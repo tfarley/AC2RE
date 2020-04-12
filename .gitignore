@@ -1,0 +1,5 @@
+# Build directory
+[Bb]uild/
+
+# Project/editor files
+.vs/
