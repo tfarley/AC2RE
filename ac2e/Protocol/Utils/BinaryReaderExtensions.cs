@@ -3,10 +3,10 @@ using System.Text;
 
 public static class BinaryReaderExtensions {
 
-    public static string ReadEncryptedString(this BinaryReader binaryReader) {
-        ushort length = binaryReader.ReadUInt16();
-        byte[] bytes = binaryReader.ReadBytes(length);
-        binaryReader.Align();
+    public static string ReadEncryptedString(this BinaryReader reader) {
+        ushort length = reader.ReadUInt16();
+        byte[] bytes = reader.ReadBytes(length);
+        reader.Align();
         CryptoUtil.decrypt(bytes, 0, length);
         return Encoding.ASCII.GetString(bytes);
     }

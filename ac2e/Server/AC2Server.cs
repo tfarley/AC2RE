@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using static ProtocolHeader;
 
 class AC2Server {
 
@@ -12,6 +11,8 @@ class AC2Server {
     private static readonly IPEndPoint ANY_ENDPOINT = new IPEndPoint(IPAddress.Any, 0);
     private static readonly int MAX_CONNECTIONS = 300;
     private static readonly int PACKET_BUFFER_SIZE = 1200;
+
+    private static readonly float ACK_INTERVAL = 2.0f;
 
     private NetInterface netInterface1;
     private NetInterface netInterface2;
@@ -24,6 +25,10 @@ class AC2Server {
     private readonly Dictionary<ushort, ClientConnection> clients = new Dictionary<ushort, ClientConnection>();
 
     private float serverTime => (DateTime.Now.Ticks - Process.GetCurrentProcess().StartTime.Ticks) / TimeSpan.TicksPerSecond;
+
+    private readonly Language[] SUPPORTED_LANGUAGES = new Language[] {
+        Language.ENGLISH,
+    };
 
     ~AC2Server() {
         // Always close in order to release system resources
@@ -95,13 +100,12 @@ class AC2Server {
     }
 
     internal void processData(byte[] rawData, int dataLen, IPEndPoint receiveEndpoint) {
-        BinaryReader data = new BinaryReader(new MemoryStream(rawData));
+        BinaryReader data = new BinaryReader(new MemoryStream(rawData, 0, dataLen));
 
         try {
             Packet packet = new Packet(data);
-            ProtocolHeader header = packet.header;
 
-            ALog.debug($"RCVD: s {header.seqId} f {header.flags} c {header.checksum:X8} r {header.recipientId} g {header.interval} l {header.dataLength} i {header.iteration}");
+            ALog.debug($"RCVD: {packet}");
 
             if (packet.logonHeader != null) {
                 ALog.debug($"Logon request: ts {packet.logonHeader.timestamp} acct {packet.logonHeader.account}");
@@ -111,21 +115,45 @@ class AC2Server {
                 } else {
                     ALog.warn("Client tried to connect, but the number of active connections is already at the limit.");
                 }
-            } else if (clients.TryGetValue(packet.header.recipientId, out ClientConnection client)) {
+            } else if (clients.TryGetValue(packet.recipientId, out ClientConnection client)) {
+                for (uint i = client.highestReceivedPacketSeq + 1; i < packet.seq; i++) {
+                    client.nackedSeqs.Add(i);
+                    ALog.warn($"Nacked seq {i}, client id {packet.recipientId}.");
+                }
+                client.highestReceivedPacketSeq = packet.seq;
+
                 if (packet.connectFinalizeHeader != 0) {
                     if (packet.connectFinalizeHeader == client.connectionAckCookie) {
-                        ALog.debug($"Got good connect finalize cookie from client id: {packet.header.recipientId}.");
+                        ALog.debug($"Got good connect finalize cookie from client id: {packet.recipientId}.");
+                        client.connect();
+                        client.packetSeq = 2;
+                        client.highestReceivedPacketSeq = 1;
+                        client.nextAckTime = serverTime + ACK_INTERVAL;
+                        client.enqueueMessage(new WorldNameMsg {
+                            numConnections = (uint)clients.Count,
+                            maxConnections = (uint)MAX_CONNECTIONS,
+                            worldName = "MyWorld",
+                        });
+                        client.enqueueMessage(new CliDatInterrogationMsg {
+                            regionId = 1,
+                            nameRuleLanguage = Language.ENGLISH,
+                            supportedLanguages = SUPPORTED_LANGUAGES,
+                        });
+                        sendPacket(client, new Packet());
                     } else {
-                        ALog.warn($"Got bad connect finalize cookie from client id: {packet.header.recipientId} - {packet.connectFinalizeHeader} sent, {client.connectionAckCookie} expected.");
+                        ALog.warn($"Got bad connect finalize cookie from client id: {packet.recipientId} - {packet.connectFinalizeHeader} sent, {client.connectionAckCookie} expected.");
                     }
                 }
 
-                if (packet.header.flags.HasFlag(Flag.ECHO_REQUEST)) {
+                if (packet.flags.HasFlag(Packet.Flag.ECHO_REQUEST)) {
                     client.echoRequestedLocalTime = packet.echoRequestHeader.localTime;
-                    sendEcho(client);
+                }
+
+                if (packet.frags.Count > 0) {
+                    ALog.debug($"Got packet with frags from client id: {packet.recipientId}.");
                 }
             } else {
-                 ALog.warn($"Got packet from unknown client id: {packet.header.recipientId}.");
+                 ALog.warn($"Got packet from unknown client id: {packet.recipientId}.");
             }
         } catch (Exception e) {
             ALog.exception(e);
@@ -154,21 +182,20 @@ class AC2Server {
         });
     }
 
-    private void sendEcho(ClientConnection client) {
-        sendPacket(client, new Packet());
-    }
-
     private void sendPacket(ClientConnection client, Packet packet) {
         float curServerTime = serverTime;
 
-        ProtocolHeader header = packet.header;
-
-        header.seqId = client.seqId;
-        client.seqId++;
-        header.recipientId = client.id;
-        header.interval = (ushort)curServerTime;
+        packet.seq = client.packetSeq;
+        client.packetSeq++;
+        packet.recipientId = client.id;
+        packet.interval = (ushort)curServerTime;
         // TODO: Need to advance this?
-        header.iteration = 1;
+        packet.iteration = 0x14;
+
+        if (client.connected && serverTime > client.nextAckTime) {
+            packet.flags |= Packet.Flag.ACK;
+            client.nextAckTime = serverTime + ACK_INTERVAL;
+        }
 
         if (client.echoRequestedLocalTime != -1.0f) {
             packet.echoResponseHeader = new EchoResponseHeader {
@@ -178,11 +205,73 @@ class AC2Server {
             client.echoRequestedLocalTime = -1.0f;
         }
 
-        int packetLength = packet.write(new PacketWriter(sendBuffer), client.serverIsaac);
+        if (client.fragQueue.Count > 0) {
+            // TODO: Just assuming that all fragments cause encryption for now - there might be cases where they don't need to or shouldn't
+            packet.flags |= Packet.Flag.ENCRYPTED_CHECKSUM;
+            packet.flags |= Packet.Flag.FRAGMENTS;
+        }
+
+        BinaryWriter data = new BinaryWriter(new MemoryStream(sendBuffer));
+
+        // Write header
+        packet.writeHeader(data);
+        uint headerChecksum = CryptoUtil.calcChecksum(sendBuffer, 0, data.BaseStream.Position, true);
+
+        // Write optional headers
+        long contentStart = data.BaseStream.Position;
+        uint contentChecksum = 0;
+        packet.writeOptionalHeaders(data, sendBuffer, ref contentChecksum);
+
+        if (packet.flags.HasFlag(Packet.Flag.ACK)) {
+            long dataStart = data.BaseStream.Position;
+            data.Write(client.highestReceivedPacketSeq);
+            contentChecksum += CryptoUtil.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
+        }
+
+        // Fill with fragments until full
+        if (packet.flags.HasFlag(Packet.Flag.FRAGMENTS)) {
+            while (client.fragQueue.TryPeek(out NetBlobFrag frag)) {
+                long lastFragStartPos = data.BaseStream.Position;
+                try {
+                    long dataStart = data.BaseStream.Position;
+                    frag.writeHeader(data);
+                    contentChecksum += CryptoUtil.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
+
+                    dataStart = data.BaseStream.Position;
+                    frag.writePayload(data);
+                    contentChecksum += CryptoUtil.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
+
+                    packet.frags.Add(frag);
+                    client.fragQueue.Dequeue();
+                } catch (ArgumentException) {
+                    data.BaseStream.Seek(lastFragStartPos, SeekOrigin.Begin);
+                }
+            }
+        }
+
+        // Encrypt checksum if necessary
+        if (packet.flags.HasFlag(Packet.Flag.ENCRYPTED_CHECKSUM)) {
+            if (!packet.hasIsaacXor) {
+                packet.isaacXor = client.serverIsaac.Next();
+                packet.hasIsaacXor = true;
+            }
+            contentChecksum ^= packet.isaacXor;
+        }
+
+        int packetLength = (int)data.BaseStream.Position;
+        ushort contentLength = (ushort)(packetLength - contentStart);
+
+        // Replace the content length and also update the checksum
+        BitConverter.GetBytes(contentLength).CopyTo(sendBuffer, 16);
+        headerChecksum += contentLength;
+
+        // Replace the checksum
+        BitConverter.GetBytes(headerChecksum + contentChecksum).CopyTo(sendBuffer, 8);
+
         netInterface1.sendTo(sendBuffer, packetLength, client.endpoint);
 
         ALog.debug($"Send[{packetLength}] to {client.endpoint} - {BitConverter.ToString(sendBuffer, 0, packetLength)}.", CatTransport.i);
 
-        ALog.debug($"SENT: s {header.seqId} f {header.flags} c {header.checksum:X8} r {header.recipientId} g {header.interval} l {header.dataLength} i {header.iteration}");
+        ALog.debug($"SENT: {packet}");
     }
 }

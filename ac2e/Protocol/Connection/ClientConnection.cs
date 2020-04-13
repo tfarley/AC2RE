@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
 
 public class ClientConnection {
@@ -11,7 +13,12 @@ public class ClientConnection {
 
     public bool connected { get; private set; }
     public ISAAC serverIsaac { get; private set; }
-    public uint seqId;
+    public uint packetSeq;
+    public uint highestReceivedPacketSeq;
+    public readonly List<uint> nackedSeqs = new List<uint>();
+    public uint blobSeq;
+    public readonly Queue<NetBlobFrag> fragQueue = new Queue<NetBlobFrag>();
+    public float nextAckTime;
     public float echoRequestedLocalTime = -1.0f;
 
     public ClientConnection(ushort id, IPEndPoint endpoint) {
@@ -28,5 +35,14 @@ public class ClientConnection {
         connected = true;
 
         serverIsaac = new ISAAC(serverSeed);
+    }
+
+    public void enqueueMessage(INetMessage message) {
+        MemoryStream buffer = new MemoryStream();
+        message.write(new BinaryWriter(buffer));
+        foreach (NetBlobFrag frag in NetBlob.fragmentize(blobSeq, message.queue, buffer.ToArray())) {
+            fragQueue.Enqueue(frag);
+        }
+        blobSeq++;
     }
 }

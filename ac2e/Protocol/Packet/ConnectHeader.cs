@@ -9,10 +9,7 @@ public class ConnectHeader {
     public uint outgoingSeed;
     public uint incomingSeed;
 
-    public void write(PacketWriter writer, ref uint checksum) {
-        BinaryWriter data = writer.data;
-        long dataStart = data.BaseStream.Position;
-
+    public void write(BinaryWriter data) {
         data.Write(serverTime);
         data.Write(connectionAckCookie);
         data.Write(recipientId);
@@ -22,7 +19,5 @@ public class ConnectHeader {
         data.Write(incomingSeed);
         // TODO: Unknown value - padding?
         data.Write((uint)0);
-
-        checksum += CryptoUtil.calcChecksum(writer.rawData, dataStart, data.BaseStream.Position - dataStart, true);
     }
 }
