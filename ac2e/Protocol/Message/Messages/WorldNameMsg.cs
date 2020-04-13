@@ -14,9 +14,7 @@ public class WorldNameMsg : INetMessage {
     public uint unk3 = 0x40A633CB; // TODO: What is this?
     public ushort unk4; // TODO: What is this?
 
-
     public void write(BinaryWriter data) {
-        data.Write((uint)opcode);
         data.Write(numConnections);
         data.Write(maxConnections);
         data.Write(unk1);

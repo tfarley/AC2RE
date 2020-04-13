@@ -43,6 +43,15 @@ class Packet {
     public ushort dataLength;
     public ushort iteration;
 
+    private uint _ackHeader;
+    public uint ackHeader {
+        get => _ackHeader;
+        set {
+            _ackHeader = value;
+            flags |= Flag.ACK;
+        }
+    }
+
     private LogonHeader _logonHeader;
     public LogonHeader logonHeader {
         get => _logonHeader;
@@ -125,10 +134,7 @@ class Packet {
             throw new NotImplementedException();
         }
         if (flags.HasFlag(Flag.ACK)) {
-            throw new NotImplementedException();
-        }
-        if (flags.HasFlag(Flag.DISCONNECT)) {
-            throw new NotImplementedException();
+            _ackHeader = data.ReadUInt32();
         }
         if (flags.HasFlag(Flag.LOGON_REQUEST)) {
             _logonHeader = new LogonHeader(data);
@@ -199,8 +205,10 @@ class Packet {
         if (flags.HasFlag(Flag.NO_RETRANSMIT)) {
             throw new NotImplementedException();
         }
-        if (flags.HasFlag(Flag.DISCONNECT)) {
-            throw new NotImplementedException();
+        if (flags.HasFlag(Flag.ACK)) {
+            long dataStart = data.BaseStream.Position;
+            data.Write(_ackHeader);
+            checksum += CryptoUtil.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
         }
         if (flags.HasFlag(Flag.LOGON_REQUEST)) {
             throw new NotImplementedException();

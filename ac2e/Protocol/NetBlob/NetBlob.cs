@@ -6,15 +6,15 @@ public static class NetBlob {
     // TODO: Better number for max frag size?
     public static readonly int MAX_FRAG_SIZE = 450;
 
-    // TODO: What's this? Should not be a constant?
-    public static readonly uint BLOB_ID = 450;
+    // TODO: What's this? Should not be a constant? Figure out why this makes character select work, but it doesn't without the 23...
+    public static readonly uint BLOB_ID = 0x23010000;
 
     public static List<NetBlobFrag> fragmentize(uint blobSeq, NetQueue queueId, byte[] payload) {
         List<NetBlobFrag> frags = new List<NetBlobFrag>();
         if (payload.Length < MAX_FRAG_SIZE) {
             frags.Add(new NetBlobFrag {
                 blobSeq = blobSeq,
-                blobId = BLOB_ID,
+                blobId = BLOB_ID | blobSeq,
                 numFrags = 1,
                 fragIndex = 0,
                 queueId = queueId,
@@ -26,7 +26,7 @@ public static class NetBlob {
             while (remainingLength > 0) {
                 NetBlobFrag frag = new NetBlobFrag {
                     blobSeq = blobSeq,
-                    blobId = BLOB_ID,
+                    blobId = BLOB_ID | blobSeq,
                     numFrags = numFrags,
                     fragIndex = (ushort)frags.Count,
                     queueId = queueId,

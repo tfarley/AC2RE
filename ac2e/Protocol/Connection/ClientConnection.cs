@@ -7,6 +7,7 @@ public class ClientConnection {
 
     public readonly ushort id;
     public readonly IPEndPoint endpoint;
+    public readonly string accountName;
     public readonly ulong connectionAckCookie;
     public readonly uint serverSeed;
     public readonly uint clientSeed;
@@ -15,15 +16,17 @@ public class ClientConnection {
     public ISAAC serverIsaac { get; private set; }
     public uint packetSeq;
     public uint highestReceivedPacketSeq;
+    public uint highestAckedPacketSeq;
     public readonly List<uint> nackedSeqs = new List<uint>();
     public uint blobSeq;
     public readonly Queue<NetBlobFrag> fragQueue = new Queue<NetBlobFrag>();
     public float nextAckTime;
     public float echoRequestedLocalTime = -1.0f;
 
-    public ClientConnection(ushort id, IPEndPoint endpoint) {
+    public ClientConnection(ushort id, IPEndPoint endpoint, string accountName) {
         this.id = id;
         this.endpoint = endpoint;
+        this.accountName = accountName;
 
         Random rand = new Random();
         connectionAckCookie = rand.NextULong();
@@ -35,11 +38,15 @@ public class ClientConnection {
         connected = true;
 
         serverIsaac = new ISAAC(serverSeed);
+        packetSeq = 2;
+        highestReceivedPacketSeq = 1;
     }
 
     public void enqueueMessage(INetMessage message) {
         MemoryStream buffer = new MemoryStream();
-        message.write(new BinaryWriter(buffer));
+        BinaryWriter data = new BinaryWriter(buffer);
+        data.Write((uint)message.opcode);
+        message.write(data);
         foreach (NetBlobFrag frag in NetBlob.fragmentize(blobSeq, message.queue, buffer.ToArray())) {
             fragQueue.Enqueue(frag);
         }

@@ -11,7 +11,6 @@ public class CliDatInterrogationMsg : INetMessage {
     public Language[] supportedLanguages;
 
     public void write(BinaryWriter data) {
-        data.Write((uint)opcode);
         data.Write(regionId);
         data.Write((uint)nameRuleLanguage);
         data.Write((uint)supportedLanguages.Length);

@@ -109,13 +109,23 @@ class AC2Server {
 
             if (packet.logonHeader != null) {
                 ALog.debug($"Logon request: ts {packet.logonHeader.timestamp} acct {packet.logonHeader.account}");
-                ClientConnection client = addClient(receiveEndpoint);
+                ClientConnection client = addClient(receiveEndpoint, packet.logonHeader.account);
                 if (client != null) {
                     sendConnect(client);
                 } else {
                     ALog.warn("Client tried to connect, but the number of active connections is already at the limit.");
                 }
             } else if (clients.TryGetValue(packet.recipientId, out ClientConnection client)) {
+                if (packet.flags.HasFlag(Packet.Flag.DISCONNECT)) {
+                    // TODO: Remove client
+                    ALog.info($"Client diconnected, id {packet.recipientId}.");
+                    return;
+                }
+                if (packet.flags.HasFlag(Packet.Flag.ACK)) {
+                    client.highestAckedPacketSeq = packet.ackHeader;
+                    // TODO: Clear out any stored packets
+                }
+
                 for (uint i = client.highestReceivedPacketSeq + 1; i < packet.seq; i++) {
                     client.nackedSeqs.Add(i);
                     ALog.warn($"Nacked seq {i}, client id {packet.recipientId}.");
@@ -126,8 +136,6 @@ class AC2Server {
                     if (packet.connectFinalizeHeader == client.connectionAckCookie) {
                         ALog.debug($"Got good connect finalize cookie from client id: {packet.recipientId}.");
                         client.connect();
-                        client.packetSeq = 2;
-                        client.highestReceivedPacketSeq = 1;
                         client.nextAckTime = serverTime + ACK_INTERVAL;
                         client.enqueueMessage(new WorldNameMsg {
                             numConnections = (uint)clients.Count,
@@ -150,7 +158,13 @@ class AC2Server {
                 }
 
                 if (packet.frags.Count > 0) {
-                    ALog.debug($"Got packet with frags from client id: {packet.recipientId}.");
+                    foreach (NetBlobFrag frag in packet.frags) {
+                        if (frag.numFrags == 1) {
+                            processNetBlob(client, frag.payload);
+                        } else {
+                            ALog.error($"Got fragmented packet from client id: {packet.recipientId} - reassembly not implemented yet!");
+                        }
+                    }
                 }
             } else {
                  ALog.warn($"Got packet from unknown client id: {packet.recipientId}.");
@@ -160,12 +174,46 @@ class AC2Server {
         }
     }
 
-    private ClientConnection addClient(IPEndPoint clientEndpoint) {
+    private void processNetBlob(ClientConnection client, byte[] payload) {
+        BinaryReader data = new BinaryReader(new MemoryStream(payload));
+
+        MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
+
+        object genericMsg = null;
+
+        switch (opcode) {
+            case MessageOpcode.CLIDAT_INTERROGATION_RESPONSE_EVENT:
+                CliDatInterrogationResponseMsg msg = new CliDatInterrogationResponseMsg(data);
+                genericMsg = msg;
+                client.enqueueMessage(new CliDatEndDDDMsg());
+                CharacterIdentity[] characters = new CharacterIdentity[] { };
+                client.enqueueMessage(new LoginMinCharSetMsg {
+                    accountName = client.accountName,
+                    characters = characters,
+                });
+                client.enqueueMessage(new LoginCharacterSetMsg {
+                    characters = characters,
+                    numAllowedCharacters = 10,
+                    accountName = client.accountName,
+                    hasLegions = true,
+                    useTurbineChat = true,
+                });
+                sendPacket(client, new Packet());
+                break;
+            default:
+                ALog.error($"Unhandled opcode: {opcode} - message not processed!");
+                break;
+        }
+
+        ALog.debug($"Got msg: {genericMsg}");
+    }
+
+    private ClientConnection addClient(IPEndPoint clientEndpoint, string accountName) {
         if (clients.Count > MAX_CONNECTIONS) {
             return null;
         }
 
-        ClientConnection client = new ClientConnection(clientCounter, clientEndpoint);
+        ClientConnection client = new ClientConnection(clientCounter, clientEndpoint, accountName);
         clients[clientCounter] = client;
         clientCounter++;
         return client;
@@ -190,10 +238,10 @@ class AC2Server {
         packet.recipientId = client.id;
         packet.interval = (ushort)curServerTime;
         // TODO: Need to advance this?
-        packet.iteration = 0x14;
-
+        packet.iteration = 1;
+        
         if (client.connected && serverTime > client.nextAckTime) {
-            packet.flags |= Packet.Flag.ACK;
+            packet.ackHeader = client.highestReceivedPacketSeq;
             client.nextAckTime = serverTime + ACK_INTERVAL;
         }
 
@@ -221,12 +269,6 @@ class AC2Server {
         long contentStart = data.BaseStream.Position;
         uint contentChecksum = 0;
         packet.writeOptionalHeaders(data, sendBuffer, ref contentChecksum);
-
-        if (packet.flags.HasFlag(Packet.Flag.ACK)) {
-            long dataStart = data.BaseStream.Position;
-            data.Write(client.highestReceivedPacketSeq);
-            contentChecksum += CryptoUtil.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
-        }
 
         // Fill with fragments until full
         if (packet.flags.HasFlag(Packet.Flag.FRAGMENTS)) {
