@@ -1,5 +1,6 @@
 ﻿using System;
 
+// DB table 2300000A
 [Flags]
 public enum PhysiqueType : uint {
     UNDEF = 0,
@@ -16,6 +17,6 @@ public enum PhysiqueType : uint {
     BOOTS_CLOTHING_COLOR = 1 << 10,
     CLOTHING_MASK = SHIRT_CLOTHING_COLOR | PANTS_CLOTHING_COLOR | BOOTS_CLOTHING_COLOR,
     FACE_DETAIL = 1 << 11,
-    UNK1 = 1 << 12,
+    EYE_COLOR = 1 << 12,
     ALL = uint.MaxValue,
 }

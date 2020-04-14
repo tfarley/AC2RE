@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 
 public class CharacterIdentity {
 
@@ -9,7 +10,7 @@ public class CharacterIdentity {
 
     public void write(BinaryWriter data) {
         data.Write(id);
-        data.WriteEncryptedString(name);
+        data.WriteEncryptedString(name, Encoding.Unicode);
         data.Write(greyedOutForSeconds);
         vDesc.write(data);
     }

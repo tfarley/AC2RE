@@ -1,5 +1,6 @@
 ﻿using System;
 
+// DB table 23000007
 [Flags]
 public enum SpeciesType : uint {
     UNDEF = 0,

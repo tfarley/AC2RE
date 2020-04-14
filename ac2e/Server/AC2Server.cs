@@ -101,120 +101,138 @@ class AC2Server {
     }
 
     internal void processData(byte[] rawData, int dataLen, IPEndPoint receiveEndpoint) {
-        BinaryReader data = new BinaryReader(new MemoryStream(rawData, 0, dataLen));
+        using (BinaryReader data = new BinaryReader(new MemoryStream(rawData, 0, dataLen))) {
 
-        try {
-            Packet packet = new Packet(data);
+            try {
+                Packet packet = new Packet(data);
 
-            ALog.debug($"RCVD: {packet}");
+                ALog.debug($"RCVD: {packet}");
 
-            if (packet.logonHeader != null) {
-                ALog.debug($"Logon request: ts {packet.logonHeader.timestamp} acct {packet.logonHeader.account}");
-                ClientConnection client = addClient(receiveEndpoint, packet.logonHeader.account);
-                if (client != null) {
-                    sendConnect(client);
-                } else {
-                    ALog.warn("Client tried to connect, but the number of active connections is already at the limit.");
-                }
-            } else if (clients.TryGetValue(packet.recipientId, out ClientConnection client)) {
-                if (packet.flags.HasFlag(Packet.Flag.DISCONNECT)) {
-                    // TODO: Remove client
-                    ALog.info($"Client diconnected, id {packet.recipientId}.");
-                    return;
-                }
-                if (packet.flags.HasFlag(Packet.Flag.ACK)) {
-                    client.highestAckedPacketSeq = packet.ackHeader;
-                    // TODO: Clear out any stored packets
-                }
-
-                for (uint i = client.highestReceivedPacketSeq + 1; i < packet.seq; i++) {
-                    client.nackedSeqs.Add(i);
-                    ALog.warn($"Nacked seq {i}, client id {packet.recipientId}.");
-                }
-                client.highestReceivedPacketSeq = packet.seq;
-
-                if (packet.connectAckHeader != 0) {
-                    if (packet.connectAckHeader == client.connectionAckCookie) {
-                        ALog.debug($"Got good connect ack cookie from client id: {packet.recipientId}.");
-                        client.connect();
-                        client.nextAckTime = serverTime + ACK_INTERVAL;
-                        client.nextAckTime = serverTime + TIME_SYNC_INTERVAL;
-                        client.enqueueMessage(new WorldNameMsg {
-                            numConnections = (uint)clients.Count,
-                            maxConnections = (uint)MAX_CONNECTIONS,
-                            worldName = "MyWorld",
-                        });
-                        client.enqueueMessage(new CliDatInterrogationMsg {
-                            regionId = 1,
-                            nameRuleLanguage = Language.ENGLISH,
-                            supportedLanguages = SUPPORTED_LANGUAGES,
-                        });
-                        sendPacket(client, new Packet());
+                if (packet.logonHeader != null) {
+                    ALog.debug($"Logon request: ts {packet.logonHeader.timestamp} acct {packet.logonHeader.account}");
+                    ClientConnection client = addClient(receiveEndpoint, packet.logonHeader.account);
+                    if (client != null) {
+                        sendConnect(client);
                     } else {
-                        ALog.warn($"Got bad connect ack cookie from client id: {packet.recipientId} - {packet.connectAckHeader} sent, {client.connectionAckCookie} expected.");
+                        ALog.warn("Client tried to connect, but the number of active connections is already at the limit.");
                     }
-                }
+                } else if (clients.TryGetValue(packet.recipientId, out ClientConnection client)) {
+                    if (packet.flags.HasFlag(Packet.Flag.DISCONNECT)) {
+                        // TODO: Remove client
+                        ALog.info($"Client diconnected, id {packet.recipientId}.");
+                        return;
+                    }
+                    if (packet.flags.HasFlag(Packet.Flag.ACK)) {
+                        client.highestAckedPacketSeq = packet.ackHeader;
+                        // TODO: Clear out any stored packets
+                    }
 
-                if (packet.flags.HasFlag(Packet.Flag.ECHO_REQUEST)) {
-                    client.echoRequestedLocalTime = packet.echoRequestHeader.localTime;
-                }
+                    for (uint i = client.highestReceivedPacketSeq + 1; i < packet.seq; i++) {
+                        client.nackedSeqs.Add(i);
+                        ALog.warn($"Nacked seq {i}, client id {packet.recipientId}.");
+                    }
+                    client.highestReceivedPacketSeq = packet.seq;
 
-                if (packet.frags.Count > 0) {
-                    foreach (NetBlobFrag frag in packet.frags) {
-                        if (frag.fragCount == 1) {
-                            processNetBlob(client, frag);
+                    if (packet.connectAckHeader != 0) {
+                        if (packet.connectAckHeader == client.connectionAckCookie) {
+                            ALog.debug($"Got good connect ack cookie from client id: {packet.recipientId}.");
+                            client.connect();
+                            client.nextAckTime = serverTime + ACK_INTERVAL;
+                            client.nextAckTime = serverTime + TIME_SYNC_INTERVAL;
+                            client.enqueueMessage(new WorldNameMsg {
+                                numConnections = (uint)clients.Count,
+                                maxConnections = (uint)MAX_CONNECTIONS,
+                                worldName = "MyWorld",
+                            });
+                            client.enqueueMessage(new CliDatInterrogationMsg {
+                                regionId = 1,
+                                nameRuleLanguage = Language.ENGLISH,
+                                supportedLanguages = SUPPORTED_LANGUAGES,
+                            });
+                            sendPacket(client, new Packet());
                         } else {
-                            ALog.error($"Got fragmented packet from client id: {packet.recipientId} - reassembly not implemented yet!");
+                            ALog.warn($"Got bad connect ack cookie from client id: {packet.recipientId} - {packet.connectAckHeader} sent, {client.connectionAckCookie} expected.");
                         }
                     }
+
+                    if (packet.flags.HasFlag(Packet.Flag.ECHO_REQUEST)) {
+                        client.echoRequestedLocalTime = packet.echoRequestHeader.localTime;
+                    }
+
+                    if (packet.frags.Count > 0) {
+                        foreach (NetBlobFrag frag in packet.frags) {
+                            if (frag.fragCount == 1) {
+                                processNetBlob(client, frag);
+                            } else {
+                                ALog.error($"Got fragmented packet from client id: {packet.recipientId} - reassembly not implemented yet!");
+                            }
+                        }
+                    }
+                } else {
+                    ALog.warn($"Got packet from unknown client id: {packet.recipientId}.");
                 }
-            } else {
-                 ALog.warn($"Got packet from unknown client id: {packet.recipientId}.");
+            } catch (Exception e) {
+                ALog.exception(e);
             }
-        } catch (Exception e) {
-            ALog.exception(e);
         }
     }
 
     private void processNetBlob(ClientConnection client, NetBlobFrag blob) {
-        BinaryReader data = new BinaryReader(new MemoryStream(blob.payload));
+        using (BinaryReader data = new BinaryReader(new MemoryStream(blob.payload))) {
 
-        MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
+            MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
 
-        INetMessage genericMsg = null;
+            INetMessage genericMsg = null;
 
-        switch (opcode) {
-            case MessageOpcode.CLIDAT_INTERROGATION_RESPONSE_EVENT: {
-                    CliDatInterrogationResponseMsg msg = new CliDatInterrogationResponseMsg(data);
-                    genericMsg = msg;
-                    client.enqueueMessage(new CliDatEndDDDMsg());
-                    CharacterIdentity[] characters = new CharacterIdentity[] { };
-                    client.enqueueMessage(new LoginMinCharSetMsg {
-                        accountName = client.accountName,
-                        characters = characters,
-                    });
-                    client.enqueueMessage(new LoginCharacterSetMsg {
-                        characters = characters,
-                        numAllowedCharacters = 10,
-                        accountName = client.accountName,
-                        hasLegions = true,
-                        useTurbineChat = true,
-                    });
-                    sendPacket(client, new Packet());
-                    break;
-                }
-            case MessageOpcode.CHARACTER_CREATE_EVENT: {
-                    CharacterCreateMsg msg = new CharacterCreateMsg(data);
-                    genericMsg = msg;
-                    break;
-                }
-            default: {
-                    ALog.error($"Unhandled opcode: {opcode} - message not processed! Header: {blob}");
-                    break;
-                }
+            switch (opcode) {
+                case MessageOpcode.CLIDAT_INTERROGATION_RESPONSE_EVENT: {
+                        CliDatInterrogationResponseMsg msg = new CliDatInterrogationResponseMsg(data);
+                        genericMsg = msg;
+                        client.enqueueMessage(new CliDatEndDDDMsg());
+                        CharacterIdentity[] characters = new CharacterIdentity[] {
+                            new CharacterIdentity {
+                                id = 123,
+                                name = "TestChar",
+                                greyedOutForSeconds = 0,
+                                vDesc = new VisualDesc {
+                                    baseSetupId = 123,
+                                },
+                            },
+                        };
+                        client.enqueueMessage(new LoginMinCharSetMsg {
+                            accountName = client.accountName,
+                            characters = characters,
+                        });
+                        client.enqueueMessage(new LoginCharacterSetMsg {
+                            characters = characters,
+                            numAllowedCharacters = 10,
+                            accountName = client.accountName,
+                            hasLegions = true,
+                            useTurbineChat = true,
+                        });
+                        sendPacket(client, new Packet());
+                        break;
+                    }
+                case MessageOpcode.CHARACTER_CREATE_EVENT: {
+                        CharacterCreateMsg msg = new CharacterCreateMsg(data);
+                        genericMsg = msg;
+                        // TODO: Create character
+                        break;
+                    }
+                case MessageOpcode.CHARACTER_ENTER_GAME_EVENT: {
+                        CharacterEnterGameMsg msg = new CharacterEnterGameMsg(data);
+                        genericMsg = msg;
+                        // TODO: Send messages required for player to enter game
+                        break;
+                    }
+                default: {
+                        ALog.error($"Unhandled opcode: {opcode} - message not processed! Header: {blob}");
+                        break;
+                    }
+            }
+
+            ALog.debug($"Got msg: {genericMsg}");
         }
-
-        ALog.debug($"Got msg: {genericMsg}");
     }
 
     private ClientConnection addClient(IPEndPoint clientEndpoint, string accountName) {

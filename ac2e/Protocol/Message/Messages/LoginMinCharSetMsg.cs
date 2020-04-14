@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 
 public class LoginMinCharSetMsg : INetMessage {
 
@@ -14,7 +15,7 @@ public class LoginMinCharSetMsg : INetMessage {
         data.WriteEncryptedString(accountName);
         data.Write((uint)characters.Length);
         foreach (CharacterIdentity character in characters) {
-            data.Write(character.name);
+            data.WriteEncryptedString(character.name, Encoding.Unicode);
         }
         data.Write((uint)characters.Length);
         foreach (CharacterIdentity character in characters) {
