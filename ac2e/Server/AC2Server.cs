@@ -13,6 +13,7 @@ class AC2Server {
     private static readonly int PACKET_BUFFER_SIZE = 1200;
 
     private static readonly float ACK_INTERVAL = 2.0f;
+    private static readonly float TIME_SYNC_INTERVAL = 20.0f;
 
     private NetInterface netInterface1;
     private NetInterface netInterface2;
@@ -132,11 +133,12 @@ class AC2Server {
                 }
                 client.highestReceivedPacketSeq = packet.seq;
 
-                if (packet.connectFinalizeHeader != 0) {
-                    if (packet.connectFinalizeHeader == client.connectionAckCookie) {
-                        ALog.debug($"Got good connect finalize cookie from client id: {packet.recipientId}.");
+                if (packet.connectAckHeader != 0) {
+                    if (packet.connectAckHeader == client.connectionAckCookie) {
+                        ALog.debug($"Got good connect ack cookie from client id: {packet.recipientId}.");
                         client.connect();
                         client.nextAckTime = serverTime + ACK_INTERVAL;
+                        client.nextAckTime = serverTime + TIME_SYNC_INTERVAL;
                         client.enqueueMessage(new WorldNameMsg {
                             numConnections = (uint)clients.Count,
                             maxConnections = (uint)MAX_CONNECTIONS,
@@ -149,7 +151,7 @@ class AC2Server {
                         });
                         sendPacket(client, new Packet());
                     } else {
-                        ALog.warn($"Got bad connect finalize cookie from client id: {packet.recipientId} - {packet.connectFinalizeHeader} sent, {client.connectionAckCookie} expected.");
+                        ALog.warn($"Got bad connect ack cookie from client id: {packet.recipientId} - {packet.connectAckHeader} sent, {client.connectionAckCookie} expected.");
                     }
                 }
 
@@ -159,8 +161,8 @@ class AC2Server {
 
                 if (packet.frags.Count > 0) {
                     foreach (NetBlobFrag frag in packet.frags) {
-                        if (frag.numFrags == 1) {
-                            processNetBlob(client, frag.payload);
+                        if (frag.fragCount == 1) {
+                            processNetBlob(client, frag);
                         } else {
                             ALog.error($"Got fragmented packet from client id: {packet.recipientId} - reassembly not implemented yet!");
                         }
@@ -174,35 +176,42 @@ class AC2Server {
         }
     }
 
-    private void processNetBlob(ClientConnection client, byte[] payload) {
-        BinaryReader data = new BinaryReader(new MemoryStream(payload));
+    private void processNetBlob(ClientConnection client, NetBlobFrag blob) {
+        BinaryReader data = new BinaryReader(new MemoryStream(blob.payload));
 
         MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
 
-        object genericMsg = null;
+        INetMessage genericMsg = null;
 
         switch (opcode) {
-            case MessageOpcode.CLIDAT_INTERROGATION_RESPONSE_EVENT:
-                CliDatInterrogationResponseMsg msg = new CliDatInterrogationResponseMsg(data);
-                genericMsg = msg;
-                client.enqueueMessage(new CliDatEndDDDMsg());
-                CharacterIdentity[] characters = new CharacterIdentity[] { };
-                client.enqueueMessage(new LoginMinCharSetMsg {
-                    accountName = client.accountName,
-                    characters = characters,
-                });
-                client.enqueueMessage(new LoginCharacterSetMsg {
-                    characters = characters,
-                    numAllowedCharacters = 10,
-                    accountName = client.accountName,
-                    hasLegions = true,
-                    useTurbineChat = true,
-                });
-                sendPacket(client, new Packet());
-                break;
-            default:
-                ALog.error($"Unhandled opcode: {opcode} - message not processed!");
-                break;
+            case MessageOpcode.CLIDAT_INTERROGATION_RESPONSE_EVENT: {
+                    CliDatInterrogationResponseMsg msg = new CliDatInterrogationResponseMsg(data);
+                    genericMsg = msg;
+                    client.enqueueMessage(new CliDatEndDDDMsg());
+                    CharacterIdentity[] characters = new CharacterIdentity[] { };
+                    client.enqueueMessage(new LoginMinCharSetMsg {
+                        accountName = client.accountName,
+                        characters = characters,
+                    });
+                    client.enqueueMessage(new LoginCharacterSetMsg {
+                        characters = characters,
+                        numAllowedCharacters = 10,
+                        accountName = client.accountName,
+                        hasLegions = true,
+                        useTurbineChat = true,
+                    });
+                    sendPacket(client, new Packet());
+                    break;
+                }
+            case MessageOpcode.CHARACTER_CREATE_EVENT: {
+                    CharacterCreateMsg msg = new CharacterCreateMsg(data);
+                    genericMsg = msg;
+                    break;
+                }
+            default: {
+                    ALog.error($"Unhandled opcode: {opcode} - message not processed! Header: {blob}");
+                    break;
+                }
         }
 
         ALog.debug($"Got msg: {genericMsg}");
@@ -243,6 +252,11 @@ class AC2Server {
         if (client.connected && serverTime > client.nextAckTime) {
             packet.ackHeader = client.highestReceivedPacketSeq;
             client.nextAckTime = serverTime + ACK_INTERVAL;
+        }
+
+        if (client.connected && serverTime > client.nextTimeSyncTime) {
+            packet.timeSyncHeader = serverTime;
+            client.nextTimeSyncTime = serverTime + TIME_SYNC_INTERVAL;
         }
 
         if (client.echoRequestedLocalTime != -1.0f) {

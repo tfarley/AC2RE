@@ -25,14 +25,14 @@ class Packet {
         LOGON_REQUEST = 1 << 16, // 0x00010000
         WORLD_LOGON_REQUEST = 1 << 17, // 0x00020000
         CONNECT = 1 << 18, // 0x00040000
-        CONNECT_FINALIZE = 1 << 19, // 0x00080000
+        CONNECT_ACK = 1 << 19, // 0x00080000
         NET_ERROR = 1 << 20, // 0x00100000
         NET_ERROR_DISCONNECT = 1 << 21, // 0x00200000
         ICMD_COMMAND = 1 << 22, // 0x00400000
-        TIME_SYNC = 1 << 23, // 0x00800000
-        ECHO_REQUEST = 1 << 24, // 0x01000000
-        ECHO_RESPONSE = 1 << 25, // 0x02000000
-        FLOW = 1 << 26, // 0x04000000
+        TIME_SYNC = 1 << 24, // 0x00100000
+        ECHO_REQUEST = 1 << 25, // 0x02000000
+        ECHO_RESPONSE = 1 << 26, // 0x04000000
+        FLOW = 1 << 27, // 0x08000000
     }
 
     public uint seq;
@@ -70,12 +70,21 @@ class Packet {
         }
     }
 
-    private ulong _connectFinalizeHeader;
-    public ulong connectFinalizeHeader {
-        get => _connectFinalizeHeader;
+    private ulong _connectAckHeader;
+    public ulong connectAckHeader {
+        get => _connectAckHeader;
         set {
-            _connectFinalizeHeader = value;
-            flags |= Flag.CONNECT_FINALIZE;
+            _connectAckHeader = value;
+            flags |= Flag.CONNECT_ACK;
+        }
+    }
+
+    private double _timeSyncHeader;
+    public double timeSyncHeader {
+        get => _timeSyncHeader;
+        set {
+            _timeSyncHeader = value;
+            flags |= Flag.TIME_SYNC;
         }
     }
 
@@ -94,6 +103,15 @@ class Packet {
         set {
             _echoResponseHeader = value;
             flags |= Flag.ECHO_RESPONSE;
+        }
+    }
+
+    private FlowHeader _flowHeader;
+    public FlowHeader flowHeader {
+        get => _flowHeader;
+        set {
+            _flowHeader = value;
+            flags |= Flag.FLOW;
         }
     }
 
@@ -145,8 +163,8 @@ class Packet {
         if (flags.HasFlag(Flag.CONNECT)) {
             throw new NotImplementedException();
         }
-        if (flags.HasFlag(Flag.CONNECT_FINALIZE)) {
-            _connectFinalizeHeader = data.ReadUInt64();
+        if (flags.HasFlag(Flag.CONNECT_ACK)) {
+            _connectAckHeader = data.ReadUInt64();
         }
         if (flags.HasFlag(Flag.NET_ERROR)) {
             throw new NotImplementedException();
@@ -158,21 +176,27 @@ class Packet {
             throw new NotImplementedException();
         }
         if (flags.HasFlag(Flag.TIME_SYNC)) {
-            throw new NotImplementedException();
+            _timeSyncHeader = data.ReadDouble();
         }
         if (flags.HasFlag(Flag.ECHO_REQUEST)) {
             _echoRequestHeader = new EchoRequestHeader(data);
         }
         if (flags.HasFlag(Flag.ECHO_RESPONSE)) {
-            // TODO: Anything to do here?
+            throw new NotImplementedException();
         }
         if (flags.HasFlag(Flag.FLOW)) {
-            throw new NotImplementedException();
+            _flowHeader = new FlowHeader(data);
         }
 
         if (flags.HasFlag(Flag.FRAGMENTS)) {
             while (data.BaseStream.Position < data.BaseStream.Length) {
-                frags.Add(new NetBlobFrag(data));
+                long fragStart = data.BaseStream.Position;
+                NetBlobFrag frag = new NetBlobFrag(data);
+                if (data.BaseStream.Position != fragStart + frag.fragSize) {
+                    ALog.warn($"Did not read full fragment!");
+                }
+
+                frags.Add(frag);
             }
         }
     }
@@ -224,7 +248,7 @@ class Packet {
             _connectHeader.write(data);
             checksum += CryptoUtil.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
         }
-        if (flags.HasFlag(Flag.CONNECT_FINALIZE)) {
+        if (flags.HasFlag(Flag.CONNECT_ACK)) {
             throw new NotImplementedException();
         }
         if (flags.HasFlag(Flag.NET_ERROR)) {
@@ -237,7 +261,9 @@ class Packet {
             throw new NotImplementedException();
         }
         if (flags.HasFlag(Flag.TIME_SYNC)) {
-            throw new NotImplementedException();
+            long dataStart = data.BaseStream.Position;
+            data.Write(_timeSyncHeader);
+            checksum += CryptoUtil.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
         }
         if (flags.HasFlag(Flag.ECHO_REQUEST)) {
             throw new NotImplementedException();
@@ -247,8 +273,10 @@ class Packet {
             _echoResponseHeader.write(data);
             checksum += CryptoUtil.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
         }
-        if (flags.HasFlag(Flag.FLOW)) {
-            throw new NotImplementedException();
+        if (_flowHeader != null) {
+            long dataStart = data.BaseStream.Position;
+            _flowHeader.write(data);
+            checksum += CryptoUtil.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
         }
     }
 

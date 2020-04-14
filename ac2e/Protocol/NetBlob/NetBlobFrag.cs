@@ -4,7 +4,8 @@ public class NetBlobFrag {
 
     public uint blobSeq;
     public uint blobId;
-    public ushort numFrags;
+    public ushort fragCount;
+    public ushort fragSize;
     public ushort fragIndex;
     public NetQueue queueId;
     public byte[] payload;
@@ -16,8 +17,8 @@ public class NetBlobFrag {
     public NetBlobFrag(BinaryReader data) {
         blobSeq = data.ReadUInt32();
         blobId = data.ReadUInt32();
-        numFrags = data.ReadUInt16();
-        ushort fragSize = data.ReadUInt16();
+        fragCount = data.ReadUInt16();
+        fragSize = data.ReadUInt16();
         fragIndex = data.ReadUInt16();
         queueId = (NetQueue)data.ReadUInt16();
 
@@ -25,15 +26,21 @@ public class NetBlobFrag {
     }
 
     public void writeHeader(BinaryWriter data) {
+        fragSize = (ushort)(payload.Length + 16);
+
         data.Write(blobSeq);
         data.Write(blobId);
-        data.Write(numFrags);
-        data.Write((ushort)(payload.Length + 16));
+        data.Write(fragCount);
+        data.Write(fragSize);
         data.Write(fragIndex);
         data.Write((ushort)queueId);
     }
 
     public void writePayload(BinaryWriter data) {
         data.Write(payload);
+    }
+
+    public override string ToString() {
+        return $"s {blobSeq} u {blobId} c {fragCount} l {fragSize} i {fragIndex} q {queueId}";
     }
 }

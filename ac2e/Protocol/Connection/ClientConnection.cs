@@ -21,6 +21,7 @@ public class ClientConnection {
     public uint blobSeq;
     public readonly Queue<NetBlobFrag> fragQueue = new Queue<NetBlobFrag>();
     public float nextAckTime;
+    public float nextTimeSyncTime;
     public float echoRequestedLocalTime = -1.0f;
 
     public ClientConnection(ushort id, IPEndPoint endpoint, string accountName) {
