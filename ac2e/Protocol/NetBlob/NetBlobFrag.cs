@@ -2,8 +2,9 @@
 
 public class NetBlobFrag {
 
-    public uint blobSeq;
-    public uint blobId;
+    public static readonly int MAX_SIZE = Packet.MAX_SIZE - 20 - 50 - 16; // Max packet size - header size - some room for optional headers - frag header size
+
+    public NetBlobId blobId;
     public ushort fragCount;
     public ushort fragSize;
     public ushort fragIndex;
@@ -15,8 +16,7 @@ public class NetBlobFrag {
     }
 
     public NetBlobFrag(BinaryReader data) {
-        blobSeq = data.ReadUInt32();
-        blobId = data.ReadUInt32();
+        blobId = data.ReadUInt64();
         fragCount = data.ReadUInt16();
         fragSize = data.ReadUInt16();
         fragIndex = data.ReadUInt16();
@@ -28,8 +28,7 @@ public class NetBlobFrag {
     public void writeHeader(BinaryWriter data) {
         fragSize = (ushort)(payload.Length + 16);
 
-        data.Write(blobSeq);
-        data.Write(blobId);
+        data.Write(blobId.id);
         data.Write(fragCount);
         data.Write(fragSize);
         data.Write(fragIndex);
@@ -41,6 +40,6 @@ public class NetBlobFrag {
     }
 
     public override string ToString() {
-        return $"s {blobSeq} u {blobId} c {fragCount} l {fragSize} i {fragIndex} q {queueId}";
+        return $"b {blobId} c {fragCount} l {fragSize} i {fragIndex} q {queueId}";
     }
 }

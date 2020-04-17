@@ -11,16 +11,34 @@ public static class BinaryWriterExtensions {
         }
         ushort numChars = (ushort)str.Length;
         writer.Write(numChars);
+        if (numChars == 0) {
+            writer.Align();
+            return;
+        }
         byte[] bytes = encoding.GetBytes(str);
         CryptoUtil.encrypt(bytes, 0, bytes.Length);
         writer.Write(bytes);
         writer.Align();
     }
 
+    public static void WriteList<T>(this BinaryWriter writer, List<T> list, Action<BinaryWriter, T> elementWriter, uint sizeOfSize = 4) {
+        if (sizeOfSize == 1) {
+            writer.Write((byte)list.Count);
+        } else if (sizeOfSize == 2) {
+            writer.Write((ushort)list.Count);
+        } else if (sizeOfSize == 4) {
+            writer.Write((uint)list.Count);
+        } else {
+            throw new Exception();
+        }
+        foreach (var element in list) {
+            elementWriter.Invoke(writer, element);
+        }
+    }
+
     public static void WriteDictionary<K, V>(this BinaryWriter writer, Dictionary<K, V> dict, Action<BinaryWriter, K> keyWriter, Action<BinaryWriter, V> valueWriter) {
-        ushort numElements = (ushort)dict.Count;
-        writer.Write(numElements);
-        writer.Write(numElements);
+        writer.Write((ushort)dict.Count);
+        writer.Write((ushort)0);
         foreach (var element in dict) {
             keyWriter.Invoke(writer, element.Key);
             valueWriter.Invoke(writer, element.Value);

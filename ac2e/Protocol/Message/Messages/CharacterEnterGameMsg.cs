@@ -2,6 +2,8 @@
 
 public class CharacterEnterGameMsg : INetMessage {
 
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+
     public NetQueue queue => NetQueue.NET_QUEUE_LOGON;
 
     public MessageOpcode opcode => MessageOpcode.CHARACTER_ENTER_GAME_EVENT;

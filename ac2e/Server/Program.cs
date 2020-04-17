@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Text;
 using System.Threading;
 
 class Program {
@@ -11,9 +13,33 @@ class Program {
 
         ALog.info("Hello World!");
 
-        parseDatFiles();
+        //parseWLib();
+
+        //parseDatFiles();
 
         runServer();
+    }
+
+    private static void printDecryptedString(byte[] bytes, Encoding encoding) {
+        CryptoUtil.decrypt(bytes, 0, bytes.Length);
+        ALog.info($"Str: {encoding.GetString(bytes)}");
+    }
+
+    private static void printEncryptedString(string str, Encoding encoding) {
+        byte[] bytes = encoding.GetBytes(str);
+        CryptoUtil.encrypt(bytes, 0, bytes.Length);
+        ALog.info($"Str: {str}");
+        ALog.info($"Enc: {BitConverter.ToString(bytes).Replace("-", "")}");
+    }
+
+    private static void parseWLib() {
+        string wlibFileName = "56000005";
+        if (File.Exists(wlibFileName)) {
+            using (BinaryReader data = new BinaryReader(File.OpenRead(wlibFileName))) {
+                var wlib = new WLib(data);
+                ALog.info("Parsed wlib.");
+            }
+        }
     }
 
     private static void parseDatFiles() {

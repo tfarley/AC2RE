@@ -26,13 +26,20 @@
     public static uint calcChecksum(byte[] buffer, int offset, int size, bool includeSize) {
         uint checksum = includeSize ? ((uint)size << 16) : 0;
 
+        int sizeLeftover = size % 4;
+
         int shift = 0;
-        for (int i = offset; i < offset + size; i++) {
+        for (int i = offset; i < offset + size - sizeLeftover; i++) {
             checksum += ((uint)buffer[i] << shift);
             shift += 8;
             if (shift > 24) {
                 shift = 0;
             }
+        }
+        shift = 24;
+        for (int i = offset + size - sizeLeftover; i < offset + size; i++) {
+            checksum += ((uint)buffer[i] << shift);
+            shift -= 8;
         }
 
         return checksum;

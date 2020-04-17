@@ -4,6 +4,8 @@ using System.Text;
 
 public class CharacterCreateMsg : INetMessage {
 
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+
     public NetQueue queue => NetQueue.NET_QUEUE_LOGON;
 
     public MessageOpcode opcode => MessageOpcode.CHARACTER_CREATE_EVENT;

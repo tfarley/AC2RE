@@ -45,10 +45,13 @@ public class ClientConnection {
 
     public void enqueueMessage(INetMessage message) {
         MemoryStream buffer = new MemoryStream();
-        BinaryWriter data = new BinaryWriter(buffer);
-        data.Write((uint)message.opcode);
-        message.write(data);
-        foreach (NetBlobFrag frag in NetBlob.fragmentize(blobSeq, message.queue, buffer.ToArray())) {
+        using (BinaryWriter data = new BinaryWriter(buffer)) {
+            data.Write((uint)message.opcode);
+            message.write(data);
+        }
+        byte[] dataArray = buffer.ToArray();
+        ALog.info($"Enqueued msg: {message} {BitConverter.ToString(dataArray)}");
+        foreach (NetBlobFrag frag in NetBlob.fragmentize(message.blobFlags, blobSeq, message.queue, dataArray)) {
             fragQueue.Enqueue(frag);
         }
         blobSeq++;

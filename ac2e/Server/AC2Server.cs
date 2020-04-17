@@ -4,13 +4,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 class AC2Server {
 
     private static readonly IPEndPoint ANY_ENDPOINT_V6 = new IPEndPoint(IPAddress.IPv6Any, 0);
     private static readonly IPEndPoint ANY_ENDPOINT = new IPEndPoint(IPAddress.Any, 0);
     private static readonly int MAX_CONNECTIONS = 300;
-    private static readonly int PACKET_BUFFER_SIZE = 1200;
 
     private static readonly float ACK_INTERVAL = 2.0f;
     private static readonly float TIME_SYNC_INTERVAL = 20.0f;
@@ -19,8 +19,8 @@ class AC2Server {
     private NetInterface netInterface2;
     public bool active;
 
-    private readonly byte[] receiveBuffer = new byte[PACKET_BUFFER_SIZE];
-    private readonly byte[] sendBuffer = new byte[PACKET_BUFFER_SIZE];
+    private readonly byte[] receiveBuffer = new byte[Packet.MAX_SIZE];
+    private readonly byte[] sendBuffer = new byte[Packet.MAX_SIZE];
 
     private ushort clientCounter = 1;
     private readonly Dictionary<ushort, ClientConnection> clients = new Dictionary<ushort, ClientConnection>();
@@ -149,7 +149,7 @@ class AC2Server {
                                 nameRuleLanguage = Language.ENGLISH,
                                 supportedLanguages = SUPPORTED_LANGUAGES,
                             });
-                            sendPacket(client, new Packet());
+                            flushSend(client);
                         } else {
                             ALog.warn($"Got bad connect ack cookie from client id: {packet.recipientId} - {packet.connectAckHeader} sent, {client.connectionAckCookie} expected.");
                         }
@@ -191,11 +191,11 @@ class AC2Server {
                         client.enqueueMessage(new CliDatEndDDDMsg());
                         CharacterIdentity[] characters = new CharacterIdentity[] {
                             new CharacterIdentity {
-                                id = 123,
+                                id = 0xC,
                                 name = "TestChar",
                                 greyedOutForSeconds = 0,
                                 vDesc = new VisualDesc {
-                                    baseSetupId = 123,
+                                    baseSetupId = 0x1F001110,
                                 },
                             },
                         };
@@ -210,7 +210,7 @@ class AC2Server {
                             hasLegions = true,
                             useTurbineChat = true,
                         });
-                        sendPacket(client, new Packet());
+                        flushSend(client);
                         break;
                     }
                 case MessageOpcode.CHARACTER_CREATE_EVENT: {
@@ -257,6 +257,13 @@ class AC2Server {
         });
     }
 
+    private void flushSend(ClientConnection client) {
+        while (client.fragQueue.Count > 0) {
+            sendPacket(client, new Packet());
+            Thread.Sleep(50);
+        }
+    }
+
     private void sendPacket(ClientConnection client, Packet packet) {
         float curServerTime = serverTime;
 
@@ -291,60 +298,67 @@ class AC2Server {
             packet.flags |= Packet.Flag.FRAGMENTS;
         }
 
-        BinaryWriter data = new BinaryWriter(new MemoryStream(sendBuffer));
+        using (BinaryWriter data = new BinaryWriter(new MemoryStream(sendBuffer))) {
+            // Write header
+            packet.writeHeader(data);
+            uint headerChecksum = CryptoUtil.calcChecksum(sendBuffer, 0, data.BaseStream.Position, true);
 
-        // Write header
-        packet.writeHeader(data);
-        uint headerChecksum = CryptoUtil.calcChecksum(sendBuffer, 0, data.BaseStream.Position, true);
+            // Write optional headers
+            long contentStart = data.BaseStream.Position;
+            uint contentChecksum = 0;
+            packet.writeOptionalHeaders(data, sendBuffer, ref contentChecksum);
 
-        // Write optional headers
-        long contentStart = data.BaseStream.Position;
-        uint contentChecksum = 0;
-        packet.writeOptionalHeaders(data, sendBuffer, ref contentChecksum);
+            // Fill with fragments until full
+            if (packet.flags.HasFlag(Packet.Flag.FRAGMENTS)) {
+                while (client.fragQueue.TryPeek(out NetBlobFrag frag)) {
+                    long lastFragStartPos = data.BaseStream.Position;
+                    try {
+                        uint fragChecksum = 0;
 
-        // Fill with fragments until full
-        if (packet.flags.HasFlag(Packet.Flag.FRAGMENTS)) {
-            while (client.fragQueue.TryPeek(out NetBlobFrag frag)) {
-                long lastFragStartPos = data.BaseStream.Position;
-                try {
-                    long dataStart = data.BaseStream.Position;
-                    frag.writeHeader(data);
-                    contentChecksum += CryptoUtil.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
+                        long dataStart = data.BaseStream.Position;
+                        frag.writeHeader(data);
+                        fragChecksum += CryptoUtil.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
 
-                    dataStart = data.BaseStream.Position;
-                    frag.writePayload(data);
-                    contentChecksum += CryptoUtil.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
+                        dataStart = data.BaseStream.Position;
+                        frag.writePayload(data);
+                        fragChecksum += CryptoUtil.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
 
-                    packet.frags.Add(frag);
-                    client.fragQueue.Dequeue();
-                } catch (ArgumentException) {
-                    data.BaseStream.Seek(lastFragStartPos, SeekOrigin.Begin);
+                        packet.frags.Add(frag);
+                        client.fragQueue.Dequeue();
+                        contentChecksum += fragChecksum;
+                    } catch (Exception e) {
+                        if (!(e is ArgumentException || e is NotSupportedException)) {
+                            ALog.exception(e);
+                        }
+                        data.BaseStream.Seek(lastFragStartPos, SeekOrigin.Begin);
+                        break;
+                    }
                 }
             }
-        }
 
-        // Encrypt checksum if necessary
-        if (packet.flags.HasFlag(Packet.Flag.ENCRYPTED_CHECKSUM)) {
-            if (!packet.hasIsaacXor) {
-                packet.isaacXor = client.serverIsaac.Next();
-                packet.hasIsaacXor = true;
+            // Encrypt checksum if necessary
+            if (packet.flags.HasFlag(Packet.Flag.ENCRYPTED_CHECKSUM)) {
+                if (!packet.hasIsaacXor) {
+                    packet.isaacXor = client.serverIsaac.Next();
+                    packet.hasIsaacXor = true;
+                }
+                contentChecksum ^= packet.isaacXor;
             }
-            contentChecksum ^= packet.isaacXor;
+
+            int packetLength = (int)data.BaseStream.Position;
+            ushort contentLength = (ushort)(packetLength - contentStart);
+
+            // Replace the content length and also update the checksum
+            BitConverter.GetBytes(contentLength).CopyTo(sendBuffer, 16);
+            headerChecksum += contentLength;
+
+            // Replace the checksum
+            BitConverter.GetBytes(headerChecksum + contentChecksum).CopyTo(sendBuffer, 8);
+
+            netInterface1.sendTo(sendBuffer, packetLength, client.endpoint);
+
+            ALog.debug($"Send[{packetLength}] to {client.endpoint} - {BitConverter.ToString(sendBuffer, 0, packetLength)}.", CatTransport.i);
         }
-
-        int packetLength = (int)data.BaseStream.Position;
-        ushort contentLength = (ushort)(packetLength - contentStart);
-
-        // Replace the content length and also update the checksum
-        BitConverter.GetBytes(contentLength).CopyTo(sendBuffer, 16);
-        headerChecksum += contentLength;
-
-        // Replace the checksum
-        BitConverter.GetBytes(headerChecksum + contentChecksum).CopyTo(sendBuffer, 8);
-
-        netInterface1.sendTo(sendBuffer, packetLength, client.endpoint);
-
-        ALog.debug($"Send[{packetLength}] to {client.endpoint} - {BitConverter.ToString(sendBuffer, 0, packetLength)}.", CatTransport.i);
 
         ALog.debug($"SENT: {packet}");
     }

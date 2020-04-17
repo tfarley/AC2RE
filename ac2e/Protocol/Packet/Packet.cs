@@ -4,6 +4,8 @@ using System.IO;
 
 class Packet {
 
+    public static readonly int MAX_SIZE = 464;
+
     [Flags]
     public enum Flag : uint {
         NONE = 0,
@@ -29,7 +31,7 @@ class Packet {
         NET_ERROR = 1 << 20, // 0x00100000
         NET_ERROR_DISCONNECT = 1 << 21, // 0x00200000
         ICMD_COMMAND = 1 << 22, // 0x00400000
-        TIME_SYNC = 1 << 24, // 0x00100000
+        TIME_SYNC = 1 << 24, // 0x01000000
         ECHO_REQUEST = 1 << 25, // 0x02000000
         ECHO_RESPONSE = 1 << 26, // 0x04000000
         FLOW = 1 << 27, // 0x08000000
@@ -42,6 +44,15 @@ class Packet {
     public ushort interval;
     public ushort dataLength;
     public ushort iteration;
+
+    private List<uint> _nacksHeader;
+    public List<uint> nacksHeader {
+        get => _nacksHeader;
+        set {
+            _nacksHeader = value;
+            flags |= Flag.NACKS;
+        }
+    }
 
     private uint _ackHeader;
     public uint ackHeader {
@@ -146,6 +157,7 @@ class Packet {
             throw new NotImplementedException();
         }
         if (flags.HasFlag(Flag.NACKS)) {
+            _nacksHeader = data.ReadList(data => data.ReadUInt32(), 2);
             throw new NotImplementedException();
         }
         if (flags.HasFlag(Flag.NO_RETRANSMIT)) {

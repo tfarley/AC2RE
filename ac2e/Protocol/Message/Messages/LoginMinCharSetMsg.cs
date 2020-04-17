@@ -3,6 +3,8 @@ using System.Text;
 
 public class LoginMinCharSetMsg : INetMessage {
 
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
+
     public NetQueue queue => NetQueue.NET_QUEUE_EVENT;
 
     public MessageOpcode opcode => MessageOpcode.Evt_Login__MinCharSet_ID;
