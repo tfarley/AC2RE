@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="2.9.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AC2E.Crypto\AC2E.Crypto.csproj" />
+    <ProjectReference Include="..\AC2E.Dat\AC2E.Dat.csproj" />
+    <ProjectReference Include="..\AC2E.Def\AC2E.Def.csproj" />
+    <ProjectReference Include="..\AC2E.Interp\AC2E.Interp.csproj" />
+    <ProjectReference Include="..\AC2E.Protocol\AC2E.Protocol.csproj" />
+    <ProjectReference Include="..\AC2E.Utils\AC2E.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AC2E.Interp\AC2E.Interp.csproj" />
+    <ProjectReference Include="..\AC2E.Utils\AC2E.Utils.csproj" />
+  </ItemGroup>
+
+</Project>
