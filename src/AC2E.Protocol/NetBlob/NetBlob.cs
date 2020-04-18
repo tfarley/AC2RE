@@ -11,6 +11,7 @@ namespace AC2E.Protocol.NetBlob {
 
         public static List<NetBlobFrag> fragmentize(NetBlobId.Flag blobFlags, uint blobSeq, NetQueue queueId, byte[] payload) {
             List<NetBlobFrag> frags = new List<NetBlobFrag>();
+            // TODO: Determining order this way doesn't seem correct, see packet with 66:00:01:00 having EVENT queue but WEENIE ordering
             byte orderingType = (queueId == NetQueue.NET_QUEUE_WEENIE || queueId == NetQueue.NET_QUEUE_SECUREWEENIE) ? ORDERING_TYPE_WEENIE : ORDERING_TYPE_NORMAL;
             NetBlobId blobId = new NetBlobId(blobFlags, orderingType, 0, blobSeq);
             if (payload.Length < NetBlobFrag.MAX_SIZE) {

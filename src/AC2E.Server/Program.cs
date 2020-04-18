@@ -1,5 +1,6 @@
 ﻿using AC2E.Crypto;
 using AC2E.Dat.DbObjects;
+using AC2E.Interp;
 using Serilog;
 using System;
 using System.IO;
@@ -45,6 +46,14 @@ namespace AC2E.Server {
                 using (BinaryReader data = new BinaryReader(File.OpenRead(wlibFileName))) {
                     var wlib = new WLib(data);
                     Log.Information("Parsed wlib.");
+                    using (StreamWriter output = new StreamWriter(File.OpenWrite("wlib.packages.txt"))) {
+                        Dump.dumpPackages(output, wlib.byteStream);
+                    }
+                    var disasm = new Disasm(wlib.byteStream);
+                    Log.Information("Disassembled bytestream.");
+                    using (StreamWriter output = new StreamWriter(File.OpenWrite("wlib.disasm.txt"))) {
+                        disasm.write(output);
+                    }
                 }
             }
         }

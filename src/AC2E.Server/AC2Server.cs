@@ -200,8 +200,8 @@ namespace AC2E.Server {
                             genericMsg = msg;
                             client.enqueueMessage(new CliDatEndDDDMsg());
                             CharacterIdentity[] characters = new CharacterIdentity[] {
-                            new CharacterIdentity {
-                                    id = 0xC,
+                                new CharacterIdentity {
+                                    id = 0x213000000000dd9d,
                                     name = "TestChar",
                                     greyedOutForSeconds = 0,
                                     vDesc = new VisualDesc {
@@ -232,7 +232,45 @@ namespace AC2E.Server {
                     case MessageOpcode.CHARACTER_ENTER_GAME_EVENT: {
                             CharacterEnterGameMsg msg = new CharacterEnterGameMsg(data);
                             genericMsg = msg;
-                            // TODO: Send messages required for player to enter game
+                            client.enqueueMessage(new CreatePlayerMsg {
+                                objectId = msg.characterId,
+                                regionId = 1,
+                            });
+                            client.enqueueMessage(new LoginPlayerDescMsg {
+
+                            });
+                            client.enqueueMessage(new CreateObjectMsg {
+                                objectId = msg.characterId,
+                                vDesc = new VisualDesc {
+                                    baseSetupId = 0x1F001110,
+                                },
+                            });
+                            flushSend(client);
+                            break;
+                        }
+                    case MessageOpcode.CLIDAT_REQUEST_DATA_EVENT: {
+                            CliDatRequestDataMsg msg = new CliDatRequestDataMsg(data);
+                            genericMsg = msg;
+                            client.enqueueMessage(new CliDatErrorMsg {
+                                fileDbType = msg.fileDbType,
+                                fileId = msg.fileId,
+                                unk1 = 1,
+                            });
+                            flushSend(client);
+                            break;
+                        }
+                    case MessageOpcode.Evt_Interp__InterpSEvent_ID: {
+                            InterpSEventMsg msg = new InterpSEventMsg(data);
+                            genericMsg = msg;
+                            // TODO: Just for testing - when pressing the attack mode button, go into portal space after a 1sec delay
+                            if (msg.funcId == (uint)EventFunctionId.StartAttack) {
+                                client.enqueueMessage(new InterpCEventPrivateMsg {
+                                    netEvent = new EnterPortalSpaceEvt {
+                                        delay = 1,
+                                    }
+                                });
+                            }
+                            flushSend(client);
                             break;
                         }
                     default: {

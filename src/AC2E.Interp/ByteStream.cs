@@ -82,20 +82,19 @@ namespace AC2E.Interp {
 
             public string name;
             public string baseName;
-            public uint flags;
-            public uint size;
             public uint checksum;
+            public uint size;
+            public TypeFlag flags;
             public uint packageId;
             public uint parentIndex;
             public Dictionary<string, CheckpointExportData> checkpoint;
 
             public ExportPackageArgs(BinaryReader data) {
-                // TODO: Flags and checksum might be swapped
                 name = data.ReadEncryptedString();
                 baseName = data.ReadEncryptedString();
-                flags = data.ReadUInt32();
-                size = data.ReadUInt32();
                 checksum = data.ReadUInt32();
+                size = data.ReadUInt32();
+                flags = (TypeFlag)data.ReadUInt32();
                 packageId = data.ReadUInt32();
                 parentIndex = data.ReadUInt32();
                 checkpoint = data.ReadDictionary(data => data.ReadEncryptedString(), data => new CheckpointExportData(data));
@@ -119,7 +118,7 @@ namespace AC2E.Interp {
             public FunctionId funcId;
             public uint offset;
             public uint size;
-            public uint flags;
+            public FuncFlag flags;
             public List<VTableId> deps;
 
             public ExportFunctionData(BinaryReader data) {
@@ -127,7 +126,7 @@ namespace AC2E.Interp {
                 funcId = data.ReadUInt32();
                 offset = data.ReadUInt32();
                 size = data.ReadUInt32();
-                flags = data.ReadUInt32();
+                flags = (FuncFlag)data.ReadUInt32();
                 deps = data.ReadList(data => new VTableId(data.ReadUInt32()));
             }
         }
@@ -212,7 +211,6 @@ namespace AC2E.Interp {
                 UNDEF = 0,
                 FUNCTION = 1,
                 PACKAGE = 2,
-                FORCE_DWORD = 0xFFFFFFFF,
             }
 
             public string name;
@@ -245,14 +243,14 @@ namespace AC2E.Interp {
 
             public uint offset;
             public FrameMemberType type;
-            public uint flags;
+            public VarFlag flags;
             public string name;
             public string typeName;
 
             public FrameMemberDebugInfo(BinaryReader data) {
                 offset = data.ReadUInt32();
                 type = (FrameMemberType)data.ReadUInt32();
-                flags = data.ReadUInt32();
+                flags = (VarFlag)data.ReadUInt32();
                 name = data.ReadEncryptedString();
                 typeName = data.ReadEncryptedString();
             }

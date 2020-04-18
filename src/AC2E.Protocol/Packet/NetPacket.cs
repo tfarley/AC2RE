@@ -10,7 +10,7 @@ namespace AC2E.Protocol.Packet {
 
     public class NetPacket {
 
-        public static readonly int MAX_SIZE = 464;
+        public static readonly int MAX_SIZE = 1200;
 
         [Flags]
         public enum Flag : uint {

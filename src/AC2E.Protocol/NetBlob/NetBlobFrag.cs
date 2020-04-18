@@ -1,11 +1,10 @@
-﻿using AC2E.Protocol.Packet;
-using System.IO;
+﻿using System.IO;
 
 namespace AC2E.Protocol.NetBlob {
 
     public class NetBlobFrag {
 
-        public static readonly int MAX_SIZE = NetPacket.MAX_SIZE - 20 - 50 - 16; // Max packet size - header size - some room for optional headers - frag header size
+        public static readonly int MAX_SIZE = 464;
 
         public NetBlobId blobId;
         public ushort fragCount;

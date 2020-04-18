@@ -49,5 +49,14 @@
                 id = (id & ~FUNC_NUM_MASK) | (value & FUNC_NUM_MASK);
             }
         }
+
+        public uint funcAddr {
+            get {
+                return (id & ~ABS_FLAG_MASK);
+            }
+            set {
+                id = (id & ABS_FLAG_MASK) | (value & ~ABS_FLAG_MASK);
+            }
+        }
     }
 }
