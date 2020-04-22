@@ -15,7 +15,15 @@ namespace AC2E.Protocol.Messages {
 
         public void write(BinaryWriter data) {
             data.Write(netEvent.funcId);
+            // Placeholder for length
+            data.Write((uint)0);
+            long contentStart = data.BaseStream.Position;
             netEvent.write(data);
+            long contentEnd = data.BaseStream.Position;
+            long contentLength = contentEnd - contentStart;
+            data.BaseStream.Seek(-contentLength - 4, SeekOrigin.Current);
+            data.Write((uint)contentLength);
+            data.BaseStream.Seek(contentEnd, SeekOrigin.Begin);
         }
     }
 }

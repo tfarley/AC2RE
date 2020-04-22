@@ -1,4 +1,4 @@
-﻿using AC2E.Def.Enums;
+﻿using AC2E.Def.Extensions;
 using AC2E.Interp;
 using System.IO;
 
@@ -11,9 +11,7 @@ namespace AC2E.Protocol.Messages {
         public double delay;
 
         public void write(BinaryWriter data) {
-            data.Write(12);
-            data.Write((uint)PackTag.LONGFLOAT);
-            data.Write(delay);
+            data.Pack(delay);
         }
     }
 }

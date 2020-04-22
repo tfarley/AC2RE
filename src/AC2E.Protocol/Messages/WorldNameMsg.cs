@@ -1,5 +1,5 @@
-﻿using AC2E.Protocol.NetBlob;
-using AC2E.Utils.Extensions;
+﻿using AC2E.Def.Extensions;
+using AC2E.Protocol.NetBlob;
 using System.IO;
 
 namespace AC2E.Protocol.Messages {

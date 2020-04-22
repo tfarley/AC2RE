@@ -1,6 +1,6 @@
 ﻿using AC2E.Def.Enums;
+using AC2E.Def.Extensions;
 using AC2E.Protocol.NetBlob;
-using AC2E.Utils.Extensions;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;

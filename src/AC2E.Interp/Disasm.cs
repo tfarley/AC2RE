@@ -55,6 +55,7 @@ namespace AC2E.Interp {
                 // TODO: Decode more opcodes - some may be multi-word like the ones below, and may be some with embedded immediates
                 switch (instruction.opcode) {
                     case Opcode.CALL:
+                    case Opcode.CALL_EFUN:
                         i += 4;
                         FunctionId targetFuncId = new FunctionId(BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i));
                         KeyValuePair<ExportData, ExportFunctionData> target = addrToTarget.GetValueOrDefault(targetFuncId.funcAddr, new KeyValuePair<ExportData, ExportFunctionData>());
@@ -66,6 +67,7 @@ namespace AC2E.Interp {
                         instruction.val = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
                         break;
                     case Opcode.NEW:
+                    case Opcode.NEW_NATIVE:
                         i += 4;
                         instruction.targetPackage = packageIdToPackage.GetValueOrDefault(BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i), null);
                         break;
@@ -113,7 +115,7 @@ namespace AC2E.Interp {
                 if (instruction.targetPackage != null) {
                     data.Write($" {instruction.targetPackage.args.name}");
                     if (instruction.targetFunc == null) {
-                        data.Write($" ({instruction.targetPackage.args.packageId})");
+                        data.Write($" (0x{instruction.targetPackage.args.packageId:X8})");
                     }
                 }
                 if (instruction.targetFunc != null) {
