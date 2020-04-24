@@ -1,11 +1,13 @@
 ﻿using AC2E.Crypto;
 using AC2E.Def.Enums;
 using AC2E.Def.Structs;
+using AC2E.Interp;
 using AC2E.Protocol;
 using AC2E.Protocol.Messages;
 using AC2E.Protocol.NetBlob;
 using AC2E.Protocol.Packet;
 using AC2E.Server.Net;
+using AC2E.Utils;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -41,6 +43,8 @@ namespace AC2E.Server {
         private readonly Language[] SUPPORTED_LANGUAGES = new Language[] {
             Language.ENGLISH,
         };
+
+        private int toggleCounter = 0;
 
         ~AC2Server() {
             // Always close in order to release system resources
@@ -262,13 +266,50 @@ namespace AC2E.Server {
                     case MessageOpcode.Evt_Interp__InterpSEvent_ID: {
                             InterpSEventMsg msg = new InterpSEventMsg(data);
                             genericMsg = msg;
-                            // TODO: Just for testing - when pressing the attack mode button, go into portal space after a 1sec delay
+                            // TODO: Just for testing - when pressing the attack mode button, toggle Refining effect UI image
                             if (msg.funcId == (uint)EventFunctionId.StartAttack) {
-                                client.enqueueMessage(new InterpCEventPrivateMsg {
-                                    netEvent = new EnterPortalSpaceEvt {
-                                        delay = 1,
-                                    }
-                                });
+                                if (toggleCounter % 2 == 0) {
+                                    EffectPkg refiningEffect = new EffectPkg {
+                                        id = 0x0000F08A,
+                                        did = 0x6F0011ED,
+                                    };
+                                    client.enqueueMessage(new InterpCEventPrivateMsg {
+                                        netEvent = new ClientAddEffectEvt {
+                                            effectRecord = new EffectRecordPkg {
+                                                id = 0x0007A674,
+
+                                                m_timeDemotedFromTopLevel = -1.0,
+                                                m_timeCast = 129996502.8136027,
+                                                m_iidCaster = 0x213000000000dd9d,
+                                                m_ttTimeout = 0.0f,
+                                                m_fApp = 0.0f,
+                                                m_fSpellcraft = 1.0f,
+                                                m_iApp = 0,
+                                                m_bPK = false,
+                                                m_rApp = null,
+                                                m_timePromotedToTopLevel = -1.0,
+                                                m_effect = refiningEffect,
+                                                m_iidActingForWhom = 0,
+                                                m_didSkill = 0,
+                                                m_iidFromItem = 0x213000000000dd9d,
+                                                m_flags = 0x00000051,
+                                                m_uiDurabilityLevel = 0,
+                                                m_relatedEID = 0,
+                                                m_effectID = 0x00000BD9,
+                                                m_categories = 1,
+                                                m_uiMaxDurabilityLevel = 0,
+                                            },
+                                            effectId = 0x00000BD9,
+                                        }
+                                    });
+                                } else {
+                                    client.enqueueMessage(new InterpCEventPrivateMsg {
+                                        netEvent = new ClientRemoveEffectEvt {
+                                            effectId = 0x00000BD9,
+                                        }
+                                    });
+                                }
+                                toggleCounter++;
                             }
                             flushSend(client);
                             break;
@@ -308,7 +349,7 @@ namespace AC2E.Server {
         private void flushSend(ClientConnection client) {
             while (client.fragQueue.Count > 0) {
                 sendPacket(client, new NetPacket());
-                Thread.Sleep(50);
+                Thread.Sleep(10);
             }
         }
 

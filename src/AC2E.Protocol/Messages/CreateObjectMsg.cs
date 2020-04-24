@@ -14,7 +14,7 @@ namespace AC2E.Protocol.Messages {
         public MessageOpcode opcode => MessageOpcode.Evt_Physics__CreateObject_ID;
 
         // TODO: Complete packet breakdown
-        public ulong objectId;
+        public InstanceId objectId;
         public VisualDesc vDesc;
         //public PhysicsDesc pDesc;
         //public WeenieDesc wDesc;

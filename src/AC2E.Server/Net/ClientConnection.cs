@@ -12,6 +12,10 @@ namespace AC2E.Server.Net {
 
     internal class ClientConnection {
 
+        public static readonly byte ORDERING_TYPE_WEENIE = 0x01;
+        public static readonly byte ORDERING_TYPE_UNK1 = 0x02;
+        public static readonly byte ORDERING_TYPE_NORMAL = 0x03;
+
         public readonly ushort id;
         public readonly IPEndPoint endpoint;
         public readonly string accountName;
@@ -62,7 +66,15 @@ namespace AC2E.Server.Net {
         }
 
         private void enqueueBlob(NetBlobId.Flag blobFlags, NetQueue queueId, byte[] payload) {
-            foreach (NetBlobFrag frag in NetBlob.fragmentize(blobFlags, blobSeq, queueId, payload)) {
+            // TODO: Determining order this way doesn't seem correct, see packet with 66:00:01:00 having EVENT queue but WEENIE ordering
+            byte orderingType = (queueId == NetQueue.NET_QUEUE_WEENIE || queueId == NetQueue.NET_QUEUE_SECUREWEENIE) ? ORDERING_TYPE_WEENIE : ORDERING_TYPE_NORMAL;
+            NetBlob blob = new NetBlob {
+                blobId = new NetBlobId(blobFlags, orderingType, 0, blobSeq),
+                queueId = queueId,
+                payload = payload,
+            };
+            blob.fragmentize();
+            foreach (NetBlobFrag frag in blob.frags.Values) {
                 fragQueue.Enqueue(frag);
             }
             blobSeq++;

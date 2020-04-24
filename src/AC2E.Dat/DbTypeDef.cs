@@ -1,4 +1,6 @@
-﻿namespace AC2E.Dat {
+﻿using AC2E.Def.Structs;
+
+namespace AC2E.Dat {
 
     public class DbTypeDef {
 
@@ -1775,8 +1777,8 @@
             },
         };
 
-        public uint baseDid;
-        public uint topDid;
+        public DataId baseDid;
+        public DataId topDid;
         public string extension;
         public uint packVersion;
         public DbUpdateType updateType;

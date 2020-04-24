@@ -1,4 +1,5 @@
-﻿using AC2E.Protocol.NetBlob;
+﻿using AC2E.Def.Structs;
+using AC2E.Protocol.NetBlob;
 using System.IO;
 
 namespace AC2E.Protocol.Messages {
@@ -11,7 +12,7 @@ namespace AC2E.Protocol.Messages {
 
         public MessageOpcode opcode => MessageOpcode.Evt_Physics__CreatePlayer_ID;
 
-        public ulong objectId;
+        public InstanceId objectId;
         public uint regionId;
 
         public void write(BinaryWriter data) {

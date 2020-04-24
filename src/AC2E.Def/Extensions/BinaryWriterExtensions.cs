@@ -1,6 +1,5 @@
 ﻿using AC2E.Crypto;
 using AC2E.Def.Enums;
-using AC2E.Def.Structs;
 using AC2E.Utils.Extensions;
 using System;
 using System.Collections.Generic;
@@ -39,34 +38,6 @@ namespace AC2E.Def.Extensions {
         public static void Pack(this BinaryWriter writer, double value) {
             writer.Write((uint)PackTag.LONGFLOAT);
             writer.Write(value);
-        }
-
-        public static void Pack(this BinaryWriter writer, IPackage value) {
-            writer.Write((uint)PackTag.PACKAGE);
-            writer.Write((uint)1);
-            writer.Write(value.id);
-            writer.Write((uint)0x44000100);
-            writer.Write((uint)0);
-            writer.Write((ushort)0xFFFF);
-            writer.Write((ushort)value.nativeType);
-            value.write(writer);
-            writer.Write((uint)0);
-        }
-
-        public static void Pack(this BinaryWriter writer, IPackage[] values) {
-            writer.Write((uint)PackTag.PACKAGE);
-            writer.Write((uint)values.Length);
-            foreach (IPackage value in values) {
-                writer.Write(value.id);
-            }
-            foreach (IPackage value in values) {
-                writer.Write((uint)0x44000100);
-                writer.Write((uint)0);
-                writer.Write((ushort)0xFFFF);
-                writer.Write((ushort)value.nativeType);
-                value.write(writer);
-                writer.Write((uint)0);
-            }
         }
 
         public static void WriteEncryptedString(this BinaryWriter writer, string str, Encoding encoding = null) {

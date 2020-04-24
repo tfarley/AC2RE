@@ -81,7 +81,7 @@ namespace AC2E.Server {
 
             while (true) {
                 SERVER.processReceive();
-                Thread.Sleep(100);
+                Thread.Sleep(10);
             }
         }
     }

@@ -3,19 +3,36 @@ using System.Collections.Generic;
 
 namespace AC2E.Protocol.NetBlob {
 
-    public static class NetBlob {
+    public class NetBlob {
 
-        public static readonly byte ORDERING_TYPE_WEENIE = 0x01;
-        public static readonly byte ORDERING_TYPE_UNK1 = 0x02;
-        public static readonly byte ORDERING_TYPE_NORMAL = 0x03;
+        public NetBlobId blobId;
+        public ushort fragCount;
+        public NetQueue queueId;
+        public byte[] payload;
 
-        public static List<NetBlobFrag> fragmentize(NetBlobId.Flag blobFlags, uint blobSeq, NetQueue queueId, byte[] payload) {
-            List<NetBlobFrag> frags = new List<NetBlobFrag>();
-            // TODO: Determining order this way doesn't seem correct, see packet with 66:00:01:00 having EVENT queue but WEENIE ordering
-            byte orderingType = (queueId == NetQueue.NET_QUEUE_WEENIE || queueId == NetQueue.NET_QUEUE_SECUREWEENIE) ? ORDERING_TYPE_WEENIE : ORDERING_TYPE_NORMAL;
-            NetBlobId blobId = new NetBlobId(blobFlags, orderingType, 0, blobSeq);
+        public SortedDictionary<ushort, NetBlobFrag> frags = new SortedDictionary<ushort, NetBlobFrag>();
+
+        // TODO: Use/test this frag combining for receiving
+        public void addFragment(NetBlobFrag newFrag) {
+            frags.Add(newFrag.fragIndex, newFrag);
+            if (frags.Count == fragCount) {
+                int blobSize = 0;
+                foreach (NetBlobFrag frag in frags.Values) {
+                    blobSize += frag.fragSize;
+                }
+                payload = new byte[blobSize];
+                int payloadOffset = 0;
+                foreach (NetBlobFrag frag in frags.Values) {
+                    Array.Copy(frag.payload, 0, payload, payloadOffset, frag.payload.Length);
+                    payloadOffset += frag.payload.Length;
+                }
+            }
+        }
+
+        public void fragmentize() {
             if (payload.Length < NetBlobFrag.MAX_SIZE) {
-                frags.Add(new NetBlobFrag {
+                fragCount = 1;
+                frags.Add(0, new NetBlobFrag {
                     blobId = blobId,
                     fragCount = 1,
                     fragIndex = 0,
@@ -24,21 +41,22 @@ namespace AC2E.Protocol.NetBlob {
                 });
             } else {
                 int remainingLength = payload.Length;
-                ushort numFrags = (ushort)((payload.Length + NetBlobFrag.MAX_SIZE - 1) / NetBlobFrag.MAX_SIZE);
+                fragCount = (ushort)((payload.Length + NetBlobFrag.MAX_SIZE - 1) / NetBlobFrag.MAX_SIZE);
+                ushort fragIndex = 0;
                 while (remainingLength > 0) {
                     NetBlobFrag frag = new NetBlobFrag {
                         blobId = blobId,
-                        fragCount = numFrags,
+                        fragCount = fragCount,
                         fragIndex = (ushort)frags.Count,
                         queueId = queueId,
                         payload = new byte[Math.Min(remainingLength, NetBlobFrag.MAX_SIZE)],
                     };
                     Buffer.BlockCopy(payload, payload.Length - remainingLength, frag.payload, 0, frag.payload.Length);
-                    frags.Add(frag);
+                    frags.Add(fragIndex, frag);
                     remainingLength -= frag.payload.Length;
+                    fragIndex++;
                 }
             }
-            return frags;
         }
     }
 }

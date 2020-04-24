@@ -1,5 +1,6 @@
 ﻿using AC2E.Def.Enums;
 using AC2E.Def.Extensions;
+using AC2E.Def.Structs;
 using AC2E.Protocol.NetBlob;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +18,7 @@ namespace AC2E.Protocol.Messages {
 
         public string accountName;
         public string characterName;
-        public uint entityDid;
+        public DataId entityDid;
         public uint unk1;
         public SpeciesType species;
         public SexType sex;

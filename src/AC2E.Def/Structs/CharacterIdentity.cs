@@ -6,7 +6,7 @@ namespace AC2E.Def.Structs {
 
     public class CharacterIdentity {
 
-        public ulong id;
+        public InstanceId id;
         public string name;
         public uint greyedOutForSeconds;
         public VisualDesc vDesc;
