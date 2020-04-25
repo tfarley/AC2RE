@@ -86,6 +86,10 @@ namespace AC2E.Server {
         public void processReceive() {
             processReceive(netInterface1);
             processReceive(netInterface2);
+
+            foreach (ClientConnection client in clients.Values) {
+                flushSend(client);
+            }
         }
 
         private void processReceive(NetInterface netInterface) {
@@ -164,7 +168,6 @@ namespace AC2E.Server {
                                     nameRuleLanguage = Language.ENGLISH,
                                     supportedLanguages = SUPPORTED_LANGUAGES,
                                 });
-                                flushSend(client);
                             } else {
                                 Log.Warning($"Got bad connect ack cookie from client id: {packet.recipientId} - {packet.connectAckHeader} sent, {client.connectionAckCookie} expected.");
                             }
@@ -225,7 +228,6 @@ namespace AC2E.Server {
                                 hasLegions = true,
                                 useTurbineChat = true,
                             });
-                            flushSend(client);
                             break;
                         }
                     case MessageOpcode.CHARACTER_CREATE_EVENT: {
@@ -250,7 +252,6 @@ namespace AC2E.Server {
                                     baseSetupId = 0x1F001110,
                                 },
                             });
-                            flushSend(client);
                             break;
                         }
                     case MessageOpcode.CLIDAT_REQUEST_DATA_EVENT: {
@@ -261,7 +262,6 @@ namespace AC2E.Server {
                                 fileId = msg.fileId,
                                 unk1 = 1,
                             });
-                            flushSend(client);
                             break;
                         }
                     case MessageOpcode.Evt_Interp__InterpSEvent_ID: {
@@ -312,7 +312,6 @@ namespace AC2E.Server {
                                 }
                                 toggleCounter++;
                             }
-                            flushSend(client);
                             break;
                         }
                     default: {
@@ -348,7 +347,7 @@ namespace AC2E.Server {
         }
 
         private void flushSend(ClientConnection client) {
-            while (client.fragQueue.Count > 0) {
+            while (client.connected && (serverTime > client.nextAckTime || serverTime > client.nextTimeSyncTime || client.fragQueue.Count > 0)) {
                 sendPacket(client, new NetPacket());
                 Thread.Sleep(10);
             }
@@ -364,28 +363,30 @@ namespace AC2E.Server {
             // TODO: Need to advance this?
             packet.iteration = 1;
 
-            if (client.connected && serverTime > client.nextAckTime) {
-                packet.ackHeader = client.highestReceivedPacketSeq;
-                client.nextAckTime = serverTime + ACK_INTERVAL;
-            }
-
-            if (client.connected && serverTime > client.nextTimeSyncTime) {
-                packet.timeSyncHeader = serverTime;
-                client.nextTimeSyncTime = serverTime + TIME_SYNC_INTERVAL;
-            }
-
-            if (client.echoRequestedLocalTime != -1.0f) {
-                packet.echoResponseHeader = new EchoResponseHeader {
-                    localTime = client.echoRequestedLocalTime,
-                    localToServerTimeDelta = curServerTime - client.echoRequestedLocalTime,
-                };
-                client.echoRequestedLocalTime = -1.0f;
-            }
-
-            if (client.fragQueue.Count > 0) {
-                // TODO: Just assuming that all fragments cause encryption for now - there might be cases where they don't need to or shouldn't
+            if (client.connected) {
                 packet.flags |= NetPacket.Flag.ENCRYPTED_CHECKSUM;
-                packet.flags |= NetPacket.Flag.FRAGMENTS;
+
+                if (curServerTime > client.nextAckTime) {
+                    packet.ackHeader = client.highestReceivedPacketSeq;
+                    client.nextAckTime = curServerTime + ACK_INTERVAL;
+                }
+
+                if (curServerTime > client.nextTimeSyncTime) {
+                    packet.timeSyncHeader = curServerTime;
+                    client.nextTimeSyncTime = curServerTime + TIME_SYNC_INTERVAL;
+                }
+
+                if (client.echoRequestedLocalTime != -1.0f) {
+                    packet.echoResponseHeader = new EchoResponseHeader {
+                        localTime = client.echoRequestedLocalTime,
+                        localToServerTimeDelta = curServerTime - client.echoRequestedLocalTime,
+                    };
+                    client.echoRequestedLocalTime = -1.0f;
+                }
+
+                if (client.fragQueue.Count > 0) {
+                    packet.flags |= NetPacket.Flag.FRAGMENTS;
+                }
             }
 
             using (BinaryWriter data = new BinaryWriter(new MemoryStream(sendBuffer))) {
