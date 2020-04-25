@@ -13,7 +13,6 @@ namespace AC2E.Interp {
 
         uint id { get; }
         IPackage[] references { get; }
-        FieldDesc[] fieldDescs { get; }
 
         void write(BinaryWriter data) {
             throw new NotImplementedException();

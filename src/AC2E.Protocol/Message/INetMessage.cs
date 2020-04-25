@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace AC2E.Protocol {
+namespace AC2E.Protocol.Message {
 
     public interface INetMessage {
 

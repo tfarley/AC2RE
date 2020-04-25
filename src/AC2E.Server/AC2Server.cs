@@ -2,12 +2,13 @@
 using AC2E.Def.Enums;
 using AC2E.Def.Structs;
 using AC2E.Interp;
-using AC2E.Protocol;
-using AC2E.Protocol.Messages;
+using AC2E.Protocol.Event;
+using AC2E.Protocol.Event.ClientEvents;
+using AC2E.Protocol.Message;
+using AC2E.Protocol.Message.Messages;
 using AC2E.Protocol.NetBlob;
 using AC2E.Protocol.Packet;
 using AC2E.Server.Net;
-using AC2E.Utils;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -267,14 +268,14 @@ namespace AC2E.Server {
                             InterpSEventMsg msg = new InterpSEventMsg(data);
                             genericMsg = msg;
                             // TODO: Just for testing - when pressing the attack mode button, toggle Refining effect UI image
-                            if (msg.funcId == (uint)EventFunctionId.StartAttack) {
+                            if (msg.netEvent.funcId == ServerEventFunctionId.Combat__StartAttack) {
                                 if (toggleCounter % 2 == 0) {
                                     EffectPkg refiningEffect = new EffectPkg {
                                         id = 0x0000F08A,
                                         did = 0x6F0011ED,
                                     };
                                     client.enqueueMessage(new InterpCEventPrivateMsg {
-                                        netEvent = new ClientAddEffectEvt {
+                                        netEvent = new ClientAddEffectCEvt {
                                             effectRecord = new EffectRecordPkg {
                                                 id = 0x0007A674,
 
@@ -304,7 +305,7 @@ namespace AC2E.Server {
                                     });
                                 } else {
                                     client.enqueueMessage(new InterpCEventPrivateMsg {
-                                        netEvent = new ClientRemoveEffectEvt {
+                                        netEvent = new ClientRemoveEffectCEvt {
                                             effectId = 0x00000BD9,
                                         }
                                     });

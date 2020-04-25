@@ -3,7 +3,7 @@ using AC2E.Protocol.NetBlob;
 using AC2E.Utils;
 using System.IO;
 
-namespace AC2E.Protocol.Messages {
+namespace AC2E.Protocol.Message.Messages {
 
     public class CreateObjectMsg : INetMessage {
 

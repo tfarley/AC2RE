@@ -1,13 +1,12 @@
 ﻿using AC2E.Def.Extensions;
-using AC2E.Interp;
 using AC2E.Interp.Extensions;
 using System.IO;
 
-namespace AC2E.Protocol.Messages {
+namespace AC2E.Protocol.Event.ClientEvents {
 
-    public class ClientRemoveEffectEvt : INetEvent {
+    public class ClientRemoveEffectCEvt : INetClientEvent {
 
-        public FunctionId funcId => (uint)EventFunctionId.ClientRemoveEffect;
+        public ClientEventFunctionId funcId => ClientEventFunctionId.Effect__ClientRemoveEffect;
 
         public uint effectId;
 

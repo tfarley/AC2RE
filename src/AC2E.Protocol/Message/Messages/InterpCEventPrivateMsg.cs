@@ -1,7 +1,8 @@
-﻿using AC2E.Protocol.NetBlob;
+﻿using AC2E.Protocol.Event;
+using AC2E.Protocol.NetBlob;
 using System.IO;
 
-namespace AC2E.Protocol.Messages {
+namespace AC2E.Protocol.Message.Messages {
 
     public class InterpCEventPrivateMsg : INetMessage {
 
@@ -11,10 +12,10 @@ namespace AC2E.Protocol.Messages {
 
         public MessageOpcode opcode => MessageOpcode.Evt_Interp__InterpCEvent_Private_ID;
 
-        public INetEvent netEvent;
+        public INetClientEvent netEvent;
 
         public void write(BinaryWriter data) {
-            data.Write(netEvent.funcId);
+            data.Write((uint)netEvent.funcId);
             // Placeholder for length
             data.Write((uint)0);
             long contentStart = data.BaseStream.Position;

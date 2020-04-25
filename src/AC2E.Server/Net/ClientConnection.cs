@@ -1,5 +1,6 @@
 ﻿using AC2E.Crypto;
 using AC2E.Protocol;
+using AC2E.Protocol.Message;
 using AC2E.Protocol.NetBlob;
 using AC2E.Utils.Extensions;
 using Serilog;

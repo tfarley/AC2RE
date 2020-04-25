@@ -1,4 +1,4 @@
-﻿namespace AC2E.Protocol {
+﻿namespace AC2E.Protocol.Message {
 
     public enum MessageOpcode : uint {
         UNDEF_EVENT = 0x00000000,

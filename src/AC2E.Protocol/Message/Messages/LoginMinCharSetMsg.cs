@@ -4,7 +4,7 @@ using AC2E.Protocol.NetBlob;
 using System.IO;
 using System.Text;
 
-namespace AC2E.Protocol.Messages {
+namespace AC2E.Protocol.Message.Messages {
 
     public class LoginMinCharSetMsg : INetMessage {
 

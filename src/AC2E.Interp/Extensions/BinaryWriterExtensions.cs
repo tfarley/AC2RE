@@ -1,6 +1,5 @@
 ﻿using AC2E.Def.Enums;
 using AC2E.Utils.Extensions;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -59,7 +58,7 @@ namespace AC2E.Interp.Extensions {
             }
 
             if (references.Count > 0) {
-                foreach (FieldDesc fieldDesc in value.fieldDescs) {
+                foreach (FieldDesc fieldDesc in InterpMeta.getFieldDescs(value.GetType())) {
                     writer.Write((byte)fieldDesc.fieldType);
                     if (fieldDesc.numWords == 2) {
                         writer.Write(UNINITIALIZED_DATA);
@@ -71,6 +70,10 @@ namespace AC2E.Interp.Extensions {
                 // TODO: Is this needed/correct?
                 writer.Write((uint)0);
             }
+        }
+
+        public static void Write(this BinaryWriter writer, IPackage value) {
+            writer.Write(value != null ? value.id : IPackage.NULL);
         }
     }
 }

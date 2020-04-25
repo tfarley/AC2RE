@@ -1,4 +1,5 @@
 ﻿using AC2E.Def.Structs;
+using AC2E.Interp.Extensions;
 using System.IO;
 
 namespace AC2E.Interp {
@@ -15,32 +16,6 @@ namespace AC2E.Interp {
                 return new IPackage[] {
                     m_rApp,
                     m_effect,
-                };
-            }
-        }
-        public FieldDesc[] fieldDescs {
-            get {
-                return new FieldDesc[] {
-                    new FieldDesc(StackType.UNDEF, 2),
-                    new FieldDesc(StackType.UNDEF, 2),
-                    new FieldDesc(StackType.UNDEF, 2),
-                    new FieldDesc(StackType.UNDEF, 1),
-                    new FieldDesc(StackType.UNDEF, 1),
-                    new FieldDesc(StackType.UNDEF, 1),
-                    new FieldDesc(StackType.UNDEF, 1),
-                    new FieldDesc(StackType.UNDEF, 1),
-                    new FieldDesc(StackType.REFERENCE, 1),
-                    new FieldDesc(StackType.UNDEF, 2),
-                    new FieldDesc(StackType.REFERENCE, 1),
-                    new FieldDesc(StackType.UNDEF, 2),
-                    new FieldDesc(StackType.UNDEF, 1),
-                    new FieldDesc(StackType.UNDEF, 2),
-                    new FieldDesc(StackType.UNDEF, 1),
-                    new FieldDesc(StackType.UNDEF, 1),
-                    new FieldDesc(StackType.UNDEF, 1),
-                    new FieldDesc(StackType.UNDEF, 1),
-                    new FieldDesc(StackType.UNDEF, 1),
-                    new FieldDesc(StackType.UNDEF, 1),
                 };
             }
         }
@@ -75,9 +50,9 @@ namespace AC2E.Interp {
             data.Write(m_fSpellcraft);
             data.Write(m_iApp);
             data.Write(m_bPK ? (uint)1 : (uint)0);
-            data.Write(m_rApp != null ? m_rApp.id : IPackage.NULL);
+            data.Write(m_rApp);
             data.Write(m_timePromotedToTopLevel);
-            data.Write(m_effect != null ? m_effect.id : IPackage.NULL);
+            data.Write(m_effect);
             data.Write(m_iidActingForWhom);
             data.Write(m_didSkill);
             data.Write(m_iidFromItem);

@@ -3,11 +3,11 @@ using AC2E.Interp;
 using AC2E.Interp.Extensions;
 using System.IO;
 
-namespace AC2E.Protocol.Messages {
+namespace AC2E.Protocol.Event.ClientEvents {
 
-    public class ClientAddEffectEvt : INetEvent {
+    public class ClientAddEffectCEvt : INetClientEvent {
 
-        public FunctionId funcId => (uint)EventFunctionId.ClientAddEffect;
+        public ClientEventFunctionId funcId => ClientEventFunctionId.Effect__ClientAddEffect;
 
         public EffectRecordPkg effectRecord;
         public uint effectId;

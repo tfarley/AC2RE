@@ -11,7 +11,6 @@ namespace AC2E.Interp {
 
         public uint id { get; set; }
         public IPackage[] references => new IPackage[] { };
-        public FieldDesc[] fieldDescs => new FieldDesc[] { };
 
         public DataId did;
 
