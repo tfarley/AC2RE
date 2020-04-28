@@ -15,7 +15,7 @@ namespace AC2E.Interp {
             public List<uint> versions;
 
             public VersionTable(BinaryReader data) {
-                versions = data.ReadList(data => data.ReadUInt32());
+                versions = data.ReadList(data.ReadUInt32);
             }
         }
 
@@ -36,8 +36,8 @@ namespace AC2E.Interp {
             public List<List<uint>> offsets;
 
             public StringLitTable(BinaryReader data) {
-                strings = data.ReadList(data => data.ReadEncryptedString(Encoding.Unicode));
-                offsets = data.ReadList(data => data.ReadList(data => data.ReadUInt32()));
+                strings = data.ReadList(() => data.ReadEncryptedString(Encoding.Unicode));
+                offsets = data.ReadList(() => data.ReadList(data.ReadUInt32));
             }
         }
 
@@ -49,8 +49,8 @@ namespace AC2E.Interp {
 
             public ImportData(BinaryReader data) {
                 packageName = data.ReadEncryptedString();
-                symbols = data.ReadList(data => new ImportSymbolInfo(data));
-                packageOffsets = data.ReadList(data => data.ReadUInt32());
+                symbols = data.ReadList(() => new ImportSymbolInfo(data));
+                packageOffsets = data.ReadList(data.ReadUInt32);
             }
         }
 
@@ -62,7 +62,7 @@ namespace AC2E.Interp {
 
             public ImportSymbolInfo(BinaryReader data) {
                 name = data.ReadEncryptedString();
-                offsets = data.ReadList(data => data.ReadUInt32());
+                offsets = data.ReadList(data.ReadUInt32);
                 fromAddr = data.ReadUInt32(); // TODO: Might be a bool
             }
         }
@@ -74,7 +74,7 @@ namespace AC2E.Interp {
 
             public ExportData(BinaryReader data) {
                 args = new ExportPackageArgs(data);
-                funcs = data.ReadList(data => new ExportFunctionData(data));
+                funcs = data.ReadList(() => new ExportFunctionData(data));
             }
         }
 
@@ -97,7 +97,7 @@ namespace AC2E.Interp {
                 flags = (TypeFlag)data.ReadUInt32();
                 packageId = data.ReadUInt32();
                 parentIndex = data.ReadUInt32();
-                checkpoint = data.ReadDictionary(data => data.ReadEncryptedString(), data => new CheckpointExportData(data));
+                checkpoint = data.ReadDictionary(() => data.ReadEncryptedString(), () => new CheckpointExportData(data));
             }
         }
 
@@ -127,7 +127,7 @@ namespace AC2E.Interp {
                 offset = data.ReadUInt32();
                 size = data.ReadUInt32();
                 flags = (FuncFlag)data.ReadUInt32();
-                deps = data.ReadList(data => new VTableId(data.ReadUInt32()));
+                deps = data.ReadList(() => new VTableId(data.ReadUInt32()));
             }
         }
 
@@ -140,11 +140,11 @@ namespace AC2E.Interp {
             public Dictionary<string, uint> packageIdStrMap;
 
             public VTableSection(BinaryReader data) {
-                funcMapper = data.ReadList(data => data.ReadList(data => new VTableId(data.ReadUInt32())));
-                vTable = data.ReadList(data => data.ReadList(data => data.ReadUInt32()));
-                packageInfo = data.ReadList(data => new PackageInfo(data));
-                packageIdMap = data.ReadList(data => data.ReadUInt32());
-                packageIdStrMap = data.ReadDictionary(data => data.ReadEncryptedString(), data => data.ReadUInt32());
+                funcMapper = data.ReadList(() => data.ReadList(() => new VTableId(data.ReadUInt32())));
+                vTable = data.ReadList(() => data.ReadList(data.ReadUInt32));
+                packageInfo = data.ReadList(() => new PackageInfo(data));
+                packageIdMap = data.ReadList(data.ReadUInt32);
+                packageIdStrMap = data.ReadDictionary(() => data.ReadEncryptedString(), data.ReadUInt32);
             }
         }
 
@@ -190,7 +190,7 @@ namespace AC2E.Interp {
 
             public LineOffsetList(BinaryReader data) {
                 sourceFilename = data.ReadEncryptedString();
-                lineOffsets = data.ReadList(data => new LineOffsetInfo(data));
+                lineOffsets = data.ReadList(() => new LineOffsetInfo(data));
             }
         }
 
@@ -222,7 +222,7 @@ namespace AC2E.Interp {
                 name = data.ReadEncryptedString();
                 type = (FrameType)data.ReadUInt32();
                 size = data.ReadUInt32();
-                members = data.ReadList(data => new FrameMemberDebugInfo(data));
+                members = data.ReadList(() => new FrameMemberDebugInfo(data));
             }
         }
 
@@ -289,16 +289,16 @@ namespace AC2E.Interp {
                         stringLitTable = new StringLitTable(data);
                         break;
                     case SectionType.IMPORT_TABLE:
-                        imports = data.ReadList(data => new ImportData(data));
+                        imports = data.ReadList(() => new ImportData(data));
                         break;
                     case SectionType.EXPORT_TABLE:
-                        exports = data.ReadList(data => new ExportData(data));
+                        exports = data.ReadList(() => new ExportData(data));
                         break;
                     case SectionType.VTABLE_INFO:
                         vTable = new VTableSection(data);
                         break;
                     case SectionType.VALID_EVENT_TABLE:
-                        validEvents = data.ReadDictionary(data => new FunctionId(data.ReadUInt32()), data => data.ReadUInt32());
+                        validEvents = data.ReadDictionary(() => new FunctionId(data.ReadUInt32()), data.ReadUInt32);
                         break;
                     case SectionType.FUNCTION_LOC_DEBUG:
                         funcLocs = new List<FunctionLocationInfo>();
@@ -308,13 +308,13 @@ namespace AC2E.Interp {
                         }
                         break;
                     case SectionType.SOURCE_FILE_DEBUG:
-                        originalSourceText = data.ReadList(data => new OriginalSourceFileInfo(data));
+                        originalSourceText = data.ReadList(() => new OriginalSourceFileInfo(data));
                         break;
                     case SectionType.LINE_NUM_DEBUG:
-                        lineOffsets = data.ReadList(data => new LineOffsetList(data));
+                        lineOffsets = data.ReadList(() => new LineOffsetList(data));
                         break;
                     case SectionType.FRAME_DEBUG_INFO:
-                        frames = data.ReadList(data => new FrameDebugInfo(data));
+                        frames = data.ReadList(() => new FrameDebugInfo(data));
                         break;
                     default:
                         Log.Warning($"Unhandled ByteStream section: {sectionType}");

@@ -1,4 +1,4 @@
-﻿namespace AC2E.Protocol.Event {
+﻿namespace AC2E.Interp.Event {
 
     public enum ServerEventFunctionId : uint {
         AI__PetTrigger = 0x82000003,

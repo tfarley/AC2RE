@@ -1,8 +1,8 @@
 ﻿using System.IO;
 
-namespace AC2E.Protocol.Event {
+namespace AC2E.Interp.Event {
 
-    public interface INetClientEvent {
+    public interface IClientEvent {
 
         ClientEventFunctionId funcId { get; }
 

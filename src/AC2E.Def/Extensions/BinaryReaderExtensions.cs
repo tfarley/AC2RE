@@ -62,15 +62,15 @@ namespace AC2E.Def.Extensions {
             if (encoding == null) {
                 encoding = Encoding.ASCII;
             }
-            MemoryStream data = new MemoryStream();
-            using (BinaryWriter writer = new BinaryWriter(data)) {
+            MemoryStream buffer = new MemoryStream();
+            using (BinaryWriter data = new BinaryWriter(buffer)) {
                 byte val;
                 do {
                     val = reader.ReadByte();
-                    writer.Write(val);
+                    data.Write(val);
                 } while (val != 0);
             }
-            byte[] bytes = data.ToArray();
+            byte[] bytes = buffer.ToArray();
             return encoding.GetString(bytes, 0, bytes.Length - 1);
         }
 
@@ -90,7 +90,7 @@ namespace AC2E.Def.Extensions {
             return encoding.GetString(bytes);
         }
 
-        public static List<T> ReadList<T>(this BinaryReader reader, Func<BinaryReader, T> elementReader, uint sizeOfSize = 4) {
+        public static List<T> ReadList<T>(this BinaryReader reader, Func<T> elementReader, uint sizeOfSize = 4) {
             List<T> list = new List<T>();
             uint numElements;
             if (sizeOfSize == 1) {
@@ -103,17 +103,17 @@ namespace AC2E.Def.Extensions {
                 throw new Exception();
             }
             for (int i = 0; i < numElements; i++) {
-                list.Add(elementReader.Invoke(reader));
+                list.Add(elementReader.Invoke());
             }
             return list;
         }
 
-        public static Dictionary<K, V> ReadDictionary<K, V>(this BinaryReader reader, Func<BinaryReader, K> keyReader, Func<BinaryReader, V> valueReader) {
+        public static Dictionary<K, V> ReadDictionary<K, V>(this BinaryReader reader, Func<K> keyReader, Func<V> valueReader) {
             Dictionary<K, V> dict = new Dictionary<K, V>();
             ushort numElements = reader.ReadUInt16();
             ushort tableSize = reader.ReadUInt16();
             for (int i = 0; i < numElements; i++) {
-                dict.Add(keyReader.Invoke(reader), valueReader.Invoke(reader));
+                dict.Add(keyReader.Invoke(), valueReader.Invoke());
             }
             return dict;
         }

@@ -1,4 +1,4 @@
-﻿namespace AC2E.Protocol.Event {
+﻿namespace AC2E.Interp.Event {
 
     public enum ClientEventFunctionId : uint {
         AI__PetRemove = 0x8200001A,

@@ -56,27 +56,33 @@ namespace AC2E.Def.Extensions {
             writer.Align(4);
         }
 
-        public static void WriteList<T>(this BinaryWriter writer, List<T> list, Action<BinaryWriter, T> elementWriter, uint sizeOfSize = 4) {
+        public static void Write<T>(this BinaryWriter writer, List<T> list, Action<T> elementWriter, uint sizeOfSize = 4) {
+            int count = list != null ? list.Count : 0;
             if (sizeOfSize == 1) {
-                writer.Write((byte)list.Count);
+                writer.Write((byte)count);
             } else if (sizeOfSize == 2) {
-                writer.Write((ushort)list.Count);
+                writer.Write((ushort)count);
             } else if (sizeOfSize == 4) {
-                writer.Write((uint)list.Count);
+                writer.Write((uint)count);
             } else {
                 throw new Exception();
             }
-            foreach (var element in list) {
-                elementWriter.Invoke(writer, element);
+            if (count > 0) {
+                foreach (var element in list) {
+                    elementWriter.Invoke(element);
+                }
             }
         }
 
-        public static void WriteDictionary<K, V>(this BinaryWriter writer, Dictionary<K, V> dict, Action<BinaryWriter, K> keyWriter, Action<BinaryWriter, V> valueWriter) {
-            writer.Write((ushort)dict.Count);
-            writer.Write((ushort)0);
-            foreach (var element in dict) {
-                keyWriter.Invoke(writer, element.Key);
-                valueWriter.Invoke(writer, element.Value);
+        public static void Write<K, V>(this BinaryWriter writer, Dictionary<K, V> dict, Action<K> keyWriter, Action<V> valueWriter) {
+            int count = dict != null ? dict.Count : 0;
+            writer.Write((ushort)count);
+            writer.Write(count > 0 ? (ushort)0x200 : (ushort)0);
+            if (count > 0) {
+                foreach (var element in dict) {
+                    keyWriter.Invoke(element.Key);
+                    valueWriter.Invoke(element.Value);
+                }
             }
         }
     }

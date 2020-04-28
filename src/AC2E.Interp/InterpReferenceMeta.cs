@@ -2,9 +2,7 @@
 
 namespace AC2E.Interp {
 
-    public struct InterpReference {
-
-        public static readonly InterpReference NULL = new InterpReference(0xFFFFFFFF);
+    public struct InterpReferenceMeta {
 
         [Flags]
         public enum Flag : uint {
@@ -22,16 +20,16 @@ namespace AC2E.Interp {
 
         public uint id;
 
-        public InterpReference(uint id) {
+        public InterpReferenceMeta(uint id) {
             this.id = id;
         }
 
-        public InterpReference(Flag flags, ReferenceType referenceType) {
+        public InterpReferenceMeta(Flag flags, ReferenceType referenceType) {
             id = (uint)flags | (((uint)referenceType << 8) & REFERENCE_TYPE_MASK);
         }
 
-        public static implicit operator uint(InterpReference o) => o.id;
-        public static implicit operator InterpReference(uint o) => new InterpReference(o);
+        public static implicit operator uint(InterpReferenceMeta o) => o.id;
+        public static implicit operator InterpReferenceMeta(uint o) => new InterpReferenceMeta(o);
 
         public bool isRecurse {
             get {

@@ -1,24 +1,17 @@
 ﻿using AC2E.Def.Structs;
 using AC2E.Interp.Extensions;
+using System.Collections.Generic;
 using System.IO;
 
-namespace AC2E.Interp {
+namespace AC2E.Interp.Packages {
 
     public class EffectRecordPkg : IPackage {
 
         public NativeType nativeType => NativeType.UNDEF;
         public PackageType packageType => PackageType.EffectRecord;
-        public InterpReference reference => new InterpReference(InterpReference.Flag.LOADED | InterpReference.Flag.RECURSE, ReferenceType.HEAP_OBJECT);
+        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAP_OBJECT);
 
         public uint id { get; set; }
-        public IPackage[] references {
-            get {
-                return new IPackage[] {
-                    m_rApp,
-                    m_effect,
-                };
-            }
-        }
 
         public double m_timeDemotedFromTopLevel;
         public double m_timeCast;
@@ -30,7 +23,7 @@ namespace AC2E.Interp {
         public bool m_bPK;
         public IPackage m_rApp;
         public double m_timePromotedToTopLevel;
-        public IPackage m_effect;
+        public EffectPkg m_effect;
         public InstanceId m_iidActingForWhom;
         public DataId m_didSkill;
         public InstanceId m_iidFromItem;
@@ -41,7 +34,7 @@ namespace AC2E.Interp {
         public uint m_categories;
         public uint m_uiMaxDurabilityLevel;
 
-        public void write(BinaryWriter data) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(m_timeDemotedFromTopLevel);
             data.Write(m_timeCast);
             data.Write(m_iidCaster);
@@ -50,9 +43,9 @@ namespace AC2E.Interp {
             data.Write(m_fSpellcraft);
             data.Write(m_iApp);
             data.Write(m_bPK ? (uint)1 : (uint)0);
-            data.Write(m_rApp);
+            data.Write(m_rApp, references);
             data.Write(m_timePromotedToTopLevel);
-            data.Write(m_effect);
+            data.Write(m_effect, references);
             data.Write(m_iidActingForWhom);
             data.Write(m_didSkill);
             data.Write(m_iidFromItem);

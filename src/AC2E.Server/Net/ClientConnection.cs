@@ -2,20 +2,25 @@
 using AC2E.Protocol;
 using AC2E.Protocol.Message;
 using AC2E.Protocol.NetBlob;
+using AC2E.Protocol.Packet;
 using AC2E.Utils.Extensions;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading;
 
 namespace AC2E.Server.Net {
 
     internal class ClientConnection {
 
-        public static readonly byte ORDERING_TYPE_WEENIE = 0x01;
-        public static readonly byte ORDERING_TYPE_UNK1 = 0x02;
-        public static readonly byte ORDERING_TYPE_NORMAL = 0x03;
+        private static readonly float ACK_INTERVAL = 2.0f;
+        private static readonly float TIME_SYNC_INTERVAL = 20.0f;
+
+        private static readonly byte ORDERING_TYPE_WEENIE = 0x01;
+        private static readonly byte ORDERING_TYPE_UNK1 = 0x02;
+        private static readonly byte ORDERING_TYPE_NORMAL = 0x03;
 
         public readonly ushort id;
         public readonly IPEndPoint endpoint;
@@ -36,6 +41,11 @@ namespace AC2E.Server.Net {
         public float nextTimeSyncTime;
         public float echoRequestedLocalTime = -1.0f;
 
+        private readonly byte[] sendBuffer = new byte[NetPacket.MAX_SIZE];
+
+        private readonly Dictionary<uint, List<NetPacket>> sentSeqToPackets = new Dictionary<uint, List<NetPacket>>();
+        private readonly Queue<NetPacket> nacksToResend = new Queue<NetPacket>();
+
         public ClientConnection(ushort id, IPEndPoint endpoint, string accountName) {
             this.id = id;
             this.endpoint = endpoint;
@@ -47,12 +57,15 @@ namespace AC2E.Server.Net {
             clientSeed = rand.NextUInt();
         }
 
-        public void connect() {
+        public void connect(float serverTime) {
             connected = true;
 
             serverIsaac = new ISAAC(serverSeed);
-            packetSeq = 2;
+            packetSeq = 1;
             highestReceivedPacketSeq = 1;
+
+            nextAckTime = serverTime + ACK_INTERVAL;
+            nextAckTime = serverTime + TIME_SYNC_INTERVAL;
         }
 
         public void enqueueMessage(INetMessage msg) {
@@ -79,6 +92,143 @@ namespace AC2E.Server.Net {
                 fragQueue.Enqueue(frag);
             }
             blobSeq++;
+        }
+
+        public void flushSend(NetInterface netInterface, float serverTime) {
+            while (connected && (serverTime > nextAckTime || serverTime > nextTimeSyncTime || fragQueue.Count > 0 || nacksToResend.Count > 0)) {
+                if (nacksToResend.TryDequeue(out NetPacket packet)) {
+                    rawSendPacket(netInterface, serverTime, packet);
+                } else {
+                    sendPacket(netInterface, serverTime, new NetPacket());
+                }
+                Thread.Sleep(10);
+            }
+        }
+
+        public void sendPacket(NetInterface netInterface, float serverTime, NetPacket packet) {
+            packet.recipientId = id;
+            packet.interval = (ushort)serverTime;
+            // TODO: Need to advance this?
+            packet.iteration = 1;
+
+            if (connected) {
+                packet.flags |= NetPacket.Flag.ENCRYPTED_CHECKSUM;
+
+                int remainingSize = NetPacket.MAX_SIZE - 20; // Subtracts packet header
+
+                // Fill with fragments until full
+                if (fragQueue.Count > 0) {
+                    packet.flags |= NetPacket.Flag.FRAGMENTS;
+
+                    while (fragQueue.TryPeek(out NetBlobFrag frag) && remainingSize >= frag.fragSize) {
+                        packet.frags.Add(frag);
+                        fragQueue.Dequeue();
+                        remainingSize -= frag.fragSize;
+                    }
+                }
+
+                // Allocate remaining space to optional headers
+                if (remainingSize > 4 && serverTime > nextAckTime) {
+                    packet.ackHeader = highestReceivedPacketSeq;
+                    nextAckTime = serverTime + ACK_INTERVAL;
+                    remainingSize -= 4;
+                }
+
+                if (remainingSize > 8 && serverTime > nextTimeSyncTime) {
+                    packet.timeSyncHeader = serverTime;
+                    nextTimeSyncTime = serverTime + TIME_SYNC_INTERVAL;
+                    remainingSize -= 8;
+                }
+
+                if (remainingSize > 8 && echoRequestedLocalTime != -1.0f) {
+                    packet.echoResponseHeader = new EchoResponseHeader {
+                        localTime = echoRequestedLocalTime,
+                        localToServerTimeDelta = serverTime - echoRequestedLocalTime,
+                    };
+                    echoRequestedLocalTime = -1.0f;
+                    remainingSize -= 8;
+                }
+
+                // If purely ACK or NACKS, don't increment sequence number and don't encrypt checksum
+                if (packet.flags != (NetPacket.Flag.ACK | NetPacket.Flag.ENCRYPTED_CHECKSUM) && packet.flags != (NetPacket.Flag.NACKS | NetPacket.Flag.ENCRYPTED_CHECKSUM)) {
+                    packetSeq++;
+                } else {
+                    packet.flags &= ~NetPacket.Flag.ENCRYPTED_CHECKSUM;
+                }
+            }
+
+            packet.seq = packetSeq;
+
+            rawSendPacket(netInterface, serverTime, packet);
+
+            sentSeqToPackets.GetOrCreate(packet.seq).Add(packet);
+        }
+
+        private void rawSendPacket(NetInterface netInterface, float serverTime, NetPacket packet) {
+            using (BinaryWriter data = new BinaryWriter(new MemoryStream(sendBuffer))) {
+                // Write header
+                packet.writeHeader(data);
+                uint headerChecksum = CryptoUtil.calcChecksum(sendBuffer, 0, data.BaseStream.Position, true);
+
+                // Write optional headers
+                long contentStart = data.BaseStream.Position;
+                uint contentChecksum = 0;
+                packet.writeOptionalHeaders(data, sendBuffer, ref contentChecksum);
+
+                // Write blob fragments
+                if (packet.flags.HasFlag(NetPacket.Flag.FRAGMENTS)) {
+                    foreach (NetBlobFrag frag in packet.frags) {
+                        long dataStart = data.BaseStream.Position;
+                        frag.writeHeader(data);
+                        contentChecksum += CryptoUtil.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
+
+                        dataStart = data.BaseStream.Position;
+                        frag.writePayload(data);
+                        contentChecksum += CryptoUtil.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
+                    }
+                }
+
+                // Encrypt checksum if necessary
+                if (packet.flags.HasFlag(NetPacket.Flag.ENCRYPTED_CHECKSUM)) {
+                    if (!packet.hasIsaacXor) {
+                        packet.isaacXor = serverIsaac.Next();
+                        packet.hasIsaacXor = true;
+                    }
+                    contentChecksum ^= packet.isaacXor;
+                }
+
+                int packetLength = (int)data.BaseStream.Position;
+                ushort contentLength = (ushort)(packetLength - contentStart);
+
+                // Replace the content length and also update the checksum
+                BitConverter.GetBytes(contentLength).CopyTo(sendBuffer, 16);
+                headerChecksum += contentLength;
+
+                // Replace the checksum
+                BitConverter.GetBytes(headerChecksum + contentChecksum).CopyTo(sendBuffer, 8);
+
+                netInterface.sendTo(sendBuffer, packetLength, endpoint);
+
+                Log.Debug($"Send[{packetLength}] to {endpoint} - {BitConverter.ToString(sendBuffer, 0, packetLength)}.");
+            }
+
+            Log.Debug($"SENT: {packet}");
+        }
+
+        public void ackPacket(uint seq) {
+            for (uint i = highestAckedPacketSeq + 1; i <= seq; i++) {
+                sentSeqToPackets.Remove(i);
+            }
+            highestAckedPacketSeq = seq;
+        }
+
+        public void nackPacket(uint seq) {
+            if (sentSeqToPackets.TryGetValue(seq, out List<NetPacket> packets)) {
+                foreach (NetPacket packet in packets) {
+                    packet.flags |= NetPacket.Flag.RETRANSMITTING;
+                    nacksToResend.Enqueue(packet);
+                }
+            }
         }
     }
 }

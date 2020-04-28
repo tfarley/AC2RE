@@ -1,8 +1,8 @@
 ﻿using System.IO;
 
-namespace AC2E.Protocol.Event.ServerEvents {
+namespace AC2E.Interp.Event.ServerEvents {
 
-    public class StartAttackSEvt : INetServerEvent {
+    public class StartAttackSEvt : IServerEvent {
 
         public ServerEventFunctionId funcId => ServerEventFunctionId.Combat__StartAttack;
 

@@ -1,4 +1,4 @@
-﻿using AC2E.Protocol.Event;
+﻿using AC2E.Interp.Event;
 using AC2E.Protocol.NetBlob;
 using System.IO;
 
@@ -12,7 +12,7 @@ namespace AC2E.Protocol.Message.Messages {
 
         public MessageOpcode opcode => MessageOpcode.Evt_Interp__InterpCEvent_Private_ID;
 
-        public INetClientEvent netEvent;
+        public IClientEvent netEvent;
 
         public void write(BinaryWriter data) {
             data.Write((uint)netEvent.funcId);

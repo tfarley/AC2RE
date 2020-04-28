@@ -10,38 +10,49 @@ namespace AC2E.Interp.Extensions {
         private static readonly byte UNINITIALIZED_DATA = 0xCD;
 
         public static void Pack(this BinaryWriter writer, IPackage value) {
-            List<IPackage> nonNullReferences = new List<IPackage>();
-            foreach (IPackage reference in value.references) {
-                if (reference != null) {
-                    nonNullReferences.Add(reference);
+            List<IPackage> references = new List<IPackage>();
+            references.Add(value);
+
+            MemoryStream buffer = new MemoryStream();
+            using (BinaryWriter data = new BinaryWriter(buffer)) {
+                for (int i = 0; i < references.Count; i++) {
+                    IPackage reference = references[i];
+                    if (reference != null) {
+                        writePackage(data, reference, references);
+                    }
+                }
+            }
+
+            for (int i = references.Count - 1; i >= 0; i--) {
+                if (references[i] == null) {
+                    references.RemoveAt(i);
                 }
             }
 
             writer.Write((uint)PackTag.PACKAGE);
-            writer.Write((uint)nonNullReferences.Count + 1);
-            writer.Write(value.id);
-            foreach (IPackage reference in nonNullReferences) {
+            writer.Write((uint)references.Count);
+            foreach (IPackage reference in references) {
                 writer.Write(reference.id);
             }
-            packPackage(writer, value, nonNullReferences);
-            foreach (IPackage reference in nonNullReferences) {
-                // TODO: Need to keep nesting?
-                packPackage(writer, reference, new List<IPackage>());
-            }
+            writer.Write(buffer.ToArray());
         }
 
-        private static void packPackage(BinaryWriter writer, IPackage value, List<IPackage> references) {
-            writer.Write(value.reference);
-            if (value.reference.isSingleton) {
-                value.write(writer);
+        private static void writePackage(BinaryWriter writer, IPackage value, List<IPackage> references) {
+            int startReferencesCount = references.Count;
+
+            writer.Write(value.referenceMeta);
+
+            if (value.referenceMeta.isSingleton) {
+                value.write(writer, references);
                 return;
             }
+
             writer.Write((uint)0);
             if (value.nativeType != NativeType.UNDEF) {
                 writer.Write((ushort)value.nativeType);
                 writer.Write((ushort)0xFFFF);
 
-                value.write(writer);
+                value.write(writer, references);
             } else {
                 writer.Write((ushort)0);
                 writer.Write((ushort)value.packageType);
@@ -49,7 +60,7 @@ namespace AC2E.Interp.Extensions {
                 writer.Write((uint)0);
 
                 long contentStart = writer.BaseStream.Position;
-                value.write(writer);
+                value.write(writer, references);
                 long contentEnd = writer.BaseStream.Position;
                 long contentLength = contentEnd - contentStart;
                 writer.BaseStream.Seek(-contentLength - 4, SeekOrigin.Current);
@@ -57,7 +68,8 @@ namespace AC2E.Interp.Extensions {
                 writer.BaseStream.Seek(contentEnd, SeekOrigin.Begin);
             }
 
-            if (references.Count > 0) {
+            // Write out field descriptions
+            if (value.packageType != PackageType.UNDEF && references.Count > startReferencesCount) {
                 foreach (FieldDesc fieldDesc in InterpMeta.getFieldDescs(value.GetType())) {
                     writer.Write((byte)fieldDesc.fieldType);
                     if (fieldDesc.numWords == 2) {
@@ -72,8 +84,9 @@ namespace AC2E.Interp.Extensions {
             }
         }
 
-        public static void Write(this BinaryWriter writer, IPackage value) {
+        public static void Write(this BinaryWriter writer, IPackage value, List<IPackage> references) {
             writer.Write(value != null ? value.id : IPackage.NULL);
+            references.Add(value);
         }
     }
 }

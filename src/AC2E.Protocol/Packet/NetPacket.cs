@@ -10,7 +10,7 @@ namespace AC2E.Protocol.Packet {
 
     public class NetPacket {
 
-        public static readonly int MAX_SIZE = 1200;
+        public static readonly int MAX_SIZE = 484;
 
         [Flags]
         public enum Flag : uint {
@@ -163,8 +163,7 @@ namespace AC2E.Protocol.Packet {
                 throw new NotImplementedException();
             }
             if (flags.HasFlag(Flag.NACKS)) {
-                _nacksHeader = data.ReadList(data => data.ReadUInt32(), 2);
-                throw new NotImplementedException();
+                _nacksHeader = data.ReadList(data.ReadUInt32);
             }
             if (flags.HasFlag(Flag.NO_RETRANSMIT)) {
                 throw new NotImplementedException();

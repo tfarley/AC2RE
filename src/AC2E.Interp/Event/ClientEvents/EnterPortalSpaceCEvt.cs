@@ -1,9 +1,9 @@
 ﻿using AC2E.Def.Extensions;
 using System.IO;
 
-namespace AC2E.Protocol.Event.ClientEvents {
+namespace AC2E.Interp.Event.ClientEvents {
 
-    public class EnterPortalSpaceCEvt : INetClientEvent {
+    public class EnterPortalSpaceCEvt : IClientEvent {
 
         public ClientEventFunctionId funcId => ClientEventFunctionId.Player__EnterPortalSpace;
 

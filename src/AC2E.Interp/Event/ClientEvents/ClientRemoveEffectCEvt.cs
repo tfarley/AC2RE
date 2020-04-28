@@ -2,16 +2,16 @@
 using AC2E.Interp.Extensions;
 using System.IO;
 
-namespace AC2E.Protocol.Event.ClientEvents {
+namespace AC2E.Interp.Event.ClientEvents {
 
-    public class ClientRemoveEffectCEvt : INetClientEvent {
+    public class ClientRemoveEffectCEvt : IClientEvent {
 
         public ClientEventFunctionId funcId => ClientEventFunctionId.Effect__ClientRemoveEffect;
 
-        public uint effectId;
+        public uint _eid;
 
         public void write(BinaryWriter data) {
-            data.Pack(effectId);
+            data.Pack(_eid);
         }
     }
 }

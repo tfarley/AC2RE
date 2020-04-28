@@ -2,18 +2,21 @@
 using AC2E.Def.Enums;
 using AC2E.Def.Structs;
 using AC2E.Interp;
-using AC2E.Protocol.Event;
-using AC2E.Protocol.Event.ClientEvents;
+using AC2E.Interp.Event;
+using AC2E.Interp.Event.ClientEvents;
+using AC2E.Interp.Packages;
 using AC2E.Protocol.Message;
 using AC2E.Protocol.Message.Messages;
 using AC2E.Protocol.NetBlob;
 using AC2E.Protocol.Packet;
 using AC2E.Server.Net;
+using AC2E.Utils;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -26,15 +29,11 @@ namespace AC2E.Server {
         private static readonly IPEndPoint ANY_ENDPOINT = new IPEndPoint(IPAddress.Any, 0);
         private static readonly int MAX_CONNECTIONS = 300;
 
-        private static readonly float ACK_INTERVAL = 2.0f;
-        private static readonly float TIME_SYNC_INTERVAL = 20.0f;
-
-        private NetInterface netInterface1;
+        public NetInterface netInterface1;
         private NetInterface netInterface2;
         public bool active;
 
         private readonly byte[] receiveBuffer = new byte[NetPacket.MAX_SIZE];
-        private readonly byte[] sendBuffer = new byte[NetPacket.MAX_SIZE];
 
         private ushort clientCounter = 1;
         private readonly Dictionary<ushort, ClientConnection> clients = new Dictionary<ushort, ClientConnection>();
@@ -88,7 +87,7 @@ namespace AC2E.Server {
             processReceive(netInterface2);
 
             foreach (ClientConnection client in clients.Values) {
-                flushSend(client);
+                client.flushSend(netInterface1, serverTime);
             }
         }
 
@@ -141,9 +140,23 @@ namespace AC2E.Server {
                             Log.Information($"Client diconnected, id {packet.recipientId}.");
                             return;
                         }
+
+                        // TODO: Need to handle client acking the re-sent (nacked) packets
                         if (packet.flags.HasFlag(NetPacket.Flag.ACK)) {
-                            client.highestAckedPacketSeq = packet.ackHeader;
-                            // TODO: Clear out any stored packets
+                            client.ackPacket(packet.ackHeader);
+                        }
+
+                        if (packet.flags.HasFlag(NetPacket.Flag.NACKS)) {
+                            foreach (uint seq in packet.nacksHeader) {
+                                client.nackPacket(seq);
+                            }
+                        }
+
+                        if (client.connected && packet.seq <= client.highestReceivedPacketSeq) {
+                            if (!packet.flags.HasFlag(NetPacket.Flag.ACK) && !packet.flags.HasFlag(NetPacket.Flag.NACKS)) {
+                                Log.Warning($"Got dupe packet with seq {packet.seq}, expecting {client.highestReceivedPacketSeq}.");
+                            }
+                            return;
                         }
 
                         for (uint i = client.highestReceivedPacketSeq + 1; i < packet.seq; i++) {
@@ -155,9 +168,7 @@ namespace AC2E.Server {
                         if (packet.connectAckHeader != 0) {
                             if (packet.connectAckHeader == client.connectionAckCookie) {
                                 Log.Debug($"Got good connect ack cookie from client id: {packet.recipientId}.");
-                                client.connect();
-                                client.nextAckTime = serverTime + ACK_INTERVAL;
-                                client.nextAckTime = serverTime + TIME_SYNC_INTERVAL;
+                                client.connect(serverTime);
                                 client.enqueueMessage(new WorldNameMsg {
                                     numConnections = (uint)clients.Count,
                                     maxConnections = (uint)MAX_CONNECTIONS,
@@ -252,6 +263,194 @@ namespace AC2E.Server {
                                     baseSetupId = 0x1F001110,
                                 },
                             });
+                            client.enqueueMessage(new InterpCEventPrivateMsg {
+                                netEvent = new HandleCharacterSessionStartCEvt {
+                                    money = 12345,
+                                    _aReg = new ActRegistryPkg {
+                                        id = 0x00029B49,
+                                        m_viewingProtectionEID = 0,
+                                        m_actSceneTable = new ARHashPkg<AListPkg> {
+                                            id = 0x00029B4A,
+                                            contents = new Dictionary<uint, AListPkg> {
+                                                { 0x40000005, new AListPkg { id = 0x00029B4B } },
+                                                { 0x40000006, new AListPkg { id = 0x00029B4C } },
+                                                { 0x40000007, new AListPkg { id = 0x00029B4D } },
+                                                { 0x40000008, new AListPkg { id = 0x00029B55 } },
+                                                { 0x40000009, new AListPkg { id = 0x00029B56 } },
+                                                { 0x4000000A, new AListPkg { id = 0x00029B57 } },
+                                            }
+                                        }
+                                    },
+                                    _quests = new GMQuestInfoListPkg {
+                                        id = 0x00029D08,
+                                    },
+                                    _options = new GameplayOptionsProfilePkg {
+                                        id = 0x00029B48,
+                                        contentFlags =
+                                            GameplayOptionsProfilePkg.ContentFlag.SHORTCUT_ARRAY
+                                            | GameplayOptionsProfilePkg.ContentFlag.SHOW_RANGE_DAMAGE_OTHER
+                                            | GameplayOptionsProfilePkg.ContentFlag.SAVED_UI_LOCATIONS
+                                            | GameplayOptionsProfilePkg.ContentFlag.RADAR_MASK
+                                            | GameplayOptionsProfilePkg.ContentFlag.FILTER_HASH
+                                            | GameplayOptionsProfilePkg.ContentFlag.BIT_FIELD
+                                            | GameplayOptionsProfilePkg.ContentFlag.CHAT_FONT_COLORS
+                                            | GameplayOptionsProfilePkg.ContentFlag.CHAT_FONT_SIZES
+                                            | GameplayOptionsProfilePkg.ContentFlag.CHAT_POPUP_FLAGS
+                                            | GameplayOptionsProfilePkg.ContentFlag.WINDOW_TO_CHANNEL,
+                                        m_shortcutArray = Enumerable.Repeat(new ShortcutInfoPkg { _type = ShortcutType.UNDEF }, 100).ToList(),
+                                        m_whichShortcutSet = 1,
+                                        m_fDamageTextRangeOther = 1.0f,
+                                        m_savedUILocations = new UISaveLocationsPkg(),
+                                        /*m_savedUILocations = new UISaveLocationsPkg {
+                                            contents = new Dictionary<uint, Dictionary<uint, UISaveLocationsPkg.UILocationData>> {
+                                            { 0, new Dictionary<uint, UISaveLocationsPkg.UILocationData> {
+                                                { 0xA05C6B95, new UISaveLocationsPkg.UILocationData { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                                { 0xA0446B95, new UISaveLocationsPkg.UILocationData { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                                { 0xA04C6B95, new UISaveLocationsPkg.UILocationData { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                                { 0xA0746B95, new UISaveLocationsPkg.UILocationData { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                                { 0x6433C3C7, new UISaveLocationsPkg.UILocationData { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                                { 0x9A25490C, new UISaveLocationsPkg.UILocationData { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                                { 0xA0F792C9, new UISaveLocationsPkg.UILocationData { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                            } }
+                                        }
+                                        },*/
+                                        m_radarMask = 0xFFFFFFFF,
+                                        m_filterHash = new Dictionary<uint, uint> {
+                                            { 0x00800001, 0x0060017B },
+                                            { 0x00000002, 0x80000000 },
+                                            { 0x00000003, 0x00010000 },
+                                            { 0x00000004, 0x00020000 },
+                                        },
+                                        m_bitField = (GameplayOptionsProfilePkg.Flag)0x80024FF5,
+                                        m_version = GameplayOptionsProfilePkg.Version.LATEST_VERSION,
+                                        m_chatFontColors = new Dictionary<TextType, uint> {
+                                            { TextType.ERROR, 0 },
+                                            { TextType.COMBAT, 1 },
+                                            { TextType.ADMIN, 2 },
+                                            { TextType.STANDARD, 3 },
+                                            { TextType.SAY, 4 },
+                                            { TextType.TELL, 5 },
+                                            { TextType.EMOTE, 6 },
+                                            { TextType.LOG, 4 },
+                                            { TextType.BROADCAST, 9 },
+                                            { TextType.FELLOWSHIP, 7 },
+                                            { TextType.ALLEGIANCE, 8 },
+                                            { TextType.CHAT_ENTRY, 4 },
+                                            { TextType.GENERAL, 4 },
+                                            { TextType.TRADE, 4 },
+                                            { TextType.REGION, 4 },
+                                            { TextType.FACTION, 4 },
+                                            { TextType.DEVOTED, 4 },
+                                            { TextType.PK, 4 },
+                                        },
+                                        m_chatFontSizes = new Dictionary<TextType, uint> {
+                                            { TextType.ERROR, 0 },
+                                            { TextType.COMBAT, 0 },
+                                            { TextType.ADMIN, 0 },
+                                            { TextType.STANDARD, 0 },
+                                            { TextType.SAY, 0 },
+                                            { TextType.TELL, 0 },
+                                            { TextType.EMOTE, 0 },
+                                            { TextType.LOG, 0 },
+                                            { TextType.BROADCAST, 0 },
+                                            { TextType.FELLOWSHIP, 0 },
+                                            { TextType.ALLEGIANCE, 0 },
+                                            { TextType.CHAT_ENTRY, 0 },
+                                            { TextType.GENERAL, 0 },
+                                            { TextType.TRADE, 0 },
+                                            { TextType.REGION, 0 },
+                                            { TextType.FACTION, 0 },
+                                            { TextType.DEVOTED, 0 },
+                                            { TextType.PK, 0 },
+                                        },
+                                        windowToChannel = new Dictionary<uint, TextType> {
+                                            { 1, TextType.SAY },
+                                            { 2, TextType.GENERAL },
+                                            { 3, TextType.FELLOWSHIP },
+                                            { 4, TextType.ALLEGIANCE },
+                                        },
+                                        m_chatPopupFlags = new Dictionary<TextType, bool> {
+                                            { TextType.BROADCAST, true },
+                                            { TextType.FELLOWSHIP, true },
+                                            { TextType.ALLEGIANCE, true },
+                                        },
+                                        m_windowOpacities = new Dictionary<uint, float> {
+                                            { 0xA05C6B95, 0.65f },
+                                            { 0xA0446B95, 0.65f },
+                                            { 0xA04C6B95, 0.65f },
+                                            { 0xA0746B95, 0.65f },
+                                        },
+                                    },
+                                    _skills = new SkillRepositoryPkg {
+                                        id = 0x00029711,
+                                        m_nSkillCredits = 0,
+                                        m_nUntrainXP = 0,
+                                        m_hashPerkTypes = new AAHashPkg {
+                                            id = 0x00029712,
+                                            contents = new Dictionary<uint, uint> {
+
+                                            }
+                                        },
+                                        m_typeUntrained = 0,
+                                        m_hashCategories = new AAHashPkg {
+                                            id = 0x00029713,
+                                            contents = new Dictionary<uint, uint> {
+
+                                            }
+                                        },
+                                        m_hashSkills = new ARHashPkg<SkillInfoPkg> {
+                                            id = 0x00029714,
+                                            contents = new Dictionary<uint, SkillInfoPkg> {
+
+                                            }
+                                        },
+                                    },
+                                    _regEffect = new EffectRegistryPkg {
+                                        id = 0x0003E9EA,
+                                        m_qualitiesModifiedCount = null,
+                                        m_appliedFX = new AAHashPkg {
+                                            id = 0x0003E9EB,
+                                            contents = new Dictionary<uint, uint> {
+
+                                            },
+                                        },
+                                        m_baseEffectRegistry = null,
+                                        m_uiEffectIDCounter = 3,
+                                        m_effectInfo = null,
+                                        m_ttLastPulse = -1.0,
+                                        m_listEquipperEffectEids = null,
+                                        m_listAcquirerEffectEids = null,
+                                        m_flags = 0x000C0001,
+                                        m_setTrackedEffects = null,
+                                        m_topEffects = null,
+                                        m_effectCategorizationTable = null,
+                                        m_appliedAppearances = new AAHashPkg {
+                                            id = 0x0003E9EC,
+                                            contents = new Dictionary<uint, uint> {
+
+                                            },
+                                        },
+                                    },
+                                    _filledInvLocs = 0,
+                                    _invByLocTable = new ARHashPkg<InventProfilePkg> {
+                                        id = 0x0003DF19,
+                                    },
+                                    _invByIIDTable = new LRHashPkg<InventProfilePkg> {
+                                        id = 0x0003DF29,
+                                    },
+                                    _ContainerSegments = new RListPkg<ContainerSegmentDescriptorPkg> {
+                                        id = 0x0003DF13,
+                                    },
+                                    _Containers = new LListPkg {
+                                        id = 0x0003DF18,
+                                    },
+                                    _Contents = new LListPkg {
+                                        id = 0x0003DF12,
+                                    },
+                                    _locFactionStatus = 1,
+                                    _srvFactionStatus = 0,
+                                }
+                            });
                             break;
                         }
                     case MessageOpcode.CLIDAT_REQUEST_DATA_EVENT: {
@@ -276,7 +475,7 @@ namespace AC2E.Server {
                                     };
                                     client.enqueueMessage(new InterpCEventPrivateMsg {
                                         netEvent = new ClientAddEffectCEvt {
-                                            effectRecord = new EffectRecordPkg {
+                                            _record = new EffectRecordPkg {
                                                 id = 0x0007A674,
 
                                                 m_timeDemotedFromTopLevel = -1.0,
@@ -300,13 +499,13 @@ namespace AC2E.Server {
                                                 m_categories = 1,
                                                 m_uiMaxDurabilityLevel = 0,
                                             },
-                                            effectId = 0x00000BD9,
+                                            _eid = 0x00000BD9,
                                         }
                                     });
                                 } else {
                                     client.enqueueMessage(new InterpCEventPrivateMsg {
                                         netEvent = new ClientRemoveEffectCEvt {
-                                            effectId = 0x00000BD9,
+                                            _eid = 0x00000BD9,
                                         }
                                     });
                                 }
@@ -336,7 +535,7 @@ namespace AC2E.Server {
         }
 
         private void sendConnect(ClientConnection client) {
-            sendPacket(client, new NetPacket {
+            client.sendPacket(netInterface1, serverTime, new NetPacket {
                 connectHeader = new ConnectHeader {
                     connectionAckCookie = client.connectionAckCookie,
                     recipientId = client.id,
@@ -344,114 +543,6 @@ namespace AC2E.Server {
                     incomingSeed = client.clientSeed,
                 },
             });
-        }
-
-        private void flushSend(ClientConnection client) {
-            while (client.connected && (serverTime > client.nextAckTime || serverTime > client.nextTimeSyncTime || client.fragQueue.Count > 0)) {
-                sendPacket(client, new NetPacket());
-                Thread.Sleep(10);
-            }
-        }
-
-        private void sendPacket(ClientConnection client, NetPacket packet) {
-            float curServerTime = serverTime;
-
-            packet.seq = client.packetSeq;
-            client.packetSeq++;
-            packet.recipientId = client.id;
-            packet.interval = (ushort)curServerTime;
-            // TODO: Need to advance this?
-            packet.iteration = 1;
-
-            if (client.connected) {
-                packet.flags |= NetPacket.Flag.ENCRYPTED_CHECKSUM;
-
-                if (curServerTime > client.nextAckTime) {
-                    packet.ackHeader = client.highestReceivedPacketSeq;
-                    client.nextAckTime = curServerTime + ACK_INTERVAL;
-                }
-
-                if (curServerTime > client.nextTimeSyncTime) {
-                    packet.timeSyncHeader = curServerTime;
-                    client.nextTimeSyncTime = curServerTime + TIME_SYNC_INTERVAL;
-                }
-
-                if (client.echoRequestedLocalTime != -1.0f) {
-                    packet.echoResponseHeader = new EchoResponseHeader {
-                        localTime = client.echoRequestedLocalTime,
-                        localToServerTimeDelta = curServerTime - client.echoRequestedLocalTime,
-                    };
-                    client.echoRequestedLocalTime = -1.0f;
-                }
-
-                if (client.fragQueue.Count > 0) {
-                    packet.flags |= NetPacket.Flag.FRAGMENTS;
-                }
-            }
-
-            using (BinaryWriter data = new BinaryWriter(new MemoryStream(sendBuffer))) {
-                // Write header
-                packet.writeHeader(data);
-                uint headerChecksum = CryptoUtil.calcChecksum(sendBuffer, 0, data.BaseStream.Position, true);
-
-                // Write optional headers
-                long contentStart = data.BaseStream.Position;
-                uint contentChecksum = 0;
-                packet.writeOptionalHeaders(data, sendBuffer, ref contentChecksum);
-
-                // Fill with fragments until full
-                if (packet.flags.HasFlag(NetPacket.Flag.FRAGMENTS)) {
-                    while (client.fragQueue.TryPeek(out NetBlobFrag frag)) {
-                        long lastFragStartPos = data.BaseStream.Position;
-                        try {
-                            uint fragChecksum = 0;
-
-                            long dataStart = data.BaseStream.Position;
-                            frag.writeHeader(data);
-                            fragChecksum += CryptoUtil.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
-
-                            dataStart = data.BaseStream.Position;
-                            frag.writePayload(data);
-                            fragChecksum += CryptoUtil.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
-
-                            packet.frags.Add(frag);
-                            client.fragQueue.Dequeue();
-                            contentChecksum += fragChecksum;
-                        } catch (Exception e) {
-                            if (!(e is ArgumentException || e is NotSupportedException)) {
-                                Log.Error(e, "Error writing fragment.");
-                            }
-                            data.BaseStream.Seek(lastFragStartPos, SeekOrigin.Begin);
-                            break;
-                        }
-                    }
-                }
-
-                // Encrypt checksum if necessary
-                if (packet.flags.HasFlag(NetPacket.Flag.ENCRYPTED_CHECKSUM)) {
-                    if (!packet.hasIsaacXor) {
-                        packet.isaacXor = client.serverIsaac.Next();
-                        packet.hasIsaacXor = true;
-                    }
-                    contentChecksum ^= packet.isaacXor;
-                }
-
-                int packetLength = (int)data.BaseStream.Position;
-                ushort contentLength = (ushort)(packetLength - contentStart);
-
-                // Replace the content length and also update the checksum
-                BitConverter.GetBytes(contentLength).CopyTo(sendBuffer, 16);
-                headerChecksum += contentLength;
-
-                // Replace the checksum
-                BitConverter.GetBytes(headerChecksum + contentChecksum).CopyTo(sendBuffer, 8);
-
-                netInterface1.sendTo(sendBuffer, packetLength, client.endpoint);
-
-                Log.Debug($"Send[{packetLength}] to {client.endpoint} - {BitConverter.ToString(sendBuffer, 0, packetLength)}.");
-            }
-
-            Log.Debug($"SENT: {packet}");
         }
     }
 }

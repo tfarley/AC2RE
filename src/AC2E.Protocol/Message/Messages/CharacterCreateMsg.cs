@@ -35,7 +35,7 @@ namespace AC2E.Protocol.Message.Messages {
             sex = (SexType)data.ReadUInt32();
             unk2 = data.ReadUInt32();
             unk3 = data.ReadUInt32();
-            physiqueTypeValues = data.ReadDictionary(data => (PhysiqueType)data.ReadUInt32(), data => data.ReadSingle());
+            physiqueTypeValues = data.ReadDictionary(() => (PhysiqueType)data.ReadUInt32(), data.ReadSingle);
         }
     }
 }

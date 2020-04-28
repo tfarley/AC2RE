@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.Interp {
@@ -9,12 +10,11 @@ namespace AC2E.Interp {
 
         NativeType nativeType { get; }
         PackageType packageType { get; }
-        InterpReference reference { get; }
+        InterpReferenceMeta referenceMeta { get; }
 
         uint id { get; }
-        IPackage[] references { get; }
 
-        void write(BinaryWriter data) {
+        void write(BinaryWriter data, List<IPackage> referenceList) {
             throw new NotImplementedException();
         }
     }

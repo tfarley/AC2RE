@@ -1,8 +1,8 @@
 ﻿using System.IO;
 
-namespace AC2E.Protocol.Event.ServerEvents {
+namespace AC2E.Interp.Event.ServerEvents {
 
-    public class GenericSEvt : INetServerEvent {
+    public class GenericSEvt : IServerEvent {
 
         public ServerEventFunctionId funcId { get; private set; }
 

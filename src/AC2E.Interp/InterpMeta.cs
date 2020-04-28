@@ -31,10 +31,15 @@ namespace AC2E.Interp {
                 fieldDescs = new FieldDesc[fieldInfos.Length];
                 for (int i = 0; i < fieldInfos.Length; i++) {
                     FieldInfo fieldInfo = fieldInfos[i];
-                    StackType stackType = fieldInfo.FieldType == typeof(IPackage)
-                        ? StackType.REFERENCE
-                        : StackType.UNDEF;
-                    fieldDescs[i] = new FieldDesc(stackType, TYPE_TO_NUM_WORDS[fieldInfo.FieldType]);
+                    Type fieldType = fieldInfo.FieldType;
+                    StackType stackType;
+                    if (typeof(IPackage).IsAssignableFrom(fieldType)) {
+                        fieldType = typeof(IPackage);
+                        stackType = StackType.REFERENCE;
+                    } else {
+                        stackType = StackType.UNDEF;
+                    }
+                    fieldDescs[i] = new FieldDesc(stackType, TYPE_TO_NUM_WORDS[fieldType]);
                 }
                 fieldDescCache[type] = fieldDescs;
             }
