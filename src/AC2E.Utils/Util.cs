@@ -18,5 +18,9 @@ namespace AC2E.Utils {
 
             return bytes;
         }
+
+        public static ushort byteSwapped(ushort value) {
+            return (ushort)(((value & 0x00FFU) << 8) | ((value & 0xFF00U) >> 8));
+        }
     }
 }

@@ -1,7 +1,5 @@
-﻿using AC2E.Crypto;
-using AC2E.Def.Enums;
+﻿using AC2E.Def.Enums;
 using AC2E.Def.Structs;
-using AC2E.Interp;
 using AC2E.Interp.Event;
 using AC2E.Interp.Event.ClientEvents;
 using AC2E.Interp.Packages;
@@ -10,7 +8,6 @@ using AC2E.Protocol.Message.Messages;
 using AC2E.Protocol.NetBlob;
 using AC2E.Protocol.Packet;
 using AC2E.Server.Net;
-using AC2E.Utils;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -19,7 +16,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 
 namespace AC2E.Server {
 

@@ -14,17 +14,19 @@ namespace AC2E.Protocol.NetBlob {
 
         // TODO: Use/test this frag combining for receiving
         public void addFragment(NetBlobFrag newFrag) {
-            frags.Add(newFrag.fragIndex, newFrag);
-            if (frags.Count == fragCount) {
-                int blobSize = 0;
-                foreach (NetBlobFrag frag in frags.Values) {
-                    blobSize += frag.fragSize;
-                }
-                payload = new byte[blobSize];
-                int payloadOffset = 0;
-                foreach (NetBlobFrag frag in frags.Values) {
-                    Array.Copy(frag.payload, 0, payload, payloadOffset, frag.payload.Length);
-                    payloadOffset += frag.payload.Length;
+            if (!frags.ContainsKey(newFrag.fragIndex)) {
+                frags.Add(newFrag.fragIndex, newFrag);
+                if (frags.Count == fragCount) {
+                    int blobSize = 0;
+                    foreach (NetBlobFrag frag in frags.Values) {
+                        blobSize += frag.fragSize;
+                    }
+                    payload = new byte[blobSize];
+                    int payloadOffset = 0;
+                    foreach (NetBlobFrag frag in frags.Values) {
+                        Array.Copy(frag.payload, 0, payload, payloadOffset, frag.payload.Length);
+                        payloadOffset += frag.payload.Length;
+                    }
                 }
             }
         }
