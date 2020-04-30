@@ -1,9 +1,13 @@
-﻿using AC2E.PacketTool.Reader;
+﻿using AC2E.Interp.Event;
+using AC2E.PacketTool.Reader;
+using AC2E.Protocol.Message;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Reflection;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,6 +20,8 @@ namespace AC2E.PacketTool.UI {
 
         private GridViewColumnHeader lastRecordsListBoxColumnHeaderClicked = null;
         private ListSortDirection lastRecordsListBoxColumnHeaderSortDirection = ListSortDirection.Ascending;
+
+        public object INetServerEvent { get; private set; }
 
         public MainWindow() {
             InitializeComponent();
@@ -40,11 +46,11 @@ namespace AC2E.PacketTool.UI {
                     continue;
                 }
 
-                if (errorsFilter == "Exclude" && netBlobRow.netBlobRecord.netBlob.payload == null) {
+                if (errorsFilter == "Exclude" && netBlobRow.netBlobRecord.messageException != null) {
                     continue;
                 }
 
-                if (errorsFilter == "Only" && netBlobRow.netBlobRecord.netBlob.payload != null) {
+                if (errorsFilter == "Only" && netBlobRow.netBlobRecord.messageException == null) {
                     continue;
                 }
 
@@ -66,6 +72,8 @@ namespace AC2E.PacketTool.UI {
             openFileDialog.Filter = "Packet Captures (*.pcap;*.pcapng)|*.pcap;*.pcapng|All files (*.*)|*.*";
             openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog() == true) {
+                lastRecordsListBoxColumnHeaderClicked = null;
+
                 using (FileStream fileStream = File.OpenRead(openFileDialog.FileName)) {
                     NetBlobCollection netBlobCollection = PcapReader.read(fileStream);
 
@@ -136,6 +144,55 @@ namespace AC2E.PacketTool.UI {
                     lastRecordsListBoxColumnHeaderClicked = headerClicked;
                     lastRecordsListBoxColumnHeaderSortDirection = direction;
                 }
+            }
+        }
+
+        private void recordsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (recordsListBox.SelectedItems.Count == 1) {
+                NetBlobRecord netBlobRecord = ((NetBlobRow)recordsListBox.SelectedItem).netBlobRecord;
+
+                bool wasUndetermined = netBlobRecord.messageErrorTypeOptional == NetBlobRecord.MessageErrorType.UNDETERMINED;
+
+                if (netBlobRecord.netBlob.payload != null) {
+                    recordHexTextBox.Text = BitConverter.ToString(netBlobRecord.netBlob.payload);
+                } else {
+                    recordHexTextBox.Text = "";
+                }
+
+                Exception messageException = netBlobRecord.messageException;
+                if (messageException == null) {
+                    try {
+                        INetMessage message = netBlobRecord.message;
+
+                        FieldInfo[] fieldInfos = message.GetType().GetFields();
+                        StringBuilder messageStringBuilder = new StringBuilder();
+                        foreach (FieldInfo fieldInfo in fieldInfos) {
+                            messageStringBuilder.AppendLine($"{fieldInfo.Name} = {fieldInfo.GetValue(message)}");
+                        }
+
+                        if (message.opcode == MessageOpcode.Evt_Interp__InterpSEvent_ID || message.opcode == MessageOpcode.Evt_Interp__InterpSEventEncrypt_ID || message.opcode == MessageOpcode.Evt_Interp__InterpCEvent_Private_ID || message.opcode == MessageOpcode.Evt_Interp__InterpCEvent_Cell_ID || message.opcode == MessageOpcode.Evt_Interp__InterpCEvent_Visual_ID || message.opcode == MessageOpcode.Evt_Interp__InterpCEvent_Broadcast_ID) {
+                            messageStringBuilder.AppendLine();
+                            object netEvent = message.GetType().GetField("netEvent").GetValue(message);
+                            FieldInfo[] eventFieldInfos = netEvent.GetType().GetFields();
+                            foreach (FieldInfo eventFieldInfo in eventFieldInfos) {
+                                messageStringBuilder.AppendLine($"{eventFieldInfo.Name} = {eventFieldInfo.GetValue(netEvent)}");
+                            }
+                        }
+
+                        recordMessageTextBox.Text = messageStringBuilder.ToString();
+                    } catch (Exception ex) {
+                        recordMessageTextBox.Text = ex.ToString();
+                    }
+                } else {
+                    recordMessageTextBox.Text = messageException.ToString();
+                }
+
+                if (wasUndetermined) {
+                    recordsListBox.Items.Refresh();
+                }
+            } else {
+                recordHexTextBox.Text = "";
+                recordMessageTextBox.Text = "";
             }
         }
     }

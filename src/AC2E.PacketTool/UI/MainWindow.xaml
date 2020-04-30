@@ -21,6 +21,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0">
@@ -48,7 +50,7 @@
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
 
-            <ListView x:Name="recordsListBox" Grid.Row="1" Margin="10,10,10,10" GridViewColumnHeader.Click="recordsListBoxColumnHeader_Click">
+            <ListView x:Name="recordsListBox" Grid.Row="1" Margin="10,10,10,10" SelectionChanged="recordsListBox_SelectionChanged" GridViewColumnHeader.Click="recordsListBoxColumnHeader_Click">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Line" Width="60" DisplayMemberBinding="{Binding lineNum}"/>
@@ -60,9 +62,26 @@
                         <GridViewColumn Header="Event" Width="270" DisplayMemberBinding="{Binding eventName}"/>
                         <GridViewColumn Header="Size" Width="50" DisplayMemberBinding="{Binding size}"/>
                         <GridViewColumn Header="Queue" Width="150" DisplayMemberBinding="{Binding queue}"/>
+                        <GridViewColumn Header="Error" Width="150" DisplayMemberBinding="{Binding error}"/>
                     </GridView>
                 </ListView.View>
             </ListView>
+
+            <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch"/>
+
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="recordHexTextBox" Grid.Column="0" Margin="10,10,10,10" TextWrapping="Wrap" IsReadOnly="True"/>
+
+                <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
+
+                <TextBox x:Name="recordMessageTextBox" Grid.Column="2" Margin="10,10,10,10" TextWrapping="Wrap" IsReadOnly="True"/>
+            </Grid>
         </Grid>
     </DockPanel>
 </Window>

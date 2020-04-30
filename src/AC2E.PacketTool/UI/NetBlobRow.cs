@@ -16,6 +16,7 @@ namespace AC2E.PacketTool.UI {
         public string eventName { get; private set; }
         public int size { get; private set; }
         public string queue { get; private set; }
+        public string error => netBlobRecord.messageErrorTypeOptional.ToString();
 
         public NetBlobRecord netBlobRecord;
 
