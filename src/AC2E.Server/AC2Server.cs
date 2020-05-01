@@ -36,7 +36,7 @@ namespace AC2E.Server {
 
         private float serverTime => (DateTime.Now.Ticks - Process.GetCurrentProcess().StartTime.Ticks) / TimeSpan.TicksPerSecond;
 
-        private readonly Language[] SUPPORTED_LANGUAGES = new Language[] {
+        private readonly List<Language> SUPPORTED_LANGUAGES = new List<Language> {
             Language.ENGLISH,
         };
 
@@ -168,7 +168,11 @@ namespace AC2E.Server {
                                 client.enqueueMessage(new WorldNameMsg {
                                     numConnections = (uint)clients.Count,
                                     maxConnections = (uint)MAX_CONNECTIONS,
+                                    unk1 = 0x00010000,
                                     worldName = "MyWorld",
+                                    unk2 = 0x34DDF9FC,
+                                    unk3 = 0x40A633CB,
+                                    unk4 = 0,
                                 });
                                 client.enqueueMessage(new CliDatInterrogationMsg {
                                     regionId = 1,
@@ -213,10 +217,10 @@ namespace AC2E.Server {
                     case MessageOpcode.CLIDAT_INTERROGATION_RESPONSE_EVENT: {
                             CliDatInterrogationResponseMsg msg = new CliDatInterrogationResponseMsg(data);
                             genericMsg = msg;
-                            client.enqueueMessage(new CliDatEndDDDMsg());
-                            CharacterIdentity[] characters = new CharacterIdentity[] {
+
+                            List<CharacterIdentity> characters = new List<CharacterIdentity> {
                                 new CharacterIdentity {
-                                    id = 0x213000000000dd9d,
+                                    id = new InstanceId(0x213000000000dd9d),
                                     name = "TestChar",
                                     greyedOutForSeconds = 0,
                                     vDesc = new VisualDesc {
@@ -224,14 +228,30 @@ namespace AC2E.Server {
                                     },
                                 },
                             };
+
+                            List<string> characterNames = new List<string>();
+                            List<InstanceId> characterIds = new List<InstanceId>();
+                            foreach (CharacterIdentity character in characters) {
+                                characterNames.Add(character.name);
+                                characterIds.Add(character.id);
+                            }
+
+                            client.enqueueMessage(new CliDatEndDDDMsg());
+
                             client.enqueueMessage(new LoginMinCharSetMsg {
+                                unk1 = 0,
                                 accountName = client.accountName,
-                                characters = characters,
+                                characterNames = characterNames,
+                                characterIds = characterIds,
                             });
+
                             client.enqueueMessage(new LoginCharacterSetMsg {
                                 characters = characters,
+                                unk1 = 0,
+                                unk2 = 0,
                                 numAllowedCharacters = 10,
                                 accountName = client.accountName,
+                                unk3 = 1,
                                 hasLegions = true,
                                 useTurbineChat = true,
                             });
@@ -246,19 +266,23 @@ namespace AC2E.Server {
                     case MessageOpcode.CHARACTER_ENTER_GAME_EVENT: {
                             CharacterEnterGameMsg msg = new CharacterEnterGameMsg(data);
                             genericMsg = msg;
+
                             client.enqueueMessage(new CreatePlayerMsg {
                                 objectId = msg.characterId,
                                 regionId = 1,
                             });
+
                             client.enqueueMessage(new LoginPlayerDescMsg {
 
                             });
+
                             client.enqueueMessage(new CreateObjectMsg {
                                 objectId = msg.characterId,
                                 vDesc = new VisualDesc {
                                     baseSetupId = 0x1F001110,
                                 },
                             });
+
                             client.enqueueMessage(new InterpCEventPrivateMsg {
                                 netEvent = new HandleCharacterSessionStartCEvt {
                                     money = 12345,
@@ -467,7 +491,7 @@ namespace AC2E.Server {
                                 if (toggleCounter % 2 == 0) {
                                     EffectPkg refiningEffect = new EffectPkg {
                                         id = 0x0000F08A,
-                                        did = 0x6F0011ED,
+                                        did = new DataId(0x6F0011ED),
                                     };
                                     client.enqueueMessage(new InterpCEventPrivateMsg {
                                         netEvent = new ClientAddEffectCEvt {
@@ -476,7 +500,7 @@ namespace AC2E.Server {
 
                                                 m_timeDemotedFromTopLevel = -1.0,
                                                 m_timeCast = 129996502.8136027,
-                                                m_iidCaster = 0x213000000000dd9d,
+                                                m_iidCaster = new InstanceId(0x213000000000dd9d),
                                                 m_ttTimeout = 0.0f,
                                                 m_fApp = 0.0f,
                                                 m_fSpellcraft = 1.0f,
@@ -485,9 +509,9 @@ namespace AC2E.Server {
                                                 m_rApp = null,
                                                 m_timePromotedToTopLevel = -1.0,
                                                 m_effect = refiningEffect,
-                                                m_iidActingForWhom = 0,
-                                                m_didSkill = 0,
-                                                m_iidFromItem = 0x213000000000dd9d,
+                                                m_iidActingForWhom = default,
+                                                m_didSkill = default,
+                                                m_iidFromItem = new InstanceId(0x213000000000dd9d),
                                                 m_flags = 0x00000051,
                                                 m_uiDurabilityLevel = 0,
                                                 m_relatedEID = 0,

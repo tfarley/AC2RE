@@ -1,7 +1,6 @@
 ﻿using AC2E.Interp.Event;
 using AC2E.Interp.Event.ServerEvents;
 using AC2E.Protocol.NetBlob;
-using Serilog;
 using System;
 using System.IO;
 

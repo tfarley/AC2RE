@@ -16,6 +16,16 @@ namespace AC2E.Protocol.Message.Messages {
         public uint fileId;
         public uint unk1;
 
+        public CliDatErrorMsg() {
+
+        }
+
+        public CliDatErrorMsg(BinaryReader data) {
+            fileDbType = (DbType)data.ReadUInt32();
+            fileId = data.ReadUInt32();
+            unk1 = data.ReadUInt32();
+        }
+
         public void write(BinaryWriter data) {
             data.Write((uint)fileDbType);
             data.Write(fileId);

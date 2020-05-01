@@ -17,7 +17,7 @@ namespace AC2E.Protocol.Message.Messages {
         public string accountName;
 
         public CharacterEnterGameMsg(BinaryReader data) {
-            characterId = data.ReadUInt64();
+            characterId = data.ReadInstanceId();
             accountName = data.ReadEncryptedString();
         }
     }

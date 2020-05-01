@@ -11,6 +11,17 @@ namespace AC2E.Def.Structs {
         public uint greyedOutForSeconds;
         public VisualDesc vDesc;
 
+        public CharacterIdentity() {
+
+        }
+
+        public CharacterIdentity(BinaryReader data) {
+            id = data.ReadInstanceId();
+            name = data.ReadEncryptedString(Encoding.Unicode);
+            greyedOutForSeconds = data.ReadUInt32();
+            vDesc = new VisualDesc(data);
+        }
+
         public void write(BinaryWriter data) {
             data.Write(id);
             data.WriteEncryptedString(name, Encoding.Unicode);

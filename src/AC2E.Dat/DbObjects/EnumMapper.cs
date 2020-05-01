@@ -11,7 +11,7 @@ namespace AC2E.Dat.DbObjects {
         public Dictionary<uint, string> idToString;
 
         public EnumMapper(BinaryReader data) : base(data) {
-            baseEnumMapperDid = data.ReadUInt32();
+            baseEnumMapperDid = data.ReadDataId();
             idToString = data.ReadDictionary(data.ReadUInt32, () => data.ReadEncryptedString());
         }
     }

@@ -123,7 +123,7 @@ namespace AC2E.Interp {
 
             public ExportFunctionData(BinaryReader data) {
                 name = data.ReadEncryptedString();
-                funcId = data.ReadUInt32();
+                funcId = new FunctionId(data.ReadUInt32());
                 offset = data.ReadUInt32();
                 size = data.ReadUInt32();
                 flags = (FuncFlag)data.ReadUInt32();

@@ -1,5 +1,6 @@
 ﻿using AC2E.Crypto;
 using AC2E.Def.Enums;
+using AC2E.Def.Structs;
 using AC2E.Utils.Extensions;
 using System;
 using System.Collections.Generic;
@@ -116,6 +117,14 @@ namespace AC2E.Def.Extensions {
                 dict.Add(keyReader.Invoke(), valueReader.Invoke());
             }
             return dict;
+        }
+
+        public static DataId ReadDataId(this BinaryReader reader) {
+            return new DataId(reader.ReadUInt32());
+        }
+
+        public static InstanceId ReadInstanceId(this BinaryReader reader) {
+            return new InstanceId(reader.ReadUInt64());
         }
     }
 }

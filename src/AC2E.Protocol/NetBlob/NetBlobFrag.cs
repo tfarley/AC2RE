@@ -28,7 +28,7 @@ namespace AC2E.Protocol.NetBlob {
         }
 
         public NetBlobFrag(BinaryReader data) {
-            blobId = data.ReadUInt64();
+            blobId = new NetBlobId(data.ReadUInt64());
             fragCount = data.ReadUInt16();
             fragSize = data.ReadUInt16();
             fragIndex = data.ReadUInt16();

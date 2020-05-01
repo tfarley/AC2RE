@@ -1,5 +1,7 @@
 ﻿using AC2E.Interp.Event;
+using AC2E.Interp.Event.ClientEvents;
 using AC2E.Protocol.NetBlob;
+using System;
 using System.IO;
 
 namespace AC2E.Protocol.Message.Messages {
@@ -13,6 +15,28 @@ namespace AC2E.Protocol.Message.Messages {
         public MessageOpcode opcode => MessageOpcode.Evt_Interp__InterpCEvent_Private_ID;
 
         public IClientEvent netEvent;
+
+        public InterpCEventPrivateMsg() {
+
+        }
+
+        public InterpCEventPrivateMsg(BinaryReader data) {
+            ClientEventFunctionId funcId = (ClientEventFunctionId)data.ReadUInt32();
+            uint length = data.ReadUInt32();
+            switch (funcId) {
+                case ClientEventFunctionId.Effect__ClientRemoveEffect:
+                    netEvent = new ClientRemoveEffectCEvt(data);
+                    break;
+                case ClientEventFunctionId.Player__EnterPortalSpace:
+                    netEvent = new EnterPortalSpaceCEvt(data);
+                    break;
+                case ClientEventFunctionId.Player__ExitPortalSpace:
+                    netEvent = new ExitPortalSpaceCEvt(data);
+                    break;
+                default:
+                    throw new Exception($"Unhandled client event: {funcId}.");
+            }
+        }
 
         public void write(BinaryWriter data) {
             data.Write((uint)netEvent.funcId);

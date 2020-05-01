@@ -1,5 +1,6 @@
 ﻿using AC2E.Crypto;
 using AC2E.Def.Enums;
+using AC2E.Def.Structs;
 using AC2E.Utils.Extensions;
 using System;
 using System.Collections.Generic;
@@ -84,6 +85,14 @@ namespace AC2E.Def.Extensions {
                     valueWriter.Invoke(element.Value);
                 }
             }
+        }
+
+        public static void Write(this BinaryWriter writer, DataId value) {
+            writer.Write(value.id);
+        }
+
+        public static void Write(this BinaryWriter writer, InstanceId value) {
+            writer.Write(value.id);
         }
     }
 }

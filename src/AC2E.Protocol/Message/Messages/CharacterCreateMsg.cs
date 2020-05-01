@@ -29,7 +29,7 @@ namespace AC2E.Protocol.Message.Messages {
         public CharacterCreateMsg(BinaryReader data) {
             accountName = data.ReadEncryptedString();
             characterName = data.ReadEncryptedString(Encoding.Unicode);
-            entityDid = data.ReadUInt32();
+            entityDid = data.ReadDataId();
             unk1 = data.ReadUInt32();
             species = (SpeciesType)data.ReadUInt32();
             sex = (SexType)data.ReadUInt32();

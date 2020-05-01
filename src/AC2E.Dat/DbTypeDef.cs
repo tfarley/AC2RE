@@ -6,8 +6,8 @@ namespace AC2E.Dat {
 
         public static readonly DbTypeDef[] DEFS = {
             new DbTypeDef {
-                baseDid = 0,
-                topDid = 0,
+                baseDid = new DataId(0),
+                topDid = new DataId(0),
                 extension = ".lbi",
                 packVersion = 1,
                 updateType = DbUpdateType.DYNAMIC,
@@ -29,8 +29,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0,
-                topDid = 0,
+                baseDid = new DataId(0),
+                topDid = new DataId(0),
                 extension = ".lightinfo",
                 packVersion = 1,
                 updateType = DbUpdateType.DYNAMIC,
@@ -52,8 +52,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0,
-                topDid = 0,
+                baseDid = new DataId(0),
+                topDid = new DataId(0),
                 extension = ".lbo",
                 packVersion = 1,
                 updateType = DbUpdateType.DYNAMIC,
@@ -75,8 +75,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0,
-                topDid = 0,
+                baseDid = new DataId(0),
+                topDid = new DataId(0),
                 extension = ".shell",
                 packVersion = 1,
                 updateType = DbUpdateType.DYNAMIC,
@@ -98,8 +98,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0,
-                topDid = 0,
+                baseDid = new DataId(0),
+                topDid = new DataId(0),
                 extension = ".lightcache",
                 packVersion = 1,
                 updateType = DbUpdateType.DYNAMIC,
@@ -121,8 +121,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0,
-                topDid = 0,
+                baseDid = new DataId(0),
+                topDid = new DataId(0),
                 extension = ".pathmap",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -144,8 +144,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x01000000,
-                topDid = 0x01FFFFFF,
+                baseDid = new DataId(0x01000000),
+                topDid = new DataId(0x01FFFFFF),
                 extension = ".cellmesh",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -167,8 +167,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x02000000,
-                topDid = 0x02FFFFFF,
+                baseDid = new DataId(0x02000000),
+                topDid = new DataId(0x02FFFFFF),
                 extension = ".scn",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -190,8 +190,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x03000000,
-                topDid = 0x03FFFFFF,
+                baseDid = new DataId(0x03000000),
+                topDid = new DataId(0x03FFFFFF),
                 extension = ".animmap",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -213,8 +213,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x04000000,
-                topDid = 0x04FFFFFF,
+                baseDid = new DataId(0x04000000),
+                topDid = new DataId(0x04FFFFFF),
                 extension = ".set",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -236,8 +236,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x05000000,
-                topDid = 0x05FFFFFF,
+                baseDid = new DataId(0x05000000),
+                topDid = new DataId(0x05FFFFFF),
                 extension = ".anm",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -259,8 +259,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x06000000,
-                topDid = 0x06FFFFFF,
+                baseDid = new DataId(0x06000000),
+                topDid = new DataId(0x06FFFFFF),
                 extension = ".mesh",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -282,8 +282,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x0A000000,
-                topDid = 0x0AFFFFFF,
+                baseDid = new DataId(0x0A000000),
+                topDid = new DataId(0x0AFFFFFF),
                 extension = ".wqf",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -305,8 +305,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x0C000000,
-                topDid = 0x0CFFFFFF,
+                baseDid = new DataId(0x0C000000),
+                topDid = new DataId(0x0CFFFFFF),
                 extension = ".wav",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -328,8 +328,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x0E000003,
-                topDid = 0x0E000003,
+                baseDid = new DataId(0x0E000003),
+                topDid = new DataId(0x0E000003),
                 extension = "",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -351,8 +351,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x0E000004,
-                topDid = 0x0E000004,
+                baseDid = new DataId(0x0E000004),
+                topDid = new DataId(0x0E000004),
                 extension = ".places",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -374,8 +374,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x0EBADA55,
-                topDid = 0x0EBADA55,
+                baseDid = new DataId(0x0EBADA55),
+                topDid = new DataId(0x0EBADA55),
                 extension = ".taboo",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -397,8 +397,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x0F000000,
-                topDid = 0x0FFFFFFF,
+                baseDid = new DataId(0x0F000000),
+                topDid = new DataId(0x0FFFFFFF),
                 extension = ".rgn",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -420,8 +420,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x10000000,
-                topDid = 0x10FFFFFF,
+                baseDid = new DataId(0x10000000),
+                topDid = new DataId(0x10FFFFFF),
                 extension = ".sod",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -443,8 +443,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x11000000,
-                topDid = 0x11FFFFFF,
+                baseDid = new DataId(0x11000000),
+                topDid = new DataId(0x11FFFFFF),
                 extension = ".scd",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -466,8 +466,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x12000000,
-                topDid = 0x12FFFFFF,
+                baseDid = new DataId(0x12000000),
+                topDid = new DataId(0x12FFFFFF),
                 extension = ".trd",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -489,8 +489,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x13000000,
-                topDid = 0x13FFFFFF,
+                baseDid = new DataId(0x13000000),
+                topDid = new DataId(0x13FFFFFF),
                 extension = ".sfd",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -512,8 +512,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x14000000,
-                topDid = 0x14FFFFFF,
+                baseDid = new DataId(0x14000000),
+                topDid = new DataId(0x14FFFFFF),
                 extension = ".end",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -535,8 +535,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x15000000,
-                topDid = 0x15FFFFFF,
+                baseDid = new DataId(0x15000000),
+                topDid = new DataId(0x15FFFFFF),
                 extension = ".skd",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -558,8 +558,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x16000000,
-                topDid = 0x16FFFFFF,
+                baseDid = new DataId(0x16000000),
+                topDid = new DataId(0x16FFFFFF),
                 extension = ".wtd",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -581,8 +581,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x17000000,
-                topDid = 0x17FFFFFF,
+                baseDid = new DataId(0x17000000),
+                topDid = new DataId(0x17FFFFFF),
                 extension = ".fgd",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -604,8 +604,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x18000000,
-                topDid = 0x18FFFFFF,
+                baseDid = new DataId(0x18000000),
+                topDid = new DataId(0x18FFFFFF),
                 extension = ".prd",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -627,8 +627,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x19000000,
-                topDid = 0x19FFFFFF,
+                baseDid = new DataId(0x19000000),
+                topDid = new DataId(0x19FFFFFF),
                 extension = ".bmd",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -650,8 +650,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x1A000000,
-                topDid = 0x1AFFFFFF,
+                baseDid = new DataId(0x1A000000),
+                topDid = new DataId(0x1AFFFFFF),
                 extension = ".dyd",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -673,8 +673,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x1D000000,
-                topDid = 0x1DFFFFFF,
+                baseDid = new DataId(0x1D000000),
+                topDid = new DataId(0x1DFFFFFF),
                 extension = ".keymap",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -696,8 +696,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x1E000000,
-                topDid = 0x1EFFFFFF,
+                baseDid = new DataId(0x1E000000),
+                topDid = new DataId(0x1EFFFFFF),
                 extension = ".fxtable",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -719,8 +719,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x1F000000,
-                topDid = 0x1FFFFFFF,
+                baseDid = new DataId(0x1F000000),
+                topDid = new DataId(0x1FFFFFFF),
                 extension = ".vd",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -742,8 +742,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x20000000,
-                topDid = 0x20FFFFFF,
+                baseDid = new DataId(0x20000000),
+                topDid = new DataId(0x20FFFFFF),
                 extension = ".apr",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -765,8 +765,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x21000000,
-                topDid = 0x21FFFFFF,
+                baseDid = new DataId(0x21000000),
+                topDid = new DataId(0x21FFFFFF),
                 extension = ".uiscene",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -788,8 +788,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x22000000,
-                topDid = 0x22FFFFFF,
+                baseDid = new DataId(0x22000000),
+                topDid = new DataId(0x22FFFFFF),
                 extension = ".uil",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -811,8 +811,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x23000000,
-                topDid = 0x23FFFFFF,
+                baseDid = new DataId(0x23000000),
+                topDid = new DataId(0x23FFFFFF),
                 extension = ".emp",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -834,8 +834,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x24000000,
-                topDid = 0x24FFFFFF,
+                baseDid = new DataId(0x24000000),
+                topDid = new DataId(0x24FFFFFF),
                 extension = ".mid",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -857,8 +857,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x25000000,
-                topDid = 0x26FFFFFF,
+                baseDid = new DataId(0x25000000),
+                topDid = new DataId(0x26FFFFFF),
                 extension = ".stt",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -880,8 +880,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x27000000,
-                topDid = 0x27FFFFFF,
+                baseDid = new DataId(0x27000000),
+                topDid = new DataId(0x27FFFFFF),
                 extension = ".fmt",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -903,8 +903,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x28000000,
-                topDid = 0x28FFFFFF,
+                baseDid = new DataId(0x28000000),
+                topDid = new DataId(0x28FFFFFF),
                 extension = ".imp",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -926,8 +926,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x29000000,
-                topDid = 0x29FFFFFF,
+                baseDid = new DataId(0x29000000),
+                topDid = new DataId(0x29FFFFFF),
                 extension = ".snv",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -949,8 +949,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x2A000000,
-                topDid = 0x2AFFFFFF,
+                baseDid = new DataId(0x2A000000),
+                topDid = new DataId(0x2AFFFFFF),
                 extension = ".sif",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -972,8 +972,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x2B000000,
-                topDid = 0x2BFFFFFF,
+                baseDid = new DataId(0x2B000000),
+                topDid = new DataId(0x2BFFFFFF),
                 extension = ".mat",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -995,8 +995,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x2C000000,
-                topDid = 0x2CFFFFFF,
+                baseDid = new DataId(0x2C000000),
+                topDid = new DataId(0x2CFFFFFF),
                 extension = ".mif",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1018,8 +1018,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x2F000000,
-                topDid = 0x2FFFFFFF,
+                baseDid = new DataId(0x2F000000),
+                topDid = new DataId(0x2FFFFFFF),
                 extension = ".ctp",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1041,8 +1041,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x30000000,
-                topDid = 0x30FFFFFF,
+                baseDid = new DataId(0x30000000),
+                topDid = new DataId(0x30FFFFFF),
                 extension = ".mm",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1064,8 +1064,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x31000000,
-                topDid = 0x31FFFFFF,
+                baseDid = new DataId(0x31000000),
+                topDid = new DataId(0x31FFFFFF),
                 extension = ".mi",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1087,8 +1087,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x32000000,
-                topDid = 0x32FFFFFF,
+                baseDid = new DataId(0x32000000),
+                topDid = new DataId(0x32FFFFFF),
                 extension = ".midesc",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1110,8 +1110,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x34000000,
-                topDid = 0x34FFFFFF,
+                baseDid = new DataId(0x34000000),
+                topDid = new DataId(0x34FFFFFF),
                 extension = ".mpr",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1133,8 +1133,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x35000000,
-                topDid = 0x35FFFFFF,
+                baseDid = new DataId(0x35000000),
+                topDid = new DataId(0x35FFFFFF),
                 extension = ".gmt",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1156,8 +1156,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x36000000,
-                topDid = 0x36FFFFFF,
+                baseDid = new DataId(0x36000000),
+                topDid = new DataId(0x36FFFFFF),
                 extension = ".lnd",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1179,8 +1179,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x37000000,
-                topDid = 0x37FFFFFF,
+                baseDid = new DataId(0x37000000),
+                topDid = new DataId(0x37FFFFFF),
                 extension = ".pmat",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1202,8 +1202,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x38000000,
-                topDid = 0x38FFFFFF,
+                baseDid = new DataId(0x38000000),
+                topDid = new DataId(0x38FFFFFF),
                 extension = ".obstacledesc",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1225,8 +1225,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x39000000,
-                topDid = 0x39FFFFFF,
+                baseDid = new DataId(0x39000000),
+                topDid = new DataId(0x39FFFFFF),
                 extension = ".psdesc",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1248,8 +1248,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x40000000,
-                topDid = 0x400FFFFF,
+                baseDid = new DataId(0x40000000),
+                topDid = new DataId(0x400FFFFF),
                 extension = ".texture",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1271,8 +1271,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x40100000,
-                topDid = 0x40FFFFFF,
+                baseDid = new DataId(0x40100000),
+                topDid = new DataId(0x40FFFFFF),
                 extension = ".texture_local",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1294,8 +1294,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x41000000,
-                topDid = 0x410FFFFF,
+                baseDid = new DataId(0x41000000),
+                topDid = new DataId(0x410FFFFF),
                 extension = ".dds",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1317,8 +1317,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x41100000,
-                topDid = 0x41FFFFFF,
+                baseDid = new DataId(0x41100000),
+                topDid = new DataId(0x41FFFFFF),
                 extension = ".dds_local",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1340,8 +1340,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x42000000,
-                topDid = 0x42000FFF,
+                baseDid = new DataId(0x42000000),
+                topDid = new DataId(0x42000FFF),
                 extension = ".font",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1363,8 +1363,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x42001000,
-                topDid = 0x42FFFFFF,
+                baseDid = new DataId(0x42001000),
+                topDid = new DataId(0x42FFFFFF),
                 extension = ".font_local",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1386,8 +1386,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x44000000,
-                topDid = 0x44FFFFFF,
+                baseDid = new DataId(0x44000000),
+                topDid = new DataId(0x44FFFFFF),
                 extension = ".behaviortable",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1409,8 +1409,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x46000000,
-                topDid = 0x46FFFFFF,
+                baseDid = new DataId(0x46000000),
+                topDid = new DataId(0x46FFFFFF),
                 extension = ".entitygroup",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1432,8 +1432,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x47000000,
-                topDid = 0x47FFFFFF,
+                baseDid = new DataId(0x47000000),
+                topDid = new DataId(0x47FFFFFF),
                 extension = ".entity",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1455,8 +1455,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x51000000,
-                topDid = 0x51FFFFFF,
+                baseDid = new DataId(0x51000000),
+                topDid = new DataId(0x51FFFFFF),
                 extension = ".actionmap",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1478,8 +1478,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x52000000,
-                topDid = 0x527FFFFF,
+                baseDid = new DataId(0x52000000),
+                topDid = new DataId(0x527FFFFF),
                 extension = ".cdb",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1501,8 +1501,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x52800000,
-                topDid = 0x52FFFFFF,
+                baseDid = new DataId(0x52800000),
+                topDid = new DataId(0x52FFFFFF),
                 extension = ".prf",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1524,8 +1524,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x54000000,
-                topDid = 0x54FFFFFF,
+                baseDid = new DataId(0x54000000),
+                topDid = new DataId(0x54FFFFFF),
                 extension = ".validmodes",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1547,8 +1547,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x55000000,
-                topDid = 0x55FFFFFF,
+                baseDid = new DataId(0x55000000),
+                topDid = new DataId(0x55FFFFFF),
                 extension = ".cfx",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1570,8 +1570,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x56000000,
-                topDid = 0x56FFFFFF,
+                baseDid = new DataId(0x56000000),
+                topDid = new DataId(0x56FFFFFF),
                 extension = ".wlib",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1593,8 +1593,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x57000000,
-                topDid = 0x57FFFFFF,
+                baseDid = new DataId(0x57000000),
+                topDid = new DataId(0x57FFFFFF),
                 extension = ".fxscript",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1616,8 +1616,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x58000000,
-                topDid = 0x58FFFFFF,
+                baseDid = new DataId(0x58000000),
+                topDid = new DataId(0x58FFFFFF),
                 extension = ".sti",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1639,8 +1639,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x59000000,
-                topDid = 0x59000FFF,
+                baseDid = new DataId(0x59000000),
+                topDid = new DataId(0x59000FFF),
                 extension = ".detailmap",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1662,8 +1662,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x5900F000,
-                topDid = 0x59FFFFFF,
+                baseDid = new DataId(0x5900F000),
+                topDid = new DataId(0x59FFFFFF),
                 extension = ".mapnotes",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1685,8 +1685,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x60000000,
-                topDid = 0x60FFFFFF,
+                baseDid = new DataId(0x60000000),
+                topDid = new DataId(0x60FFFFFF),
                 extension = ".conversation",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1708,8 +1708,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x61000000,
-                topDid = 0x61FFFFFF,
+                baseDid = new DataId(0x61000000),
+                topDid = new DataId(0x61FFFFFF),
                 extension = ".wbaseDid",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1731,8 +1731,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x62000000,
-                topDid = 0x62FFFFFF,
+                baseDid = new DataId(0x62000000),
+                topDid = new DataId(0x62FFFFFF),
                 extension = ".dbcategories",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,
@@ -1754,8 +1754,8 @@ namespace AC2E.Dat {
             },
 
             new DbTypeDef {
-                baseDid = 0x6F000000,
-                topDid = 0x7FFFFFFF,
+                baseDid = new DataId(0x6F000000),
+                topDid = new DataId(0x7FFFFFFF),
                 extension = ".wc",
                 packVersion = 1,
                 updateType = DbUpdateType.PATCH,

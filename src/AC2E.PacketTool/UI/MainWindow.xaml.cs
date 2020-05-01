@@ -1,8 +1,8 @@
-﻿using AC2E.Interp.Event;
-using AC2E.PacketTool.Reader;
+﻿using AC2E.PacketTool.Reader;
 using AC2E.Protocol.Message;
 using Microsoft.Win32;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -147,6 +147,67 @@ namespace AC2E.PacketTool.UI {
             }
         }
 
+        private void objectToString(StringBuilder stringBuilder, HashSet<object> visited, int indentLevel, object target) {
+            if (target == null) {
+                stringBuilder.Append("null");
+                return;
+            }
+
+            Type targetType = target.GetType();
+
+            if (targetType.IsPrimitive || target is Enum) {
+                stringBuilder.Append(target.ToString());
+                return;
+            }
+
+            IEnumerable enumerableValue = target as IEnumerable;
+            if (enumerableValue != null && !(target is string)) {
+                if (!visited.Add(target)) {
+                    stringBuilder.Append($"Circular ref: {target}");
+                    return;
+                }
+
+                stringBuilder.AppendLine("[");
+                bool first = true;
+                foreach (object val in enumerableValue) {
+                    if (!first) {
+                        stringBuilder.AppendLine(",");
+                    }
+                    stringBuilder.Append(' ', indentLevel + 2);
+                    objectToString(stringBuilder, visited, indentLevel + 2, val);
+                    first = false;
+                }
+                stringBuilder.AppendLine();
+                stringBuilder.Append(' ', indentLevel);
+                stringBuilder.Append(']');
+                return;
+            }
+
+            foreach (MethodInfo methodInfo in targetType.GetMethods()) {
+                if (methodInfo.Name == "ToString" && methodInfo.DeclaringType == targetType) {
+                    stringBuilder.Append(target.ToString());
+                    return;
+                }
+            }
+
+            if (!visited.Add(target)) {
+                stringBuilder.Append($"Circular ref: {target}");
+                return;
+            }
+
+            FieldInfo[] fieldInfos = targetType.GetFields();
+            stringBuilder.AppendLine("{");
+            string fieldIndent = new string(' ', indentLevel + 2);
+            foreach (FieldInfo fieldInfo in fieldInfos) {
+                string fieldLine = $"{fieldIndent}{fieldInfo.Name} = ";
+                stringBuilder.Append(fieldLine);
+                objectToString(stringBuilder, visited, fieldLine.Length, fieldInfo.GetValue(target));
+                stringBuilder.AppendLine();
+            }
+            stringBuilder.Append(' ', indentLevel);
+            stringBuilder.Append('}');
+        }
+
         private void recordsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (recordsListBox.SelectedItems.Count == 1) {
                 NetBlobRecord netBlobRecord = ((NetBlobRow)recordsListBox.SelectedItem).netBlobRecord;
@@ -164,20 +225,8 @@ namespace AC2E.PacketTool.UI {
                     try {
                         INetMessage message = netBlobRecord.message;
 
-                        FieldInfo[] fieldInfos = message.GetType().GetFields();
                         StringBuilder messageStringBuilder = new StringBuilder();
-                        foreach (FieldInfo fieldInfo in fieldInfos) {
-                            messageStringBuilder.AppendLine($"{fieldInfo.Name} = {fieldInfo.GetValue(message)}");
-                        }
-
-                        if (message.opcode == MessageOpcode.Evt_Interp__InterpSEvent_ID || message.opcode == MessageOpcode.Evt_Interp__InterpSEventEncrypt_ID || message.opcode == MessageOpcode.Evt_Interp__InterpCEvent_Private_ID || message.opcode == MessageOpcode.Evt_Interp__InterpCEvent_Cell_ID || message.opcode == MessageOpcode.Evt_Interp__InterpCEvent_Visual_ID || message.opcode == MessageOpcode.Evt_Interp__InterpCEvent_Broadcast_ID) {
-                            messageStringBuilder.AppendLine();
-                            object netEvent = message.GetType().GetField("netEvent").GetValue(message);
-                            FieldInfo[] eventFieldInfos = netEvent.GetType().GetFields();
-                            foreach (FieldInfo eventFieldInfo in eventFieldInfos) {
-                                messageStringBuilder.AppendLine($"{eventFieldInfo.Name} = {eventFieldInfo.GetValue(netEvent)}");
-                            }
-                        }
+                        objectToString(messageStringBuilder, new HashSet<object>(), 0, message);
 
                         recordMessageTextBox.Text = messageStringBuilder.ToString();
                     } catch (Exception ex) {

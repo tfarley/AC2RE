@@ -40,7 +40,7 @@ namespace AC2E.Interp.Extensions {
         private static void writePackage(BinaryWriter writer, IPackage value, List<IPackage> references) {
             int startReferencesCount = references.Count;
 
-            writer.Write(value.referenceMeta);
+            writer.Write(value.referenceMeta.id);
 
             if (value.referenceMeta.isSingleton) {
                 value.write(writer, references);

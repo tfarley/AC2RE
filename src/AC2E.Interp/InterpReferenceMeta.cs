@@ -28,9 +28,6 @@ namespace AC2E.Interp {
             id = (uint)flags | (((uint)referenceType << 8) & REFERENCE_TYPE_MASK);
         }
 
-        public static implicit operator uint(InterpReferenceMeta o) => o.id;
-        public static implicit operator InterpReferenceMeta(uint o) => new InterpReferenceMeta(o);
-
         public bool isRecurse {
             get {
                 return getFlag(Flag.RECURSE);

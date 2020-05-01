@@ -16,9 +16,6 @@
             id = (isAbs ? ABS_FLAG_MASK : 0) | (((uint)packageNum << 16) & PACKAGE_NUM_MASK) | (funcNum & FUNC_NUM_MASK);
         }
 
-        public static implicit operator uint(FunctionId o) => o.id;
-        public static implicit operator FunctionId(uint o) => new FunctionId(o);
-
         public bool isAbs {
             get {
                 return (id & ABS_FLAG_MASK) != 0;

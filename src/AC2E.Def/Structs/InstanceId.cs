@@ -8,7 +8,8 @@
             this.id = id;
         }
 
-        public static implicit operator ulong(InstanceId o) => o.id;
-        public static implicit operator InstanceId(ulong o) => new InstanceId(o);
+        public override string ToString() {
+            return $"0x{id:X16}";
+        }
     }
 }

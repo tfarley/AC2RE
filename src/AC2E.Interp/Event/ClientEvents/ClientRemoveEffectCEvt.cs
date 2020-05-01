@@ -10,6 +10,14 @@ namespace AC2E.Interp.Event.ClientEvents {
 
         public uint _eid;
 
+        public ClientRemoveEffectCEvt() {
+
+        }
+
+        public ClientRemoveEffectCEvt(BinaryReader data) {
+            _eid = data.UnpackUInt32();
+        }
+
         public void write(BinaryWriter data) {
             data.Pack(_eid);
         }

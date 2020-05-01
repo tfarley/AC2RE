@@ -15,9 +15,6 @@
             id = (((uint)packageNum << 16) & PACKAGE_NUM_MASK) | (funcNum & FUNC_NUM_MASK);
         }
 
-        public static implicit operator uint(VTableId o) => o.id;
-        public static implicit operator VTableId(uint o) => new VTableId(o);
-
         public ushort packageNum {
             get {
                 return (ushort)((id & PACKAGE_NUM_MASK) >> 16);

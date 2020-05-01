@@ -26,9 +26,6 @@ namespace AC2E.Protocol.NetBlob {
             id = (ulong)flags | (((ulong)orderingType << 56) & ORDERING_TYPE_MASK) | ((ulong)orderingStamp) << 32 | (sequenceId & SEQUENCE_ID_MASK);
         }
 
-        public static implicit operator ulong(NetBlobId o) => o.id;
-        public static implicit operator NetBlobId(ulong o) => new NetBlobId(o);
-
         public bool isEphemeral {
             get {
                 return getFlag(Flag.EPHEMERAL);

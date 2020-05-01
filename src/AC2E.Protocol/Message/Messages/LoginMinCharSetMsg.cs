@@ -1,6 +1,7 @@
 ﻿using AC2E.Def.Extensions;
 using AC2E.Def.Structs;
 using AC2E.Protocol.NetBlob;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -14,20 +15,27 @@ namespace AC2E.Protocol.Message.Messages {
 
         public MessageOpcode opcode => MessageOpcode.Evt_Login__MinCharSet_ID;
 
+        public uint unk1;
         public string accountName;
-        public CharacterIdentity[] characters;
+        public List<string> characterNames;
+        public List<InstanceId> characterIds;
+
+        public LoginMinCharSetMsg() {
+
+        }
+
+        public LoginMinCharSetMsg(BinaryReader data) {
+            unk1 = data.ReadUInt32();
+            accountName = data.ReadEncryptedString();
+            characterNames = data.ReadList(() => data.ReadEncryptedString(Encoding.Unicode));
+            characterIds = data.ReadList(data.ReadInstanceId);
+        }
 
         public void write(BinaryWriter data) {
-            data.Write((uint)0); // TODO: Unknown
+            data.Write(unk1);
             data.WriteEncryptedString(accountName);
-            data.Write((uint)characters.Length);
-            foreach (CharacterIdentity character in characters) {
-                data.WriteEncryptedString(character.name, Encoding.Unicode);
-            }
-            data.Write((uint)characters.Length);
-            foreach (CharacterIdentity character in characters) {
-                data.Write(character.id);
-            }
+            data.Write(characterNames, v => data.WriteEncryptedString(v, Encoding.Unicode));
+            data.Write(characterIds, data.Write);
         }
     }
 }

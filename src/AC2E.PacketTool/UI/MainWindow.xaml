@@ -76,11 +76,11 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox x:Name="recordHexTextBox" Grid.Column="0" Margin="10,10,10,10" TextWrapping="Wrap" IsReadOnly="True"/>
+                <TextBox x:Name="recordHexTextBox" Grid.Column="0" Margin="10,10,10,10" TextWrapping="Wrap" IsReadOnly="True" FontFamily="Courier New"/>
 
                 <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
 
-                <TextBox x:Name="recordMessageTextBox" Grid.Column="2" Margin="10,10,10,10" TextWrapping="Wrap" IsReadOnly="True"/>
+                <TextBox x:Name="recordMessageTextBox" Grid.Column="2" Margin="10,10,10,10" TextWrapping="Wrap" IsReadOnly="True" FontFamily="Courier New"/>
             </Grid>
         </Grid>
     </DockPanel>

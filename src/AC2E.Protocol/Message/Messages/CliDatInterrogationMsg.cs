@@ -1,5 +1,7 @@
 ﻿using AC2E.Def.Enums;
+using AC2E.Def.Extensions;
 using AC2E.Protocol.NetBlob;
+using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.Protocol.Message.Messages {
@@ -14,15 +16,22 @@ namespace AC2E.Protocol.Message.Messages {
 
         public uint regionId;
         public Language nameRuleLanguage;
-        public Language[] supportedLanguages;
+        public List<Language> supportedLanguages;
+
+        public CliDatInterrogationMsg() {
+
+        }
+
+        public CliDatInterrogationMsg(BinaryReader data) {
+            regionId = data.ReadUInt32();
+            nameRuleLanguage = (Language)data.ReadUInt32();
+            supportedLanguages = data.ReadList(() => (Language)data.ReadUInt32());
+        }
 
         public void write(BinaryWriter data) {
             data.Write(regionId);
             data.Write((uint)nameRuleLanguage);
-            data.Write((uint)supportedLanguages.Length);
-            foreach (Language supportedLanguages in supportedLanguages) {
-                data.Write((uint)supportedLanguages);
-            }
+            data.Write(supportedLanguages, v => data.Write((uint)v));
         }
     }
 }

@@ -11,6 +11,14 @@ namespace AC2E.Protocol.Message.Messages {
 
         public MessageOpcode opcode => MessageOpcode.CLIDAT_END_DDD_EVENT;
 
+        public CliDatEndDDDMsg() {
+
+        }
+
+        public CliDatEndDDDMsg(BinaryReader data) {
+
+        }
+
         public void write(BinaryWriter data) {
 
         }

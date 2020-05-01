@@ -1,6 +1,7 @@
 ﻿using AC2E.Def.Extensions;
 using AC2E.Protocol.NetBlob;
 using System.IO;
+using System.Text;
 
 namespace AC2E.Protocol.Message.Messages {
 
@@ -14,17 +15,31 @@ namespace AC2E.Protocol.Message.Messages {
 
         public uint numConnections;
         public uint maxConnections;
-        public uint unk1 = 0x00010000; // TODO: What is this?
+        public uint unk1;
         public string worldName;
-        public uint unk2 = 0x34DDF9FC; // TODO: What is this?
-        public uint unk3 = 0x40A633CB; // TODO: What is this?
-        public ushort unk4; // TODO: What is this?
+        public uint unk2;
+        public uint unk3;
+        public ushort unk4;
+
+        public WorldNameMsg() {
+
+        }
+
+        public WorldNameMsg(BinaryReader data) {
+            numConnections = data.ReadUInt32();
+            maxConnections = data.ReadUInt32();
+            unk1 = data.ReadUInt32();
+            worldName = data.ReadEncryptedString(Encoding.Unicode);
+            unk2 = data.ReadUInt32();
+            unk3 = data.ReadUInt32();
+            unk4 = data.ReadUInt16();
+        }
 
         public void write(BinaryWriter data) {
             data.Write(numConnections);
             data.Write(maxConnections);
             data.Write(unk1);
-            data.WriteEncryptedString(worldName);
+            data.WriteEncryptedString(worldName, Encoding.Unicode);
             data.Write(unk2);
             data.Write(unk3);
             data.Write(unk4);

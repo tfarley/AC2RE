@@ -21,7 +21,7 @@ namespace AC2E.Interp {
         public readonly ByteStream byteStream;
         public readonly Dictionary<uint, string> funcLocToName = new Dictionary<uint, string>();
         public readonly Dictionary<string, FrameDebugInfo> nameToFrame = new Dictionary<string, FrameDebugInfo>();
-        public readonly Dictionary<uint, KeyValuePair<ExportData, ExportFunctionData>> addrToTarget = new Dictionary<uint, KeyValuePair<ExportData, ExportFunctionData>>();
+        public readonly Dictionary<FunctionId, KeyValuePair<ExportData, ExportFunctionData>> addrToTarget = new Dictionary<FunctionId, KeyValuePair<ExportData, ExportFunctionData>>();
         public readonly Dictionary<uint, ExportData> packageIdToPackage = new Dictionary<uint, ExportData>();
 
         public readonly List<Instruction> instructions = new List<Instruction>();
@@ -58,7 +58,7 @@ namespace AC2E.Interp {
                     case Opcode.CALL_EFUN:
                         i += 4;
                         FunctionId targetFuncId = new FunctionId(BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i));
-                        KeyValuePair<ExportData, ExportFunctionData> target = addrToTarget.GetValueOrDefault(targetFuncId.funcAddr, new KeyValuePair<ExportData, ExportFunctionData>());
+                        KeyValuePair<ExportData, ExportFunctionData> target = addrToTarget.GetValueOrDefault(new FunctionId(targetFuncId.funcAddr), new KeyValuePair<ExportData, ExportFunctionData>());
                         instruction.targetPackage = target.Key;
                         instruction.targetFunc = target.Value;
                         break;
@@ -120,7 +120,7 @@ namespace AC2E.Interp {
                 }
                 if (instruction.targetFunc != null) {
                     writeFunction(data, $"{instruction.targetPackage.args.name}::{instruction.targetFunc.name}");
-                    FunctionId funcId = instruction.targetFunc.funcId.id;
+                    FunctionId funcId = instruction.targetFunc.funcId;
                     funcId.isAbs = true;
                     data.Write($" [0x{funcId.id:X8}]");
                 }
