@@ -1,5 +1,6 @@
 ﻿namespace AC2E.Interp.Event {
 
+    // Calls to InterfaceInterface::SendServerEvt + InterfaceInterface::SendServerEvtEncrypt
     public enum ServerEventFunctionId : uint {
         AI__PetTrigger = 0x82000003,
         AI__RequestDumpAI = 0x82000006,

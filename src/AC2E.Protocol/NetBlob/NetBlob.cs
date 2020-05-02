@@ -5,10 +5,10 @@ namespace AC2E.Protocol.NetBlob {
 
     public class NetBlob {
 
-        public NetBlobId blobId;
-        public ushort fragCount;
-        public NetQueue queueId;
-        public byte[] payload;
+        public NetBlobId blobId; // savedNetBlobID_
+        public ushort fragCount; // numFragments_
+        public NetQueue queueId; // queueID_
+        public byte[] payload; // buf_
 
         public SortedDictionary<ushort, NetBlobFrag> frags = new SortedDictionary<ushort, NetBlobFrag>();
 

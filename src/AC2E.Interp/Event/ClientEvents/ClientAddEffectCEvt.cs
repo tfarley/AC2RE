@@ -9,6 +9,7 @@ namespace AC2E.Interp.Event.ClientEvents {
 
         public ClientEventFunctionId funcId => ClientEventFunctionId.Effect__ClientAddEffect;
 
+        // WM_Effect::PostCEvt_Effect_ClientAddEffect
         public EffectRecordPkg _record;
         public uint _eid;
 

@@ -10,18 +10,19 @@ namespace AC2E.Protocol.Message.Messages {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
 
-        public NetQueue queueId => NetQueue.NET_QUEUE_EVENT;
+        public NetQueue queueId => NetQueue.EVENT;
 
         public MessageOpcode opcode => MessageOpcode.Evt_Login__CharacterSet_ID;
 
-        public List<CharacterIdentity> characters;
-        public List<CharacterIdentity> deletedCharacters;
-        public uint status;
-        public uint numAllowedCharacters;
-        public string accountName;
+        // CharacterSet
+        public List<CharacterIdentity> characters; // set_
+        public List<CharacterIdentity> deletedCharacters; // delSet_
+        public uint status; // status_
+        public uint numAllowedCharacters; // numAllowedCharacters_
+        public string accountName; // account_
         public uint unk1;
         public bool hasLegions;
-        public bool useTurbineChat;
+        public bool useTurbineChat; // m_fUseTurbineChat
 
         public LoginCharacterSetMsg() {
 

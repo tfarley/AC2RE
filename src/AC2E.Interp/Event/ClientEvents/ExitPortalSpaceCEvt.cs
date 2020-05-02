@@ -7,18 +7,19 @@ namespace AC2E.Interp.Event.ClientEvents {
 
         public ClientEventFunctionId funcId => ClientEventFunctionId.Player__ExitPortalSpace;
 
-        public double delay;
+        // WM_Player::PostCEvt_ExitPortalSpace
+        public double _delay;
 
         public ExitPortalSpaceCEvt() {
 
         }
 
         public ExitPortalSpaceCEvt(BinaryReader data) {
-            delay = data.UnpackDouble();
+            _delay = data.UnpackDouble();
         }
 
         public void write(BinaryWriter data) {
-            data.Pack(delay);
+            data.Pack(_delay);
         }
     }
 }

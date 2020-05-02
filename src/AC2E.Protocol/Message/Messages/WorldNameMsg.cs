@@ -9,7 +9,7 @@ namespace AC2E.Protocol.Message.Messages {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
 
-        public NetQueue queueId => NetQueue.NET_QUEUE_EVENT;
+        public NetQueue queueId => NetQueue.EVENT;
 
         public MessageOpcode opcode => MessageOpcode.Evt_Admin__WorldName_ID;
 

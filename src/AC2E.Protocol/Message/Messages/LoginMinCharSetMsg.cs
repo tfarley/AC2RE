@@ -11,28 +11,29 @@ namespace AC2E.Protocol.Message.Messages {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
 
-        public NetQueue queueId => NetQueue.NET_QUEUE_EVENT;
+        public NetQueue queueId => NetQueue.EVENT;
 
         public MessageOpcode opcode => MessageOpcode.Evt_Login__MinCharSet_ID;
 
-        public uint unk1;
-        public string accountName;
-        public List<string> characterNames;
-        public List<InstanceId> characterIds;
+        // MinimalCharacterSet
+        public uint numAllowedCharacters; // m_numAllowedCharacters
+        public string accountName; // m_account
+        public List<string> characterNames; // m_names
+        public List<InstanceId> characterIds; // m_iids
 
         public LoginMinCharSetMsg() {
 
         }
 
         public LoginMinCharSetMsg(BinaryReader data) {
-            unk1 = data.ReadUInt32();
+            numAllowedCharacters = data.ReadUInt32();
             accountName = data.ReadEncryptedString();
             characterNames = data.ReadList(() => data.ReadEncryptedString(Encoding.Unicode));
             characterIds = data.ReadList(data.ReadInstanceId);
         }
 
         public void write(BinaryWriter data) {
-            data.Write(unk1);
+            data.Write(numAllowedCharacters);
             data.WriteEncryptedString(accountName);
             data.Write(characterNames, v => data.WriteEncryptedString(v, Encoding.Unicode));
             data.Write(characterIds, data.Write);

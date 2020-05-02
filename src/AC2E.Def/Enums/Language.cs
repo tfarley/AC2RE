@@ -1,5 +1,6 @@
 ﻿namespace AC2E.Def.Enums {
 
+    // Const *_Language
     // Dat file 23000035
     public enum Language : uint {
         INVALID = 0,

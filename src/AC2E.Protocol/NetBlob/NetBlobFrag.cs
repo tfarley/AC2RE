@@ -7,11 +7,12 @@ namespace AC2E.Protocol.NetBlob {
 
         public static readonly int MAX_SIZE = NetPacket.MAX_SIZE - 20 - 16; // Subtracts packet header size and fragment header size
 
-        public NetBlobId blobId;
-        public ushort fragCount;
-        public ushort fragSize;
-        public ushort fragIndex;
-        public NetQueue queueId;
+        // BlobFragHeader_t
+        public NetBlobId blobId; // blobID
+        public ushort fragCount; // numFrags
+        public ushort fragSize; // blobFragSize
+        public ushort fragIndex; // blobNum
+        public NetQueue queueId; // queueID
         public byte[] _payload;
         public byte[] payload {
             get {

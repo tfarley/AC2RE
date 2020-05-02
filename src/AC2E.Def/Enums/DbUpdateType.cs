@@ -1,5 +1,6 @@
-﻿namespace AC2E.Dat {
+﻿namespace AC2E.Def.Enums {
 
+    // Enum DBUpdateType::Type
     public enum DbUpdateType : uint {
         SKIP = 0,
         NONE = 0,

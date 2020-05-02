@@ -2,6 +2,7 @@
 
 namespace AC2E.Def.Enums {
 
+    // Const *_SexType
     // Dat file 23000009
     [Flags]
     public enum SexType : uint {

@@ -1,5 +1,6 @@
 ﻿namespace AC2E.Def.Enums {
 
+    // Enum PackTag
     public enum PackTag : uint {
         UNDEF = 0,
         INT = 1,

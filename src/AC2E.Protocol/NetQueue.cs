@@ -1,15 +1,16 @@
 ﻿namespace AC2E.Protocol {
 
+    // Const NET_QUEUE_*
     public enum NetQueue : ushort {
-        NET_QUEUE_INVALID,
-        NET_QUEUE_EVENT,
-        NET_QUEUE_CONTROL,
-        NET_QUEUE_WEENIE,
-        NET_QUEUE_LOGON,
-        NET_QUEUE_DATABASE,
-        NET_QUEUE_SECURECONTROL,
-        NET_QUEUE_SECUREWEENIE,
-        NET_QUEUE_SECURELOGON,
-        NET_QUEUE_MAX,
+        INVALID = 0,
+        EVENT = 1,
+        CONTROL = 2,
+        WEENIE = 3,
+        LOGON = 4,
+        DATABASE = 5,
+        SECURECONTROL = 6,
+        SECUREWEENIE = 7,
+        SECURELOGON = 8,
+        MAX = 9,
     }
 }

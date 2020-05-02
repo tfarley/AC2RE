@@ -12,7 +12,7 @@ namespace AC2E.Protocol.Message.Messages {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
 
-        public NetQueue queueId => NetQueue.NET_QUEUE_LOGON;
+        public NetQueue queueId => NetQueue.LOGON;
 
         public MessageOpcode opcode => MessageOpcode.CHARACTER_CREATE_EVENT;
 

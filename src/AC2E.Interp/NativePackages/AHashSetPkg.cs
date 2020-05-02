@@ -7,7 +7,7 @@ namespace AC2E.Interp.Packages {
 
         public NativeType nativeType => NativeType.AHASHSET;
         public PackageType packageType => PackageType.UNDEF;
-        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAP_OBJECT);
+        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
 
         public uint id { get; set; }
 

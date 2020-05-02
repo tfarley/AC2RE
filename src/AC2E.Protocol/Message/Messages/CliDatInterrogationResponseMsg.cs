@@ -8,11 +8,13 @@ namespace AC2E.Protocol.Message.Messages {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
 
-        public NetQueue queueId => NetQueue.NET_QUEUE_DATABASE;
+        public NetQueue queueId => NetQueue.DATABASE;
 
         public MessageOpcode opcode => MessageOpcode.CLIDAT_INTERROGATION_RESPONSE_EVENT;
 
-        public Language language;
+        // CCliDatInterrogationResponseEvent::CDataFormat
+        public Language language; // LanguageID
+        // public uint[] IterationListData = new uint[4]; // IterationListData
 
         public CliDatInterrogationResponseMsg(BinaryReader data) {
             language = (Language)data.ReadUInt32();

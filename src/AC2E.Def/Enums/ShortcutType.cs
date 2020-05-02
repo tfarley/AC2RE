@@ -1,5 +1,6 @@
 ﻿namespace AC2E.Def.Enums {
 
+    // Const *_ShortcutType
     public enum ShortcutType : uint {
         UNDEF = 0,
         SKILL = 0x40000001,

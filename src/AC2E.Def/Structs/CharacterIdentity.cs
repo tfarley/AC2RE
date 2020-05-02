@@ -6,10 +6,10 @@ namespace AC2E.Def.Structs {
 
     public class CharacterIdentity {
 
-        public InstanceId id;
-        public string name;
-        public uint greyedOutForSeconds;
-        public VisualDesc vDesc;
+        public InstanceId id; // id_
+        public string name; // name_
+        public uint secondsGreyedOut; // secondsGreyedOut_
+        public VisualDesc vDesc; // vDesc_
 
         public CharacterIdentity() {
 
@@ -18,14 +18,14 @@ namespace AC2E.Def.Structs {
         public CharacterIdentity(BinaryReader data) {
             id = data.ReadInstanceId();
             name = data.ReadEncryptedString(Encoding.Unicode);
-            greyedOutForSeconds = data.ReadUInt32();
+            secondsGreyedOut = data.ReadUInt32();
             vDesc = new VisualDesc(data);
         }
 
         public void write(BinaryWriter data) {
             data.Write(id);
             data.WriteEncryptedString(name, Encoding.Unicode);
-            data.Write(greyedOutForSeconds);
+            data.Write(secondsGreyedOut);
             vDesc.write(data);
         }
     }

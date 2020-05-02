@@ -61,8 +61,8 @@
                         <GridViewColumn Header="Opcode" Width="270" DisplayMemberBinding="{Binding opcodeName}"/>
                         <GridViewColumn Header="Event" Width="270" DisplayMemberBinding="{Binding eventName}"/>
                         <GridViewColumn Header="Size" Width="50" DisplayMemberBinding="{Binding size}"/>
-                        <GridViewColumn Header="Queue" Width="150" DisplayMemberBinding="{Binding queue}"/>
-                        <GridViewColumn Header="Error" Width="150" DisplayMemberBinding="{Binding error}"/>
+                        <GridViewColumn Header="Queue" Width="120" DisplayMemberBinding="{Binding queue}"/>
+                        <GridViewColumn Header="Error" Width="200" DisplayMemberBinding="{Binding error}"/>
                     </GridView>
                 </ListView.View>
             </ListView>

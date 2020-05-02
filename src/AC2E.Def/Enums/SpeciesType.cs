@@ -2,6 +2,7 @@
 
 namespace AC2E.Def.Enums {
 
+    // Const *_SpeciesType
     // Dat file 23000007
     [Flags]
     public enum SpeciesType : uint {

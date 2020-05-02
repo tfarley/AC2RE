@@ -9,6 +9,7 @@ namespace AC2E.Interp.Event.ClientEvents {
 
         public ClientEventFunctionId funcId => ClientEventFunctionId.Player__HandleCharacterSessionStart;
 
+        // WM_Player::PostCEvt_HandleCharacterSessionStart
         public int money;
         public ActRegistryPkg _aReg;
         public GMQuestInfoListPkg _quests;

@@ -7,22 +7,24 @@ namespace AC2E.Def.Structs {
 
     public class VisualDesc {
 
+        // Enum VisualDescPack::Flag
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
-            DATABASE = 1 << 0,
-            PARENT = 1 << 1,
-            MIDESC = 1 << 2,
-            BEHAVIOR = 1 << 3,
-            MODES = 1 << 4,
-            SCALE = 1 << 5,
-            CHILDSCALE = 1 << 6,
-            ICONDESC = 1 << 7,
-            GLOBALMOD = 1 << 8,
-            PGDTABLE = 1 << 9,
-            PARTICLESCALE = 1 << 10,
+            DATABASE = 1 << 0, // 0x00000001
+            PARENT = 1 << 1, // 0x00000002
+            MIDESC = 1 << 2, // 0x00000004
+            BEHAVIOR = 1 << 3, // 0x00000008
+            MODES = 1 << 4, // 0x00000010
+            SCALE = 1 << 5, // 0x00000020
+            CHILDSCALE = 1 << 6, // 0x00000040
+            ICONDESC = 1 << 7, // 0x00000080
+            GLOBALMOD = 1 << 8, // 0x00000100
+            PGDTABLE = 1 << 9, // 0x00000200
+            PARTICLESCALE = 1 << 10, // 0x00000400
         }
 
+        // Const *_PartGroupKey
         public enum PartGroupKey : uint {
             INVALID = 0,
             DEFAULT_BODY = 0x40000001,
@@ -44,6 +46,7 @@ namespace AC2E.Def.Structs {
 
         public class PartGroupDataDesc {
 
+            // Enum PGDDPack::Flag
             [Flags]
             public enum PackFlag : uint {
                 NONE = 0,

@@ -5,10 +5,10 @@ using System.IO;
 
 namespace AC2E.Dat.DbObjects {
 
-    public class EnumMapper : DbObject {
+    public class EnumMapper : DbObj {
 
-        public DataId baseEnumMapperDid;
-        public Dictionary<uint, string> idToString;
+        public DataId baseEnumMapperDid; // m_base_emp_did
+        public Dictionary<uint, string> idToString; // m_id_to_string_map
 
         public EnumMapper(BinaryReader data) : base(data) {
             baseEnumMapperDid = data.ReadDataId();

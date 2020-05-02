@@ -1,7 +1,8 @@
 ﻿namespace AC2E.Interp {
 
+    // Const O_*
     public enum Opcode : byte {
-        UNDEF = 0x00,
+        UNDEF = 0,
         NOOP = 0x01,
         PUSH = 0x02,
         PUSHV = 0x03,

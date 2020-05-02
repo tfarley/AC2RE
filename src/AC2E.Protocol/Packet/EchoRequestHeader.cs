@@ -4,7 +4,8 @@ namespace AC2E.Protocol.Packet {
 
     public class EchoRequestHeader {
 
-        public float localTime;
+        // CEchoRequestHeader
+        public float localTime; // m_LocalTime
 
         public EchoRequestHeader(BinaryReader data) {
             localTime = data.ReadSingle();

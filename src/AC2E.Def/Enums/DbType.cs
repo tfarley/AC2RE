@@ -1,5 +1,6 @@
-﻿namespace AC2E.Dat {
+﻿namespace AC2E.Def.Enums {
 
+    // Const DB_TYPE_*
     public enum DbType : uint {
         UNDEFINED = 0x00000000,
         CELLMESH = 0x40000004,

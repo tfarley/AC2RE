@@ -1,0 +1,28 @@
+﻿namespace AC2E.Def.Enums {
+
+    // Enum charError
+    public enum CharError : uint {
+        UNDEF = 0,
+        LOGGED_ON = 1,
+        ACCOUNT_LOGON = 2,
+        SERVER_CRASH = 3,
+        LOGOFF = 4,
+        DELETE = 5,
+        ACCOUNT_IN_USE = 6,
+        ACCOUNT_INVALID = 7,
+        ACCOUNT_DOESNT_EXIST = 8,
+        ENTER_GAME_GENERIC = 9,
+        ENTER_GAME_STRESS_ACCOUNT = 10,
+        ENTER_GAME_CHARACTER_IN_WORLD = 11,
+        ENTER_GAME_PLAYER_ACCOUNT_MISSING = 12,
+        ENTER_GAME_CHARACTER_NOT_OWNED = 13,
+        ENTER_GAME_CHARACTER_IN_WORLD_SERVER = 14,
+        ENTER_GAME_OLD_CHARACTER = 15,
+        ENTER_GAME_CORRUPT_CHARACTER = 16,
+        ENTER_GAME_START_SERVER_DOWN = 17,
+        ENTER_GAME_COULDNT_PLACE_CHARACTER = 18,
+        LOGON_SERVER_FULL = 19,
+        CHARACTER_IS_BOOTED = 20,
+        ENTER_GAME_CHARACTER_LOCKED = 21,
+    }
+}

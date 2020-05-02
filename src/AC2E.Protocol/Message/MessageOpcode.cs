@@ -1,5 +1,6 @@
 ﻿namespace AC2E.Protocol.Message {
 
+    // Const Notice_* + Evt_* + *_EVENT
     public enum MessageOpcode : uint {
         UNDEF_EVENT = 0x00000000,
         NET_QUEUE_EVENT = 0x00000001,

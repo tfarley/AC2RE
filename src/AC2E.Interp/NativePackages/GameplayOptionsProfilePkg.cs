@@ -12,57 +12,58 @@ namespace AC2E.Interp.Packages {
         [Flags]
         public enum ContentFlag : uint {
             NONE = 0,
-            ALIAS_TABLE = 1 << 0,
-            SHORTCUT_ARRAY = 1 << 1,
-            SHORTCUT_SET = 1 << 2,
-            SHOW_RANGE_DAMAGE_OTHER = 1 << 3,
-            SAVED_UI_LOCATIONS = 1 << 4,
-            RADAR_MASK = 1 << 5,
-            FILTER_HASH = 1 << 6,
-            BIT_FIELD = 1 << 7,
-            CHAT_FONT_COLORS = 1 << 8,
-            CHAT_FONT_SIZES = 1 << 9,
-            CHAT_POPUP_FLAGS = 1 << 10,
-            WINDOW_OPACITIES = 1 << 11,
-            UNK1 = 1 << 12,
-            WINDOW_TO_CHANNEL = 1 << 13,
+            ALIAS_TABLE = 1 << 0, // 0x00000001
+            SHORTCUT_ARRAY = 1 << 1, // 0x00000002
+            SHORTCUT_SET = 1 << 2, // 0x00000004
+            SHOW_RANGE_DAMAGE_OTHER = 1 << 3, // 0x00000008
+            SAVED_UI_LOCATIONS = 1 << 4, // 0x00000010
+            RADAR_MASK = 1 << 5, // 0x00000020
+            FILTER_HASH = 1 << 6, // 0x00000040
+            BIT_FIELD = 1 << 7, // 0x00000080
+            CHAT_FONT_COLORS = 1 << 8, // 0x00000100
+            CHAT_FONT_SIZES = 1 << 9, // 0x00000200
+            CHAT_POPUP_FLAGS = 1 << 10, // 0x00000400
+            WINDOW_OPACITIES = 1 << 11, // 0x00000800
+            UNK1 = 1 << 12, // 0x00001000
+            WINDOW_TO_CHANNEL = 1 << 13, // 0x00002000
         }
 
+        // Enum GameplayOptionsProfile::GameplayOptionsProfile_Flags
         [Flags]
         public enum Flag : uint {
             NONE = 0,
-            SHOW_SHORTCUT_NUMBERS = 1 << 0,
-            SHOW_DAMAGE_TEXT = 1 << 1,
-            SHOW_DAMAGE_OTHER = 1 << 2,
-            SHOW_RADAR_COORDS = 1 << 3,
-            AUTO_TARGET = 1 << 4,
-            ACCEPT_ALLEGIENCE = 1 << 5,
-            ACCEPT_FELLOWSHIP = 1 << 6,
-            ACCEPT_TRADE = 1 << 7,
-            SHOW_OBJECT_NAMES = 1 << 8,
-            BYPASS_GOLDMELT_CONFIRMATION = 1 << 9,
-            SHORTCUT_LOCKED = 1 << 10,
-            SHOW_PK_DAMAGE = 1 << 11,
-            SHORTCUT_INSTASCROLL = 1 << 12,
-            LATENCY_INDICATOR_GRAPH = 1 << 13,
-            HAS_BEEN_VERSIONED = 1u << 31,
+            SHOW_SHORTCUT_NUMBERS = 1 << 0, // 0x00000001
+            SHOW_DAMAGE_TEXT = 1 << 1, // 0x00000002
+            SHOW_DAMAGE_OTHER = 1 << 2, // 0x00000004
+            SHOW_RADAR_COORDS = 1 << 3, // 0x00000008
+            AUTO_TARGET = 1 << 4, // 0x00000010
+            ACCEPT_ALLEGIENCE = 1 << 5, // 0x00000020
+            ACCEPT_FELLOWSHIP = 1 << 6, // 0x00000040
+            ACCEPT_TRADE = 1 << 7, // 0x00000080
+            SHOW_OBJECT_NAMES = 1 << 8, // 0x00000100
+            BYPASS_GOLDMELT_CONFIRMATION = 1 << 9, // 0x00000200
+            SHORTCUT_LOCKED = 1 << 10, // 0x00000400
+            SHOW_PK_DAMAGE = 1 << 11, // 0x00000800
+            SHORTCUT_INSTASCROLL = 1 << 12, // 0x00001000
+            LATENCY_INDICATOR_GRAPH = 1 << 13, // 0x00002000
+            HAS_BEEN_VERSIONED = 1u << 31, // 0x80000000
         }
 
-        [Flags]
+        // Enum GameplayOptionsProfile::GameplayOptionsProfile_Version
         public enum Version : uint {
-            UNDEFINED_VERSION,
-            CHAT_FONT_VERSION,
-            WINDOW_OPACITIES_VERSION,
-            BROADCAST_TEXTTYPE_VERSION,
-            BROADCAST_FILTERFIX_VERSION,
-            UNK1,
-            UNK2,
+            UNDEFINED_VERSION = 0,
+            CHAT_FONT_VERSION = 1,
+            WINDOW_OPACITIES_VERSION = 2,
+            BROADCAST_TEXTTYPE_VERSION = 3,
+            BROADCAST_FILTERFIX_VERSION = 4,
+            UNK1 = 5,
+            UNK2 = 6,
             LATEST_VERSION = UNK2,
         }
 
         public NativeType nativeType => NativeType.GAMEPLAYOPTIONSPROFILE;
         public PackageType packageType => PackageType.UNDEF;
-        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAP_OBJECT);
+        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
 
         public uint id { get; set; }
 

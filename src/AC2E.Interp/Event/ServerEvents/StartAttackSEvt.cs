@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using AC2E.Def.Extensions;
+using AC2E.Def.Structs;
+using System.IO;
 
 namespace AC2E.Interp.Event.ServerEvents {
 
@@ -6,8 +8,14 @@ namespace AC2E.Interp.Event.ServerEvents {
 
         public ServerEventFunctionId funcId => ServerEventFunctionId.Combat__StartAttack;
 
-        public StartAttackSEvt(BinaryReader data) {
+        // WM_Combat::SendSEvt_StartAttack
+        public InstanceId unk1;
+        public InstanceId _target;
+        // TODO: More here
 
+        public StartAttackSEvt(BinaryReader data) {
+            unk1 = data.ReadInstanceId();
+            _target = data.ReadInstanceId();
         }
     }
 }

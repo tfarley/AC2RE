@@ -8,6 +8,7 @@ namespace AC2E.Interp.Event.ClientEvents {
 
         public ClientEventFunctionId funcId => ClientEventFunctionId.Effect__ClientRemoveEffect;
 
+        // WM_Effect::PostCEvt_Effect_ClientRemoveEffect
         public uint _eid;
 
         public ClientRemoveEffectCEvt() {

@@ -1,10 +1,8 @@
-﻿using System;
+﻿namespace AC2E.Interp {
 
-namespace AC2E.Interp {
-
-    [Flags]
+    // Const *_NativeType
     public enum NativeType : uint {
-        UNDEF = 0x00000000,
+        UNDEF = 0,
         AAHASH = 0x00000001,
         AAHASHITER = 0x00000002,
         AAMULTIHASH = 0x00000003,

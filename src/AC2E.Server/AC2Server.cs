@@ -123,8 +123,8 @@ namespace AC2E.Server {
                     Log.Debug($"RCVD: {packet}");
 
                     if (packet.logonHeader != null) {
-                        Log.Debug($"Logon request: ts {packet.logonHeader.timestamp} acct {packet.logonHeader.account}");
-                        ClientConnection client = addClient(receiveEndpoint, packet.logonHeader.account);
+                        Log.Debug($"Logon request: seq {packet.logonHeader.netAuth.connectionSeq} acct {packet.logonHeader.netAuth.account}");
+                        ClientConnection client = addClient(receiveEndpoint, packet.logonHeader.netAuth.account);
                         if (client != null) {
                             sendConnect(client);
                         } else {
@@ -175,7 +175,7 @@ namespace AC2E.Server {
                                     unk4 = 0,
                                 });
                                 client.enqueueMessage(new CliDatInterrogationMsg {
-                                    regionId = 1,
+                                    regionId = (RegionID)1,
                                     nameRuleLanguage = Language.ENGLISH,
                                     supportedLanguages = SUPPORTED_LANGUAGES,
                                 });
@@ -222,7 +222,7 @@ namespace AC2E.Server {
                                 new CharacterIdentity {
                                     id = new InstanceId(0x213000000000dd9d),
                                     name = "TestChar",
-                                    greyedOutForSeconds = 0,
+                                    secondsGreyedOut = 0,
                                     vDesc = new VisualDesc {
                                         packFlags = VisualDesc.PackFlag.PARENT,
                                         m_parent_did = new DataId(0x1F001110),
@@ -240,7 +240,7 @@ namespace AC2E.Server {
                             client.enqueueMessage(new CliDatEndDDDMsg());
 
                             client.enqueueMessage(new LoginMinCharSetMsg {
-                                unk1 = 0,
+                                numAllowedCharacters = 0,
                                 accountName = client.accountName,
                                 characterNames = characterNames,
                                 characterIds = characterIds,
@@ -479,9 +479,8 @@ namespace AC2E.Server {
                             CliDatRequestDataMsg msg = new CliDatRequestDataMsg(data);
                             genericMsg = msg;
                             client.enqueueMessage(new CliDatErrorMsg {
-                                fileDbType = msg.fileDbType,
-                                fileId = msg.fileId,
-                                unk1 = 1,
+                                qdid = msg.qdid,
+                                error = 1,
                             });
                             break;
                         }
@@ -560,9 +559,9 @@ namespace AC2E.Server {
             client.sendPacket(netInterface1, serverTime, new NetPacket {
                 connectHeader = new ConnectHeader {
                     connectionAckCookie = client.connectionAckCookie,
-                    recipientId = client.id,
-                    outgoingSeed = client.serverSeed,
-                    incomingSeed = client.clientSeed,
+                    netId = client.id,
+                    outgoingSeed = client.outgoingSeed,
+                    incomingSeed = client.incomingSeed,
                 },
             });
         }

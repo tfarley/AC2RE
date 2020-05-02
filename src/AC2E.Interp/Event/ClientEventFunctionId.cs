@@ -1,5 +1,6 @@
 ﻿namespace AC2E.Interp.Event {
 
+    // Func *::PostCEvt_*
     public enum ClientEventFunctionId : uint {
         AI__PetRemove = 0x8200001A,
         AI__PetAdd = 0x8200001B,

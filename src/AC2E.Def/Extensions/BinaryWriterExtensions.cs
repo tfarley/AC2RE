@@ -91,6 +91,11 @@ namespace AC2E.Def.Extensions {
             writer.Write(value.id);
         }
 
+        public static void Write(this BinaryWriter writer, QualifiedDataId value) {
+            writer.Write((uint)value.dbType);
+            writer.Write(value.did);
+        }
+
         public static void Write(this BinaryWriter writer, InstanceId value) {
             writer.Write(value.id);
         }

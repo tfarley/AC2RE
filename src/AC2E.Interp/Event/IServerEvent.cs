@@ -2,6 +2,6 @@
 
     public interface IServerEvent {
 
-        ServerEventFunctionId funcId { get; }
+        ServerEventFunctionId funcId { get; } // _fid
     }
 }

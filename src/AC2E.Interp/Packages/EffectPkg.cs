@@ -9,7 +9,7 @@ namespace AC2E.Interp.Packages {
 
         public NativeType nativeType => NativeType.UNDEF;
         public PackageType packageType => PackageType.Effect;
-        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.SINGLETON | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAP_OBJECT);
+        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.SINGLETON | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
 
         public uint id { get; set; }
 

@@ -4,7 +4,7 @@ namespace AC2E.Interp.Event {
 
     public interface IClientEvent {
 
-        ClientEventFunctionId funcId { get; }
+        ClientEventFunctionId funcId { get; } // _fid
 
         void write(BinaryWriter data);
     }

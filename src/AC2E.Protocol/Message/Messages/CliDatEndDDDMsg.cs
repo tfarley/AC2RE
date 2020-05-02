@@ -7,7 +7,7 @@ namespace AC2E.Protocol.Message.Messages {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
 
-        public NetQueue queueId => NetQueue.NET_QUEUE_DATABASE;
+        public NetQueue queueId => NetQueue.DATABASE;
 
         public MessageOpcode opcode => MessageOpcode.CLIDAT_END_DDD_EVENT;
 

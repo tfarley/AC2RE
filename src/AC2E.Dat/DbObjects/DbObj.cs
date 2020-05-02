@@ -4,11 +4,11 @@ using System.IO;
 
 namespace AC2E.Dat.DbObjects {
 
-    public abstract class DbObject {
+    public abstract class DbObj {
 
-        public DataId did;
+        public DataId did; // m_DID
 
-        public DbObject(BinaryReader data) {
+        public DbObj(BinaryReader data) {
             did = data.ReadDataId();
         }
     }

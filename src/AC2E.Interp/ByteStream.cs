@@ -12,7 +12,7 @@ namespace AC2E.Interp {
 
         public class VersionTable {
 
-            public List<uint> versions;
+            public List<uint> versions; // m_versions
 
             public VersionTable(BinaryReader data) {
                 versions = data.ReadList(data.ReadUInt32);
@@ -21,19 +21,19 @@ namespace AC2E.Interp {
 
         public class OpcodeStream {
 
-            public uint bufSize;
-            public byte[] opcodeBytes;
+            public uint size; // m_size
+            public byte[] opcodeBytes; // m_pOpcodeBytes
 
             public OpcodeStream(BinaryReader data) {
-                bufSize = data.ReadUInt32();
-                opcodeBytes = data.ReadBytes((int)bufSize);
+                size = data.ReadUInt32();
+                opcodeBytes = data.ReadBytes((int)size);
             }
         }
 
         public class StringLitTable {
 
-            public List<string> strings;
-            public List<List<uint>> offsets;
+            public List<string> strings; // m_strtbl
+            public List<List<uint>> offsets; // m_offsets
 
             public StringLitTable(BinaryReader data) {
                 strings = data.ReadList(() => data.ReadEncryptedString(Encoding.Unicode));
@@ -43,9 +43,9 @@ namespace AC2E.Interp {
 
         public class ImportData {
 
-            public string packageName;
-            public List<ImportSymbolInfo> symbols;
-            public List<uint> packageOffsets;
+            public string packageName; // m_pkgName
+            public List<ImportSymbolInfo> symbols; // m_syms
+            public List<uint> packageOffsets; // m_pkgOffsets
 
             public ImportData(BinaryReader data) {
                 packageName = data.ReadEncryptedString();
@@ -56,9 +56,9 @@ namespace AC2E.Interp {
 
         public class ImportSymbolInfo {
 
-            public string name;
-            public List<uint> offsets;
-            public uint fromAddr;
+            public string name; // m_name
+            public List<uint> offsets; // m_offsets
+            public uint fromAddr; // m_from_addr
 
             public ImportSymbolInfo(BinaryReader data) {
                 name = data.ReadEncryptedString();
@@ -69,8 +69,8 @@ namespace AC2E.Interp {
 
         public class ExportData {
 
-            public ExportPackageArgs args;
-            public List<ExportFunctionData> funcs;
+            public ExportPackageArgs args; // m_args
+            public List<ExportFunctionData> funcs; // m_funcs
 
             public ExportData(BinaryReader data) {
                 args = new ExportPackageArgs(data);
@@ -80,14 +80,14 @@ namespace AC2E.Interp {
 
         public class ExportPackageArgs {
 
-            public string name;
-            public string baseName;
-            public uint checksum;
-            public uint size;
-            public TypeFlag flags;
-            public uint packageId;
-            public uint parentIndex;
-            public Dictionary<string, CheckpointExportData> checkpoint;
+            public string name; // m_name
+            public string baseName; // m_base_name
+            public uint checksum; // m_checksum
+            public uint size; // m_size
+            public TypeFlag flags; // m_flags
+            public uint packageId; // m_pkg_id
+            public uint parentIndex; // m_parent_index
+            public Dictionary<string, CheckpointExportData> checkpoint; // m_checkpoint
 
             public ExportPackageArgs(BinaryReader data) {
                 name = data.ReadEncryptedString();
@@ -103,8 +103,8 @@ namespace AC2E.Interp {
 
         public class CheckpointExportData {
 
-            public uint offset;
-            public uint tag;
+            public uint offset; // m_offset
+            public uint tag; // m_tag
 
             public CheckpointExportData(BinaryReader data) {
                 offset = data.ReadUInt32();
@@ -114,12 +114,12 @@ namespace AC2E.Interp {
 
         public class ExportFunctionData {
 
-            public string name;
-            public FunctionId funcId;
-            public uint offset;
-            public uint size;
-            public FuncFlag flags;
-            public List<VTableId> deps;
+            public string name; // m_name
+            public FunctionId funcId; // m_fid
+            public uint offset; // m_offset
+            public uint size; // m_size
+            public FuncFlag flags; // m_flags
+            public List<VTableId> deps; // m_deps
 
             public ExportFunctionData(BinaryReader data) {
                 name = data.ReadEncryptedString();
@@ -133,11 +133,11 @@ namespace AC2E.Interp {
 
         public class VTableSection {
 
-            public List<List<VTableId>> funcMapper;
-            public List<List<uint>> vTable;
-            public List<PackageInfo> packageInfo;
-            public List<uint> packageIdMap;
-            public Dictionary<string, uint> packageIdStrMap;
+            public List<List<VTableId>> funcMapper; // m_funcMapper
+            public List<List<uint>> vTable; // m_vtbl
+            public List<PackageInfo> packageInfo; // m_pkgInfo
+            public List<uint> packageIdMap; // m_pkgIdMap
+            public Dictionary<string, uint> packageIdStrMap; // m_pkgIdStrMap
 
             public VTableSection(BinaryReader data) {
                 funcMapper = data.ReadList(() => data.ReadList(() => new VTableId(data.ReadUInt32())));
@@ -150,8 +150,8 @@ namespace AC2E.Interp {
 
         public class PackageInfo {
 
-            public uint size;
-            public uint checksum;
+            public uint size; // size
+            public uint checksum; // checksum
 
             public PackageInfo(BinaryReader data) {
                 // TODO: Size and checksum might be swapped
@@ -162,8 +162,8 @@ namespace AC2E.Interp {
 
         public class FunctionLocationInfo {
 
-            public string functionName;
-            public uint offset;
+            public string functionName; // FunctionName
+            public uint offset; // Offset
 
             public FunctionLocationInfo(BinaryReader data) {
                 functionName = data.ReadNullTermString();
@@ -173,33 +173,33 @@ namespace AC2E.Interp {
 
         public class OriginalSourceFileInfo {
 
-            public string fileName;
-            public string text;
+            public uint fileName; // FilenameIdx
+            public string text; // Text
 
             public OriginalSourceFileInfo(BinaryReader data) {
-                // TODO: FileName and text might be swapped
-                fileName = data.ReadNullTermString();
+                // TODO: fileName and text might be swapped
+                fileName = data.ReadUInt32();
                 text = data.ReadNullTermString();
             }
         }
 
-        public class LineOffsetList {
+        public class PLineOffsetList {
 
-            public string sourceFilename;
-            public List<LineOffsetInfo> lineOffsets;
+            public string sourceFileName; // SourceFilename
+            public List<PLineOffsetInfo> lineOffsets;
 
-            public LineOffsetList(BinaryReader data) {
-                sourceFilename = data.ReadEncryptedString();
-                lineOffsets = data.ReadList(() => new LineOffsetInfo(data));
+            public PLineOffsetList(BinaryReader data) {
+                sourceFileName = data.ReadEncryptedString();
+                lineOffsets = data.ReadList(() => new PLineOffsetInfo(data));
             }
         }
 
-        public class LineOffsetInfo {
+        public class PLineOffsetInfo {
 
-            public uint offset;
-            public uint lineNum;
+            public uint offset; // Offset
+            public uint lineNum; // LineNum
 
-            public LineOffsetInfo(BinaryReader data) {
+            public PLineOffsetInfo(BinaryReader data) {
                 offset = data.ReadUInt32();
                 lineNum = data.ReadUInt32();
             }
@@ -213,10 +213,10 @@ namespace AC2E.Interp {
                 PACKAGE = 2,
             }
 
-            public string name;
-            public FrameType type;
-            public uint size;
-            public List<FrameMemberDebugInfo> members;
+            public string name; // m_name
+            public FrameType type; // m_type
+            public uint size; // m_size
+            public List<FrameMemberDebugInfo> members; // m_refMembers
 
             public FrameDebugInfo(BinaryReader data) {
                 name = data.ReadEncryptedString();
@@ -228,6 +228,7 @@ namespace AC2E.Interp {
 
         public class FrameMemberDebugInfo {
 
+            // Enum FrameMemberType
             public enum FrameMemberType : uint {
                 UNDEF = 0,
                 VOID = 1,
@@ -241,11 +242,11 @@ namespace AC2E.Interp {
                 PACKAGE = 9,
             }
 
-            public uint offset;
-            public FrameMemberType type;
-            public VarFlag flags;
-            public string name;
-            public string typeName;
+            public uint offset; // Offset
+            public FrameMemberType type; // Type
+            public VarFlag flags; // Flags
+            public string name; // Name
+            public string typeName; // TypeName
 
             public FrameMemberDebugInfo(BinaryReader data) {
                 offset = data.ReadUInt32();
@@ -259,17 +260,17 @@ namespace AC2E.Interp {
         public byte[] magic;
         public ushort unk1;
         public uint byteStreamVersion;
-        public VersionTable versionInfo;
-        public OpcodeStream opcodeStream;
-        public StringLitTable stringLitTable;
-        public List<ImportData> imports;
-        public List<ExportData> exports;
-        public VTableSection vTable;
-        public Dictionary<FunctionId, uint> validEvents;
-        public List<FunctionLocationInfo> funcLocs;
-        public List<OriginalSourceFileInfo> originalSourceText;
-        public List<LineOffsetList> lineOffsets;
-        public List<FrameDebugInfo> frames;
+        public VersionTable versionInfo; // m_version
+        public OpcodeStream opcodeStream; // m_opcodeStream
+        public StringLitTable stringLitTable; // m_strtbl
+        public List<ImportData> imports; // m_imptbl
+        public List<ExportData> exports; // m_exptbl
+        public VTableSection vTable; // m_vtbl
+        public Dictionary<FunctionId, uint> validEvents; // m_validEvents
+        public List<FunctionLocationInfo> funcLocs; // m_functionLocs
+        public List<OriginalSourceFileInfo> originalSourceText; // m_originalSourceText
+        public List<PLineOffsetList> lineOffsets; // m_lineOffsets
+        public List<FrameDebugInfo> frames; // m_frames
 
         public ByteStream(BinaryReader data) {
             magic = data.ReadBytes(2);
@@ -311,7 +312,7 @@ namespace AC2E.Interp {
                         originalSourceText = data.ReadList(() => new OriginalSourceFileInfo(data));
                         break;
                     case SectionType.LINE_NUM_DEBUG:
-                        lineOffsets = data.ReadList(() => new LineOffsetList(data));
+                        lineOffsets = data.ReadList(() => new PLineOffsetList(data));
                         break;
                     case SectionType.FRAME_DEBUG_INFO:
                         frames = data.ReadList(() => new FrameDebugInfo(data));

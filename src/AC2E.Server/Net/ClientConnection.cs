@@ -26,11 +26,11 @@ namespace AC2E.Server.Net {
         public readonly IPEndPoint endpoint;
         public readonly string accountName;
         public readonly ulong connectionAckCookie;
-        public readonly uint serverSeed;
-        public readonly uint clientSeed;
+        public readonly uint outgoingSeed;
+        public readonly uint incomingSeed;
 
         public bool connected { get; private set; }
-        public ISAAC serverIsaac { get; private set; }
+        public ISAAC outgoingIsaac { get; private set; }
         public uint packetSeq;
         public uint highestReceivedPacketSeq;
         public uint highestAckedPacketSeq;
@@ -53,14 +53,14 @@ namespace AC2E.Server.Net {
 
             Random rand = new Random();
             connectionAckCookie = rand.NextULong();
-            serverSeed = rand.NextUInt();
-            clientSeed = rand.NextUInt();
+            outgoingSeed = rand.NextUInt();
+            incomingSeed = rand.NextUInt();
         }
 
         public void connect(float serverTime) {
             connected = true;
 
-            serverIsaac = new ISAAC(serverSeed);
+            outgoingIsaac = new ISAAC(outgoingSeed);
             packetSeq = 1;
             highestReceivedPacketSeq = 1;
 
@@ -81,7 +81,7 @@ namespace AC2E.Server.Net {
 
         private void enqueueBlob(NetBlobId.Flag blobFlags, NetQueue queueId, byte[] payload) {
             // TODO: Determining order this way doesn't seem correct, see packet with 66:00:01:00 having EVENT queue but WEENIE ordering
-            byte orderingType = (queueId == NetQueue.NET_QUEUE_WEENIE || queueId == NetQueue.NET_QUEUE_SECUREWEENIE) ? ORDERING_TYPE_WEENIE : ORDERING_TYPE_NORMAL;
+            byte orderingType = (queueId == NetQueue.WEENIE || queueId == NetQueue.SECUREWEENIE) ? ORDERING_TYPE_WEENIE : ORDERING_TYPE_NORMAL;
             NetBlob blob = new NetBlob {
                 blobId = new NetBlobId(blobFlags, orderingType, 0, blobSeq),
                 queueId = queueId,
@@ -191,7 +191,7 @@ namespace AC2E.Server.Net {
                 // Encrypt checksum if necessary
                 if (packet.flags.HasFlag(NetPacket.Flag.ENCRYPTED_CHECKSUM)) {
                     if (!packet.hasIsaacXor) {
-                        packet.isaacXor = serverIsaac.Next();
+                        packet.isaacXor = outgoingIsaac.Next();
                         packet.hasIsaacXor = true;
                     }
                     contentChecksum ^= packet.isaacXor;

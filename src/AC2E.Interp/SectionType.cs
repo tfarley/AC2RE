@@ -1,5 +1,6 @@
 ﻿namespace AC2E.Interp {
 
+    // Const *_SectionType
     public enum SectionType : uint {
         INVALID = 0,
         OPCODE = 1,

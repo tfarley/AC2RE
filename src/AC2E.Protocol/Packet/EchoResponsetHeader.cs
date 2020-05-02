@@ -4,8 +4,9 @@ namespace AC2E.Protocol.Packet {
 
     public class EchoResponseHeader {
 
-        public float localTime;
-        public float localToServerTimeDelta;
+        // CEchoResponseHeader
+        public float localTime; // m_LocalTimeConstructed
+        public float localToServerTimeDelta; // m_LocalTimeConstructed
 
         public void write(BinaryWriter data) {
             data.Write(localTime);

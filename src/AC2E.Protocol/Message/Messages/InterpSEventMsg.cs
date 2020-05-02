@@ -10,7 +10,7 @@ namespace AC2E.Protocol.Message.Messages {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
 
-        public NetQueue queueId => NetQueue.NET_QUEUE_WEENIE;
+        public NetQueue queueId => NetQueue.WEENIE;
 
         public MessageOpcode opcode => MessageOpcode.Evt_Interp__InterpSEvent_ID;
 

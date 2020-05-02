@@ -123,6 +123,10 @@ namespace AC2E.Def.Extensions {
             return new DataId(reader.ReadUInt32());
         }
 
+        public static QualifiedDataId ReadQualifiedDataId(this BinaryReader reader) {
+            return new QualifiedDataId((DbType)reader.ReadUInt32(), reader.ReadDataId());
+        }
+
         public static InstanceId ReadInstanceId(this BinaryReader reader) {
             return new InstanceId(reader.ReadUInt64());
         }

@@ -1,10 +1,7 @@
-﻿using System;
+﻿namespace AC2E.Interp {
 
-namespace AC2E.Interp {
-
-    [Flags]
     public enum PackageType : uint {
-        UNDEF = 0x00000000,
+        UNDEF = 0,
         BalanceExceptionList = 0x00000015,
         IPreproc = 0x00000031,
         CharacterGenSystem = 0x00000096,
