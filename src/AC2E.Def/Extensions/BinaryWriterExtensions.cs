@@ -94,5 +94,11 @@ namespace AC2E.Def.Extensions {
         public static void Write(this BinaryWriter writer, InstanceId value) {
             writer.Write(value.id);
         }
+
+        public static void Write(this BinaryWriter writer, Vector value) {
+            writer.Write(value.x);
+            writer.Write(value.y);
+            writer.Write(value.z);
+        }
     }
 }

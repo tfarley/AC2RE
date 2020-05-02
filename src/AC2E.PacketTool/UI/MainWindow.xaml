@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AC2E.PacketTool"
         mc:Ignorable="d"
-        Title="AC2E Packet Tool" Height="800" Width="1500">
+        Title="AC2E Packet Tool" Height="800" Width="1700">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -76,11 +76,11 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox x:Name="recordHexTextBox" Grid.Column="0" Margin="10,10,10,10" TextWrapping="Wrap" IsReadOnly="True" FontFamily="Courier New"/>
+                <TextBox x:Name="recordHexTextBox" Grid.Column="0" Margin="10,10,10,10" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" IsReadOnly="True" FontFamily="Courier New"/>
 
                 <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
 
-                <TextBox x:Name="recordMessageTextBox" Grid.Column="2" Margin="10,10,10,10" TextWrapping="Wrap" IsReadOnly="True" FontFamily="Courier New"/>
+                <TextBox x:Name="recordMessageTextBox" Grid.Column="2" Margin="10,10,10,10" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" IsReadOnly="True" FontFamily="Courier New"/>
             </Grid>
         </Grid>
     </DockPanel>

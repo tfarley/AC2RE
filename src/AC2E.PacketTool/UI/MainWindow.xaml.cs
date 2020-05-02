@@ -1,13 +1,10 @@
 ﻿using AC2E.PacketTool.Reader;
-using AC2E.Protocol.Message;
+using AC2E.Utils;
 using Microsoft.Win32;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Reflection;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -147,67 +144,6 @@ namespace AC2E.PacketTool.UI {
             }
         }
 
-        private void objectToString(StringBuilder stringBuilder, HashSet<object> visited, int indentLevel, object target) {
-            if (target == null) {
-                stringBuilder.Append("null");
-                return;
-            }
-
-            Type targetType = target.GetType();
-
-            if (targetType.IsPrimitive || target is Enum) {
-                stringBuilder.Append(target.ToString());
-                return;
-            }
-
-            IEnumerable enumerableValue = target as IEnumerable;
-            if (enumerableValue != null && !(target is string)) {
-                if (!visited.Add(target)) {
-                    stringBuilder.Append($"Circular ref: {target}");
-                    return;
-                }
-
-                stringBuilder.AppendLine("[");
-                bool first = true;
-                foreach (object val in enumerableValue) {
-                    if (!first) {
-                        stringBuilder.AppendLine(",");
-                    }
-                    stringBuilder.Append(' ', indentLevel + 2);
-                    objectToString(stringBuilder, visited, indentLevel + 2, val);
-                    first = false;
-                }
-                stringBuilder.AppendLine();
-                stringBuilder.Append(' ', indentLevel);
-                stringBuilder.Append(']');
-                return;
-            }
-
-            foreach (MethodInfo methodInfo in targetType.GetMethods()) {
-                if (methodInfo.Name == "ToString" && methodInfo.DeclaringType == targetType) {
-                    stringBuilder.Append(target.ToString());
-                    return;
-                }
-            }
-
-            if (!visited.Add(target)) {
-                stringBuilder.Append($"Circular ref: {target}");
-                return;
-            }
-
-            FieldInfo[] fieldInfos = targetType.GetFields();
-            stringBuilder.AppendLine("{");
-            string fieldIndent = new string(' ', indentLevel + 2);
-            foreach (FieldInfo fieldInfo in fieldInfos) {
-                string fieldLine = $"{fieldIndent}{fieldInfo.Name} = ";
-                stringBuilder.Append(fieldLine);
-                objectToString(stringBuilder, visited, fieldLine.Length, fieldInfo.GetValue(target));
-                stringBuilder.AppendLine();
-            }
-            stringBuilder.Append(' ', indentLevel);
-            stringBuilder.Append('}');
-        }
-
         private void recordsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (recordsListBox.SelectedItems.Count == 1) {
                 NetBlobRecord netBlobRecord = ((NetBlobRow)recordsListBox.SelectedItem).netBlobRecord;
@@ -223,12 +159,7 @@ namespace AC2E.PacketTool.UI {
                 Exception messageException = netBlobRecord.messageException;
                 if (messageException == null) {
                     try {
-                        INetMessage message = netBlobRecord.message;
-
-                        StringBuilder messageStringBuilder = new StringBuilder();
-                        objectToString(messageStringBuilder, new HashSet<object>(), 0, message);
-
-                        recordMessageTextBox.Text = messageStringBuilder.ToString();
+                        recordMessageTextBox.Text = Util.objectToString(netBlobRecord.message);
                     } catch (Exception ex) {
                         recordMessageTextBox.Text = ex.ToString();
                     }

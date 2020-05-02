@@ -224,7 +224,8 @@ namespace AC2E.Server {
                                     name = "TestChar",
                                     greyedOutForSeconds = 0,
                                     vDesc = new VisualDesc {
-                                        baseSetupId = 0x1F001110,
+                                        packFlags = VisualDesc.PackFlag.PARENT,
+                                        m_parent_did = new DataId(0x1F001110),
                                     },
                                 },
                             };
@@ -247,11 +248,11 @@ namespace AC2E.Server {
 
                             client.enqueueMessage(new LoginCharacterSetMsg {
                                 characters = characters,
-                                unk1 = 0,
-                                unk2 = 0,
+                                deletedCharacters = null,
+                                status = 0,
                                 numAllowedCharacters = 10,
                                 accountName = client.accountName,
-                                unk3 = 1,
+                                unk1 = 1,
                                 hasLegions = true,
                                 useTurbineChat = true,
                             });
@@ -279,7 +280,8 @@ namespace AC2E.Server {
                             client.enqueueMessage(new CreateObjectMsg {
                                 objectId = msg.characterId,
                                 vDesc = new VisualDesc {
-                                    baseSetupId = 0x1F001110,
+                                    packFlags = VisualDesc.PackFlag.PARENT,
+                                    m_parent_did = new DataId(0x1F001110),
                                 },
                             });
 

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using AC2E.Def.Extensions;
+using AC2E.Def.Structs;
+using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.Interp.Packages {
@@ -11,14 +13,10 @@ namespace AC2E.Interp.Packages {
 
         public uint id { get; set; }
 
-        public float x;
-        public float y;
-        public float z;
+        public Vector vector;
 
         public void write(BinaryWriter data, List<IPackage> references) {
-            data.Write(x);
-            data.Write(y);
-            data.Write(z);
+            data.Write(vector);
         }
     }
 }

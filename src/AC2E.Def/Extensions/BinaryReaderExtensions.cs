@@ -126,5 +126,13 @@ namespace AC2E.Def.Extensions {
         public static InstanceId ReadInstanceId(this BinaryReader reader) {
             return new InstanceId(reader.ReadUInt64());
         }
+
+        public static Vector ReadVector(this BinaryReader reader) {
+            return new Vector {
+                x = reader.ReadSingle(),
+                y = reader.ReadSingle(),
+                z = reader.ReadSingle(),
+            };
+        }
     }
 }
