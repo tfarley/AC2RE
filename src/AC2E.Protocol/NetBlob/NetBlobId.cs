@@ -28,57 +28,33 @@ namespace AC2E.Protocol.NetBlob {
         }
 
         public bool isEphemeral {
-            get {
-                return getFlag(Flag.EPHEMERAL);
-            }
-            set {
-                setFlag(Flag.EPHEMERAL, value);
-            }
+            get => getFlag(Flag.EPHEMERAL);
+            set => setFlag(Flag.EPHEMERAL, value);
         }
 
         public bool isCell {
-            get {
-                return getFlag(Flag.CELL);
-            }
-            set {
-                setFlag(Flag.CELL, value);
-            }
+            get => getFlag(Flag.CELL);
+            set => setFlag(Flag.CELL, value);
         }
 
         public bool isOutOfWorld {
-            get {
-                return getFlag(Flag.OUT_OF_WORLD);
-            }
-            set {
-                setFlag(Flag.OUT_OF_WORLD, value);
-            }
+            get => getFlag(Flag.OUT_OF_WORLD);
+            set => setFlag(Flag.OUT_OF_WORLD, value);
         }
 
         public byte orderingType {
-            get {
-                return (byte)((id & ORDERING_TYPE_MASK) >> 56);
-            }
-            set {
-                id = (id & ~ORDERING_TYPE_MASK) | (((ulong)value << 56) & ORDERING_TYPE_MASK);
-            }
+            get => (byte)((id & ORDERING_TYPE_MASK) >> 56);
+            set => id = (id & ~ORDERING_TYPE_MASK) | (((ulong)value << 56) & ORDERING_TYPE_MASK);
         }
 
         public ushort orderingStamp {
-            get {
-                return (ushort)((id & ORDERING_STAMP_MASK) >> 32);
-            }
-            set {
-                id = (id & ~ORDERING_STAMP_MASK) | (((ulong)value << 32) & ORDERING_STAMP_MASK);
-            }
+            get => (ushort)((id & ORDERING_STAMP_MASK) >> 32);
+            set => id = (id & ~ORDERING_STAMP_MASK) | (((ulong)value << 32) & ORDERING_STAMP_MASK);
         }
 
         public ulong sequenceId {
-            get {
-                return id & SEQUENCE_ID_MASK;
-            }
-            set {
-                id = (id & ~SEQUENCE_ID_MASK) | (value & SEQUENCE_ID_MASK);
-            }
+            get => id & SEQUENCE_ID_MASK;
+            set => id = (id & ~SEQUENCE_ID_MASK) | (value & SEQUENCE_ID_MASK);
         }
 
         private bool getFlag(Flag flag) {

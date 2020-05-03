@@ -24,6 +24,8 @@ namespace AC2E.PacketTool.Reader {
                     return new CliDatInterrogationResponseMsg(data);
                 case MessageOpcode.CLIDAT_REQUEST_DATA_EVENT:
                     return new CliDatRequestDataMsg(data);
+                case MessageOpcode.Evt_Physics__CPosition_ID:
+                    return new CPositionMsg(data);
                 case MessageOpcode.Evt_Physics__CreatePlayer_ID:
                     return new CreatePlayerMsg(data);
                 case MessageOpcode.Evt_Interp__InterpCEvent_Private_ID:

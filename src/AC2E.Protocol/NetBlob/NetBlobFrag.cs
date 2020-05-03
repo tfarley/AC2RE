@@ -15,9 +15,7 @@ namespace AC2E.Protocol.NetBlob {
         public NetQueue queueId; // queueID
         public byte[] _payload;
         public byte[] payload {
-            get {
-                return _payload;
-            }
+            get => _payload;
             set {
                 _payload = value;
                 fragSize = (ushort)(payload.Length + 16);

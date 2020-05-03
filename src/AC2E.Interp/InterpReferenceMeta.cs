@@ -29,84 +29,48 @@ namespace AC2E.Interp {
         }
 
         public bool isRecurse {
-            get {
-                return getFlag(Flag.RECURSE);
-            }
-            set {
-                setFlag(Flag.RECURSE, value);
-            }
+            get => getFlag(Flag.RECURSE);
+            set => setFlag(Flag.RECURSE, value);
         }
 
         public bool isProcess {
-            get {
-                return getFlag(Flag.PROCESS);
-            }
-            set {
-                setFlag(Flag.PROCESS, value);
-            }
+            get => getFlag(Flag.PROCESS);
+            set => setFlag(Flag.PROCESS, value);
         }
 
         public bool isRoot {
-            get {
-                return getFlag(Flag.ROOT);
-            }
-            set {
-                setFlag(Flag.ROOT, value);
-            }
+            get => getFlag(Flag.ROOT);
+            set => setFlag(Flag.ROOT, value);
         }
 
         public bool isSingleton {
-            get {
-                return getFlag(Flag.SINGLETON);
-            }
-            set {
-                setFlag(Flag.SINGLETON, value);
-            }
+            get => getFlag(Flag.SINGLETON);
+            set => setFlag(Flag.SINGLETON, value);
         }
 
         public bool isLoaded {
-            get {
-                return getFlag(Flag.LOADED);
-            }
-            set {
-                setFlag(Flag.LOADED, value);
-            }
+            get => getFlag(Flag.LOADED);
+            set => setFlag(Flag.LOADED, value);
         }
 
         public bool isUnk1 {
-            get {
-                return getFlag(Flag.UNK1);
-            }
-            set {
-                setFlag(Flag.UNK1, value);
-            }
+            get => getFlag(Flag.UNK1);
+            set => setFlag(Flag.UNK1, value);
         }
 
         public ushort gcHigh {
-            get {
-                return (ushort)((id & GC_HIGH_MASK) >> 10);
-            }
-            set {
-                id = (id & ~GC_HIGH_MASK) | (((uint)value << 10) & GC_HIGH_MASK);
-            }
+            get => (ushort)((id & GC_HIGH_MASK) >> 10);
+            set => id = (id & ~GC_HIGH_MASK) | (((uint)value << 10) & GC_HIGH_MASK);
         }
 
         public ReferenceType referenceType {
-            get {
-                return (ReferenceType)((id & REFERENCE_TYPE_MASK) >> 8);
-            }
-            set {
-                id = (id & ~GC_HIGH_MASK) | (((uint)value << 8) & REFERENCE_TYPE_MASK);
-            }
+            get => (ReferenceType)((id & REFERENCE_TYPE_MASK) >> 8);
+            set => id = (id & ~GC_HIGH_MASK) | (((uint)value << 8) & REFERENCE_TYPE_MASK);
         }
 
         public byte gcLow {
-            get {
-                return (byte)(id & GC_LOW_MASK);
-            }
-            set {
-                id = (id & ~GC_LOW_MASK) | (value & GC_LOW_MASK);
-            }
+            get => (byte)(id & GC_LOW_MASK);
+            set => id = (id & ~GC_LOW_MASK) | (value & GC_LOW_MASK);
         }
 
         private bool getFlag(Flag flag) {

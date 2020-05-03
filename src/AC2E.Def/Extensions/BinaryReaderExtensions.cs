@@ -138,5 +138,13 @@ namespace AC2E.Def.Extensions {
                 z = reader.ReadSingle(),
             };
         }
+
+        public static Heading ReadHeading(this BinaryReader reader) {
+            return new Heading(((reader.ReadUInt32() >> 24) & 0x000000FF) / 255.0f * 360.0f);
+        }
+
+        public static CellId ReadCellId(this BinaryReader reader) {
+            return new CellId(reader.ReadUInt32());
+        }
     }
 }

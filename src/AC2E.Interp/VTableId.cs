@@ -16,21 +16,13 @@
         }
 
         public ushort packageNum {
-            get {
-                return (ushort)((id & PACKAGE_NUM_MASK) >> 16);
-            }
-            set {
-                id = (id & ~PACKAGE_NUM_MASK) | (((uint)value << 16) & PACKAGE_NUM_MASK);
-            }
+            get => (ushort)((id & PACKAGE_NUM_MASK) >> 16);
+            set => id = (id & ~PACKAGE_NUM_MASK) | (((uint)value << 16) & PACKAGE_NUM_MASK);
         }
 
         public ushort funcNum {
-            get {
-                return (ushort)(id & FUNC_NUM_MASK);
-            }
-            set {
-                id = (id & ~FUNC_NUM_MASK) | (value & FUNC_NUM_MASK);
-            }
+            get => (ushort)(id & FUNC_NUM_MASK);
+            set => id = (id & ~FUNC_NUM_MASK) | (value & FUNC_NUM_MASK);
         }
     }
 }

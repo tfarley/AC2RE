@@ -105,5 +105,13 @@ namespace AC2E.Def.Extensions {
             writer.Write(value.y);
             writer.Write(value.z);
         }
+
+        public static void Write(this BinaryWriter writer, Heading value) {
+            writer.Write((uint)(value.rotDegrees / 360.0f * 255.0f) & 0x000000FF);
+        }
+
+        public static void Write(this BinaryWriter writer, CellId value) {
+            writer.Write(value.id);
+        }
     }
 }
