@@ -16,6 +16,7 @@ namespace AC2E.Def.Enums {
         EMOTE = 1 << 6, // 0x00000040
         LOG = 1 << 7, // 0x00000080
         BROADCAST = 1 << 8, // 0x00000100
+
         FELLOWSHIP = 1 << 16, // 0x00000200
         ALLEGIANCE = 1 << 17, // 0x00000400
         CHAT_ENTRY = 1 << 18, // 0x00000800

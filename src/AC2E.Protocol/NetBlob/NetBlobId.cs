@@ -6,7 +6,8 @@ namespace AC2E.Protocol.NetBlob {
 
         [Flags]
         public enum Flag : ulong {
-            NONE = 0x0000000000000000,
+            NONE = 0,
+
             OUT_OF_WORLD = 0x2000000000000000,
             CELL = 0x4000000000000000,
             EPHEMERAL = 0x8000000000000000,

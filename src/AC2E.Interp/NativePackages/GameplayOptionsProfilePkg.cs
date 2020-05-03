@@ -46,6 +46,7 @@ namespace AC2E.Interp.Packages {
             SHOW_PK_DAMAGE = 1 << 11, // 0x00000800
             SHORTCUT_INSTASCROLL = 1 << 12, // 0x00001000
             LATENCY_INDICATOR_GRAPH = 1 << 13, // 0x00002000
+
             HAS_BEEN_VERSIONED = 1u << 31, // 0x80000000
         }
 
