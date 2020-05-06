@@ -63,6 +63,10 @@
                         <GridViewColumn Header="Size" Width="50" DisplayMemberBinding="{Binding size}"/>
                         <GridViewColumn Header="Queue" Width="120" DisplayMemberBinding="{Binding queue}"/>
                         <GridViewColumn Header="Error" Width="200" DisplayMemberBinding="{Binding error}"/>
+                        <GridViewColumn Header="Ord" Width="30" DisplayMemberBinding="{Binding orderingType}"/>
+                        <GridViewColumn Header="Eph" Width="30" DisplayMemberBinding="{Binding isEphemeral}"/>
+                        <GridViewColumn Header="Cel" Width="30" DisplayMemberBinding="{Binding isCell}"/>
+                        <GridViewColumn Header="Oow" Width="30" DisplayMemberBinding="{Binding isOutOfWorld}"/>
                     </GridView>
                 </ListView.View>
             </ListView>

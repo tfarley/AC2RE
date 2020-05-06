@@ -100,7 +100,7 @@ namespace AC2E.Def.Structs {
                     m_startup_fx = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
                 }
                 if (packFlags.HasFlag(PackFlag.FXOVERRIDES)) {
-                    throw new Exception();
+                    throw new NotImplementedException();
                 }
             }
 
@@ -131,7 +131,7 @@ namespace AC2E.Def.Structs {
                     data.Write(m_startup_fx, data.Write, data.Write);
                 }
                 if (packFlags.HasFlag(PackFlag.FXOVERRIDES)) {
-                    throw new Exception();
+                    throw new NotImplementedException();
                 }
             }
         }

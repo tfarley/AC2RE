@@ -39,7 +39,7 @@ namespace AC2E.Interp.Packages {
                     data.WriteEncryptedString(_data_str);
                     break;
                 default:
-                    throw new Exception();
+                    throw new InvalidDataException();
             }
         }
     }

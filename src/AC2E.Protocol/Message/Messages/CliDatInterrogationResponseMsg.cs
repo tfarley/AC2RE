@@ -7,9 +7,7 @@ namespace AC2E.Protocol.Message.Messages {
     public class CliDatInterrogationResponseMsg : INetMessage {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
-
         public NetQueue queueId => NetQueue.DATABASE;
-
         public MessageOpcode opcode => MessageOpcode.CLIDAT_INTERROGATION_RESPONSE_EVENT;
 
         // CCliDatInterrogationResponseEvent::CDataFormat

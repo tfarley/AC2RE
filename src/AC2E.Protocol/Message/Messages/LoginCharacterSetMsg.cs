@@ -9,9 +9,7 @@ namespace AC2E.Protocol.Message.Messages {
     public class LoginCharacterSetMsg : INetMessage {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
-
         public NetQueue queueId => NetQueue.EVENT;
-
         public MessageOpcode opcode => MessageOpcode.Evt_Login__CharacterSet_ID;
 
         // CharacterSet

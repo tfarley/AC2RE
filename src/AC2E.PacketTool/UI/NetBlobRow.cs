@@ -17,6 +17,10 @@ namespace AC2E.PacketTool.UI {
         public int size { get; private set; }
         public string queue { get; private set; }
         public string error => netBlobRecord.messageErrorTypeOptional.ToString();
+        public byte orderingType { get; private set; }
+        public char isEphemeral { get; private set; }
+        public char isCell { get; private set; }
+        public char isOutOfWorld { get; private set; }
 
         public NetBlobRecord netBlobRecord;
 
@@ -38,6 +42,10 @@ namespace AC2E.PacketTool.UI {
             }
             size = netBlobRecord.netBlob.payload != null ? netBlobRecord.netBlob.payload.Length : 0;
             queue = netBlobRecord.netBlob.queueId.ToString();
+            orderingType = netBlobRecord.netBlob.blobId.orderingType;
+            isEphemeral = netBlobRecord.netBlob.blobId.isEphemeral ? 'T' : 'F';
+            isCell = netBlobRecord.netBlob.blobId.isCell ? 'T' : 'F';
+            isOutOfWorld = netBlobRecord.netBlob.blobId.isOutOfWorld ? 'T' : 'F';
         }
     }
 }

@@ -9,9 +9,7 @@ namespace AC2E.Protocol.Message.Messages {
     public class InterpSEventMsg : INetMessage {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-
         public NetQueue queueId => NetQueue.WEENIE;
-
         public MessageOpcode opcode => MessageOpcode.Evt_Interp__InterpSEvent_ID;
 
         public IServerEvent netEvent;
@@ -23,7 +21,7 @@ namespace AC2E.Protocol.Message.Messages {
                     netEvent = new StartAttackSEvt(data);
                     break;
                 default:
-                    throw new Exception($"Unhandled server event: {funcId}.");
+                    throw new NotImplementedException($"Unhandled server event: {funcId}.");
             }
         }
     }

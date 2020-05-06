@@ -9,9 +9,7 @@ namespace AC2E.Protocol.Message.Messages {
     public class InterpCEventPrivateMsg : INetMessage {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-
         public NetQueue queueId => NetQueue.EVENT;
-
         public MessageOpcode opcode => MessageOpcode.Evt_Interp__InterpCEvent_Private_ID;
 
         public IClientEvent netEvent;
@@ -34,7 +32,7 @@ namespace AC2E.Protocol.Message.Messages {
                     netEvent = new ExitPortalSpaceCEvt(data);
                     break;
                 default:
-                    throw new Exception($"Unhandled client event: {funcId}.");
+                    throw new NotImplementedException($"Unhandled client event: {funcId}.");
             }
         }
 

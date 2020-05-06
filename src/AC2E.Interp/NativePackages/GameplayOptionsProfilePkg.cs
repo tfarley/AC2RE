@@ -128,7 +128,7 @@ namespace AC2E.Interp.Packages {
                 data.Write(m_windowOpacities, data.Write, data.Write);
             }
             if (contentFlags.HasFlag(ContentFlag.UNK1)) {
-                throw new Exception();
+                throw new NotImplementedException();
             }
         }
     }

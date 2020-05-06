@@ -13,7 +13,7 @@ namespace AC2E.Def.Extensions {
 
         public static int UnpackInt32(this BinaryReader reader) {
             if ((PackTag)reader.ReadUInt32() != PackTag.INT) {
-                throw new Exception();
+                throw new InvalidDataException();
             }
 
             return reader.ReadInt32();
@@ -21,7 +21,7 @@ namespace AC2E.Def.Extensions {
 
         public static uint UnpackUInt32(this BinaryReader reader) {
             if ((PackTag)reader.ReadUInt32() != PackTag.INT) {
-                throw new Exception();
+                throw new InvalidDataException();
             }
 
             return reader.ReadUInt32();
@@ -29,7 +29,7 @@ namespace AC2E.Def.Extensions {
 
         public static long UnpackInt64(this BinaryReader reader) {
             if ((PackTag)reader.ReadUInt32() != PackTag.LONGINT) {
-                throw new Exception();
+                throw new InvalidDataException();
             }
 
             return reader.ReadInt64();
@@ -37,7 +37,7 @@ namespace AC2E.Def.Extensions {
 
         public static ulong UnpackUInt64(this BinaryReader reader) {
             if ((PackTag)reader.ReadUInt32() != PackTag.LONGINT) {
-                throw new Exception();
+                throw new InvalidDataException();
             }
 
             return reader.ReadUInt64();
@@ -45,7 +45,7 @@ namespace AC2E.Def.Extensions {
 
         public static float UnpackSingle(this BinaryReader reader) {
             if ((PackTag)reader.ReadUInt32() != PackTag.FLOAT) {
-                throw new Exception();
+                throw new InvalidDataException();
             }
 
             return reader.ReadSingle();
@@ -53,7 +53,7 @@ namespace AC2E.Def.Extensions {
 
         public static double UnpackDouble(this BinaryReader reader) {
             if ((PackTag)reader.ReadUInt32() != PackTag.LONGFLOAT) {
-                throw new Exception();
+                throw new InvalidDataException();
             }
 
             return reader.ReadDouble();
@@ -101,7 +101,7 @@ namespace AC2E.Def.Extensions {
             } else if (sizeOfSize == 4) {
                 numElements = reader.ReadUInt32();
             } else {
-                throw new Exception();
+                throw new ArgumentException();
             }
             for (int i = 0; i < numElements; i++) {
                 list.Add(elementReader.Invoke());
@@ -136,6 +136,15 @@ namespace AC2E.Def.Extensions {
                 x = reader.ReadSingle(),
                 y = reader.ReadSingle(),
                 z = reader.ReadSingle(),
+            };
+        }
+
+        public static Quaternion ReadQuaternion(this BinaryReader reader) {
+            return new Quaternion {
+                x = reader.ReadSingle(),
+                y = reader.ReadSingle(),
+                z = reader.ReadSingle(),
+                w = reader.ReadSingle(),
             };
         }
 

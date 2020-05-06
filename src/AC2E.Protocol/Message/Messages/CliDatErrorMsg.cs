@@ -8,9 +8,7 @@ namespace AC2E.Protocol.Message.Messages {
     public class CliDatErrorMsg : INetMessage {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
-
         public NetQueue queueId => NetQueue.DATABASE;
-
         public MessageOpcode opcode => MessageOpcode.CLIDAT_ERROR_EVENT;
 
         // CCliDatErrorEvent::CDataFormat

@@ -26,6 +26,8 @@ namespace AC2E.PacketTool.Reader {
                     return new CliDatRequestDataMsg(data);
                 case MessageOpcode.Evt_Physics__CPosition_ID:
                     return new CPositionMsg(data);
+                case MessageOpcode.Evt_Physics__CreateObject_ID:
+                    return new CreateObjectMsg(data);
                 case MessageOpcode.Evt_Physics__CreatePlayer_ID:
                     return new CreatePlayerMsg(data);
                 case MessageOpcode.Evt_Interp__InterpCEvent_Private_ID:
@@ -36,6 +38,8 @@ namespace AC2E.PacketTool.Reader {
                     return new LoginCharacterSetMsg(data);
                 case MessageOpcode.Evt_Login__MinCharSet_ID:
                     return new LoginMinCharSetMsg(data);
+                case MessageOpcode.Evt_Physics__Position_ID:
+                    return new PositionMsg(data);
                 case MessageOpcode.Evt_Admin__WorldName_ID:
                     return new WorldNameMsg(data);
                 default:

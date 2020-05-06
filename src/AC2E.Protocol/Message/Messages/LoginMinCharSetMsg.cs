@@ -10,9 +10,7 @@ namespace AC2E.Protocol.Message.Messages {
     public class LoginMinCharSetMsg : INetMessage {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
-
         public NetQueue queueId => NetQueue.EVENT;
-
         public MessageOpcode opcode => MessageOpcode.Evt_Login__MinCharSet_ID;
 
         // MinimalCharacterSet

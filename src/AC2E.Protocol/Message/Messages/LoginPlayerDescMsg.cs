@@ -7,9 +7,7 @@ namespace AC2E.Protocol.Message.Messages {
     public class LoginPlayerDescMsg : INetMessage {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-
         public NetQueue queueId => NetQueue.EVENT;
-
         public MessageOpcode opcode => MessageOpcode.Evt_Login__PlayerDesc_ID;
 
         // TODO: Complete packet breakdown

@@ -64,7 +64,7 @@ namespace AC2E.PacketTool.Reader {
                             _messageErrorType = MessageErrorType.NONE;
                         } else {
                             _messageErrorType = MessageErrorType.UNHANDLED_OPCODE;
-                            _messageException = new Exception("Unhandled message opcode.");
+                            _messageException = new NotImplementedException("Unhandled message opcode.");
                         }
                     }
                 } else {

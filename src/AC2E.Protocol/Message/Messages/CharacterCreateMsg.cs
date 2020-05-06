@@ -11,9 +11,7 @@ namespace AC2E.Protocol.Message.Messages {
     public class CharacterCreateMsg : INetMessage {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-
         public NetQueue queueId => NetQueue.LOGON;
-
         public MessageOpcode opcode => MessageOpcode.CHARACTER_CREATE_EVENT;
 
         public string accountName;

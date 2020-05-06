@@ -8,9 +8,7 @@ namespace AC2E.Protocol.Message.Messages {
     public class CreatePlayerMsg : INetMessage {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-
         public NetQueue queueId => NetQueue.EVENT;
-
         public MessageOpcode opcode => MessageOpcode.Evt_Physics__CreatePlayer_ID;
 
         // GlobalEventHandler::RecvEvt_CreatePlayer
