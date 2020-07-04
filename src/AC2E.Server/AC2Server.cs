@@ -131,25 +131,25 @@ namespace AC2E.Server {
                             Log.Warning("Client tried to connect, but the number of active connections is already at the limit.");
                         }
                     } else if (clients.TryGetValue(packet.recipientId, out ClientConnection client)) {
-                        if (packet.flags.HasFlag(NetPacket.Flag.DISCONNECT)) {
+                        if (packet.flags.HasFlag(NetPacket.Flag.LOGOFF)) {
                             // TODO: Remove client
                             Log.Information($"Client diconnected, id {packet.recipientId}.");
                             return;
                         }
 
                         // TODO: Need to handle client acking the re-sent (nacked) packets
-                        if (packet.flags.HasFlag(NetPacket.Flag.ACK)) {
+                        if (packet.flags.HasFlag(NetPacket.Flag.PAK)) {
                             client.ackPacket(packet.ackHeader);
                         }
 
-                        if (packet.flags.HasFlag(NetPacket.Flag.NACKS)) {
+                        if (packet.flags.HasFlag(NetPacket.Flag.NAK)) {
                             foreach (uint seq in packet.nacksHeader) {
                                 client.nackPacket(seq);
                             }
                         }
 
                         if (client.connected && packet.seq <= client.highestReceivedPacketSeq) {
-                            if (!packet.flags.HasFlag(NetPacket.Flag.ACK) && !packet.flags.HasFlag(NetPacket.Flag.NACKS)) {
+                            if (!packet.flags.HasFlag(NetPacket.Flag.PAK) && !packet.flags.HasFlag(NetPacket.Flag.NAK)) {
                                 Log.Warning($"Got dupe packet with seq {packet.seq}, expecting {client.highestReceivedPacketSeq}.");
                             }
                             return;

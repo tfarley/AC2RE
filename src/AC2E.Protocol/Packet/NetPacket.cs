@@ -23,19 +23,19 @@ namespace AC2E.Protocol.Packet {
 
             // Optional headers, see COptionalHeaderAllocatorTemplate
             SERVER_SWITCH = 1 << 8, // 0x00000100
-            LOGON_SERVER_ADDR = 1 << 9, // 0x00000200
+            LOGON_ROUTE = 1 << 9, // 0x00000200
             UNK_1 = 1 << 10, // 0x00000400 // TODO: Response to server switch?
             REFERRAL = 1 << 11, // 0x00000800
-            NACKS = 1 << 12, // 0x00001000
+            NAK = 1 << 12, // 0x00001000
             NO_RETRANSMIT = 1 << 13, // 0x00002000
-            ACK = 1 << 14, // 0x00004000
-            DISCONNECT = 1 << 15, // 0x00008000
-            LOGON_REQUEST = 1 << 16, // 0x00010000
-            WORLD_LOGON_REQUEST = 1 << 17, // 0x00020000
+            PAK = 1 << 14, // 0x00004000
+            LOGOFF = 1 << 15, // 0x00008000
+            LOGON = 1 << 16, // 0x00010000
+            WORLD_LOGON = 1 << 17, // 0x00020000
             CONNECT = 1 << 18, // 0x00040000
             CONNECT_ACK = 1 << 19, // 0x00080000
-            NET_ERROR = 1 << 20, // 0x00100000
-            NET_ERROR_DISCONNECT = 1 << 21, // 0x00200000
+            CONNECTION_ERROR = 1 << 20, // 0x00100000
+            DISCONNECT = 1 << 21, // 0x00200000
             ICMD_COMMAND = 1 << 22, // 0x00400000
             TIME_SYNC = 1 << 24, // 0x01000000
             ECHO_REQUEST = 1 << 25, // 0x02000000
@@ -56,7 +56,7 @@ namespace AC2E.Protocol.Packet {
             get => _nacksHeader;
             set {
                 _nacksHeader = value;
-                flags |= Flag.NACKS;
+                flags |= Flag.NAK;
             }
         }
 
@@ -65,7 +65,7 @@ namespace AC2E.Protocol.Packet {
             get => _ackHeader;
             set {
                 _ackHeader = value;
-                flags |= Flag.ACK;
+                flags |= Flag.PAK;
             }
         }
 
@@ -74,7 +74,7 @@ namespace AC2E.Protocol.Packet {
             get => _logonHeader;
             set {
                 _logonHeader = value;
-                flags |= Flag.LOGON_REQUEST;
+                flags |= Flag.LOGON;
             }
         }
 
@@ -153,7 +153,7 @@ namespace AC2E.Protocol.Packet {
             if (flags.HasFlag(Flag.SERVER_SWITCH)) {
                 throw new NotImplementedException();
             }
-            if (flags.HasFlag(Flag.LOGON_SERVER_ADDR)) {
+            if (flags.HasFlag(Flag.LOGON_ROUTE)) {
                 throw new NotImplementedException();
             }
             if (flags.HasFlag(Flag.UNK_1)) {
@@ -162,19 +162,19 @@ namespace AC2E.Protocol.Packet {
             if (flags.HasFlag(Flag.REFERRAL)) {
                 throw new NotImplementedException();
             }
-            if (flags.HasFlag(Flag.NACKS)) {
+            if (flags.HasFlag(Flag.NAK)) {
                 _nacksHeader = data.ReadList(data.ReadUInt32);
             }
             if (flags.HasFlag(Flag.NO_RETRANSMIT)) {
                 throw new NotImplementedException();
             }
-            if (flags.HasFlag(Flag.ACK)) {
+            if (flags.HasFlag(Flag.PAK)) {
                 _ackHeader = data.ReadUInt32();
             }
-            if (flags.HasFlag(Flag.LOGON_REQUEST)) {
+            if (flags.HasFlag(Flag.LOGON)) {
                 _logonHeader = new LogonHeader(data);
             }
-            if (flags.HasFlag(Flag.WORLD_LOGON_REQUEST)) {
+            if (flags.HasFlag(Flag.WORLD_LOGON)) {
                 throw new NotImplementedException();
             }
             if (flags.HasFlag(Flag.CONNECT)) {
@@ -183,10 +183,10 @@ namespace AC2E.Protocol.Packet {
             if (flags.HasFlag(Flag.CONNECT_ACK)) {
                 _connectAckHeader = data.ReadUInt64();
             }
-            if (flags.HasFlag(Flag.NET_ERROR)) {
+            if (flags.HasFlag(Flag.CONNECTION_ERROR)) {
                 throw new NotImplementedException();
             }
-            if (flags.HasFlag(Flag.NET_ERROR_DISCONNECT)) {
+            if (flags.HasFlag(Flag.DISCONNECT)) {
                 throw new NotImplementedException();
             }
             if (flags.HasFlag(Flag.ICMD_COMMAND)) {
@@ -231,7 +231,7 @@ namespace AC2E.Protocol.Packet {
             if (flags.HasFlag(Flag.SERVER_SWITCH)) {
                 throw new NotImplementedException();
             }
-            if (flags.HasFlag(Flag.LOGON_SERVER_ADDR)) {
+            if (flags.HasFlag(Flag.LOGON_ROUTE)) {
                 throw new NotImplementedException();
             }
             if (flags.HasFlag(Flag.UNK_1)) {
@@ -240,24 +240,24 @@ namespace AC2E.Protocol.Packet {
             if (flags.HasFlag(Flag.REFERRAL)) {
                 throw new NotImplementedException();
             }
-            if (flags.HasFlag(Flag.NACKS)) {
+            if (flags.HasFlag(Flag.NAK)) {
                 throw new NotImplementedException();
             }
             if (flags.HasFlag(Flag.NO_RETRANSMIT)) {
                 throw new NotImplementedException();
             }
-            if (flags.HasFlag(Flag.ACK)) {
+            if (flags.HasFlag(Flag.PAK)) {
                 long dataStart = data.BaseStream.Position;
                 data.Write(_ackHeader);
                 checksum += CryptoUtil.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
             }
-            if (flags.HasFlag(Flag.LOGON_REQUEST)) {
+            if (flags.HasFlag(Flag.LOGON)) {
                 throw new NotImplementedException();
             }
-            if (flags.HasFlag(Flag.WORLD_LOGON_REQUEST)) {
+            if (flags.HasFlag(Flag.WORLD_LOGON)) {
                 throw new NotImplementedException();
             }
-            if (flags.HasFlag(Flag.WORLD_LOGON_REQUEST)) {
+            if (flags.HasFlag(Flag.WORLD_LOGON)) {
                 throw new NotImplementedException();
             }
             if (_connectHeader != null) {
@@ -268,10 +268,10 @@ namespace AC2E.Protocol.Packet {
             if (flags.HasFlag(Flag.CONNECT_ACK)) {
                 throw new NotImplementedException();
             }
-            if (flags.HasFlag(Flag.NET_ERROR)) {
+            if (flags.HasFlag(Flag.CONNECTION_ERROR)) {
                 throw new NotImplementedException();
             }
-            if (flags.HasFlag(Flag.NET_ERROR_DISCONNECT)) {
+            if (flags.HasFlag(Flag.DISCONNECT)) {
                 throw new NotImplementedException();
             }
             if (flags.HasFlag(Flag.ICMD_COMMAND)) {

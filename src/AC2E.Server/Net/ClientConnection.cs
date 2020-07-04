@@ -150,7 +150,7 @@ namespace AC2E.Server.Net {
                 }
 
                 // If purely ACK or NACKS, don't increment sequence number and don't encrypt checksum
-                if (packet.flags != (NetPacket.Flag.ACK | NetPacket.Flag.ENCRYPTED_CHECKSUM) && packet.flags != (NetPacket.Flag.NACKS | NetPacket.Flag.ENCRYPTED_CHECKSUM)) {
+                if (packet.flags != (NetPacket.Flag.PAK | NetPacket.Flag.ENCRYPTED_CHECKSUM) && packet.flags != (NetPacket.Flag.NAK | NetPacket.Flag.ENCRYPTED_CHECKSUM)) {
                     packetSeq++;
                 } else {
                     packet.flags &= ~NetPacket.Flag.ENCRYPTED_CHECKSUM;
