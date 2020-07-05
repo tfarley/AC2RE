@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AC2E.Protocol.NetBlob {
+namespace AC2E.Protocol {
 
     public struct NetBlobId {
 

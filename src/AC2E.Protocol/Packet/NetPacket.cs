@@ -1,12 +1,10 @@
-﻿using AC2E.Crypto;
-using AC2E.Def.Extensions;
-using AC2E.Protocol.NetBlob;
+﻿using AC2E.Utils;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace AC2E.Protocol.Packet {
+namespace AC2E.Protocol {
 
     public class NetPacket {
 
@@ -249,7 +247,7 @@ namespace AC2E.Protocol.Packet {
             if (flags.HasFlag(Flag.PAK)) {
                 long dataStart = data.BaseStream.Position;
                 data.Write(_ackHeader);
-                checksum += CryptoUtil.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
+                checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
             }
             if (flags.HasFlag(Flag.LOGON)) {
                 throw new NotImplementedException();
@@ -263,7 +261,7 @@ namespace AC2E.Protocol.Packet {
             if (_connectHeader != null) {
                 long dataStart = data.BaseStream.Position;
                 _connectHeader.write(data);
-                checksum += CryptoUtil.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
+                checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
             }
             if (flags.HasFlag(Flag.CONNECT_ACK)) {
                 throw new NotImplementedException();
@@ -280,7 +278,7 @@ namespace AC2E.Protocol.Packet {
             if (flags.HasFlag(Flag.TIME_SYNC)) {
                 long dataStart = data.BaseStream.Position;
                 data.Write(_timeSyncHeader);
-                checksum += CryptoUtil.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
+                checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
             }
             if (flags.HasFlag(Flag.ECHO_REQUEST)) {
                 throw new NotImplementedException();
@@ -288,12 +286,12 @@ namespace AC2E.Protocol.Packet {
             if (_echoResponseHeader != null) {
                 long dataStart = data.BaseStream.Position;
                 _echoResponseHeader.write(data);
-                checksum += CryptoUtil.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
+                checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
             }
             if (_flowHeader != null) {
                 long dataStart = data.BaseStream.Position;
                 _flowHeader.write(data);
-                checksum += CryptoUtil.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
+                checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
             }
         }
 

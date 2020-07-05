@@ -1,5 +1,4 @@
-﻿using AC2E.PacketTool.Reader;
-using AC2E.Utils;
+﻿using AC2E.Utils;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;

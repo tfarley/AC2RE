@@ -1,9 +1,8 @@
-﻿using AC2E.Interp.Event;
-using AC2E.PacketTool.Reader;
-using AC2E.Protocol.Message;
+﻿using AC2E.Protocol;
+using AC2E.WLib;
 using System;
 
-namespace AC2E.PacketTool.UI {
+namespace AC2E.PacketTool {
 
     public class NetBlobRow {
 

@@ -3,7 +3,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 
-namespace AC2E.Server.Net {
+namespace AC2E.Server {
 
     internal class NetInterface {
 

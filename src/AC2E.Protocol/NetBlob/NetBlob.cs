@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AC2E.Protocol.NetBlob {
+namespace AC2E.Protocol {
 
     public class NetBlob {
 

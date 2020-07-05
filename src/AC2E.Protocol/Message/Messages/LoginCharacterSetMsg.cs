@@ -1,10 +1,8 @@
-﻿using AC2E.Def.Extensions;
-using AC2E.Def.Structs;
-using AC2E.Protocol.NetBlob;
+﻿using AC2E.Def;
 using System.Collections.Generic;
 using System.IO;
 
-namespace AC2E.Protocol.Message.Messages {
+namespace AC2E.Protocol {
 
     public class LoginCharacterSetMsg : INetMessage {
 

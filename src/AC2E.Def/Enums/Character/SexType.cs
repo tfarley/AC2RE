@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AC2E.Def.Enums {
+namespace AC2E.Def {
 
     // Const *_SexType
     // Dat file 23000009

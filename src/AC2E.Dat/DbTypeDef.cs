@@ -1,7 +1,4 @@
-﻿using AC2E.Def.Enums;
-using AC2E.Def.Structs;
-
-namespace AC2E.Dat {
+﻿namespace AC2E.Dat {
 
     public class DbTypeDef {
 

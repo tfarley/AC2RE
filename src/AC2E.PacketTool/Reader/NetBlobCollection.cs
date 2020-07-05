@@ -1,8 +1,7 @@
-﻿using AC2E.Protocol.NetBlob;
-using AC2E.Protocol.Packet;
+﻿using AC2E.Protocol;
 using System.Collections.Generic;
 
-namespace AC2E.PacketTool.Reader {
+namespace AC2E.PacketTool {
 
     public class NetBlobCollection {
 

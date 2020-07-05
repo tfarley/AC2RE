@@ -1,10 +1,7 @@
-﻿using AC2E.Interp.Event;
-using AC2E.Interp.Event.ServerEvents;
-using AC2E.Protocol.NetBlob;
-using System;
+﻿using AC2E.WLib;
 using System.IO;
 
-namespace AC2E.Protocol.Message.Messages {
+namespace AC2E.Protocol {
 
     public class InterpSEventMsg : INetMessage {
 
@@ -16,13 +13,7 @@ namespace AC2E.Protocol.Message.Messages {
 
         public InterpSEventMsg(BinaryReader data) {
             ServerEventFunctionId funcId = (ServerEventFunctionId)data.ReadUInt32();
-            switch (funcId) {
-                case ServerEventFunctionId.Combat__StartAttack:
-                    netEvent = new StartAttackSEvt(data);
-                    break;
-                default:
-                    throw new NotImplementedException($"Unhandled server event: {funcId}.");
-            }
+            netEvent = IServerEvent.read(funcId, data);
         }
     }
 }

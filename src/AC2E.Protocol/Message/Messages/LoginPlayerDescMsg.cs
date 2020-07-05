@@ -1,8 +1,7 @@
-﻿using AC2E.Protocol.NetBlob;
-using AC2E.Utils;
+﻿using AC2E.Utils;
 using System.IO;
 
-namespace AC2E.Protocol.Message.Messages {
+namespace AC2E.Protocol {
 
     public class LoginPlayerDescMsg : INetMessage {
 

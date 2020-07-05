@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AC2E.Utils.Extensions {
+namespace AC2E.Utils {
 
     public static class DictionaryExtensions {
 

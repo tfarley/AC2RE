@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace AC2E.Def.Structs {
+namespace AC2E.Def {
 
     public class MotionInterpDesc {
 

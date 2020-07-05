@@ -1,11 +1,9 @@
-﻿using AC2E.Def.Enums;
-using AC2E.Def.Extensions;
-using AC2E.Interp.Extensions;
+﻿using AC2E.Def;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace AC2E.Interp.Packages {
+namespace AC2E.Interp {
 
     public class GameplayOptionsProfilePkg : IPackage {
 

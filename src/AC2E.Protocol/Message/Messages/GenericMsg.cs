@@ -1,7 +1,6 @@
-﻿using AC2E.Protocol.NetBlob;
-using System.IO;
+﻿using System.IO;
 
-namespace AC2E.Protocol.Message.Messages {
+namespace AC2E.Protocol {
 
     public class GenericMsg : INetMessage {
 

@@ -1,13 +1,11 @@
-﻿using AC2E.Crypto;
-using AC2E.Def.Enums;
-using AC2E.Def.Structs;
-using AC2E.Utils.Extensions;
+﻿using AC2E.Def;
+using AC2E.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace AC2E.Def.Extensions {
+namespace AC2E {
 
     public static class BinaryWriterExtensions {
 
@@ -52,7 +50,7 @@ namespace AC2E.Def.Extensions {
                 return;
             }
             byte[] bytes = encoding.GetBytes(str);
-            CryptoUtil.encrypt(bytes, 0, bytes.Length);
+            AC2Crypto.encrypt(bytes, 0, bytes.Length);
             writer.Write(bytes);
             writer.Align(4);
         }
@@ -85,15 +83,6 @@ namespace AC2E.Def.Extensions {
                     valueWriter.Invoke(element.Value);
                 }
             }
-        }
-
-        public static void Write(this BinaryWriter writer, DataId value) {
-            writer.Write(value.id);
-        }
-
-        public static void Write(this BinaryWriter writer, QualifiedDataId value) {
-            writer.Write((uint)value.dbType);
-            writer.Write(value.did);
         }
 
         public static void Write(this BinaryWriter writer, InstanceId value) {

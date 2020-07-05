@@ -1,9 +1,8 @@
-﻿using AC2E.Def.Extensions;
-using AC2E.Def.Structs;
+﻿using AC2E.Def;
 using System.Collections.Generic;
 using System.IO;
 
-namespace AC2E.Interp.Packages {
+namespace AC2E.Interp {
 
     public class VectorPkg : IPackage {
 

@@ -1,13 +1,11 @@
-﻿using AC2E.Crypto;
-using AC2E.Def.Enums;
-using AC2E.Def.Structs;
-using AC2E.Utils.Extensions;
+﻿using AC2E.Def;
+using AC2E.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace AC2E.Def.Extensions {
+namespace AC2E {
 
     public static class BinaryReaderExtensions {
 
@@ -87,7 +85,7 @@ namespace AC2E.Def.Extensions {
             int length = numChars * encoding.GetMaxByteCount(0);
             byte[] bytes = reader.ReadBytes(length);
             reader.Align(4);
-            CryptoUtil.decrypt(bytes, 0, length);
+            AC2Crypto.decrypt(bytes, 0, length);
             return encoding.GetString(bytes);
         }
 
@@ -117,14 +115,6 @@ namespace AC2E.Def.Extensions {
                 dict.Add(keyReader.Invoke(), valueReader.Invoke());
             }
             return dict;
-        }
-
-        public static DataId ReadDataId(this BinaryReader reader) {
-            return new DataId(reader.ReadUInt32());
-        }
-
-        public static QualifiedDataId ReadQualifiedDataId(this BinaryReader reader) {
-            return new QualifiedDataId((DbType)reader.ReadUInt32(), reader.ReadDataId());
         }
 
         public static InstanceId ReadInstanceId(this BinaryReader reader) {

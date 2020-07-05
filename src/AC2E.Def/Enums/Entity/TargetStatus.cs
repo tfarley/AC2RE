@@ -1,4 +1,4 @@
-﻿namespace AC2E.Def.Enums {
+﻿namespace AC2E.Def {
 
     // Enum TargetStatus
     public enum TargetStatus : uint {

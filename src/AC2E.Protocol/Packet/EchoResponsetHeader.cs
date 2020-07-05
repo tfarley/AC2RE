@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace AC2E.Protocol.Packet {
+namespace AC2E.Protocol {
 
     public class EchoResponseHeader {
 

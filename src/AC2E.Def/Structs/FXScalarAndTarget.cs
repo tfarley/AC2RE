@@ -1,7 +1,6 @@
-﻿using AC2E.Def.Extensions;
-using System.IO;
+﻿using System.IO;
 
-namespace AC2E.Def.Structs {
+namespace AC2E.Def {
 
     public class FXScalarAndTarget {
 

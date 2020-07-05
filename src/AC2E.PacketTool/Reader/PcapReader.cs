@@ -1,10 +1,9 @@
-﻿using AC2E.Protocol.Packet;
+﻿using AC2E.Protocol;
 using Serilog;
 using System;
 using System.IO;
-using static AC2E.PacketTool.Reader.NetworkHeaders;
 
-namespace AC2E.PacketTool.Reader {
+namespace AC2E.PacketTool {
 
     public class PcapReader {
 

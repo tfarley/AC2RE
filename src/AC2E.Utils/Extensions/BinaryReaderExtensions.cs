@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace AC2E.Utils.Extensions {
+namespace AC2E.Utils {
 
     public static class BinaryReaderExtensions {
 

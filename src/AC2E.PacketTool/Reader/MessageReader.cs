@@ -1,9 +1,8 @@
-﻿using AC2E.Protocol.Message;
-using AC2E.Protocol.Message.Messages;
+﻿using AC2E.Protocol;
 using Serilog;
 using System.IO;
 
-namespace AC2E.PacketTool.Reader {
+namespace AC2E.PacketTool {
 
     public class MessageReader {
 

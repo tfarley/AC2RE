@@ -1,9 +1,10 @@
-﻿using AC2E.Def.Enums;
-using AC2E.Utils.Extensions;
+﻿using AC2E.Def;
+using AC2E.Interp;
+using AC2E.Utils;
 using System.Collections.Generic;
 using System.IO;
 
-namespace AC2E.Interp.Extensions {
+namespace AC2E {
 
     public static class BinaryWriterExtensions {
 

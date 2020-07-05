@@ -1,12 +1,10 @@
-﻿using AC2E.Def.Enums;
-using AC2E.Def.Extensions;
-using AC2E.Def.Structs;
-using AC2E.Protocol.NetBlob;
+﻿using AC2E.Dat;
+using AC2E.Def;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace AC2E.Protocol.Message.Messages {
+namespace AC2E.Protocol {
 
     public class CharacterCreateMsg : INetMessage {
 

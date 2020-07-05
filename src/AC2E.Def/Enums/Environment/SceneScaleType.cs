@@ -1,4 +1,4 @@
-﻿namespace AC2E.Def.Enums {
+﻿namespace AC2E.Def {
 
     // Enum SceneScaleType::Type
     public enum SceneScaleType : uint {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AC2E.Def.Enums {
+namespace AC2E.Def {
 
     // Const *_TextType
     // Dat file 230000A5 + 230000BB

@@ -1,5 +1,4 @@
-﻿using AC2E.Def.Extensions;
-using Serilog;
+﻿using Serilog;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;

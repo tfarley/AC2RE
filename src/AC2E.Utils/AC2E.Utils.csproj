@@ -4,8 +4,4 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\AC2E.Crypto\AC2E.Crypto.csproj" />
-  </ItemGroup>
-
 </Project>

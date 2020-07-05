@@ -1,7 +1,6 @@
-﻿using AC2E.Protocol.Packet;
-using System.IO;
+﻿using System.IO;
 
-namespace AC2E.Protocol.NetBlob {
+namespace AC2E.Protocol {
 
     public class NetBlobFrag {
 

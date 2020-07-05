@@ -1,8 +1,7 @@
-﻿using AC2E.Def.Extensions;
-using System;
+﻿using System;
 using System.IO;
 
-namespace AC2E.Protocol.Packet {
+namespace AC2E.Protocol {
 
     public class LogonHeader {
 

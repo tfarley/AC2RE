@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AC2E.Def.Enums {
+namespace AC2E.Def {
 
     // Enum Quadrant
     [Flags]

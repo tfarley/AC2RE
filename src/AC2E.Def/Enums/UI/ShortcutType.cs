@@ -1,4 +1,4 @@
-﻿namespace AC2E.Def.Enums {
+﻿namespace AC2E.Def {
 
     // Const *_ShortcutType
     public enum ShortcutType : uint {

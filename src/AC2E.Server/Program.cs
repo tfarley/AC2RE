@@ -1,6 +1,6 @@
-﻿using AC2E.Crypto;
-using AC2E.Dat.DbObjects;
+﻿using AC2E.Dat;
 using AC2E.Interp;
+using AC2E.Utils;
 using Serilog;
 using System;
 using System.IO;
@@ -29,13 +29,13 @@ namespace AC2E.Server {
         }
 
         private static void printDecryptedString(byte[] bytes, Encoding encoding) {
-            CryptoUtil.decrypt(bytes, 0, bytes.Length);
+            AC2Crypto.decrypt(bytes, 0, bytes.Length);
             Log.Information($"Str: {encoding.GetString(bytes)}");
         }
 
         private static void printEncryptedString(string str, Encoding encoding) {
             byte[] bytes = encoding.GetBytes(str);
-            CryptoUtil.encrypt(bytes, 0, bytes.Length);
+            AC2Crypto.encrypt(bytes, 0, bytes.Length);
             Log.Information($"Str: {str}");
             Log.Information($"Enc: {BitConverter.ToString(bytes).Replace("-", "")}");
         }
@@ -44,7 +44,7 @@ namespace AC2E.Server {
             string wlibFileName = "56000005";
             if (File.Exists(wlibFileName)) {
                 using (BinaryReader data = new BinaryReader(File.OpenRead(wlibFileName))) {
-                    var wlib = new WLib(data);
+                    var wlib = new Dat.WLib(data);
                     Log.Information("Parsed wlib.");
                     using (StreamWriter output = new StreamWriter(File.OpenWrite("wlib.packages.txt"))) {
                         Dump.dumpPackages(output, wlib.byteStream);

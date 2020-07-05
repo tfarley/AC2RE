@@ -1,8 +1,7 @@
-﻿using AC2E.Protocol.NetBlob;
-using System;
+﻿using System;
 using System.IO;
 
-namespace AC2E.Protocol.Message {
+namespace AC2E.Protocol {
 
     public interface INetMessage {
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AC2E.Utils.Extensions {
+namespace AC2E.Utils {
 
     public static class RandomExtensions {
 

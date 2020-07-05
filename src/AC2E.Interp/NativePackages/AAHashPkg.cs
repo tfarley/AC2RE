@@ -1,9 +1,7 @@
-﻿using AC2E.Def.Extensions;
-using AC2E.Interp.Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
-namespace AC2E.Interp.Packages {
+namespace AC2E.Interp {
 
     public class AAHashPkg : IPackage {
 

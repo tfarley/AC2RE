@@ -1,4 +1,4 @@
-﻿namespace AC2E.Protocol.Message {
+﻿namespace AC2E.Protocol {
 
     // Const Notice_* + Evt_* + *_EVENT
     public enum MessageOpcode : uint {

@@ -1,9 +1,8 @@
-﻿using AC2E.Protocol.Message;
-using AC2E.Protocol.NetBlob;
+﻿using AC2E.Protocol;
 using System;
 using System.IO;
 
-namespace AC2E.PacketTool.Reader {
+namespace AC2E.PacketTool {
 
     public class NetBlobRecord {
 

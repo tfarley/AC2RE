@@ -1,4 +1,4 @@
-﻿namespace AC2E.Def.Structs {
+﻿namespace AC2E.Def {
 
     public struct Heading {
 

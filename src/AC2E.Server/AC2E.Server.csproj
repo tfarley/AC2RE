@@ -16,10 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AC2E.Crypto\AC2E.Crypto.csproj" />
-    <ProjectReference Include="..\AC2E.Dat\AC2E.Dat.csproj" />
+    <ProjectReference Include="..\AC2E.DatObjects\AC2E.Dat.csproj" />
     <ProjectReference Include="..\AC2E.Def\AC2E.Def.csproj" />
-    <ProjectReference Include="..\AC2E.Interp\AC2E.Interp.csproj" />
     <ProjectReference Include="..\AC2E.Protocol\AC2E.Protocol.csproj" />
     <ProjectReference Include="..\AC2E.Utils\AC2E.Utils.csproj" />
   </ItemGroup>

@@ -10,8 +10,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AC2E.Def\AC2E.Def.csproj" />
-    <ProjectReference Include="..\AC2E.Interp\AC2E.Interp.csproj" />
     <ProjectReference Include="..\AC2E.Utils\AC2E.Utils.csproj" />
+    <ProjectReference Include="..\AC2E.Wlib\AC2E.WLib.csproj" />
   </ItemGroup>
 
 </Project>

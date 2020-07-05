@@ -1,9 +1,7 @@
-﻿using AC2E.Def.Extensions;
-using AC2E.Protocol.NetBlob;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 
-namespace AC2E.Protocol.Message.Messages {
+namespace AC2E.Protocol {
 
     public class WorldNameMsg : INetMessage {
 

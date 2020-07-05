@@ -1,9 +1,5 @@
-﻿using AC2E.Crypto;
-using AC2E.Protocol;
-using AC2E.Protocol.Message;
-using AC2E.Protocol.NetBlob;
-using AC2E.Protocol.Packet;
-using AC2E.Utils.Extensions;
+﻿using AC2E.Protocol;
+using AC2E.Utils;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -11,7 +7,7 @@ using System.IO;
 using System.Net;
 using System.Threading;
 
-namespace AC2E.Server.Net {
+namespace AC2E.Server {
 
     internal class ClientConnection {
 
@@ -168,7 +164,7 @@ namespace AC2E.Server.Net {
             using (BinaryWriter data = new BinaryWriter(new MemoryStream(sendBuffer))) {
                 // Write header
                 packet.writeHeader(data);
-                uint headerChecksum = CryptoUtil.calcChecksum(sendBuffer, 0, data.BaseStream.Position, true);
+                uint headerChecksum = AC2Crypto.calcChecksum(sendBuffer, 0, data.BaseStream.Position, true);
 
                 // Write optional headers
                 long contentStart = data.BaseStream.Position;
@@ -180,11 +176,11 @@ namespace AC2E.Server.Net {
                     foreach (NetBlobFrag frag in packet.frags) {
                         long dataStart = data.BaseStream.Position;
                         frag.writeHeader(data);
-                        contentChecksum += CryptoUtil.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
+                        contentChecksum += AC2Crypto.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
 
                         dataStart = data.BaseStream.Position;
                         frag.writePayload(data);
-                        contentChecksum += CryptoUtil.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
+                        contentChecksum += AC2Crypto.calcChecksum(sendBuffer, dataStart, data.BaseStream.Position - dataStart, true);
                     }
                 }
 

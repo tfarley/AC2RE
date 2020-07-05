@@ -1,8 +1,7 @@
-﻿using AC2E.Def.Enums;
-using AC2E.Protocol.NetBlob;
+﻿using AC2E.Def;
 using System.IO;
 
-namespace AC2E.Protocol.Message.Messages {
+namespace AC2E.Protocol {
 
     public class CliDatInterrogationResponseMsg : INetMessage {
 
