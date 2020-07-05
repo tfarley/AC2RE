@@ -219,7 +219,7 @@ namespace AC2E.Server {
                                     secondsGreyedOut = 0,
                                     vDesc = new VisualDesc {
                                         packFlags = VisualDesc.PackFlag.PARENT,
-                                        m_parent_did = new DataId(0x1F001110),
+                                        parentDid = new DataId(0x1F001110),
                                     },
                                 },
                             };
@@ -275,7 +275,7 @@ namespace AC2E.Server {
                                 objectId = msg.characterId,
                                 vDesc = new VisualDesc {
                                     packFlags = VisualDesc.PackFlag.PARENT,
-                                    m_parent_did = new DataId(0x1F001110),
+                                    parentDid = new DataId(0x1F001110),
                                 },
                             });
 

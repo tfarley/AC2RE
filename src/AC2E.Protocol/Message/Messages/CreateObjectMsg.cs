@@ -15,7 +15,7 @@ namespace AC2E.Protocol {
         public InstanceId objectId; // objectID
         public VisualDesc vDesc; // _vdesc
         public PhysicsDesc pDesc; // _pdesc
-        //public WeenieDesc wDesc; // _wdesc
+        public WeenieDesc wDesc; // _wdesc
 
         public CreateObjectMsg() {
 
@@ -25,6 +25,7 @@ namespace AC2E.Protocol {
             objectId = data.ReadInstanceId();
             vDesc = new VisualDesc(data);
             pDesc = new PhysicsDesc(data);
+            wDesc = new WeenieDesc(data);
         }
 
         public void write(BinaryWriter data) {

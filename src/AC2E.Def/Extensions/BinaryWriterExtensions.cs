@@ -102,6 +102,13 @@ namespace AC2E {
             writer.Write(value.w);
         }
 
+        public static void Write(this BinaryWriter writer, RGBAColor value) {
+            writer.Write(value.r);
+            writer.Write(value.g);
+            writer.Write(value.b);
+            writer.Write(value.a);
+        }
+
         public static void Write(this BinaryWriter writer, Heading value) {
             writer.Write((uint)(value.rotDegrees / 360.0f * 255.0f) & 0x000000FF);
         }

@@ -62,42 +62,42 @@ namespace AC2E.Def {
             }
 
             public PackFlag packFlags;
-            public PartGroupKey m_key;
-            public PartGroupKey m_parent_key;
-            public uint m_conn_pt;
-            public DataId m_setupDID;
-            public DataId m_animMapDID;
-            public Dictionary<uint, AppearanceInfo> m_app_hash;
-            public DataId m_fxtable_did;
-            public Dictionary<uint, float> m_startup_fx;
-            //public Dictionary<uint, List<FXData>> m_fx_overrides; // TODO: Figure this one out, need to find an example in pcaps
+            public PartGroupKey key; // m_key
+            public PartGroupKey parentKey; // m_parent_key
+            public uint connectionPoint; // m_conn_pt
+            public DataId setupDid; // m_setupDID
+            public DataId animMapDid; // m_animMapDID
+            public Dictionary<uint, AppearanceInfo> appearances; // m_app_hash
+            public DataId fxTableDid; // m_fxtable_did
+            public Dictionary<uint, float> startupFx; // m_startup_fx
+            //public Dictionary<uint, List<FXData>> fxOverrides; // m_fx_overrides // TODO: Figure this one out, need to find an example in pcaps
 
             public PartGroupDataDesc(BinaryReader data) {
                 // TODO: Need to verify parsing of all of these properties
                 packFlags = (PackFlag)data.ReadUInt32();
                 if (packFlags.HasFlag(PackFlag.KEY)) {
-                    m_key = (PartGroupKey)data.ReadUInt32();
+                    key = (PartGroupKey)data.ReadUInt32();
                 }
                 if (packFlags.HasFlag(PackFlag.PARENTKEY)) {
-                    m_parent_key = (PartGroupKey)data.ReadUInt32();
+                    parentKey = (PartGroupKey)data.ReadUInt32();
                 }
                 if (packFlags.HasFlag(PackFlag.CONNECTIONPOINT)) {
-                    m_conn_pt = data.ReadUInt32();
+                    connectionPoint = data.ReadUInt32();
                 }
                 if (packFlags.HasFlag(PackFlag.SETUP)) {
-                    m_setupDID = data.ReadDataId();
+                    setupDid = data.ReadDataId();
                 }
                 if (packFlags.HasFlag(PackFlag.ANIMMAP)) {
-                    m_animMapDID = data.ReadDataId();
+                    animMapDid = data.ReadDataId();
                 }
                 if (packFlags.HasFlag(PackFlag.APPHASH)) {
-                    m_app_hash = data.ReadDictionary(data.ReadUInt32, () => new AppearanceInfo(data));
+                    appearances = data.ReadDictionary(data.ReadUInt32, () => new AppearanceInfo(data));
                 }
                 if (packFlags.HasFlag(PackFlag.FXTABLE)) {
-                    m_fxtable_did = data.ReadDataId();
+                    fxTableDid = data.ReadDataId();
                 }
                 if (packFlags.HasFlag(PackFlag.STARTUPFX)) {
-                    m_startup_fx = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
+                    startupFx = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
                 }
                 if (packFlags.HasFlag(PackFlag.FXOVERRIDES)) {
                     throw new NotImplementedException();
@@ -107,28 +107,28 @@ namespace AC2E.Def {
             public void write(BinaryWriter data) {
                 data.Write((uint)packFlags);
                 if (packFlags.HasFlag(PackFlag.KEY)) {
-                    data.Write((uint)m_key);
+                    data.Write((uint)key);
                 }
                 if (packFlags.HasFlag(PackFlag.PARENTKEY)) {
-                    data.Write((uint)m_parent_key);
+                    data.Write((uint)parentKey);
                 }
                 if (packFlags.HasFlag(PackFlag.CONNECTIONPOINT)) {
-                    data.Write(m_conn_pt);
+                    data.Write(connectionPoint);
                 }
                 if (packFlags.HasFlag(PackFlag.SETUP)) {
-                    data.Write(m_setupDID);
+                    data.Write(setupDid);
                 }
                 if (packFlags.HasFlag(PackFlag.ANIMMAP)) {
-                    data.Write(m_animMapDID);
+                    data.Write(animMapDid);
                 }
                 if (packFlags.HasFlag(PackFlag.APPHASH)) {
-                    data.Write(m_app_hash, data.Write, v => v.write(data));
+                    data.Write(appearances, data.Write, v => v.write(data));
                 }
                 if (packFlags.HasFlag(PackFlag.FXTABLE)) {
-                    data.Write(m_fxtable_did);
+                    data.Write(fxTableDid);
                 }
                 if (packFlags.HasFlag(PackFlag.STARTUPFX)) {
-                    data.Write(m_startup_fx, data.Write, data.Write);
+                    data.Write(startupFx, data.Write, data.Write);
                 }
                 if (packFlags.HasFlag(PackFlag.FXOVERRIDES)) {
                     throw new NotImplementedException();
@@ -136,11 +136,43 @@ namespace AC2E.Def {
             }
         }
 
+        public class IconLayerDesc {
+
+            // TODO: Any pack flags?
+            public uint iconLayerId; // m_iconLayerID
+            public DataId imageDid; // m_imageDID
+            public RGBAColor shiftColor; // m_shiftColor
+
+            public IconLayerDesc(BinaryReader data) {
+                iconLayerId = data.ReadUInt32();
+                imageDid = data.ReadDataId();
+                shiftColor = data.ReadRGBAColor();
+            }
+        }
+
+        public class IconDesc {
+
+            // TODO: Any pack flags?
+            public List<IconLayerDesc> layers; // m_layers
+
+            public IconDesc(BinaryReader data) {
+                layers = data.ReadList(() => new IconLayerDesc(data));
+            }
+        }
+
         public PackFlag packFlags;
-        public DataId m_parent_did;
-        public Vector m_scale;
-        public PartGroupDataDesc m_global_app_mods;
-        // TODO: More fields here
+        public DataId parentDid; // m_parent_did
+        public DataId miDescDid; // m_midesc_did
+        public DataId behaviorTableDid; // m_behaviortable_did
+        public DataId modesDid; // m_modes_did
+        public Vector scale; // m_scale
+        public float childScale; // m_child_scale
+        public float particleScale; // m_particle_scale
+        public PartGroupDataDesc root; // m_root
+        public Dictionary<uint, PartGroupDataDesc> pgdDescTable; // m_pgd_desc_table
+        public PartGroupDataDesc globalAppearanceModifiers; // m_global_app_mods
+        public IconDesc iconDesc; // m_icon_desc
+        public string creationTimestamp; // m_creation_timestamp
 
         public VisualDesc() {
 
@@ -148,27 +180,75 @@ namespace AC2E.Def {
 
         public VisualDesc(BinaryReader data) {
             packFlags = (PackFlag)data.ReadUInt32();
+            if (packFlags.HasFlag(PackFlag.DATABASE)) {
+                throw new NotImplementedException();
+            }
             if (packFlags.HasFlag(PackFlag.PARENT)) {
-                m_parent_did = data.ReadDataId();
+                parentDid = data.ReadDataId();
+            }
+            if (packFlags.HasFlag(PackFlag.MIDESC)) {
+                miDescDid = data.ReadDataId();
+            }
+            if (packFlags.HasFlag(PackFlag.BEHAVIOR)) {
+                behaviorTableDid = data.ReadDataId();
+            }
+            if (packFlags.HasFlag(PackFlag.MODES)) {
+                modesDid = data.ReadDataId();
             }
             if (packFlags.HasFlag(PackFlag.SCALE)) {
-                m_scale = data.ReadVector();
+                scale = data.ReadVector();
+            }
+            if (packFlags.HasFlag(PackFlag.CHILDSCALE)) {
+                childScale = data.ReadSingle();
+            }
+            if (packFlags.HasFlag(PackFlag.PARTICLESCALE)) {
+                particleScale = data.ReadSingle();
+            }
+            if (packFlags.HasFlag(PackFlag.ICONDESC)) {
+                iconDesc = new IconDesc(data);
             }
             if (packFlags.HasFlag(PackFlag.GLOBALMOD)) {
-                m_global_app_mods = new PartGroupDataDesc(data);
+                globalAppearanceModifiers = new PartGroupDataDesc(data);
+            }
+            if (packFlags.HasFlag(PackFlag.PGDTABLE)) {
+                pgdDescTable = data.ReadDictionary(data.ReadUInt32, () => new PartGroupDataDesc(data));
             }
         }
 
         public void write(BinaryWriter data) {
             data.Write((uint)packFlags);
+            if (packFlags.HasFlag(PackFlag.DATABASE)) {
+                throw new NotImplementedException();
+            }
             if (packFlags.HasFlag(PackFlag.PARENT)) {
-                data.Write(m_parent_did);
+                data.Write(parentDid);
+            }
+            if (packFlags.HasFlag(PackFlag.MIDESC)) {
+                data.Write(miDescDid);
+            }
+            if (packFlags.HasFlag(PackFlag.BEHAVIOR)) {
+                data.Write(behaviorTableDid);
+            }
+            if (packFlags.HasFlag(PackFlag.MODES)) {
+                data.Write(modesDid);
             }
             if (packFlags.HasFlag(PackFlag.SCALE)) {
-                data.Write(m_scale);
+                data.Write(scale);
+            }
+            if (packFlags.HasFlag(PackFlag.CHILDSCALE)) {
+                data.Write(childScale);
+            }
+            if (packFlags.HasFlag(PackFlag.PARTICLESCALE)) {
+                data.Write(particleScale);
+            }
+            if (packFlags.HasFlag(PackFlag.ICONDESC)) {
+                throw new NotImplementedException();
             }
             if (packFlags.HasFlag(PackFlag.GLOBALMOD)) {
-                m_global_app_mods.write(data);
+                globalAppearanceModifiers.write(data);
+            }
+            if (packFlags.HasFlag(PackFlag.PGDTABLE)) {
+                data.Write(pgdDescTable, data.Write, v => v.write(data));
             }
         }
     }

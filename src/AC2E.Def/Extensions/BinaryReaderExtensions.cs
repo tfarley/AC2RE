@@ -138,6 +138,15 @@ namespace AC2E {
             };
         }
 
+        public static RGBAColor ReadRGBAColor(this BinaryReader reader) {
+            return new RGBAColor {
+                r = reader.ReadSingle(),
+                g = reader.ReadSingle(),
+                b = reader.ReadSingle(),
+                a = reader.ReadSingle(),
+            };
+        }
+
         public static Heading ReadHeading(this BinaryReader reader) {
             return new Heading(((reader.ReadUInt32() >> 24) & 0x000000FF) / 255.0f * 360.0f);
         }

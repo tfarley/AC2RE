@@ -109,10 +109,10 @@ namespace AC2E.Def {
             }
             if (packFlags.HasFlag(PackFlag.PARENT)) {
                 parentId = data.ReadInstanceId();
+                locationId = data.ReadUInt32();
+                parentInstanceStamp = data.ReadUInt16();
+                data.Align(4);
             }
-            locationId = data.ReadUInt32();
-            parentInstanceStamp = data.ReadUInt16();
-            data.Align(4);
             if (packFlags.HasFlag(PackFlag.ORIENTATION)) {
                 orientationId = data.ReadUInt32();
             }
@@ -161,10 +161,12 @@ namespace AC2E.Def {
             for (int i = 0; i < timestamps.Length; i++) {
                 timestamps[i] = data.ReadUInt16();
             }
+            data.Align(4);
         }
 
         public void write(BinaryWriter data) {
             data.Write((uint)packFlags);
+            // TODO: Write everything
         }
     }
 }
