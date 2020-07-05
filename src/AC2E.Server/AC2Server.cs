@@ -166,9 +166,6 @@ namespace AC2E.Server {
                                     maxConnections = (uint)MAX_CONNECTIONS,
                                     unk1 = 0x00010000,
                                     worldName = "MyWorld",
-                                    unk2 = 0x34DDF9FC,
-                                    unk3 = 0x40A633CB,
-                                    unk4 = 0,
                                 });
                                 client.enqueueMessage(new CliDatInterrogationMsg {
                                     regionId = (RegionID)1,
@@ -209,6 +206,7 @@ namespace AC2E.Server {
 
                 INetMessage genericMsg = null;
 
+                bool handled = true;
                 switch (opcode) {
                     case MessageOpcode.CLIDAT_INTERROGATION_RESPONSE_EVENT: {
                             CliDatInterrogationResponseMsg msg = new CliDatInterrogationResponseMsg(data);
@@ -532,11 +530,16 @@ namespace AC2E.Server {
                         }
                     default: {
                             Log.Error($"Unhandled opcode: {opcode} - message not processed! Header: {blob}");
+                            handled = false;
                             break;
                         }
                 }
 
                 Log.Debug($"Got msg: {genericMsg}");
+
+                if (handled && data.BaseStream.Position < data.BaseStream.Length) {
+                    Log.Warning($"NetBlob was not fully read ({data.BaseStream.Position} / {data.BaseStream.Length}).");
+                }
             }
         }
 

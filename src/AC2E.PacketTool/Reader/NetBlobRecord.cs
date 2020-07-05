@@ -9,6 +9,7 @@ namespace AC2E.PacketTool {
         public enum MessageErrorType {
             UNDETERMINED,
             NONE,
+            PARTIAL_READ,
             INCOMPLETE_BLOB,
             UNHANDLED_OPCODE,
             PARSE_FAILURE,
@@ -60,7 +61,12 @@ namespace AC2E.PacketTool {
                     using (BinaryReader data = new BinaryReader(new MemoryStream(netBlob.payload))) {
                         _message = MessageReader.read(data);
                         if (_message != null) {
-                            _messageErrorType = MessageErrorType.NONE;
+                            if (data.BaseStream.Position < data.BaseStream.Length) {
+                                _messageErrorType = MessageErrorType.PARTIAL_READ;
+                                _messageException = new NotImplementedException($"NetBlob was not fully read ({data.BaseStream.Position} / {data.BaseStream.Length}).");
+                            } else {
+                                _messageErrorType = MessageErrorType.NONE;
+                            }
                         } else {
                             _messageErrorType = MessageErrorType.UNHANDLED_OPCODE;
                             _messageException = new NotImplementedException("Unhandled message opcode.");
@@ -68,7 +74,7 @@ namespace AC2E.PacketTool {
                     }
                 } else {
                     _messageErrorType = MessageErrorType.INCOMPLETE_BLOB;
-                    _messageException = new Exception("Incomplete NetBlob.");
+                    _messageException = new Exception("Incomplete NetBlob due to missing fragments.");
                 }
             } catch (Exception e) {
                 _messageErrorType = MessageErrorType.PARSE_FAILURE;

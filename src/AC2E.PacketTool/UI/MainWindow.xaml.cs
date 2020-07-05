@@ -160,10 +160,10 @@ namespace AC2E.PacketTool.UI {
                     try {
                         recordMessageTextBox.Text = Util.objectToString(netBlobRecord.message);
                     } catch (Exception ex) {
-                        recordMessageTextBox.Text = ex.ToString();
+                        recordMessageTextBox.Text = ex.ToString() + "\n\n" + Util.objectToString(netBlobRecord.message);
                     }
                 } else {
-                    recordMessageTextBox.Text = messageException.ToString();
+                    recordMessageTextBox.Text = messageException.ToString() + "\n\n" + Util.objectToString(netBlobRecord.message);
                 }
 
                 if (wasUndetermined) {

@@ -13,9 +13,6 @@ namespace AC2E.Protocol {
         public uint maxConnections;
         public uint unk1;
         public string worldName;
-        public uint unk2;
-        public uint unk3;
-        public ushort unk4;
 
         public WorldNameMsg() {
 
@@ -26,9 +23,6 @@ namespace AC2E.Protocol {
             maxConnections = data.ReadUInt32();
             unk1 = data.ReadUInt32();
             worldName = data.ReadEncryptedString(Encoding.Unicode);
-            unk2 = data.ReadUInt32();
-            unk3 = data.ReadUInt32();
-            unk4 = data.ReadUInt16();
         }
 
         public void write(BinaryWriter data) {
@@ -36,9 +30,6 @@ namespace AC2E.Protocol {
             data.Write(maxConnections);
             data.Write(unk1);
             data.WriteEncryptedString(worldName, Encoding.Unicode);
-            data.Write(unk2);
-            data.Write(unk3);
-            data.Write(unk4);
         }
     }
 }

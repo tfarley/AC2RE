@@ -19,7 +19,7 @@ namespace AC2E.Protocol {
                 if (frags.Count == fragCount) {
                     int blobSize = 0;
                     foreach (NetBlobFrag frag in frags.Values) {
-                        blobSize += frag.fragSize;
+                        blobSize += frag.payload.Length;
                     }
                     payload = new byte[blobSize];
                     int payloadOffset = 0;
