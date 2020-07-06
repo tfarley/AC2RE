@@ -173,7 +173,87 @@ namespace AC2E.Def {
 
         public void write(BinaryWriter data) {
             data.Write((uint)packFlags);
-            // TODO: Write everything
+            if (packFlags.HasFlag(PackFlag.MY_PACKAGE_ID)) {
+                data.Write(packageId);
+            }
+            if (packFlags.HasFlag(PackFlag.ENTITY_DID)) {
+                data.Write(entityDid);
+            }
+            if (packFlags.HasFlag(PackFlag.BITFIELD)) {
+                data.Write((uint)bitfield);
+            }
+            if (packFlags.HasFlag(PackFlag.NAME)) {
+                name.write(data);
+            }
+            if (packFlags.HasFlag(PackFlag.PLURAL_NAME)) {
+                pluralName.write(data);
+            }
+            if (packFlags.HasFlag(PackFlag.ICON_ID)) {
+                data.Write(iconDid);
+            }
+            if (packFlags.HasFlag(PackFlag.CONTAINER_ID)) {
+                data.Write(containerId);
+            }
+            if (packFlags.HasFlag(PackFlag.WIELDER_ID)) {
+                data.Write(wielderId);
+            }
+            if (packFlags.HasFlag(PackFlag.MONARCH_ID)) {
+                data.Write(monarchId);
+            }
+            if (packFlags.HasFlag(PackFlag.ORIGINATOR_ID)) {
+                data.Write(originatorId);
+            }
+            if (packFlags.HasFlag(PackFlag.CLAIMANT_ID)) {
+                data.Write(claimantId);
+            }
+            if (packFlags.HasFlag(PackFlag.KILLER_ID)) {
+                data.Write(killerId);
+            }
+            if (packFlags.HasFlag(PackFlag.PET_SUMMONER_ID)) {
+                data.Write(petSummonerId);
+            }
+            if (packFlags.HasFlag(PackFlag.PHYSICS_SCALE)) {
+                data.Write(scale);
+            }
+            if (packFlags.HasFlag(PackFlag.QUANTITY)) {
+                data.Write(quantity);
+            }
+            if (packFlags.HasFlag(PackFlag.VALUE)) {
+                data.Write(value);
+            }
+            if (packFlags.HasFlag(PackFlag.FACTION_TYPE)) {
+                data.Write(factionType);
+            }
+            if (packFlags.HasFlag(PackFlag.PK_ALWAYS_TRUE_PERMISSIONS)) {
+                data.Write(pkAlwaysTrue ? (uint)1 : (uint)0);
+            }
+            if (packFlags.HasFlag(PackFlag.PK_ALWAYS_FALSE_PERMISSIONS)) {
+                data.Write(pkAlwaysFalse ? (uint)1 : (uint)0);
+            }
+            if (packFlags.HasFlag(PackFlag.PHYSICS_TYPE_LOW_DWORD)) {
+                data.Write(physicsTypeLow);
+            }
+            if (packFlags.HasFlag(PackFlag.PHYSICS_TYPE_HIGH_DWORD)) {
+                data.Write(physicsTypeHigh);
+            }
+            if (packFlags.HasFlag(PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD)) {
+                data.Write(movementEtherealLow);
+            }
+            if (packFlags.HasFlag(PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD)) {
+                data.Write(movementEtherealHigh);
+            }
+            if (packFlags.HasFlag(PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD)) {
+                data.Write(placementEtherealLow);
+            }
+            if (packFlags.HasFlag(PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD)) {
+                data.Write(placementEtherealHigh);
+            }
+            if (packFlags.HasFlag(PackFlag.DURABILITY_CURRENT_LEVEL)) {
+                data.Write(durabilityCurrentLevel);
+            }
+            if (packFlags.HasFlag(PackFlag.DURABILITY_MAX_LEVEL)) {
+                data.Write(durabilityMaxLevel);
+            }
         }
     }
 }

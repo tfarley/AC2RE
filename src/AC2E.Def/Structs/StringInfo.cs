@@ -66,12 +66,21 @@ namespace AC2E.Def {
 
         }
 
+        public StringInfo(string literalValue) {
+            this.literalValue = literalValue;
+        }
+
         public StringInfo(BinaryReader data) {
+            // TODO: Guessed on the reading/writing of this - see if isLiteral might actually be between numVars and variable dictionary itself? Note that StringInfo has ::Pack instead of ::StreamPack like most structs
             stringId = data.ReadUInt32();
             tableDid = data.ReadDataId();
-            variables = data.ReadDictionary(data.ReadUInt32, () => new StringInfoData(data));
-            // TODO: Need to ensure this is the actual logic for detecting a literal/how to parse
-            if (tableDid.id == 0) {
+            variables = new Dictionary<uint, StringInfoData>();
+            ushort numVariables = data.ReadUInt16();
+            bool isLiteral = data.ReadUInt16() != 0;
+            for (int i = 0; i < numVariables; i++) {
+                variables.Add(data.ReadUInt32(), new StringInfoData(data));
+            }
+            if (isLiteral) {
                 literalValue = data.ReadEncryptedString(Encoding.Unicode);
             }
         }
@@ -79,10 +88,17 @@ namespace AC2E.Def {
         public void write(BinaryWriter data) {
             data.Write(stringId);
             data.Write(tableDid);
-            data.Write(variables, data.Write, v => v.write(data));
-            // TODO: Need to ensure this is the actual logic for detecting a literal/how to write
-            if (tableDid.id == 0) {
-                data.WriteEncryptedString(literalValue);
+            int numVariables = variables != null ? variables.Count : 0;
+            data.Write((ushort)numVariables);
+            data.Write(literalValue != null ? (ushort)1 : (ushort)0);
+            if (numVariables > 0) {
+                foreach (var element in variables) {
+                    data.Write(element.Key);
+                    element.Value.write(data);
+                }
+            }
+            if (literalValue != null) {
+                data.WriteEncryptedString(literalValue, Encoding.Unicode);
             }
         }
     }

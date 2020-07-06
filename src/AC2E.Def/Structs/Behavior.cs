@@ -11,6 +11,10 @@ namespace AC2E.Def {
         public Behavior(BinaryReader data) {
             flags = data.ReadUInt64();
         }
+
+        public void write(BinaryWriter data) {
+            data.Write(flags);
+        }
     }
 
     public class BehaviorParams {
@@ -150,6 +154,85 @@ namespace AC2E.Def {
             }
             if (packFlags.HasFlag(PackFlag.CONTEXTID)) {
                 contextId = data.ReadUInt32();
+            }
+        }
+
+        public void write(BinaryWriter data) {
+            data.Write((uint)packFlags);
+            if (packFlags.HasFlag(PackFlag.BEHAVIOR_ID)) {
+                data.Write(behaviorId);
+            }
+            if (packFlags.HasFlag(PackFlag.TIME_SCALE)) {
+                data.Write(timeScale);
+            }
+            if (packFlags.HasFlag(PackFlag.MODE_ID)) {
+                data.Write(modeID);
+            }
+            if (packFlags.HasFlag(PackFlag.HOLDCYLE)) {
+                data.Write(holdCycles);
+            }
+            if (packFlags.HasFlag(PackFlag.FXSCRIPT)) {
+                data.Write(fxScriptId);
+            }
+            if (packFlags.HasFlag(PackFlag.FXTODO)) {
+                data.Write(fxId);
+            }
+            if (packFlags.HasFlag(PackFlag.TARGET)) {
+                data.Write(targetId);
+            }
+            if (packFlags.HasFlag(PackFlag.NEW_CAMERA_OBJ)) {
+                 data.Write(cameraTargetId);
+                 data.Write(cameraBehavior);
+            }
+            if (packFlags.HasFlag(PackFlag.VDESC)) {
+                 data.Write(vDescToClone);
+                 data.Write(clonedAprId);
+                data.Write(clonedAppAprHash, data.Write, data.Write);
+            }
+            if (packFlags.HasFlag(PackFlag.IMPULSE)) {
+                data.Write(impulse);
+            }
+            if (packFlags.HasFlag(PackFlag.EARLYCALLBACK)) {
+                data.Write(earlyCallback ? (uint)1 : (uint)0);
+            }
+            if (packFlags.HasFlag(PackFlag.MOVETOCANCELS)) {
+                data.Write(moveToCancels ? (uint)1 : (uint)0);
+            }
+            if (packFlags.HasFlag(PackFlag.PARENTED_CAMERA)) {
+                data.Write(cameraParent ? (uint)1 : (uint)0);
+            }
+            if (packFlags.HasFlag(PackFlag.TARGETED_CAMERA)) {
+                data.Write(cameraTarget ? (uint)1 : (uint)0);
+            }
+            if (packFlags.HasFlag(PackFlag.HOLD_CAMERA)) {
+                data.Write(cameraHold ? (uint)1 : (uint)0);
+            }
+            if (packFlags.HasFlag(PackFlag.RESTORE_CAMERA)) {
+                data.Write(cameraRestore ? (uint)1 : (uint)0);
+            }
+            if (packFlags.HasFlag(PackFlag.FADE_CHILDREN)) {
+                data.Write(fadeChildren ? (uint)1 : (uint)0);
+            }
+            if (packFlags.HasFlag(PackFlag.PROPAGATE)) {
+                data.Write(propagate ? (uint)1 : (uint)0);
+            }
+            if (packFlags.HasFlag(PackFlag.LOCKACTIONS)) {
+                data.Write(lockActions ? (uint)1 : (uint)0);
+            }
+            if (packFlags.HasFlag(PackFlag.SEND_EVENT)) {
+                data.Write(sendEvent ? (uint)1 : (uint)0);
+            }
+            if (packFlags.HasFlag(PackFlag.LEAVE_IDLE)) {
+                data.Write(leaveIdleAlone ? (uint)1 : (uint)0);
+            }
+            if (packFlags.HasFlag(PackFlag.SELF_DESTRUCT)) {
+                data.Write(destroyOnCompletion ? (uint)1 : (uint)0);
+            }
+            if (packFlags.HasFlag(PackFlag.WEENIE_EMOTE_ID)) {
+                data.Write(weenieEmoteId);
+            }
+            if (packFlags.HasFlag(PackFlag.CONTEXTID)) {
+                data.Write(contextId);
             }
         }
     }

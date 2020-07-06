@@ -271,8 +271,87 @@ namespace AC2E.Server {
                             client.enqueueMessage(new CreateObjectMsg {
                                 objectId = msg.characterId,
                                 vDesc = new VisualDesc {
-                                    packFlags = VisualDesc.PackFlag.PARENT,
-                                    parentDid = new DataId(0x1F001110),
+                                    packFlags = VisualDesc.PackFlag.PARENT | VisualDesc.PackFlag.SCALE | VisualDesc.PackFlag.GLOBALMOD,
+                                    parentDid = new DataId(0x1F000023),
+                                    scale = new Vector(0.9107999f, 0.9107999f, 0.98999995f),
+                                    globalAppearanceModifiers = new VisualDesc.PartGroupDataDesc {
+                                        packFlags = VisualDesc.PartGroupDataDesc.PackFlag.KEY | VisualDesc.PartGroupDataDesc.PackFlag.APPHASH,
+                                        key = VisualDesc.PartGroupKey.ENTIRE_TREE,
+                                        appearances = new Dictionary<uint, VisualDesc.AppearanceInfo> {
+                                                { 536870990, new VisualDesc.AppearanceInfo {
+                                                    appKeyToValue = new Dictionary<uint, float> {
+                                                        { 2, 0.14f },
+                                                        { 16, 1.0f },
+                                                    }
+                                                } },
+                                                { 536870992, new VisualDesc.AppearanceInfo {
+                                                    appKeyToValue = new Dictionary<uint, float> {
+                                                        { 2, 0.24f },
+                                                        { 16, 1.0f },
+                                                    }
+                                                } },
+                                                { 536870924, new VisualDesc.AppearanceInfo {
+                                                    appKeyToValue = new Dictionary<uint, float> {
+                                                        { 1, 0.3f },
+                                                    }
+                                                } },
+                                                { 536870925, new VisualDesc.AppearanceInfo {
+                                                    appKeyToValue = new Dictionary<uint, float> {
+                                                        { 3, 0.2f },
+                                                        { 11, 0.15f },
+                                                        { 12, 0.3f },
+                                                    }
+                                                } },
+                                                { 536870926, new VisualDesc.AppearanceInfo {
+                                                    appKeyToValue = new Dictionary<uint, float> {
+                                                        { 1090519068, 0.06f },
+                                                    }
+                                                } },
+                                                { 536871161, new VisualDesc.AppearanceInfo {
+                                                    appKeyToValue = new Dictionary<uint, float> {
+                                                        { 2, 0.04f },
+                                                        { 16, 1.0f },
+                                                    }
+                                                } },
+                                                { 536870934, new VisualDesc.AppearanceInfo {
+                                                    appKeyToValue = new Dictionary<uint, float> {
+                                                        { 2, 0.2f },
+                                                        { 16, 1.0f },
+                                                    }
+                                                } },
+                                            }
+                                    },
+                                },
+                                pDesc = new PhysicsDesc {
+                                    packFlags = PhysicsDesc.PackFlag.SLIDERS | PhysicsDesc.PackFlag.MODE | PhysicsDesc.PackFlag.POSITION | PhysicsDesc.PackFlag.VELOCITY_SCALE,
+                                    sliders = new Dictionary<uint, PhysicsDesc.SliderData> {
+                                            { 1073741834, new PhysicsDesc.SliderData {
+                                                value = 1.0f,
+                                                velocity = 0.0f,
+                                            } }
+                                        },
+                                    modeId = 1073741825,
+                                    pos = new Position {
+                                        cellId = new CellId(0x8D, 0xB5, 0x00, 0x3E),
+                                        frame = new Frame(new Vector(158.13483f, 117.91791f, 129.50496f), new Quaternion(0.23793525f, 0.0f, 0.0f, 0.971281f)),
+                                    },
+                                    velScale = 1.08f,
+                                    timestamps = new ushort[] { 1, 0, 0, 0 },
+                                    instanceStamp = 5,
+                                    visualOrderingStamp = 8,
+                                },
+                                wDesc = new WeenieDesc {
+                                    packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.MONARCH_ID | WeenieDesc.PackFlag.PHYSICS_TYPE_LOW_DWORD | WeenieDesc.PackFlag.PHYSICS_TYPE_HIGH_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.ENTITY_DID,
+                                    packageId = 895,
+                                    name = new StringInfo("Diabesus [M]"),
+                                    monarchId = new InstanceId(0x2130000000003B2D),
+                                    physicsTypeLow = 75497504,
+                                    physicsTypeHigh = 0,
+                                    movementEtherealLow = 1042284560,
+                                    movementEtherealHigh = 0,
+                                    placementEtherealLow = 65011856,
+                                    placementEtherealHigh = 0,
+                                    entityDid = new DataId(0x47000530),
                                 },
                             });
 
@@ -521,6 +600,31 @@ namespace AC2E.Server {
                                         }
                                     });
                                 }
+
+                                client.enqueueMessage(new CreateObjectMsg {
+                                    objectId = new InstanceId(0x12345 + (ulong)toggleCounter),
+                                    vDesc = new VisualDesc {
+                                        packFlags = VisualDesc.PackFlag.PARENT,
+                                        parentDid = new DataId(0x1F000000 + (uint)toggleCounter),
+                                    },
+                                    pDesc = new PhysicsDesc {
+                                        packFlags = PhysicsDesc.PackFlag.POSITION,
+                                        pos = new Position {
+                                            cellId = new CellId(0x8D, 0xB5, 0x00, 0x3E),
+                                            frame = new Frame(new Vector(158.13483f + toggleCounter * 1.0f, 117.91791f - toggleCounter * 1.0f, 129.50496f), new Quaternion(0.23793525f, 0.0f, 0.0f, 0.971281f)),
+                                        },
+                                        timestamps = new ushort[] { 1, 0, 0, 0 },
+                                        instanceStamp = 5,
+                                        visualOrderingStamp = 8,
+                                    },
+                                    wDesc = new WeenieDesc {
+                                        packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.ENTITY_DID,
+                                        packageId = 895,
+                                        name = new StringInfo($"TestObj 0x{toggleCounter:X}"),
+                                        entityDid = new DataId(0x47000530),
+                                    },
+                                });
+
                                 toggleCounter++;
                             }
                             break;

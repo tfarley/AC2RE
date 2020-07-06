@@ -12,9 +12,18 @@ namespace AC2E.Def {
             public float value; // m_value
             public float velocity; // m_velocity
 
+            public SliderData() {
+
+            }
+
             public SliderData(BinaryReader data) {
                 value = data.ReadSingle();
                 velocity = data.ReadSingle();
+            }
+
+            public void write(BinaryWriter data) {
+                data.Write(value);
+                data.Write(velocity);
             }
         }
 
@@ -98,7 +107,7 @@ namespace AC2E.Def {
                 behaviors = data.ReadList(() => new BehaviorParams(data));
             }
             if (packFlags.HasFlag(PackFlag.SLIDERS)) {
-                sliders = data.ReadDictionary(data.ReadUInt32, () => new SliderData(data));
+                sliders = data.ReadStlMap(data.ReadUInt32, () => new SliderData(data));
             }
             if (packFlags.HasFlag(PackFlag.ANIMFRAME_ID)) {
                 animframeId = data.ReadUInt32();
@@ -152,7 +161,7 @@ namespace AC2E.Def {
                 targetOffset = data.ReadVector();
             }
             if (packFlags.HasFlag(PackFlag.FX)) {
-                fx = data.ReadDictionary(data.ReadUInt32, () => new FXScalarAndTarget(data));
+                fx = data.ReadStlMap(data.ReadUInt32, () => new FXScalarAndTarget(data));
             }
             missileIsActivated = packFlags.HasFlag(PackFlag.MISSILE_ACTIVATED);
             missileIsMoving = packFlags.HasFlag(PackFlag.MISSILE_MOVING);
@@ -165,7 +174,75 @@ namespace AC2E.Def {
 
         public void write(BinaryWriter data) {
             data.Write((uint)packFlags);
-            // TODO: Write everything
+            data.Write(instanceStamp);
+            data.Write(visualOrderingStamp);
+            if (packFlags.HasFlag(PackFlag.MODE)) {
+                data.Write(modeId);
+            }
+            if (packFlags.HasFlag(PackFlag.BEHAVIORS)) {
+                data.Write(behaviors, v => v.write(data));
+            }
+            if (packFlags.HasFlag(PackFlag.SLIDERS)) {
+                data.WriteStlMap(sliders, data.Write, v => v.write(data));
+            }
+            if (packFlags.HasFlag(PackFlag.ANIMFRAME_ID)) {
+                data.Write(animframeId);
+            }
+            if (packFlags.HasFlag(PackFlag.POSITION)) {
+                pos.write(data);
+            }
+            if (packFlags.HasFlag(PackFlag.PARENT)) {
+                data.Write(parentId);
+                data.Write(locationId);
+                data.Write(parentInstanceStamp);
+                data.Align(4);
+            }
+            if (packFlags.HasFlag(PackFlag.ORIENTATION)) {
+                data.Write(orientationId);
+            }
+            if (packFlags.HasFlag(PackFlag.VELOCITY)) {
+                data.Write(vel);
+            }
+            if (packFlags.HasFlag(PackFlag.EXTERNAL_ACL)) {
+                data.Write(externalAccel);
+            }
+            if (packFlags.HasFlag(PackFlag.VELOCITY_SCALE)) {
+                data.Write(velScale);
+            }
+            if (packFlags.HasFlag(PackFlag.JUMP_SCALE)) {
+                data.Write(jumpScale);
+            }
+            if (packFlags.HasFlag(PackFlag.ACCELERATION)) {
+                data.Write(accel);
+            }
+            if (packFlags.HasFlag(PackFlag.OMEGA)) {
+                data.Write(omega);
+            }
+            if (packFlags.HasFlag(PackFlag.LOOKAT_ID)) {
+                data.Write(lookAtId);
+            }
+            if (packFlags.HasFlag(PackFlag.HEAD_X)) {
+                data.Write(headingX);
+            }
+            if (packFlags.HasFlag(PackFlag.HEAD_Z)) {
+                data.Write(headingZ);
+            }
+            if (packFlags.HasFlag(PackFlag.TARGET_ID)) {
+                data.Write(targetId);
+            }
+            if (packFlags.HasFlag(PackFlag.TARGET_POS)) {
+                targetPos.write(data);
+            }
+            if (packFlags.HasFlag(PackFlag.TARGET_OFFSET)) {
+                data.Write(targetOffset);
+            }
+            if (packFlags.HasFlag(PackFlag.FX)) {
+                data.WriteStlMap(fx, data.Write, v => v.write(data));
+            }
+            for (int i = 0; i < timestamps.Length; i++) {
+                data.Write(timestamps[i]);
+            }
+            data.Align(4);
         }
     }
 }

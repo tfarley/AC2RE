@@ -33,14 +33,18 @@ namespace AC2E.Def {
 
         public class AppearanceInfo {
 
-            public Dictionary<uint, float> m_appkeyHash;
+            public Dictionary<uint, float> appKeyToValue; // m_appkeyHash
+
+            public AppearanceInfo() {
+
+            }
 
             public AppearanceInfo(BinaryReader data) {
-                m_appkeyHash = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
+                appKeyToValue = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
             }
 
             public void write(BinaryWriter data) {
-                data.Write(m_appkeyHash, data.Write, data.Write);
+                data.Write(appKeyToValue, data.Write, data.Write);
             }
         }
 
@@ -71,6 +75,10 @@ namespace AC2E.Def {
             public DataId fxTableDid; // m_fxtable_did
             public Dictionary<uint, float> startupFx; // m_startup_fx
             //public Dictionary<uint, List<FXData>> fxOverrides; // m_fx_overrides // TODO: Figure this one out, need to find an example in pcaps
+
+            public PartGroupDataDesc() {
+
+            }
 
             public PartGroupDataDesc(BinaryReader data) {
                 // TODO: Need to verify parsing of all of these properties
@@ -148,6 +156,12 @@ namespace AC2E.Def {
                 imageDid = data.ReadDataId();
                 shiftColor = data.ReadRGBAColor();
             }
+
+            public void write(BinaryWriter data) {
+                data.Write(iconLayerId);
+                data.Write(imageDid);
+                data.Write(shiftColor);
+            }
         }
 
         public class IconDesc {
@@ -157,6 +171,10 @@ namespace AC2E.Def {
 
             public IconDesc(BinaryReader data) {
                 layers = data.ReadList(() => new IconLayerDesc(data));
+            }
+
+            public void write(BinaryWriter data) {
+                data.Write(layers, v => v.write(data));
             }
         }
 
@@ -242,7 +260,7 @@ namespace AC2E.Def {
                 data.Write(particleScale);
             }
             if (packFlags.HasFlag(PackFlag.ICONDESC)) {
-                throw new NotImplementedException();
+                iconDesc.write(data);
             }
             if (packFlags.HasFlag(PackFlag.GLOBALMOD)) {
                 globalAppearanceModifiers.write(data);

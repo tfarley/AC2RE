@@ -43,8 +43,8 @@ namespace AC2E {
             if (encoding == null) {
                 encoding = Encoding.ASCII;
             }
-            ushort numChars = (ushort)str.Length;
-            writer.Write(numChars);
+            int numChars = str != null ? str.Length : 0;
+            writer.Write((ushort)numChars);
             if (numChars == 0) {
                 writer.Align(4);
                 return;
@@ -77,6 +77,18 @@ namespace AC2E {
             int count = dict != null ? dict.Count : 0;
             writer.Write((ushort)count);
             writer.Write(count > 0 ? (ushort)0x200 : (ushort)0);
+            if (count > 0) {
+                foreach (var element in dict) {
+                    keyWriter.Invoke(element.Key);
+                    valueWriter.Invoke(element.Value);
+                }
+            }
+        }
+
+        public static void WriteStlMap<K, V>(this BinaryWriter writer, Dictionary<K, V> dict, Action<K> keyWriter, Action<V> valueWriter) {
+            // Variation of dictionary where the count is a full 32 bits without any table size (used for std::map specifically, see STREAMPACK_STL)
+            int count = dict != null ? dict.Count : 0;
+            writer.Write(count);
             if (count > 0) {
                 foreach (var element in dict) {
                     keyWriter.Invoke(element.Key);

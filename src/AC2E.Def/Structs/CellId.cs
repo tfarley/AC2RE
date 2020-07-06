@@ -13,6 +13,10 @@
             this.id = id;
         }
 
+        public CellId(uint x, uint y, uint indoorCellId, uint outdoorCellId) {
+            id = ((x & 0xFF) << 24) | ((y & 0xFF) << 16) | ((indoorCellId & 0xFF) << 8) | (outdoorCellId & 0xFF);
+        }
+
         public override string ToString() {
             return $"<{x:X2}, {y:X2}> [{indoorCellId:X2} {outdoorCellId:X2}]";
         }

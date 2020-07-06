@@ -117,6 +117,16 @@ namespace AC2E {
             return dict;
         }
 
+        public static Dictionary<K, V> ReadStlMap<K, V>(this BinaryReader reader, Func<K> keyReader, Func<V> valueReader) {
+            // Variation of dictionary where the count is a full 32 bits without any table size (used for std::map specifically, see STREAMPACK_STL)
+            Dictionary<K, V> dict = new Dictionary<K, V>();
+            uint numElements = reader.ReadUInt32();
+            for (int i = 0; i < numElements; i++) {
+                dict.Add(keyReader.Invoke(), valueReader.Invoke());
+            }
+            return dict;
+        }
+
         public static InstanceId ReadInstanceId(this BinaryReader reader) {
             return new InstanceId(reader.ReadUInt64());
         }

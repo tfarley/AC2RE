@@ -11,5 +11,10 @@ namespace AC2E.Def {
             scalar = data.ReadSingle();
             targetId = data.ReadInstanceId();
         }
+
+        public void write(BinaryWriter data) {
+            data.Write(scalar);
+            data.Write(targetId);
+        }
     }
 }
