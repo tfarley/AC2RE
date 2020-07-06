@@ -6,7 +6,7 @@ namespace AC2E.PacketTool {
 
     public class MessageReader {
 
-        public static INetMessage read(BinaryReader data) {
+        public static INetMessage read(BinaryReader data, bool isClientToServer) {
             MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
             switch (opcode) {
                 case MessageOpcode.Evt_Physics__CForceCreate_ID:
@@ -16,7 +16,7 @@ namespace AC2E.PacketTool {
                 case MessageOpcode.CHARACTER_ENTER_GAME_EVENT:
                     return new CharacterEnterGameMsg(data);
                 case MessageOpcode.Evt_Login__CharExitGame_ID:
-                    return new CharacterExitGameMsg(data);
+                    return isClientToServer ? (INetMessage)new CharacterExitGameCMsg(data) : new CharacterExitGameSMsg(data);
                 case MessageOpcode.CLIDAT_END_DDD_EVENT:
                     return new CliDatEndDDDMsg(data);
                 case MessageOpcode.CLIDAT_ERROR_EVENT:
@@ -31,6 +31,8 @@ namespace AC2E.PacketTool {
                     return new ClientSceneRenderingCompleteMsg();
                 case MessageOpcode.Evt_Physics__CLookAtDir_ID:
                     return new CLookAtDirMsg(data);
+                case MessageOpcode.Evt_Physics__CLookAt_ID:
+                    return new CLookAtMsg(data);
                 case MessageOpcode.Evt_Physics__Contain_ID:
                     return new ContainMsg(data);
                 case MessageOpcode.Evt_Physics__CPosition_ID:
@@ -81,6 +83,42 @@ namespace AC2E.PacketTool {
                     return new PositionCellMsg(data);
                 case MessageOpcode.Evt_Physics__Position_ID:
                     return new PositionMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateBool_Private_ID:
+                    return new QualUpdateBoolPrivateMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateBool_Visual_ID:
+                    return new QualUpdateBoolVisualMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateDataID_Private_ID:
+                    return new QualUpdateDataIdPrivateMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateDataID_Visual_ID:
+                    return new QualUpdateDataIdVisualMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateFloat_Private_ID:
+                    return new QualUpdateFloatPrivateMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateFloat_Visual_ID:
+                    return new QualUpdateFloatVisualMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateInstanceID_Private_ID:
+                    return new QualUpdateInstanceIdPrivateMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateInstanceID_Visual_ID:
+                    return new QualUpdateInstanceIdVisualMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateInt_Private_ID:
+                    return new QualUpdateIntPrivateMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateInt_Visual_ID:
+                    return new QualUpdateIntVisualMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateLongInt_Private_ID:
+                    return new QualUpdateLongIntPrivateMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateLongInt_Visual_ID:
+                    return new QualUpdateLongIntVisualMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdatePosition_Private_ID:
+                    return new QualUpdatePositionPrivateMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdatePosition_Visual_ID:
+                    return new QualUpdatePositionVisualMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateStringInfo_Private_ID:
+                    return new QualUpdateStringInfoPrivateMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateStringInfo_Visual_ID:
+                    return new QualUpdateStringInfoVisualMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateTimestamp_Private_ID:
+                    return new QualUpdateTimestampPrivateMsg(data);
+                case MessageOpcode.Evt_Qualities__UpdateTimestamp_Visual_ID:
+                    return new QualUpdateTimestampVisualMsg(data);
                 case MessageOpcode.Evt_Physics__ReleaseBehavior_ID:
                     return new ReleaseBehaviorMsg(data);
                 case MessageOpcode.Evt_Physics__SetAccelerationScale_ID:
@@ -95,6 +133,8 @@ namespace AC2E.PacketTool {
                     return new StopBehaviorMsg(data);
                 case MessageOpcode.Evt_Physics__StopFX_ID:
                     return new StopFxMsg(data);
+                case MessageOpcode.Evt_Physics__UpdateVisualDesc_ID:
+                    return new UpdateVisualDescMsg(data);
                 case MessageOpcode.Evt_Admin__WorldName_ID:
                     return new WorldNameMsg(data);
                 default:

@@ -59,7 +59,7 @@ namespace AC2E.PacketTool {
             try {
                 if (netBlob.payload != null) {
                     using (BinaryReader data = new BinaryReader(new MemoryStream(netBlob.payload))) {
-                        _message = MessageReader.read(data);
+                        _message = MessageReader.read(data, isClientToServer);
                         if (_message != null) {
                             if (data.BaseStream.Position < data.BaseStream.Length) {
                                 _messageErrorType = MessageErrorType.PARTIAL_READ;

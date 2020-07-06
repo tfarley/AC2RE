@@ -5,7 +5,7 @@ namespace AC2E.Protocol {
     public class CLookAtDirMsg : INetMessage {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-        public NetQueue queueId => NetQueue.EVENT;
+        public NetQueue queueId => NetQueue.WEENIE;
         public MessageOpcode opcode => MessageOpcode.Evt_Physics__CLookAtDir_ID;
 
         // ECM_Physics::SendEvt_CLookAtDir
