@@ -39,7 +39,7 @@ namespace AC2E.Def {
             positionStamp = data.ReadUInt16();
             forcePositionStamp = data.ReadUInt16();
             teleportStamp = data.ReadUInt16();
-            if (impulse) {
+            if (jump || impulse) {
                 impulseVel = data.ReadVector();
             }
             data.Align(4);

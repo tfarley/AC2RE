@@ -25,6 +25,7 @@ namespace AC2E.Def {
         }
 
         public StringInfoDataType type; // type
+
         public StringInfo stringInfo;
 
         public StringInfoData(BinaryReader data) {
@@ -39,6 +40,19 @@ namespace AC2E.Def {
                     throw new NotImplementedException();
             }
         }
+
+        public void write(BinaryWriter data) {
+            // TODO: Not sure if this should be full 32 write or 16 + align
+            data.Write((ushort)type);
+            data.Align(4);
+            switch (type) {
+                case StringInfoDataType.STRING_INFO:
+                    stringInfo.write(data);
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
     }
 
     public class StringInfo {
@@ -48,6 +62,10 @@ namespace AC2E.Def {
         public Dictionary<uint, StringInfoData> variables; // m_variables
         public string literalValue; // m_LiteralValue
 
+        public StringInfo() {
+
+        }
+
         public StringInfo(BinaryReader data) {
             stringId = data.ReadUInt32();
             tableDid = data.ReadDataId();
@@ -55,6 +73,16 @@ namespace AC2E.Def {
             // TODO: Need to ensure this is the actual logic for detecting a literal/how to parse
             if (tableDid.id == 0) {
                 literalValue = data.ReadEncryptedString(Encoding.Unicode);
+            }
+        }
+
+        public void write(BinaryWriter data) {
+            data.Write(stringId);
+            data.Write(tableDid);
+            data.Write(variables, data.Write, v => v.write(data));
+            // TODO: Need to ensure this is the actual logic for detecting a literal/how to write
+            if (tableDid.id == 0) {
+                data.WriteEncryptedString(literalValue);
             }
         }
     }

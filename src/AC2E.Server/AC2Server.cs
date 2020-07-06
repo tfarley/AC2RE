@@ -162,10 +162,7 @@ namespace AC2E.Server {
                                 Log.Debug($"Got good connect ack cookie from client id: {packet.recipientId}.");
                                 client.connect(serverTime);
                                 client.enqueueMessage(new WorldNameMsg {
-                                    numConnections = (uint)clients.Count,
-                                    maxConnections = (uint)MAX_CONNECTIONS,
-                                    unk1 = 0x00010000,
-                                    worldName = "MyWorld",
+                                    name = new StringInfo { literalValue = "MyWorld" },
                                 });
                                 client.enqueueMessage(new CliDatInterrogationMsg {
                                     regionId = (RegionID)1,

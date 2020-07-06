@@ -9,6 +9,7 @@ namespace AC2E.Protocol {
         public NetQueue queueId => NetQueue.WEENIE;
         public MessageOpcode opcode => MessageOpcode.Evt_Interp__InterpSEvent_ID;
 
+        // ECM_Interp::SendEvt_InterpSEvent
         public IServerEvent netEvent;
 
         public InterpSEventMsg(BinaryReader data) {

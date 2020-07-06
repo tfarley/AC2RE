@@ -9,11 +9,12 @@ namespace AC2E.Protocol {
         public NetQueue queueId => NetQueue.EVENT;
         public MessageOpcode opcode => MessageOpcode.Evt_Physics__PositionCell_ID;
 
-        public InstanceIdWithStamp idWithStamp;
-        public PositionPack positionPack;
+        // ECM_Physics::RecvEvt_Position
+        public InstanceIdWithStamp senderIdWithStamp; // sender
+        public PositionPack positionPack; // __pp
 
         public PositionCellMsg(BinaryReader data) {
-            idWithStamp = new InstanceIdWithStamp(data);
+            senderIdWithStamp = data.ReadInstanceIdWithStamp();
             positionPack = new PositionPack(data);
         }
     }

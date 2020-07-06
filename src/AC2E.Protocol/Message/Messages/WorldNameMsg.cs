@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Text;
+﻿using AC2E.Def;
+using System.IO;
 
 namespace AC2E.Protocol {
 
@@ -9,27 +9,19 @@ namespace AC2E.Protocol {
         public NetQueue queueId => NetQueue.EVENT;
         public MessageOpcode opcode => MessageOpcode.Evt_Admin__WorldName_ID;
 
-        public uint numConnections;
-        public uint maxConnections;
-        public uint unk1;
-        public string worldName;
+        // GlobalEventHandler::RecvEvt_WorldName
+        public StringInfo name; // _si
 
         public WorldNameMsg() {
 
         }
 
         public WorldNameMsg(BinaryReader data) {
-            numConnections = data.ReadUInt32();
-            maxConnections = data.ReadUInt32();
-            unk1 = data.ReadUInt32();
-            worldName = data.ReadEncryptedString(Encoding.Unicode);
+            name = new StringInfo(data);
         }
 
         public void write(BinaryWriter data) {
-            data.Write(numConnections);
-            data.Write(maxConnections);
-            data.Write(unk1);
-            data.WriteEncryptedString(worldName, Encoding.Unicode);
+            name.write(data);
         }
     }
 }

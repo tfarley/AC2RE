@@ -9,6 +9,7 @@ namespace AC2E.Protocol {
         public NetQueue queueId => NetQueue.EVENT;
         public MessageOpcode opcode => MessageOpcode.Evt_Interp__InterpCEvent_Private_ID;
 
+        // ECM_Interp::RecvEvt_InterpCEvent_Private
         public IClientEvent netEvent;
 
         public InterpCEventPrivateMsg() {

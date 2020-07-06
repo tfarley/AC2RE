@@ -89,6 +89,12 @@ namespace AC2E {
             writer.Write(value.id);
         }
 
+        public static void Write(this BinaryWriter writer, InstanceIdWithStamp value) {
+            writer.Write(value.id);
+            writer.Write(value.instanceStamp);
+            writer.Write(value.otherStamp);
+        }
+
         public static void Write(this BinaryWriter writer, Vector value) {
             writer.Write(value.x);
             writer.Write(value.y);

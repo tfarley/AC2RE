@@ -121,6 +121,14 @@ namespace AC2E {
             return new InstanceId(reader.ReadUInt64());
         }
 
+        public static InstanceIdWithStamp ReadInstanceIdWithStamp(this BinaryReader reader) {
+            return new InstanceIdWithStamp {
+                id = reader.ReadInstanceId(),
+                instanceStamp = reader.ReadUInt16(),
+                otherStamp = reader.ReadUInt16(),
+            };
+        }
+
         public static Vector ReadVector(this BinaryReader reader) {
             return new Vector {
                 x = reader.ReadSingle(),

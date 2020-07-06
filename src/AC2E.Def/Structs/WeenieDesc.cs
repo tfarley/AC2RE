@@ -1,7 +1,6 @@
 ﻿using AC2E.Dat;
 using System;
 using System.IO;
-using System.Text;
 
 namespace AC2E.Def {
 

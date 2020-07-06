@@ -9,7 +9,8 @@ namespace AC2E.Protocol {
         public NetQueue queueId => NetQueue.WEENIE;
         public MessageOpcode opcode => MessageOpcode.Evt_Physics__CPosition_ID;
 
-        public CPositionPack positionPack;
+        // ECM_Physics::SendEvt_CPosition
+        public CPositionPack positionPack; // _position_pack
 
         public CPositionMsg(BinaryReader data) {
             positionPack = new CPositionPack(data);
