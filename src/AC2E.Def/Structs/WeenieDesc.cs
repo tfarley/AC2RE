@@ -141,10 +141,10 @@ namespace AC2E.Def {
                 factionType = data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.PK_ALWAYS_TRUE_PERMISSIONS)) {
-                pkAlwaysTrue = data.ReadUInt32() > 0;
+                pkAlwaysTrue = data.ReadUInt32() != 0;
             }
             if (packFlags.HasFlag(PackFlag.PK_ALWAYS_FALSE_PERMISSIONS)) {
-                pkAlwaysFalse = data.ReadUInt32() > 0;
+                pkAlwaysFalse = data.ReadUInt32() != 0;
             }
             if (packFlags.HasFlag(PackFlag.PHYSICS_TYPE_LOW_DWORD)) {
                 physicsTypeLow = data.ReadUInt32();
