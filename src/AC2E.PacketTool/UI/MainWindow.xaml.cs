@@ -21,6 +21,12 @@ namespace AC2E.PacketTool.UI {
 
         public MainWindow() {
             InitializeComponent();
+
+            foreach (NetBlobRecord.MessageErrorType messageErrorType in Enum.GetValues(typeof(NetBlobRecord.MessageErrorType))) {
+                if (messageErrorType != NetBlobRecord.MessageErrorType.UNDETERMINED) {
+                    errorsFilterComboBox.Items.Add(new ComboBoxItem { Content = messageErrorType });
+                }
+            }
         }
 
         private void refreshItems() {
@@ -30,7 +36,7 @@ namespace AC2E.PacketTool.UI {
 
             string opcodeFilter = opcodeFilterTextBox.Text;
             string eventFilter = eventFilterTextBox.Text;
-            string errorsFilter = errorsFilterComboBox.Text;
+            ComboBoxItem errorsFilter = (ComboBoxItem)errorsFilterComboBox.SelectedItem;
 
             bool reselect = false;
             foreach (NetBlobRow netBlobRow in netBlobRows) {
@@ -42,12 +48,14 @@ namespace AC2E.PacketTool.UI {
                     continue;
                 }
 
-                if (errorsFilter == "Exclude" && netBlobRow.netBlobRecord.messageException != null) {
-                    continue;
-                }
-
-                if (errorsFilter == "Only" && netBlobRow.netBlobRecord.messageException == null) {
-                    continue;
+                if (errorsFilter != null && errorsFilter.Content != null && !"".Equals(errorsFilter.Content)) {
+                    if ("All".Equals(errorsFilter.Content)) {
+                        if (netBlobRow.netBlobRecord.messageException == null) {
+                            continue;
+                        }
+                    } else if (!netBlobRow.netBlobRecord.messageErrorType.Equals(errorsFilter.Content)) {
+                        continue;
+                    }
                 }
 
                 if (netBlobRow == prevSelectedItem) {

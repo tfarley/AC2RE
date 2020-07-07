@@ -12,6 +12,7 @@ namespace AC2E.PacketTool {
             PARTIAL_READ,
             INCOMPLETE_BLOB,
             UNHANDLED_OPCODE,
+            NOT_IMPLEMENTED,
             PARSE_FAILURE,
         }
 
@@ -76,6 +77,9 @@ namespace AC2E.PacketTool {
                     _messageErrorType = MessageErrorType.INCOMPLETE_BLOB;
                     _messageException = new Exception("Incomplete NetBlob due to missing fragments.");
                 }
+            } catch (NotImplementedException e) {
+                _messageErrorType = MessageErrorType.NOT_IMPLEMENTED;
+                _messageException = e;
             } catch (Exception e) {
                 _messageErrorType = MessageErrorType.PARSE_FAILURE;
                 _messageException = e;

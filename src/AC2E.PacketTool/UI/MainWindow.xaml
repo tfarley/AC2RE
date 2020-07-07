@@ -41,8 +41,7 @@
                     <Label Content="Errors:" Margin="10,10,5,10"/>
                     <ComboBox x:Name="errorsFilterComboBox" MinWidth="100" Margin="0,10,10,10">
                         <ComboBoxItem Content=""/>
-                        <ComboBoxItem Content="Exclude"/>
-                        <ComboBoxItem Content="Only"/>
+                        <ComboBoxItem Content="All"/>
                     </ComboBox>
                     <Button Content="Apply Filters" Padding="10,5,10,5" Margin="10,10,0,10" Click="applyFiltersButton_Click"/>
                 </StackPanel>
