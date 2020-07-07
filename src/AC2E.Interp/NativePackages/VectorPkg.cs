@@ -10,9 +10,17 @@ namespace AC2E.Interp {
         public PackageType packageType => PackageType.UNDEF;
         public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
 
-        public uint id { get; set; }
+        public PackageId id { get; set; }
 
         public Vector contents;
+
+        public VectorPkg() {
+
+        }
+
+        public VectorPkg(BinaryReader data) {
+            contents = data.ReadVector();
+        }
 
         public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(contents);

@@ -64,7 +64,7 @@ namespace AC2E.Interp {
         public PackageType packageType => PackageType.UNDEF;
         public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
 
-        public uint id { get; set; }
+        public PackageId id { get; set; }
 
         public ContentFlag contentFlags;
         public Dictionary<string, string> m_aliasTable;

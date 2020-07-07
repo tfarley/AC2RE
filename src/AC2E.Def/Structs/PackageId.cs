@@ -2,9 +2,11 @@
 
     public struct PackageId {
 
-        public ulong id;
+        public static readonly PackageId NULL = new PackageId(0xFFFFFFFF);
 
-        public PackageId(ulong id) {
+        public uint id;
+
+        public PackageId(uint id) {
             this.id = id;
         }
 

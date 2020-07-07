@@ -1,4 +1,5 @@
-﻿using AC2E.Interp;
+﻿using AC2E.Def;
+using AC2E.Interp;
 using System.Collections.Generic;
 using System.IO;
 
@@ -10,7 +11,7 @@ namespace AC2E.WLib {
         public PackageType packageType => PackageType.EffectRegistry;
         public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
 
-        public uint id { get; set; }
+        public PackageId id { get; set; }
 
         public AAHashPkg m_qualitiesModifiedCount;
         public AAHashPkg m_appliedFX;

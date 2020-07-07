@@ -181,12 +181,12 @@ namespace AC2E.Def {
                 data.Write(targetId);
             }
             if (packFlags.HasFlag(PackFlag.NEW_CAMERA_OBJ)) {
-                 data.Write(cameraTargetId);
-                 data.Write(cameraBehavior);
+                data.Write(cameraTargetId);
+                data.Write(cameraBehavior);
             }
             if (packFlags.HasFlag(PackFlag.VDESC)) {
-                 data.Write(vDescToClone);
-                 data.Write(clonedAprId);
+                data.Write(vDescToClone);
+                data.Write(clonedAprId);
                 data.Write(clonedAppAprHash, data.Write, data.Write);
             }
             if (packFlags.HasFlag(PackFlag.IMPULSE)) {

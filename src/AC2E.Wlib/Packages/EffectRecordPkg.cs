@@ -12,7 +12,7 @@ namespace AC2E.WLib {
         public PackageType packageType => PackageType.EffectRecord;
         public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
 
-        public uint id { get; set; }
+        public PackageId id { get; set; }
 
         public double m_timeDemotedFromTopLevel;
         public double m_timeCast;

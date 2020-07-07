@@ -11,7 +11,7 @@ namespace AC2E.WLib {
         public PackageType packageType => PackageType.InventProfile;
         public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
 
-        public uint id { get; set; }
+        public PackageId id { get; set; }
 
         public VisualDescInfoPkg m_visualDescInfo;
         public uint m_slotsTaken;

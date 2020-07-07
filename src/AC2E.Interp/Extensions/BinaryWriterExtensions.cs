@@ -31,10 +31,7 @@ namespace AC2E {
             }
 
             writer.Write((uint)PackTag.PACKAGE);
-            writer.Write((uint)references.Count);
-            foreach (IPackage reference in references) {
-                writer.Write(reference.id);
-            }
+            writer.Write(references, v => writer.Write(v.id));
             writer.Write(buffer.ToArray());
         }
 
@@ -49,14 +46,11 @@ namespace AC2E {
             }
 
             writer.Write((uint)0);
+            writer.Write((ushort)value.nativeType);
+            writer.Write(value.nativeType != NativeType.UNDEF ? (ushort)0xFFFF : (ushort)value.packageType);
             if (value.nativeType != NativeType.UNDEF) {
-                writer.Write((ushort)value.nativeType);
-                writer.Write((ushort)0xFFFF);
-
                 value.write(writer, references);
             } else {
-                writer.Write((ushort)0);
-                writer.Write((ushort)value.packageType);
                 // Placeholder for length
                 writer.Write((uint)0);
 
@@ -86,7 +80,7 @@ namespace AC2E {
         }
 
         public static void Write(this BinaryWriter writer, IPackage value, List<IPackage> references) {
-            writer.Write(value != null ? value.id : IPackage.NULL);
+            writer.Write(value != null ? value.id : PackageId.NULL);
             references.Add(value);
         }
     }

@@ -15,6 +15,8 @@ namespace AC2E.WLib {
                     return new QueryAllegianceProfileSEvt(data);
                 case ServerEventFunctionId.Allegiance__QueryAllegiance:
                     return new QueryAllegianceSEvt(data);
+                case ServerEventFunctionId.Communication__Say:
+                    return new SaySEvt(data);
                 case ServerEventFunctionId.Combat__SetNextTarget:
                     return new SetNextTargetSEvt(data);
                 case ServerEventFunctionId.Player__SetSelection:
@@ -25,6 +27,8 @@ namespace AC2E.WLib {
                     return new StopAttackingSEvt(data);
                 case ServerEventFunctionId.Combat__StopAttack:
                     return new StopAttackSEvt(data);
+                case ServerEventFunctionId.Communication__Tell:
+                    return new TellSEvt(data);
                 default:
                     throw new NotImplementedException($"Unhandled server event: {funcId}.");
             }

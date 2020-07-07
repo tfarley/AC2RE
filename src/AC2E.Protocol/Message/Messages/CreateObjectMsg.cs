@@ -1,5 +1,4 @@
 ﻿using AC2E.Def;
-using AC2E.Utils;
 using System.IO;
 
 namespace AC2E.Protocol {
