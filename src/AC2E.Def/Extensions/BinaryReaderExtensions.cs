@@ -127,6 +127,10 @@ namespace AC2E {
             return dict;
         }
 
+        public static PackageId ReadPackageId(this BinaryReader reader) {
+            return new PackageId(reader.ReadUInt32());
+        }
+
         public static InstanceId ReadInstanceId(this BinaryReader reader) {
             return new InstanceId(reader.ReadUInt64());
         }

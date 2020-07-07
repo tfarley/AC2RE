@@ -10,7 +10,7 @@ namespace AC2E.Protocol {
         MessageOpcode opcode { get; }
 
         void write(BinaryWriter data) {
-            throw new NotImplementedException();
+            throw new NotImplementedException("INetMessage implementor must override write().");
         }
     }
 }

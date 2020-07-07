@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AC2E.Protocol {
 
-    public class LoginMinCharSetMsg : INetMessage {
+    public class MinCharSetMsg : INetMessage {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
         public NetQueue queueId => NetQueue.EVENT;
@@ -17,11 +17,11 @@ namespace AC2E.Protocol {
         public List<string> characterNames; // m_names
         public List<InstanceId> characterIds; // m_iids
 
-        public LoginMinCharSetMsg() {
+        public MinCharSetMsg() {
 
         }
 
-        public LoginMinCharSetMsg(BinaryReader data) {
+        public MinCharSetMsg(BinaryReader data) {
             numAllowedCharacters = data.ReadUInt32();
             accountName = data.ReadEncryptedString();
             characterNames = data.ReadList(() => data.ReadEncryptedString(Encoding.Unicode));

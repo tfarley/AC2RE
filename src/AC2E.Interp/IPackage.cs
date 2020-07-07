@@ -15,7 +15,7 @@ namespace AC2E.Interp {
         uint id { get; }
 
         void write(BinaryWriter data, List<IPackage> referenceList) {
-            throw new NotImplementedException();
+            throw new NotImplementedException("IPackage implementor must override write().");
         }
     }
 }

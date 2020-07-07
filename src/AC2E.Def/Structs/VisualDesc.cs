@@ -108,7 +108,7 @@ namespace AC2E.Def {
                     startupFx = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
                 }
                 if (packFlags.HasFlag(PackFlag.FXOVERRIDES)) {
-                    throw new NotImplementedException();
+                    throw new NotImplementedException("PartGroupDataDesc.fxOverrides");
                 }
             }
 
@@ -139,7 +139,7 @@ namespace AC2E.Def {
                     data.Write(startupFx, data.Write, data.Write);
                 }
                 if (packFlags.HasFlag(PackFlag.FXOVERRIDES)) {
-                    throw new NotImplementedException();
+                    throw new NotImplementedException("PartGroupDataDesc.fxOverrides");
                 }
             }
         }
@@ -199,7 +199,7 @@ namespace AC2E.Def {
         public VisualDesc(BinaryReader data) {
             packFlags = (PackFlag)data.ReadUInt32();
             if (packFlags.HasFlag(PackFlag.DATABASE)) {
-                throw new NotImplementedException();
+                throw new NotImplementedException("VisualDesc.database");
             }
             if (packFlags.HasFlag(PackFlag.PARENT)) {
                 parentDid = data.ReadDataId();
@@ -236,7 +236,7 @@ namespace AC2E.Def {
         public void write(BinaryWriter data) {
             data.Write((uint)packFlags);
             if (packFlags.HasFlag(PackFlag.DATABASE)) {
-                throw new NotImplementedException();
+                throw new NotImplementedException("VisualDesc.database");
             }
             if (packFlags.HasFlag(PackFlag.PARENT)) {
                 data.Write(parentDid);

@@ -70,15 +70,17 @@ namespace AC2E.PacketTool {
                 case MessageOpcode.Evt_Physics__LeaveWorld_ID:
                     return new LeaveWorldMsg(data);
                 case MessageOpcode.Evt_Login__CharacterSet_ID:
-                    return new LoginCharacterSetMsg(data);
+                    return new CharacterSetMsg(data);
                 case MessageOpcode.Evt_Login__MinCharSet_ID:
-                    return new LoginMinCharSetMsg(data);
+                    return new MinCharSetMsg(data);
                 case MessageOpcode.Evt_Physics__LookAtDir_ID:
                     return new LookAtDirMsg(data);
                 case MessageOpcode.Evt_Physics__LookAt_ID:
                     return new LookAtMsg(data);
                 case MessageOpcode.Evt_Physics__Parent_ID:
                     return new ParentMsg(data);
+                case MessageOpcode.Evt_Login__PlayerDesc_ID:
+                    return new PlayerDescMsg(data);
                 case MessageOpcode.Evt_Physics__PositionCell_ID:
                     return new PositionCellMsg(data);
                 case MessageOpcode.Evt_Physics__Position_ID:

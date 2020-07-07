@@ -54,7 +54,7 @@ namespace AC2E.Def {
         }
 
         public Bitfield bitfield; // _bitfield
-        public uint packageId; // _my_pkgid
+        public PackageId packageId; // _my_pkgid
         public DataId entityDid; // m_entityDID
         public PackFlag packFlags; // _data_mask
         public StringInfo name; // _name
@@ -89,7 +89,7 @@ namespace AC2E.Def {
         public WeenieDesc(BinaryReader data) {
             packFlags = (PackFlag)data.ReadUInt32();
             if (packFlags.HasFlag(PackFlag.MY_PACKAGE_ID)) {
-                packageId = data.ReadUInt32();
+                packageId = data.ReadPackageId();
             }
             if (packFlags.HasFlag(PackFlag.ENTITY_DID)) {
                 entityDid = data.ReadDataId();

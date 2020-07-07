@@ -76,7 +76,8 @@ namespace AC2E {
         public static void Write<K, V>(this BinaryWriter writer, Dictionary<K, V> dict, Action<K> keyWriter, Action<V> valueWriter) {
             int count = dict != null ? dict.Count : 0;
             writer.Write((ushort)count);
-            writer.Write(count > 0 ? (ushort)0x200 : (ushort)0);
+            // NOTE: The client may crash if this table size value is too small, even if the dictionary itself does not have many entries
+            writer.Write((ushort)Math.Max(count, 0x800));
             if (count > 0) {
                 foreach (var element in dict) {
                     keyWriter.Invoke(element.Key);
@@ -95,6 +96,10 @@ namespace AC2E {
                     valueWriter.Invoke(element.Value);
                 }
             }
+        }
+
+        public static void Write(this BinaryWriter writer, PackageId value) {
+            writer.Write(value.id);
         }
 
         public static void Write(this BinaryWriter writer, InstanceId value) {

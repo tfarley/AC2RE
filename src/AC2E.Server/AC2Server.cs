@@ -230,14 +230,14 @@ namespace AC2E.Server {
 
                             client.enqueueMessage(new CliDatEndDDDMsg());
 
-                            client.enqueueMessage(new LoginMinCharSetMsg {
+                            client.enqueueMessage(new MinCharSetMsg {
                                 numAllowedCharacters = 0,
                                 accountName = client.accountName,
                                 characterNames = characterNames,
                                 characterIds = characterIds,
                             });
 
-                            client.enqueueMessage(new LoginCharacterSetMsg {
+                            client.enqueueMessage(new CharacterSetMsg {
                                 characters = characters,
                                 deletedCharacters = null,
                                 status = 0,
@@ -264,8 +264,56 @@ namespace AC2E.Server {
                                 regionId = 1,
                             });
 
-                            client.enqueueMessage(new LoginPlayerDescMsg {
-
+                            client.enqueueMessage(new PlayerDescMsg {
+                                baseQualities = new CBaseQualities {
+                                    packFlags = CBaseQualities.PackFlag.WEENIE_DESC | CBaseQualities.PackFlag.INT_HASH_TABLE | CBaseQualities.PackFlag.BOOL_HASH_TABLE | CBaseQualities.PackFlag.FLOAT_HASH_TABLE | CBaseQualities.PackFlag.TIMESTAMP_HASH_TABLE | CBaseQualities.PackFlag.DATA_ID_HASH_TABLE | CBaseQualities.PackFlag.LONG_INT_HASH_TABLE,
+                                    dbType = 0x81000530,
+                                    wDesc = new WeenieDesc {
+                                        packFlags = WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.MONARCH_ID | WeenieDesc.PackFlag.PHYSICS_TYPE_LOW_DWORD | WeenieDesc.PackFlag.PHYSICS_TYPE_HIGH_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD,
+                                        name = new StringInfo("Diabesus [M]"),
+                                        monarchId = new InstanceId(0x2130000000003B2D),
+                                        physicsTypeLow = 75497504,
+                                        physicsTypeHigh = 0,
+                                        movementEtherealLow = 1042284560,
+                                        movementEtherealHigh = 0,
+                                        placementEtherealLow = 65011856,
+                                        placementEtherealHigh = 0,
+                                    },
+                                    intTable = new Dictionary<uint, int> {
+                                        { 280, 78 },
+                                        { 290, 1 },
+                                        { 291, 4096 },
+                                        { 292, 2 },
+                                        { 302, 7 },
+                                        { 950, -1 },
+                                        { 3100, 391 },
+                                        { 258, 310 },
+                                        { 259, 280 },
+                                        { 263, 280 },
+                                        { 264, 280 },
+                                    },
+                                    longIntTable = new Dictionary<uint, long> {
+                                        { 300, 902 },
+                                        { 301, 722 },
+                                        { 1000, 80 },
+                                        { 1001, 40 },
+                                    },
+                                    boolTable = new Dictionary<uint, bool> {
+                                        { 2002, false }
+                                    },
+                                    floatTable = new Dictionary<uint, float> {
+                                        { 286, 100.0f },
+                                        { 262, 1.0f },
+                                        { 263, 1.0f },
+                                        { 3000, 30.0f },
+                                    },
+                                    timestampTable = new Dictionary<uint, double> {
+                                        { 303, 121629267.45585053 }
+                                    },
+                                    dataIdTable = new Dictionary<uint, DataId> {
+                                        { 1, new DataId(0x470000CD) }
+                                    },
+                                },
                             });
 
                             client.enqueueMessage(new CreateObjectMsg {
@@ -342,7 +390,7 @@ namespace AC2E.Server {
                                 },
                                 wDesc = new WeenieDesc {
                                     packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.MONARCH_ID | WeenieDesc.PackFlag.PHYSICS_TYPE_LOW_DWORD | WeenieDesc.PackFlag.PHYSICS_TYPE_HIGH_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.ENTITY_DID,
-                                    packageId = 895,
+                                    packageId = new PackageId(895),
                                     name = new StringInfo("Diabesus [M]"),
                                     monarchId = new InstanceId(0x2130000000003B2D),
                                     physicsTypeLow = 75497504,
@@ -619,7 +667,7 @@ namespace AC2E.Server {
                                     },
                                     wDesc = new WeenieDesc {
                                         packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.ENTITY_DID,
-                                        packageId = 895,
+                                        packageId = new PackageId(895),
                                         name = new StringInfo($"TestObj 0x{toggleCounter:X}"),
                                         entityDid = new DataId(0x47000530),
                                     },

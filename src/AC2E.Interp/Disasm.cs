@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AC2E.Def;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using static AC2E.Interp.ByteStream;
@@ -22,7 +23,7 @@ namespace AC2E.Interp {
         public readonly Dictionary<uint, string> funcLocToName = new Dictionary<uint, string>();
         public readonly Dictionary<string, FrameDebugInfo> nameToFrame = new Dictionary<string, FrameDebugInfo>();
         public readonly Dictionary<FunctionId, KeyValuePair<ExportData, ExportFunctionData>> addrToTarget = new Dictionary<FunctionId, KeyValuePair<ExportData, ExportFunctionData>>();
-        public readonly Dictionary<uint, ExportData> packageIdToPackage = new Dictionary<uint, ExportData>();
+        public readonly Dictionary<PackageId, ExportData> packageIdToPackage = new Dictionary<PackageId, ExportData>();
 
         public readonly List<Instruction> instructions = new List<Instruction>();
 
@@ -69,7 +70,7 @@ namespace AC2E.Interp {
                     case Opcode.NEW:
                     case Opcode.NEW_NATIVE:
                         i += 4;
-                        instruction.targetPackage = packageIdToPackage.GetValueOrDefault(BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i), null);
+                        instruction.targetPackage = packageIdToPackage.GetValueOrDefault(new PackageId(BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i)), null);
                         break;
                     default:
                         break;
@@ -100,7 +101,7 @@ namespace AC2E.Interp {
                     string[] fullNameSplit = functionName.Split("::");
                     string packageName = fullNameSplit[0];
                     string funcName = fullNameSplit[1];
-                    uint packageId = byteStream.vTable.packageIdStrMap[packageName];
+                    PackageId packageId = byteStream.vTable.packageIdStrMap[packageName];
                     FunctionId funcId = packageIdToPackage[packageId].funcs.Find(f => f.name == funcName).funcId;
                     funcId.isAbs = true;
                     data.WriteLine();

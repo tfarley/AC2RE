@@ -37,7 +37,7 @@ namespace AC2E.Def {
                     stringInfo = new StringInfo(data);
                     break;
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException($"StringInfoData type {type}.");
             }
         }
 
@@ -50,7 +50,7 @@ namespace AC2E.Def {
                     stringInfo.write(data);
                     break;
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException($"StringInfoData type {type}.");
             }
         }
     }

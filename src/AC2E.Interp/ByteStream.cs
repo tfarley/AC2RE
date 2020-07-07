@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using AC2E.Def;
+using Serilog;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -84,7 +85,7 @@ namespace AC2E.Interp {
             public uint checksum; // m_checksum
             public uint size; // m_size
             public TypeFlag flags; // m_flags
-            public uint packageId; // m_pkg_id
+            public PackageId packageId; // m_pkg_id
             public uint parentIndex; // m_parent_index
             public Dictionary<string, CheckpointExportData> checkpoint; // m_checkpoint
 
@@ -94,7 +95,7 @@ namespace AC2E.Interp {
                 checksum = data.ReadUInt32();
                 size = data.ReadUInt32();
                 flags = (TypeFlag)data.ReadUInt32();
-                packageId = data.ReadUInt32();
+                packageId = data.ReadPackageId();
                 parentIndex = data.ReadUInt32();
                 checkpoint = data.ReadDictionary(() => data.ReadEncryptedString(), () => new CheckpointExportData(data));
             }
@@ -135,15 +136,15 @@ namespace AC2E.Interp {
             public List<List<VTableId>> funcMapper; // m_funcMapper
             public List<List<uint>> vTable; // m_vtbl
             public List<PackageInfo> packageInfo; // m_pkgInfo
-            public List<uint> packageIdMap; // m_pkgIdMap
-            public Dictionary<string, uint> packageIdStrMap; // m_pkgIdStrMap
+            public List<PackageId> packageIdMap; // m_pkgIdMap
+            public Dictionary<string, PackageId> packageIdStrMap; // m_pkgIdStrMap
 
             public VTableSection(BinaryReader data) {
                 funcMapper = data.ReadList(() => data.ReadList(() => new VTableId(data.ReadUInt32())));
                 vTable = data.ReadList(() => data.ReadList(data.ReadUInt32));
                 packageInfo = data.ReadList(() => new PackageInfo(data));
-                packageIdMap = data.ReadList(data.ReadUInt32);
-                packageIdStrMap = data.ReadDictionary(() => data.ReadEncryptedString(), data.ReadUInt32);
+                packageIdMap = data.ReadList(data.ReadPackageId);
+                packageIdStrMap = data.ReadDictionary(() => data.ReadEncryptedString(), data.ReadPackageId);
             }
         }
 

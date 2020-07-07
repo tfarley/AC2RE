@@ -4,7 +4,7 @@ using System.IO;
 
 namespace AC2E.Protocol {
 
-    public class LoginCharacterSetMsg : INetMessage {
+    public class CharacterSetMsg : INetMessage {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
         public NetQueue queueId => NetQueue.EVENT;
@@ -20,11 +20,11 @@ namespace AC2E.Protocol {
         public bool hasLegions;
         public bool useTurbineChat; // m_fUseTurbineChat
 
-        public LoginCharacterSetMsg() {
+        public CharacterSetMsg() {
 
         }
 
-        public LoginCharacterSetMsg(BinaryReader data) {
+        public CharacterSetMsg(BinaryReader data) {
             characters = data.ReadList(() => new CharacterIdentity(data));
             deletedCharacters = data.ReadList(() => new CharacterIdentity(data));
             status = data.ReadUInt32();
