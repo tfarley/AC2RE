@@ -14,6 +14,7 @@ namespace AC2E.Protocol {
 
         public InterpSEventMsg(BinaryReader data) {
             ServerEventFunctionId funcId = (ServerEventFunctionId)data.ReadUInt32();
+            uint length = data.ReadUInt32();
             netEvent = IServerEvent.read(funcId, data);
         }
     }

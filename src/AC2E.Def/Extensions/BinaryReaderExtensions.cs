@@ -57,6 +57,14 @@ namespace AC2E {
             return reader.ReadDouble();
         }
 
+        public static InstanceId UnpackInstanceId(this BinaryReader reader) {
+            if ((PackTag)reader.ReadUInt32() != PackTag.LONGINT) {
+                throw new InvalidDataException();
+            }
+
+            return new InstanceId(reader.ReadUInt64());
+        }
+
         public static string ReadNullTermString(this BinaryReader reader, Encoding encoding = null) {
             if (encoding == null) {
                 encoding = Encoding.ASCII;

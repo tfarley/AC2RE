@@ -39,6 +39,11 @@ namespace AC2E {
             writer.Write(value);
         }
 
+        public static void Pack(this BinaryWriter writer, InstanceId value) {
+            writer.Write((uint)PackTag.LONGINT);
+            writer.Write(value);
+        }
+
         public static void WriteEncryptedString(this BinaryWriter writer, string str, Encoding encoding = null) {
             if (encoding == null) {
                 encoding = Encoding.ASCII;
