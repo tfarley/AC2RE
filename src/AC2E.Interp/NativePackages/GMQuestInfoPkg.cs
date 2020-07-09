@@ -1,4 +1,5 @@
-﻿using AC2E.Def;
+﻿using AC2E.Dat;
+using AC2E.Def;
 using System.Collections.Generic;
 using System.IO;
 
@@ -12,10 +13,61 @@ namespace AC2E.Interp {
 
         public PackageId id { get; set; }
 
-        // TODO: Fill out
+        public uint _questID;
+        public StringInfo _strQuestName;
+        public StringInfo _strQuestDescription;
+        public DataId _didIcon;
+        public int _iChallengeLevel;
+        public uint _questStatus;
+        public uint _uiCurPhase;
+        public StringInfo _strCurJournalEntry;
+        public double _ttBestowal;
+        public double _ttDone;
+        public bool _bExpires;
+        public bool _bMaxedOut;
+        public double _ttSecondsRemaining;
+        public double _ttSecondsUntilRetry;
+        public bool _playFXOnUpdate;
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public GMQuestInfoPkg() {
 
+        }
+
+        public GMQuestInfoPkg(BinaryReader data) {
+            // TODO: This format does not match known stuff, so the names/order here may be slightly incorrect
+            _questID = data.ReadUInt32();
+            _strQuestName = new StringInfo(data);
+            _strQuestDescription = new StringInfo(data);
+            _didIcon = data.ReadDataId();
+            _questStatus = data.ReadUInt32();
+            _uiCurPhase = data.ReadUInt32();
+            _strCurJournalEntry = new StringInfo(data);
+            _iChallengeLevel = data.ReadInt32();
+            _ttBestowal = data.ReadDouble();
+            _ttDone = data.ReadDouble();
+            _bExpires = data.ReadUInt32() != 0;
+            _ttSecondsRemaining = data.ReadDouble();
+            _ttSecondsUntilRetry = data.ReadDouble();
+            _bMaxedOut = data.ReadUInt32() != 0;
+            _playFXOnUpdate = data.ReadUInt32() != 0;
+        }
+
+        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+            data.Write(_questID);
+            _strQuestName.write(data);
+            _strQuestDescription.write(data);
+            data.Write(_didIcon);
+            data.Write(_questStatus);
+            data.Write(_uiCurPhase);
+            _strCurJournalEntry.write(data);
+            data.Write(_iChallengeLevel);
+            data.Write(_ttBestowal);
+            data.Write(_ttDone);
+            data.Write(_bExpires ? (uint)1 : (uint)0);
+            data.Write(_ttSecondsRemaining);
+            data.Write(_ttSecondsUntilRetry);
+            data.Write(_bMaxedOut ? (uint)1 : (uint)0);
+            data.Write(_playFXOnUpdate ? (uint)1 : (uint)0);
         }
     }
 }

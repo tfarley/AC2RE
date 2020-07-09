@@ -1,4 +1,5 @@
-﻿using AC2E.Utils;
+﻿using AC2E.Interp;
+using AC2E.Utils;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -12,15 +13,19 @@ namespace AC2E.PacketTool.UI {
 
     public partial class MainWindow : Window {
 
+        private string originalTitle;
+
         private readonly List<NetBlobRow> netBlobRows = new List<NetBlobRow>();
 
         private GridViewColumnHeader lastRecordsListBoxColumnHeaderClicked = null;
         private ListSortDirection lastRecordsListBoxColumnHeaderSortDirection = ListSortDirection.Ascending;
 
-        public object INetServerEvent { get; private set; }
-
         public MainWindow() {
+            PackageManager.init(PackageFactory.read);
+
             InitializeComponent();
+
+            originalTitle = Title;
 
             foreach (NetBlobRecord.MessageErrorType messageErrorType in Enum.GetValues(typeof(NetBlobRecord.MessageErrorType))) {
                 if (messageErrorType != NetBlobRecord.MessageErrorType.UNDETERMINED) {
@@ -76,6 +81,8 @@ namespace AC2E.PacketTool.UI {
             openFileDialog.Filter = "Packet Captures (*.pcap;*.pcapng)|*.pcap;*.pcapng|All files (*.*)|*.*";
             openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog() == true) {
+                Title = $"{originalTitle} - {openFileDialog.SafeFileName}";
+
                 lastRecordsListBoxColumnHeaderClicked = null;
 
                 using (FileStream fileStream = File.OpenRead(openFileDialog.FileName)) {

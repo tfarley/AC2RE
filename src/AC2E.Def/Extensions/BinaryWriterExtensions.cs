@@ -78,6 +78,31 @@ namespace AC2E {
             }
         }
 
+        public static void Write<T>(this BinaryWriter writer, HashSet<T> set, Action<T> elementWriter) {
+            int count = set != null ? set.Count : 0;
+            writer.Write((ushort)count);
+            // NOTE: The client may crash if this table size value is too small, even if the set itself does not have many entries
+            writer.Write((ushort)Math.Max(count, 0x800));
+            if (count > 0) {
+                foreach (var element in set) {
+                    elementWriter.Invoke(element);
+                }
+            }
+        }
+
+        public static void WriteMulti<K, V>(this BinaryWriter writer, Dictionary<K, List<V>> dict, Action<K> keyWriter, Action<V> valueWriter) {
+            int count = dict != null ? dict.Count : 0;
+            writer.Write(count);
+            if (count > 0) {
+                foreach (var element in dict) {
+                    foreach (var subelement in element.Value) {
+                        keyWriter.Invoke(element.Key);
+                        valueWriter.Invoke(subelement);
+                    }
+                }
+            }
+        }
+
         public static void Write<K, V>(this BinaryWriter writer, Dictionary<K, V> dict, Action<K> keyWriter, Action<V> valueWriter) {
             int count = dict != null ? dict.Count : 0;
             writer.Write((ushort)count);

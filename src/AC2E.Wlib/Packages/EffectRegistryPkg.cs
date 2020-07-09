@@ -13,21 +13,47 @@ namespace AC2E.WLib {
 
         public PackageId id { get; set; }
 
-        public AAHashPkg m_qualitiesModifiedCount;
-        public AAHashPkg m_appliedFX;
-        public EffectRegistryPkg m_baseEffectRegistry;
+        public PkgRef<AAHashPkg> m_qualitiesModifiedCount;
+        public PkgRef<AAHashPkg> m_appliedFX;
+        public PkgRef<EffectRegistryPkg> m_baseEffectRegistry;
         public uint m_uiEffectIDCounter;
-        public ARHashPkg<IPackage> m_effectInfo; // TODO: EffectInfo pkg type?
+        public PkgRef<ARHashPkg<IPackage>> m_effectInfo; // TODO: EffectInfo pkg type?
         public double m_ttLastPulse;
-        public AListPkg m_listEquipperEffectEids;
-        public AListPkg m_listAcquirerEffectEids;
+        public PkgRef<AListPkg> m_listEquipperEffectEids;
+        public PkgRef<AListPkg> m_listAcquirerEffectEids;
         public uint m_flags;
-        public AHashSetPkg m_setTrackedEffects;
-        public AAHashPkg m_topEffects;
-        public AAMultiHashPkg m_effectCategorizationTable;
-        public AAHashPkg m_appliedAppearances;
+        public PkgRef<AHashSetPkg> m_setTrackedEffects;
+        public PkgRef<AAHashPkg> m_topEffects;
+        public PkgRef<AAMultiHashPkg> m_effectCategorizationTable;
+        public PkgRef<AAHashPkg> m_appliedAppearances;
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public EffectRegistryPkg() {
+
+        }
+
+        public EffectRegistryPkg(BinaryReader data) {
+            m_qualitiesModifiedCount = data.ReadPkgRef<AAHashPkg>();
+            m_appliedFX = data.ReadPkgRef<AAHashPkg>();
+            m_baseEffectRegistry = data.ReadPkgRef<EffectRegistryPkg>();
+            m_uiEffectIDCounter = data.ReadUInt32();
+            m_effectInfo = data.ReadPkgRef<ARHashPkg<IPackage>>();
+            m_ttLastPulse = data.ReadDouble();
+            m_listEquipperEffectEids = data.ReadPkgRef<AListPkg>();
+            m_listAcquirerEffectEids = data.ReadPkgRef<AListPkg>();
+            m_flags = data.ReadUInt32();
+            m_setTrackedEffects = data.ReadPkgRef<AHashSetPkg>();
+            m_topEffects = data.ReadPkgRef<AAHashPkg>();
+            m_effectCategorizationTable = data.ReadPkgRef<AAMultiHashPkg>();
+            m_appliedAppearances = data.ReadPkgRef<AAHashPkg>();
+        }
+
+        public void resolveGenericRefs() {
+            if (m_effectInfo.rawValue != null) {
+                PackageManager.add(new ARHashPkg<IPackage>(PackageManager.get<ARHashPkg>(m_effectInfo.id)));
+            }
+        }
+
+        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
             data.Write(m_qualitiesModifiedCount, references);
             data.Write(m_appliedFX, references);
             data.Write(m_baseEffectRegistry, references);

@@ -11,13 +11,13 @@ namespace AC2E {
         private static readonly byte UNINITIALIZED_DATA = 0xCD;
 
         public static void Pack(this BinaryWriter writer, IPackage value) {
-            List<IPackage> references = new List<IPackage>();
-            references.Add(value);
+            List<PkgRef<IPackage>> references = new List<PkgRef<IPackage>>();
+            references.Add(new PkgRef<IPackage>(value));
 
             MemoryStream buffer = new MemoryStream();
             using (BinaryWriter data = new BinaryWriter(buffer)) {
                 for (int i = 0; i < references.Count; i++) {
-                    IPackage reference = references[i];
+                    IPackage reference = references[i].value;
                     if (reference != null) {
                         writePackage(data, reference, references);
                     }
@@ -25,7 +25,7 @@ namespace AC2E {
             }
 
             for (int i = references.Count - 1; i >= 0; i--) {
-                if (references[i] == null) {
+                if (references[i].id.id == PackageId.NULL.id) {
                     references.RemoveAt(i);
                 }
             }
@@ -35,9 +35,7 @@ namespace AC2E {
             writer.Write(buffer.ToArray());
         }
 
-        private static void writePackage(BinaryWriter writer, IPackage value, List<IPackage> references) {
-            int startReferencesCount = references.Count;
-
+        private static void writePackage(BinaryWriter writer, IPackage value, List<PkgRef<IPackage>> references) {
             writer.Write(value.referenceMeta.id);
 
             if (value.referenceMeta.isSingleton) {
@@ -63,8 +61,9 @@ namespace AC2E {
                 writer.BaseStream.Seek(contentEnd, SeekOrigin.Begin);
             }
 
+            // TODO: Still not sure this is the correct condition for whether there are references or not
             // Write out field descriptions
-            if (value.packageType != PackageType.UNDEF && references.Count > startReferencesCount) {
+            if (value.nativeType == NativeType.UNDEF) {
                 foreach (FieldDesc fieldDesc in InterpMeta.getFieldDescs(value.GetType())) {
                     writer.Write((byte)fieldDesc.fieldType);
                     if (fieldDesc.numWords == 2) {
@@ -79,9 +78,19 @@ namespace AC2E {
             }
         }
 
-        public static void Write(this BinaryWriter writer, IPackage value, List<IPackage> references) {
+        public static void Write(this BinaryWriter writer, PackageId value, List<PkgRef<IPackage>> references) {
+            writer.Write(value);
+            references.Add(new PkgRef<IPackage>(value));
+        }
+
+        public static void Write<T>(this BinaryWriter writer, PkgRef<T> value, List<PkgRef<IPackage>> references) where T : IPackage {
             writer.Write(value != null ? value.id : PackageId.NULL);
-            references.Add(value);
+            references.Add(value != null ? new PkgRef<IPackage>(value.value) : new PkgRef<IPackage>(PackageId.NULL));
+        }
+
+        public static void Write<T>(this BinaryWriter writer, T value, List<PkgRef<IPackage>> references) where T : IPackage {
+            writer.Write(value != null ? value.id : PackageId.NULL);
+            references.Add(new PkgRef<IPackage>(value));
         }
     }
 }

@@ -28,7 +28,6 @@ namespace AC2E.WLib {
         }
 
         public HandleCharacterSessionStartCEvt(BinaryReader data) {
-            // TODO: Tricky part here will be how to read generic packages
             money = data.UnpackInt32();
             _aReg = data.UnpackPackage<ActRegistryPkg>();
             _quests = data.UnpackPackage<GMQuestInfoListPkg>();
@@ -36,9 +35,9 @@ namespace AC2E.WLib {
             _skills = data.UnpackPackage<SkillRepositoryPkg>();
             _regEffect = data.UnpackPackage<EffectRegistryPkg>();
             _filledInvLocs = data.UnpackUInt32();
-            _invByLocTable = data.UnpackPackage<ARHashPkg<InventProfilePkg>>();
-            _invByIIDTable = data.UnpackPackage<LRHashPkg<InventProfilePkg>>();
-            _ContainerSegments = data.UnpackPackage<RListPkg<ContainerSegmentDescriptorPkg>>();
+            _invByLocTable = new ARHashPkg<InventProfilePkg>(data.UnpackPackage<ARHashPkg>());
+            _invByIIDTable = new LRHashPkg<InventProfilePkg>(data.UnpackPackage<LRHashPkg>());
+            _ContainerSegments = new RListPkg<ContainerSegmentDescriptorPkg>(data.UnpackPackage<RListPkg>());
             _Containers = data.UnpackPackage<LListPkg>();
             _Contents = data.UnpackPackage<LListPkg>();
             _locFactionStatus = data.UnpackUInt32();

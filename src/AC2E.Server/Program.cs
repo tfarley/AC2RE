@@ -21,6 +21,8 @@ namespace AC2E.Server {
 
             Log.Information("Hello World!");
 
+            PackageManager.init(PackageFactory.read);
+
             //parseWLib();
 
             //parseDatFiles();

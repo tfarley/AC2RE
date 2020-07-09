@@ -16,12 +16,32 @@ namespace AC2E.WLib {
         public uint m_nSkillCredits;
         public ulong m_nUntrainXP;
         public uint m_nHeroSkillCredits;
-        public AAHashPkg m_hashPerkTypes;
+        public PkgRef<AAHashPkg> m_hashPerkTypes;
         public uint m_typeUntrained;
-        public AAHashPkg m_hashCategories;
-        public ARHashPkg<SkillInfoPkg> m_hashSkills;
+        public PkgRef<AAHashPkg> m_hashCategories;
+        public PkgRef<ARHashPkg<SkillInfoPkg>> m_hashSkills;
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public SkillRepositoryPkg() {
+
+        }
+
+        public SkillRepositoryPkg(BinaryReader data) {
+            m_nSkillCredits = data.ReadUInt32();
+            m_nUntrainXP = data.ReadUInt64();
+            m_nHeroSkillCredits = data.ReadUInt32();
+            m_hashPerkTypes = data.ReadPkgRef<AAHashPkg>();
+            m_typeUntrained = data.ReadUInt32();
+            m_hashCategories = data.ReadPkgRef<AAHashPkg>();
+            m_hashSkills = data.ReadPkgRef<ARHashPkg<SkillInfoPkg>>();
+        }
+
+        public void resolveGenericRefs() {
+            if (m_hashSkills.rawValue != null) {
+                PackageManager.add(new ARHashPkg<SkillInfoPkg>(PackageManager.get<ARHashPkg>(m_hashSkills.id)));
+            }
+        }
+
+        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
             data.Write(m_nSkillCredits);
             data.Write(m_nUntrainXP);
             data.Write(m_nHeroSkillCredits);

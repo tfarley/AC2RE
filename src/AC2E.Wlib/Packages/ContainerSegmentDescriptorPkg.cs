@@ -16,7 +16,16 @@ namespace AC2E.WLib {
         public uint mSegmentMaxSize;
         public uint mSegmentSize;
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public ContainerSegmentDescriptorPkg() {
+
+        }
+
+        public ContainerSegmentDescriptorPkg(BinaryReader data) {
+            mSegmentMaxSize = data.ReadUInt32();
+            mSegmentSize = data.ReadUInt32();
+        }
+
+        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
             data.Write(mSegmentMaxSize);
             data.Write(mSegmentSize);
         }

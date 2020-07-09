@@ -2,6 +2,7 @@
 using AC2E.Def;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace AC2E.Interp {
 
@@ -19,11 +20,37 @@ namespace AC2E.Interp {
         public uint _data_enum;
         public DataId _data_dataid;
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public ShortcutInfoPkg() {
+
+        }
+
+        public ShortcutInfoPkg(BinaryReader data) {
             // TODO: Guessing on the types here
+            _type = (ShortcutType)data.ReadUInt32();
             switch (_type) {
                 case ShortcutType.UNDEF:
-                    data.Write((uint)0);
+                    break;
+                case ShortcutType.SKILL:
+                case ShortcutType.RECIPE:
+                case ShortcutType.NEW_RECIPE:
+                    _data_dataid = data.ReadDataId();
+                    break;
+                case ShortcutType.ITEM:
+                    _data_iid = data.ReadInstanceId();
+                    break;
+                case ShortcutType.ALIAS:
+                    _data_str = data.ReadEncryptedString(Encoding.Unicode);
+                    break;
+                default:
+                    throw new InvalidDataException();
+            }
+        }
+
+        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+            // TODO: Guessing on the types here
+            data.Write((uint)_type);
+            switch (_type) {
+                case ShortcutType.UNDEF:
                     break;
                 case ShortcutType.SKILL:
                 case ShortcutType.RECIPE:
@@ -34,7 +61,7 @@ namespace AC2E.Interp {
                     data.Write(_data_iid);
                     break;
                 case ShortcutType.ALIAS:
-                    data.WriteEncryptedString(_data_str);
+                    data.WriteEncryptedString(_data_str, Encoding.Unicode);
                     break;
                 default:
                     throw new InvalidDataException();

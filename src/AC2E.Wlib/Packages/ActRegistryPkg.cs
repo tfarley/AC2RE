@@ -14,9 +14,24 @@ namespace AC2E.WLib {
         public PackageId id { get; set; }
 
         public int m_viewingProtectionEID;
-        public ARHashPkg<AListPkg> m_actSceneTable;
+        public PkgRef<ARHashPkg<AListPkg>> m_actSceneTable;
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public ActRegistryPkg() {
+
+        }
+
+        public ActRegistryPkg(BinaryReader data) {
+            m_viewingProtectionEID = data.ReadInt32();
+            m_actSceneTable = data.ReadPkgRef<ARHashPkg<AListPkg>>();
+        }
+
+        public void resolveGenericRefs() {
+            if (m_actSceneTable.rawValue != null) {
+                PackageManager.add(new ARHashPkg<AListPkg>(PackageManager.get<ARHashPkg>(m_actSceneTable.id)));
+            }
+        }
+
+        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
             data.Write(m_viewingProtectionEID);
             data.Write(m_actSceneTable, references);
         }

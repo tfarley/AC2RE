@@ -408,17 +408,17 @@ namespace AC2E.Server {
                                     _aReg = new ActRegistryPkg {
                                         id = new PackageId(0x00029B49),
                                         m_viewingProtectionEID = 0,
-                                        m_actSceneTable = new ARHashPkg<AListPkg> {
+                                        m_actSceneTable = new PkgRef<ARHashPkg<AListPkg>>(new ARHashPkg<AListPkg> {
                                             id = new PackageId(0x00029B4A),
-                                            contents = new Dictionary<uint, AListPkg> {
-                                                { 0x40000005, new AListPkg { id = new PackageId(0x00029B4B) } },
-                                                { 0x40000006, new AListPkg { id = new PackageId(0x00029B4C) } },
-                                                { 0x40000007, new AListPkg { id = new PackageId(0x00029B4D) } },
-                                                { 0x40000008, new AListPkg { id = new PackageId(0x00029B55) } },
-                                                { 0x40000009, new AListPkg { id = new PackageId(0x00029B56) } },
-                                                { 0x4000000A, new AListPkg { id = new PackageId(0x00029B57) } },
+                                            contents = new Dictionary<uint, PkgRef<AListPkg>> {
+                                                { 0x40000005, new PkgRef<AListPkg>(new AListPkg { id = new PackageId(0x00029B4B) }) },
+                                                { 0x40000006, new PkgRef<AListPkg>(new AListPkg { id = new PackageId(0x00029B4C) }) },
+                                                { 0x40000007, new PkgRef<AListPkg>(new AListPkg { id = new PackageId(0x00029B4D) }) },
+                                                { 0x40000008, new PkgRef<AListPkg>(new AListPkg { id = new PackageId(0x00029B55) }) },
+                                                { 0x40000009, new PkgRef<AListPkg>(new AListPkg { id = new PackageId(0x00029B56) }) },
+                                                { 0x4000000A, new PkgRef<AListPkg>(new AListPkg { id = new PackageId(0x00029B57) }) },
                                             }
-                                        }
+                                        })
                                     },
                                     _quests = new GMQuestInfoListPkg {
                                         id = new PackageId(0x00029D08),
@@ -524,35 +524,35 @@ namespace AC2E.Server {
                                         id = new PackageId(0x00029711),
                                         m_nSkillCredits = 0,
                                         m_nUntrainXP = 0,
-                                        m_hashPerkTypes = new AAHashPkg {
+                                        m_hashPerkTypes = new PkgRef<AAHashPkg>(new AAHashPkg {
                                             id = new PackageId(0x00029712),
                                             contents = new Dictionary<uint, uint> {
 
                                             }
-                                        },
+                                        }),
                                         m_typeUntrained = 0,
-                                        m_hashCategories = new AAHashPkg {
+                                        m_hashCategories = new PkgRef<AAHashPkg>(new AAHashPkg {
                                             id = new PackageId(0x00029713),
                                             contents = new Dictionary<uint, uint> {
 
                                             }
-                                        },
-                                        m_hashSkills = new ARHashPkg<SkillInfoPkg> {
+                                        }),
+                                        m_hashSkills = new PkgRef<ARHashPkg<SkillInfoPkg>>(new ARHashPkg<SkillInfoPkg> {
                                             id = new PackageId(0x00029714),
-                                            contents = new Dictionary<uint, SkillInfoPkg> {
+                                            contents = new Dictionary<uint, PkgRef<SkillInfoPkg>> {
 
                                             }
-                                        },
+                                        }),
                                     },
                                     _regEffect = new EffectRegistryPkg {
                                         id = new PackageId(0x0003E9EA),
                                         m_qualitiesModifiedCount = null,
-                                        m_appliedFX = new AAHashPkg {
+                                        m_appliedFX = new PkgRef<AAHashPkg>(new AAHashPkg {
                                             id = new PackageId(0x0003E9EB),
                                             contents = new Dictionary<uint, uint> {
 
                                             },
-                                        },
+                                        }),
                                         m_baseEffectRegistry = null,
                                         m_uiEffectIDCounter = 3,
                                         m_effectInfo = null,
@@ -563,12 +563,12 @@ namespace AC2E.Server {
                                         m_setTrackedEffects = null,
                                         m_topEffects = null,
                                         m_effectCategorizationTable = null,
-                                        m_appliedAppearances = new AAHashPkg {
+                                        m_appliedAppearances = new PkgRef<AAHashPkg>(new AAHashPkg {
                                             id = new PackageId(0x0003E9EC),
                                             contents = new Dictionary<uint, uint> {
 
                                             },
-                                        },
+                                        }),
                                     },
                                     _filledInvLocs = 0,
                                     _invByLocTable = new ARHashPkg<InventProfilePkg> {
@@ -607,7 +607,7 @@ namespace AC2E.Server {
                             // TODO: Just for testing - when pressing the attack mode button, toggle Refining effect UI image
                             if (msg.netEvent.funcId == ServerEventFunctionId.Combat__StartAttack) {
                                 if (toggleCounter % 2 == 0) {
-                                    EffectPkg refiningEffect = new EffectPkg {
+                                    SingletonPkg refiningEffect = new SingletonPkg {
                                         id = new PackageId(0x0000F08A),
                                         did = new DataId(0x6F0011ED),
                                     };
@@ -626,7 +626,7 @@ namespace AC2E.Server {
                                                 m_bPK = false,
                                                 m_rApp = null,
                                                 m_timePromotedToTopLevel = -1.0,
-                                                m_effect = refiningEffect,
+                                                m_effect = new PkgRef<SingletonPkg>(refiningEffect),
                                                 m_iidActingForWhom = default,
                                                 m_didSkill = default,
                                                 m_iidFromItem = new InstanceId(0x213000000000dd9d),

@@ -1,10 +1,11 @@
 ﻿using AC2E.Def;
+using AC2E.Utils;
 using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.Interp {
 
-    public class ARHashPkg<V> : IPackage where V : IPackage {
+    public abstract class BaseARHashPkg : IPackage {
 
         public NativeType nativeType => NativeType.ARHASH;
         public PackageType packageType => PackageType.UNDEF;
@@ -12,12 +13,66 @@ namespace AC2E.Interp {
 
         public PackageId id { get; set; }
 
-        public Dictionary<uint, V> contents;
+        public abstract void write(BinaryWriter data, List<PkgRef<IPackage>> references);
+    }
 
-        // TODO: This should probably not be generic - ideally it would just store PackageIds so that the reader does not need to mess with generics, same for all other "R" generic variants
+    public class ARHashPkg : BaseARHashPkg {
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public Dictionary<uint, PackageId> contents;
+
+        public ARHashPkg() {
+
+        }
+
+        public ARHashPkg(BinaryReader data) {
+            contents = data.ReadDictionary(data.ReadUInt32, data.ReadPackageId);
+        }
+
+        public override void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
             data.Write(contents, data.Write, v => data.Write(v, references));
+        }
+    }
+
+    public class ARHashPkg<V> : BaseARHashPkg where V : IPackage {
+
+        public Dictionary<uint, PkgRef<V>> contents;
+
+        public ARHashPkg(ARHashPkg plain) {
+            id = plain.id;
+            if (plain.contents != null) {
+                contents = new Dictionary<uint, PkgRef<V>>(plain.contents.Count);
+                foreach (var element in plain.contents) {
+                    contents[element.Key] = new PkgRef<V>(element.Value);
+                }
+            }
+        }
+
+        public ARHashPkg toPlain() {
+            ARHashPkg plain = new ARHashPkg();
+            plain.id = id;
+            if (contents != null) {
+                plain.contents = new Dictionary<uint, PackageId>(contents.Count);
+                foreach (var element in contents) {
+                    plain.contents[element.Key] = element.Value.id;
+                }
+            }
+            return plain;
+        }
+
+        public ARHashPkg() {
+
+        }
+
+        public ARHashPkg(BinaryReader data) {
+            contents = data.ReadDictionary(data.ReadUInt32, () => data.ReadPkgRef<V>());
+        }
+
+        public override void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+            data.Write(contents, data.Write, v => data.Write(v, references));
+        }
+
+        public override string ToString() {
+            return Util.objectToString(contents);
         }
     }
 }

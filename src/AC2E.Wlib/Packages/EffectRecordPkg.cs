@@ -22,9 +22,9 @@ namespace AC2E.WLib {
         public float m_fSpellcraft;
         public int m_iApp;
         public bool m_bPK;
-        public IPackage m_rApp;
+        public PkgRef<IPackage> m_rApp;
         public double m_timePromotedToTopLevel;
-        public EffectPkg m_effect;
+        public PkgRef<SingletonPkg> m_effect;
         public InstanceId m_iidActingForWhom;
         public DataId m_didSkill;
         public InstanceId m_iidFromItem;
@@ -35,7 +35,34 @@ namespace AC2E.WLib {
         public uint m_categories;
         public uint m_uiMaxDurabilityLevel;
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public EffectRecordPkg() {
+
+        }
+
+        public EffectRecordPkg(BinaryReader data) {
+            m_timeDemotedFromTopLevel = data.ReadDouble();
+            m_timeCast = data.ReadDouble();
+            m_iidCaster = data.ReadInstanceId();
+            m_ttTimeout = data.ReadSingle();
+            m_fApp = data.ReadSingle();
+            m_fSpellcraft = data.ReadSingle();
+            m_iApp = data.ReadInt32();
+            m_bPK = data.ReadUInt32() != 0;
+            m_rApp = data.ReadPkgRef<IPackage>();
+            m_timePromotedToTopLevel = data.ReadDouble();
+            m_effect = data.ReadPkgRef<SingletonPkg>();
+            m_iidActingForWhom = data.ReadInstanceId();
+            m_didSkill = data.ReadDataId();
+            m_iidFromItem = data.ReadInstanceId();
+            m_flags = data.ReadUInt32();
+            m_uiDurabilityLevel = data.ReadUInt32();
+            m_relatedEID = data.ReadUInt32();
+            m_effectID = data.ReadUInt32();
+            m_categories = data.ReadUInt32();
+            m_uiMaxDurabilityLevel = data.ReadUInt32();
+        }
+
+        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
             data.Write(m_timeDemotedFromTopLevel);
             data.Write(m_timeCast);
             data.Write(m_iidCaster);

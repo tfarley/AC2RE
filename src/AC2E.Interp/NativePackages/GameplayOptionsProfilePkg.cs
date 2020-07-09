@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace AC2E.Interp {
 
@@ -81,18 +82,72 @@ namespace AC2E.Interp {
         public Dictionary<uint, TextType> windowToChannel;
         public Dictionary<TextType, bool> m_chatPopupFlags;
         public Dictionary<uint, float> m_windowOpacities;
+        public uint unk1;
 
-        public void write(BinaryWriter data, List<IPackage> references) {
-            data.Write((uint)contentFlags);
-            data.Write((uint)0);
+        public GameplayOptionsProfilePkg() {
+
+        }
+
+        public GameplayOptionsProfilePkg(BinaryReader data) {
+            contentFlags = (ContentFlag)data.ReadUInt64();
             if (contentFlags.HasFlag(ContentFlag.ALIAS_TABLE)) {
-                data.Write(m_aliasTable, data.Write, data.Write);
+                m_aliasTable = data.ReadDictionary(() => data.ReadEncryptedString(Encoding.Unicode), () => data.ReadEncryptedString(Encoding.Unicode));
+            }
+            if (contentFlags.HasFlag(ContentFlag.SHORTCUT_ARRAY)) {
+                m_shortcutArray = data.ReadList(() => new ShortcutInfoPkg(data));
+            }
+            if (contentFlags.HasFlag(ContentFlag.SHORTCUT_SET)) {
+                m_whichShortcutSet = data.ReadUInt32();
+            }
+            if (contentFlags.HasFlag(ContentFlag.UNK1)) {
+                unk1 = data.ReadUInt32();
+            }
+            if (contentFlags.HasFlag(ContentFlag.SHOW_RANGE_DAMAGE_OTHER)) {
+                m_fDamageTextRangeOther = data.ReadSingle();
+            }
+            if (contentFlags.HasFlag(ContentFlag.SAVED_UI_LOCATIONS)) {
+                m_savedUILocations = new UISaveLocationsPkg(data);
+            }
+            if (contentFlags.HasFlag(ContentFlag.RADAR_MASK)) {
+                m_radarMask = data.ReadUInt32();
+            }
+            if (contentFlags.HasFlag(ContentFlag.FILTER_HASH)) {
+                m_filterHash = data.ReadDictionary(data.ReadUInt32, data.ReadUInt32);
+            }
+            if (contentFlags.HasFlag(ContentFlag.BIT_FIELD)) {
+                m_bitField = (Flag)data.ReadUInt32();
+            }
+            m_version = (Version)data.ReadUInt32();
+            if (contentFlags.HasFlag(ContentFlag.CHAT_FONT_COLORS)) {
+                m_chatFontColors = data.ReadDictionary(() => (TextType)data.ReadUInt32(), data.ReadUInt32);
+            }
+            if (contentFlags.HasFlag(ContentFlag.CHAT_FONT_SIZES)) {
+                m_chatFontSizes = data.ReadDictionary(() => (TextType)data.ReadUInt32(), data.ReadUInt32);
+            }
+            if (contentFlags.HasFlag(ContentFlag.WINDOW_TO_CHANNEL)) {
+                windowToChannel = data.ReadDictionary(data.ReadUInt32, () => (TextType)data.ReadUInt32());
+            }
+            if (contentFlags.HasFlag(ContentFlag.CHAT_POPUP_FLAGS)) {
+                m_chatPopupFlags = data.ReadDictionary(() => (TextType)data.ReadUInt32(), () => data.ReadUInt32() != 0);
+            }
+            if (contentFlags.HasFlag(ContentFlag.WINDOW_OPACITIES)) {
+                m_windowOpacities = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
+            }
+        }
+
+        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+            data.Write((ulong)contentFlags);
+            if (contentFlags.HasFlag(ContentFlag.ALIAS_TABLE)) {
+                data.Write(m_aliasTable, k => data.WriteEncryptedString(k, Encoding.Unicode), v => data.WriteEncryptedString(v, Encoding.Unicode));
             }
             if (contentFlags.HasFlag(ContentFlag.SHORTCUT_ARRAY)) {
                 data.Write(m_shortcutArray, v => v.write(data, references));
             }
             if (contentFlags.HasFlag(ContentFlag.SHORTCUT_SET)) {
                 data.Write(m_whichShortcutSet);
+            }
+            if (contentFlags.HasFlag(ContentFlag.UNK1)) {
+                data.Write(unk1);
             }
             if (contentFlags.HasFlag(ContentFlag.SHOW_RANGE_DAMAGE_OTHER)) {
                 data.Write(m_fDamageTextRangeOther);
@@ -124,9 +179,6 @@ namespace AC2E.Interp {
             }
             if (contentFlags.HasFlag(ContentFlag.WINDOW_OPACITIES)) {
                 data.Write(m_windowOpacities, data.Write, data.Write);
-            }
-            if (contentFlags.HasFlag(ContentFlag.UNK1)) {
-                throw new NotImplementedException();
             }
         }
     }

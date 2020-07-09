@@ -9,6 +9,7 @@ namespace AC2E.Interp {
     public static class InterpMeta {
 
         private static readonly Dictionary<Type, FieldDesc[]> fieldDescCache = new Dictionary<Type, FieldDesc[]>();
+        private static readonly Dictionary<Type, bool> hasReferencesCache = new Dictionary<Type, bool>();
 
         private static readonly Dictionary<Type, uint> TYPE_TO_NUM_WORDS = new Dictionary<Type, uint> {
             { typeof(bool), 1 },
@@ -19,6 +20,7 @@ namespace AC2E.Interp {
             { typeof(uint), 1 },
             { typeof(float), 1 },
             { typeof(IPackage), 1 },
+            { typeof(IPkgRef), 1 },
             { typeof(DataId), 1 },
             { typeof(long), 2 },
             { typeof(ulong), 2 },
@@ -34,7 +36,7 @@ namespace AC2E.Interp {
                     FieldInfo fieldInfo = fieldInfos[i];
                     Type fieldType = fieldInfo.FieldType;
                     StackType stackType;
-                    if (typeof(IPackage).IsAssignableFrom(fieldType)) {
+                    if (typeof(IPackage).IsAssignableFrom(fieldType) || typeof(IPkgRef).IsAssignableFrom(fieldType)) {
                         fieldType = typeof(IPackage);
                         stackType = StackType.REFERENCE;
                     } else {
@@ -45,6 +47,23 @@ namespace AC2E.Interp {
                 fieldDescCache[type] = fieldDescs;
             }
             return fieldDescs;
+        }
+
+        public static bool hasReferences(Type type) {
+            if (!hasReferencesCache.TryGetValue(type, out bool hasReferences)) {
+                FieldInfo[] fieldInfos = type.GetFields();
+                hasReferences = false;
+                for (int i = 0; i < fieldInfos.Length; i++) {
+                    FieldInfo fieldInfo = fieldInfos[i];
+                    Type fieldType = fieldInfo.FieldType;
+                    if (typeof(IPackage).IsAssignableFrom(fieldType) || typeof(IPkgRef).IsAssignableFrom(fieldType)) {
+                        hasReferences = true;
+                        break;
+                    }
+                }
+                hasReferencesCache[type] = hasReferences;
+            }
+            return hasReferences;
         }
     }
 }

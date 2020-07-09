@@ -25,7 +25,25 @@ namespace AC2E.WLib {
         public uint m_nSkillOverride;
         public uint m_typeSkill;
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public SkillInfoPkg() {
+
+        }
+
+        public SkillInfoPkg(BinaryReader data) {
+            m_timeLastUsed = data.ReadDouble();
+            m_levelCached = data.ReadUInt32();
+            m_timeCached = data.ReadDouble();
+            m_nXPAllocated = data.ReadUInt64();
+            m_mask = data.ReadUInt32();
+            m_timeGranted = data.ReadDouble();
+            m_nTrainedChildren = data.ReadUInt32();
+            m_nTrainedDependents = data.ReadUInt32();
+            m_nCostWhenLearned = data.ReadUInt32();
+            m_nSkillOverride = data.ReadUInt32();
+            m_typeSkill = data.ReadUInt32();
+        }
+
+        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
             data.Write(m_timeLastUsed);
             data.Write(m_levelCached);
             data.Write(m_timeCached);
@@ -37,7 +55,6 @@ namespace AC2E.WLib {
             data.Write(m_nCostWhenLearned);
             data.Write(m_nSkillOverride);
             data.Write(m_typeSkill);
-            // TODO: Need to write field types at the end, BUT there are no reference fields here - so how to determine when to write that info?
         }
     }
 }

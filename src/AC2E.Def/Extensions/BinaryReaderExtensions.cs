@@ -115,6 +115,25 @@ namespace AC2E {
             return list;
         }
 
+        public static HashSet<T> ReadSet<T>(this BinaryReader reader, Func<T> elementReader) {
+            HashSet<T> set = new HashSet<T>();
+            ushort numElements = reader.ReadUInt16();
+            ushort setSize = reader.ReadUInt16();
+            for (int i = 0; i < numElements; i++) {
+                set.Add(elementReader.Invoke());
+            }
+            return set;
+        }
+
+        public static Dictionary<K, List<V>> ReadMultiDictionary<K, V>(this BinaryReader reader, Func<K> keyReader, Func<V> valueReader) {
+            Dictionary<K, List<V>> dict = new Dictionary<K, List<V>>();
+            uint numElements = reader.ReadUInt32();
+            for (int i = 0; i < numElements; i++) {
+                dict.GetOrCreate(keyReader.Invoke()).Add(valueReader.Invoke());
+            }
+            return dict;
+        }
+
         public static Dictionary<K, V> ReadDictionary<K, V>(this BinaryReader reader, Func<K> keyReader, Func<V> valueReader) {
             Dictionary<K, V> dict = new Dictionary<K, V>();
             ushort numElements = reader.ReadUInt16();

@@ -1,4 +1,5 @@
 ﻿using AC2E.Def;
+using AC2E.Utils;
 using System.Collections.Generic;
 using System.IO;
 
@@ -12,10 +13,22 @@ namespace AC2E.Interp {
 
         public PackageId id { get; set; }
 
-        // TODO: Fill out
+        public Dictionary<uint, VisualDesc.AppearanceInfo> contents;
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public AppInfoHashPkg() {
 
+        }
+
+        public AppInfoHashPkg(BinaryReader data) {
+            contents = data.ReadDictionary(data.ReadUInt32, () => new VisualDesc.AppearanceInfo(data));
+        }
+
+        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+            data.Write(contents, data.Write, v => v.write(data));
+        }
+
+        public override string ToString() {
+            return Util.objectToString(contents);
         }
     }
 }

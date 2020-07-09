@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -54,46 +56,64 @@ namespace AC2E.Utils {
                     return;
                 }
 
-                stringBuilder.AppendLine("{");
-                foreach (DictionaryEntry entry in dictionaryValue) {
-                    stringBuilder.Append(' ', indentLevel + 2);
-                    int startLen = stringBuilder.Length;
-                    objectToString(stringBuilder, visited, indentLevel + 2, entry.Key);
-                    stringBuilder.Append(" : ");
-                    objectToString(stringBuilder, visited, indentLevel + 2 + (stringBuilder.Length - startLen), entry.Value);
-                    stringBuilder.AppendLine();
+                if (dictionaryValue.Count > 0) {
+                    stringBuilder.AppendLine("{");
+                    foreach (DictionaryEntry entry in dictionaryValue) {
+                        stringBuilder.Append(' ', indentLevel + 2);
+                        objectToString(stringBuilder, visited, indentLevel + 2, entry.Key);
+                        stringBuilder.Append(" : ");
+                        objectToString(stringBuilder, visited, indentLevel + 2, entry.Value);
+                        stringBuilder.AppendLine();
+                    }
+                    stringBuilder.Append(' ', indentLevel);
+                    stringBuilder.Append('}');
+                } else {
+                    stringBuilder.Append("{ }");
                 }
-                stringBuilder.Append(' ', indentLevel);
-                stringBuilder.Append('}');
                 return;
             }
 
-            IEnumerable enumerableValue = target as IEnumerable;
+            IEnumerable<object> enumerableValue = target as IEnumerable<object>;
             if (enumerableValue != null && !(target is string)) {
                 if (!visited.Add(target)) {
                     stringBuilder.Append($"Circular ref: {target}");
                     return;
                 }
 
-                stringBuilder.AppendLine("[");
-                bool first = true;
-                foreach (object val in enumerableValue) {
-                    if (!first) {
-                        stringBuilder.AppendLine(",");
+                if (enumerableValue.Count() > 0) {
+                    stringBuilder.AppendLine("[");
+                    bool first = true;
+                    foreach (object val in enumerableValue) {
+                        if (!first) {
+                            stringBuilder.AppendLine(",");
+                        }
+                        stringBuilder.Append(' ', indentLevel + 2);
+                        objectToString(stringBuilder, visited, indentLevel + 2, val);
+                        first = false;
                     }
-                    stringBuilder.Append(' ', indentLevel + 2);
-                    objectToString(stringBuilder, visited, indentLevel + 2, val);
-                    first = false;
+                    stringBuilder.AppendLine();
+                    stringBuilder.Append(' ', indentLevel);
+                    stringBuilder.Append(']');
+                } else {
+                    stringBuilder.Append("[ ]");
                 }
-                stringBuilder.AppendLine();
-                stringBuilder.Append(' ', indentLevel);
-                stringBuilder.Append(']');
                 return;
             }
 
             foreach (MethodInfo methodInfo in targetType.GetMethods()) {
                 if (methodInfo.Name == "ToString" && methodInfo.DeclaringType == targetType) {
-                    stringBuilder.Append(target.ToString());
+                    using (StringReader toStringReader = new StringReader(target.ToString())) {
+                        bool first = true;
+                        string line;
+                        while ((line = toStringReader.ReadLine()) != null) {
+                            if (!first) {
+                                stringBuilder.AppendLine();
+                                stringBuilder.Append(' ', indentLevel);
+                            }
+                            stringBuilder.Append(line);
+                            first = false;
+                        }
+                    }
                     return;
                 }
             }
@@ -104,16 +124,19 @@ namespace AC2E.Utils {
             }
 
             FieldInfo[] fieldInfos = targetType.GetFields();
-            stringBuilder.AppendLine("{");
-            string fieldIndent = new string(' ', indentLevel + 2);
-            foreach (FieldInfo fieldInfo in fieldInfos) {
-                string fieldLine = $"{fieldIndent}{fieldInfo.Name} = ";
-                stringBuilder.Append(fieldLine);
-                objectToString(stringBuilder, visited, fieldLine.Length, fieldInfo.GetValue(target));
-                stringBuilder.AppendLine();
+            if (fieldInfos.Length > 0) {
+                stringBuilder.AppendLine("{");
+                string fieldIndent = new string(' ', indentLevel + 2);
+                foreach (FieldInfo fieldInfo in fieldInfos) {
+                    stringBuilder.Append($"{fieldIndent}{fieldInfo.Name} = ");
+                    objectToString(stringBuilder, visited, indentLevel + 2, fieldInfo.GetValue(target));
+                    stringBuilder.AppendLine();
+                }
+                stringBuilder.Append(' ', indentLevel);
+                stringBuilder.Append('}');
+            } else {
+                stringBuilder.Append("{ }");
             }
-            stringBuilder.Append(' ', indentLevel);
-            stringBuilder.Append('}');
         }
     }
 }

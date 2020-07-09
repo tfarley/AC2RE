@@ -11,9 +11,14 @@ namespace AC2E.Interp {
         PackageType packageType { get; }
         InterpReferenceMeta referenceMeta { get; }
 
-        PackageId id { get; }
+        PackageId id { get; set; }
 
-        void write(BinaryWriter data, List<IPackage> referenceList) {
+        // This allows packages to convert/cast packages from their plain type to their easier-to-work-with generic type in the registry, if applicable
+        void resolveGenericRefs() {
+
+        }
+
+        void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
             throw new NotImplementedException("IPackage implementor must override write().");
         }
     }
