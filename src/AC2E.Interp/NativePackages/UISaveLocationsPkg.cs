@@ -1,5 +1,4 @@
-﻿using AC2E.Def;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.Interp {
@@ -36,10 +35,6 @@ namespace AC2E.Interp {
         }
 
         public NativeType nativeType => NativeType.UISAVELOCATIONS;
-        public PackageType packageType => PackageType.UNDEF;
-        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
-
-        public PackageId id { get; set; }
 
         public Dictionary<uint, Dictionary<uint, UILocationData>> contents;
 

@@ -1,5 +1,4 @@
-﻿using AC2E.Def;
-using AC2E.Interp;
+﻿using AC2E.Interp;
 using System.Collections.Generic;
 using System.IO;
 
@@ -7,11 +6,7 @@ namespace AC2E.WLib {
 
     public class SkillRepositoryPkg : IPackage {
 
-        public NativeType nativeType => NativeType.UNDEF;
         public PackageType packageType => PackageType.SkillRepository;
-        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
-
-        public PackageId id { get; set; }
 
         public uint m_nSkillCredits;
         public ulong m_nUntrainXP;
@@ -35,10 +30,8 @@ namespace AC2E.WLib {
             m_hashSkills = data.ReadPkgRef<ARHashPkg<SkillInfoPkg>>();
         }
 
-        public void resolveGenericRefs() {
-            if (m_hashSkills.rawValue != null) {
-                PackageManager.add(new ARHashPkg<SkillInfoPkg>(PackageManager.get<ARHashPkg>(m_hashSkills.id)));
-            }
+        public void resolveRefs() {
+            PackageManager.convert<ARHashPkg<IPackage>>(m_hashSkills.id, v => v.to<SkillInfoPkg>());
         }
 
         public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {

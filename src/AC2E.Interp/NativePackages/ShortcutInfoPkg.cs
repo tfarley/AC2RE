@@ -9,10 +9,6 @@ namespace AC2E.Interp {
     public class ShortcutInfoPkg : IPackage {
 
         public NativeType nativeType => NativeType.SHORTCUTINFO;
-        public PackageType packageType => PackageType.UNDEF;
-        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
-
-        public PackageId id { get; set; }
 
         public ShortcutType _type;
         public string _data_str;

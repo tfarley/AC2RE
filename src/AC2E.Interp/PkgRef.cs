@@ -1,5 +1,6 @@
 ﻿using AC2E.Def;
 using AC2E.Utils;
+using System.Text;
 
 namespace AC2E.Interp {
 
@@ -26,12 +27,17 @@ namespace AC2E.Interp {
         }
 
         public PkgRef(T value) {
-            id = value != null ? value.id : PackageId.NULL;
+            id = PackageManager.getId(value);
             _value = value;
         }
 
         public override string ToString() {
-            return value != null ? Util.objectToString(value) : (id.id != PackageId.NULL.id ? $"PkgRef[{id}]" : "PkgRef[NULL]");
+            StringBuilder stringBuilder = new StringBuilder(id.id != PackageId.NULL.id ? $"Pkg[{id}]" : "Pkg[NULL]");
+            if (value != null) {
+                stringBuilder.Append(' ');
+                stringBuilder.Append(Util.objectToString(value));
+            }
+            return stringBuilder.ToString();
         }
     }
 }

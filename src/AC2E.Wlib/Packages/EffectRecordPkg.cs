@@ -8,11 +8,7 @@ namespace AC2E.WLib {
 
     public class EffectRecordPkg : IPackage {
 
-        public NativeType nativeType => NativeType.UNDEF;
         public PackageType packageType => PackageType.EffectRecord;
-        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
-
-        public PackageId id { get; set; }
 
         public double m_timeDemotedFromTopLevel;
         public double m_timeCast;

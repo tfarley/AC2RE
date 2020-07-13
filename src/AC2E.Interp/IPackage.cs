@@ -1,5 +1,4 @@
-﻿using AC2E.Def;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -7,14 +6,11 @@ namespace AC2E.Interp {
 
     public interface IPackage {
 
-        NativeType nativeType { get; }
-        PackageType packageType { get; }
-        InterpReferenceMeta referenceMeta { get; }
-
-        PackageId id { get; set; }
+        NativeType nativeType => NativeType.UNDEF;
+        PackageType packageType => PackageType.UNDEF;
 
         // This allows packages to convert/cast packages from their plain type to their easier-to-work-with generic type in the registry, if applicable
-        void resolveGenericRefs() {
+        void resolveRefs() {
 
         }
 

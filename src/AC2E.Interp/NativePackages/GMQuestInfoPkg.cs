@@ -8,10 +8,6 @@ namespace AC2E.Interp {
     public class GMQuestInfoPkg : IPackage {
 
         public NativeType nativeType => NativeType.GMQUESTINFO;
-        public PackageType packageType => PackageType.UNDEF;
-        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
-
-        public PackageId id { get; set; }
 
         public uint _questID;
         public StringInfo _strQuestName;

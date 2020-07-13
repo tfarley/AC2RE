@@ -62,10 +62,6 @@ namespace AC2E.Interp {
         }
 
         public NativeType nativeType => NativeType.GAMEPLAYOPTIONSPROFILE;
-        public PackageType packageType => PackageType.UNDEF;
-        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
-
-        public PackageId id { get; set; }
 
         public ContentFlag contentFlags;
         public Dictionary<string, string> m_aliasTable;

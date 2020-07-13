@@ -8,10 +8,6 @@ namespace AC2E.Interp {
     public class AppInfoHashPkg : IPackage {
 
         public NativeType nativeType => NativeType.APPINFOHASH;
-        public PackageType packageType => PackageType.UNDEF;
-        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
-
-        public PackageId id { get; set; }
 
         public Dictionary<uint, VisualDesc.AppearanceInfo> contents;
 

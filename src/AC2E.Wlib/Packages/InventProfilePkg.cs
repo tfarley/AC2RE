@@ -7,11 +7,7 @@ namespace AC2E.WLib {
 
     public class InventProfilePkg : IPackage {
 
-        public NativeType nativeType => NativeType.UNDEF;
         public PackageType packageType => PackageType.InventProfile;
-        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
-
-        public PackageId id { get; set; }
 
         public PkgRef<VisualDescInfoPkg> m_visualDescInfo;
         public uint m_slotsTaken;

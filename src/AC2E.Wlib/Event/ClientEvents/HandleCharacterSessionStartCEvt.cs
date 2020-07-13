@@ -35,9 +35,9 @@ namespace AC2E.WLib {
             _skills = data.UnpackPackage<SkillRepositoryPkg>();
             _regEffect = data.UnpackPackage<EffectRegistryPkg>();
             _filledInvLocs = data.UnpackUInt32();
-            _invByLocTable = new ARHashPkg<InventProfilePkg>(data.UnpackPackage<ARHashPkg>());
-            _invByIIDTable = new LRHashPkg<InventProfilePkg>(data.UnpackPackage<LRHashPkg>());
-            _ContainerSegments = new RListPkg<ContainerSegmentDescriptorPkg>(data.UnpackPackage<RListPkg>());
+            _invByLocTable = data.UnpackPackage<ARHashPkg<IPackage>>().to<InventProfilePkg>();
+            _invByIIDTable = data.UnpackPackage<LRHashPkg<IPackage>>().to<InventProfilePkg>();
+            _ContainerSegments = data.UnpackPackage<RListPkg<IPackage>>().to<ContainerSegmentDescriptorPkg>();
             _Containers = data.UnpackPackage<LListPkg>();
             _Contents = data.UnpackPackage<LListPkg>();
             _locFactionStatus = data.UnpackUInt32();

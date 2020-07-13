@@ -1,5 +1,4 @@
-﻿using AC2E.Def;
-using AC2E.Interp;
+﻿using AC2E.Interp;
 using System.Collections.Generic;
 using System.IO;
 
@@ -7,11 +6,7 @@ namespace AC2E.WLib {
 
     public class EffectRegistryPkg : IPackage {
 
-        public NativeType nativeType => NativeType.UNDEF;
         public PackageType packageType => PackageType.EffectRegistry;
-        public InterpReferenceMeta referenceMeta => new InterpReferenceMeta(InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE, ReferenceType.HEAPOBJECT);
-
-        public PackageId id { get; set; }
 
         public PkgRef<AAHashPkg> m_qualitiesModifiedCount;
         public PkgRef<AAHashPkg> m_appliedFX;
@@ -45,12 +40,6 @@ namespace AC2E.WLib {
             m_topEffects = data.ReadPkgRef<AAHashPkg>();
             m_effectCategorizationTable = data.ReadPkgRef<AAMultiHashPkg>();
             m_appliedAppearances = data.ReadPkgRef<AAHashPkg>();
-        }
-
-        public void resolveGenericRefs() {
-            if (m_effectInfo.rawValue != null) {
-                PackageManager.add(new ARHashPkg<IPackage>(PackageManager.get<ARHashPkg>(m_effectInfo.id)));
-            }
         }
 
         public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {

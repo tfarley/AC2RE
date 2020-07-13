@@ -1,8 +1,6 @@
-﻿using AC2E.Dat;
-using AC2E.Def;
+﻿using AC2E.Def;
 using AC2E.Interp;
 using AC2E.Utils;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -15,45 +13,47 @@ namespace AC2E {
                 throw new InvalidDataException();
             }
 
-            List<PackageId> references = reader.ReadList(reader.ReadPackageId);
+            List<PackageId> packageIds = reader.ReadList(reader.ReadPackageId);
+            IPackage[] allPackages = new IPackage[packageIds.Count];
 
-            T package = readPackage<T>(references[0], reader);
-            PackageManager.add(package);
+            T rootPackage = readPackage<T>(packageIds[0], reader);
+            allPackages[0] = rootPackage;
 
-            List<IPackage> referencedPackages = new List<IPackage>();
-            for (int i = 1; i < references.Count; i++) {
-                IPackage referencedPackage = readPackage<IPackage>(references[i], reader);
-                referencedPackages.Add(referencedPackage);
-                PackageManager.add(referencedPackage);
+            for (int i = 1; i < packageIds.Count; i++) {
+                IPackage referencedPackage = readPackage<IPackage>(packageIds[i], reader);
+                allPackages[i] = referencedPackage;
             }
 
-            package.resolveGenericRefs();
-            foreach (IPackage referencedPackage in referencedPackages) {
-                referencedPackage.resolveGenericRefs();
+            foreach (IPackage package in allPackages) {
+                package.resolveRefs();
             }
 
-            return package;
+            return rootPackage;
         }
 
         private static T readPackage<T>(PackageId packageId, BinaryReader reader) {
             InterpReferenceMeta referenceMeta = new InterpReferenceMeta(reader.ReadUInt32());
 
+            IPackage package;
+
             if (referenceMeta.isSingleton) {
-                return (T)(IPackage)new SingletonPkg {
+                package = new SingletonPkg {
                     did = reader.ReadDataId(),
                 };
-            }
 
-            IPackage package;
+                PackageManager.register(packageId, package, referenceMeta);
+
+                return (T)package;
+            }
 
             uint unk1 = reader.ReadUInt32();
             NativeType nativeType = (NativeType)reader.ReadUInt16();
             PackageType packageType = (PackageType)reader.ReadUInt16();
             if (nativeType != NativeType.UNDEF) {
-                package = PackageManager.read(packageId, nativeType, reader);
+                package = PackageManager.read(nativeType, reader);
             } else {
                 uint length = reader.ReadUInt32();
-                package = PackageManager.read(packageId, packageType, reader);
+                package = PackageManager.read(packageType, reader);
             }
 
             // TODO: Still not sure this is the correct condition for whether there are references or not
@@ -71,6 +71,8 @@ namespace AC2E {
                 // TODO: Is this needed/correct?
                 reader.ReadUInt32();
             }
+
+            PackageManager.register(packageId, package, referenceMeta);
 
             return (T)package;
         }
