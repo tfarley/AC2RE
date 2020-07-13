@@ -15,6 +15,10 @@ namespace AC2E.WLib {
                     return new ClientAddEffectCEvt(data);
                 case ClientEventFunctionId.Effect__ClientRemoveEffect:
                     return new ClientRemoveEffectCEvt(data);
+                case ClientEventFunctionId.Craft__CraftRefresh:
+                    return new CraftRefreshCEvt(data);
+                case ClientEventFunctionId.Communication__DisplayStringInfo:
+                    return new DisplayStringInfoCEvt(data);
                 case ClientEventFunctionId.Communication__CDoSay:
                     return new DoSayCEvt(data);
                 case ClientEventFunctionId.Player__EnterPortalSpace:
@@ -25,8 +29,14 @@ namespace AC2E.WLib {
                     return new HandleCharacterSessionStartCEvt(data);
                 case ClientEventFunctionId.Communication__CHearTell:
                     return new HearTellCEvt(data);
+                case ClientEventFunctionId.Communication__RefreshChannels:
+                    return new RefreshChannelsCEvt(data);
                 case ClientEventFunctionId.Player__SetMovementFrozen:
                     return new SetMovementFrozenCEvt(data);
+                case ClientEventFunctionId.Usage__TryToUseItem_Done:
+                    return new TryToUseItemCEvt(data);
+                case ClientEventFunctionId.Examination__UpdateExaminationProfile:
+                    return new UpdateExaminationProfileCEvt(data);
                 case ClientEventFunctionId.Fellowship__UpdateFellowCellID:
                     return new UpdateFellowCellIdCEvt(data);
                 case ClientEventFunctionId.Fellowship__UpdateFellowHealth:

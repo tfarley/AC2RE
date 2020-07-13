@@ -9,14 +9,14 @@ namespace AC2E.Interp {
 
         public NativeType nativeType => NativeType.APPINFOHASH;
 
-        public Dictionary<uint, VisualDesc.AppearanceInfo> contents;
+        public Dictionary<uint, AppearanceInfo> contents;
 
         public AppInfoHashPkg() {
 
         }
 
         public AppInfoHashPkg(BinaryReader data) {
-            contents = data.ReadDictionary(data.ReadUInt32, () => new VisualDesc.AppearanceInfo(data));
+            contents = data.ReadDictionary(data.ReadUInt32, () => new AppearanceInfo(data));
         }
 
         public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {

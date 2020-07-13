@@ -156,10 +156,10 @@ namespace AC2E {
         }
 
         public static void Write(this BinaryWriter writer, RGBAColor value) {
-            writer.Write(value.r);
-            writer.Write(value.g);
-            writer.Write(value.b);
-            writer.Write(value.a);
+            writer.Write((byte)(value.r * 255.0f));
+            writer.Write((byte)(value.g * 255.0f));
+            writer.Write((byte)(value.b * 255.0f));
+            writer.Write((byte)(value.a * 255.0f));
         }
 
         public static void Write(this BinaryWriter writer, Heading value) {

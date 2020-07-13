@@ -26,6 +26,11 @@ namespace AC2E.Def {
 
         public StringInfoDataType type; // type
 
+        public int dataInt;
+        public float dataFloat;
+        public uint dataUInt;
+        public long dataLong;
+        public ulong dataULong;
         public StringInfo stringInfo;
 
         public StringInfoData(BinaryReader data) {
@@ -33,8 +38,23 @@ namespace AC2E.Def {
             type = (StringInfoDataType)data.ReadUInt16();
             data.Align(4);
             switch (type) {
+                case StringInfoDataType.INT:
+                    dataInt = data.ReadInt32();
+                    break;
+                case StringInfoDataType.FLOAT:
+                    dataFloat = data.ReadSingle();
+                    break;
+                case StringInfoDataType.UINT:
+                    dataUInt = data.ReadUInt32();
+                    break;
                 case StringInfoDataType.STRING_INFO:
                     stringInfo = new StringInfo(data);
+                    break;
+                case StringInfoDataType.LINT:
+                    dataLong = data.ReadInt64();
+                    break;
+                case StringInfoDataType.ULINT:
+                    dataULong = data.ReadUInt64();
                     break;
                 default:
                     throw new NotImplementedException($"StringInfoData type {type}.");
@@ -46,8 +66,23 @@ namespace AC2E.Def {
             data.Write((ushort)type);
             data.Align(4);
             switch (type) {
+                case StringInfoDataType.INT:
+                    data.Write(dataInt);
+                    break;
+                case StringInfoDataType.FLOAT:
+                    data.Write(dataFloat);
+                    break;
+                case StringInfoDataType.UINT:
+                    data.Write(dataUInt);
+                    break;
                 case StringInfoDataType.STRING_INFO:
                     stringInfo.write(data);
+                    break;
+                case StringInfoDataType.LINT:
+                    data.Write(dataLong);
+                    break;
+                case StringInfoDataType.ULINT:
+                    data.Write(dataULong);
                     break;
                 default:
                     throw new NotImplementedException($"StringInfoData type {type}.");
@@ -71,17 +106,15 @@ namespace AC2E.Def {
         }
 
         public StringInfo(BinaryReader data) {
-            // TODO: Guessed on the reading/writing of this - see if isLiteral might actually be between numVars and variable dictionary itself? Note that StringInfo has ::Pack instead of ::StreamPack like most structs
             stringId = data.ReadUInt32();
             tableDid = data.ReadDataId();
             variables = new Dictionary<uint, StringInfoData>();
             ushort numVariables = data.ReadUInt16();
-            bool isLiteral = data.ReadUInt16() != 0;
+            if (data.ReadUInt16() != 0) {
+                literalValue = data.ReadEncryptedString(Encoding.Unicode);
+            }
             for (int i = 0; i < numVariables; i++) {
                 variables.Add(data.ReadUInt32(), new StringInfoData(data));
-            }
-            if (isLiteral) {
-                literalValue = data.ReadEncryptedString(Encoding.Unicode);
             }
         }
 
@@ -90,15 +123,17 @@ namespace AC2E.Def {
             data.Write(tableDid);
             int numVariables = variables != null ? variables.Count : 0;
             data.Write((ushort)numVariables);
-            data.Write(literalValue != null ? (ushort)1 : (ushort)0);
+            if (literalValue != null) {
+                data.Write((ushort)1);
+                data.WriteEncryptedString(literalValue, Encoding.Unicode);
+            } else {
+                data.Write((ushort)0);
+            }
             if (numVariables > 0) {
                 foreach (var element in variables) {
                     data.Write(element.Key);
                     element.Value.write(data);
                 }
-            }
-            if (literalValue != null) {
-                data.WriteEncryptedString(literalValue, Encoding.Unicode);
             }
         }
     }

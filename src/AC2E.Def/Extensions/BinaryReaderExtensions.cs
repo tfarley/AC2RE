@@ -189,10 +189,10 @@ namespace AC2E {
 
         public static RGBAColor ReadRGBAColor(this BinaryReader reader) {
             return new RGBAColor {
-                r = reader.ReadSingle(),
-                g = reader.ReadSingle(),
-                b = reader.ReadSingle(),
-                a = reader.ReadSingle(),
+                r = reader.ReadByte() / 255.0f,
+                g = reader.ReadByte() / 255.0f,
+                b = reader.ReadByte() / 255.0f,
+                a = reader.ReadByte() / 255.0f,
             };
         }
 

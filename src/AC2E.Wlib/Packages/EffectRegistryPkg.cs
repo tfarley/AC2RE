@@ -12,7 +12,7 @@ namespace AC2E.WLib {
         public PkgRef<AAHashPkg> m_appliedFX;
         public PkgRef<EffectRegistryPkg> m_baseEffectRegistry;
         public uint m_uiEffectIDCounter;
-        public PkgRef<ARHashPkg<IPackage>> m_effectInfo; // TODO: EffectInfo pkg type?
+        public PkgRef<ARHashPkg<EffectRecordPkg>> m_effectInfo;
         public double m_ttLastPulse;
         public PkgRef<AListPkg> m_listEquipperEffectEids;
         public PkgRef<AListPkg> m_listAcquirerEffectEids;
@@ -31,7 +31,7 @@ namespace AC2E.WLib {
             m_appliedFX = data.ReadPkgRef<AAHashPkg>();
             m_baseEffectRegistry = data.ReadPkgRef<EffectRegistryPkg>();
             m_uiEffectIDCounter = data.ReadUInt32();
-            m_effectInfo = data.ReadPkgRef<ARHashPkg<IPackage>>();
+            m_effectInfo = data.ReadPkgRef<ARHashPkg<EffectRecordPkg>>();
             m_ttLastPulse = data.ReadDouble();
             m_listEquipperEffectEids = data.ReadPkgRef<AListPkg>();
             m_listAcquirerEffectEids = data.ReadPkgRef<AListPkg>();
@@ -40,6 +40,10 @@ namespace AC2E.WLib {
             m_topEffects = data.ReadPkgRef<AAHashPkg>();
             m_effectCategorizationTable = data.ReadPkgRef<AAMultiHashPkg>();
             m_appliedAppearances = data.ReadPkgRef<AAHashPkg>();
+        }
+
+        public void resolveRefs() {
+            PackageManager.convert<ARHashPkg<IPackage>>(m_effectInfo.id, v => v.to<EffectRecordPkg>());
         }
 
         public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {

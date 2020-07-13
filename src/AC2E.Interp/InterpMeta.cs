@@ -26,6 +26,8 @@ namespace AC2E.Interp {
             { typeof(ulong), 2 },
             { typeof(double), 2 },
             { typeof(InstanceId), 2 },
+
+            { typeof(TextType), 1 },
         };
 
         public static FieldDesc[] getFieldDescs(Type type) {

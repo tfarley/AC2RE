@@ -7,6 +7,7 @@
         ITEM = 0x40000002,
         ALIAS = 0x40000003,
         RECIPE = 0x40000004,
+
         NEW_RECIPE = 0x40000006,
     }
 }

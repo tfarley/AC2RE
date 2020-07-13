@@ -324,43 +324,43 @@ namespace AC2E.Server {
                                     globalAppearanceModifiers = new VisualDesc.PartGroupDataDesc {
                                         packFlags = VisualDesc.PartGroupDataDesc.PackFlag.KEY | VisualDesc.PartGroupDataDesc.PackFlag.APPHASH,
                                         key = VisualDesc.PartGroupKey.ENTIRE_TREE,
-                                        appearances = new Dictionary<uint, VisualDesc.AppearanceInfo> {
-                                                { 536870990, new VisualDesc.AppearanceInfo {
+                                        appearances = new Dictionary<uint, AppearanceInfo> {
+                                                { 536870990, new AppearanceInfo {
                                                     appKeyToValue = new Dictionary<uint, float> {
                                                         { 2, 0.14f },
                                                         { 16, 1.0f },
                                                     }
                                                 } },
-                                                { 536870992, new VisualDesc.AppearanceInfo {
+                                                { 536870992, new AppearanceInfo {
                                                     appKeyToValue = new Dictionary<uint, float> {
                                                         { 2, 0.24f },
                                                         { 16, 1.0f },
                                                     }
                                                 } },
-                                                { 536870924, new VisualDesc.AppearanceInfo {
+                                                { 536870924, new AppearanceInfo {
                                                     appKeyToValue = new Dictionary<uint, float> {
                                                         { 1, 0.3f },
                                                     }
                                                 } },
-                                                { 536870925, new VisualDesc.AppearanceInfo {
+                                                { 536870925, new AppearanceInfo {
                                                     appKeyToValue = new Dictionary<uint, float> {
                                                         { 3, 0.2f },
                                                         { 11, 0.15f },
                                                         { 12, 0.3f },
                                                     }
                                                 } },
-                                                { 536870926, new VisualDesc.AppearanceInfo {
+                                                { 536870926, new AppearanceInfo {
                                                     appKeyToValue = new Dictionary<uint, float> {
                                                         { 1090519068, 0.06f },
                                                     }
                                                 } },
-                                                { 536871161, new VisualDesc.AppearanceInfo {
+                                                { 536871161, new AppearanceInfo {
                                                     appKeyToValue = new Dictionary<uint, float> {
                                                         { 2, 0.04f },
                                                         { 16, 1.0f },
                                                     }
                                                 } },
-                                                { 536870934, new VisualDesc.AppearanceInfo {
+                                                { 536870934, new AppearanceInfo {
                                                     appKeyToValue = new Dictionary<uint, float> {
                                                         { 2, 0.2f },
                                                         { 16, 1.0f },

@@ -137,6 +137,10 @@ namespace AC2E.Interp {
                     return new AppInfoHashPkg(data);
                 case NativeType.ARHASH:
                     return new ARHashPkg<IPackage>(data);
+                case NativeType.EXAMINATIONPROFILE:
+                    return new ExaminationProfilePkg(data);
+                case NativeType.EXAMINATIONREQUEST:
+                    return new ExaminationRequestPkg(data);
                 case NativeType.GAMEPLAYOPTIONSPROFILE:
                     return new GameplayOptionsProfilePkg(data);
                 case NativeType.GMQUESTINFOLIST:
@@ -147,12 +151,16 @@ namespace AC2E.Interp {
                     return new LListPkg(data);
                 case NativeType.LRHASH:
                     return new LRHashPkg<IPackage>(data);
+                case NativeType.POSITION:
+                    return new PositionPkg(data);
                 case NativeType.RLIST:
                     return new RListPkg<IPackage>(data);
                 case NativeType.SHORTCUTINFO:
                     return new ShortcutInfoPkg(data);
                 case NativeType.STRINGINFO:
                     return new StringInfoPkg(data);
+                case NativeType.WPSTRING:
+                    return new StringPkg(data);
                 case NativeType.UISAVELOCATIONS:
                     return new UISaveLocationsPkg(data);
                 case NativeType.VECTOR:

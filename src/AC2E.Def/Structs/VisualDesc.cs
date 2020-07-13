@@ -31,23 +31,6 @@ namespace AC2E.Def {
             ENTIRE_TREE = 0x40000002,
         }
 
-        public class AppearanceInfo {
-
-            public Dictionary<uint, float> appKeyToValue; // m_appkeyHash
-
-            public AppearanceInfo() {
-
-            }
-
-            public AppearanceInfo(BinaryReader data) {
-                appKeyToValue = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
-            }
-
-            public void write(BinaryWriter data) {
-                data.Write(appKeyToValue, data.Write, data.Write);
-            }
-        }
-
         public class PartGroupDataDesc {
 
             // Enum PGDDPack::Flag
@@ -141,40 +124,6 @@ namespace AC2E.Def {
                 if (packFlags.HasFlag(PackFlag.FXOVERRIDES)) {
                     throw new NotImplementedException("PartGroupDataDesc.fxOverrides");
                 }
-            }
-        }
-
-        public class IconLayerDesc {
-
-            // TODO: Any pack flags?
-            public uint iconLayerId; // m_iconLayerID
-            public DataId imageDid; // m_imageDID
-            public RGBAColor shiftColor; // m_shiftColor
-
-            public IconLayerDesc(BinaryReader data) {
-                iconLayerId = data.ReadUInt32();
-                imageDid = data.ReadDataId();
-                shiftColor = data.ReadRGBAColor();
-            }
-
-            public void write(BinaryWriter data) {
-                data.Write(iconLayerId);
-                data.Write(imageDid);
-                data.Write(shiftColor);
-            }
-        }
-
-        public class IconDesc {
-
-            // TODO: Any pack flags?
-            public List<IconLayerDesc> layers; // m_layers
-
-            public IconDesc(BinaryReader data) {
-                layers = data.ReadList(() => new IconLayerDesc(data));
-            }
-
-            public void write(BinaryWriter data) {
-                data.Write(layers, v => v.write(data));
             }
         }
 
