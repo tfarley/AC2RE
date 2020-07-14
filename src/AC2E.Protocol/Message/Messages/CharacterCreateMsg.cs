@@ -1,5 +1,4 @@
-﻿using AC2E.Dat;
-using AC2E.Def;
+﻿using AC2E.Def;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;

@@ -1,5 +1,4 @@
 ﻿using AC2E.Def;
-using AC2E.Interp;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -9,7 +8,7 @@ namespace AC2E.WLib {
         public ClientEventFunctionId funcId => ClientEventFunctionId.Communication__DisplayStringInfo;
 
         // WM_Communication::PostCEvt_DisplayStringInfo
-        public StringInfoPkg _msg;
+        public StringInfo _msg;
         public TextType _type;
 
         public DisplayStringInfoCEvt() {
@@ -17,7 +16,7 @@ namespace AC2E.WLib {
         }
 
         public DisplayStringInfoCEvt(BinaryReader data) {
-            _msg = data.UnpackPackage<StringInfoPkg>();
+            _msg = data.UnpackPackage<StringInfo>();
             _type = (TextType)data.UnpackUInt32();
         }
 

@@ -1,4 +1,4 @@
-﻿using AC2E.Interp;
+﻿using AC2E.Def;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -8,10 +8,10 @@ namespace AC2E.WLib {
         public ServerEventFunctionId funcId => ServerEventFunctionId.Examination__QueryExaminationProfile;
 
         // WM_Examination::SendSEvt_QueryExaminationProfile
-        public ExaminationRequestPkg _inRequest;
+        public ExaminationRequest _inRequest;
 
         public QueryExaminationProfileSEvt(BinaryReader data) {
-            _inRequest = data.UnpackPackage<ExaminationRequestPkg>();
+            _inRequest = data.UnpackPackage<ExaminationRequest>();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using AC2E.Def;
-using AC2E.Interp;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -8,10 +7,10 @@ namespace AC2E.WLib {
 
         public PackageType packageType => PackageType.UsageDesc;
 
-        public StringInfoPkg m_siSuccessMessage;
+        public StringInfo m_siSuccessMessage;
         public UsageBlobPkg m_usageBlob;
         public InstanceId m_itemID;
-        public PositionPkg m_posUser;
+        public Position m_posUser;
         public uint m_wtUser; // TODO: WeenieType
         public InstanceId m_userID;
         public float m_fDistanceToUsedItem;
@@ -19,7 +18,7 @@ namespace AC2E.WLib {
         public uint m_status; // TODO: ErrorType
         public InstanceId m_effTargetID;
         public uint m_uttValid; // TODO: UsageTargetType
-        public RListPkg<SingletonPkg> m_effsToApply;
+        public RList<SingletonPkg> m_effsToApply;
         public int m_iVigorCost;
         public uint m_controlFlags;
         public bool m_bCancelsSF;
@@ -30,10 +29,10 @@ namespace AC2E.WLib {
         }
 
         public UsageDescPkg(BinaryReader data, PackageRegistry registry) {
-            data.ReadPkgRef<StringInfoPkg>(v => m_siSuccessMessage = v, registry);
+            data.ReadPkgRef<StringInfo>(v => m_siSuccessMessage = v, registry);
             data.ReadPkgRef<UsageBlobPkg>(v => m_usageBlob = v, registry);
             m_itemID = data.ReadInstanceId();
-            data.ReadPkgRef<PositionPkg>(v => m_posUser = v, registry);
+            data.ReadPkgRef<Position>(v => m_posUser = v, registry);
             m_wtUser = data.ReadUInt32();
             m_userID = data.ReadInstanceId();
             m_fDistanceToUsedItem = data.ReadSingle();
@@ -41,7 +40,7 @@ namespace AC2E.WLib {
             m_status = data.ReadUInt32();
             m_effTargetID = data.ReadInstanceId();
             m_uttValid = data.ReadUInt32();
-            data.ReadPkgRef<RListPkg<IPackage>>(v => m_effsToApply = v.to<SingletonPkg>(), registry);
+            data.ReadPkgRef<RList<IPackage>>(v => m_effsToApply = v.to<SingletonPkg>(), registry);
             m_iVigorCost = data.ReadInt32();
             m_controlFlags = data.ReadUInt32();
             m_bCancelsSF = data.ReadUInt32() != 0;

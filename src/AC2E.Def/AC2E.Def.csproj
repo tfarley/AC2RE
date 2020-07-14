@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AC2E.Dat\AC2E.DatDef.csproj" />
     <ProjectReference Include="..\AC2E.Utils\AC2E.Utils.csproj" />
   </ItemGroup>
 

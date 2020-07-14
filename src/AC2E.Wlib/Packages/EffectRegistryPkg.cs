@@ -1,4 +1,4 @@
-﻿using AC2E.Interp;
+﻿using AC2E.Def;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -7,38 +7,38 @@ namespace AC2E.WLib {
 
         public PackageType packageType => PackageType.EffectRegistry;
 
-        public AAHashPkg m_qualitiesModifiedCount;
-        public AAHashPkg m_appliedFX;
+        public AAHash m_qualitiesModifiedCount;
+        public AAHash m_appliedFX;
         public EffectRegistryPkg m_baseEffectRegistry;
         public uint m_uiEffectIDCounter;
-        public ARHashPkg<EffectRecordPkg> m_effectInfo;
+        public ARHash<EffectRecordPkg> m_effectInfo;
         public double m_ttLastPulse;
-        public AListPkg m_listEquipperEffectEids;
-        public AListPkg m_listAcquirerEffectEids;
+        public AList m_listEquipperEffectEids;
+        public AList m_listAcquirerEffectEids;
         public uint m_flags;
-        public AHashSetPkg m_setTrackedEffects;
-        public AAHashPkg m_topEffects;
-        public AAMultiHashPkg m_effectCategorizationTable;
-        public AAHashPkg m_appliedAppearances;
+        public AHashSet m_setTrackedEffects;
+        public AAHash m_topEffects;
+        public AAMultiHash m_effectCategorizationTable;
+        public AAHash m_appliedAppearances;
 
         public EffectRegistryPkg() {
 
         }
 
         public EffectRegistryPkg(BinaryReader data, PackageRegistry registry) {
-            data.ReadPkgRef<AAHashPkg>(v => m_qualitiesModifiedCount = v, registry);
-            data.ReadPkgRef<AAHashPkg>(v => m_appliedFX = v, registry);
+            data.ReadPkgRef<AAHash>(v => m_qualitiesModifiedCount = v, registry);
+            data.ReadPkgRef<AAHash>(v => m_appliedFX = v, registry);
             data.ReadPkgRef<EffectRegistryPkg>(v => m_baseEffectRegistry = v, registry);
             m_uiEffectIDCounter = data.ReadUInt32();
-            data.ReadPkgRef<ARHashPkg<IPackage>>(v => m_effectInfo = v.to<EffectRecordPkg>(), registry);
+            data.ReadPkgRef<ARHash<IPackage>>(v => m_effectInfo = v.to<EffectRecordPkg>(), registry);
             m_ttLastPulse = data.ReadDouble();
-            data.ReadPkgRef<AListPkg>(v => m_listEquipperEffectEids = v, registry);
-            data.ReadPkgRef<AListPkg>(v => m_listAcquirerEffectEids = v, registry);
+            data.ReadPkgRef<AList>(v => m_listEquipperEffectEids = v, registry);
+            data.ReadPkgRef<AList>(v => m_listAcquirerEffectEids = v, registry);
             m_flags = data.ReadUInt32();
-            data.ReadPkgRef<AHashSetPkg>(v => m_setTrackedEffects = v, registry);
-            data.ReadPkgRef<AAHashPkg>(v => m_topEffects = v, registry);
-            data.ReadPkgRef<AAMultiHashPkg>(v => m_effectCategorizationTable = v, registry);
-            data.ReadPkgRef<AAHashPkg>(v => m_appliedAppearances = v, registry);
+            data.ReadPkgRef<AHashSet>(v => m_setTrackedEffects = v, registry);
+            data.ReadPkgRef<AAHash>(v => m_topEffects = v, registry);
+            data.ReadPkgRef<AAMultiHash>(v => m_effectCategorizationTable = v, registry);
+            data.ReadPkgRef<AAHash>(v => m_appliedAppearances = v, registry);
         }
 
         public void write(BinaryWriter data, PackageRegistry registry) {

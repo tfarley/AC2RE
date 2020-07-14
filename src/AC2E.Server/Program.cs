@@ -1,5 +1,4 @@
-﻿using AC2E.Dat;
-using AC2E.Interp;
+﻿using AC2E.Def;
 using AC2E.Utils;
 using Serilog;
 using System;
@@ -46,7 +45,7 @@ namespace AC2E.Server {
             string wlibFileName = "56000005";
             if (File.Exists(wlibFileName)) {
                 using (BinaryReader data = new BinaryReader(File.OpenRead(wlibFileName))) {
-                    var wlib = new Dat.WLib(data);
+                    var wlib = new Def.WLib(data);
                     Log.Information("Parsed wlib.");
                     using (StreamWriter output = new StreamWriter(File.OpenWrite("wlib.packages.txt"))) {
                         Dump.dumpPackages(output, wlib.byteStream);

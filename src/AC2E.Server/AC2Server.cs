@@ -1,6 +1,4 @@
-﻿using AC2E.Dat;
-using AC2E.Def;
-using AC2E.Interp;
+﻿using AC2E.Def;
 using AC2E.Protocol;
 using AC2E.WLib;
 using Serilog;
@@ -407,36 +405,36 @@ namespace AC2E.Server {
                                     money = 12345,
                                     _aReg = new ActRegistryPkg {
                                         m_viewingProtectionEID = 0,
-                                        m_actSceneTable = new ARHashPkg<AListPkg> {
-                                            contents = new Dictionary<uint, AListPkg> {
-                                                { 0x40000005, new AListPkg() },
-                                                { 0x40000006, new AListPkg() },
-                                                { 0x40000007, new AListPkg() },
-                                                { 0x40000008, new AListPkg() },
-                                                { 0x40000009, new AListPkg() },
-                                                { 0x4000000A, new AListPkg() },
+                                        m_actSceneTable = new ARHash<AList> {
+                                            contents = new Dictionary<uint, AList> {
+                                                { 0x40000005, new AList() },
+                                                { 0x40000006, new AList() },
+                                                { 0x40000007, new AList() },
+                                                { 0x40000008, new AList() },
+                                                { 0x40000009, new AList() },
+                                                { 0x4000000A, new AList() },
                                             }
                                         }
                                     },
-                                    _quests = new GMQuestInfoListPkg {
+                                    _quests = new GMQuestInfoList {
 
                                     },
-                                    _options = new GameplayOptionsProfilePkg {
+                                    _options = new GameplayOptionsProfile {
                                         contentFlags =
-                                            GameplayOptionsProfilePkg.ContentFlag.SHORTCUT_ARRAY
-                                            | GameplayOptionsProfilePkg.ContentFlag.SHOW_RANGE_DAMAGE_OTHER
-                                            | GameplayOptionsProfilePkg.ContentFlag.SAVED_UI_LOCATIONS
-                                            | GameplayOptionsProfilePkg.ContentFlag.RADAR_MASK
-                                            | GameplayOptionsProfilePkg.ContentFlag.FILTER_HASH
-                                            | GameplayOptionsProfilePkg.ContentFlag.BIT_FIELD
-                                            | GameplayOptionsProfilePkg.ContentFlag.CHAT_FONT_COLORS
-                                            | GameplayOptionsProfilePkg.ContentFlag.CHAT_FONT_SIZES
-                                            | GameplayOptionsProfilePkg.ContentFlag.CHAT_POPUP_FLAGS
-                                            | GameplayOptionsProfilePkg.ContentFlag.WINDOW_TO_CHANNEL,
-                                        m_shortcutArray = Enumerable.Repeat(new ShortcutInfoPkg { _type = ShortcutType.UNDEF }, 100).ToList(),
+                                            GameplayOptionsProfile.ContentFlag.SHORTCUT_ARRAY
+                                            | GameplayOptionsProfile.ContentFlag.SHOW_RANGE_DAMAGE_OTHER
+                                            | GameplayOptionsProfile.ContentFlag.SAVED_UI_LOCATIONS
+                                            | GameplayOptionsProfile.ContentFlag.RADAR_MASK
+                                            | GameplayOptionsProfile.ContentFlag.FILTER_HASH
+                                            | GameplayOptionsProfile.ContentFlag.BIT_FIELD
+                                            | GameplayOptionsProfile.ContentFlag.CHAT_FONT_COLORS
+                                            | GameplayOptionsProfile.ContentFlag.CHAT_FONT_SIZES
+                                            | GameplayOptionsProfile.ContentFlag.CHAT_POPUP_FLAGS
+                                            | GameplayOptionsProfile.ContentFlag.WINDOW_TO_CHANNEL,
+                                        m_shortcutArray = Enumerable.Repeat(new ShortcutInfo { _type = ShortcutType.UNDEF }, 100).ToList(),
                                         m_whichShortcutSet = 1,
                                         m_fDamageTextRangeOther = 1.0f,
-                                        m_savedUILocations = new UISaveLocationsPkg(),
+                                        m_savedUILocations = new UISaveLocations(),
                                         /*m_savedUILocations = new UISaveLocationsPkg {
                                             contents = new Dictionary<uint, Dictionary<uint, UISaveLocationsPkg.UILocationData>> {
                                             { 0, new Dictionary<uint, UISaveLocationsPkg.UILocationData> {
@@ -457,8 +455,8 @@ namespace AC2E.Server {
                                             { 0x00000003, 0x00010000 },
                                             { 0x00000004, 0x00020000 },
                                         },
-                                        m_bitField = (GameplayOptionsProfilePkg.Flag)0x80024FF5,
-                                        m_version = GameplayOptionsProfilePkg.Version.LATEST_VERSION,
+                                        m_bitField = (GameplayOptionsProfile.Flag)0x80024FF5,
+                                        m_version = GameplayOptionsProfile.Version.LATEST_VERSION,
                                         m_chatFontColors = new Dictionary<TextType, uint> {
                                             { TextType.ERROR, 0 },
                                             { TextType.COMBAT, 1 },
@@ -520,18 +518,18 @@ namespace AC2E.Server {
                                     _skills = new SkillRepositoryPkg {
                                         m_nSkillCredits = 0,
                                         m_nUntrainXP = 0,
-                                        m_hashPerkTypes = new AAHashPkg {
+                                        m_hashPerkTypes = new AAHash {
                                             contents = new Dictionary<uint, uint> {
 
                                             }
                                         },
                                         m_typeUntrained = 0,
-                                        m_hashCategories = new AAHashPkg {
+                                        m_hashCategories = new AAHash {
                                             contents = new Dictionary<uint, uint> {
 
                                             }
                                         },
-                                        m_hashSkills = new ARHashPkg<SkillInfoPkg> {
+                                        m_hashSkills = new ARHash<SkillInfoPkg> {
                                             contents = new Dictionary<uint, SkillInfoPkg> {
 
                                             }
@@ -539,7 +537,7 @@ namespace AC2E.Server {
                                     },
                                     _regEffect = new EffectRegistryPkg {
                                         m_qualitiesModifiedCount = null,
-                                        m_appliedFX = new AAHashPkg {
+                                        m_appliedFX = new AAHash {
                                             contents = new Dictionary<uint, uint> {
 
                                             },
@@ -554,26 +552,26 @@ namespace AC2E.Server {
                                         m_setTrackedEffects = null,
                                         m_topEffects = null,
                                         m_effectCategorizationTable = null,
-                                        m_appliedAppearances = new AAHashPkg {
+                                        m_appliedAppearances = new AAHash {
                                             contents = new Dictionary<uint, uint> {
 
                                             },
                                         },
                                     },
                                     _filledInvLocs = 0,
-                                    _invByLocTable = new ARHashPkg<InventProfilePkg> {
+                                    _invByLocTable = new ARHash<InventProfilePkg> {
 
                                     },
-                                    _invByIIDTable = new LRHashPkg<InventProfilePkg> {
+                                    _invByIIDTable = new LRHash<InventProfilePkg> {
 
                                     },
-                                    _ContainerSegments = new RListPkg<ContainerSegmentDescriptorPkg> {
+                                    _ContainerSegments = new RList<ContainerSegmentDescriptorPkg> {
 
                                     },
-                                    _Containers = new LListPkg {
+                                    _Containers = new LList {
 
                                     },
-                                    _Contents = new LListPkg {
+                                    _Contents = new LList {
 
                                     },
                                     _locFactionStatus = 1,

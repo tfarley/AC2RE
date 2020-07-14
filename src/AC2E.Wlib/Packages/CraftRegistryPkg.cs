@@ -1,4 +1,4 @@
-﻿using AC2E.Interp;
+﻿using AC2E.Def;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -7,24 +7,24 @@ namespace AC2E.WLib {
 
         public PackageType packageType => PackageType.CraftRegistry;
 
-        public ARHashPkg<RecipeRecordPkg> m_recipeRecords;
+        public ARHash<RecipeRecordPkg> m_recipeRecords;
         public float m_CraftSkillScore;
         public uint m_CraftSkillTitle; // TODO: CraftSkillTitleType
         public double m_usageResetTime;
-        public ARHashPkg<CraftSkillRecordPkg> m_hashCraftSkillRecords;
-        public ARHashPkg<RecipeRecordPkg> m_hashRecipeRecords;
+        public ARHash<CraftSkillRecordPkg> m_hashCraftSkillRecords;
+        public ARHash<RecipeRecordPkg> m_hashRecipeRecords;
 
         public CraftRegistryPkg() {
 
         }
 
         public CraftRegistryPkg(BinaryReader data, PackageRegistry registry) {
-            data.ReadPkgRef<ARHashPkg<IPackage>>(v => m_recipeRecords = v.to<RecipeRecordPkg>(), registry);
+            data.ReadPkgRef<ARHash<IPackage>>(v => m_recipeRecords = v.to<RecipeRecordPkg>(), registry);
             m_CraftSkillScore = data.ReadSingle();
             m_CraftSkillTitle = data.ReadUInt32();
             m_usageResetTime = data.ReadDouble();
-            data.ReadPkgRef<ARHashPkg<IPackage>>(v => m_hashCraftSkillRecords = v.to<CraftSkillRecordPkg>(), registry);
-            data.ReadPkgRef<ARHashPkg<IPackage>>(v => m_hashRecipeRecords = v.to<RecipeRecordPkg>(), registry);
+            data.ReadPkgRef<ARHash<IPackage>>(v => m_hashCraftSkillRecords = v.to<CraftSkillRecordPkg>(), registry);
+            data.ReadPkgRef<ARHash<IPackage>>(v => m_hashRecipeRecords = v.to<RecipeRecordPkg>(), registry);
         }
 
         public void write(BinaryWriter data, PackageRegistry registry) {

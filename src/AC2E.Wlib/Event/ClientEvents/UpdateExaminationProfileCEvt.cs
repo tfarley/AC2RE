@@ -1,4 +1,4 @@
-﻿using AC2E.Interp;
+﻿using AC2E.Def;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -8,14 +8,14 @@ namespace AC2E.WLib {
         public ClientEventFunctionId funcId => ClientEventFunctionId.Examination__UpdateExaminationProfile;
 
         // WM_Examination::PostCEvt_UpdateExaminationProfile
-        public ExaminationProfilePkg _examineProf;
+        public ExaminationProfile _examineProf;
 
         public UpdateExaminationProfileCEvt() {
 
         }
 
         public UpdateExaminationProfileCEvt(BinaryReader data) {
-            _examineProf = data.UnpackPackage<ExaminationProfilePkg>();
+            _examineProf = data.UnpackPackage<ExaminationProfile>();
         }
 
         public void write(BinaryWriter data) {

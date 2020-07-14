@@ -1,4 +1,4 @@
-﻿using AC2E.Interp;
+﻿using AC2E.Def;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -9,7 +9,7 @@ namespace AC2E.WLib {
 
         // WM_Communication::PostCEvt_CDoSay
         public uint _weenieChatFlags;
-        public StringInfoPkg _msg;
+        public StringInfo _msg;
 
         public DoSayCEvt() {
 
@@ -17,7 +17,7 @@ namespace AC2E.WLib {
 
         public DoSayCEvt(BinaryReader data) {
             _weenieChatFlags = data.UnpackUInt32();
-            _msg = data.UnpackPackage<StringInfoPkg>();
+            _msg = data.UnpackPackage<StringInfo>();
         }
 
         public void write(BinaryWriter data) {

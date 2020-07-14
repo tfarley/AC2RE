@@ -1,4 +1,4 @@
-﻿using AC2E.Interp;
+﻿using AC2E.Def;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -8,14 +8,14 @@ namespace AC2E.WLib {
         public ClientEventFunctionId funcId => ClientEventFunctionId.Communication__RefreshChannels;
 
         // WM_Communication::PostCEvt_RefreshChannels
-        public ARHashPkg<ChannelDataPkg> _channels;
+        public ARHash<ChannelDataPkg> _channels;
 
         public RefreshChannelsCEvt() {
 
         }
 
         public RefreshChannelsCEvt(BinaryReader data) {
-            _channels = data.UnpackPackage<ARHashPkg<IPackage>>().to<ChannelDataPkg>();
+            _channels = data.UnpackPackage<ARHash<IPackage>>().to<ChannelDataPkg>();
         }
 
         public void write(BinaryWriter data) {

@@ -1,4 +1,4 @@
-﻿using AC2E.Interp;
+﻿using AC2E.Def;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -7,8 +7,8 @@ namespace AC2E.WLib {
 
         public PackageType packageType => PackageType.UsageBlob;
 
-        public StringInfoPkg m_criticalSuccessMessage;
-        public StringInfoPkg m_successMessage;
+        public StringInfo m_criticalSuccessMessage;
+        public StringInfo m_successMessage;
         public uint m_userBehaviorRepeatCount;
         public float m_userBehaviorTimeScale;
         public uint m_userBehavior;
@@ -19,8 +19,8 @@ namespace AC2E.WLib {
         }
 
         public UsageBlobPkg(BinaryReader data, PackageRegistry registry) {
-            data.ReadPkgRef<StringInfoPkg>(v => m_criticalSuccessMessage = v, registry);
-            data.ReadPkgRef<StringInfoPkg>(v => m_successMessage = v, registry);
+            data.ReadPkgRef<StringInfo>(v => m_criticalSuccessMessage = v, registry);
+            data.ReadPkgRef<StringInfo>(v => m_successMessage = v, registry);
             m_userBehaviorRepeatCount = data.ReadUInt32();
             m_userBehaviorTimeScale = data.ReadSingle();
             m_userBehavior = data.ReadUInt32();

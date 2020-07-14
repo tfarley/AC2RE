@@ -1,5 +1,4 @@
-﻿using AC2E.Dat;
-using AC2E.Interp;
+﻿using AC2E.Def;
 using System.IO;
 
 namespace AC2E.WLib {

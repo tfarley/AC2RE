@@ -1,5 +1,4 @@
 ﻿using AC2E.Def;
-using AC2E.Interp;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -14,7 +13,7 @@ namespace AC2E.WLib {
         public uint m_roomID;
         public bool m_available;
         public uint m_factionType;
-        public StringPkg m_name;
+        public WPString m_name;
 
         public ChannelDataPkg() {
 
@@ -27,7 +26,7 @@ namespace AC2E.WLib {
             m_roomID = data.ReadUInt32();
             m_available = data.ReadUInt32() != 0;
             m_factionType = data.ReadUInt32();
-            data.ReadPkgRef<StringPkg>(v => m_name = v, registry);
+            data.ReadPkgRef<WPString>(v => m_name = v, registry);
         }
 
         public void write(BinaryWriter data, PackageRegistry registry) {

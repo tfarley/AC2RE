@@ -1,5 +1,4 @@
 ﻿using AC2E.Def;
-using AC2E.Interp;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -10,8 +9,8 @@ namespace AC2E.WLib {
 
         // WM_Communication::PostCEvt_CHearTell
         public uint _weenieChatFlags;
-        public StringInfoPkg _msg;
-        public StringInfoPkg _teller;
+        public StringInfo _msg;
+        public StringInfo _teller;
         public InstanceId _tellerID;
 
         public HearTellCEvt() {
@@ -20,8 +19,8 @@ namespace AC2E.WLib {
 
         public HearTellCEvt(BinaryReader data) {
             _weenieChatFlags = data.UnpackUInt32();
-            _msg = data.UnpackPackage<StringInfoPkg>();
-            _teller = data.UnpackPackage<StringInfoPkg>();
+            _msg = data.UnpackPackage<StringInfo>();
+            _teller = data.UnpackPackage<StringInfo>();
             _tellerID = data.UnpackInstanceId();
         }
 

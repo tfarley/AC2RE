@@ -1,4 +1,4 @@
-﻿using AC2E.Interp;
+﻿using AC2E.Def;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -10,10 +10,10 @@ namespace AC2E.WLib {
         public uint m_nSkillCredits;
         public ulong m_nUntrainXP;
         public uint m_nHeroSkillCredits;
-        public AAHashPkg m_hashPerkTypes;
+        public AAHash m_hashPerkTypes;
         public uint m_typeUntrained;
-        public AAHashPkg m_hashCategories;
-        public ARHashPkg<SkillInfoPkg> m_hashSkills;
+        public AAHash m_hashCategories;
+        public ARHash<SkillInfoPkg> m_hashSkills;
 
         public SkillRepositoryPkg() {
 
@@ -23,10 +23,10 @@ namespace AC2E.WLib {
             m_nSkillCredits = data.ReadUInt32();
             m_nUntrainXP = data.ReadUInt64();
             m_nHeroSkillCredits = data.ReadUInt32();
-            data.ReadPkgRef<AAHashPkg>(v => m_hashPerkTypes = v, registry);
+            data.ReadPkgRef<AAHash>(v => m_hashPerkTypes = v, registry);
             m_typeUntrained = data.ReadUInt32();
-            data.ReadPkgRef<AAHashPkg>(v => m_hashCategories = v, registry);
-            data.ReadPkgRef<ARHashPkg<IPackage>>(v => m_hashSkills = v.to<SkillInfoPkg>(), registry);
+            data.ReadPkgRef<AAHash>(v => m_hashCategories = v, registry);
+            data.ReadPkgRef<ARHash<IPackage>>(v => m_hashSkills = v.to<SkillInfoPkg>(), registry);
         }
 
         public void write(BinaryWriter data, PackageRegistry registry) {
