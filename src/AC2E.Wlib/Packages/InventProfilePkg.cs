@@ -1,7 +1,5 @@
 ﻿using AC2E.Def;
 using AC2E.Interp;
-using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -20,16 +18,16 @@ namespace AC2E.WLib {
 
         }
 
-        public InventProfilePkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
-            data.ReadPkgRef<VisualDescInfoPkg>(v => m_visualDescInfo = v, resolvers);
+        public InventProfilePkg(BinaryReader data, PackageRegistry registry) {
+            data.ReadPkgRef<VisualDescInfoPkg>(v => m_visualDescInfo = v, registry);
             m_slotsTaken = data.ReadUInt32();
             m_location = data.ReadUInt32();
             m_it = data.ReadInt32();
             m_iid = data.ReadInstanceId();
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
-            data.Write(m_visualDescInfo, references);
+        public void write(BinaryWriter data, PackageRegistry registry) {
+            data.Write(m_visualDescInfo, registry);
             data.Write(m_slotsTaken);
             data.Write(m_location);
             data.Write(m_it);

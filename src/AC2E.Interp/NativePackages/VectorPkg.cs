@@ -1,6 +1,5 @@
 ﻿using AC2E.Def;
 using AC2E.Utils;
-using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.Interp {
@@ -19,7 +18,7 @@ namespace AC2E.Interp {
             contents = data.ReadVector();
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public void write(BinaryWriter data, PackageRegistry registry) {
             data.Write(contents);
         }
 

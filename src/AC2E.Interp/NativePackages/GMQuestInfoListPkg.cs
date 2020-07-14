@@ -18,8 +18,8 @@ namespace AC2E.Interp {
             contents = data.ReadList(() => new GMQuestInfoPkg(data));
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
-            data.Write(contents, v => v.write(data, references));
+        public void write(BinaryWriter data, PackageRegistry registry) {
+            data.Write(contents, v => v.write(data, registry));
         }
 
         public override string ToString() {

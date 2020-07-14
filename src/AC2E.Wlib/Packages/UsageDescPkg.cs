@@ -1,7 +1,5 @@
 ﻿using AC2E.Def;
 using AC2E.Interp;
-using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -31,11 +29,11 @@ namespace AC2E.WLib {
 
         }
 
-        public UsageDescPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
-            data.ReadPkgRef<StringInfoPkg>(v => m_siSuccessMessage = v, resolvers);
-            data.ReadPkgRef<UsageBlobPkg>(v => m_usageBlob = v, resolvers);
+        public UsageDescPkg(BinaryReader data, PackageRegistry registry) {
+            data.ReadPkgRef<StringInfoPkg>(v => m_siSuccessMessage = v, registry);
+            data.ReadPkgRef<UsageBlobPkg>(v => m_usageBlob = v, registry);
             m_itemID = data.ReadInstanceId();
-            data.ReadPkgRef<PositionPkg>(v => m_posUser = v, resolvers);
+            data.ReadPkgRef<PositionPkg>(v => m_posUser = v, registry);
             m_wtUser = data.ReadUInt32();
             m_userID = data.ReadInstanceId();
             m_fDistanceToUsedItem = data.ReadSingle();
@@ -43,18 +41,18 @@ namespace AC2E.WLib {
             m_status = data.ReadUInt32();
             m_effTargetID = data.ReadInstanceId();
             m_uttValid = data.ReadUInt32();
-            data.ReadPkgRef<RListPkg<IPackage>>(v => m_effsToApply = v.to<SingletonPkg>(), resolvers);
+            data.ReadPkgRef<RListPkg<IPackage>>(v => m_effsToApply = v.to<SingletonPkg>(), registry);
             m_iVigorCost = data.ReadInt32();
             m_controlFlags = data.ReadUInt32();
             m_bCancelsSF = data.ReadUInt32() != 0;
             m_iHealthCost = data.ReadInt32();
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
-            data.Write(m_siSuccessMessage, references);
-            data.Write(m_usageBlob, references);
+        public void write(BinaryWriter data, PackageRegistry registry) {
+            data.Write(m_siSuccessMessage, registry);
+            data.Write(m_usageBlob, registry);
             data.Write(m_itemID);
-            data.Write(m_posUser, references);
+            data.Write(m_posUser, registry);
             data.Write(m_wtUser);
             data.Write(m_userID);
             data.Write(m_fDistanceToUsedItem);
@@ -62,7 +60,7 @@ namespace AC2E.WLib {
             data.Write(m_status);
             data.Write(m_effTargetID);
             data.Write(m_uttValid);
-            data.Write(m_effsToApply, references);
+            data.Write(m_effsToApply, registry);
             data.Write(m_iVigorCost);
             data.Write(m_controlFlags);
             data.Write(m_bCancelsSF);

@@ -1,5 +1,4 @@
 ﻿using AC2E.Interp;
-using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -38,7 +37,7 @@ namespace AC2E.WLib {
             m_typeSkill = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public void write(BinaryWriter data, PackageRegistry registry) {
             data.Write(m_timeLastUsed);
             data.Write(m_levelCached);
             data.Write(m_timeCached);

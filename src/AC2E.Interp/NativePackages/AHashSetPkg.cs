@@ -18,7 +18,7 @@ namespace AC2E.Interp {
             contents = data.ReadSet(data.ReadUInt32);
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public void write(BinaryWriter data, PackageRegistry registry) {
             data.Write(contents, data.Write);
         }
 

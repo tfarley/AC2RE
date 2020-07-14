@@ -1,8 +1,6 @@
 ﻿using AC2E.Dat;
 using AC2E.Def;
 using AC2E.Interp;
-using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -36,7 +34,7 @@ namespace AC2E.WLib {
 
         }
 
-        public EffectRecordPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
+        public EffectRecordPkg(BinaryReader data, PackageRegistry registry) {
             m_timeDemotedFromTopLevel = data.ReadDouble();
             m_timeCast = data.ReadDouble();
             m_iidCaster = data.ReadInstanceId();
@@ -45,9 +43,9 @@ namespace AC2E.WLib {
             m_fSpellcraft = data.ReadSingle();
             m_iApp = data.ReadInt32();
             m_bPK = data.ReadUInt32() != 0;
-            data.ReadPkgRef<IPackage>(v => m_rApp = v, resolvers);
+            data.ReadPkgRef<IPackage>(v => m_rApp = v, registry);
             m_timePromotedToTopLevel = data.ReadDouble();
-            data.ReadPkgRef<SingletonPkg>(v => m_effect = v, resolvers);
+            data.ReadPkgRef<SingletonPkg>(v => m_effect = v, registry);
             m_iidActingForWhom = data.ReadInstanceId();
             m_didSkill = data.ReadDataId();
             m_iidFromItem = data.ReadInstanceId();
@@ -59,7 +57,7 @@ namespace AC2E.WLib {
             m_uiMaxDurabilityLevel = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public void write(BinaryWriter data, PackageRegistry registry) {
             data.Write(m_timeDemotedFromTopLevel);
             data.Write(m_timeCast);
             data.Write(m_iidCaster);
@@ -68,9 +66,9 @@ namespace AC2E.WLib {
             data.Write(m_fSpellcraft);
             data.Write(m_iApp);
             data.Write(m_bPK ? (uint)1 : (uint)0);
-            data.Write(m_rApp, references);
+            data.Write(m_rApp, registry);
             data.Write(m_timePromotedToTopLevel);
-            data.Write(m_effect, references);
+            data.Write(m_effect, registry);
             data.Write(m_iidActingForWhom);
             data.Write(m_didSkill);
             data.Write(m_iidFromItem);

@@ -1,5 +1,4 @@
 ﻿using AC2E.Dat;
-using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.Interp {
@@ -16,7 +15,7 @@ namespace AC2E.Interp {
             did = data.ReadDataId();
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public void write(BinaryWriter data, PackageRegistry registry) {
             data.Write(did);
         }
     }

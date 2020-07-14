@@ -1,6 +1,4 @@
 ﻿using AC2E.Interp;
-using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -21,24 +19,24 @@ namespace AC2E.WLib {
 
         }
 
-        public SkillRepositoryPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
+        public SkillRepositoryPkg(BinaryReader data, PackageRegistry registry) {
             m_nSkillCredits = data.ReadUInt32();
             m_nUntrainXP = data.ReadUInt64();
             m_nHeroSkillCredits = data.ReadUInt32();
-            data.ReadPkgRef<AAHashPkg>(v => m_hashPerkTypes = v, resolvers);
+            data.ReadPkgRef<AAHashPkg>(v => m_hashPerkTypes = v, registry);
             m_typeUntrained = data.ReadUInt32();
-            data.ReadPkgRef<AAHashPkg>(v => m_hashCategories = v, resolvers);
-            data.ReadPkgRef<ARHashPkg<IPackage>>(v => m_hashSkills = v.to<SkillInfoPkg>(), resolvers);
+            data.ReadPkgRef<AAHashPkg>(v => m_hashCategories = v, registry);
+            data.ReadPkgRef<ARHashPkg<IPackage>>(v => m_hashSkills = v.to<SkillInfoPkg>(), registry);
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public void write(BinaryWriter data, PackageRegistry registry) {
             data.Write(m_nSkillCredits);
             data.Write(m_nUntrainXP);
             data.Write(m_nHeroSkillCredits);
-            data.Write(m_hashPerkTypes, references);
+            data.Write(m_hashPerkTypes, registry);
             data.Write(m_typeUntrained);
-            data.Write(m_hashCategories, references);
-            data.Write(m_hashSkills, references);
+            data.Write(m_hashCategories, registry);
+            data.Write(m_hashSkills, registry);
         }
     }
 }

@@ -6,15 +6,13 @@ namespace AC2E.Interp {
 
     public static class PackageManager {
 
-        public static readonly PackageRegistry registry = new PackageRegistry();
-
         private static readonly HashSet<Type> SINGLETON_PACKAGE_TYPES = new HashSet<Type> {
             typeof(SingletonPkg) // TODO: EffectPkg etc. instead of shared class?
         };
 
-        private static Func<PackageType, BinaryReader, List<Action<PackageRegistry>>, IPackage> packageFactory;
+        private static Func<BinaryReader, PackageType, PackageRegistry, IPackage> packageFactory;
 
-        public static void init(Func<PackageType, BinaryReader, List<Action<PackageRegistry>>, IPackage> packageFactory) {
+        public static void init(Func<BinaryReader, PackageType, PackageRegistry, IPackage> packageFactory) {
             PackageManager.packageFactory = packageFactory;
         }
 
@@ -27,7 +25,7 @@ namespace AC2E.Interp {
             return new InterpReferenceMeta(flags, ReferenceType.HEAPOBJECT);
         }
 
-        public static IPackage read(NativeType nativeType, BinaryReader data, List<Action<PackageRegistry>> resolvers) {
+        public static IPackage read(BinaryReader data, NativeType nativeType, PackageRegistry registry) {
             switch (nativeType) {
                 case NativeType.AAHASH:
                     return new AAHashPkg(data);
@@ -40,7 +38,7 @@ namespace AC2E.Interp {
                 case NativeType.APPINFOHASH:
                     return new AppInfoHashPkg(data);
                 case NativeType.ARHASH:
-                    return new ARHashPkg<IPackage>(data, resolvers);
+                    return new ARHashPkg<IPackage>(data, registry);
                 case NativeType.EXAMINATIONPROFILE:
                     return new ExaminationProfilePkg(data);
                 case NativeType.EXAMINATIONREQUEST:
@@ -54,11 +52,11 @@ namespace AC2E.Interp {
                 case NativeType.LLIST:
                     return new LListPkg(data);
                 case NativeType.LRHASH:
-                    return new LRHashPkg<IPackage>(data, resolvers);
+                    return new LRHashPkg<IPackage>(data, registry);
                 case NativeType.POSITION:
                     return new PositionPkg(data);
                 case NativeType.RLIST:
-                    return new RListPkg<IPackage>(data, resolvers);
+                    return new RListPkg<IPackage>(data, registry);
                 case NativeType.SHORTCUTINFO:
                     return new ShortcutInfoPkg(data);
                 case NativeType.STRINGINFO:
@@ -76,12 +74,12 @@ namespace AC2E.Interp {
             }
         }
 
-        public static IPackage read(PackageType packageType, BinaryReader data, List<Action<PackageRegistry>> resolvers) {
+        public static IPackage read(BinaryReader data, PackageType packageType, PackageRegistry registry) {
             if (packageFactory == null) {
                 throw new InvalidOperationException("Attempted to read a package when the package manager has not been initialized with a factory");
             }
 
-            return packageFactory.Invoke(packageType, data, resolvers);
+            return packageFactory.Invoke(data, packageType, registry);
         }
     }
 }

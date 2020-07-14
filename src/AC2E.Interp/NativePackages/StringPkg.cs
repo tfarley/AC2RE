@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 
 namespace AC2E.Interp {
@@ -18,7 +17,7 @@ namespace AC2E.Interp {
             contents = data.ReadEncryptedString(Encoding.Unicode);
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public void write(BinaryWriter data, PackageRegistry registry) {
             data.WriteEncryptedString(contents, Encoding.Unicode);
         }
 

@@ -1,5 +1,4 @@
 ﻿using AC2E.Utils;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -26,15 +25,15 @@ namespace AC2E.Interp {
 
         }
 
-        public LRHashPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
+        public LRHashPkg(BinaryReader data, PackageRegistry registry) {
             contents = new Dictionary<ulong, V>();
             foreach (var element in data.ReadDictionary(data.ReadUInt64, data.ReadPackageId)) {
-                resolvers.Add(registry => contents[element.Key] = registry.get<V>(element.Value));
+                registry.addResolver(() => contents[element.Key] = registry.get<V>(element.Value));
             }
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
-            data.Write(contents, data.Write, v => data.Write(v, references));
+        public void write(BinaryWriter data, PackageRegistry registry) {
+            data.Write(contents, data.Write, v => data.Write(v, registry));
         }
 
         public override string ToString() {

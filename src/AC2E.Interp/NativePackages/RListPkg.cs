@@ -1,5 +1,4 @@
 ﻿using AC2E.Utils;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -26,15 +25,15 @@ namespace AC2E.Interp {
 
         }
 
-        public RListPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
+        public RListPkg(BinaryReader data, PackageRegistry registry) {
             contents = new List<T>();
             foreach (var element in data.ReadList(data.ReadPackageId)) {
-                resolvers.Add(registry => contents.Add(registry.get<T>(element)));
+                registry.addResolver(() => contents.Add(registry.get<T>(element)));
             }
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
-            data.Write(contents, v => data.Write(v, references));
+        public void write(BinaryWriter data, PackageRegistry registry) {
+            data.Write(contents, v => data.Write(v, registry));
         }
 
         public override string ToString() {

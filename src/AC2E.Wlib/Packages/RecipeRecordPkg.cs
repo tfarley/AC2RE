@@ -1,6 +1,5 @@
 ﻿using AC2E.Dat;
 using AC2E.Interp;
-using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -35,7 +34,7 @@ namespace AC2E.WLib {
             m_nextRefreshReal = data.ReadInt32();
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public void write(BinaryWriter data, PackageRegistry registry) {
             data.Write(m_recipe);
             data.Write(m_ttLastUsed);
             data.Write(m_iSuccesses);

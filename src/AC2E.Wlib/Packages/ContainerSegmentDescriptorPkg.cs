@@ -1,5 +1,4 @@
 ﻿using AC2E.Interp;
-using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.WLib {
@@ -20,7 +19,7 @@ namespace AC2E.WLib {
             mSegmentSize = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public void write(BinaryWriter data, PackageRegistry registry) {
             data.Write(mSegmentMaxSize);
             data.Write(mSegmentSize);
         }

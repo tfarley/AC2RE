@@ -1,4 +1,5 @@
 ﻿using AC2E.Def;
+using System;
 using System.Collections.Generic;
 
 namespace AC2E.Interp {
@@ -15,6 +16,9 @@ namespace AC2E.Interp {
         private readonly Dictionary<IPackage, PackageMeta> registryByPackage = new Dictionary<IPackage, PackageMeta>();
         private readonly Dictionary<PackageId, PackageMeta> registryById = new Dictionary<PackageId, PackageMeta>();
         private uint packageIdCounter;
+
+        private readonly List<Action> resolvers = new List<Action>();
+        public readonly List<IPackage> references = new List<IPackage>();
 
         public bool contains(IPackage package) {
             return registryByPackage.ContainsKey(package);
@@ -82,6 +86,19 @@ namespace AC2E.Interp {
                 return meta;
             }
             throw new KeyNotFoundException();
+        }
+
+        public void addResolver(Action resolver) {
+            resolvers.Add(resolver);
+        }
+
+        public void executeResolvers() {
+            // Reverse resolvers to ensure we convert the nested packages before the parents
+            resolvers.Reverse();
+            foreach (Action resolver in resolvers) {
+                resolver.Invoke();
+            }
+            resolvers.Clear();
         }
     }
 }

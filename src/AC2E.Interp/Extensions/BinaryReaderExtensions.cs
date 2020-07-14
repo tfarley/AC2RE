@@ -15,26 +15,21 @@ namespace AC2E {
             }
 
             PackageRegistry tempRegistry = new PackageRegistry();
-            List<Action<PackageRegistry>> resolvers = new List<Action<PackageRegistry>>();
 
             List<PackageId> packageIds = reader.ReadList(reader.ReadPackageId);
 
-            T rootPackage = readPackage<T>(tempRegistry, packageIds[0], reader, resolvers);
+            T rootPackage = readPackage<T>(reader, tempRegistry, packageIds[0]);
 
             for (int i = 1; i < packageIds.Count; i++) {
-                readPackage<IPackage>(tempRegistry, packageIds[i], reader, resolvers);
+                readPackage<IPackage>(reader, tempRegistry, packageIds[i]);
             }
 
-            // Reverse resolvers to ensure we convert the nested packages before the parents
-            resolvers.Reverse();
-            foreach (Action<PackageRegistry> resolver in resolvers) {
-                resolver.Invoke(tempRegistry);
-            }
+            tempRegistry.executeResolvers();
 
             return rootPackage;
         }
 
-        private static T readPackage<T>(PackageRegistry registry, PackageId packageId, BinaryReader reader, List<Action<PackageRegistry>> resolvers) {
+        private static T readPackage<T>(BinaryReader reader, PackageRegistry registry, PackageId packageId) {
             InterpReferenceMeta referenceMeta = new InterpReferenceMeta(reader.ReadUInt32());
 
             IPackage package;
@@ -53,10 +48,10 @@ namespace AC2E {
             NativeType nativeType = (NativeType)reader.ReadUInt16();
             PackageType packageType = (PackageType)reader.ReadUInt16();
             if (nativeType != NativeType.UNDEF) {
-                package = PackageManager.read(nativeType, reader, resolvers);
+                package = PackageManager.read(reader, nativeType, registry);
             } else {
                 uint length = reader.ReadUInt32();
-                package = PackageManager.read(packageType, reader, resolvers);
+                package = PackageManager.read(reader, packageType, registry);
             }
 
             // TODO: Still not sure this is the correct condition for whether there are references or not
@@ -80,10 +75,10 @@ namespace AC2E {
             return (T)package;
         }
 
-        public static PackageId ReadPkgRef<T>(this BinaryReader reader, Action<T> assigner, List<Action<PackageRegistry>> resolvers) where T : IPackage {
+        public static PackageId ReadPkgRef<T>(this BinaryReader reader, Action<T> assigner, PackageRegistry registry) where T : IPackage {
             PackageId packageId = reader.ReadPackageId();
             if (packageId.id != PackageId.NULL.id) {
-                resolvers.Add(registry => assigner.Invoke(registry.get<T>(packageId)));
+                registry.addResolver(() => assigner.Invoke(registry.get<T>(packageId)));
             }
             return packageId;
         }

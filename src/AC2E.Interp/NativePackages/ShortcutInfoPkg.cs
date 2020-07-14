@@ -1,6 +1,5 @@
 ﻿using AC2E.Dat;
 using AC2E.Def;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -42,7 +41,7 @@ namespace AC2E.Interp {
             }
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public void write(BinaryWriter data, PackageRegistry registry) {
             // TODO: Guessing on the types here
             data.Write((uint)_type);
             switch (_type) {

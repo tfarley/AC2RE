@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.Interp {
@@ -9,7 +8,7 @@ namespace AC2E.Interp {
         NativeType nativeType => NativeType.UNDEF;
         PackageType packageType => PackageType.UNDEF;
 
-        void write(BinaryWriter data, List<IPackage> references) {
+        void write(BinaryWriter data, PackageRegistry registry) {
             throw new NotImplementedException("IPackage implementor must override write().");
         }
     }

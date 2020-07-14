@@ -131,13 +131,13 @@ namespace AC2E.Interp {
             }
         }
 
-        public void write(BinaryWriter data, List<IPackage> references) {
+        public void write(BinaryWriter data, PackageRegistry registry) {
             data.Write((ulong)contentFlags);
             if (contentFlags.HasFlag(ContentFlag.ALIAS_TABLE)) {
                 data.Write(m_aliasTable, k => data.WriteEncryptedString(k, Encoding.Unicode), v => data.WriteEncryptedString(v, Encoding.Unicode));
             }
             if (contentFlags.HasFlag(ContentFlag.SHORTCUT_ARRAY)) {
-                data.Write(m_shortcutArray, v => v.write(data, references));
+                data.Write(m_shortcutArray, v => v.write(data, registry));
             }
             if (contentFlags.HasFlag(ContentFlag.SHORTCUT_SET)) {
                 data.Write(m_whichShortcutSet);
@@ -149,7 +149,7 @@ namespace AC2E.Interp {
                 data.Write(m_fDamageTextRangeOther);
             }
             if (contentFlags.HasFlag(ContentFlag.SAVED_UI_LOCATIONS)) {
-                m_savedUILocations.write(data, references);
+                m_savedUILocations.write(data, registry);
             }
             if (contentFlags.HasFlag(ContentFlag.RADAR_MASK)) {
                 data.Write(m_radarMask);
