@@ -1,4 +1,5 @@
 ﻿using AC2E.Interp;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -26,24 +27,20 @@ namespace AC2E.WLib {
 
         }
 
-        public EffectRegistryPkg(BinaryReader data) {
-            m_qualitiesModifiedCount = data.ReadPkgRef<AAHashPkg>();
-            m_appliedFX = data.ReadPkgRef<AAHashPkg>();
-            m_baseEffectRegistry = data.ReadPkgRef<EffectRegistryPkg>();
+        public EffectRegistryPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
+            m_qualitiesModifiedCount = data.ReadPkgRef<AAHashPkg>(resolvers);
+            m_appliedFX = data.ReadPkgRef<AAHashPkg>(resolvers);
+            m_baseEffectRegistry = data.ReadPkgRef<EffectRegistryPkg>(resolvers);
             m_uiEffectIDCounter = data.ReadUInt32();
-            m_effectInfo = data.ReadPkgRef<ARHashPkg<EffectRecordPkg>>();
+            m_effectInfo = data.ReadPkgRef<ARHashPkg<IPackage>, ARHashPkg<EffectRecordPkg>>(resolvers, v => v.to<EffectRecordPkg>());
             m_ttLastPulse = data.ReadDouble();
-            m_listEquipperEffectEids = data.ReadPkgRef<AListPkg>();
-            m_listAcquirerEffectEids = data.ReadPkgRef<AListPkg>();
+            m_listEquipperEffectEids = data.ReadPkgRef<AListPkg>(resolvers);
+            m_listAcquirerEffectEids = data.ReadPkgRef<AListPkg>(resolvers);
             m_flags = data.ReadUInt32();
-            m_setTrackedEffects = data.ReadPkgRef<AHashSetPkg>();
-            m_topEffects = data.ReadPkgRef<AAHashPkg>();
-            m_effectCategorizationTable = data.ReadPkgRef<AAMultiHashPkg>();
-            m_appliedAppearances = data.ReadPkgRef<AAHashPkg>();
-        }
-
-        public void resolveRefs() {
-            PackageManager.convert<ARHashPkg<IPackage>>(m_effectInfo.id, v => v.to<EffectRecordPkg>());
+            m_setTrackedEffects = data.ReadPkgRef<AHashSetPkg>(resolvers);
+            m_topEffects = data.ReadPkgRef<AAHashPkg>(resolvers);
+            m_effectCategorizationTable = data.ReadPkgRef<AAMultiHashPkg>(resolvers);
+            m_appliedAppearances = data.ReadPkgRef<AAHashPkg>(resolvers);
         }
 
         public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {

@@ -1,4 +1,5 @@
 ﻿using AC2E.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -10,12 +11,27 @@ namespace AC2E.Interp {
 
         public Dictionary<uint, PkgRef<V>> contents;
 
-        public ARHashPkg<T> to<T>() where T : IPackage {
+        public ARHashPkg<T> to<T>() where T : class, IPackage {
             ARHashPkg<T> converted = new ARHashPkg<T>();
             if (contents != null) {
                 converted.contents = new Dictionary<uint, PkgRef<T>>(contents.Count);
                 foreach (var element in contents) {
-                    converted.contents[element.Key] = new PkgRef<T>(element.Value.id);
+                    PkgRef<T> convertedPkgRef = new PkgRef<T>(element.Value.id);
+                    convertedPkgRef.value = element.Value.value as T;
+                    converted.contents[element.Key] = convertedPkgRef;
+                }
+            }
+            return converted;
+        }
+
+        public ARHashPkg<T> to<T>(PackageRegistry registry, Func<V, T> converter) where T : IPackage {
+            ARHashPkg<T> converted = new ARHashPkg<T>();
+            if (contents != null) {
+                converted.contents = new Dictionary<uint, PkgRef<T>>(contents.Count);
+                foreach (var element in contents) {
+                    PkgRef<T> convertedPkgRef = new PkgRef<T>(element.Value.id);
+                    convertedPkgRef.value = registry.convert(convertedPkgRef.id, converter);
+                    converted.contents[element.Key] = convertedPkgRef;
                 }
             }
             return converted;
@@ -25,8 +41,8 @@ namespace AC2E.Interp {
 
         }
 
-        public ARHashPkg(BinaryReader data) {
-            contents = data.ReadDictionary(data.ReadUInt32, () => data.ReadPkgRef<V>());
+        public ARHashPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
+            contents = data.ReadDictionary(data.ReadUInt32, () => data.ReadPkgRef<V>(resolvers));
         }
 
         public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {

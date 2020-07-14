@@ -1,6 +1,7 @@
 ﻿using AC2E.Dat;
 using AC2E.Def;
 using AC2E.Interp;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -35,7 +36,7 @@ namespace AC2E.WLib {
 
         }
 
-        public EffectRecordPkg(BinaryReader data) {
+        public EffectRecordPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
             m_timeDemotedFromTopLevel = data.ReadDouble();
             m_timeCast = data.ReadDouble();
             m_iidCaster = data.ReadInstanceId();
@@ -44,9 +45,9 @@ namespace AC2E.WLib {
             m_fSpellcraft = data.ReadSingle();
             m_iApp = data.ReadInt32();
             m_bPK = data.ReadUInt32() != 0;
-            m_rApp = data.ReadPkgRef<IPackage>();
+            m_rApp = data.ReadPkgRef<IPackage>(resolvers);
             m_timePromotedToTopLevel = data.ReadDouble();
-            m_effect = data.ReadPkgRef<SingletonPkg>();
+            m_effect = data.ReadPkgRef<SingletonPkg>(resolvers);
             m_iidActingForWhom = data.ReadInstanceId();
             m_didSkill = data.ReadDataId();
             m_iidFromItem = data.ReadInstanceId();

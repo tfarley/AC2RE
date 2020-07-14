@@ -1,4 +1,5 @@
 ﻿using AC2E.Interp;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -19,9 +20,9 @@ namespace AC2E.WLib {
 
         }
 
-        public UsageBlobPkg(BinaryReader data) {
-            m_criticalSuccessMessage = data.ReadPkgRef<StringInfoPkg>();
-            m_successMessage = data.ReadPkgRef<StringInfoPkg>();
+        public UsageBlobPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
+            m_criticalSuccessMessage = data.ReadPkgRef<StringInfoPkg>(resolvers);
+            m_successMessage = data.ReadPkgRef<StringInfoPkg>(resolvers);
             m_userBehaviorRepeatCount = data.ReadUInt32();
             m_userBehaviorTimeScale = data.ReadSingle();
             m_userBehavior = data.ReadUInt32();

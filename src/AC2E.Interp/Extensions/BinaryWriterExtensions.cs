@@ -36,7 +36,7 @@ namespace AC2E {
         }
 
         private static void writePackage(BinaryWriter writer, IPackage value, List<PkgRef<IPackage>> references) {
-            InterpReferenceMeta referenceMeta = PackageManager.getMeta(value).referenceMeta;
+            InterpReferenceMeta referenceMeta = PackageManager.registry.getMeta(value).referenceMeta;
 
             writer.Write(referenceMeta.id);
 
@@ -96,7 +96,7 @@ namespace AC2E {
 
         public static void Write<T>(this BinaryWriter writer, T value, List<PkgRef<IPackage>> references) where T : IPackage {
             if (value != null) {
-                writer.Write(PackageManager.getId(value));
+                writer.Write(PackageManager.registry.getId(value));
                 references.Add(new PkgRef<IPackage>(value));
             } else {
                 writer.Write(PackageId.NULL);

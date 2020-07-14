@@ -1,5 +1,6 @@
 ﻿using AC2E.Def;
 using AC2E.Interp;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -30,11 +31,11 @@ namespace AC2E.WLib {
 
         }
 
-        public UsageDescPkg(BinaryReader data) {
-            m_siSuccessMessage = data.ReadPkgRef<StringInfoPkg>();
-            m_usageBlob = data.ReadPkgRef<UsageBlobPkg>();
+        public UsageDescPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
+            m_siSuccessMessage = data.ReadPkgRef<StringInfoPkg>(resolvers);
+            m_usageBlob = data.ReadPkgRef<UsageBlobPkg>(resolvers);
             m_itemID = data.ReadInstanceId();
-            m_posUser = data.ReadPkgRef<PositionPkg>();
+            m_posUser = data.ReadPkgRef<PositionPkg>(resolvers);
             m_wtUser = data.ReadUInt32();
             m_userID = data.ReadInstanceId();
             m_fDistanceToUsedItem = data.ReadSingle();
@@ -42,15 +43,11 @@ namespace AC2E.WLib {
             m_status = data.ReadUInt32();
             m_effTargetID = data.ReadInstanceId();
             m_uttValid = data.ReadUInt32();
-            m_effsToApply = data.ReadPkgRef<RListPkg<SingletonPkg>>();
+            m_effsToApply = data.ReadPkgRef<RListPkg<IPackage>, RListPkg<SingletonPkg>>(resolvers, v => v.to<SingletonPkg>());
             m_iVigorCost = data.ReadInt32();
             m_controlFlags = data.ReadUInt32();
             m_bCancelsSF = data.ReadUInt32() != 0;
             m_iHealthCost = data.ReadInt32();
-        }
-
-        public void resolveRefs() {
-            PackageManager.convert<ARHashPkg<IPackage>>(m_effsToApply.id, v => v.to<SingletonPkg>());
         }
 
         public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {

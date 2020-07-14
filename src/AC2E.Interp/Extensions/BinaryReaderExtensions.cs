@@ -1,6 +1,7 @@
 ﻿using AC2E.Def;
 using AC2E.Interp;
 using AC2E.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -13,25 +14,27 @@ namespace AC2E {
                 throw new InvalidDataException();
             }
 
-            List<PackageId> packageIds = reader.ReadList(reader.ReadPackageId);
-            IPackage[] allPackages = new IPackage[packageIds.Count];
+            PackageRegistry tempRegistry = new PackageRegistry();
+            List<Action<PackageRegistry>> resolvers = new List<Action<PackageRegistry>>();
 
-            T rootPackage = readPackage<T>(packageIds[0], reader);
-            allPackages[0] = rootPackage;
+            List<PackageId> packageIds = reader.ReadList(reader.ReadPackageId);
+
+            T rootPackage = readPackage<T>(tempRegistry, packageIds[0], reader, resolvers);
 
             for (int i = 1; i < packageIds.Count; i++) {
-                IPackage referencedPackage = readPackage<IPackage>(packageIds[i], reader);
-                allPackages[i] = referencedPackage;
+                readPackage<IPackage>(tempRegistry, packageIds[i], reader, resolvers);
             }
 
-            foreach (IPackage package in allPackages) {
-                package.resolveRefs();
+            // Reverse resolvers to ensure we convert the nested packages before the parents
+            resolvers.Reverse();
+            foreach (Action<PackageRegistry> resolver in resolvers) {
+                resolver.Invoke(tempRegistry);
             }
 
             return rootPackage;
         }
 
-        private static T readPackage<T>(PackageId packageId, BinaryReader reader) {
+        private static T readPackage<T>(PackageRegistry registry, PackageId packageId, BinaryReader reader, List<Action<PackageRegistry>> resolvers) {
             InterpReferenceMeta referenceMeta = new InterpReferenceMeta(reader.ReadUInt32());
 
             IPackage package;
@@ -41,7 +44,7 @@ namespace AC2E {
                     did = reader.ReadDataId(),
                 };
 
-                PackageManager.register(packageId, package, referenceMeta);
+                registry.register(packageId, package, referenceMeta);
 
                 return (T)package;
             }
@@ -50,10 +53,10 @@ namespace AC2E {
             NativeType nativeType = (NativeType)reader.ReadUInt16();
             PackageType packageType = (PackageType)reader.ReadUInt16();
             if (nativeType != NativeType.UNDEF) {
-                package = PackageManager.read(nativeType, reader);
+                package = PackageManager.read(nativeType, reader, resolvers);
             } else {
                 uint length = reader.ReadUInt32();
-                package = PackageManager.read(packageType, reader);
+                package = PackageManager.read(packageType, reader, resolvers);
             }
 
             // TODO: Still not sure this is the correct condition for whether there are references or not
@@ -72,13 +75,21 @@ namespace AC2E {
                 reader.ReadUInt32();
             }
 
-            PackageManager.register(packageId, package, referenceMeta);
+            registry.register(packageId, package, referenceMeta);
 
             return (T)package;
         }
 
-        public static PkgRef<T> ReadPkgRef<T>(this BinaryReader reader) where T : IPackage {
-            return new PkgRef<T>(reader.ReadPackageId());
+        public static PkgRef<T> ReadPkgRef<T>(this BinaryReader reader, List<Action<PackageRegistry>> resolvers) where T : IPackage {
+            PkgRef<T> pkgRef = new PkgRef<T>(reader.ReadPackageId());
+            resolvers.Add(registry => pkgRef.value = registry.get<T>(pkgRef.id));
+            return pkgRef;
+        }
+
+        public static PkgRef<U> ReadPkgRef<T, U>(this BinaryReader reader, List<Action<PackageRegistry>> resolvers, Func<T, U> converter) where T : IPackage where U : IPackage {
+            PkgRef<U> pkgRef = new PkgRef<U>(reader.ReadPackageId());
+            resolvers.Add(registry => pkgRef.value = registry.convert(pkgRef.id, converter));
+            return pkgRef;
         }
     }
 }

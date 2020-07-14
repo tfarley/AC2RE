@@ -1,4 +1,5 @@
 ﻿using AC2E.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -10,12 +11,27 @@ namespace AC2E.Interp {
 
         public List<PkgRef<T>> contents;
 
-        public RListPkg<T> to<T>() where T : IPackage {
-            RListPkg<T> converted = new RListPkg<T>();
+        public RListPkg<U> to<U>() where U : class, IPackage {
+            RListPkg<U> converted = new RListPkg<U>();
             if (contents != null) {
-                converted.contents = new List<PkgRef<T>>(contents.Count);
+                converted.contents = new List<PkgRef<U>>(contents.Count);
                 foreach (var element in contents) {
-                    converted.contents.Add(new PkgRef<T>(element.id));
+                    PkgRef<U> convertedPkgRef = new PkgRef<U>(element.id);
+                    convertedPkgRef.value = element.value as U;
+                    converted.contents.Add(convertedPkgRef);
+                }
+            }
+            return converted;
+        }
+
+        public RListPkg<U> to<U>(PackageRegistry registry, Func<T, U> converter) where U : IPackage {
+            RListPkg<U> converted = new RListPkg<U>();
+            if (contents != null) {
+                converted.contents = new List<PkgRef<U>>(contents.Count);
+                foreach (var element in contents) {
+                    PkgRef<U> convertedPkgRef = new PkgRef<U>(element.id);
+                    convertedPkgRef.value = registry.convert(convertedPkgRef.id, converter);
+                    converted.contents.Add(convertedPkgRef);
                 }
             }
             return converted;
@@ -25,8 +41,8 @@ namespace AC2E.Interp {
 
         }
 
-        public RListPkg(BinaryReader data) {
-            contents = data.ReadList(() => data.ReadPkgRef<T>());
+        public RListPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
+            contents = data.ReadList(() => data.ReadPkgRef<T>(resolvers));
         }
 
         public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {

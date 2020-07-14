@@ -1,4 +1,5 @@
 ﻿using AC2E.Interp;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -20,18 +21,14 @@ namespace AC2E.WLib {
 
         }
 
-        public SkillRepositoryPkg(BinaryReader data) {
+        public SkillRepositoryPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
             m_nSkillCredits = data.ReadUInt32();
             m_nUntrainXP = data.ReadUInt64();
             m_nHeroSkillCredits = data.ReadUInt32();
-            m_hashPerkTypes = data.ReadPkgRef<AAHashPkg>();
+            m_hashPerkTypes = data.ReadPkgRef<AAHashPkg>(resolvers);
             m_typeUntrained = data.ReadUInt32();
-            m_hashCategories = data.ReadPkgRef<AAHashPkg>();
-            m_hashSkills = data.ReadPkgRef<ARHashPkg<SkillInfoPkg>>();
-        }
-
-        public void resolveRefs() {
-            PackageManager.convert<ARHashPkg<IPackage>>(m_hashSkills.id, v => v.to<SkillInfoPkg>());
+            m_hashCategories = data.ReadPkgRef<AAHashPkg>(resolvers);
+            m_hashSkills = data.ReadPkgRef<ARHashPkg<IPackage>, ARHashPkg<SkillInfoPkg>>(resolvers, v => v.to<SkillInfoPkg>());
         }
 
         public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {

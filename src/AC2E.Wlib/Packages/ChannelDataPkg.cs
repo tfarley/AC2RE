@@ -1,5 +1,6 @@
 ﻿using AC2E.Def;
 using AC2E.Interp;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -21,14 +22,14 @@ namespace AC2E.WLib {
 
         }
 
-        public ChannelDataPkg(BinaryReader data) {
+        public ChannelDataPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
             m_fPendingRoomCreation = data.ReadUInt32() != 0;
             m_type = (TextType)data.ReadUInt32();
             m_regionID = data.ReadUInt32();
             m_roomID = data.ReadUInt32();
             m_available = data.ReadUInt32() != 0;
             m_factionType = data.ReadUInt32();
-            m_name = data.ReadPkgRef<StringPkg>();
+            m_name = data.ReadPkgRef<StringPkg>(resolvers);
         }
 
         public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {

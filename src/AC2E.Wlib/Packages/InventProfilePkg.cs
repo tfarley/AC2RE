@@ -1,5 +1,6 @@
 ﻿using AC2E.Def;
 using AC2E.Interp;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -19,8 +20,8 @@ namespace AC2E.WLib {
 
         }
 
-        public InventProfilePkg(BinaryReader data) {
-            m_visualDescInfo = data.ReadPkgRef<VisualDescInfoPkg>();
+        public InventProfilePkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
+            m_visualDescInfo = data.ReadPkgRef<VisualDescInfoPkg>(resolvers);
             m_slotsTaken = data.ReadUInt32();
             m_location = data.ReadUInt32();
             m_it = data.ReadInt32();

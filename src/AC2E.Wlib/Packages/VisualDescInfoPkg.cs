@@ -1,4 +1,5 @@
 ﻿using AC2E.Interp;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -16,10 +17,10 @@ namespace AC2E.WLib {
 
         }
 
-        public VisualDescInfoPkg(BinaryReader data) {
-            m_scale = data.ReadPkgRef<VectorPkg>();
-            m_appInfoHash = data.ReadPkgRef<AppInfoHashPkg>();
-            m_cachedVisualDesc = data.ReadPkgRef<VisualDescPkg>();
+        public VisualDescInfoPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
+            m_scale = data.ReadPkgRef<VectorPkg>(resolvers);
+            m_appInfoHash = data.ReadPkgRef<AppInfoHashPkg>(resolvers);
+            m_cachedVisualDesc = data.ReadPkgRef<VisualDescPkg>(resolvers);
         }
 
         public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
