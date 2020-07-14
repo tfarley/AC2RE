@@ -9,7 +9,7 @@ namespace AC2E.Interp {
         NativeType nativeType => NativeType.UNDEF;
         PackageType packageType => PackageType.UNDEF;
 
-        void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        void write(BinaryWriter data, List<IPackage> references) {
             throw new NotImplementedException("IPackage implementor must override write().");
         }
     }

@@ -10,7 +10,7 @@ namespace AC2E.WLib {
 
         public PackageType packageType => PackageType.InventProfile;
 
-        public PkgRef<VisualDescInfoPkg> m_visualDescInfo;
+        public VisualDescInfoPkg m_visualDescInfo;
         public uint m_slotsTaken;
         public uint m_location;
         public int m_it;
@@ -21,14 +21,14 @@ namespace AC2E.WLib {
         }
 
         public InventProfilePkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
-            m_visualDescInfo = data.ReadPkgRef<VisualDescInfoPkg>(resolvers);
+            data.ReadPkgRef<VisualDescInfoPkg>(v => m_visualDescInfo = v, resolvers);
             m_slotsTaken = data.ReadUInt32();
             m_location = data.ReadUInt32();
             m_it = data.ReadInt32();
             m_iid = data.ReadInstanceId();
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(m_visualDescInfo, references);
             data.Write(m_slotsTaken);
             data.Write(m_location);

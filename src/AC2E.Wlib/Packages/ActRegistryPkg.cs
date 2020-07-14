@@ -10,7 +10,7 @@ namespace AC2E.WLib {
         public PackageType packageType => PackageType.ActRegistry;
 
         public int m_viewingProtectionEID;
-        public PkgRef<ARHashPkg<AListPkg>> m_actSceneTable;
+        public ARHashPkg<AListPkg> m_actSceneTable;
 
         public ActRegistryPkg() {
 
@@ -18,10 +18,10 @@ namespace AC2E.WLib {
 
         public ActRegistryPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
             m_viewingProtectionEID = data.ReadInt32();
-            m_actSceneTable = data.ReadPkgRef<ARHashPkg<IPackage>, ARHashPkg<AListPkg>>(resolvers, v => v.to<AListPkg>());
+            data.ReadPkgRef<ARHashPkg<IPackage>>(v => m_actSceneTable = v.to<AListPkg>(), resolvers);
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(m_viewingProtectionEID);
             data.Write(m_actSceneTable, references);
         }

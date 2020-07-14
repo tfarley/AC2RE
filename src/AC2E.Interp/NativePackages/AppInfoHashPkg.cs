@@ -19,7 +19,7 @@ namespace AC2E.Interp {
             contents = data.ReadDictionary(data.ReadUInt32, () => new AppearanceInfo(data));
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(contents, data.Write, v => v.write(data));
         }
 

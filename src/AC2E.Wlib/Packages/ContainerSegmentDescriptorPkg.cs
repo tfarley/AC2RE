@@ -20,7 +20,7 @@ namespace AC2E.WLib {
             mSegmentSize = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(mSegmentMaxSize);
             data.Write(mSegmentSize);
         }

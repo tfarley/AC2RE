@@ -10,10 +10,10 @@ namespace AC2E.WLib {
 
         public PackageType packageType => PackageType.UsageDesc;
 
-        public PkgRef<StringInfoPkg> m_siSuccessMessage;
-        public PkgRef<UsageBlobPkg> m_usageBlob;
+        public StringInfoPkg m_siSuccessMessage;
+        public UsageBlobPkg m_usageBlob;
         public InstanceId m_itemID;
-        public PkgRef<PositionPkg> m_posUser;
+        public PositionPkg m_posUser;
         public uint m_wtUser; // TODO: WeenieType
         public InstanceId m_userID;
         public float m_fDistanceToUsedItem;
@@ -21,7 +21,7 @@ namespace AC2E.WLib {
         public uint m_status; // TODO: ErrorType
         public InstanceId m_effTargetID;
         public uint m_uttValid; // TODO: UsageTargetType
-        public PkgRef<RListPkg<SingletonPkg>> m_effsToApply;
+        public RListPkg<SingletonPkg> m_effsToApply;
         public int m_iVigorCost;
         public uint m_controlFlags;
         public bool m_bCancelsSF;
@@ -32,10 +32,10 @@ namespace AC2E.WLib {
         }
 
         public UsageDescPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
-            m_siSuccessMessage = data.ReadPkgRef<StringInfoPkg>(resolvers);
-            m_usageBlob = data.ReadPkgRef<UsageBlobPkg>(resolvers);
+            data.ReadPkgRef<StringInfoPkg>(v => m_siSuccessMessage = v, resolvers);
+            data.ReadPkgRef<UsageBlobPkg>(v => m_usageBlob = v, resolvers);
             m_itemID = data.ReadInstanceId();
-            m_posUser = data.ReadPkgRef<PositionPkg>(resolvers);
+            data.ReadPkgRef<PositionPkg>(v => m_posUser = v, resolvers);
             m_wtUser = data.ReadUInt32();
             m_userID = data.ReadInstanceId();
             m_fDistanceToUsedItem = data.ReadSingle();
@@ -43,14 +43,14 @@ namespace AC2E.WLib {
             m_status = data.ReadUInt32();
             m_effTargetID = data.ReadInstanceId();
             m_uttValid = data.ReadUInt32();
-            m_effsToApply = data.ReadPkgRef<RListPkg<IPackage>, RListPkg<SingletonPkg>>(resolvers, v => v.to<SingletonPkg>());
+            data.ReadPkgRef<RListPkg<IPackage>>(v => m_effsToApply = v.to<SingletonPkg>(), resolvers);
             m_iVigorCost = data.ReadInt32();
             m_controlFlags = data.ReadUInt32();
             m_bCancelsSF = data.ReadUInt32() != 0;
             m_iHealthCost = data.ReadInt32();
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(m_siSuccessMessage, references);
             data.Write(m_usageBlob, references);
             data.Write(m_itemID);

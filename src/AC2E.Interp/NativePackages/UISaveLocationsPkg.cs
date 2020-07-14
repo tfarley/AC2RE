@@ -46,7 +46,7 @@ namespace AC2E.Interp {
             contents = data.ReadDictionary(data.ReadUInt32, () => data.ReadDictionary(data.ReadUInt32, () => new UILocationData(data)));
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(contents, data.Write, v => data.Write(v, data.Write, v => v.write(data)));
         }
     }

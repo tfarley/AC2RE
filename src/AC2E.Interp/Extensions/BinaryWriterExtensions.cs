@@ -11,13 +11,13 @@ namespace AC2E {
         private static readonly byte UNINITIALIZED_DATA = 0xCD;
 
         public static void Pack(this BinaryWriter writer, IPackage value) {
-            List<PkgRef<IPackage>> references = new List<PkgRef<IPackage>>();
-            references.Add(new PkgRef<IPackage>(value));
+            List<IPackage> references = new List<IPackage>();
+            references.Add(value);
 
             MemoryStream buffer = new MemoryStream();
             using (BinaryWriter data = new BinaryWriter(buffer)) {
                 for (int i = 0; i < references.Count; i++) {
-                    IPackage referencedPackage = references[i].value;
+                    IPackage referencedPackage = references[i];
                     if (referencedPackage != null) {
                         writePackage(data, referencedPackage, references);
                     }
@@ -25,17 +25,17 @@ namespace AC2E {
             }
 
             for (int i = references.Count - 1; i >= 0; i--) {
-                if (references[i].id.id == PackageId.NULL.id) {
+                if (references[i] == null) {
                     references.RemoveAt(i);
                 }
             }
 
             writer.Write((uint)PackTag.PACKAGE);
-            writer.Write(references, v => writer.Write(v.id));
+            writer.Write(references, v => writer.Write(PackageManager.registry.getId(v)));
             writer.Write(buffer.ToArray());
         }
 
-        private static void writePackage(BinaryWriter writer, IPackage value, List<PkgRef<IPackage>> references) {
+        private static void writePackage(BinaryWriter writer, IPackage value, List<IPackage> references) {
             InterpReferenceMeta referenceMeta = PackageManager.registry.getMeta(value).referenceMeta;
 
             writer.Write(referenceMeta.id);
@@ -80,24 +80,10 @@ namespace AC2E {
             }
         }
 
-        public static void Write(this BinaryWriter writer, PackageId value, List<PkgRef<IPackage>> references) {
-            writer.Write(value);
-            references.Add(new PkgRef<IPackage>(value));
-        }
-
-        public static void Write<T>(this BinaryWriter writer, PkgRef<T> value, List<PkgRef<IPackage>> references) where T : IPackage {
-            if (value != null) {
-                writer.Write(value.id);
-                references.Add(new PkgRef<IPackage>(value.value));
-            } else {
-                writer.Write(PackageId.NULL);
-            }
-        }
-
-        public static void Write<T>(this BinaryWriter writer, T value, List<PkgRef<IPackage>> references) where T : IPackage {
+        public static void Write<T>(this BinaryWriter writer, T value, List<IPackage> references) where T : IPackage {
             if (value != null) {
                 writer.Write(PackageManager.registry.getId(value));
-                references.Add(new PkgRef<IPackage>(value));
+                references.Add(value);
             } else {
                 writer.Write(PackageId.NULL);
             }

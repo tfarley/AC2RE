@@ -54,7 +54,7 @@ namespace AC2E.Interp {
             }
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write((uint)_type);
             data.Write(_admin ? (uint)1 : (uint)0);
             switch (_type) {

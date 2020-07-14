@@ -38,7 +38,7 @@ namespace AC2E.WLib {
             m_typeSkill = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(m_timeLastUsed);
             data.Write(m_levelCached);
             data.Write(m_timeCached);

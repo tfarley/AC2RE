@@ -48,7 +48,7 @@ namespace AC2E.Interp {
             _playFXOnUpdate = data.ReadUInt32() != 0;
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(_questID);
             _strQuestName.write(data);
             _strQuestDescription.write(data);

@@ -80,16 +80,12 @@ namespace AC2E {
             return (T)package;
         }
 
-        public static PkgRef<T> ReadPkgRef<T>(this BinaryReader reader, List<Action<PackageRegistry>> resolvers) where T : IPackage {
-            PkgRef<T> pkgRef = new PkgRef<T>(reader.ReadPackageId());
-            resolvers.Add(registry => pkgRef.value = registry.get<T>(pkgRef.id));
-            return pkgRef;
-        }
-
-        public static PkgRef<U> ReadPkgRef<T, U>(this BinaryReader reader, List<Action<PackageRegistry>> resolvers, Func<T, U> converter) where T : IPackage where U : IPackage {
-            PkgRef<U> pkgRef = new PkgRef<U>(reader.ReadPackageId());
-            resolvers.Add(registry => pkgRef.value = registry.convert(pkgRef.id, converter));
-            return pkgRef;
+        public static PackageId ReadPkgRef<T>(this BinaryReader reader, Action<T> assigner, List<Action<PackageRegistry>> resolvers) where T : IPackage {
+            PackageId packageId = reader.ReadPackageId();
+            if (packageId.id != PackageId.NULL.id) {
+                resolvers.Add(registry => assigner.Invoke(registry.get<T>(packageId)));
+            }
+            return packageId;
         }
     }
 }

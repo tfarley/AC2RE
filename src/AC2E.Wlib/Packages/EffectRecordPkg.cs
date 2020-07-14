@@ -19,9 +19,9 @@ namespace AC2E.WLib {
         public float m_fSpellcraft;
         public int m_iApp;
         public bool m_bPK;
-        public PkgRef<IPackage> m_rApp;
+        public IPackage m_rApp;
         public double m_timePromotedToTopLevel;
-        public PkgRef<SingletonPkg> m_effect;
+        public SingletonPkg m_effect;
         public InstanceId m_iidActingForWhom;
         public DataId m_didSkill;
         public InstanceId m_iidFromItem;
@@ -45,9 +45,9 @@ namespace AC2E.WLib {
             m_fSpellcraft = data.ReadSingle();
             m_iApp = data.ReadInt32();
             m_bPK = data.ReadUInt32() != 0;
-            m_rApp = data.ReadPkgRef<IPackage>(resolvers);
+            data.ReadPkgRef<IPackage>(v => m_rApp = v, resolvers);
             m_timePromotedToTopLevel = data.ReadDouble();
-            m_effect = data.ReadPkgRef<SingletonPkg>(resolvers);
+            data.ReadPkgRef<SingletonPkg>(v => m_effect = v, resolvers);
             m_iidActingForWhom = data.ReadInstanceId();
             m_didSkill = data.ReadDataId();
             m_iidFromItem = data.ReadInstanceId();
@@ -59,7 +59,7 @@ namespace AC2E.WLib {
             m_uiMaxDurabilityLevel = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(m_timeDemotedFromTopLevel);
             data.Write(m_timeCast);
             data.Write(m_iidCaster);

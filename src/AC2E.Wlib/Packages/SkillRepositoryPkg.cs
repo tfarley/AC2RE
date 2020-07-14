@@ -12,10 +12,10 @@ namespace AC2E.WLib {
         public uint m_nSkillCredits;
         public ulong m_nUntrainXP;
         public uint m_nHeroSkillCredits;
-        public PkgRef<AAHashPkg> m_hashPerkTypes;
+        public AAHashPkg m_hashPerkTypes;
         public uint m_typeUntrained;
-        public PkgRef<AAHashPkg> m_hashCategories;
-        public PkgRef<ARHashPkg<SkillInfoPkg>> m_hashSkills;
+        public AAHashPkg m_hashCategories;
+        public ARHashPkg<SkillInfoPkg> m_hashSkills;
 
         public SkillRepositoryPkg() {
 
@@ -25,13 +25,13 @@ namespace AC2E.WLib {
             m_nSkillCredits = data.ReadUInt32();
             m_nUntrainXP = data.ReadUInt64();
             m_nHeroSkillCredits = data.ReadUInt32();
-            m_hashPerkTypes = data.ReadPkgRef<AAHashPkg>(resolvers);
+            data.ReadPkgRef<AAHashPkg>(v => m_hashPerkTypes = v, resolvers);
             m_typeUntrained = data.ReadUInt32();
-            m_hashCategories = data.ReadPkgRef<AAHashPkg>(resolvers);
-            m_hashSkills = data.ReadPkgRef<ARHashPkg<IPackage>, ARHashPkg<SkillInfoPkg>>(resolvers, v => v.to<SkillInfoPkg>());
+            data.ReadPkgRef<AAHashPkg>(v => m_hashCategories = v, resolvers);
+            data.ReadPkgRef<ARHashPkg<IPackage>>(v => m_hashSkills = v.to<SkillInfoPkg>(), resolvers);
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(m_nSkillCredits);
             data.Write(m_nUntrainXP);
             data.Write(m_nHeroSkillCredits);

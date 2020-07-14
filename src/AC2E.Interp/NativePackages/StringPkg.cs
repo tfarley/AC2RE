@@ -18,7 +18,7 @@ namespace AC2E.Interp {
             contents = data.ReadEncryptedString(Encoding.Unicode);
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.WriteEncryptedString(contents, Encoding.Unicode);
         }
 

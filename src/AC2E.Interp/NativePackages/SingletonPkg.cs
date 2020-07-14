@@ -16,7 +16,7 @@ namespace AC2E.Interp {
             did = data.ReadDataId();
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(did);
         }
     }

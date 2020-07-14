@@ -407,16 +407,16 @@ namespace AC2E.Server {
                                     money = 12345,
                                     _aReg = new ActRegistryPkg {
                                         m_viewingProtectionEID = 0,
-                                        m_actSceneTable = new PkgRef<ARHashPkg<AListPkg>>(new ARHashPkg<AListPkg> {
-                                            contents = new Dictionary<uint, PkgRef<AListPkg>> {
-                                                { 0x40000005, new PkgRef<AListPkg>(new AListPkg()) },
-                                                { 0x40000006, new PkgRef<AListPkg>(new AListPkg()) },
-                                                { 0x40000007, new PkgRef<AListPkg>(new AListPkg()) },
-                                                { 0x40000008, new PkgRef<AListPkg>(new AListPkg()) },
-                                                { 0x40000009, new PkgRef<AListPkg>(new AListPkg()) },
-                                                { 0x4000000A, new PkgRef<AListPkg>(new AListPkg()) },
+                                        m_actSceneTable = new ARHashPkg<AListPkg> {
+                                            contents = new Dictionary<uint, AListPkg> {
+                                                { 0x40000005, new AListPkg() },
+                                                { 0x40000006, new AListPkg() },
+                                                { 0x40000007, new AListPkg() },
+                                                { 0x40000008, new AListPkg() },
+                                                { 0x40000009, new AListPkg() },
+                                                { 0x4000000A, new AListPkg() },
                                             }
-                                        })
+                                        }
                                     },
                                     _quests = new GMQuestInfoListPkg {
 
@@ -520,30 +520,30 @@ namespace AC2E.Server {
                                     _skills = new SkillRepositoryPkg {
                                         m_nSkillCredits = 0,
                                         m_nUntrainXP = 0,
-                                        m_hashPerkTypes = new PkgRef<AAHashPkg>(new AAHashPkg {
+                                        m_hashPerkTypes = new AAHashPkg {
                                             contents = new Dictionary<uint, uint> {
 
                                             }
-                                        }),
+                                        },
                                         m_typeUntrained = 0,
-                                        m_hashCategories = new PkgRef<AAHashPkg>(new AAHashPkg {
+                                        m_hashCategories = new AAHashPkg {
                                             contents = new Dictionary<uint, uint> {
 
                                             }
-                                        }),
-                                        m_hashSkills = new PkgRef<ARHashPkg<SkillInfoPkg>>(new ARHashPkg<SkillInfoPkg> {
-                                            contents = new Dictionary<uint, PkgRef<SkillInfoPkg>> {
+                                        },
+                                        m_hashSkills = new ARHashPkg<SkillInfoPkg> {
+                                            contents = new Dictionary<uint, SkillInfoPkg> {
 
                                             }
-                                        }),
+                                        },
                                     },
                                     _regEffect = new EffectRegistryPkg {
                                         m_qualitiesModifiedCount = null,
-                                        m_appliedFX = new PkgRef<AAHashPkg>(new AAHashPkg {
+                                        m_appliedFX = new AAHashPkg {
                                             contents = new Dictionary<uint, uint> {
 
                                             },
-                                        }),
+                                        },
                                         m_baseEffectRegistry = null,
                                         m_uiEffectIDCounter = 3,
                                         m_effectInfo = null,
@@ -554,11 +554,11 @@ namespace AC2E.Server {
                                         m_setTrackedEffects = null,
                                         m_topEffects = null,
                                         m_effectCategorizationTable = null,
-                                        m_appliedAppearances = new PkgRef<AAHashPkg>(new AAHashPkg {
+                                        m_appliedAppearances = new AAHashPkg {
                                             contents = new Dictionary<uint, uint> {
 
                                             },
-                                        }),
+                                        },
                                     },
                                     _filledInvLocs = 0,
                                     _invByLocTable = new ARHashPkg<InventProfilePkg> {
@@ -613,7 +613,7 @@ namespace AC2E.Server {
                                                 m_bPK = false,
                                                 m_rApp = null,
                                                 m_timePromotedToTopLevel = -1.0,
-                                                m_effect = new PkgRef<SingletonPkg>(refiningEffect),
+                                                m_effect = refiningEffect,
                                                 m_iidActingForWhom = default,
                                                 m_didSkill = default,
                                                 m_iidFromItem = new InstanceId(0x213000000000dd9d),

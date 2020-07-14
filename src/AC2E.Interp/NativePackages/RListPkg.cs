@@ -9,29 +9,14 @@ namespace AC2E.Interp {
 
         public NativeType nativeType => NativeType.RLIST;
 
-        public List<PkgRef<T>> contents;
+        public List<T> contents;
 
         public RListPkg<U> to<U>() where U : class, IPackage {
             RListPkg<U> converted = new RListPkg<U>();
             if (contents != null) {
-                converted.contents = new List<PkgRef<U>>(contents.Count);
+                converted.contents = new List<U>(contents.Count);
                 foreach (var element in contents) {
-                    PkgRef<U> convertedPkgRef = new PkgRef<U>(element.id);
-                    convertedPkgRef.value = element.value as U;
-                    converted.contents.Add(convertedPkgRef);
-                }
-            }
-            return converted;
-        }
-
-        public RListPkg<U> to<U>(PackageRegistry registry, Func<T, U> converter) where U : IPackage {
-            RListPkg<U> converted = new RListPkg<U>();
-            if (contents != null) {
-                converted.contents = new List<PkgRef<U>>(contents.Count);
-                foreach (var element in contents) {
-                    PkgRef<U> convertedPkgRef = new PkgRef<U>(element.id);
-                    convertedPkgRef.value = registry.convert(convertedPkgRef.id, converter);
-                    converted.contents.Add(convertedPkgRef);
+                    converted.contents.Add(element as U);
                 }
             }
             return converted;
@@ -42,10 +27,13 @@ namespace AC2E.Interp {
         }
 
         public RListPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
-            contents = data.ReadList(() => data.ReadPkgRef<T>(resolvers));
+            contents = new List<T>();
+            foreach (var element in data.ReadList(data.ReadPackageId)) {
+                resolvers.Add(registry => contents.Add(registry.get<T>(element)));
+            }
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(contents, v => data.Write(v, references));
         }
 

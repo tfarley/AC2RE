@@ -20,7 +20,6 @@ namespace AC2E.Interp {
             { typeof(uint), 1 },
             { typeof(float), 1 },
             { typeof(IPackage), 1 },
-            { typeof(IPkgRef), 1 },
             { typeof(DataId), 1 },
             { typeof(long), 2 },
             { typeof(ulong), 2 },
@@ -38,7 +37,7 @@ namespace AC2E.Interp {
                     FieldInfo fieldInfo = fieldInfos[i];
                     Type fieldType = fieldInfo.FieldType;
                     StackType stackType;
-                    if (typeof(IPackage).IsAssignableFrom(fieldType) || typeof(IPkgRef).IsAssignableFrom(fieldType)) {
+                    if (typeof(IPackage).IsAssignableFrom(fieldType)) {
                         fieldType = typeof(IPackage);
                         stackType = StackType.REFERENCE;
                     } else {
@@ -58,7 +57,7 @@ namespace AC2E.Interp {
                 for (int i = 0; i < fieldInfos.Length; i++) {
                     FieldInfo fieldInfo = fieldInfos[i];
                     Type fieldType = fieldInfo.FieldType;
-                    if (typeof(IPackage).IsAssignableFrom(fieldType) || typeof(IPkgRef).IsAssignableFrom(fieldType)) {
+                    if (typeof(IPackage).IsAssignableFrom(fieldType)) {
                         hasReferences = true;
                         break;
                     }

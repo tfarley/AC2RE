@@ -35,7 +35,7 @@ namespace AC2E.WLib {
             m_nextRefreshReal = data.ReadInt32();
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(m_recipe);
             data.Write(m_ttLastUsed);
             data.Write(m_iSuccesses);

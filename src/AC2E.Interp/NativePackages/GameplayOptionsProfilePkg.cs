@@ -131,7 +131,7 @@ namespace AC2E.Interp {
             }
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write((ulong)contentFlags);
             if (contentFlags.HasFlag(ContentFlag.ALIAS_TABLE)) {
                 data.Write(m_aliasTable, k => data.WriteEncryptedString(k, Encoding.Unicode), v => data.WriteEncryptedString(v, Encoding.Unicode));

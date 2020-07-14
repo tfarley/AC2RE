@@ -9,29 +9,14 @@ namespace AC2E.Interp {
 
         public NativeType nativeType => NativeType.ARHASH;
 
-        public Dictionary<uint, PkgRef<V>> contents;
+        public Dictionary<uint, V> contents;
 
         public ARHashPkg<T> to<T>() where T : class, IPackage {
             ARHashPkg<T> converted = new ARHashPkg<T>();
             if (contents != null) {
-                converted.contents = new Dictionary<uint, PkgRef<T>>(contents.Count);
+                converted.contents = new Dictionary<uint, T>(contents.Count);
                 foreach (var element in contents) {
-                    PkgRef<T> convertedPkgRef = new PkgRef<T>(element.Value.id);
-                    convertedPkgRef.value = element.Value.value as T;
-                    converted.contents[element.Key] = convertedPkgRef;
-                }
-            }
-            return converted;
-        }
-
-        public ARHashPkg<T> to<T>(PackageRegistry registry, Func<V, T> converter) where T : IPackage {
-            ARHashPkg<T> converted = new ARHashPkg<T>();
-            if (contents != null) {
-                converted.contents = new Dictionary<uint, PkgRef<T>>(contents.Count);
-                foreach (var element in contents) {
-                    PkgRef<T> convertedPkgRef = new PkgRef<T>(element.Value.id);
-                    convertedPkgRef.value = registry.convert(convertedPkgRef.id, converter);
-                    converted.contents[element.Key] = convertedPkgRef;
+                    converted.contents[element.Key] = element.Value as T;
                 }
             }
             return converted;
@@ -42,10 +27,13 @@ namespace AC2E.Interp {
         }
 
         public ARHashPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
-            contents = data.ReadDictionary(data.ReadUInt32, () => data.ReadPkgRef<V>(resolvers));
+            contents = new Dictionary<uint, V>();
+            foreach (var element in data.ReadDictionary(data.ReadUInt32, data.ReadPackageId)) {
+                resolvers.Add(registry => contents[element.Key] = registry.get<V>(element.Value));
+            }
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(contents, data.Write, v => data.Write(v, references));
         }
 

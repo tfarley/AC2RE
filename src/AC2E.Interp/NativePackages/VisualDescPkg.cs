@@ -19,7 +19,7 @@ namespace AC2E.Interp {
             contents = new VisualDesc(data);
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             contents.write(data);
         }
 

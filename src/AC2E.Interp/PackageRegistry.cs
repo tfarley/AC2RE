@@ -1,5 +1,4 @@
 ﻿using AC2E.Def;
-using System;
 using System.Collections.Generic;
 
 namespace AC2E.Interp {
@@ -45,23 +44,6 @@ namespace AC2E.Interp {
             registryByPackage[package] = meta;
             registryById[packageId] = meta;
             return meta;
-        }
-
-        public U convert<T, U>(PackageId packageId, Func<T, U> converter) where T : IPackage where U : IPackage {
-            if (packageId.id == PackageId.NULL.id) {
-                return default;
-            }
-
-            PackageMeta newMeta = registryById[packageId];
-            T oldPackage = (T)newMeta.package;
-            U newPackage = converter.Invoke(oldPackage);
-            newMeta.package = newPackage;
-
-            registryById[packageId] = newMeta;
-            registryByPackage.Remove(oldPackage);
-            registryByPackage[newPackage] = newMeta;
-
-            return newPackage;
         }
 
         public PackageId getId(IPackage package) {

@@ -18,7 +18,7 @@ namespace AC2E.Interp {
             contents = data.ReadList(() => new GMQuestInfoPkg(data));
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(contents, v => v.write(data, references));
         }
 

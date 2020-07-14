@@ -18,7 +18,7 @@ namespace AC2E.Interp {
             contents = data.ReadMultiDictionary(data.ReadUInt32, data.ReadUInt32);
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.WriteMulti(contents, data.Write, data.Write);
         }
 

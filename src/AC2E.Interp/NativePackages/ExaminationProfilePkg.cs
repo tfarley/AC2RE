@@ -22,7 +22,7 @@ namespace AC2E.Interp {
             unk1 = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             _request.write(data, references);
             data.Write(_nodeList, v => v.write(data));
             data.Write(unk1);

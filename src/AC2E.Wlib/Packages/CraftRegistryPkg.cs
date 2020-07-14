@@ -9,27 +9,27 @@ namespace AC2E.WLib {
 
         public PackageType packageType => PackageType.CraftRegistry;
 
-        public PkgRef<ARHashPkg<RecipeRecordPkg>> m_recipeRecords;
+        public ARHashPkg<RecipeRecordPkg> m_recipeRecords;
         public float m_CraftSkillScore;
         public uint m_CraftSkillTitle; // TODO: CraftSkillTitleType
         public double m_usageResetTime;
-        public PkgRef<ARHashPkg<CraftSkillRecordPkg>> m_hashCraftSkillRecords;
-        public PkgRef<ARHashPkg<RecipeRecordPkg>> m_hashRecipeRecords;
+        public ARHashPkg<CraftSkillRecordPkg> m_hashCraftSkillRecords;
+        public ARHashPkg<RecipeRecordPkg> m_hashRecipeRecords;
 
         public CraftRegistryPkg() {
 
         }
 
         public CraftRegistryPkg(BinaryReader data, List<Action<PackageRegistry>> resolvers) {
-            m_recipeRecords = data.ReadPkgRef<ARHashPkg<IPackage>, ARHashPkg<RecipeRecordPkg>>(resolvers, v => v.to<RecipeRecordPkg>());
+            data.ReadPkgRef<ARHashPkg<IPackage>>(v => m_recipeRecords = v.to<RecipeRecordPkg>(), resolvers);
             m_CraftSkillScore = data.ReadSingle();
             m_CraftSkillTitle = data.ReadUInt32();
             m_usageResetTime = data.ReadDouble();
-            m_hashCraftSkillRecords = data.ReadPkgRef<ARHashPkg<IPackage>, ARHashPkg<CraftSkillRecordPkg>>(resolvers, v => v.to<CraftSkillRecordPkg>());
-            m_hashRecipeRecords = data.ReadPkgRef<ARHashPkg<IPackage>, ARHashPkg<RecipeRecordPkg>>(resolvers, v => v.to<RecipeRecordPkg>());
+            data.ReadPkgRef<ARHashPkg<IPackage>>(v => m_hashCraftSkillRecords = v.to<CraftSkillRecordPkg>(), resolvers);
+            data.ReadPkgRef<ARHashPkg<IPackage>>(v => m_hashRecipeRecords = v.to<RecipeRecordPkg>(), resolvers);
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(m_recipeRecords, references);
             data.Write(m_CraftSkillScore);
             data.Write(m_CraftSkillTitle);

@@ -25,7 +25,7 @@ namespace AC2E.WLib {
             m_iLevel = data.ReadInt32();
         }
 
-        public void write(BinaryWriter data, List<PkgRef<IPackage>> references) {
+        public void write(BinaryWriter data, List<IPackage> references) {
             data.Write(m_uliXPEarnedToday);
             data.Write(m_didCraftSkill);
             data.Write(m_uliAvailableCraftXP);
