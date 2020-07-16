@@ -32,6 +32,14 @@ namespace AC2E.WLib {
                 case ServerEventFunctionId.Communication__Tell:
                     return new TellSEvt(data);
 
+                case ServerEventFunctionId.Craft__RequestAddIngredient:
+                    return new RequestAddIngredientSEvt(data);
+                case ServerEventFunctionId.Craft__RequestExecuteCraft:
+                    return new RequestExecuteCraftSEvt(data);
+
+                case ServerEventFunctionId.Death__RequestResurrect:
+                    return new EmptySEvt(funcId);
+
                 case ServerEventFunctionId.Examination__QueryExaminationProfile:
                     return new QueryExaminationProfileSEvt(data);
 
@@ -44,13 +52,15 @@ namespace AC2E.WLib {
                     return new CloseContainerSEvt(data);
                 case ServerEventFunctionId.Inventory__DirectiveEquipItem:
                     return new DirectiveEquipItemSEvt(data);
+                case ServerEventFunctionId.Inventory__DirectiveMoveItem:
+                    return new DirectiveMoveItemSEvt(data);
+                case ServerEventFunctionId.Inventory__DirectiveReorganizeContents:
+                    return new DirectiveReorganizeContentsSEvt(data);
                 case ServerEventFunctionId.Inventory__DirectiveTransmuteAllFromContainer:
                     return new DirectiveTransmuteAllFromContainerSEvt(data);
 
                 case ServerEventFunctionId.Money__DragToMoneyBag:
                     return new DragToMoneyBagSEvt(data);
-
-
 
                 case ServerEventFunctionId.Player__Dismount:
                     return new EmptySEvt(funcId);
@@ -70,6 +80,8 @@ namespace AC2E.WLib {
                     return new SetSelectionSEvt(data);
                 case ServerEventFunctionId.Player__SetShortcut:
                     return new SetShortcutSEvt(data);
+                case ServerEventFunctionId.Player__UploadGameOptions:
+                    return new UploadGameOptionsSEvt(data);
                 case ServerEventFunctionId.Player__UploadUISettings:
                     return new UploadUISettingsSEvt(data);
 
@@ -79,6 +91,13 @@ namespace AC2E.WLib {
                     return new RequestTrainSkillSEvt(data);
                 case ServerEventFunctionId.Skill__RequestUntrainSkill:
                     return new RequestUntrainSkillSEvt(data);
+
+                case ServerEventFunctionId.Trade__AcceptTrade:
+                    return new AcceptTradeSEvt(data);
+                case ServerEventFunctionId.Trade__CloseTradeNegotiations:
+                    return new EmptySEvt(funcId);
+                case ServerEventFunctionId.Trade__OpenTradeNegotiations:
+                    return new OpenTradeNegotiationsSEvt(data);
 
                 case ServerEventFunctionId.Usage__Usage_TryToUseItem:
                     return new TryToUseItemSEvt(data);

@@ -1,5 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
+﻿using System.IO;
 
 namespace AC2E.WLib {
 

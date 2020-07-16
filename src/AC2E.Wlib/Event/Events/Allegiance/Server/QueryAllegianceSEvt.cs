@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.WLib {
+﻿namespace AC2E.WLib {
 
     public class QueryAllegianceSEvt : IServerEvent {
 

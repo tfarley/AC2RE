@@ -65,6 +65,14 @@ namespace AC2E {
             return new InstanceId(reader.ReadUInt64());
         }
 
+        public static DataId UnpackDataId(this BinaryReader reader) {
+            if ((PackTag)reader.ReadUInt32() != PackTag.INT) {
+                throw new InvalidDataException();
+            }
+
+            return new DataId(reader.ReadUInt32());
+        }
+
         public static T UnpackPackage<T>(this BinaryReader reader) where T : IPackage {
             if ((PackTag)reader.ReadUInt32() != PackTag.PACKAGE) {
                 throw new InvalidDataException();

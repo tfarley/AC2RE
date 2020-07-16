@@ -29,6 +29,8 @@ namespace AC2E {
                     return new InventProfilePkg(data, registry);
                 case PackageType.InvEquipDesc:
                     return new InvEquipDescPkg(data, registry);
+                case PackageType.InvMoveDesc:
+                    return new InvMoveDescPkg(data, registry);
                 case PackageType.InvTransmuteAllDesc:
                     return new InvTransmuteAllDescPkg(data, registry);
                 case PackageType.RecipeRecord:
@@ -37,6 +39,8 @@ namespace AC2E {
                     return new SkillInfoPkg(data);
                 case PackageType.SkillRepository:
                     return new SkillRepositoryPkg(data, registry);
+                case PackageType.Trade:
+                    return new TradePkg(data, registry);
                 case PackageType.UsageBlob:
                     return new UsageBlobPkg(data, registry);
                 case PackageType.UsageDesc:

@@ -33,6 +33,8 @@ namespace AC2E.Def {
                     return new AAMultiHash(data);
                 case NativeType.AHASHSET:
                     return new AHashSet(data);
+                case NativeType.ALHASH:
+                    return new ALHash(data);
                 case NativeType.ALIST:
                     return new AList(data);
                 case NativeType.APPINFOHASH:
@@ -49,6 +51,8 @@ namespace AC2E.Def {
                     return new GMQuestInfoList(data);
                 case NativeType.GMQUESTINFO:
                     return new GMQuestInfo(data);
+                case NativeType.LAHASH:
+                    return new LAHash(data);
                 case NativeType.LLIST:
                     return new LList(data);
                 case NativeType.LRHASH:
