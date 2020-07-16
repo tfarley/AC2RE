@@ -23,8 +23,14 @@ namespace AC2E {
                     return new EffectRecordPkg(data, registry);
                 case PackageType.EffectRegistry:
                     return new EffectRegistryPkg(data, registry);
+                case PackageType.EquipItemProfile:
+                    return new EquipItemProfilePkg(data, registry);
                 case PackageType.InventProfile:
                     return new InventProfilePkg(data, registry);
+                case PackageType.InvEquipDesc:
+                    return new InvEquipDescPkg(data, registry);
+                case PackageType.InvTransmuteAllDesc:
+                    return new InvTransmuteAllDescPkg(data, registry);
                 case PackageType.RecipeRecord:
                     return new RecipeRecordPkg(data);
                 case PackageType.SkillInfo:
