@@ -46,6 +46,11 @@ namespace AC2E {
             writer.Write(value);
         }
 
+        public static void Pack(this BinaryWriter writer, DataId value) {
+            writer.Write((uint)PackTag.INT);
+            writer.Write(value);
+        }
+
         public static void Pack(this BinaryWriter writer, IPackage value) {
             PackageRegistry tempRegistry = new PackageRegistry();
             tempRegistry.references.Add(value);

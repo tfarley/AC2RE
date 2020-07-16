@@ -53,6 +53,8 @@ namespace AC2E.Def {
                     return new GMQuestInfo(data);
                 case NativeType.LAHASH:
                     return new LAHash(data);
+                case NativeType.LAHASHSET:
+                    return new LAHashSet(data);
                 case NativeType.LLIST:
                     return new LList(data);
                 case NativeType.LRHASH:
@@ -61,6 +63,8 @@ namespace AC2E.Def {
                     return new Position(data);
                 case NativeType.RLIST:
                     return new RList<IPackage>(data, registry);
+                case NativeType.SELECTIONINFO:
+                    return new SelectionInfo(data);
                 case NativeType.SHORTCUTINFO:
                     return new ShortcutInfo(data);
                 case NativeType.STRINGINFO:

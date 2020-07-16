@@ -73,14 +73,14 @@ namespace AC2E.Utils {
                 return;
             }
 
-            IEnumerable<object> enumerableValue = target as IEnumerable<object>;
+            IEnumerable enumerableValue = target as IEnumerable;
             if (enumerableValue != null && !(target is string)) {
                 if (!visited.Add(target)) {
                     stringBuilder.Append($"Circular ref: {target}");
                     return;
                 }
 
-                if (enumerableValue.Count() > 0) {
+                if (((IEnumerable)target).GetEnumerator().MoveNext()) {
                     stringBuilder.AppendLine("[");
                     bool first = true;
                     foreach (object val in enumerableValue) {

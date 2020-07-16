@@ -9,6 +9,10 @@ namespace AC2E {
 
         public static IPackage read(BinaryReader data, PackageType packageType, PackageRegistry registry) {
             switch (packageType) {
+                case PackageType.AllegianceData:
+                    return new AllegianceDataPkg(data, registry);
+                case PackageType.AllegianceProfile:
+                    return new AllegianceProfilePkg(data, registry);
                 case PackageType.ActRegistry:
                     return new ActRegistryPkg(data, registry);
                 case PackageType.ChannelData:

@@ -10,10 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Event\Events\Allegiance\Client\" />
-    <Folder Include="Event\Events\Combat\Client\" />
     <Folder Include="Event\Events\Effect\Server\" />
-    <Folder Include="Event\Events\Inventory\Client\" />
     <Folder Include="Event\Events\Money\Client\" />
     <Folder Include="Event\Events\Skill\Client\" />
     <Folder Include="Event\Events\Trade\Client\" />

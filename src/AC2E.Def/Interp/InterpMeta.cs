@@ -19,12 +19,11 @@ namespace AC2E.Def {
             { typeof(float), 1 },
             { typeof(IPackage), 1 },
             { typeof(DataId), 1 },
+
             { typeof(long), 2 },
             { typeof(ulong), 2 },
             { typeof(double), 2 },
             { typeof(InstanceId), 2 },
-
-            { typeof(TextType), 1 },
         };
 
         public static FieldDesc[] getFieldDescs(Type type) {
@@ -39,6 +38,9 @@ namespace AC2E.Def {
                         fieldType = typeof(IPackage);
                         stackType = StackType.REFERENCE;
                     } else {
+                        if (typeof(Enum).IsAssignableFrom(fieldType)) {
+                            fieldType = Enum.GetUnderlyingType(fieldType);
+                        }
                         stackType = StackType.UNDEF;
                     }
                     fieldDescs[i] = new FieldDesc(stackType, TYPE_TO_NUM_WORDS[fieldType]);

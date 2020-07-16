@@ -7,26 +7,26 @@ namespace AC2E.WLib {
 
         public PackageType packageType => PackageType.Trade;
 
-        public LAHash m_slave_table;
+        public InstanceIdAHash m_slave_table;
         public InstanceId m_master;
         public InstanceId m_slave;
         public bool m_master_accepted;
         public bool m_slave_accepted;
         public uint m_status;
-        public LAHash m_master_table;
+        public InstanceIdAHash m_master_table;
 
         public TradePkg() {
 
         }
 
         public TradePkg(BinaryReader data, PackageRegistry registry) {
-            data.ReadPkgRef<LAHash>(v => m_slave_table = v, registry);
+            data.ReadPkgRef<LAHash>(v => m_slave_table = new InstanceIdAHash(v), registry);
             m_master = data.ReadInstanceId();
             m_slave = data.ReadInstanceId();
             m_master_accepted = data.ReadUInt32() != 0;
             m_slave_accepted = data.ReadUInt32() != 0;
             m_status = data.ReadUInt32();
-            data.ReadPkgRef<LAHash>(v => m_master_table = v, registry);
+            data.ReadPkgRef<LAHash>(v => m_master_table = new InstanceIdAHash(v), registry);
         }
 
         public void write(BinaryWriter data, PackageRegistry registry) {

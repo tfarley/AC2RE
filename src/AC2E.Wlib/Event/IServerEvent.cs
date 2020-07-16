@@ -9,6 +9,8 @@ namespace AC2E.WLib {
 
         public static IServerEvent read(ServerEventFunctionId funcId, BinaryReader data) {
             switch (funcId) {
+                case ServerEventFunctionId.Allegiance__AcceptVassal:
+                    return new AcceptVassalSEvt(data);
                 case ServerEventFunctionId.Allegiance__QueryAllegianceProfile:
                     return new QueryAllegianceProfileSEvt(data);
                 case ServerEventFunctionId.Allegiance__QueryAllegiance:
@@ -91,6 +93,13 @@ namespace AC2E.WLib {
                     return new RequestTrainSkillSEvt(data);
                 case ServerEventFunctionId.Skill__RequestUntrainSkill:
                     return new RequestUntrainSkillSEvt(data);
+
+                case ServerEventFunctionId.Store__RequestLeaveStore:
+                    return new RequestLeaveStoreSEvt(data);
+                case ServerEventFunctionId.Store__RequestNextSales:
+                    return new RequestNextSalesSEvt(data);
+                case ServerEventFunctionId.Store__RequestPrevSales:
+                    return new RequestPrevSalesSEvt(data);
 
                 case ServerEventFunctionId.Trade__AcceptTrade:
                     return new AcceptTradeSEvt(data);

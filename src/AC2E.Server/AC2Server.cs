@@ -568,10 +568,10 @@ namespace AC2E.Server {
                                     _ContainerSegments = new RList<ContainerSegmentDescriptorPkg> {
 
                                     },
-                                    _Containers = new LList {
+                                    _Containers = new InstanceIdList {
 
                                     },
-                                    _Contents = new LList {
+                                    _Contents = new InstanceIdList {
 
                                     },
                                     _locFactionStatus = 1,

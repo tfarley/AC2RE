@@ -18,8 +18,8 @@ namespace AC2E.WLib {
         public ARHash<InventProfilePkg> _invByLocTable;
         public LRHash<InventProfilePkg> _invByIIDTable;
         public RList<ContainerSegmentDescriptorPkg> _ContainerSegments;
-        public LList _Containers;
-        public LList _Contents;
+        public InstanceIdList _Containers;
+        public InstanceIdList _Contents;
         public uint _locFactionStatus;
         public uint _srvFactionStatus;
 
@@ -38,8 +38,8 @@ namespace AC2E.WLib {
             _invByLocTable = data.UnpackPackage<ARHash<IPackage>>().to<InventProfilePkg>();
             _invByIIDTable = data.UnpackPackage<LRHash<IPackage>>().to<InventProfilePkg>();
             _ContainerSegments = data.UnpackPackage<RList<IPackage>>().to<ContainerSegmentDescriptorPkg>();
-            _Containers = data.UnpackPackage<LList>();
-            _Contents = data.UnpackPackage<LList>();
+            _Containers = new InstanceIdList(data.UnpackPackage<LList>());
+            _Contents = new InstanceIdList(data.UnpackPackage<LList>());
             _locFactionStatus = data.UnpackUInt32();
             _srvFactionStatus = data.UnpackUInt32();
         }

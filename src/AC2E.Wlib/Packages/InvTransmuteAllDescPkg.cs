@@ -9,14 +9,14 @@ namespace AC2E.WLib {
 
         public uint m_lastError;
         public bool bIgnoreAttunement;
-        public LList m_itemsTransmuted;
+        public InstanceIdList m_itemsTransmuted;
         public bool checkTakePermFlag;
         public uint m_moneyEarned;
         public bool m_bQuiet;
         public bool noAnimFlag;
         public uint m_status;
         public InstanceId m_fromContainerID;
-        public LList m_itemsNotTransmuted;
+        public InstanceIdList m_itemsNotTransmuted;
         public bool playedAnim;
         public bool noMoveFlag;
         public InstanceId m_targetPlayerID;
@@ -28,14 +28,14 @@ namespace AC2E.WLib {
         public InvTransmuteAllDescPkg(BinaryReader data, PackageRegistry registry) {
             m_lastError = data.ReadUInt32();
             bIgnoreAttunement = data.ReadUInt32() != 0;
-            data.ReadPkgRef<LList>(v => m_itemsTransmuted = v, registry);
+            data.ReadPkgRef<LList>(v => m_itemsTransmuted = new InstanceIdList(v), registry);
             checkTakePermFlag = data.ReadUInt32() != 0;
             m_moneyEarned = data.ReadUInt32();
             m_bQuiet = data.ReadUInt32() != 0;
             noAnimFlag = data.ReadUInt32() != 0;
             m_status = data.ReadUInt32();
             m_fromContainerID = data.ReadInstanceId();
-            data.ReadPkgRef<LList>(v => m_itemsNotTransmuted = v, registry);
+            data.ReadPkgRef<LList>(v => m_itemsNotTransmuted = new InstanceIdList(v), registry);
             playedAnim = data.ReadUInt32() != 0;
             noMoveFlag = data.ReadUInt32() != 0;
             m_targetPlayerID = data.ReadInstanceId();
