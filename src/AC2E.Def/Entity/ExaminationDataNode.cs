@@ -64,7 +64,7 @@ namespace AC2E.Def {
                     valLongInt = data.ReadInt64();
                     break;
                 default:
-                    throw new InvalidDataException();
+                    throw new InvalidDataException(_type.ToString());
             }
         }
 
@@ -112,7 +112,7 @@ namespace AC2E.Def {
                     data.Write(valLongInt);
                     break;
                 default:
-                    throw new InvalidDataException();
+                    throw new InvalidDataException(_type.ToString());
             }
         }
     }

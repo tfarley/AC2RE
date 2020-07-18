@@ -3,7 +3,9 @@ using System.IO;
 
 namespace AC2E.Def {
 
-    public class IconDesc {
+    public class IconDesc : IPackage {
+
+        public NativeType nativeType => NativeType.ICONDESC;
 
         public class IconLayerDesc {
 
@@ -32,6 +34,10 @@ namespace AC2E.Def {
 
         public void write(BinaryWriter data) {
             data.Write(layers, v => v.write(data));
+        }
+
+        public void write(BinaryWriter data, PackageRegistry registry) {
+            write(data);
         }
     }
 }

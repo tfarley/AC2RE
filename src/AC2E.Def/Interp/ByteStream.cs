@@ -316,7 +316,7 @@ namespace AC2E.Def {
                         frames = data.ReadList(() => new FrameDebugInfo(data));
                         break;
                     default:
-                        throw new InvalidDataException();
+                        throw new InvalidDataException(sectionType.ToString());
                 }
             }
         }

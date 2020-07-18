@@ -10,72 +10,81 @@ namespace AC2E {
     public static class BinaryReaderExtensions {
 
         public static int UnpackInt32(this BinaryReader reader) {
-            if ((PackTag)reader.ReadUInt32() != PackTag.INT) {
-                throw new InvalidDataException();
+            PackTag packTag = (PackTag)reader.ReadUInt32();
+            if (packTag != PackTag.INT) {
+                throw new InvalidDataException(packTag.ToString());
             }
 
             return reader.ReadInt32();
         }
 
         public static uint UnpackUInt32(this BinaryReader reader) {
-            if ((PackTag)reader.ReadUInt32() != PackTag.INT) {
-                throw new InvalidDataException();
+            PackTag packTag = (PackTag)reader.ReadUInt32();
+            if (packTag != PackTag.INT) {
+                throw new InvalidDataException(packTag.ToString());
             }
 
             return reader.ReadUInt32();
         }
 
         public static long UnpackInt64(this BinaryReader reader) {
-            if ((PackTag)reader.ReadUInt32() != PackTag.LONGINT) {
-                throw new InvalidDataException();
+            PackTag packTag = (PackTag)reader.ReadUInt32();
+            if (packTag != PackTag.LONGINT) {
+                throw new InvalidDataException(packTag.ToString());
             }
 
             return reader.ReadInt64();
         }
 
         public static ulong UnpackUInt64(this BinaryReader reader) {
-            if ((PackTag)reader.ReadUInt32() != PackTag.LONGINT) {
-                throw new InvalidDataException();
+            PackTag packTag = (PackTag)reader.ReadUInt32();
+            if (packTag != PackTag.LONGINT) {
+                throw new InvalidDataException(packTag.ToString());
             }
 
             return reader.ReadUInt64();
         }
 
         public static float UnpackSingle(this BinaryReader reader) {
-            if ((PackTag)reader.ReadUInt32() != PackTag.FLOAT) {
-                throw new InvalidDataException();
+            PackTag packTag = (PackTag)reader.ReadUInt32();
+            if (packTag != PackTag.FLOAT) {
+                throw new InvalidDataException(packTag.ToString());
             }
 
             return reader.ReadSingle();
         }
 
         public static double UnpackDouble(this BinaryReader reader) {
-            if ((PackTag)reader.ReadUInt32() != PackTag.LONGFLOAT) {
-                throw new InvalidDataException();
+            PackTag packTag = (PackTag)reader.ReadUInt32();
+            if (packTag != PackTag.LONGFLOAT) {
+                throw new InvalidDataException(packTag.ToString());
             }
 
             return reader.ReadDouble();
         }
 
         public static InstanceId UnpackInstanceId(this BinaryReader reader) {
-            if ((PackTag)reader.ReadUInt32() != PackTag.LONGINT) {
-                throw new InvalidDataException();
+            PackTag packTag = (PackTag)reader.ReadUInt32();
+            if (packTag != PackTag.LONGINT) {
+                throw new InvalidDataException(packTag.ToString());
             }
 
             return new InstanceId(reader.ReadUInt64());
         }
 
         public static DataId UnpackDataId(this BinaryReader reader) {
-            if ((PackTag)reader.ReadUInt32() != PackTag.INT) {
-                throw new InvalidDataException();
+            PackTag packTag = (PackTag)reader.ReadUInt32();
+            if (packTag != PackTag.INT) {
+                throw new InvalidDataException(packTag.ToString());
             }
 
             return new DataId(reader.ReadUInt32());
         }
 
         public static T UnpackPackage<T>(this BinaryReader reader) where T : IPackage {
-            if ((PackTag)reader.ReadUInt32() != PackTag.PACKAGE) {
-                throw new InvalidDataException();
+            PackTag packTag = (PackTag)reader.ReadUInt32();
+            if (packTag != PackTag.PACKAGE) {
+                throw new InvalidDataException(packTag.ToString());
             }
 
             PackageRegistry tempRegistry = new PackageRegistry();

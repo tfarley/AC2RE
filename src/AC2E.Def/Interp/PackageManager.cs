@@ -51,6 +51,8 @@ namespace AC2E.Def {
                     return new GMQuestInfoList(data);
                 case NativeType.GMQUESTINFO:
                     return new GMQuestInfo(data);
+                case NativeType.ICONDESC:
+                    return new IconDesc(data);
                 case NativeType.LAHASH:
                     return new LAHash(data);
                 case NativeType.LAHASHSET:

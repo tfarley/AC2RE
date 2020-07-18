@@ -47,7 +47,7 @@ namespace AC2E.Def {
                     unk3 = data.ReadUInt32();
                     break;
                 default:
-                    throw new InvalidDataException();
+                    throw new InvalidDataException(_type.ToString());
             }
         }
 
@@ -79,7 +79,7 @@ namespace AC2E.Def {
                     data.Write(unk3);
                     break;
                 default:
-                    throw new InvalidDataException();
+                    throw new InvalidDataException(_type.ToString());
             }
         }
     }

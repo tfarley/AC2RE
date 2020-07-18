@@ -36,10 +36,14 @@ namespace AC2E.PacketTool {
 
                 case MessageOpcode.CHARACTER_CREATE_EVENT:
                     return new CharacterCreateMsg(data);
+                case MessageOpcode.Evt_Login__CharacterDeletion_ID:
+                    return isClientToServer ? (INetMessage)new CharacterDeletionSMsg(data) : new CharacterDeletionCMsg(data);
                 case MessageOpcode.CHARACTER_ENTER_GAME_EVENT:
                     return new CharacterEnterGameMsg(data);
+                case MessageOpcode.Evt_Login__CharacterError_ID:
+                    return new CharacterErrorMsg(data);
                 case MessageOpcode.Evt_Login__CharExitGame_ID:
-                    return isClientToServer ? (INetMessage)new CharacterExitGameCMsg(data) : new CharacterExitGameSMsg(data);
+                    return isClientToServer ? (INetMessage)new CharacterExitGameSMsg(data) : new CharacterExitGameCMsg(data);
                 case MessageOpcode.Evt_Login__CharacterSet_ID:
                     return new CharacterSetMsg(data);
                 case MessageOpcode.Evt_Login__ClientSceneRenderingComplete_ID:
@@ -85,6 +89,8 @@ namespace AC2E.PacketTool {
                     return new LookAtDirMsg(data);
                 case MessageOpcode.Evt_Physics__LookAt_ID:
                     return new LookAtMsg(data);
+                case MessageOpcode.Evt_Physics__MoveTo_ID:
+                    return new MoveToMsg(data);
                 case MessageOpcode.Evt_Physics__Parent_ID:
                     return new ParentMsg(data);
                 case MessageOpcode.Evt_Physics__PositionCell_ID:

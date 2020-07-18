@@ -19,6 +19,7 @@ namespace AC2E.Def {
             { typeof(float), 1 },
             { typeof(IPackage), 1 },
             { typeof(DataId), 1 },
+            { typeof(CellId), 1 },
 
             { typeof(long), 2 },
             { typeof(ulong), 2 },

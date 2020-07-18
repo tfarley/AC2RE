@@ -38,15 +38,15 @@ namespace AC2E.Def {
             [Flags]
             public enum PackFlag : uint {
                 NONE = 0,
-                KEY = 1 << 0,
-                PARENTKEY = 1 << 1,
-                CONNECTIONPOINT = 1 << 2,
-                SETUP = 1 << 3,
-                ANIMMAP = 1 << 4,
-                APPHASH = 1 << 5,
-                FXTABLE = 1 << 6,
-                STARTUPFX = 1 << 7,
-                FXOVERRIDES = 1 << 8,
+                KEY = 1 << 0, // 0x00000001
+                PARENTKEY = 1 << 1, // 0x00000002
+                CONNECTIONPOINT = 1 << 2, // 0x00000004
+                SETUP = 1 << 3, // 0x00000008
+                ANIMMAP = 1 << 4, // 0x00000010
+                APPHASH = 1 << 5, // 0x00000020
+                FXTABLE = 1 << 6, // 0x00000040
+                STARTUPFX = 1 << 7, // 0x00000080
+                FXOVERRIDES = 1 << 8, // 0x00000100
             }
 
             public PackFlag packFlags;

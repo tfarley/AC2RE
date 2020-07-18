@@ -10,9 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Event\Events\AI\Server\" />
     <Folder Include="Event\Events\Death\Server\" />
     <Folder Include="Event\Events\Effect\Server\" />
-    <Folder Include="Event\Events\Quest\Server\" />
+    <Folder Include="Event\Events\PK\Server\" />
   </ItemGroup>
 
 </Project>

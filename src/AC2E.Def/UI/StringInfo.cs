@@ -26,7 +26,8 @@ namespace AC2E.Def {
         public StringInfoDataType type; // type
 
         public int dataInt;
-        public float dataFloat;
+        public double dataDouble;
+        public ushort dataDoublePrecision;
         public uint dataUInt;
         public long dataLong;
         public ulong dataULong;
@@ -41,7 +42,9 @@ namespace AC2E.Def {
                     dataInt = data.ReadInt32();
                     break;
                 case StringInfoDataType.FLOAT:
-                    dataFloat = data.ReadSingle();
+                    dataDouble = data.ReadDouble();
+                    dataDoublePrecision = data.ReadUInt16();
+                    data.Align(4);
                     break;
                 case StringInfoDataType.UINT:
                     dataUInt = data.ReadUInt32();
@@ -69,7 +72,9 @@ namespace AC2E.Def {
                     data.Write(dataInt);
                     break;
                 case StringInfoDataType.FLOAT:
-                    data.Write(dataFloat);
+                    data.Write(dataDouble);
+                    data.Write(dataDoublePrecision);
+                    data.Align(4);
                     break;
                 case StringInfoDataType.UINT:
                     data.Write(dataUInt);

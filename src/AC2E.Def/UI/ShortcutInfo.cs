@@ -35,7 +35,7 @@ namespace AC2E.Def {
                     _data_str = data.ReadEncryptedString(Encoding.Unicode);
                     break;
                 default:
-                    throw new InvalidDataException();
+                    throw new InvalidDataException(_type.ToString());
             }
         }
 
@@ -57,7 +57,7 @@ namespace AC2E.Def {
                     data.WriteEncryptedString(_data_str, Encoding.Unicode);
                     break;
                 default:
-                    throw new InvalidDataException();
+                    throw new InvalidDataException(_type.ToString());
             }
         }
     }
