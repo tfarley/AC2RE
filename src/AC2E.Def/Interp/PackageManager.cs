@@ -10,12 +10,6 @@ namespace AC2E.Def {
             typeof(SingletonPkg) // TODO: EffectPkg etc. instead of shared class?
         };
 
-        private static Func<BinaryReader, PackageType, PackageRegistry, IPackage> packageFactory;
-
-        public static void init(Func<BinaryReader, PackageType, PackageRegistry, IPackage> packageFactory) {
-            PackageManager.packageFactory = packageFactory;
-        }
-
         public static InterpReferenceMeta getReferenceMeta(Type type) {
             InterpReferenceMeta.Flag flags = InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE;
             if (SINGLETON_PACKAGE_TYPES.Contains(type)) {
@@ -93,11 +87,82 @@ namespace AC2E.Def {
         }
 
         public static IPackage read(BinaryReader data, PackageType packageType, PackageRegistry registry) {
-            if (packageFactory == null) {
-                throw new InvalidOperationException("Attempted to read a package when the package manager has not been initialized with a factory");
+            switch (packageType) {
+                case PackageType.AllegianceData:
+                    return new AllegianceData(data, registry);
+                case PackageType.AllegianceHierarchy:
+                    return new AllegianceHierarchy(data, registry);
+                case PackageType.AllegianceNode:
+                    return new AllegianceNode(data, registry);
+                case PackageType.AllegianceProfile:
+                    return new AllegianceProfile(data, registry);
+                case PackageType.ActRegistry:
+                    return new ActRegistry(data, registry);
+                case PackageType.ChannelData:
+                    return new ChannelData(data, registry);
+                case PackageType.ConsignerDesc:
+                    return new ConsignerDesc(data, registry);
+                case PackageType.Consignment:
+                    return new Consignment(data, registry);
+                case PackageType.ContainerSegmentDescriptor:
+                    return new ContainerSegmentDescriptor(data);
+                case PackageType.CraftRegistry:
+                    return new CraftRegistry(data, registry);
+                case PackageType.CraftSkillRecord:
+                    return new CraftSkillRecord(data);
+                case PackageType.EffectRecord:
+                    return new EffectRecord(data, registry);
+                case PackageType.EffectRegistry:
+                    return new EffectRegistry(data, registry);
+                case PackageType.EquipItemProfile:
+                    return new EquipItemProfile(data, registry);
+                case PackageType.Fellow:
+                    return new Fellow(data, registry);
+                case PackageType.Fellowship:
+                    return new Fellowship(data, registry);
+                case PackageType.FellowVitals:
+                    return new FellowVitals(data, registry);
+                case PackageType.GameSaleProfile:
+                    return new GameSaleProfile(data, registry);
+                case PackageType.InventProfile:
+                    return new InventProfile(data, registry);
+                case PackageType.InvEquipDesc:
+                    return new InvEquipDesc(data, registry);
+                case PackageType.InvMoveDesc:
+                    return new InvMoveDesc(data, registry);
+                case PackageType.InvTakeAllDesc:
+                    return new InvTakeAllDesc(data, registry);
+                case PackageType.InvTransmuteAllDesc:
+                    return new InvTransmuteAllDesc(data, registry);
+                case PackageType.PetData:
+                    return new PetData(data);
+                case PackageType.PlayerSaleProfile:
+                    return new PlayerSaleProfile(data, registry);
+                case PackageType.RecipeRecord:
+                    return new RecipeRecord(data);
+                case PackageType.ResurrectionRequest:
+                    return new ResurrectionRequest(data, registry);
+                case PackageType.SaleProfile:
+                    return new SaleProfile(data, registry);
+                case PackageType.SkillInfo:
+                    return new SkillInfo(data);
+                case PackageType.SkillRepository:
+                    return new SkillRepository(data, registry);
+                case PackageType.StoreView:
+                    return new StoreView(data, registry);
+                case PackageType.Trade:
+                    return new Trade(data, registry);
+                case PackageType.TransactionBlob:
+                    return new TransactionBlob(data, registry);
+                case PackageType.UsageBlob:
+                    return new UsageBlob(data, registry);
+                case PackageType.UsageDesc:
+                    return new UsageDesc(data, registry);
+                case PackageType.VisualDescInfo:
+                    return new VisualDescInfo(data, registry);
+                default:
+                    throw new NotImplementedException($"Unhandled read for package type {packageType}");
             }
-
-            return packageFactory.Invoke(data, packageType, registry);
         }
     }
 }

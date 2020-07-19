@@ -1,6 +1,4 @@
 ﻿using AC2E.Def;
-using AC2E.Protocol;
-using AC2E.WLib;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -403,7 +401,7 @@ namespace AC2E.Server {
                             client.enqueueMessage(new InterpCEventPrivateMsg {
                                 netEvent = new HandleCharacterSessionStartCEvt {
                                     money = 12345,
-                                    _aReg = new ActRegistryPkg {
+                                    _aReg = new ActRegistry {
                                         m_viewingProtectionEID = 0,
                                         m_actSceneTable = new ARHash<AList> {
                                             contents = new Dictionary<uint, AList> {
@@ -515,7 +513,7 @@ namespace AC2E.Server {
                                             { 0xA0746B95, 0.65f },
                                         },
                                     },
-                                    _skills = new SkillRepositoryPkg {
+                                    _skills = new SkillRepository {
                                         m_nSkillCredits = 0,
                                         m_nUntrainXP = 0,
                                         m_hashPerkTypes = new AAHash {
@@ -529,13 +527,13 @@ namespace AC2E.Server {
 
                                             }
                                         },
-                                        m_hashSkills = new ARHash<SkillInfoPkg> {
-                                            contents = new Dictionary<uint, SkillInfoPkg> {
+                                        m_hashSkills = new ARHash<SkillInfo> {
+                                            contents = new Dictionary<uint, SkillInfo> {
 
                                             }
                                         },
                                     },
-                                    _regEffect = new EffectRegistryPkg {
+                                    _regEffect = new EffectRegistry {
                                         m_qualitiesModifiedCount = null,
                                         m_appliedFX = new AAHash {
                                             contents = new Dictionary<uint, uint> {
@@ -559,13 +557,13 @@ namespace AC2E.Server {
                                         },
                                     },
                                     _filledInvLocs = 0,
-                                    _invByLocTable = new ARHash<InventProfilePkg> {
+                                    _invByLocTable = new ARHash<InventProfile> {
 
                                     },
-                                    _invByIIDTable = new LRHash<InventProfilePkg> {
+                                    _invByIIDTable = new LRHash<InventProfile> {
 
                                     },
-                                    _ContainerSegments = new RList<ContainerSegmentDescriptorPkg> {
+                                    _ContainerSegments = new RList<ContainerSegmentDescriptor> {
 
                                     },
                                     _Containers = new InstanceIdList {
@@ -600,7 +598,7 @@ namespace AC2E.Server {
                                     };
                                     client.enqueueMessage(new InterpCEventPrivateMsg {
                                         netEvent = new ClientAddEffectCEvt {
-                                            _record = new EffectRecordPkg {
+                                            _record = new EffectRecord {
                                                 m_timeDemotedFromTopLevel = -1.0,
                                                 m_timeCast = 129996502.8136027,
                                                 m_iidCaster = new InstanceId(0x213000000000dd9d),

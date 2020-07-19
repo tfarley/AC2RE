@@ -1,5 +1,4 @@
-﻿using AC2E.Protocol;
-using AC2E.WLib;
+﻿using AC2E.Def;
 using System;
 
 namespace AC2E.PacketTool {

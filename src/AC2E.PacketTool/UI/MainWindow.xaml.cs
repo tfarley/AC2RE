@@ -21,8 +21,6 @@ namespace AC2E.PacketTool.UI {
         private ListSortDirection lastRecordsListBoxColumnHeaderSortDirection = ListSortDirection.Ascending;
 
         public MainWindow() {
-            PackageManager.init(PackageFactory.read);
-
             InitializeComponent();
 
             originalTitle = Title;
