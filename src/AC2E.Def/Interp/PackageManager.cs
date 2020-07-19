@@ -47,10 +47,16 @@ namespace AC2E.Def {
                     return new ExaminationRequest(data);
                 case NativeType.GAMEPLAYOPTIONSPROFILE:
                     return new GameplayOptionsProfile(data);
+                case NativeType.GMKEYFRAME:
+                    return new GMKeyframe(data);
                 case NativeType.GMQUESTINFOLIST:
                     return new GMQuestInfoList(data);
                 case NativeType.GMQUESTINFO:
                     return new GMQuestInfo(data);
+                case NativeType.GMSCENEINFO:
+                    return new GMSceneInfo(data);
+                case NativeType.GMSCENEINFOLIST:
+                    return new GMSceneInfoList(data);
                 case NativeType.ICONDESC:
                     return new IconDesc(data);
                 case NativeType.LAHASH:

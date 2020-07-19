@@ -129,6 +129,8 @@ namespace AC2E.WLib {
                 case ServerEventFunctionId.Player__UploadUISettings:
                     return new UploadUISettingsSEvt(data);
 
+                case ServerEventFunctionId.Quest__HandlePlayScenesDone:
+                    return new HandlePlayScenesDoneSEvt(data);
                 case ServerEventFunctionId.Quest__RequestCancelQuest:
                     return new RequestCancelQuestSEvt(data);
 

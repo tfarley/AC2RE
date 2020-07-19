@@ -159,8 +159,12 @@ namespace AC2E.WLib {
                     return new DisplayMarkerCEvt(data);
                 case ClientEventFunctionId.Player__DisplayMessage:
                     return new DisplayMessageCEvt(data);
+                case ClientEventFunctionId.Player__EnterPortalScene:
+                    return new EnterPortalSceneCEvt(data);
                 case ClientEventFunctionId.Player__EnterPortalSpace:
                     return new EnterPortalSpaceCEvt(data);
+                case ClientEventFunctionId.Player__ExitPortalScene:
+                    return new ExitPortalSceneCEvt(data);
                 case ClientEventFunctionId.Player__ExitPortalSpace:
                     return new ExitPortalSpaceCEvt(data);
                 case ClientEventFunctionId.Player__ForceExamineItem:
@@ -178,6 +182,8 @@ namespace AC2E.WLib {
                 case ClientEventFunctionId.Player__UpdateSelectionInfo:
                     return new UpdateSelectionInfoCEvt(data);
 
+                case ClientEventFunctionId.Quest__PlayScenes:
+                    return new PlayScenesCEvt(data);
                 case ClientEventFunctionId.Quest__UpdateQuest_Done:
                     return new UpdateQuestCEvt(data);
                 case ClientEventFunctionId.Quest__UpdateStoryQuest_Done:
