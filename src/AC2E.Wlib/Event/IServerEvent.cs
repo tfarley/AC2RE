@@ -11,6 +11,16 @@ namespace AC2E.WLib {
             switch (funcId) {
                 case ServerEventFunctionId.Allegiance__AcceptVassal:
                     return new AcceptVassalSEvt(data);
+                case ServerEventFunctionId.Allegiance__AllegianceTreeExport:
+                    return new AllegianceTreeExportSEvt(data);
+                case ServerEventFunctionId.Allegiance__AllegianceMemberSearch:
+                    return new AllegianceMemberSearchSEvt(data);
+                case ServerEventFunctionId.Allegiance__AllegianceRename:
+                    return new AllegianceRenameSEvt(data);
+                case ServerEventFunctionId.Allegiance__AllegianceSetKingdomRestrictions:
+                    return new AllegianceSetKingdomRestrictionsSEvt(data);
+                case ServerEventFunctionId.Allegiance__BreakAllegiance:
+                    return new BreakAllegianceSEvt(data);
                 case ServerEventFunctionId.Allegiance__QueryAllegianceProfile:
                     return new QueryAllegianceProfileSEvt(data);
                 case ServerEventFunctionId.Allegiance__QueryAllegiance:
@@ -29,6 +39,8 @@ namespace AC2E.WLib {
                 case ServerEventFunctionId.Combat__StopAttack:
                     return new EmptySEvt(funcId);
 
+                case ServerEventFunctionId.Communication__CustomEmote:
+                    return new CustomEmoteSEvt(data);
                 case ServerEventFunctionId.Communication__PrefabEmote:
                     return new PrefabEmoteSEvt(data);
                 case ServerEventFunctionId.Communication__Say:
@@ -80,6 +92,8 @@ namespace AC2E.WLib {
                 case ServerEventFunctionId.Money__DragToMoneyBag:
                     return new DragToMoneyBagSEvt(data);
 
+                case ServerEventFunctionId.Player__CharacterRename:
+                    return new CharacterRenameSEvt(data);
                 case ServerEventFunctionId.Player__Dismount:
                     return new EmptySEvt(funcId);
                 case ServerEventFunctionId.Player__Follow:
@@ -129,17 +143,31 @@ namespace AC2E.WLib {
 
                 case ServerEventFunctionId.Store__PurchaseItemFromStore:
                     return new PurchaseItemFromStoreSEvt(data);
+                case ServerEventFunctionId.Store__RequestCollect:
+                    return new RequestCollectSEvt(data);
+                case ServerEventFunctionId.Store__RequestEnterConsignment:
+                    return new RequestEnterConsignmentSEvt(data);
                 case ServerEventFunctionId.Store__RequestEnterStore:
                     return new RequestEnterStoreSEvt(data);
+                case ServerEventFunctionId.Store__RequestLeaveCatalog:
+                    return new RequestLeaveCatalogSEvt(data);
+                case ServerEventFunctionId.Store__RequestLeaveConsignment:
+                    return new RequestLeaveConsignmentSEvt(data);
                 case ServerEventFunctionId.Store__RequestLeaveStore:
                     return new RequestLeaveStoreSEvt(data);
                 case ServerEventFunctionId.Store__RequestNextSales:
                     return new RequestNextSalesSEvt(data);
                 case ServerEventFunctionId.Store__RequestPrevSales:
                     return new RequestPrevSalesSEvt(data);
+                case ServerEventFunctionId.Store__RequestSales:
+                    return new RequestSalesSEvt(data);
+                case ServerEventFunctionId.Store__RequestSell:
+                    return new RequestSellSEvt(data);
 
                 case ServerEventFunctionId.Trade__AcceptTrade:
                     return new AcceptTradeSEvt(data);
+                case ServerEventFunctionId.Trade__DeclineTrade:
+                    return new EmptySEvt(funcId);
                 case ServerEventFunctionId.Trade__OfferTradeItem:
                     return new OfferTradeItemSEvt(data);
                 case ServerEventFunctionId.Trade__CloseTradeNegotiations:

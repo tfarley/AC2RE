@@ -4,9 +4,10 @@ using System.IO;
 
 namespace AC2E.Def {
 
-    public class BoolList : IPackage {
+    public class BoolList : IPackage, IDelegateToString {
 
         public NativeType nativeType => NativeType.ALIST;
+        public object delegatedToStringObject => contents;
 
         public List<bool> contents;
 
@@ -27,10 +28,6 @@ namespace AC2E.Def {
 
         public void write(BinaryWriter data, PackageRegistry registry) {
             data.Write(contents, v => data.Write(v ? (uint)1 : (uint)0));
-        }
-
-        public override string ToString() {
-            return Util.objectToString(contents);
         }
     }
 }

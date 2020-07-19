@@ -11,6 +11,10 @@ namespace AC2E {
             switch (packageType) {
                 case PackageType.AllegianceData:
                     return new AllegianceDataPkg(data, registry);
+                case PackageType.AllegianceHierarchy:
+                    return new AllegianceHierarchyPkg(data, registry);
+                case PackageType.AllegianceNode:
+                    return new AllegianceNodePkg(data, registry);
                 case PackageType.AllegianceProfile:
                     return new AllegianceProfilePkg(data, registry);
                 case PackageType.ActRegistry:
@@ -57,6 +61,8 @@ namespace AC2E {
                     return new PlayerSaleProfilePkg(data, registry);
                 case PackageType.RecipeRecord:
                     return new RecipeRecordPkg(data);
+                case PackageType.ResurrectionRequest:
+                    return new ResurrectionRequestPkg(data, registry);
                 case PackageType.SaleProfile:
                     return new SaleProfilePkg(data, registry);
                 case PackageType.SkillInfo:

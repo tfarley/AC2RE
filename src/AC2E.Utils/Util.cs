@@ -37,6 +37,8 @@ namespace AC2E.Utils {
         }
 
         private static void objectToString(StringBuilder stringBuilder, HashSet<object> visited, int indentLevel, object target) {
+            HashSet<object> levelVisited = new HashSet<object>(visited);
+
             if (target == null) {
                 stringBuilder.Append("null");
                 return;
@@ -44,25 +46,31 @@ namespace AC2E.Utils {
 
             Type targetType = target.GetType();
 
+            IDelegateToString delegateToString = target as IDelegateToString;
+            if (delegateToString != null) {
+                objectToString(stringBuilder, levelVisited, indentLevel, delegateToString.delegatedToStringObject);
+                return;
+            }
+
             if (targetType.IsPrimitive || target is Enum) {
                 stringBuilder.Append(target.ToString());
                 return;
             }
 
+            if (!targetType.IsValueType && !levelVisited.Add(target)) {
+                stringBuilder.Append($"Circular ref: {target}");
+                return;
+            }
+
             IDictionary dictionaryValue = target as IDictionary;
             if (dictionaryValue != null) {
-                if (!visited.Add(target)) {
-                    stringBuilder.Append($"Circular ref: {target}");
-                    return;
-                }
-
                 if (dictionaryValue.Count > 0) {
                     stringBuilder.AppendLine("{");
                     foreach (DictionaryEntry entry in dictionaryValue) {
                         stringBuilder.Append(' ', indentLevel + 2);
-                        objectToString(stringBuilder, visited, indentLevel + 2, entry.Key);
+                        objectToString(stringBuilder, levelVisited, indentLevel + 2, entry.Key);
                         stringBuilder.Append(" : ");
-                        objectToString(stringBuilder, visited, indentLevel + 2, entry.Value);
+                        objectToString(stringBuilder, levelVisited, indentLevel + 2, entry.Value);
                         stringBuilder.AppendLine();
                     }
                     stringBuilder.Append(' ', indentLevel);
@@ -75,11 +83,6 @@ namespace AC2E.Utils {
 
             IEnumerable enumerableValue = target as IEnumerable;
             if (enumerableValue != null && !(target is string)) {
-                if (!visited.Add(target)) {
-                    stringBuilder.Append($"Circular ref: {target}");
-                    return;
-                }
-
                 if (((IEnumerable)target).GetEnumerator().MoveNext()) {
                     stringBuilder.AppendLine("[");
                     bool first = true;
@@ -88,7 +91,7 @@ namespace AC2E.Utils {
                             stringBuilder.AppendLine(",");
                         }
                         stringBuilder.Append(' ', indentLevel + 2);
-                        objectToString(stringBuilder, visited, indentLevel + 2, val);
+                        objectToString(stringBuilder, levelVisited, indentLevel + 2, val);
                         first = false;
                     }
                     stringBuilder.AppendLine();
@@ -118,18 +121,13 @@ namespace AC2E.Utils {
                 }
             }
 
-            if (!visited.Add(target)) {
-                stringBuilder.Append($"Circular ref: {target}");
-                return;
-            }
-
             FieldInfo[] fieldInfos = targetType.GetFields();
             if (fieldInfos.Length > 0) {
                 stringBuilder.AppendLine("{");
                 string fieldIndent = new string(' ', indentLevel + 2);
                 foreach (FieldInfo fieldInfo in fieldInfos) {
                     stringBuilder.Append($"{fieldIndent}{fieldInfo.Name} = ");
-                    objectToString(stringBuilder, visited, indentLevel + 2, fieldInfo.GetValue(target));
+                    objectToString(stringBuilder, levelVisited, indentLevel + 2, fieldInfo.GetValue(target));
                     stringBuilder.AppendLine();
                 }
                 stringBuilder.Append(' ', indentLevel);

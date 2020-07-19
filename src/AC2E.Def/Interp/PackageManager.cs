@@ -61,6 +61,8 @@ namespace AC2E.Def {
                     return new LList(data);
                 case NativeType.LRHASH:
                     return new LRHash<IPackage>(data, registry);
+                case NativeType.NRHASH:
+                    return new NRHash<IPackage, IPackage>(data, registry);
                 case NativeType.POSITION:
                     return new Position(data);
                 case NativeType.RLIST:

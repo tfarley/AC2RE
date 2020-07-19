@@ -4,9 +4,10 @@ using System.IO;
 
 namespace AC2E.Def {
 
-    public class RList<T> : IPackage where T : IPackage {
+    public class RList<T> : IPackage, IDelegateToString where T : IPackage {
 
         public NativeType nativeType => NativeType.RLIST;
+        public object delegatedToStringObject => contents;
 
         public List<T> contents;
 
@@ -34,10 +35,6 @@ namespace AC2E.Def {
 
         public void write(BinaryWriter data, PackageRegistry registry) {
             data.Write(contents, v => data.Write(v, registry));
-        }
-
-        public override string ToString() {
-            return Util.objectToString(contents);
         }
     }
 }

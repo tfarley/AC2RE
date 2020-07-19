@@ -42,6 +42,7 @@ namespace AC2E.PacketTool.UI {
             string opcodeFilter = opcodeFilterTextBox.Text;
             string eventFilter = eventFilterTextBox.Text;
             ComboBoxItem errorsFilter = (ComboBoxItem)errorsFilterComboBox.SelectedItem;
+            bool showIncomplete = showIncompleteCheckBox.IsChecked ?? false;
 
             bool reselect = false;
             foreach (NetBlobRow netBlobRow in netBlobRows) {
@@ -50,6 +51,10 @@ namespace AC2E.PacketTool.UI {
                 }
 
                 if (eventFilter != null && !netBlobRow.eventName.Contains(eventFilter, StringComparison.InvariantCultureIgnoreCase)) {
+                    continue;
+                }
+
+                if (!showIncomplete && netBlobRow.netBlobRecord.netBlob.payload == null) {
                     continue;
                 }
 

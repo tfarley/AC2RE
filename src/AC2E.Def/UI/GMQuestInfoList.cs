@@ -4,9 +4,10 @@ using System.IO;
 
 namespace AC2E.Def {
 
-    public class GMQuestInfoList : IPackage {
+    public class GMQuestInfoList : IPackage, IDelegateToString {
 
         public NativeType nativeType => NativeType.GMQUESTINFOLIST;
+        public object delegatedToStringObject => contents;
 
         public List<GMQuestInfo> contents;
 
@@ -20,10 +21,6 @@ namespace AC2E.Def {
 
         public void write(BinaryWriter data, PackageRegistry registry) {
             data.Write(contents, v => v.write(data, registry));
-        }
-
-        public override string ToString() {
-            return Util.objectToString(contents);
         }
     }
 }

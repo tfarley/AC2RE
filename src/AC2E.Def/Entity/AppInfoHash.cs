@@ -4,9 +4,10 @@ using System.IO;
 
 namespace AC2E.Def {
 
-    public class AppInfoHash : IPackage {
+    public class AppInfoHash : IPackage, IDelegateToString {
 
         public NativeType nativeType => NativeType.APPINFOHASH;
+        public object delegatedToStringObject => contents;
 
         public Dictionary<uint, AppearanceInfo> contents;
 
@@ -20,10 +21,6 @@ namespace AC2E.Def {
 
         public void write(BinaryWriter data, PackageRegistry registry) {
             data.Write(contents, data.Write, v => v.write(data));
-        }
-
-        public override string ToString() {
-            return Util.objectToString(contents);
         }
     }
 }

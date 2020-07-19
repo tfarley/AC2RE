@@ -20,6 +20,8 @@ namespace AC2E.WLib {
                 case ClientEventFunctionId.AI__UpdatePetName:
                     return new UpdatePetNameCEvt(data);
 
+                case ClientEventFunctionId.Allegiance__HandleAllegianceHierarchyForExport:
+                    return new HandleAllegianceHierarchyForExportCEvt(data);
                 case ClientEventFunctionId.Allegiance__Patron_SwearDone:
                     return new PatronSwearDoneCEvt(data);
                 case ClientEventFunctionId.Allegiance__RequestVassal:
@@ -48,6 +50,8 @@ namespace AC2E.WLib {
                     return new DisplayStringInfoCEvt(data);
                 case ClientEventFunctionId.Communication__CDoSay:
                     return new DoSayCEvt(data);
+                case ClientEventFunctionId.Communication__HearCustomEmote:
+                    return new HearCustomEmoteCEvt(data);
                 case ClientEventFunctionId.Communication__CHearTell:
                     return new HearTellCEvt(data);
                 case ClientEventFunctionId.Communication__RefreshChannels:
@@ -78,6 +82,8 @@ namespace AC2E.WLib {
                     return new DisplayDeathMessageCEvt(data);
                 case ClientEventFunctionId.Death__DisplayKillingMsg:
                     return new DisplayKillingMessageCEvt(data);
+                case ClientEventFunctionId.Death__ResurrectionRequestedByOther:
+                    return new ResurrectionRequestedByOtherCEvt(data);
                 case ClientEventFunctionId.Death__UpdateDeathState:
                     return new UpdateDeathStateCEvt(data);
 
@@ -95,6 +101,8 @@ namespace AC2E.WLib {
                     return new ClearFellowCEvt(data);
                 case ClientEventFunctionId.Fellowship__ClearFellowship:
                     return new EmptyCEvt(funcId);
+                case ClientEventFunctionId.Fellowship__ExpireRecruitment:
+                    return new ExpireRecruitmentCEvt(data);
                 case ClientEventFunctionId.Fellowship__RequestRecruitment:
                     return new RequestRecruitmentCEvt(data);
                 case ClientEventFunctionId.Fellowship__UpdateFellowCellID:
@@ -161,6 +169,8 @@ namespace AC2E.WLib {
                     return new HandleCharacterSessionStartCEvt(data);
                 case ClientEventFunctionId.Player__ListCurrentlyTrainedSkills_Done:
                     return new ListCurrentlyTrainedSkillsDoneCEvt(data);
+                case ClientEventFunctionId.Player__PortalStorm_Warning:
+                    return new PortalStormWarningCEvt(data);
                 case ClientEventFunctionId.Player__SetAnimationFrozen:
                     return new SetAnimationFrozenCEvt(data);
                 case ClientEventFunctionId.Player__SetMovementFrozen:
@@ -175,6 +185,8 @@ namespace AC2E.WLib {
 
                 case ClientEventFunctionId.Skill__RemoveInfo:
                     return new RemoveSkillInfoCEvt(data);
+                case ClientEventFunctionId.Skill__UpdateEverything:
+                    return new SkillUpdateEverythingCEvt(data);
                 case ClientEventFunctionId.Skill__UpdateInfo:
                     return new UpdateSkillInfoCEvt(data);
                 case ClientEventFunctionId.Skill__UpdateRepository:
@@ -182,14 +194,24 @@ namespace AC2E.WLib {
 
                 case ClientEventFunctionId.Store__EnterCatalog:
                     return new EnterCatalogCEvt(data);
+                case ClientEventFunctionId.Store__EnterConsignment:
+                    return new EnterConsignmentCEvt(data);
                 case ClientEventFunctionId.Store__EnterStore:
                     return new EnterStoreCEvt(data);
                 case ClientEventFunctionId.Store__InitSaleReminders:
                     return new InitSaleRemindersCEvt(data);
                 case ClientEventFunctionId.Store__LeaveCatalog:
                     return new LeaveCatalogCEvt(data);
+                case ClientEventFunctionId.Store__LeaveStore:
+                    return new LeaveStoreCEvt(data);
+                case ClientEventFunctionId.Store__Request_Done:
+                    return new StoreRequestDoneCEvt(data);
                 case ClientEventFunctionId.Store__UpdateCatalog:
                     return new UpdateCatalogCEvt(data);
+                case ClientEventFunctionId.Store__UpdateConsignment:
+                    return new UpdateConsignmentCEvt(data);
+                case ClientEventFunctionId.Store__UpdateSale:
+                    return new UpdateSaleCEvt(data);
                 case ClientEventFunctionId.Store__UpdateStore:
                     return new UpdateStoreCEvt(data);
 
@@ -197,6 +219,8 @@ namespace AC2E.WLib {
                     return new TradeBeAcceptedCEvt(data);
                 case ClientEventFunctionId.Trade__BeClosed:
                     return new TradeBeClosedCEvt(data);
+                case ClientEventFunctionId.Trade__BeDeclined:
+                    return new TradeBeDeclinedCEvt(data);
                 case ClientEventFunctionId.Trade__BeFailed:
                     return new TradeBeFailedCEvt(data);
                 case ClientEventFunctionId.Trade__BeOffered:

@@ -46,6 +46,12 @@ namespace AC2E.PacketTool {
                     return isClientToServer ? (INetMessage)new CharacterExitGameSMsg(data) : new CharacterExitGameCMsg(data);
                 case MessageOpcode.Evt_Login__CharacterSet_ID:
                     return new CharacterSetMsg(data);
+                case MessageOpcode.Evt_Login__CharGenVerification_ID:
+                    return new CharGenVerificationMsg(data);
+                case MessageOpcode.Evt_Login__ChatServerData_ID:
+                    return new GenericMsg {
+                        payload = data.ReadBytes((int)(data.BaseStream.Length - data.BaseStream.Position)),
+                    };
                 case MessageOpcode.Evt_Login__ClientSceneRenderingComplete_ID:
                     return new ClientSceneRenderingCompleteMsg();
                 case MessageOpcode.Evt_Login__MinCharSet_ID:

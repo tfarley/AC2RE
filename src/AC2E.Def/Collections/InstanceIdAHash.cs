@@ -4,9 +4,10 @@ using System.IO;
 
 namespace AC2E.Def {
 
-    public class InstanceIdAHash : IPackage {
+    public class InstanceIdAHash : IPackage, IDelegateToString {
 
         public NativeType nativeType => NativeType.LAHASH;
+        public object delegatedToStringObject => contents;
 
         public Dictionary<InstanceId, uint> contents;
 
@@ -27,10 +28,6 @@ namespace AC2E.Def {
 
         public void write(BinaryWriter data, PackageRegistry registry) {
             data.Write(contents, data.Write, data.Write);
-        }
-
-        public override string ToString() {
-            return Util.objectToString(contents);
         }
     }
 }

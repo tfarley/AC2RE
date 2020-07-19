@@ -43,6 +43,8 @@
                         <ComboBoxItem Content=""/>
                         <ComboBoxItem Content="All"/>
                     </ComboBox>
+                    <Label Content="Show Incomplete:" Margin="10,10,5,10"/>
+                    <CheckBox x:Name="showIncompleteCheckBox" VerticalAlignment="Center" Margin="0,10,10,10"/>
                     <Button Content="Apply Filters" Padding="10,5,10,5" Margin="10,10,0,10" Click="applyFiltersButton_Click"/>
                 </StackPanel>
 
