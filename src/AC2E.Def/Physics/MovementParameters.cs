@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -42,7 +41,7 @@ namespace AC2E.Def {
 
         }
 
-        public MovementParameters(BinaryReader data) {
+        public MovementParameters(AC2Reader data) {
             packFlags = (PackFlag)data.ReadUInt32();
             if (packFlags.HasFlag(PackFlag.MOVE) || packFlags.HasFlag(PackFlag.AWAY)) {
                 desiredVelocity = data.ReadSingle();
@@ -70,7 +69,7 @@ namespace AC2E.Def {
             contextId = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write((uint)packFlags);
             if (packFlags.HasFlag(PackFlag.MOVE) || packFlags.HasFlag(PackFlag.AWAY)) {
                 data.Write(desiredVelocity);
@@ -98,7 +97,7 @@ namespace AC2E.Def {
             data.Write(contextId);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             write(data);
         }
     }

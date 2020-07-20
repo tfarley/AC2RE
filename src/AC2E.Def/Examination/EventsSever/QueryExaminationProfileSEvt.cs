@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class QueryExaminationProfileSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Examination::SendSEvt_QueryExaminationProfile
         public ExaminationRequest _inRequest;
 
-        public QueryExaminationProfileSEvt(BinaryReader data) {
+        public QueryExaminationProfileSEvt(AC2Reader data) {
             _inRequest = data.UnpackPackage<ExaminationRequest>();
         }
     }

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class Fellowship : IPackage {
 
@@ -17,7 +15,7 @@ namespace AC2E.Def {
 
         }
 
-        public Fellowship(BinaryReader data, PackageRegistry registry) {
+        public Fellowship(AC2Reader data, PackageRegistry registry) {
             m_lastClaimant = data.ReadInstanceId();
             m_flags = data.ReadUInt32();
             m_chatRoomID = data.ReadUInt32();
@@ -26,7 +24,7 @@ namespace AC2E.Def {
             data.ReadPkgRef<WPString>(v => m_name = v, registry);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_lastClaimant);
             data.Write(m_flags);
             data.Write(m_chatRoomID);

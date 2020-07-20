@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ReferenceId {
 
@@ -13,13 +11,13 @@ namespace AC2E.Def {
             this.id = id;
         }
 
-        public ReferenceId(BinaryReader data) {
+        public ReferenceId(AC2Reader data) {
             id = data.ReadPackageId();
             cachedHashValue = data.ReadUInt32();
-            useCache = data.ReadUInt32() != 0;
+            useCache = data.ReadBoolean();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(registry.get<IPackage>(id), registry);
             data.Write(cachedHashValue);
             data.Write(useCache);

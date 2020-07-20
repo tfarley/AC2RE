@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ChannelData : IPackage {
 
@@ -18,22 +16,22 @@ namespace AC2E.Def {
 
         }
 
-        public ChannelData(BinaryReader data, PackageRegistry registry) {
-            m_fPendingRoomCreation = data.ReadUInt32() != 0;
+        public ChannelData(AC2Reader data, PackageRegistry registry) {
+            m_fPendingRoomCreation = data.ReadBoolean();
             m_type = (TextType)data.ReadUInt32();
             m_regionID = data.ReadUInt32();
             m_roomID = data.ReadUInt32();
-            m_available = data.ReadUInt32() != 0;
+            m_available = data.ReadBoolean();
             m_factionType = data.ReadUInt32();
             data.ReadPkgRef<WPString>(v => m_name = v, registry);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
-            data.Write(m_fPendingRoomCreation ? (uint)1 : (uint)0);
+        public void write(AC2Writer data, PackageRegistry registry) {
+            data.Write(m_fPendingRoomCreation);
             data.Write((uint)m_type);
             data.Write(m_regionID);
             data.Write(m_roomID);
-            data.Write(m_available ? (uint)1 : (uint)0);
+            data.Write(m_available);
             data.Write(m_factionType);
             data.Write(m_name, registry);
         }

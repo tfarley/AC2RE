@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class OfferTradeItemSEvt : IServerEvent {
 
@@ -10,7 +8,7 @@ namespace AC2E.Def {
         public uint _num;
         public InstanceId _item;
 
-        public OfferTradeItemSEvt(BinaryReader data) {
+        public OfferTradeItemSEvt(AC2Reader data) {
             _num = data.UnpackUInt32();
             _item = data.UnpackInstanceId();
         }

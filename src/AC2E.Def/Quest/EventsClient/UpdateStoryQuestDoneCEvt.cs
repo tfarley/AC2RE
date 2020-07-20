@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UpdateStoryQuestDoneCEvt : IClientEvent {
 
@@ -15,13 +13,13 @@ namespace AC2E.Def {
 
         }
 
-        public UpdateStoryQuestDoneCEvt(BinaryReader data) {
+        public UpdateStoryQuestDoneCEvt(AC2Reader data) {
             _status = data.UnpackUInt32();
             _bAddScene = data.UnpackUInt32() != 0;
             _sceneID = data.UnpackUInt32();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_status);
             data.Pack(_bAddScene ? (uint)1 : (uint)0);
             data.Pack(_sceneID);

@@ -1,7 +1,5 @@
-﻿using AC2E.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -16,12 +14,12 @@ namespace AC2E.Def {
 
             }
 
-            public SliderData(BinaryReader data) {
+            public SliderData(AC2Reader data) {
                 value = data.ReadSingle();
                 velocity = data.ReadSingle();
             }
 
-            public void write(BinaryWriter data) {
+            public void write(AC2Writer data) {
                 data.Write(value);
                 data.Write(velocity);
             }
@@ -96,7 +94,7 @@ namespace AC2E.Def {
 
         }
 
-        public PhysicsDesc(BinaryReader data) {
+        public PhysicsDesc(AC2Reader data) {
             packFlags = (PackFlag)data.ReadUInt32();
             instanceStamp = data.ReadUInt16();
             visualOrderingStamp = data.ReadUInt16();
@@ -172,7 +170,7 @@ namespace AC2E.Def {
             data.Align(4);
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write((uint)packFlags);
             data.Write(instanceStamp);
             data.Write(visualOrderingStamp);

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UpdateExaminationProfileCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public UpdateExaminationProfileCEvt(BinaryReader data) {
+        public UpdateExaminationProfileCEvt(AC2Reader data) {
             _examineProf = data.UnpackPackage<ExaminationProfile>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_examineProf);
         }
     }

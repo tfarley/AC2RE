@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CharacterDeletionSMsg : INetMessage {
 
@@ -13,8 +10,8 @@ namespace AC2E.Def {
         public string accountName;
         public InstanceId characterId; // id
 
-        public CharacterDeletionSMsg(BinaryReader data) {
-            accountName = data.ReadEncryptedString();
+        public CharacterDeletionSMsg(AC2Reader data) {
+            accountName = data.ReadString();
             characterId = data.ReadInstanceId();
         }
     }

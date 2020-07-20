@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RequestCollectSEvt : IServerEvent {
 
@@ -11,7 +9,7 @@ namespace AC2E.Def {
         public uint _target;
         public InstanceId _iidStorekeeper;
 
-        public RequestCollectSEvt(BinaryReader data) {
+        public RequestCollectSEvt(AC2Reader data) {
             _bProfits = data.UnpackUInt32() != 0;
             _target = data.UnpackUInt32();
             _iidStorekeeper = data.UnpackInstanceId();

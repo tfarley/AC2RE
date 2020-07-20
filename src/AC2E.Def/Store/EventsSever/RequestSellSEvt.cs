@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RequestSellSEvt : IServerEvent {
 
@@ -13,7 +11,7 @@ namespace AC2E.Def {
         public InstanceId _iidItem;
         public InstanceId _iidStorekeeper;
 
-        public RequestSellSEvt(BinaryReader data) {
+        public RequestSellSEvt(AC2Reader data) {
             _targetStore = data.UnpackDataId();
             _price = data.UnpackUInt32();
             _quantity = data.UnpackUInt32();

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DisplayMessageCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public DisplayMessageCEvt(BinaryReader data) {
+        public DisplayMessageCEvt(AC2Reader data) {
             _topmost = data.UnpackUInt32() != 0;
             _msg = data.UnpackPackage<StringInfo>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_topmost ? (uint)1 : (uint)0);
             data.Pack(_msg);
         }

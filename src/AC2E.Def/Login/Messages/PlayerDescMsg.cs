@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class PlayerDescMsg : INetMessage {
 
@@ -16,11 +13,11 @@ namespace AC2E.Def {
 
         }
 
-        public PlayerDescMsg(BinaryReader data) {
+        public PlayerDescMsg(AC2Reader data) {
             baseQualities = new CBaseQualities(data);
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             baseQualities.write(data);
         }
     }

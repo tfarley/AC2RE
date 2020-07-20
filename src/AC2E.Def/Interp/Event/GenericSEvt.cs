@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class GenericSEvt : IServerEvent {
 
@@ -8,7 +6,7 @@ namespace AC2E.Def {
 
         public byte[] payload;
 
-        public GenericSEvt(ServerEventFunctionId funcId, BinaryReader data, uint payloadLen) {
+        public GenericSEvt(ServerEventFunctionId funcId, AC2Reader data, uint payloadLen) {
             this.funcId = funcId;
             payload = data.ReadBytes((int)payloadLen);
         }

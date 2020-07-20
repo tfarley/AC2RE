@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class WorldNameMsg : INetMessage {
 
@@ -16,11 +13,11 @@ namespace AC2E.Def {
 
         }
 
-        public WorldNameMsg(BinaryReader data) {
+        public WorldNameMsg(AC2Reader data) {
             name = new StringInfo(data);
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             name.write(data);
         }
     }

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class InvEquipDesc : IPackage {
 
@@ -26,7 +24,7 @@ namespace AC2E.Def {
 
         }
 
-        public InvEquipDesc(BinaryReader data, PackageRegistry registry) {
+        public InvEquipDesc(AC2Reader data, PackageRegistry registry) {
             m_blockingItemLocation = data.ReadUInt32();
             data.ReadPkgRef<EquipItemProfile>(v => m_eip = v, registry);
             m_quantity = data.ReadUInt32();
@@ -44,7 +42,7 @@ namespace AC2E.Def {
             m_containerSlot = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_blockingItemLocation);
             data.Write(m_eip, registry);
             data.Write(m_quantity);

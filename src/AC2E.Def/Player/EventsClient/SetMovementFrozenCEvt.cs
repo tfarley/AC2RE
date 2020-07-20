@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class SetMovementFrozenCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public SetMovementFrozenCEvt(BinaryReader data) {
+        public SetMovementFrozenCEvt(AC2Reader data) {
             _bFrozen = data.UnpackUInt32() != 0;
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_bFrozen ? (uint)1 : (uint)0);
         }
     }

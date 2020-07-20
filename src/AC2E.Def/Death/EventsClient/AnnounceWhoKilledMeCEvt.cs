@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class AnnounceWhoKilledMeCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public AnnounceWhoKilledMeCEvt(BinaryReader data) {
+        public AnnounceWhoKilledMeCEvt(AC2Reader data) {
             _siKiller = data.UnpackPackage<StringInfo>();
             _iidKiller = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_siKiller);
             data.Pack(_iidKiller);
         }

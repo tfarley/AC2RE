@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ReleaseBehaviorMsg : INetMessage {
 
@@ -14,7 +11,7 @@ namespace AC2E.Def {
         public uint behaviorId; // _behavior_id
         public BehaviorParams behaviorParams; // _params
 
-        public ReleaseBehaviorMsg(BinaryReader data) {
+        public ReleaseBehaviorMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             behaviorId = data.ReadUInt32();
             behaviorParams = new BehaviorParams(data);

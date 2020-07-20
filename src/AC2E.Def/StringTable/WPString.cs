@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System.Text;
 
 namespace AC2E.Def {
 
@@ -13,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public WPString(BinaryReader data) {
-            contents = data.ReadEncryptedString(Encoding.Unicode);
+        public WPString(AC2Reader data) {
+            contents = data.ReadString(Encoding.Unicode);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
-            data.WriteEncryptedString(contents, Encoding.Unicode);
+        public void write(AC2Writer data, PackageRegistry registry) {
+            data.Write(contents, Encoding.Unicode);
         }
 
         public override string ToString() {

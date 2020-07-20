@@ -1,5 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
+﻿using System.IO;
 
 namespace AC2E.Def {
 
@@ -13,7 +12,7 @@ namespace AC2E.Def {
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public IClientEvent netEvent;
 
-        public InterpCEventCellMsg(BinaryReader data) {
+        public InterpCEventCellMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             ClientEventFunctionId funcId = (ClientEventFunctionId)data.ReadUInt32();
             uint length = data.ReadUInt32();
@@ -34,13 +33,13 @@ namespace AC2E.Def {
 
         }
 
-        public InterpCEventPrivateMsg(BinaryReader data) {
+        public InterpCEventPrivateMsg(AC2Reader data) {
             ClientEventFunctionId funcId = (ClientEventFunctionId)data.ReadUInt32();
             uint length = data.ReadUInt32();
             netEvent = IClientEvent.read(funcId, data);
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write((uint)netEvent.funcId);
             // Placeholder for length
             data.Write((uint)0);
@@ -64,7 +63,7 @@ namespace AC2E.Def {
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public IClientEvent netEvent;
 
-        public InterpCEventVisualMsg(BinaryReader data) {
+        public InterpCEventVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             ClientEventFunctionId funcId = (ClientEventFunctionId)data.ReadUInt32();
             uint length = data.ReadUInt32();

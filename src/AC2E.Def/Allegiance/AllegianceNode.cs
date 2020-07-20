@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class AllegianceNode : IPackage {
 
@@ -16,7 +14,7 @@ namespace AC2E.Def {
 
         }
 
-        public AllegianceNode(BinaryReader data, PackageRegistry registry) {
+        public AllegianceNode(AC2Reader data, PackageRegistry registry) {
             data.ReadPkgRef<RList<IPackage>>(v => m_vassalNodes = v.to<AllegianceNode>(), registry);
             data.ReadPkgRef<AllegianceNode>(v => m_patron = v, registry);
             data.ReadPkgRef<AllegianceData>(v => m_data = v, registry);
@@ -24,7 +22,7 @@ namespace AC2E.Def {
             data.ReadPkgRef<AllegianceNode>(v => m_peer = v, registry);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_vassalNodes, registry);
             data.Write(m_patron, registry);
             data.Write(m_data, registry);

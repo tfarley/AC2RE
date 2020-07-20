@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -19,17 +18,17 @@ namespace AC2E.Def {
 
         }
 
-        public GMSceneInfo(BinaryReader data) {
+        public GMSceneInfo(AC2Reader data) {
             _ID = data.ReadUInt32();
             _siName = new StringInfo(data);
             _actID = data.ReadUInt32();
             _uiSceneNum = data.ReadUInt32();
-            _bIsHidden = data.ReadUInt32() != 0;
-            _bIsPlayable = data.ReadUInt32() != 0;
+            _bIsHidden = data.ReadBoolean();
+            _bIsPlayable = data.ReadBoolean();
             _keyframeList = data.ReadList(() => new GMKeyframe(data));
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(_ID);
             _siName.write(data);
             data.Write(_actID);

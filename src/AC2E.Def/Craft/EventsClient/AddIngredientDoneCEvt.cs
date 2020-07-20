@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class AddIngredientDoneCEvt : IClientEvent {
 
@@ -17,7 +15,7 @@ namespace AC2E.Def {
 
         }
 
-        public AddIngredientDoneCEvt(BinaryReader data) {
+        public AddIngredientDoneCEvt(AC2Reader data) {
             _err = data.UnpackUInt32();
             _uiSpinnerVal = data.UnpackUInt32();
             _iidIngredient = data.UnpackInstanceId();
@@ -25,7 +23,7 @@ namespace AC2E.Def {
             _didRecipe = data.UnpackDataId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_err);
             data.Pack(_uiSpinnerVal);
             data.Pack(_iidIngredient);

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class Consignment : IPackage {
 
@@ -18,7 +16,7 @@ namespace AC2E.Def {
 
         }
 
-        public Consignment(BinaryReader data, PackageRegistry registry) {
+        public Consignment(AC2Reader data, PackageRegistry registry) {
             data.ReadPkgRef<PlayerSaleProfile>(v => m_profile = v, registry);
             m_iidOwner = data.ReadInstanceId();
             m_saleID = data.ReadUInt32();
@@ -28,7 +26,7 @@ namespace AC2E.Def {
             m_uiFlags = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_profile, registry);
             data.Write(m_iidOwner);
             data.Write(m_saleID);

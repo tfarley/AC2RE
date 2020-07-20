@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ClearMarkersCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public ClearMarkersCEvt(BinaryReader data) {
+        public ClearMarkersCEvt(AC2Reader data) {
             type = data.UnpackUInt32();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(type);
         }
     }

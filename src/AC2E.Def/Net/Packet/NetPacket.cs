@@ -138,7 +138,7 @@ namespace AC2E.Def {
 
         }
 
-        public NetPacket(BinaryReader data) {
+        public NetPacket(AC2Reader data) {
             seq = data.ReadUInt32();
             flags = (Flag)data.ReadUInt32();
             checksum = data.ReadUInt32();
@@ -214,7 +214,7 @@ namespace AC2E.Def {
                 }
             }
         }
-        public void writeHeader(BinaryWriter data) {
+        public void writeHeader(AC2Writer data) {
             data.Write(seq);
             data.Write((uint)flags);
             data.Write(0xBADD70DD); // checksum, replaced after data written
@@ -224,7 +224,7 @@ namespace AC2E.Def {
             data.Write(iteration);
         }
 
-        public void writeOptionalHeaders(BinaryWriter data, byte[] rawData, ref uint checksum) {
+        public void writeOptionalHeaders(AC2Writer data, byte[] rawData, ref uint checksum) {
             if (flags.HasFlag(Flag.SERVER_SWITCH)) {
                 throw new NotImplementedException();
             }

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CraftRefreshCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public CraftRefreshCEvt(BinaryReader data) {
+        public CraftRefreshCEvt(AC2Reader data) {
             _craftReg = data.UnpackPackage<CraftRegistry>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_craftReg);
         }
     }

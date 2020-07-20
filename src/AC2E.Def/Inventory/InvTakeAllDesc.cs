@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class InvTakeAllDesc : IPackage {
 
@@ -23,22 +21,22 @@ namespace AC2E.Def {
 
         }
 
-        public InvTakeAllDesc(BinaryReader data, PackageRegistry registry) {
+        public InvTakeAllDesc(AC2Reader data, PackageRegistry registry) {
             m_lastError = data.ReadUInt32();
-            bIgnoreAttunement = data.ReadUInt32() != 0;
-            checkTakePermFlag = data.ReadUInt32() != 0;
-            m_bQuiet = data.ReadUInt32() != 0;
-            noAnimFlag = data.ReadUInt32() != 0;
+            bIgnoreAttunement = data.ReadBoolean();
+            checkTakePermFlag = data.ReadBoolean();
+            m_bQuiet = data.ReadBoolean();
+            noAnimFlag = data.ReadBoolean();
             m_status = data.ReadUInt32();
             m_fromContainerID = data.ReadInstanceId();
             data.ReadPkgRef<LList>(v => m_itemsNotTaken = new InstanceIdList(v), registry);
-            playedAnim = data.ReadUInt32() != 0;
-            noMoveFlag = data.ReadUInt32() != 0;
+            playedAnim = data.ReadBoolean();
+            noMoveFlag = data.ReadBoolean();
             data.ReadPkgRef<LList>(v => m_itemsTaken = new InstanceIdList(v), registry);
             m_targetPlayerID = data.ReadInstanceId();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_lastError);
             data.Write(bIgnoreAttunement ? (uint)1 : (uint)0);
             data.Write(checkTakePermFlag ? (uint)1 : (uint)0);

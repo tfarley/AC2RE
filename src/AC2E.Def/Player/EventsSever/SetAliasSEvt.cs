@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class SetAliasSEvt : IServerEvent {
 
@@ -11,7 +9,7 @@ namespace AC2E.Def {
         public WPString _text;
         public WPString _alias;
 
-        public SetAliasSEvt(BinaryReader data) {
+        public SetAliasSEvt(AC2Reader data) {
             _add = data.UnpackUInt32() != 0;
             _text = data.UnpackPackage<WPString>();
             _alias = data.UnpackPackage<WPString>();

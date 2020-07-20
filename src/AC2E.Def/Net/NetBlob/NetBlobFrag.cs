@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class NetBlobFrag {
 
@@ -25,7 +23,7 @@ namespace AC2E.Def {
 
         }
 
-        public NetBlobFrag(BinaryReader data) {
+        public NetBlobFrag(AC2Reader data) {
             blobId = new NetBlobId(data.ReadUInt64());
             fragCount = data.ReadUInt16();
             fragSize = data.ReadUInt16();
@@ -35,7 +33,7 @@ namespace AC2E.Def {
             _payload = data.ReadBytes(fragSize - 16);
         }
 
-        public void writeHeader(BinaryWriter data) {
+        public void writeHeader(AC2Writer data) {
             data.Write(blobId.id);
             data.Write(fragCount);
             data.Write(fragSize);
@@ -43,7 +41,7 @@ namespace AC2E.Def {
             data.Write((ushort)queueId);
         }
 
-        public void writePayload(BinaryWriter data) {
+        public void writePayload(AC2Writer data) {
             data.Write(_payload);
         }
 

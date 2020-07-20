@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class SetShortcutSEvt : IServerEvent {
 
@@ -10,7 +8,7 @@ namespace AC2E.Def {
         public ShortcutInfo _shortcut;
         public uint _index;
 
-        public SetShortcutSEvt(BinaryReader data) {
+        public SetShortcutSEvt(AC2Reader data) {
             _shortcut = data.UnpackPackage<ShortcutInfo>();
             _index = data.UnpackUInt32();
         }

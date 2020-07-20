@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CharacterExitGameSMsg : INetMessage {
 
@@ -12,7 +9,7 @@ namespace AC2E.Def {
         // ECM_Login::RecvEvt_CharExitGame
         public InstanceId characterId;
 
-        public CharacterExitGameSMsg(BinaryReader data) {
+        public CharacterExitGameSMsg(AC2Reader data) {
             characterId = data.ReadInstanceId();
         }
     }

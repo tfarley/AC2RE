@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ConnectHeader {
 
@@ -11,7 +9,7 @@ namespace AC2E.Def {
         public uint outgoingSeed; // OutgoingSeed
         public uint incomingSeed; // IncomingSeed
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write(serverTime);
             data.Write(connectionAckCookie);
             data.Write(netId);

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class FollowSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Player::SendSEvt_Follow
         public InstanceId _target;
 
-        public FollowSEvt(BinaryReader data) {
+        public FollowSEvt(AC2Reader data) {
             _target = data.UnpackInstanceId();
         }
     }

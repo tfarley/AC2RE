@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ExecuteCraftDoneCEvt : IClientEvent {
 
@@ -15,13 +13,13 @@ namespace AC2E.Def {
 
         }
 
-        public ExecuteCraftDoneCEvt(BinaryReader data) {
+        public ExecuteCraftDoneCEvt(AC2Reader data) {
             _bNotifyUI = data.UnpackUInt32() != 0;
             _err = data.UnpackUInt32();
             _didRecipe = data.UnpackDataId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_bNotifyUI ? (uint)1 : (uint)0);
             data.Pack(_err);
             data.Pack(_didRecipe);

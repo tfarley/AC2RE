@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RequestRaiseCraftSkillSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Craft::SendSEvt_RequestRaiseCraftSkill
         public DataId _didCraftSkill;
 
-        public RequestRaiseCraftSkillSEvt(BinaryReader data) {
+        public RequestRaiseCraftSkillSEvt(AC2Reader data) {
             _didCraftSkill = data.UnpackDataId();
         }
     }

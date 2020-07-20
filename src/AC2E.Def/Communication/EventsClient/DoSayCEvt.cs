@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DoSayCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public DoSayCEvt(BinaryReader data) {
+        public DoSayCEvt(AC2Reader data) {
             _weenieChatFlags = data.UnpackUInt32();
             _msg = data.UnpackPackage<StringInfo>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_weenieChatFlags);
             data.Pack(_msg);
         }

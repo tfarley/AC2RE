@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class AcceptVassalSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Allegiance::SendSEvt_AcceptVassal
         public InstanceId _vassal;
 
-        public AcceptVassalSEvt(BinaryReader data) {
+        public AcceptVassalSEvt(AC2Reader data) {
             _vassal = data.UnpackInstanceId();
         }
     }

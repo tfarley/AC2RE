@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CForceCreateMsg : INetMessage {
 
@@ -12,7 +9,7 @@ namespace AC2E.Def {
         // ECM_Physics::SendEvt_CForceCreate
         public InstanceId objectId; // _object_id
 
-        public CForceCreateMsg(BinaryReader data) {
+        public CForceCreateMsg(AC2Reader data) {
             objectId = data.ReadInstanceId();
         }
     }

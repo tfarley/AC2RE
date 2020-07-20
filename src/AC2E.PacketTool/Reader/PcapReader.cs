@@ -17,7 +17,7 @@ namespace AC2E.PacketTool {
             public uint snapLen;
             public uint network;
 
-            public PcapHeader(BinaryReader data) {
+            public PcapHeader(AC2Reader data) {
                 magicNumber = data.ReadUInt32();
                 versionMajor = data.ReadUInt16();
                 versionMinor = data.ReadUInt16();
@@ -35,7 +35,7 @@ namespace AC2E.PacketTool {
             public uint inclLen;
             public uint origLen;
 
-            public PcapRecordHeader(BinaryReader data) {
+            public PcapRecordHeader(AC2Reader data) {
                 tsSec = data.ReadUInt32();
                 tsUsec = data.ReadUInt32();
                 inclLen = data.ReadUInt32();
@@ -53,7 +53,7 @@ namespace AC2E.PacketTool {
             public uint capturedLen;
             public uint packetLen;
 
-            public PcapngBlockHeader(BinaryReader data) {
+            public PcapngBlockHeader(AC2Reader data) {
                 blockType = data.ReadUInt32();
                 blockTotalLength = data.ReadUInt32();
 
@@ -75,7 +75,7 @@ namespace AC2E.PacketTool {
         public static NetBlobCollection read(Stream input) {
             NetBlobCollection netBlobCollection = new NetBlobCollection();
 
-            using (BinaryReader data = new BinaryReader(input)) {
+            using (AC2Reader data = new AC2Reader(input)) {
                 uint magicNumber = data.ReadUInt32();
                 data.BaseStream.Seek(-4, SeekOrigin.Current);
 
@@ -97,7 +97,7 @@ namespace AC2E.PacketTool {
             return (time - epoch) / 10000000000.0f;
         }
 
-        private static void readPcap(BinaryReader data, NetBlobCollection netBlobCollection) {
+        private static void readPcap(AC2Reader data, NetBlobCollection netBlobCollection) {
             PcapHeader pcapHeader = new PcapHeader(data);
 
             ulong epoch = 0;
@@ -113,7 +113,7 @@ namespace AC2E.PacketTool {
             }
         }
 
-        private static void readPcapng(BinaryReader data, NetBlobCollection netBlobCollection) {
+        private static void readPcapng(AC2Reader data, NetBlobCollection netBlobCollection) {
             ulong epoch = 0;
             int packetNum = 1;
             while (data.BaseStream.Position < data.BaseStream.Length) {
@@ -129,7 +129,7 @@ namespace AC2E.PacketTool {
 
         private static void readPacket(byte[] payload, int packetNum, float timestamp, NetBlobCollection netBlobCollection) {
             try {
-                using (BinaryReader data = new BinaryReader(new MemoryStream(payload))) {
+                using (AC2Reader data = new AC2Reader(new MemoryStream(payload))) {
                     EthernetHeader ethernetHeader = new EthernetHeader(data);
                     IpHeader ipHeader = new IpHeader(data);
                     UdpHeader udpHeader = new UdpHeader(data);

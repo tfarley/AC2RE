@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DisplayStringInfoCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public DisplayStringInfoCEvt(BinaryReader data) {
+        public DisplayStringInfoCEvt(AC2Reader data) {
             _msg = data.UnpackPackage<StringInfo>();
             _type = (TextType)data.UnpackUInt32();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_msg);
             data.Pack((uint)_type);
         }

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class TradeBeRegisteredCEvt : IClientEvent {
 
@@ -15,13 +13,13 @@ namespace AC2E.Def {
 
         }
 
-        public TradeBeRegisteredCEvt(BinaryReader data) {
+        public TradeBeRegisteredCEvt(AC2Reader data) {
             _partner_name = data.UnpackPackage<StringInfo>();
             _slave = data.UnpackInstanceId();
             _master = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_partner_name);
             data.Pack(_slave);
             data.Pack(_master);

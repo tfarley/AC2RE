@@ -1,6 +1,4 @@
-﻿using AC2E.Def;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace AC2E.Def {
@@ -21,9 +19,9 @@ namespace AC2E.Def {
         public uint unk3;
         public Dictionary<PhysiqueType, float> physiqueTypeValues;
 
-        public CharacterCreateMsg(BinaryReader data) {
-            accountName = data.ReadEncryptedString();
-            characterName = data.ReadEncryptedString(Encoding.Unicode);
+        public CharacterCreateMsg(AC2Reader data) {
+            accountName = data.ReadString();
+            characterName = data.ReadString(Encoding.Unicode);
             entityDid = data.ReadDataId();
             unk1 = data.ReadUInt32();
             species = (SpeciesType)data.ReadUInt32();

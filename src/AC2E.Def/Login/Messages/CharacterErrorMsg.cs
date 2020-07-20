@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CharacterErrorMsg : INetMessage {
 
@@ -12,7 +9,7 @@ namespace AC2E.Def {
         // ECM_Login::RecvEvt_CharacterError
         public CharError error; // error
 
-        public CharacterErrorMsg(BinaryReader data) {
+        public CharacterErrorMsg(AC2Reader data) {
             error = (CharError)data.ReadUInt32();
         }
     }

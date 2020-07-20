@@ -1,6 +1,4 @@
-﻿using AC2E.Utils;
-using System;
-using System.IO;
+﻿using System;
 
 namespace AC2E.Def {
 
@@ -28,7 +26,7 @@ namespace AC2E.Def {
         public ushort teleportStamp; // m_teleport_stamp
         public Vector impulseVel; // m_impulseVel
 
-        public PositionPack(BinaryReader data) {
+        public PositionPack(AC2Reader data) {
             time = data.ReadDouble();
             offset = new PositionOffset(data);
             heading = data.ReadHeading();

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RequestLeaveStoreSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Store::SendSEvt_Store_RequestLeaveStore
         public InstanceId _iidStorekeeper;
 
-        public RequestLeaveStoreSEvt(BinaryReader data) {
+        public RequestLeaveStoreSEvt(AC2Reader data) {
             _iidStorekeeper = data.UnpackInstanceId();
         }
     }

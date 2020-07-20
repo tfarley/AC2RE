@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -64,7 +63,7 @@ namespace AC2E.Def {
 
             }
 
-            public PartGroupDataDesc(BinaryReader data) {
+            public PartGroupDataDesc(AC2Reader data) {
                 // TODO: Need to verify parsing of all of these properties
                 packFlags = (PackFlag)data.ReadUInt32();
                 if (packFlags.HasFlag(PackFlag.KEY)) {
@@ -96,7 +95,7 @@ namespace AC2E.Def {
                 }
             }
 
-            public void write(BinaryWriter data) {
+            public void write(AC2Writer data) {
                 data.Write((uint)packFlags);
                 if (packFlags.HasFlag(PackFlag.KEY)) {
                     data.Write((uint)key);
@@ -146,7 +145,7 @@ namespace AC2E.Def {
 
         }
 
-        public VisualDesc(BinaryReader data) {
+        public VisualDesc(AC2Reader data) {
             packFlags = (PackFlag)data.ReadUInt32();
             if (packFlags.HasFlag(PackFlag.DATABASE)) {
                 throw new NotImplementedException("VisualDesc.database");
@@ -183,7 +182,7 @@ namespace AC2E.Def {
             }
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write((uint)packFlags);
             if (packFlags.HasFlag(PackFlag.DATABASE)) {
                 throw new NotImplementedException("VisualDesc.database");
@@ -220,7 +219,7 @@ namespace AC2E.Def {
             }
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             write(data);
         }
     }

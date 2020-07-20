@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class SingletonPkg : IPackage {
 
@@ -10,11 +8,11 @@ namespace AC2E.Def {
 
         }
 
-        public SingletonPkg(BinaryReader data) {
+        public SingletonPkg(AC2Reader data) {
             did = data.ReadDataId();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(did);
         }
     }

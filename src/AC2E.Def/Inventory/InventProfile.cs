@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class InventProfile : IPackage {
 
@@ -16,7 +14,7 @@ namespace AC2E.Def {
 
         }
 
-        public InventProfile(BinaryReader data, PackageRegistry registry) {
+        public InventProfile(AC2Reader data, PackageRegistry registry) {
             data.ReadPkgRef<VisualDescInfo>(v => m_visualDescInfo = v, registry);
             m_slotsTaken = data.ReadUInt32();
             m_location = data.ReadUInt32();
@@ -24,7 +22,7 @@ namespace AC2E.Def {
             m_iid = data.ReadInstanceId();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_visualDescInfo, registry);
             data.Write(m_slotsTaken);
             data.Write(m_location);

@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CliDatRequestDataMsg : INetMessage {
 
@@ -12,7 +9,7 @@ namespace AC2E.Def {
         // CCliDatRequestEvent::CDataFormat
         public QualifiedDataId qdid; // qdid
 
-        public CliDatRequestDataMsg(BinaryReader data) {
+        public CliDatRequestDataMsg(AC2Reader data) {
             qdid = data.ReadQualifiedDataId();
         }
     }

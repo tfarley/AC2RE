@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UsageBlob : IPackage {
 
@@ -17,22 +15,22 @@ namespace AC2E.Def {
 
         }
 
-        public UsageBlob(BinaryReader data, PackageRegistry registry) {
+        public UsageBlob(AC2Reader data, PackageRegistry registry) {
             data.ReadPkgRef<StringInfo>(v => m_criticalSuccessMessage = v, registry);
             data.ReadPkgRef<StringInfo>(v => m_successMessage = v, registry);
             m_userBehaviorRepeatCount = data.ReadUInt32();
             m_userBehaviorTimeScale = data.ReadSingle();
             m_userBehavior = data.ReadUInt32();
-            m_userBehaviorFadeChildren = data.ReadUInt32() != 0;
+            m_userBehaviorFadeChildren = data.ReadBoolean();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_criticalSuccessMessage, registry);
             data.Write(m_successMessage, registry);
             data.Write(m_userBehaviorRepeatCount);
             data.Write(m_userBehaviorTimeScale);
             data.Write(m_userBehavior);
-            data.Write(m_userBehaviorFadeChildren ? (uint)1 : (uint)0);
+            data.Write(m_userBehaviorFadeChildren);
         }
     }
 }

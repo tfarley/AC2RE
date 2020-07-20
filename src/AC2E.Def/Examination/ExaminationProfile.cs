@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -15,13 +14,13 @@ namespace AC2E.Def {
 
         }
 
-        public ExaminationProfile(BinaryReader data) {
+        public ExaminationProfile(AC2Reader data) {
             _request = new ExaminationRequest(data);
             _nodeList = data.ReadList(() => new ExaminationDataNode(data));
             unk1 = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             _request.write(data, registry);
             data.Write(_nodeList, v => v.write(data));
             data.Write(unk1);

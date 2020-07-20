@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DoModeMsg : INetMessage {
 
@@ -13,7 +10,7 @@ namespace AC2E.Def {
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public uint modeId; // mode_id
 
-        public DoModeMsg(BinaryReader data) {
+        public DoModeMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             modeId = data.ReadUInt32();
         }

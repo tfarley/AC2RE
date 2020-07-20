@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UpdateFellowCellIdCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public UpdateFellowCellIdCEvt(BinaryReader data) {
+        public UpdateFellowCellIdCEvt(AC2Reader data) {
             _value = new CellId(data.UnpackUInt32());
             _fid = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_value.id);
             data.Pack(_fid);
         }

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class SetSelectionSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Player::SendSEvt_SetSelection
         public InstanceId _selectionID;
 
-        public SetSelectionSEvt(BinaryReader data) {
+        public SetSelectionSEvt(AC2Reader data) {
             _selectionID = data.UnpackInstanceId();
         }
     }

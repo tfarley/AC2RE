@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class QualUpdateInstanceIdPrivateMsg : INetMessage {
 
@@ -13,7 +10,7 @@ namespace AC2E.Def {
         public uint type; // _stype
         public InstanceId value; // _data
 
-        public QualUpdateInstanceIdPrivateMsg(BinaryReader data) {
+        public QualUpdateInstanceIdPrivateMsg(AC2Reader data) {
             type = data.ReadUInt32();
             value = data.ReadInstanceId();
         }
@@ -30,7 +27,7 @@ namespace AC2E.Def {
         public uint type; // _stype
         public InstanceId value; // _data
 
-        public QualUpdateInstanceIdVisualMsg(BinaryReader data) {
+        public QualUpdateInstanceIdVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             type = data.ReadUInt32();
             value = data.ReadInstanceId();

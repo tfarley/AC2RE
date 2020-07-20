@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -7,9 +6,9 @@ namespace AC2E.Def {
 
         ClientEventFunctionId funcId { get; } // _fid
 
-        void write(BinaryWriter data);
+        void write(AC2Writer data);
 
-        public static IClientEvent read(ClientEventFunctionId funcId, BinaryReader data) {
+        public static IClientEvent read(ClientEventFunctionId funcId, AC2Reader data) {
             switch (funcId) {
                 case ClientEventFunctionId.AI__PetAdd:
                     return new PetAddCEvt(data);

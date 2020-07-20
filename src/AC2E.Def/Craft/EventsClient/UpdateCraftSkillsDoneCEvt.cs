@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UpdateCraftSkillsDoneCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public UpdateCraftSkillsDoneCEvt(BinaryReader data) {
+        public UpdateCraftSkillsDoneCEvt(AC2Reader data) {
             _listCraftSkillRecs = data.UnpackPackage<RList<IPackage>>().to<CraftSkillRecord>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_listCraftSkillRecs);
         }
     }

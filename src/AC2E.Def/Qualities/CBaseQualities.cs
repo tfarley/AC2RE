@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace AC2E.Def {
@@ -44,7 +43,7 @@ namespace AC2E.Def {
 
         }
 
-        public CBaseQualities(BinaryReader data) {
+        public CBaseQualities(AC2Reader data) {
             packFlags = (PackFlag)data.ReadUInt32();
             dbType = data.ReadUInt32();
             if (packFlags.HasFlag(PackFlag.WEENIE_DESC)) {
@@ -54,7 +53,7 @@ namespace AC2E.Def {
                 intTable = data.ReadDictionary(data.ReadUInt32, data.ReadInt32);
             }
             if (packFlags.HasFlag(PackFlag.BOOL_HASH_TABLE)) {
-                boolTable = data.ReadDictionary(data.ReadUInt32, () => data.ReadUInt32() != 0);
+                boolTable = data.ReadDictionary(data.ReadUInt32, data.ReadBoolean);
             }
             if (packFlags.HasFlag(PackFlag.FLOAT_HASH_TABLE)) {
                 floatTable = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
@@ -63,7 +62,7 @@ namespace AC2E.Def {
                 timestampTable = data.ReadDictionary(data.ReadUInt32, data.ReadDouble);
             }
             if (packFlags.HasFlag(PackFlag.STRING_HASH_TABLE)) {
-                stringTable = data.ReadDictionary(data.ReadUInt32, () => data.ReadEncryptedString(Encoding.Unicode));
+                stringTable = data.ReadDictionary(data.ReadUInt32, () => data.ReadString(Encoding.Unicode));
             }
             if (packFlags.HasFlag(PackFlag.DATA_ID_HASH_TABLE)) {
                 dataIdTable = data.ReadDictionary(data.ReadUInt32, data.ReadDataId);
@@ -85,7 +84,7 @@ namespace AC2E.Def {
             }
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write((uint)packFlags);
             data.Write(dbType);
             if (packFlags.HasFlag(PackFlag.WEENIE_DESC)) {
@@ -95,7 +94,7 @@ namespace AC2E.Def {
                 data.Write(intTable, data.Write, data.Write);
             }
             if (packFlags.HasFlag(PackFlag.BOOL_HASH_TABLE)) {
-                data.Write(boolTable, data.Write, v => data.Write(v ? (uint)1 : (uint)0));
+                data.Write(boolTable, data.Write, data.Write);
             }
             if (packFlags.HasFlag(PackFlag.FLOAT_HASH_TABLE)) {
                 data.Write(floatTable, data.Write, data.Write);
@@ -104,7 +103,7 @@ namespace AC2E.Def {
                 data.Write(timestampTable, data.Write, data.Write);
             }
             if (packFlags.HasFlag(PackFlag.STRING_HASH_TABLE)) {
-                data.Write(stringTable, data.Write, v => data.WriteEncryptedString(v, Encoding.Unicode));
+                data.Write(stringTable, data.Write, v => data.Write(v, Encoding.Unicode));
             }
             if (packFlags.HasFlag(PackFlag.DATA_ID_HASH_TABLE)) {
                 data.Write(dataIdTable, data.Write, data.Write);

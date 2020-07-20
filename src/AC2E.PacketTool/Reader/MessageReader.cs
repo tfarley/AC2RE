@@ -1,12 +1,11 @@
 ﻿using AC2E.Def;
 using Serilog;
-using System.IO;
 
 namespace AC2E.PacketTool {
 
     public class MessageReader {
 
-        public static INetMessage read(BinaryReader data, bool isClientToServer) {
+        public static INetMessage read(AC2Reader data, bool isClientToServer) {
             MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
             switch (opcode) {
                 case MessageOpcode.Evt_Admin__DisplayStringInfo_ID:

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -13,13 +12,13 @@ namespace AC2E.Def {
             public DataId imageDid; // m_imageDID
             public RGBAColor shiftColor; // m_shiftColor
 
-            public IconLayerDesc(BinaryReader data) {
+            public IconLayerDesc(AC2Reader data) {
                 iconLayerId = data.ReadUInt32();
                 imageDid = data.ReadDataId();
                 shiftColor = data.ReadRGBAColor();
             }
 
-            public void write(BinaryWriter data) {
+            public void write(AC2Writer data) {
                 data.Write(iconLayerId);
                 data.Write(imageDid);
                 data.Write(shiftColor);
@@ -28,15 +27,15 @@ namespace AC2E.Def {
 
         public List<IconLayerDesc> layers; // m_layers
 
-        public IconDesc(BinaryReader data) {
+        public IconDesc(AC2Reader data) {
             layers = data.ReadList(() => new IconLayerDesc(data));
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write(layers, v => v.write(data));
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             write(data);
         }
     }

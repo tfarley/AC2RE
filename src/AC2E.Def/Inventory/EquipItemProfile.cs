@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class EquipItemProfile : IPackage {
 
@@ -18,17 +16,17 @@ namespace AC2E.Def {
 
         }
 
-        public EquipItemProfile(BinaryReader data, PackageRegistry registry) {
+        public EquipItemProfile(AC2Reader data, PackageRegistry registry) {
             _weapon_length = data.ReadUInt32();
             _priParentingLoc = data.ReadUInt32();
             _secParentingLoc = data.ReadUInt32();
             _inventory_locations = data.ReadUInt32();
-            _bind_on_use = data.ReadUInt32() != 0;
+            _bind_on_use = data.ReadBoolean();
             _pref_inventory_location = data.ReadUInt32();
             _placement_position = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(_weapon_length);
             data.Write(_priParentingLoc);
             data.Write(_secParentingLoc);

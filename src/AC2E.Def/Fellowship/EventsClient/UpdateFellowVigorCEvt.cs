@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UpdateFellowVigorCEvt : IClientEvent {
 
@@ -15,13 +13,13 @@ namespace AC2E.Def {
 
         }
 
-        public UpdateFellowVigorCEvt(BinaryReader data) {
+        public UpdateFellowVigorCEvt(AC2Reader data) {
             _valuePK = data.UnpackUInt32();
             _value = data.UnpackUInt32();
             _fid = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_valuePK);
             data.Pack(_value);
             data.Pack(_fid);

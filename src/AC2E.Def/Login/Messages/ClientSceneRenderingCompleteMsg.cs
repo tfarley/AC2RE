@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ClientSceneRenderingCompleteMsg : INetMessage {
 
@@ -10,7 +8,7 @@ namespace AC2E.Def {
 
         // ECM_Login::SendEvt_ClientSceneRenderingComplete
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
 
         }
     }

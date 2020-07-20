@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UpdateFellowshipCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public UpdateFellowshipCEvt(BinaryReader data) {
+        public UpdateFellowshipCEvt(AC2Reader data) {
             _fellowship = data.UnpackPackage<Fellowship>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_fellowship);
         }
     }

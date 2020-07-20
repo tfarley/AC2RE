@@ -1,6 +1,5 @@
 ﻿using AC2E.Utils;
 using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -22,11 +21,11 @@ namespace AC2E.Def {
             }
         }
 
-        public InstanceIdList(BinaryReader data) {
+        public InstanceIdList(AC2Reader data) {
             contents = data.ReadList(data.ReadInstanceId);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(contents, data.Write);
         }
     }

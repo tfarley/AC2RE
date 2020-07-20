@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class QualUpdateBoolPrivateMsg : INetMessage {
 
@@ -13,9 +10,9 @@ namespace AC2E.Def {
         public uint type; // _stype
         public bool value; // _data
 
-        public QualUpdateBoolPrivateMsg(BinaryReader data) {
+        public QualUpdateBoolPrivateMsg(AC2Reader data) {
             type = data.ReadUInt32();
-            value = data.ReadUInt32() != 0;
+            value = data.ReadBoolean();
         }
     }
 
@@ -30,10 +27,10 @@ namespace AC2E.Def {
         public uint type; // _stype
         public bool value; // _data
 
-        public QualUpdateBoolVisualMsg(BinaryReader data) {
+        public QualUpdateBoolVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             type = data.ReadUInt32();
-            value = data.ReadUInt32() != 0;
+            value = data.ReadBoolean();
         }
     }
 }

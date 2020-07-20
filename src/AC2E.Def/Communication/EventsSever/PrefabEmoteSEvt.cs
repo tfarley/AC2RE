@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class PrefabEmoteSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Communication::SendSEvt_PrefabEmote
         public uint _emoteID;
 
-        public PrefabEmoteSEvt(BinaryReader data) {
+        public PrefabEmoteSEvt(AC2Reader data) {
             _emoteID = data.UnpackUInt32();
         }
     }

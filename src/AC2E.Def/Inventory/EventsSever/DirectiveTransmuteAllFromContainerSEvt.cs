@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DirectiveTransmuteAllFromContainerSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Inventory::SendSEvt_DirectiveTransmuteAllFromContainer
         public InvTransmuteAllDesc _iDesc;
 
-        public DirectiveTransmuteAllFromContainerSEvt(BinaryReader data) {
+        public DirectiveTransmuteAllFromContainerSEvt(AC2Reader data) {
             _iDesc = data.UnpackPackage<InvTransmuteAllDesc>();
         }
     }

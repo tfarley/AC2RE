@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ParentMsg : INetMessage {
 
@@ -15,7 +12,7 @@ namespace AC2E.Def {
         public uint childLocation; // _child_location
         public uint orientationId; // _orientation_id
 
-        public ParentMsg(BinaryReader data) {
+        public ParentMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             parentIdWithChildPositionStamp = data.ReadInstanceIdWithStamp();
             childLocation = data.ReadUInt32();

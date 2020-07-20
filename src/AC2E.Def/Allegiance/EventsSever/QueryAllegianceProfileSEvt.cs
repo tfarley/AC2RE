@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class QueryAllegianceProfileSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Allegiance::SendSEvt_QueryAllegianceProfile
         public InstanceId _trg;
 
-        public QueryAllegianceProfileSEvt(BinaryReader data) {
+        public QueryAllegianceProfileSEvt(AC2Reader data) {
             _trg = data.UnpackInstanceId();
         }
     }

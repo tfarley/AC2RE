@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RequestSalesSEvt : IServerEvent {
 
@@ -10,7 +8,7 @@ namespace AC2E.Def {
         public uint _index;
         public InstanceId _iidStorekeeper;
 
-        public RequestSalesSEvt(BinaryReader data) {
+        public RequestSalesSEvt(AC2Reader data) {
             _index = data.UnpackUInt32();
             _iidStorekeeper = data.UnpackInstanceId();
         }

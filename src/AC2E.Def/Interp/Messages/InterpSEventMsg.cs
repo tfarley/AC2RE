@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class InterpSEventMsg : INetMessage {
 
@@ -12,7 +9,7 @@ namespace AC2E.Def {
         // ECM_Interp::SendEvt_InterpSEvent
         public IServerEvent netEvent;
 
-        public InterpSEventMsg(BinaryReader data) {
+        public InterpSEventMsg(AC2Reader data) {
             ServerEventFunctionId funcId = (ServerEventFunctionId)data.ReadUInt32();
             uint length = data.ReadUInt32();
             netEvent = IServerEvent.read(funcId, data);

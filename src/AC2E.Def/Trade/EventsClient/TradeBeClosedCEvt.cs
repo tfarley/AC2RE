@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class TradeBeClosedCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public TradeBeClosedCEvt(BinaryReader data) {
+        public TradeBeClosedCEvt(AC2Reader data) {
             _etype = data.UnpackUInt32();
             _src = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_etype);
             data.Pack(_src);
         }

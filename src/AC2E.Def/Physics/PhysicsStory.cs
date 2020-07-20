@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -37,7 +36,7 @@ namespace AC2E.Def {
             public int targetPkDamageChange; // m_targetPKDamageChange
             public int attackerPkDamageChange; // m_attackerPKDamageChange
 
-            public StoryHookData(BinaryReader data) {
+            public StoryHookData(AC2Reader data) {
                 packFlags = (PackFlag)data.ReadUInt32();
                 type = (uint)packFlags & 0xF;
                 packFlags = (PackFlag)((uint)packFlags & ~0xF);
@@ -91,7 +90,7 @@ namespace AC2E.Def {
         public bool basicAttack; // m_basicAttack
         public List<StoryHookData> hooks; // m_hooks
 
-        public PhysicsStory(BinaryReader data) {
+        public PhysicsStory(AC2Reader data) {
             packFlags = (PackFlag)data.ReadUInt32();
             if (packFlags.HasFlag(PackFlag.ATTACKER_ID)) {
                 attackerId = data.ReadInstanceId();

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class StoreRequestDoneCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public StoreRequestDoneCEvt(BinaryReader data) {
+        public StoreRequestDoneCEvt(AC2Reader data) {
             _err = data.UnpackUInt32();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_err);
         }
     }

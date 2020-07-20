@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class SkillUpdateEverythingCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public SkillUpdateEverythingCEvt(BinaryReader data) {
+        public SkillUpdateEverythingCEvt(AC2Reader data) {
             _rep = data.UnpackPackage<SkillRepository>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_rep);
         }
     }

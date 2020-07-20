@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CreateObjectMsg : INetMessage {
 
@@ -19,14 +16,14 @@ namespace AC2E.Def {
 
         }
 
-        public CreateObjectMsg(BinaryReader data) {
+        public CreateObjectMsg(AC2Reader data) {
             objectId = data.ReadInstanceId();
             vDesc = new VisualDesc(data);
             pDesc = new PhysicsDesc(data);
             wDesc = new WeenieDesc(data);
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write(objectId);
             vDesc.write(data);
             pDesc.write(data);

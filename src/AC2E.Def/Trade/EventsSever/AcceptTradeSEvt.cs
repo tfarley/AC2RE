@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class AcceptTradeSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Trade::SendSEvt_AcceptTrade
         public Trade _stuff;
 
-        public AcceptTradeSEvt(BinaryReader data) {
+        public AcceptTradeSEvt(AC2Reader data) {
             _stuff = data.UnpackPackage<Trade>();
         }
     }

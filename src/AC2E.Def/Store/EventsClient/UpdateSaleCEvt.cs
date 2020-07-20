@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UpdateSaleCEvt : IClientEvent {
 
@@ -15,13 +13,13 @@ namespace AC2E.Def {
 
         }
 
-        public UpdateSaleCEvt(BinaryReader data) {
+        public UpdateSaleCEvt(AC2Reader data) {
             __iStockdesc = data.UnpackInt32();
             _iidItem = data.UnpackInstanceId();
             _iidStorekeeper = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(__iStockdesc);
             data.Pack(_iidItem);
             data.Pack(_iidStorekeeper);

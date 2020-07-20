@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class PurchaseItemFromStoreSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Store::SendSEvt_Store_PurchaseItemFromStore
         public TransactionBlob _blob;
 
-        public PurchaseItemFromStoreSEvt(BinaryReader data) {
+        public PurchaseItemFromStoreSEvt(AC2Reader data) {
             _blob = data.UnpackPackage<TransactionBlob>();
         }
     }

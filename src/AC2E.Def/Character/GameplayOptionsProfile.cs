@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace AC2E.Def {
@@ -83,10 +82,10 @@ namespace AC2E.Def {
 
         }
 
-        public GameplayOptionsProfile(BinaryReader data) {
+        public GameplayOptionsProfile(AC2Reader data) {
             contentFlags = (ContentFlag)data.ReadUInt64();
             if (contentFlags.HasFlag(ContentFlag.ALIAS_TABLE)) {
-                m_aliasTable = data.ReadDictionary(() => data.ReadEncryptedString(Encoding.Unicode), () => data.ReadEncryptedString(Encoding.Unicode));
+                m_aliasTable = data.ReadDictionary(() => data.ReadString(Encoding.Unicode), () => data.ReadString(Encoding.Unicode));
             }
             if (contentFlags.HasFlag(ContentFlag.SHORTCUT_ARRAY)) {
                 m_shortcutArray = data.ReadList(() => new ShortcutInfo(data));
@@ -123,17 +122,17 @@ namespace AC2E.Def {
                 windowToChannel = data.ReadDictionary(data.ReadUInt32, () => (TextType)data.ReadUInt32());
             }
             if (contentFlags.HasFlag(ContentFlag.CHAT_POPUP_FLAGS)) {
-                m_chatPopupFlags = data.ReadDictionary(() => (TextType)data.ReadUInt32(), () => data.ReadUInt32() != 0);
+                m_chatPopupFlags = data.ReadDictionary(() => (TextType)data.ReadUInt32(), data.ReadBoolean);
             }
             if (contentFlags.HasFlag(ContentFlag.WINDOW_OPACITIES)) {
                 m_windowOpacities = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
             }
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write((ulong)contentFlags);
             if (contentFlags.HasFlag(ContentFlag.ALIAS_TABLE)) {
-                data.Write(m_aliasTable, k => data.WriteEncryptedString(k, Encoding.Unicode), v => data.WriteEncryptedString(v, Encoding.Unicode));
+                data.Write(m_aliasTable, k => data.Write(k, Encoding.Unicode), v => data.Write(v, Encoding.Unicode));
             }
             if (contentFlags.HasFlag(ContentFlag.SHORTCUT_ARRAY)) {
                 data.Write(m_shortcutArray, v => v.write(data, registry));
@@ -170,7 +169,7 @@ namespace AC2E.Def {
                 data.Write(windowToChannel, data.Write, v => data.Write((uint)v));
             }
             if (contentFlags.HasFlag(ContentFlag.CHAT_POPUP_FLAGS)) {
-                data.Write(m_chatPopupFlags, k => data.Write((uint)k), v => data.Write(v ? (uint)1 : (uint)0));
+                data.Write(m_chatPopupFlags, k => data.Write((uint)k), data.Write);
             }
             if (contentFlags.HasFlag(ContentFlag.WINDOW_OPACITIES)) {
                 data.Write(m_windowOpacities, data.Write, data.Write);

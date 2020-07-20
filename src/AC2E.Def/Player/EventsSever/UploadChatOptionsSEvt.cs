@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UploadChatOptionsSEvt : IServerEvent {
 
@@ -13,7 +11,7 @@ namespace AC2E.Def {
         public AAHash _chatFontSizes;
         public AAHash _chatFilter;
 
-        public UploadChatOptionsSEvt(BinaryReader data) {
+        public UploadChatOptionsSEvt(AC2Reader data) {
             _chatPopupFlags = data.UnpackPackage<AAHash>();
             _devotedChatWindows = data.UnpackPackage<AAHash>();
             _chatFontColors = data.UnpackPackage<AAHash>();

@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class StopFxMsg : INetMessage {
 
@@ -13,7 +10,7 @@ namespace AC2E.Def {
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public uint fxId; // _fx_id
 
-        public StopFxMsg(BinaryReader data) {
+        public StopFxMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             fxId = data.ReadUInt32();
         }

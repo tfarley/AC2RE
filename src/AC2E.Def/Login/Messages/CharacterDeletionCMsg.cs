@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CharacterDeletionCMsg : INetMessage {
 
@@ -12,7 +9,7 @@ namespace AC2E.Def {
         // ECM_Login::RecvEvt_CharacterDeletion
         public InstanceId characterId; // id
 
-        public CharacterDeletionCMsg(BinaryReader data) {
+        public CharacterDeletionCMsg(AC2Reader data) {
             characterId = data.ReadInstanceId();
         }
     }

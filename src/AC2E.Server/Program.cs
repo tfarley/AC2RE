@@ -42,7 +42,7 @@ namespace AC2E.Server {
         private static void parseWLib() {
             string wlibFileName = "56000005";
             if (File.Exists(wlibFileName)) {
-                using (BinaryReader data = new BinaryReader(File.OpenRead(wlibFileName))) {
+                using (AC2Reader data = new AC2Reader(File.OpenRead(wlibFileName))) {
                     var wlib = new Def.WLib(data);
                     Log.Information("Parsed wlib.");
                     using (StreamWriter output = new StreamWriter(File.OpenWrite("wlib.packages.txt"))) {
@@ -63,7 +63,7 @@ namespace AC2E.Server {
             if (Directory.Exists(datFilesDirectory)) {
                 foreach (string datFileName in Directory.EnumerateFiles(datFilesDirectory)) {
                     if (!datFileName.EndsWith(parsedExtension) && !File.Exists(datFileName + parsedExtension)) {
-                        using (BinaryReader data = new BinaryReader(File.OpenRead(datFileName)))
+                        using (AC2Reader data = new AC2Reader(File.OpenRead(datFileName)))
                         using (StreamWriter output = new StreamWriter(File.OpenWrite(datFileName + parsedExtension))) {
                             var emp = new EnumMapper(data);
                             foreach (var mapping in emp.idToString) {

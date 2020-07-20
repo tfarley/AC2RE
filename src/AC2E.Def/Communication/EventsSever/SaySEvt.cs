@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class SaySEvt : IServerEvent {
 
@@ -10,7 +8,7 @@ namespace AC2E.Def {
         public uint _weenieChatFlags;
         public StringInfo _msg;
 
-        public SaySEvt(BinaryReader data) {
+        public SaySEvt(AC2Reader data) {
             _weenieChatFlags = data.UnpackUInt32();
             _msg = data.UnpackPackage<StringInfo>();
         }

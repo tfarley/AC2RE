@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ActRegistry : IPackage {
 
@@ -13,12 +11,12 @@ namespace AC2E.Def {
 
         }
 
-        public ActRegistry(BinaryReader data, PackageRegistry registry) {
+        public ActRegistry(AC2Reader data, PackageRegistry registry) {
             m_viewingProtectionEID = data.ReadInt32();
             data.ReadPkgRef<ARHash<IPackage>>(v => m_actSceneTable = v.to<AList>(), registry);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_viewingProtectionEID);
             data.Write(m_actSceneTable, registry);
         }

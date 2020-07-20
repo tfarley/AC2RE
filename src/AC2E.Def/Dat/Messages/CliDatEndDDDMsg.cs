@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CliDatEndDDDMsg : INetMessage {
 
@@ -12,11 +10,11 @@ namespace AC2E.Def {
 
         }
 
-        public CliDatEndDDDMsg(BinaryReader data) {
+        public CliDatEndDDDMsg(AC2Reader data) {
 
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
 
         }
     }

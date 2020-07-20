@@ -1,6 +1,4 @@
-﻿using AC2E.Def;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 
 namespace AC2E.Def {
 
@@ -19,13 +17,13 @@ namespace AC2E.Def {
 
         }
 
-        public CliDatInterrogationMsg(BinaryReader data) {
+        public CliDatInterrogationMsg(AC2Reader data) {
             regionId = (RegionID)data.ReadUInt32();
             nameRuleLanguage = (Language)data.ReadUInt32();
             supportedLanguages = data.ReadList(() => (Language)data.ReadUInt32());
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write((uint)regionId);
             data.Write((uint)nameRuleLanguage);
             data.Write(supportedLanguages, v => data.Write((uint)v));

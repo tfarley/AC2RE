@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UpdateQuestCEvt : IClientEvent {
 
@@ -15,13 +13,13 @@ namespace AC2E.Def {
 
         }
 
-        public UpdateQuestCEvt(BinaryReader data) {
+        public UpdateQuestCEvt(AC2Reader data) {
             _status = data.UnpackUInt32();
             _qInfo = data.UnpackPackage<GMQuestInfo>();
             _qut = data.UnpackUInt32();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_status);
             data.Pack(_qInfo);
             data.Pack(_qut);

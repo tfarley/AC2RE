@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class LookAtMsg : INetMessage {
 
@@ -13,7 +10,7 @@ namespace AC2E.Def {
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public InstanceId targetId; // _target_id
 
-        public LookAtMsg(BinaryReader data) {
+        public LookAtMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             targetId = data.ReadInstanceId();
         }

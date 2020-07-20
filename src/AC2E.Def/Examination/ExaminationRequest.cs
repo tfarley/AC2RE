@@ -19,9 +19,9 @@ namespace AC2E.Def {
 
         }
 
-        public ExaminationRequest(BinaryReader data) {
+        public ExaminationRequest(AC2Reader data) {
             _type = (ExaminationRequestType)data.ReadUInt32();
-            _admin = data.ReadUInt32() != 0;
+            _admin = data.ReadBoolean();
             switch (_type) {
                 case ExaminationRequestType.UNDEF:
                     break;
@@ -51,9 +51,9 @@ namespace AC2E.Def {
             }
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write((uint)_type);
-            data.Write(_admin ? (uint)1 : (uint)0);
+            data.Write(_admin);
             switch (_type) {
                 case ExaminationRequestType.UNDEF:
                     break;

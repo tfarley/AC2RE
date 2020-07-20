@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class SetNextTargetSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Combat::SendSEvt_SetNextTarget
         public InstanceId _target;
 
-        public SetNextTargetSEvt(BinaryReader data) {
+        public SetNextTargetSEvt(AC2Reader data) {
             _target = data.UnpackInstanceId();
         }
     }

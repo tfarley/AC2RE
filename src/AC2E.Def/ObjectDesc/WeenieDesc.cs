@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -85,7 +84,7 @@ namespace AC2E.Def {
 
         }
 
-        public WeenieDesc(BinaryReader data) {
+        public WeenieDesc(AC2Reader data) {
             packFlags = (PackFlag)data.ReadUInt32();
             if (packFlags.HasFlag(PackFlag.MY_PACKAGE_ID)) {
                 packageId = data.ReadPackageId();
@@ -139,10 +138,10 @@ namespace AC2E.Def {
                 factionType = data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.PK_ALWAYS_TRUE_PERMISSIONS)) {
-                pkAlwaysTrue = data.ReadUInt32() != 0;
+                pkAlwaysTrue = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.PK_ALWAYS_FALSE_PERMISSIONS)) {
-                pkAlwaysFalse = data.ReadUInt32() != 0;
+                pkAlwaysFalse = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.PHYSICS_TYPE_LOW_DWORD)) {
                 physicsTypeLow = data.ReadUInt32();
@@ -170,7 +169,7 @@ namespace AC2E.Def {
             }
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write((uint)packFlags);
             if (packFlags.HasFlag(PackFlag.MY_PACKAGE_ID)) {
                 data.Write(packageId);
@@ -224,10 +223,10 @@ namespace AC2E.Def {
                 data.Write(factionType);
             }
             if (packFlags.HasFlag(PackFlag.PK_ALWAYS_TRUE_PERMISSIONS)) {
-                data.Write(pkAlwaysTrue ? (uint)1 : (uint)0);
+                data.Write(pkAlwaysTrue);
             }
             if (packFlags.HasFlag(PackFlag.PK_ALWAYS_FALSE_PERMISSIONS)) {
-                data.Write(pkAlwaysFalse ? (uint)1 : (uint)0);
+                data.Write(pkAlwaysFalse);
             }
             if (packFlags.HasFlag(PackFlag.PHYSICS_TYPE_LOW_DWORD)) {
                 data.Write(physicsTypeLow);

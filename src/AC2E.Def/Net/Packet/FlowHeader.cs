@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class FlowHeader {
 
@@ -8,12 +6,12 @@ namespace AC2E.Def {
         public uint length; // cbDataRecvd
         public ushort interval; // interval
 
-        public FlowHeader(BinaryReader data) {
+        public FlowHeader(AC2Reader data) {
             length = data.ReadUInt32();
             interval = data.ReadUInt16();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write(length);
             data.Write(interval);
         }

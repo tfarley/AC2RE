@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class EchoResponseHeader {
 
@@ -8,7 +6,7 @@ namespace AC2E.Def {
         public float localTime; // m_LocalTimeConstructed
         public float localToServerTimeDelta; // m_LocalTimeConstructed
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write(localTime);
             data.Write(localToServerTimeDelta);
         }

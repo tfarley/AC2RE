@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RequestExecuteCraftSEvt : IServerEvent {
 
@@ -12,7 +10,7 @@ namespace AC2E.Def {
         public int _spinnerVal;
         public DataId _didRecipe;
 
-        public RequestExecuteCraftSEvt(BinaryReader data) {
+        public RequestExecuteCraftSEvt(AC2Reader data) {
             _iidTarget = data.UnpackInstanceId();
             _ingredients = data.UnpackPackage<ALHash>();
             _spinnerVal = data.UnpackInt32();

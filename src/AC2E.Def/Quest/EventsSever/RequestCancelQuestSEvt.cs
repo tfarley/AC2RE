@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RequestCancelQuestSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Quest::SendSEvt_RequestCancelQuest
         public uint _questID;
 
-        public RequestCancelQuestSEvt(BinaryReader data) {
+        public RequestCancelQuestSEvt(AC2Reader data) {
             _questID = data.UnpackUInt32();
         }
     }

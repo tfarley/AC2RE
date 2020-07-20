@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class EndSpecialAttackCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public EndSpecialAttackCEvt(BinaryReader data) {
+        public EndSpecialAttackCEvt(AC2Reader data) {
             _last_special_attack_id = data.UnpackUInt32();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_last_special_attack_id);
         }
     }

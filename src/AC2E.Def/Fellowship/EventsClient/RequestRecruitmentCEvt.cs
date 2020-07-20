@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RequestRecruitmentCEvt : IClientEvent {
 
@@ -15,13 +13,13 @@ namespace AC2E.Def {
 
         }
 
-        public RequestRecruitmentCEvt(BinaryReader data) {
+        public RequestRecruitmentCEvt(AC2Reader data) {
             _fellowship_name = data.UnpackPackage<StringInfo>();
             _leader_name = data.UnpackPackage<StringInfo>();
             _leader = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_fellowship_name);
             data.Pack(_leader_name);
             data.Pack(_leader);

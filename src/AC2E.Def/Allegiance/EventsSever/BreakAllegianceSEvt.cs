@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class BreakAllegianceSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Allegiance::SendSEvt_BreakAllegiance
         public InstanceId _trg;
 
-        public BreakAllegianceSEvt(BinaryReader data) {
+        public BreakAllegianceSEvt(AC2Reader data) {
             _trg = data.UnpackInstanceId();
         }
     }

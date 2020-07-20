@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -19,7 +18,7 @@ namespace AC2E.Def {
             return new InterpReferenceMeta(flags, ReferenceType.HEAPOBJECT);
         }
 
-        public static IPackage read(BinaryReader data, NativeType nativeType, PackageRegistry registry) {
+        public static IPackage read(AC2Reader data, NativeType nativeType, PackageRegistry registry) {
             switch (nativeType) {
                 case NativeType.AAHASH:
                     return new AAHash(data);
@@ -86,7 +85,7 @@ namespace AC2E.Def {
             }
         }
 
-        public static IPackage read(BinaryReader data, PackageType packageType, PackageRegistry registry) {
+        public static IPackage read(AC2Reader data, PackageType packageType, PackageRegistry registry) {
             switch (packageType) {
                 case PackageType.AllegianceData:
                     return new AllegianceData(data, registry);

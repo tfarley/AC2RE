@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CliDatErrorMsg : INetMessage {
 
@@ -17,12 +14,12 @@ namespace AC2E.Def {
 
         }
 
-        public CliDatErrorMsg(BinaryReader data) {
+        public CliDatErrorMsg(AC2Reader data) {
             qdid = data.ReadQualifiedDataId();
             error = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write(qdid);
             data.Write(error);
         }

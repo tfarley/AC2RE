@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ListCurrentlyTrainedSkillsDoneCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public ListCurrentlyTrainedSkillsDoneCEvt(BinaryReader data) {
+        public ListCurrentlyTrainedSkillsDoneCEvt(AC2Reader data) {
             _skills = data.UnpackPackage<RList<IPackage>>().to<StringInfo>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_skills);
         }
     }

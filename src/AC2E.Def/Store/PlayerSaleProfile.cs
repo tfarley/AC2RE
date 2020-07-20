@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class PlayerSaleProfile : SaleProfile {
 
@@ -12,11 +10,11 @@ namespace AC2E.Def {
 
         }
 
-        public PlayerSaleProfile(BinaryReader data, PackageRegistry registry) : base(data, registry) {
+        public PlayerSaleProfile(AC2Reader data, PackageRegistry registry) : base(data, registry) {
             m_iQtyInStock = data.ReadInt32();
         }
 
-        public override void write(BinaryWriter data, PackageRegistry registry) {
+        public override void write(AC2Writer data, PackageRegistry registry) {
             base.write(data, registry);
             data.Write(m_iQtyInStock);
         }

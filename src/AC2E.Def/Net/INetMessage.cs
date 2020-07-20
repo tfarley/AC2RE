@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -9,7 +8,7 @@ namespace AC2E.Def {
         NetQueue queueId { get; }
         MessageOpcode opcode { get; }
 
-        void write(BinaryWriter data) {
+        void write(AC2Writer data) {
             throw new NotImplementedException("INetMessage implementor must override write().");
         }
     }

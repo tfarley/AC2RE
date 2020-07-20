@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class EffectRegistry : IPackage {
 
@@ -24,7 +22,7 @@ namespace AC2E.Def {
 
         }
 
-        public EffectRegistry(BinaryReader data, PackageRegistry registry) {
+        public EffectRegistry(AC2Reader data, PackageRegistry registry) {
             data.ReadPkgRef<AAHash>(v => m_qualitiesModifiedCount = v, registry);
             data.ReadPkgRef<AAHash>(v => m_appliedFX = v, registry);
             data.ReadPkgRef<EffectRegistry>(v => m_baseEffectRegistry = v, registry);
@@ -40,7 +38,7 @@ namespace AC2E.Def {
             data.ReadPkgRef<AAHash>(v => m_appliedAppearances = v, registry);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_qualitiesModifiedCount, registry);
             data.Write(m_appliedFX, registry);
             data.Write(m_baseEffectRegistry, registry);

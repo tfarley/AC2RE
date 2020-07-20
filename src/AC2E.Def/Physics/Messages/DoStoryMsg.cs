@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DoStoryMsg : INetMessage {
 
@@ -13,7 +10,7 @@ namespace AC2E.Def {
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public PhysicsStory story; // __story
 
-        public DoStoryMsg(BinaryReader data) {
+        public DoStoryMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             story = new PhysicsStory(data);
         }

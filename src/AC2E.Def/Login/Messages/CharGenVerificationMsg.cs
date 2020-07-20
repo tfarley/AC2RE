@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CharGenVerificationMsg : INetMessage {
 
@@ -14,7 +11,7 @@ namespace AC2E.Def {
         public CharacterIdentity character; // _identity
         public uint weenieCharGenResult; // weenieCharGenResult
 
-        public CharGenVerificationMsg(BinaryReader data) {
+        public CharGenVerificationMsg(AC2Reader data) {
             response = data.ReadUInt32();
             character = new CharacterIdentity(data);
             weenieCharGenResult = data.ReadUInt32();

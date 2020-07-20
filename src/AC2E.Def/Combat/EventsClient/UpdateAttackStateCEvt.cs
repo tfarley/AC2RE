@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UpdateAttackStateCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public UpdateAttackStateCEvt(BinaryReader data) {
+        public UpdateAttackStateCEvt(AC2Reader data) {
             _attacking = data.UnpackUInt32() != 0;
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_attacking ? (uint)1 : (uint)0);
         }
     }

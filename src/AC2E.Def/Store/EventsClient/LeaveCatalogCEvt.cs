@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class LeaveCatalogCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public LeaveCatalogCEvt(BinaryReader data) {
+        public LeaveCatalogCEvt(AC2Reader data) {
             _iidStorekeeper = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_iidStorekeeper);
         }
     }

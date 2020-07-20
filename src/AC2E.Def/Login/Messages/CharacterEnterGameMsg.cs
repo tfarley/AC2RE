@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CharacterEnterGameMsg : INetMessage {
 
@@ -12,9 +9,9 @@ namespace AC2E.Def {
         public InstanceId characterId;
         public string accountName;
 
-        public CharacterEnterGameMsg(BinaryReader data) {
+        public CharacterEnterGameMsg(AC2Reader data) {
             characterId = data.ReadInstanceId();
-            accountName = data.ReadEncryptedString();
+            accountName = data.ReadString();
         }
     }
 }

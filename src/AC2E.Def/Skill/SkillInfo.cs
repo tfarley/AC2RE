@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class SkillInfo : IPackage {
 
@@ -22,7 +20,7 @@ namespace AC2E.Def {
 
         }
 
-        public SkillInfo(BinaryReader data) {
+        public SkillInfo(AC2Reader data) {
             m_timeLastUsed = data.ReadDouble();
             m_levelCached = data.ReadUInt32();
             m_timeCached = data.ReadDouble();
@@ -36,7 +34,7 @@ namespace AC2E.Def {
             m_typeSkill = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_timeLastUsed);
             data.Write(m_levelCached);
             data.Write(m_timeCached);

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class InvTransmuteAllDesc : IPackage {
 
@@ -24,23 +22,23 @@ namespace AC2E.Def {
 
         }
 
-        public InvTransmuteAllDesc(BinaryReader data, PackageRegistry registry) {
+        public InvTransmuteAllDesc(AC2Reader data, PackageRegistry registry) {
             m_lastError = data.ReadUInt32();
-            bIgnoreAttunement = data.ReadUInt32() != 0;
+            bIgnoreAttunement = data.ReadBoolean();
             data.ReadPkgRef<LList>(v => m_itemsTransmuted = new InstanceIdList(v), registry);
-            checkTakePermFlag = data.ReadUInt32() != 0;
+            checkTakePermFlag = data.ReadBoolean();
             m_moneyEarned = data.ReadUInt32();
-            m_bQuiet = data.ReadUInt32() != 0;
-            noAnimFlag = data.ReadUInt32() != 0;
+            m_bQuiet = data.ReadBoolean();
+            noAnimFlag = data.ReadBoolean();
             m_status = data.ReadUInt32();
             m_fromContainerID = data.ReadInstanceId();
             data.ReadPkgRef<LList>(v => m_itemsNotTransmuted = new InstanceIdList(v), registry);
-            playedAnim = data.ReadUInt32() != 0;
-            noMoveFlag = data.ReadUInt32() != 0;
+            playedAnim = data.ReadBoolean();
+            noMoveFlag = data.ReadBoolean();
             m_targetPlayerID = data.ReadInstanceId();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_lastError);
             data.Write(bIgnoreAttunement ? (uint)1 : (uint)0);
             data.Write(m_itemsTransmuted, registry);

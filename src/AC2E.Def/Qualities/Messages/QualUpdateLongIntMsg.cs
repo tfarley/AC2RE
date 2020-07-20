@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class QualUpdateLongIntPrivateMsg : INetMessage {
 
@@ -13,7 +10,7 @@ namespace AC2E.Def {
         public uint type; // _stype
         public long value; // _data
 
-        public QualUpdateLongIntPrivateMsg(BinaryReader data) {
+        public QualUpdateLongIntPrivateMsg(AC2Reader data) {
             type = data.ReadUInt32();
             value = data.ReadInt64();
         }
@@ -30,7 +27,7 @@ namespace AC2E.Def {
         public uint type; // _stype
         public long value; // _data
 
-        public QualUpdateLongIntVisualMsg(BinaryReader data) {
+        public QualUpdateLongIntVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             type = data.ReadUInt32();
             value = data.ReadInt64();

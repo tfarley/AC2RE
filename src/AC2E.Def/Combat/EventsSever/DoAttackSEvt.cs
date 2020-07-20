@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DoAttackSEvt : IServerEvent {
 
@@ -11,7 +9,7 @@ namespace AC2E.Def {
         public uint _maneuver;
         public InstanceId _target;
 
-        public DoAttackSEvt(BinaryReader data) {
+        public DoAttackSEvt(AC2Reader data) {
             _special_attack_id = data.UnpackUInt32();
             _maneuver = data.UnpackUInt32();
             _target = data.UnpackInstanceId();

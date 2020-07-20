@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class PetAddCEvt : IClientEvent {
 
@@ -16,14 +14,14 @@ namespace AC2E.Def {
 
         }
 
-        public PetAddCEvt(BinaryReader data) {
+        public PetAddCEvt(AC2Reader data) {
             _petData = data.UnpackPackage<PetData>();
             _icon = data.UnpackDataId();
             _name = data.UnpackPackage<StringInfo>();
             _iidPet = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_petData);
             data.Pack(_icon);
             data.Pack(_name);

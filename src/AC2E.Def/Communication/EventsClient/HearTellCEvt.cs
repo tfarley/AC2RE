@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class HearTellCEvt : IClientEvent {
 
@@ -16,14 +14,14 @@ namespace AC2E.Def {
 
         }
 
-        public HearTellCEvt(BinaryReader data) {
+        public HearTellCEvt(AC2Reader data) {
             _weenieChatFlags = data.UnpackUInt32();
             _msg = data.UnpackPackage<StringInfo>();
             _teller = data.UnpackPackage<StringInfo>();
             _tellerID = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_weenieChatFlags);
             data.Pack(_msg);
             data.Pack(_teller);

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class Fellow : IPackage {
 
@@ -15,14 +13,14 @@ namespace AC2E.Def {
 
         }
 
-        public Fellow(BinaryReader data, PackageRegistry registry) {
+        public Fellow(AC2Reader data, PackageRegistry registry) {
             m_join_ts = data.ReadDouble();
             m_level = data.ReadUInt32();
             data.ReadPkgRef<FellowVitals>(v => m_vitals = v, registry);
             data.ReadPkgRef<StringInfo>(v => m_name = v, registry);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_join_ts);
             data.Write(m_level);
             data.Write(m_vitals, registry);

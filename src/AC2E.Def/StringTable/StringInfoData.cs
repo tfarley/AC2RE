@@ -1,6 +1,4 @@
-﻿using AC2E.Utils;
-using System;
-using System.IO;
+﻿using System;
 
 namespace AC2E.Def {
 
@@ -31,7 +29,7 @@ namespace AC2E.Def {
         public ulong dataULong;
         public StringInfo stringInfo;
 
-        public StringInfoData(BinaryReader data) {
+        public StringInfoData(AC2Reader data) {
             // TODO: Not sure if this should be full 32 read or 16 + align
             type = (StringInfoDataType)data.ReadUInt16();
             data.Align(4);
@@ -61,7 +59,7 @@ namespace AC2E.Def {
             }
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             // TODO: Not sure if this should be full 32 write or 16 + align
             data.Write((ushort)type);
             data.Align(4);

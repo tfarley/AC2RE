@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RequestPetDieSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Player::SendSEvt_RequestPetDie
         public InstanceId _iidPet;
 
-        public RequestPetDieSEvt(BinaryReader data) {
+        public RequestPetDieSEvt(AC2Reader data) {
             _iidPet = data.UnpackInstanceId();
         }
     }

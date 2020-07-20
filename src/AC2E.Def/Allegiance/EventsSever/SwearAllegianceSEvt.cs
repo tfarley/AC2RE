@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class SwearAllegianceSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Allegiance::SendSEvt_SwearAllegiance
         public InstanceId _trg;
 
-        public SwearAllegianceSEvt(BinaryReader data) {
+        public SwearAllegianceSEvt(AC2Reader data) {
             _trg = data.UnpackInstanceId();
         }
     }

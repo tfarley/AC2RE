@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ExitPortalSceneCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public ExitPortalSceneCEvt(BinaryReader data) {
+        public ExitPortalSceneCEvt(AC2Reader data) {
             _scenes = data.UnpackPackage<GMSceneInfoList>();
             _delay = data.UnpackDouble();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_scenes);
             data.Pack(_delay);
         }

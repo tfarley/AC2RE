@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class StopBehaviorMsg : INetMessage {
 
@@ -13,7 +10,7 @@ namespace AC2E.Def {
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public uint behaviorId; // bvrID
 
-        public StopBehaviorMsg(BinaryReader data) {
+        public StopBehaviorMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             behaviorId = data.ReadUInt32();
         }

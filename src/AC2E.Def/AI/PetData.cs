@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class PetData : IPackage {
 
@@ -14,13 +12,13 @@ namespace AC2E.Def {
 
         }
 
-        public PetData(BinaryReader data) {
+        public PetData(AC2Reader data) {
             m_timeLeftWorld = data.ReadDouble();
             m_class = data.ReadUInt32();
             m_flags = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_timeLeftWorld);
             data.Write(m_class);
             data.Write(m_flags);

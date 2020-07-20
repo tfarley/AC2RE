@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class GameSaleProfile : SaleProfile {
 
@@ -13,15 +11,15 @@ namespace AC2E.Def {
 
         }
 
-        public GameSaleProfile(BinaryReader data, PackageRegistry registry) : base(data, registry) {
+        public GameSaleProfile(AC2Reader data, PackageRegistry registry) : base(data, registry) {
             m_uiOrdinal = data.ReadUInt32();
-            m_bRestricted = data.ReadUInt32() != 0;
+            m_bRestricted = data.ReadBoolean();
         }
 
-        public override void write(BinaryWriter data, PackageRegistry registry) {
+        public override void write(AC2Writer data, PackageRegistry registry) {
             base.write(data, registry);
             data.Write(m_uiOrdinal);
-            data.Write(m_bRestricted ? (uint)1 : (uint)0);
+            data.Write(m_bRestricted);
         }
     }
 }

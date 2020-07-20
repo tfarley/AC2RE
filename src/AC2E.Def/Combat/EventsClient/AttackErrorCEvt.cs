@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class AttackErrorCEvt : IClientEvent {
 
@@ -15,13 +13,13 @@ namespace AC2E.Def {
 
         }
 
-        public AttackErrorCEvt(BinaryReader data) {
+        public AttackErrorCEvt(AC2Reader data) {
             _skill = data.UnpackUInt32();
             _iidTarget = data.UnpackInstanceId();
             _err = data.UnpackUInt32();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_skill);
             data.Pack(_iidTarget);
             data.Pack(_err);

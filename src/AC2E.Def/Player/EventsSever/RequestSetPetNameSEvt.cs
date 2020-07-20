@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RequestSetPetNameSEvt : IServerEvent {
 
@@ -10,7 +8,7 @@ namespace AC2E.Def {
         public WPString _sPetName;
         public InstanceId _iidPet;
 
-        public RequestSetPetNameSEvt(BinaryReader data) {
+        public RequestSetPetNameSEvt(AC2Reader data) {
             _sPetName = data.UnpackPackage<WPString>();
             _iidPet = data.UnpackInstanceId();
         }

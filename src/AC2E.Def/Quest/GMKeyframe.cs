@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System.Text;
 
 namespace AC2E.Def {
 
@@ -21,7 +20,7 @@ namespace AC2E.Def {
 
         }
 
-        public GMKeyframe(BinaryReader data) {
+        public GMKeyframe(AC2Reader data) {
             m_sceneID = data.ReadUInt32();
             m_uiFrameNum = data.ReadUInt32();
             m_ttDuration = data.ReadDouble();
@@ -29,11 +28,11 @@ namespace AC2E.Def {
             m_didAudioFragment = data.ReadDataId();
             m_didVoiceFragment = data.ReadDataId();
             m_siTextFragment = new StringInfo(data);
-            m_strMovieFragmentFilename = data.ReadEncryptedString(Encoding.Unicode);
+            m_strMovieFragmentFilename = data.ReadString(Encoding.Unicode);
             m_definedTracks = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_sceneID);
             data.Write(m_uiFrameNum);
             data.Write(m_ttDuration);
@@ -41,7 +40,7 @@ namespace AC2E.Def {
             data.Write(m_didAudioFragment);
             data.Write(m_didVoiceFragment);
             m_siTextFragment.write(data);
-            data.WriteEncryptedString(m_strMovieFragmentFilename, Encoding.Unicode);
+            data.Write(m_strMovieFragmentFilename, Encoding.Unicode);
             data.Write(m_definedTracks);
         }
     }

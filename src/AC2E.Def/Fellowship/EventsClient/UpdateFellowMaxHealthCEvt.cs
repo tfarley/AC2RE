@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UpdateFellowMaxHealthCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public UpdateFellowMaxHealthCEvt(BinaryReader data) {
+        public UpdateFellowMaxHealthCEvt(AC2Reader data) {
             _value = data.UnpackUInt32();
             _fid = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_value);
             data.Pack(_fid);
         }

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UpdateSelectionInfoCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public UpdateSelectionInfoCEvt(BinaryReader data) {
+        public UpdateSelectionInfoCEvt(AC2Reader data) {
             _info = data.UnpackPackage<SelectionInfo>();
             _selectionID = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_info);
             data.Pack(_selectionID);
         }

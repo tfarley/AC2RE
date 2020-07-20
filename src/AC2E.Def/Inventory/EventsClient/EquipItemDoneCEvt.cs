@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class EquipItemDoneCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public EquipItemDoneCEvt(BinaryReader data) {
+        public EquipItemDoneCEvt(AC2Reader data) {
             _eDesc = data.UnpackPackage<InvEquipDesc>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_eDesc);
         }
     }

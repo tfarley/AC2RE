@@ -1,6 +1,5 @@
 ﻿using AC2E.Utils;
 using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -15,11 +14,11 @@ namespace AC2E.Def {
 
         }
 
-        public LAHash(BinaryReader data) {
+        public LAHash(AC2Reader data) {
             contents = data.ReadDictionary(data.ReadUInt64, data.ReadUInt32);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(contents, data.Write, data.Write);
         }
     }

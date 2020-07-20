@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ResetContentsCEvt : IClientEvent {
 
@@ -15,13 +13,13 @@ namespace AC2E.Def {
 
         }
 
-        public ResetContentsCEvt(BinaryReader data) {
+        public ResetContentsCEvt(AC2Reader data) {
             _containerSegments = data.UnpackPackage<RList<IPackage>>().to<ContainerSegmentDescriptor>();
             _containers = new InstanceIdList(data.UnpackPackage<LList>());
             _contents = new InstanceIdList(data.UnpackPackage<LList>());
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_containerSegments);
             data.Pack(_containers);
             data.Pack(_contents);

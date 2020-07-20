@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class HandleCharacterSessionStartCEvt : IClientEvent {
 
@@ -26,7 +24,7 @@ namespace AC2E.Def {
 
         }
 
-        public HandleCharacterSessionStartCEvt(BinaryReader data) {
+        public HandleCharacterSessionStartCEvt(AC2Reader data) {
             money = data.UnpackInt32();
             _aReg = data.UnpackPackage<ActRegistry>();
             _quests = data.UnpackPackage<GMQuestInfoList>();
@@ -43,7 +41,7 @@ namespace AC2E.Def {
             _srvFactionStatus = data.UnpackUInt32();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(money);
             data.Pack(_aReg);
             data.Pack(_quests);

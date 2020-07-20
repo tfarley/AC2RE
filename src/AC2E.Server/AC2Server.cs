@@ -106,7 +106,7 @@ namespace AC2E.Server {
         }
 
         internal void processData(byte[] rawData, int dataLen, IPEndPoint receiveEndpoint) {
-            using (BinaryReader data = new BinaryReader(new MemoryStream(rawData, 0, dataLen))) {
+            using (AC2Reader data = new AC2Reader(new MemoryStream(rawData, 0, dataLen))) {
 
                 try {
                     NetPacket packet = new NetPacket(data);
@@ -192,7 +192,7 @@ namespace AC2E.Server {
         }
 
         private void processNetBlob(ClientConnection client, NetBlobFrag blob) {
-            using (BinaryReader data = new BinaryReader(new MemoryStream(blob.payload))) {
+            using (AC2Reader data = new AC2Reader(new MemoryStream(blob.payload))) {
 
                 MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
 

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CustomEmoteSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Communication::SendSEvt_CustomEmote
         public WPString _text;
 
-        public CustomEmoteSEvt(BinaryReader data) {
+        public CustomEmoteSEvt(AC2Reader data) {
             _text = data.UnpackPackage<WPString>();
         }
     }

@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CLookAtMsg : INetMessage {
 
@@ -12,7 +9,7 @@ namespace AC2E.Def {
         // ECM_Physics::SendEvt_CLookAt
         public InstanceId targetId; // _target_id
 
-        public CLookAtMsg(BinaryReader data) {
+        public CLookAtMsg(AC2Reader data) {
             targetId = data.ReadInstanceId();
         }
     }

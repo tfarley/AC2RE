@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class HandlePlayScenesDoneSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Quest::SendSEvt_HandlePlayScenesDone
         public GMSceneInfoList _playScenes;
 
-        public HandlePlayScenesDoneSEvt(BinaryReader data) {
+        public HandlePlayScenesDoneSEvt(AC2Reader data) {
             _playScenes = data.UnpackPackage<GMSceneInfoList>();
         }
     }

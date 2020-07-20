@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class QualUpdatePositionPrivateMsg : INetMessage {
 
@@ -13,7 +10,7 @@ namespace AC2E.Def {
         public uint type; // _stype
         public Position value; // _data
 
-        public QualUpdatePositionPrivateMsg(BinaryReader data) {
+        public QualUpdatePositionPrivateMsg(AC2Reader data) {
             type = data.ReadUInt32();
             value = new Position(data);
         }
@@ -30,7 +27,7 @@ namespace AC2E.Def {
         public uint type; // _stype
         public Position value; // _data
 
-        public QualUpdatePositionVisualMsg(BinaryReader data) {
+        public QualUpdatePositionVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             type = data.ReadUInt32();
             value = new Position(data);

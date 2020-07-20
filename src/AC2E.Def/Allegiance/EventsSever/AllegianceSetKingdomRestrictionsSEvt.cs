@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class AllegianceSetKingdomRestrictionsSEvt : IServerEvent {
 
@@ -10,7 +8,7 @@ namespace AC2E.Def {
         public bool _fAllowNeutrals;
         public bool _fRestrictionsOn;
 
-        public AllegianceSetKingdomRestrictionsSEvt(BinaryReader data) {
+        public AllegianceSetKingdomRestrictionsSEvt(AC2Reader data) {
             _fAllowNeutrals = data.UnpackUInt32() != 0;
             _fRestrictionsOn = data.UnpackUInt32() != 0;
         }

@@ -1,6 +1,5 @@
 ﻿using AC2E.Utils;
 using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -26,14 +25,14 @@ namespace AC2E.Def {
 
         }
 
-        public RList(BinaryReader data, PackageRegistry registry) {
+        public RList(AC2Reader data, PackageRegistry registry) {
             contents = new List<T>();
             foreach (var element in data.ReadList(data.ReadPackageId)) {
                 registry.addResolver(() => contents.Add(registry.get<T>(element)));
             }
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(contents, v => data.Write(v, registry));
         }
     }

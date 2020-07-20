@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DirectiveMoveItemSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Inventory::SendSEvt_DirectiveMoveItem
         public InvMoveDesc _iDesc;
 
-        public DirectiveMoveItemSEvt(BinaryReader data) {
+        public DirectiveMoveItemSEvt(AC2Reader data) {
             _iDesc = data.UnpackPackage<InvMoveDesc>();
         }
     }

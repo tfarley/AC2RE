@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DisplayMarkerCEvt : IClientEvent {
 
@@ -17,7 +15,7 @@ namespace AC2E.Def {
 
         }
 
-        public DisplayMarkerCEvt(BinaryReader data) {
+        public DisplayMarkerCEvt(AC2Reader data) {
             _msg = data.UnpackPackage<StringInfo>();
             _marker = data.UnpackDataId();
             _cell = new CellId(data.UnpackUInt32());
@@ -25,7 +23,7 @@ namespace AC2E.Def {
             _type = data.UnpackUInt32();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_msg);
             data.Pack(_marker);
             data.Pack(_cell.id);

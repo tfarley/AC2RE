@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CliDatInterrogationResponseMsg : INetMessage {
 
@@ -13,7 +10,7 @@ namespace AC2E.Def {
         public Language language; // LanguageID
         // public uint[] IterationListData = new uint[4]; // IterationListData
 
-        public CliDatInterrogationResponseMsg(BinaryReader data) {
+        public CliDatInterrogationResponseMsg(AC2Reader data) {
             language = (Language)data.ReadUInt32();
             // TODO: Read IterationListData, 88 bytes worth - always?
         }

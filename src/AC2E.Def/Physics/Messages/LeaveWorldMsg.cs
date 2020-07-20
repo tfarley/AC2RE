@@ -1,8 +1,4 @@
-﻿using AC2E.Def;
-using AC2E.Utils;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class LeaveWorldMsg : INetMessage {
 
@@ -14,7 +10,7 @@ namespace AC2E.Def {
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public ushort positionStamp; // _position_stamp
 
-        public LeaveWorldMsg(BinaryReader data) {
+        public LeaveWorldMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             positionStamp = data.ReadUInt16();
             data.Align(4);

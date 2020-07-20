@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class FellowVitals : IPackage {
 
@@ -18,7 +16,7 @@ namespace AC2E.Def {
 
         }
 
-        public FellowVitals(BinaryReader data, PackageRegistry registry) {
+        public FellowVitals(AC2Reader data, PackageRegistry registry) {
             m_max_health = data.ReadUInt32();
             m_cell = data.ReadCellId();
             m_health = data.ReadUInt32();
@@ -28,7 +26,7 @@ namespace AC2E.Def {
             m_PKVigorloss = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_max_health);
             data.Write(m_cell);
             data.Write(m_health);

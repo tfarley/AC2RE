@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -8,11 +7,11 @@ namespace AC2E.Def {
 
         public ulong flags; // m_Flags
 
-        public Behavior(BinaryReader data) {
+        public Behavior(AC2Reader data) {
             flags = data.ReadUInt64();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write(flags);
         }
     }
@@ -78,7 +77,7 @@ namespace AC2E.Def {
         public bool destroyOnCompletion; // mDestroyOnCompletion
         public uint contextId; // mContextID
 
-        public BehaviorParams(BinaryReader data) {
+        public BehaviorParams(AC2Reader data) {
             packFlags = (PackFlag)data.ReadUInt32();
             if (packFlags.HasFlag(PackFlag.BEHAVIOR_ID)) {
                 behaviorId = data.ReadUInt32();
@@ -114,40 +113,40 @@ namespace AC2E.Def {
                 impulse = data.ReadVector();
             }
             if (packFlags.HasFlag(PackFlag.EARLYCALLBACK)) {
-                earlyCallback = data.ReadUInt32() != 0;
+                earlyCallback = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.MOVETOCANCELS)) {
-                moveToCancels = data.ReadUInt32() != 0;
+                moveToCancels = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.PARENTED_CAMERA)) {
-                cameraParent = data.ReadUInt32() != 0;
+                cameraParent = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.TARGETED_CAMERA)) {
-                cameraTarget = data.ReadUInt32() != 0;
+                cameraTarget = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.HOLD_CAMERA)) {
-                cameraHold = data.ReadUInt32() != 0;
+                cameraHold = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.RESTORE_CAMERA)) {
-                cameraRestore = data.ReadUInt32() != 0;
+                cameraRestore = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.FADE_CHILDREN)) {
-                fadeChildren = data.ReadUInt32() != 0;
+                fadeChildren = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.PROPAGATE)) {
-                propagate = data.ReadUInt32() != 0;
+                propagate = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.LOCKACTIONS)) {
-                lockActions = data.ReadUInt32() != 0;
+                lockActions = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.SEND_EVENT)) {
-                sendEvent = data.ReadUInt32() != 0;
+                sendEvent = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.LEAVE_IDLE)) {
-                leaveIdleAlone = data.ReadUInt32() != 0;
+                leaveIdleAlone = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.SELF_DESTRUCT)) {
-                destroyOnCompletion = data.ReadUInt32() != 0;
+                destroyOnCompletion = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.WEENIE_EMOTE_ID)) {
                 weenieEmoteId = data.ReadUInt32();
@@ -157,7 +156,7 @@ namespace AC2E.Def {
             }
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write((uint)packFlags);
             if (packFlags.HasFlag(PackFlag.BEHAVIOR_ID)) {
                 data.Write(behaviorId);
@@ -193,40 +192,40 @@ namespace AC2E.Def {
                 data.Write(impulse);
             }
             if (packFlags.HasFlag(PackFlag.EARLYCALLBACK)) {
-                data.Write(earlyCallback ? (uint)1 : (uint)0);
+                data.Write(earlyCallback);
             }
             if (packFlags.HasFlag(PackFlag.MOVETOCANCELS)) {
-                data.Write(moveToCancels ? (uint)1 : (uint)0);
+                data.Write(moveToCancels);
             }
             if (packFlags.HasFlag(PackFlag.PARENTED_CAMERA)) {
-                data.Write(cameraParent ? (uint)1 : (uint)0);
+                data.Write(cameraParent);
             }
             if (packFlags.HasFlag(PackFlag.TARGETED_CAMERA)) {
-                data.Write(cameraTarget ? (uint)1 : (uint)0);
+                data.Write(cameraTarget);
             }
             if (packFlags.HasFlag(PackFlag.HOLD_CAMERA)) {
-                data.Write(cameraHold ? (uint)1 : (uint)0);
+                data.Write(cameraHold);
             }
             if (packFlags.HasFlag(PackFlag.RESTORE_CAMERA)) {
-                data.Write(cameraRestore ? (uint)1 : (uint)0);
+                data.Write(cameraRestore);
             }
             if (packFlags.HasFlag(PackFlag.FADE_CHILDREN)) {
-                data.Write(fadeChildren ? (uint)1 : (uint)0);
+                data.Write(fadeChildren);
             }
             if (packFlags.HasFlag(PackFlag.PROPAGATE)) {
-                data.Write(propagate ? (uint)1 : (uint)0);
+                data.Write(propagate);
             }
             if (packFlags.HasFlag(PackFlag.LOCKACTIONS)) {
-                data.Write(lockActions ? (uint)1 : (uint)0);
+                data.Write(lockActions);
             }
             if (packFlags.HasFlag(PackFlag.SEND_EVENT)) {
-                data.Write(sendEvent ? (uint)1 : (uint)0);
+                data.Write(sendEvent);
             }
             if (packFlags.HasFlag(PackFlag.LEAVE_IDLE)) {
-                data.Write(leaveIdleAlone ? (uint)1 : (uint)0);
+                data.Write(leaveIdleAlone);
             }
             if (packFlags.HasFlag(PackFlag.SELF_DESTRUCT)) {
-                data.Write(destroyOnCompletion ? (uint)1 : (uint)0);
+                data.Write(destroyOnCompletion);
             }
             if (packFlags.HasFlag(PackFlag.WEENIE_EMOTE_ID)) {
                 data.Write(weenieEmoteId);

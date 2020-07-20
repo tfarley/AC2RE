@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class PatronSwearDoneCEvt : IClientEvent {
 
@@ -15,13 +13,13 @@ namespace AC2E.Def {
 
         }
 
-        public PatronSwearDoneCEvt(BinaryReader data) {
+        public PatronSwearDoneCEvt(AC2Reader data) {
             _etype = data.UnpackUInt32();
             _vassal_name = data.UnpackPackage<StringInfo>();
             _vassal = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_etype);
             data.Pack(_vassal_name);
             data.Pack(_vassal);

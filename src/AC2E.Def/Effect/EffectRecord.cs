@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class EffectRecord : IPackage {
 
@@ -31,7 +29,7 @@ namespace AC2E.Def {
 
         }
 
-        public EffectRecord(BinaryReader data, PackageRegistry registry) {
+        public EffectRecord(AC2Reader data, PackageRegistry registry) {
             m_timeDemotedFromTopLevel = data.ReadDouble();
             m_timeCast = data.ReadDouble();
             m_iidCaster = data.ReadInstanceId();
@@ -39,7 +37,7 @@ namespace AC2E.Def {
             m_fApp = data.ReadSingle();
             m_fSpellcraft = data.ReadSingle();
             m_iApp = data.ReadInt32();
-            m_bPK = data.ReadUInt32() != 0;
+            m_bPK = data.ReadBoolean();
             data.ReadPkgRef<IPackage>(v => m_rApp = v, registry);
             m_timePromotedToTopLevel = data.ReadDouble();
             data.ReadPkgRef<SingletonPkg>(v => m_effect = v, registry);
@@ -54,7 +52,7 @@ namespace AC2E.Def {
             m_uiMaxDurabilityLevel = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_timeDemotedFromTopLevel);
             data.Write(m_timeCast);
             data.Write(m_iidCaster);
@@ -62,7 +60,7 @@ namespace AC2E.Def {
             data.Write(m_fApp);
             data.Write(m_fSpellcraft);
             data.Write(m_iApp);
-            data.Write(m_bPK ? (uint)1 : (uint)0);
+            data.Write(m_bPK);
             data.Write(m_rApp, registry);
             data.Write(m_timePromotedToTopLevel);
             data.Write(m_effect, registry);

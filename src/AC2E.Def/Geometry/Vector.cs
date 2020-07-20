@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public struct Vector : IPackage {
 
@@ -16,7 +14,7 @@ namespace AC2E.Def {
             this.z = z;
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(this);
         }
 

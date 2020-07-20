@@ -20,7 +20,7 @@ namespace AC2E.Def {
 
         }
 
-        public ExaminationDataNode(BinaryReader data) {
+        public ExaminationDataNode(AC2Reader data) {
             _type = (ExaminationDataType)data.ReadUInt32();
             _order = data.ReadUInt32();
             switch (_type) {
@@ -37,7 +37,7 @@ namespace AC2E.Def {
                     break;
                 case ExaminationDataType.BOOL:
                     _appearanceID = data.ReadUInt32();
-                    valBool = data.ReadUInt32() != 0;
+                    valBool = data.ReadBoolean();
                     break;
                 case ExaminationDataType.STRING:
                     _appearanceID = data.ReadUInt32();
@@ -68,7 +68,7 @@ namespace AC2E.Def {
             }
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write((uint)_type);
             data.Write(_order);
             switch (_type) {
@@ -85,7 +85,7 @@ namespace AC2E.Def {
                     break;
                 case ExaminationDataType.BOOL:
                     data.Write(_appearanceID);
-                    data.Write(valBool ? (uint)1 : (uint)0);
+                    data.Write(valBool);
                     break;
                 case ExaminationDataType.STRING:
                     data.Write(_appearanceID);

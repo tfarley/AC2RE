@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UpdateVisualDescMsg : INetMessage {
 
@@ -13,7 +10,7 @@ namespace AC2E.Def {
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public VisualDesc vDesc; // _vdesc
 
-        public UpdateVisualDescMsg(BinaryReader data) {
+        public UpdateVisualDescMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             vDesc = new VisualDesc(data);
         }

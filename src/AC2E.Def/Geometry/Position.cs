@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class Position : IPackage {
 
@@ -13,17 +11,17 @@ namespace AC2E.Def {
 
         }
 
-        public Position(BinaryReader data) {
+        public Position(AC2Reader data) {
             cellId = data.ReadCellId();
             frame = new Frame(data);
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write(cellId);
             frame.write(data);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             write(data);
         }
     }

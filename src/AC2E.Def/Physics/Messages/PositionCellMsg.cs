@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class PositionCellMsg : INetMessage {
 
@@ -13,7 +10,7 @@ namespace AC2E.Def {
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public PositionPack positionPack; // __pp
 
-        public PositionCellMsg(BinaryReader data) {
+        public PositionCellMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             positionPack = new PositionPack(data);
         }

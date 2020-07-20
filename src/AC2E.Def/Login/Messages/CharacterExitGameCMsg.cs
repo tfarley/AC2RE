@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CharacterExitGameCMsg : INetMessage {
 
@@ -8,7 +6,7 @@ namespace AC2E.Def {
         public NetQueue queueId => NetQueue.LOGON;
         public MessageOpcode opcode => MessageOpcode.Evt_Login__CharExitGame_ID;
 
-        public CharacterExitGameCMsg(BinaryReader data) {
+        public CharacterExitGameCMsg(AC2Reader data) {
 
         }
     }

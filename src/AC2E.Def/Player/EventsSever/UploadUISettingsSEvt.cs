@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UploadUISettingsSEvt : IServerEvent {
 
@@ -10,7 +8,7 @@ namespace AC2E.Def {
         public AAHash _opacities;
         public UISaveLocations _locations;
 
-        public UploadUISettingsSEvt(BinaryReader data) {
+        public UploadUISettingsSEvt(AC2Reader data) {
             _opacities = data.UnpackPackage<AAHash>();
             _locations = data.UnpackPackage<UISaveLocations>();
         }

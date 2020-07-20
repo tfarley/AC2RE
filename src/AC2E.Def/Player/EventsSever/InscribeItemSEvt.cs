@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class InscribeItemSEvt : IServerEvent {
 
@@ -10,7 +8,7 @@ namespace AC2E.Def {
         public StringInfo _siInscription;
         public InstanceId _iidTarget;
 
-        public InscribeItemSEvt(BinaryReader data) {
+        public InscribeItemSEvt(AC2Reader data) {
             _siInscription = data.UnpackPackage<StringInfo>();
             _iidTarget = data.UnpackInstanceId();
         }

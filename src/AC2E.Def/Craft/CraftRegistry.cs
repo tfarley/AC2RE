@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CraftRegistry : IPackage {
 
@@ -17,7 +15,7 @@ namespace AC2E.Def {
 
         }
 
-        public CraftRegistry(BinaryReader data, PackageRegistry registry) {
+        public CraftRegistry(AC2Reader data, PackageRegistry registry) {
             data.ReadPkgRef<ARHash<IPackage>>(v => m_recipeRecords = v.to<RecipeRecord>(), registry);
             m_CraftSkillScore = data.ReadSingle();
             m_CraftSkillTitle = data.ReadUInt32();
@@ -26,7 +24,7 @@ namespace AC2E.Def {
             data.ReadPkgRef<ARHash<IPackage>>(v => m_hashRecipeRecords = v.to<RecipeRecord>(), registry);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_recipeRecords, registry);
             data.Write(m_CraftSkillScore);
             data.Write(m_CraftSkillTitle);

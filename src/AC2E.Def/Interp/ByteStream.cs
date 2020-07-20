@@ -12,7 +12,7 @@ namespace AC2E.Def {
 
             public List<uint> versions; // m_versions
 
-            public VersionTable(BinaryReader data) {
+            public VersionTable(AC2Reader data) {
                 versions = data.ReadList(data.ReadUInt32);
             }
         }
@@ -22,7 +22,7 @@ namespace AC2E.Def {
             public uint size; // m_size
             public byte[] opcodeBytes; // m_pOpcodeBytes
 
-            public OpcodeStream(BinaryReader data) {
+            public OpcodeStream(AC2Reader data) {
                 size = data.ReadUInt32();
                 opcodeBytes = data.ReadBytes((int)size);
             }
@@ -33,8 +33,8 @@ namespace AC2E.Def {
             public List<string> strings; // m_strtbl
             public List<List<uint>> offsets; // m_offsets
 
-            public StringLitTable(BinaryReader data) {
-                strings = data.ReadList(() => data.ReadEncryptedString(Encoding.Unicode));
+            public StringLitTable(AC2Reader data) {
+                strings = data.ReadList(() => data.ReadString(Encoding.Unicode));
                 offsets = data.ReadList(() => data.ReadList(data.ReadUInt32));
             }
         }
@@ -45,8 +45,8 @@ namespace AC2E.Def {
             public List<ImportSymbolInfo> symbols; // m_syms
             public List<uint> packageOffsets; // m_pkgOffsets
 
-            public ImportData(BinaryReader data) {
-                packageName = data.ReadEncryptedString();
+            public ImportData(AC2Reader data) {
+                packageName = data.ReadString();
                 symbols = data.ReadList(() => new ImportSymbolInfo(data));
                 packageOffsets = data.ReadList(data.ReadUInt32);
             }
@@ -58,8 +58,8 @@ namespace AC2E.Def {
             public List<uint> offsets; // m_offsets
             public uint fromAddr; // m_from_addr
 
-            public ImportSymbolInfo(BinaryReader data) {
-                name = data.ReadEncryptedString();
+            public ImportSymbolInfo(AC2Reader data) {
+                name = data.ReadString();
                 offsets = data.ReadList(data.ReadUInt32);
                 fromAddr = data.ReadUInt32(); // TODO: Might be a bool
             }
@@ -70,7 +70,7 @@ namespace AC2E.Def {
             public ExportPackageArgs args; // m_args
             public List<ExportFunctionData> funcs; // m_funcs
 
-            public ExportData(BinaryReader data) {
+            public ExportData(AC2Reader data) {
                 args = new ExportPackageArgs(data);
                 funcs = data.ReadList(() => new ExportFunctionData(data));
             }
@@ -87,15 +87,15 @@ namespace AC2E.Def {
             public uint parentIndex; // m_parent_index
             public Dictionary<string, CheckpointExportData> checkpoint; // m_checkpoint
 
-            public ExportPackageArgs(BinaryReader data) {
-                name = data.ReadEncryptedString();
-                baseName = data.ReadEncryptedString();
+            public ExportPackageArgs(AC2Reader data) {
+                name = data.ReadString();
+                baseName = data.ReadString();
                 checksum = data.ReadUInt32();
                 size = data.ReadUInt32();
                 flags = (TypeFlag)data.ReadUInt32();
                 packageId = data.ReadPackageId();
                 parentIndex = data.ReadUInt32();
-                checkpoint = data.ReadDictionary(() => data.ReadEncryptedString(), () => new CheckpointExportData(data));
+                checkpoint = data.ReadDictionary(data.ReadString, () => new CheckpointExportData(data));
             }
         }
 
@@ -104,7 +104,7 @@ namespace AC2E.Def {
             public uint offset; // m_offset
             public uint tag; // m_tag
 
-            public CheckpointExportData(BinaryReader data) {
+            public CheckpointExportData(AC2Reader data) {
                 offset = data.ReadUInt32();
                 tag = data.ReadUInt32();
             }
@@ -119,8 +119,8 @@ namespace AC2E.Def {
             public FuncFlag flags; // m_flags
             public List<VTableId> deps; // m_deps
 
-            public ExportFunctionData(BinaryReader data) {
-                name = data.ReadEncryptedString();
+            public ExportFunctionData(AC2Reader data) {
+                name = data.ReadString();
                 funcId = new FunctionId(data.ReadUInt32());
                 offset = data.ReadUInt32();
                 size = data.ReadUInt32();
@@ -137,12 +137,12 @@ namespace AC2E.Def {
             public List<PackageId> packageIdMap; // m_pkgIdMap
             public Dictionary<string, PackageId> packageIdStrMap; // m_pkgIdStrMap
 
-            public VTableSection(BinaryReader data) {
+            public VTableSection(AC2Reader data) {
                 funcMapper = data.ReadList(() => data.ReadList(() => new VTableId(data.ReadUInt32())));
                 vTable = data.ReadList(() => data.ReadList(data.ReadUInt32));
                 packageInfo = data.ReadList(() => new PackageInfo(data));
                 packageIdMap = data.ReadList(data.ReadPackageId);
-                packageIdStrMap = data.ReadDictionary(() => data.ReadEncryptedString(), data.ReadPackageId);
+                packageIdStrMap = data.ReadDictionary(data.ReadString, data.ReadPackageId);
             }
         }
 
@@ -151,7 +151,7 @@ namespace AC2E.Def {
             public uint size; // size
             public uint checksum; // checksum
 
-            public PackageInfo(BinaryReader data) {
+            public PackageInfo(AC2Reader data) {
                 // TODO: Size and checksum might be swapped
                 size = data.ReadUInt32();
                 checksum = data.ReadUInt32();
@@ -163,7 +163,7 @@ namespace AC2E.Def {
             public string functionName; // FunctionName
             public uint offset; // Offset
 
-            public FunctionLocationInfo(BinaryReader data) {
+            public FunctionLocationInfo(AC2Reader data) {
                 functionName = data.ReadNullTermString();
                 offset = data.ReadUInt32();
             }
@@ -174,7 +174,7 @@ namespace AC2E.Def {
             public uint fileName; // FilenameIdx
             public string text; // Text
 
-            public OriginalSourceFileInfo(BinaryReader data) {
+            public OriginalSourceFileInfo(AC2Reader data) {
                 // TODO: fileName and text might be swapped
                 fileName = data.ReadUInt32();
                 text = data.ReadNullTermString();
@@ -186,8 +186,8 @@ namespace AC2E.Def {
             public string sourceFileName; // SourceFilename
             public List<PLineOffsetInfo> lineOffsets;
 
-            public PLineOffsetList(BinaryReader data) {
-                sourceFileName = data.ReadEncryptedString();
+            public PLineOffsetList(AC2Reader data) {
+                sourceFileName = data.ReadString();
                 lineOffsets = data.ReadList(() => new PLineOffsetInfo(data));
             }
         }
@@ -197,7 +197,7 @@ namespace AC2E.Def {
             public uint offset; // Offset
             public uint lineNum; // LineNum
 
-            public PLineOffsetInfo(BinaryReader data) {
+            public PLineOffsetInfo(AC2Reader data) {
                 offset = data.ReadUInt32();
                 lineNum = data.ReadUInt32();
             }
@@ -216,8 +216,8 @@ namespace AC2E.Def {
             public uint size; // m_size
             public List<FrameMemberDebugInfo> members; // m_refMembers
 
-            public FrameDebugInfo(BinaryReader data) {
-                name = data.ReadEncryptedString();
+            public FrameDebugInfo(AC2Reader data) {
+                name = data.ReadString();
                 type = (FrameType)data.ReadUInt32();
                 size = data.ReadUInt32();
                 members = data.ReadList(() => new FrameMemberDebugInfo(data));
@@ -246,12 +246,12 @@ namespace AC2E.Def {
             public string name; // Name
             public string typeName; // TypeName
 
-            public FrameMemberDebugInfo(BinaryReader data) {
+            public FrameMemberDebugInfo(AC2Reader data) {
                 offset = data.ReadUInt32();
                 type = (FrameMemberType)data.ReadUInt32();
                 flags = (VarFlag)data.ReadUInt32();
-                name = data.ReadEncryptedString();
-                typeName = data.ReadEncryptedString();
+                name = data.ReadString();
+                typeName = data.ReadString();
             }
         }
 
@@ -270,7 +270,7 @@ namespace AC2E.Def {
         public List<PLineOffsetList> lineOffsets; // m_lineOffsets
         public List<FrameDebugInfo> frames; // m_frames
 
-        public ByteStream(BinaryReader data) {
+        public ByteStream(AC2Reader data) {
             magic = data.ReadBytes(2);
             unk1 = data.ReadUInt16();
             byteStreamVersion = data.ReadUInt32();

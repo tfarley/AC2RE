@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class AllegianceData : IPackage {
 
@@ -22,28 +20,28 @@ namespace AC2E.Def {
 
         }
 
-        public AllegianceData(BinaryReader data, PackageRegistry registry) {
+        public AllegianceData(AC2Reader data, PackageRegistry registry) {
             m_xp_passed = data.ReadUInt64();
             m_species = (SpeciesType)data.ReadUInt32();
             m_level = data.ReadUInt32();
             data.ReadPkgRef<WPString>(v => m_userDefinedTitle = v, registry);
             m_sex = (SexType)data.ReadUInt32();
             m_xp_pooled = data.ReadUInt64();
-            m_fIsOfficer = data.ReadUInt32() != 0;
+            m_fIsOfficer = data.ReadBoolean();
             m_id = data.ReadInstanceId();
             m_rank = data.ReadUInt32();
             m_factionType = data.ReadUInt32();
             data.ReadPkgRef<StringInfo>(v => m_name = v, registry);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_xp_passed);
             data.Write((uint)m_species);
             data.Write(m_level);
             data.Write(m_userDefinedTitle, registry);
             data.Write((uint)m_sex);
             data.Write(m_xp_pooled);
-            data.Write(m_fIsOfficer ? (uint)1 : (uint)0);
+            data.Write(m_fIsOfficer);
             data.Write(m_id);
             data.Write(m_rank);
             data.Write(m_factionType);

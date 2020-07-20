@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class SetJumpScaleMsg : INetMessage {
 
@@ -13,7 +10,7 @@ namespace AC2E.Def {
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public float value; // _value
 
-        public SetJumpScaleMsg(BinaryReader data) {
+        public SetJumpScaleMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             value = data.ReadSingle();
         }

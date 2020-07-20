@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class OpenTradeNegotiationsSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Trade::SendSEvt_OpenTradeNegotiations
         public InstanceId _trg;
 
-        public OpenTradeNegotiationsSEvt(BinaryReader data) {
+        public OpenTradeNegotiationsSEvt(AC2Reader data) {
             _trg = data.UnpackInstanceId();
         }
     }

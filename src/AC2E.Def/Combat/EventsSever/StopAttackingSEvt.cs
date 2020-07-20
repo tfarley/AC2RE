@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class StopAttackingSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Combat::SendSEvt_StopAttacking
         public InstanceId _target;
 
-        public StopAttackingSEvt(BinaryReader data) {
+        public StopAttackingSEvt(AC2Reader data) {
             _target = data.UnpackInstanceId();
         }
     }

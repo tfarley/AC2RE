@@ -1,13 +1,11 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class EchoRequestHeader {
 
         // CEchoRequestHeader
         public float localTime; // m_LocalTime
 
-        public EchoRequestHeader(BinaryReader data) {
+        public EchoRequestHeader(AC2Reader data) {
             localTime = data.ReadSingle();
         }
     }

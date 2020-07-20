@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RevokeTradeItemSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Trade::SendSEvt_RevokeTradeItem
         public InstanceId _item;
 
-        public RevokeTradeItemSEvt(BinaryReader data) {
+        public RevokeTradeItemSEvt(AC2Reader data) {
             _item = data.UnpackInstanceId();
         }
     }

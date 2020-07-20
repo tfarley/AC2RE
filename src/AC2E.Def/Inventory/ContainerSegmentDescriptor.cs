@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ContainerSegmentDescriptor : IPackage {
 
@@ -13,12 +11,12 @@ namespace AC2E.Def {
 
         }
 
-        public ContainerSegmentDescriptor(BinaryReader data) {
+        public ContainerSegmentDescriptor(AC2Reader data) {
             mSegmentMaxSize = data.ReadUInt32();
             mSegmentSize = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(mSegmentMaxSize);
             data.Write(mSegmentSize);
         }

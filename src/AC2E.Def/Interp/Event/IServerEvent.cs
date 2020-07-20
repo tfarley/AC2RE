@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -7,7 +6,7 @@ namespace AC2E.Def {
 
         ServerEventFunctionId funcId { get; } // _fid
 
-        public static IServerEvent read(ServerEventFunctionId funcId, BinaryReader data) {
+        public static IServerEvent read(ServerEventFunctionId funcId, AC2Reader data) {
             switch (funcId) {
                 case ServerEventFunctionId.Allegiance__AcceptVassal:
                     return new AcceptVassalSEvt(data);

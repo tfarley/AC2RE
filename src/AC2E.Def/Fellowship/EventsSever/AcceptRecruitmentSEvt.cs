@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class AcceptRecruitmentSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Fellowship::SendSEvt_AcceptRecruitment
         public InstanceId _leader;
 
-        public AcceptRecruitmentSEvt(BinaryReader data) {
+        public AcceptRecruitmentSEvt(AC2Reader data) {
             _leader = data.UnpackInstanceId();
         }
     }

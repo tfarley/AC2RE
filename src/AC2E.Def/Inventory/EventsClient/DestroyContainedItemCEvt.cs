@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DestroyContainedItemCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public DestroyContainedItemCEvt(BinaryReader data) {
+        public DestroyContainedItemCEvt(AC2Reader data) {
             _itemID = data.UnpackInstanceId();
             _containerID = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_itemID);
             data.Pack(_containerID);
         }

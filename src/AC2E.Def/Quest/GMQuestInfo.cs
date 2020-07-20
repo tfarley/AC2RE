@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class GMQuestInfo : IPackage {
 
@@ -26,7 +24,7 @@ namespace AC2E.Def {
 
         }
 
-        public GMQuestInfo(BinaryReader data) {
+        public GMQuestInfo(AC2Reader data) {
             // TODO: This format does not match known stuff, so the names/order here may be slightly incorrect
             _questID = data.ReadUInt32();
             _strQuestName = new StringInfo(data);
@@ -38,14 +36,14 @@ namespace AC2E.Def {
             _iChallengeLevel = data.ReadInt32();
             _ttBestowal = data.ReadDouble();
             _ttDone = data.ReadDouble();
-            _bExpires = data.ReadUInt32() != 0;
+            _bExpires = data.ReadBoolean();
             _ttSecondsRemaining = data.ReadDouble();
             _ttSecondsUntilRetry = data.ReadDouble();
-            _bMaxedOut = data.ReadUInt32() != 0;
-            _playFXOnUpdate = data.ReadUInt32() != 0;
+            _bMaxedOut = data.ReadBoolean();
+            _playFXOnUpdate = data.ReadBoolean();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(_questID);
             _strQuestName.write(data);
             _strQuestDescription.write(data);
@@ -56,11 +54,11 @@ namespace AC2E.Def {
             data.Write(_iChallengeLevel);
             data.Write(_ttBestowal);
             data.Write(_ttDone);
-            data.Write(_bExpires ? (uint)1 : (uint)0);
+            data.Write(_bExpires);
             data.Write(_ttSecondsRemaining);
             data.Write(_ttSecondsUntilRetry);
-            data.Write(_bMaxedOut ? (uint)1 : (uint)0);
-            data.Write(_playFXOnUpdate ? (uint)1 : (uint)0);
+            data.Write(_bMaxedOut);
+            data.Write(_playFXOnUpdate);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -12,7 +11,7 @@ namespace AC2E.Def {
         // ECM_Physics::RecvEvt_DoFX_Private
         public List<uint> fxIds; // _fxIDs
 
-        public DoFxPrivateMsg(BinaryReader data) {
+        public DoFxPrivateMsg(AC2Reader data) {
             fxIds = data.ReadList(data.ReadUInt32);
         }
     }

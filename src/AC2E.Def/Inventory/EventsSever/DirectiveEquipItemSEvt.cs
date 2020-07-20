@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DirectiveEquipItemSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Inventory::SendSEvt_DirectiveEquipItem
         public InvEquipDesc _eDesc;
 
-        public DirectiveEquipItemSEvt(BinaryReader data) {
+        public DirectiveEquipItemSEvt(AC2Reader data) {
             _eDesc = data.UnpackPackage<InvEquipDesc>();
         }
     }

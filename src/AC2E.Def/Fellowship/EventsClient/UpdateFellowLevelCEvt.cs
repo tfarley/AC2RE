@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UpdateFellowLevelCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public UpdateFellowLevelCEvt(BinaryReader data) {
+        public UpdateFellowLevelCEvt(AC2Reader data) {
             _new_level = data.UnpackUInt32();
             _fid = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_new_level);
             data.Pack(_fid);
         }

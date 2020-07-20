@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -35,12 +34,12 @@ namespace AC2E.Def {
             public byte[] cryptoData; // m_CryptoData
             public byte[] extraData; // m_ExtraData
 
-            public NetAuthenticator(BinaryReader data) {
+            public NetAuthenticator(AC2Reader data) {
                 netAuthType = (NetAuthType)data.ReadUInt32();
                 authFlags = (AuthFlag)data.ReadUInt32();
                 connectionSeq = data.ReadUInt32();
                 // TODO: Might need to check the auth type before reading this
-                account = data.ReadEncryptedString();
+                account = data.ReadString();
                 // TODO: Read rest of fields
             }
         }
@@ -50,8 +49,8 @@ namespace AC2E.Def {
         public uint length; // cbAuthData
         public NetAuthenticator netAuth;
 
-        public LogonHeader(BinaryReader data) {
-            clientVersion = data.ReadEncryptedString();
+        public LogonHeader(AC2Reader data) {
+            clientVersion = data.ReadString();
             length = data.ReadUInt32();
 
             long authDataStart = data.BaseStream.Position;

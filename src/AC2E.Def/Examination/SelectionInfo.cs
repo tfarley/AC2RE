@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class SelectionInfo : IPackage {
 
@@ -18,7 +16,7 @@ namespace AC2E.Def {
 
         }
 
-        public SelectionInfo(BinaryReader data) {
+        public SelectionInfo(AC2Reader data) {
             m_type = (SelectionInfoType)data.ReadUInt32();
             if (m_type == SelectionInfoType.AGENT) {
                 m_curHealth = data.ReadInt32();
@@ -30,7 +28,7 @@ namespace AC2E.Def {
             }
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write((uint)m_type);
             if (m_type == SelectionInfoType.AGENT) {
                 data.Write(m_curHealth);

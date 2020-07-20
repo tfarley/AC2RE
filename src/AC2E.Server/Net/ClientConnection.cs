@@ -66,7 +66,7 @@ namespace AC2E.Server {
 
         public void enqueueMessage(INetMessage msg) {
             MemoryStream buffer = new MemoryStream();
-            using (BinaryWriter data = new BinaryWriter(buffer)) {
+            using (AC2Writer data = new AC2Writer(buffer)) {
                 data.Write((uint)msg.opcode);
                 msg.write(data);
             }
@@ -161,7 +161,7 @@ namespace AC2E.Server {
         }
 
         private void rawSendPacket(NetInterface netInterface, float serverTime, NetPacket packet) {
-            using (BinaryWriter data = new BinaryWriter(new MemoryStream(sendBuffer))) {
+            using (AC2Writer data = new AC2Writer(new MemoryStream(sendBuffer))) {
                 // Write header
                 packet.writeHeader(data);
                 uint headerChecksum = AC2Crypto.calcChecksum(sendBuffer, 0, data.BaseStream.Position, true);

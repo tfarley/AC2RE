@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class HandleAllegianceHierarchyForExportCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public HandleAllegianceHierarchyForExportCEvt(BinaryReader data) {
+        public HandleAllegianceHierarchyForExportCEvt(AC2Reader data) {
             _filename = data.UnpackPackage<WPString>();
             _hier = data.UnpackPackage<AllegianceHierarchy>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_filename);
             data.Pack(_hier);
         }

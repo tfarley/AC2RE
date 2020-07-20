@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class QualUpdateFloatPrivateMsg : INetMessage {
 
@@ -13,7 +10,7 @@ namespace AC2E.Def {
         public uint type; // _stype
         public float value; // _data
 
-        public QualUpdateFloatPrivateMsg(BinaryReader data) {
+        public QualUpdateFloatPrivateMsg(AC2Reader data) {
             type = data.ReadUInt32();
             value = data.ReadSingle();
         }
@@ -30,7 +27,7 @@ namespace AC2E.Def {
         public uint type; // _stype
         public float value; // _data
 
-        public QualUpdateFloatVisualMsg(BinaryReader data) {
+        public QualUpdateFloatVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             type = data.ReadUInt32();
             value = data.ReadSingle();

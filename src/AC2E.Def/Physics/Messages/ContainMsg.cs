@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ContainMsg : INetMessage {
 
@@ -12,7 +9,7 @@ namespace AC2E.Def {
         // ECM_Physics::RecvEvt_Contain
         public InstanceIdWithStamp childIdWithPositionStamp; // _child_id_and_position_stamp
 
-        public ContainMsg(BinaryReader data) {
+        public ContainMsg(AC2Reader data) {
             childIdWithPositionStamp = data.ReadInstanceIdWithStamp();
         }
     }

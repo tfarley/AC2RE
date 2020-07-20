@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -8,7 +7,7 @@ namespace AC2E.Def {
         NativeType nativeType => NativeType.UNDEF;
         PackageType packageType => PackageType.UNDEF;
 
-        void write(BinaryWriter data, PackageRegistry registry) {
+        void write(AC2Writer data, PackageRegistry registry) {
             throw new NotImplementedException("IPackage implementor must override write().");
         }
     }

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class Trade : IPackage {
 
@@ -18,22 +16,22 @@ namespace AC2E.Def {
 
         }
 
-        public Trade(BinaryReader data, PackageRegistry registry) {
+        public Trade(AC2Reader data, PackageRegistry registry) {
             data.ReadPkgRef<LAHash>(v => m_slave_table = new InstanceIdAHash(v), registry);
             m_master = data.ReadInstanceId();
             m_slave = data.ReadInstanceId();
-            m_master_accepted = data.ReadUInt32() != 0;
-            m_slave_accepted = data.ReadUInt32() != 0;
+            m_master_accepted = data.ReadBoolean();
+            m_slave_accepted = data.ReadBoolean();
             m_status = data.ReadUInt32();
             data.ReadPkgRef<LAHash>(v => m_master_table = new InstanceIdAHash(v), registry);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_slave_table, registry);
             data.Write(m_master);
             data.Write(m_slave);
-            data.Write(m_master_accepted ? (uint)1 : (uint)0);
-            data.Write(m_slave_accepted ? (uint)1 : (uint)0);
+            data.Write(m_master_accepted);
+            data.Write(m_slave_accepted);
             data.Write(m_status);
             data.Write(m_master_table, registry);
         }

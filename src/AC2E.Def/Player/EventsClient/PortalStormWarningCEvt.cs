@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class PortalStormWarningCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public PortalStormWarningCEvt(BinaryReader data) {
+        public PortalStormWarningCEvt(AC2Reader data) {
             __intensity = data.UnpackSingle();
             __cellID = new CellId(data.UnpackUInt32());
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(__intensity);
             data.Pack(__cellID.id);
         }

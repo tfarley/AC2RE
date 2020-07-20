@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RecipeRecord : IPackage {
 
@@ -20,7 +18,7 @@ namespace AC2E.Def {
 
         }
 
-        public RecipeRecord(BinaryReader data) {
+        public RecipeRecord(AC2Reader data) {
             m_recipe = data.ReadUInt32();
             m_ttLastUsed = data.ReadDouble();
             m_iSuccesses = data.ReadInt32();
@@ -32,7 +30,7 @@ namespace AC2E.Def {
             m_nextRefreshReal = data.ReadInt32();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_recipe);
             data.Write(m_ttLastUsed);
             data.Write(m_iSuccesses);

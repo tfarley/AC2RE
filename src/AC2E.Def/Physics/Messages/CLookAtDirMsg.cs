@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CLookAtDirMsg : INetMessage {
 
@@ -12,7 +10,7 @@ namespace AC2E.Def {
         public float x; // _x
         public float y; // _y
 
-        public CLookAtDirMsg(BinaryReader data) {
+        public CLookAtDirMsg(AC2Reader data) {
             x = data.ReadSingle();
             y = data.ReadSingle();
         }

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UseBookCEvt : IClientEvent {
 
@@ -15,13 +13,13 @@ namespace AC2E.Def {
 
         }
 
-        public UseBookCEvt(BinaryReader data) {
+        public UseBookCEvt(AC2Reader data) {
             _didImage = data.UnpackDataId();
             _bShowControls = data.UnpackUInt32() != 0;
             _siBookSource = data.UnpackPackage<StringInfo>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_didImage);
             data.Pack(_bShowControls ? (uint)1 : (uint)0);
             data.Pack(_siBookSource);

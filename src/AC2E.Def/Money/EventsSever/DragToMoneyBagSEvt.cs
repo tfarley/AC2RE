@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DragToMoneyBagSEvt : IServerEvent {
 
@@ -12,7 +10,7 @@ namespace AC2E.Def {
         public uint _quantity;
         public InstanceId _iidItem;
 
-        public DragToMoneyBagSEvt(BinaryReader data) {
+        public DragToMoneyBagSEvt(AC2Reader data) {
             _iidFromContainer = data.UnpackInstanceId();
             _fromSlot = data.UnpackUInt32();
             _quantity = data.UnpackUInt32();

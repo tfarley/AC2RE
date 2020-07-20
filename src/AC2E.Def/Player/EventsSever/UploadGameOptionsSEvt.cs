@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UploadGameOptionsSEvt : IServerEvent {
 
@@ -12,7 +10,7 @@ namespace AC2E.Def {
         public int _shortcutHeight;
         public float _damagTextRange;
 
-        public UploadGameOptionsSEvt(BinaryReader data) {
+        public UploadGameOptionsSEvt(AC2Reader data) {
             _optionsBitfield = data.UnpackUInt32();
             _radarMask = data.UnpackUInt32();
             _shortcutHeight = data.UnpackInt32();

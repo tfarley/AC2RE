@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RequestUntrainSkillSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Skill::SendSEvt_RequestUntrainSkill
         public uint _skillType;
 
-        public RequestUntrainSkillSEvt(BinaryReader data) {
+        public RequestUntrainSkillSEvt(AC2Reader data) {
             _skillType = data.UnpackUInt32();
         }
     }

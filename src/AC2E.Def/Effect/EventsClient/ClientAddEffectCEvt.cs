@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ClientAddEffectCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public ClientAddEffectCEvt(BinaryReader data) {
+        public ClientAddEffectCEvt(AC2Reader data) {
             _record = data.UnpackPackage<EffectRecord>();
             _eid = data.UnpackUInt32();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_record);
             data.Pack(_eid);
         }

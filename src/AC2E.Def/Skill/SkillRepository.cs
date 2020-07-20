@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class SkillRepository : IPackage {
 
@@ -18,7 +16,7 @@ namespace AC2E.Def {
 
         }
 
-        public SkillRepository(BinaryReader data, PackageRegistry registry) {
+        public SkillRepository(AC2Reader data, PackageRegistry registry) {
             m_nSkillCredits = data.ReadUInt32();
             m_nUntrainXP = data.ReadUInt64();
             m_nHeroSkillCredits = data.ReadUInt32();
@@ -28,7 +26,7 @@ namespace AC2E.Def {
             data.ReadPkgRef<ARHash<IPackage>>(v => m_hashSkills = v.to<SkillInfo>(), registry);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_nSkillCredits);
             data.Write(m_nUntrainXP);
             data.Write(m_nHeroSkillCredits);

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class EnterConsignmentCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public EnterConsignmentCEvt(BinaryReader data) {
+        public EnterConsignmentCEvt(AC2Reader data) {
             _consignments = data.UnpackPackage<RList<IPackage>>().to<Consignment>();
             _iidStorekeeper = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_consignments);
             data.Pack(_iidStorekeeper);
         }

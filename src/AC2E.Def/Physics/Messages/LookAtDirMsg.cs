@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class LookAtDirMsg : INetMessage {
 
@@ -14,7 +11,7 @@ namespace AC2E.Def {
         public float z; // _z
         public float x; // _x
 
-        public LookAtDirMsg(BinaryReader data) {
+        public LookAtDirMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             z = data.ReadSingle();
             x = data.ReadSingle();

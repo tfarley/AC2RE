@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RequestEnterConsignmentSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Store::SendSEvt_Store_RequestEnterConsignment
         public InstanceId _iidStorekeeper;
 
-        public RequestEnterConsignmentSEvt(BinaryReader data) {
+        public RequestEnterConsignmentSEvt(AC2Reader data) {
             _iidStorekeeper = data.UnpackInstanceId();
         }
     }

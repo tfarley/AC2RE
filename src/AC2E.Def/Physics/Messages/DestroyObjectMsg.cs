@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DestroyObjectMsg : INetMessage {
 
@@ -16,11 +13,11 @@ namespace AC2E.Def {
 
         }
 
-        public DestroyObjectMsg(BinaryReader data) {
+        public DestroyObjectMsg(AC2Reader data) {
             objectIdWithStamp = data.ReadInstanceIdWithStamp();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write(objectIdWithStamp);
         }
     }

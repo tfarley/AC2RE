@@ -1,8 +1,4 @@
-﻿using AC2E.Def;
-using AC2E.Utils;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class MoveToMsg : INetMessage {
 
@@ -15,7 +11,7 @@ namespace AC2E.Def {
         public MovementParameters movementParameters; // _params
         public ushort movetoStamp; // _moveto_stamp
 
-        public MoveToMsg(BinaryReader data) {
+        public MoveToMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             movementParameters = new MovementParameters(data);
             movetoStamp = data.ReadUInt16();

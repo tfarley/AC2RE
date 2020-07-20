@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class QualUpdateTimestampPrivateMsg : INetMessage {
 
@@ -13,7 +10,7 @@ namespace AC2E.Def {
         public uint type; // _stype
         public double value; // _data
 
-        public QualUpdateTimestampPrivateMsg(BinaryReader data) {
+        public QualUpdateTimestampPrivateMsg(AC2Reader data) {
             type = data.ReadUInt32();
             value = data.ReadDouble();
         }
@@ -30,7 +27,7 @@ namespace AC2E.Def {
         public uint type; // _stype
         public double value; // _data
 
-        public QualUpdateTimestampVisualMsg(BinaryReader data) {
+        public QualUpdateTimestampVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             type = data.ReadUInt32();
             value = data.ReadDouble();

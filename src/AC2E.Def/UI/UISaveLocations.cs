@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -17,20 +16,20 @@ namespace AC2E.Def {
 
             }
 
-            public UILocationData(BinaryReader data) {
+            public UILocationData(AC2Reader data) {
                 m_x0 = data.ReadSingle();
                 m_y0 = data.ReadSingle();
                 m_x1 = data.ReadSingle();
                 m_y1 = data.ReadSingle();
-                m_shown = data.ReadUInt32() != 0;
+                m_shown = data.ReadBoolean();
             }
 
-            public void write(BinaryWriter data) {
+            public void write(AC2Writer data) {
                 data.Write(m_x0);
                 data.Write(m_y0);
                 data.Write(m_x1);
                 data.Write(m_y1);
-                data.Write(m_shown ? (uint)1 : (uint)0);
+                data.Write(m_shown);
             }
         }
 
@@ -42,11 +41,11 @@ namespace AC2E.Def {
 
         }
 
-        public UISaveLocations(BinaryReader data) {
+        public UISaveLocations(AC2Reader data) {
             contents = data.ReadDictionary(data.ReadUInt32, () => data.ReadDictionary(data.ReadUInt32, () => new UILocationData(data)));
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(contents, data.Write, v => data.Write(v, data.Write, v => v.write(data)));
         }
     }

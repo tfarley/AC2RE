@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UsageDesc : IPackage {
 
@@ -27,7 +25,7 @@ namespace AC2E.Def {
 
         }
 
-        public UsageDesc(BinaryReader data, PackageRegistry registry) {
+        public UsageDesc(AC2Reader data, PackageRegistry registry) {
             data.ReadPkgRef<StringInfo>(v => m_siSuccessMessage = v, registry);
             data.ReadPkgRef<UsageBlob>(v => m_usageBlob = v, registry);
             m_itemID = data.ReadInstanceId();
@@ -42,11 +40,11 @@ namespace AC2E.Def {
             data.ReadPkgRef<RList<IPackage>>(v => m_effsToApply = v.to<SingletonPkg>(), registry);
             m_iVigorCost = data.ReadInt32();
             m_controlFlags = data.ReadUInt32();
-            m_bCancelsSF = data.ReadUInt32() != 0;
+            m_bCancelsSF = data.ReadBoolean();
             m_iHealthCost = data.ReadInt32();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_siSuccessMessage, registry);
             data.Write(m_usageBlob, registry);
             data.Write(m_itemID);

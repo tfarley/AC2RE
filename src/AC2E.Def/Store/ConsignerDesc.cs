@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ConsignerDesc : IPackage {
 
@@ -14,13 +12,13 @@ namespace AC2E.Def {
 
         }
 
-        public ConsignerDesc(BinaryReader data, PackageRegistry registry) {
+        public ConsignerDesc(AC2Reader data, PackageRegistry registry) {
             data.ReadPkgRef<StringInfo>(v => m_siLocation = v, registry);
             data.ReadPkgRef<RList<IPackage>>(v => m_consignments = v.to<Consignment>(), registry);
             m_didCatalog = data.ReadDataId();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_siLocation, registry);
             data.Write(m_consignments, registry);
             data.Write(m_didCatalog);

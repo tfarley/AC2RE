@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DirectiveTakeAllFromContainerSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Inventory::SendSEvt_DirectiveTakeAllFromContainer
         public InvTakeAllDesc _iDesc;
 
-        public DirectiveTakeAllFromContainerSEvt(BinaryReader data) {
+        public DirectiveTakeAllFromContainerSEvt(AC2Reader data) {
             _iDesc = data.UnpackPackage<InvTakeAllDesc>();
         }
     }

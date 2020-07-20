@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CreateFellowshipSEvt : IServerEvent {
 
@@ -11,7 +9,7 @@ namespace AC2E.Def {
         public bool _social;
         public WPString _name;
 
-        public CreateFellowshipSEvt(BinaryReader data) {
+        public CreateFellowshipSEvt(AC2Reader data) {
             _lootingMethod = data.UnpackUInt32();
             _social = data.UnpackUInt32() != 0;
             _name = data.UnpackPackage<WPString>();

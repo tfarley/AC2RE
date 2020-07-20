@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class UpdateAllegianceProfileCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public UpdateAllegianceProfileCEvt(BinaryReader data) {
+        public UpdateAllegianceProfileCEvt(AC2Reader data) {
             _prof = data.UnpackPackage<AllegianceProfile>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_prof);
         }
     }

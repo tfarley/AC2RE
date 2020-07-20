@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DoSliderMsg : INetMessage {
 
@@ -15,7 +12,7 @@ namespace AC2E.Def {
         public float newValue; // _new_value
         public float time; // _time
 
-        public DoSliderMsg(BinaryReader data) {
+        public DoSliderMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             sliderId = data.ReadUInt32();
             newValue = data.ReadSingle();

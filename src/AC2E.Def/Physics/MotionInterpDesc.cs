@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class MotionInterpDesc {
 
@@ -8,11 +6,11 @@ namespace AC2E.Def {
 
         }
 
-        public MotionInterpDesc(BinaryReader data) {
+        public MotionInterpDesc(AC2Reader data) {
 
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
 
         }
     }

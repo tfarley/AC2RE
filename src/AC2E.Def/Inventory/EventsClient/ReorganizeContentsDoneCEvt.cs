@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class ReorganizeContentsDoneCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public ReorganizeContentsDoneCEvt(BinaryReader data) {
+        public ReorganizeContentsDoneCEvt(AC2Reader data) {
             _iDesc = data.UnpackPackage<InvMoveDesc>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_iDesc);
         }
     }

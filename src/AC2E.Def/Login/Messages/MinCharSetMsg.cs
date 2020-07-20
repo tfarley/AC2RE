@@ -1,6 +1,4 @@
-﻿using AC2E.Def;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace AC2E.Def {
@@ -21,17 +19,17 @@ namespace AC2E.Def {
 
         }
 
-        public MinCharSetMsg(BinaryReader data) {
+        public MinCharSetMsg(AC2Reader data) {
             numAllowedCharacters = data.ReadUInt32();
-            accountName = data.ReadEncryptedString();
-            characterNames = data.ReadList(() => data.ReadEncryptedString(Encoding.Unicode));
+            accountName = data.ReadString();
+            characterNames = data.ReadList(() => data.ReadString(Encoding.Unicode));
             characterIds = data.ReadList(data.ReadInstanceId);
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write(numAllowedCharacters);
-            data.WriteEncryptedString(accountName);
-            data.Write(characterNames, v => data.WriteEncryptedString(v, Encoding.Unicode));
+            data.Write(accountName);
+            data.Write(characterNames, v => data.Write(v, Encoding.Unicode));
             data.Write(characterIds, data.Write);
         }
     }

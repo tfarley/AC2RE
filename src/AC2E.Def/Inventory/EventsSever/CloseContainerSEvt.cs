@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CloseContainerSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Inventory::SendSEvt_CloseContainer
         public InstanceId _container_iid;
 
-        public CloseContainerSEvt(BinaryReader data) {
+        public CloseContainerSEvt(AC2Reader data) {
             _container_iid = data.UnpackInstanceId();
         }
     }

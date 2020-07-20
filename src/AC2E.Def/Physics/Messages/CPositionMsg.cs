@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CPositionMsg : INetMessage {
 
@@ -12,7 +9,7 @@ namespace AC2E.Def {
         // ECM_Physics::SendEvt_CPosition
         public CPositionPack positionPack; // _position_pack
 
-        public CPositionMsg(BinaryReader data) {
+        public CPositionMsg(AC2Reader data) {
             positionPack = new CPositionPack(data);
         }
     }

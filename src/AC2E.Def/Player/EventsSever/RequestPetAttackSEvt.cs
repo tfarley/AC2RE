@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RequestPetAttackSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Player::SendSEvt_RequestPetAttack
         public InstanceId _targetID;
 
-        public RequestPetAttackSEvt(BinaryReader data) {
+        public RequestPetAttackSEvt(AC2Reader data) {
             _targetID = data.UnpackInstanceId();
         }
     }

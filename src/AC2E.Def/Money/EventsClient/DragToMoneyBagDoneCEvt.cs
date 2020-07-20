@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DragToMoneyBagDoneCEvt : IClientEvent {
 
@@ -15,13 +13,13 @@ namespace AC2E.Def {
 
         }
 
-        public DragToMoneyBagDoneCEvt(BinaryReader data) {
+        public DragToMoneyBagDoneCEvt(AC2Reader data) {
             _iidFromContainer = data.UnpackInstanceId();
             _fromSlot = data.UnpackUInt32();
             _iidItem = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_iidFromContainer);
             data.Pack(_fromSlot);
             data.Pack(_iidItem);

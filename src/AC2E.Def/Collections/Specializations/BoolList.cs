@@ -1,6 +1,5 @@
 ﻿using AC2E.Utils;
 using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -22,12 +21,12 @@ namespace AC2E.Def {
             }
         }
 
-        public BoolList(BinaryReader data) {
-            contents = data.ReadList(() => data.ReadUInt32() != 0);
+        public BoolList(AC2Reader data) {
+            contents = data.ReadList(data.ReadBoolean);
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
-            data.Write(contents, v => data.Write(v ? (uint)1 : (uint)0));
+        public void write(AC2Writer data, PackageRegistry registry) {
+            data.Write(contents, data.Write);
         }
     }
 }

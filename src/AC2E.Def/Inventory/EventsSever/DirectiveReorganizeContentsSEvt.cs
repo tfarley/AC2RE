@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DirectiveReorganizeContentsSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Inventory::SendSEvt_DirectiveReorganizeContents
         public InvMoveDesc _iDesc;
 
-        public DirectiveReorganizeContentsSEvt(BinaryReader data) {
+        public DirectiveReorganizeContentsSEvt(AC2Reader data) {
             _iDesc = data.UnpackPackage<InvMoveDesc>();
         }
     }

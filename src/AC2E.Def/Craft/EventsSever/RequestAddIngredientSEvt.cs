@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RequestAddIngredientSEvt : IServerEvent {
 
@@ -12,7 +10,7 @@ namespace AC2E.Def {
         public uint _uiOrdinal;
         public DataId _didRecipe;
 
-        public RequestAddIngredientSEvt(BinaryReader data) {
+        public RequestAddIngredientSEvt(AC2Reader data) {
             _uiSpinnerVal = data.UnpackUInt32();
             _iidIngredient = data.UnpackInstanceId();
             _uiOrdinal = data.UnpackUInt32();

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class TradeBeRevokedCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public TradeBeRevokedCEvt(BinaryReader data) {
+        public TradeBeRevokedCEvt(AC2Reader data) {
             _item = data.UnpackInstanceId();
             _src = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_item);
             data.Pack(_src);
         }

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class InitSaleRemindersCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public InitSaleRemindersCEvt(BinaryReader data) {
+        public InitSaleRemindersCEvt(AC2Reader data) {
             _desc = data.UnpackPackage<ConsignerDesc>();
             _iidStorekeeper = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_desc);
             data.Pack(_iidStorekeeper);
         }

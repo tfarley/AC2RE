@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class PlayScenesCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public PlayScenesCEvt(BinaryReader data) {
+        public PlayScenesCEvt(AC2Reader data) {
             _scenes = data.UnpackPackage<GMSceneInfoList>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_scenes);
         }
     }

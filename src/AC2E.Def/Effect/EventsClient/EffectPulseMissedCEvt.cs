@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class EffectPulseMissedCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public EffectPulseMissedCEvt(BinaryReader data) {
+        public EffectPulseMissedCEvt(AC2Reader data) {
             _effectEIDs = data.UnpackPackage<AList>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_effectEIDs);
         }
     }

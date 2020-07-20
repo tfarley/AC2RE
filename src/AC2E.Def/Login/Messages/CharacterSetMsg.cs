@@ -1,6 +1,4 @@
-﻿using AC2E.Def;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 
 namespace AC2E.Def {
 
@@ -24,26 +22,26 @@ namespace AC2E.Def {
 
         }
 
-        public CharacterSetMsg(BinaryReader data) {
+        public CharacterSetMsg(AC2Reader data) {
             characters = data.ReadList(() => new CharacterIdentity(data));
             deletedCharacters = data.ReadList(() => new CharacterIdentity(data));
             status = data.ReadUInt32();
             numAllowedCharacters = data.ReadUInt32();
-            accountName = data.ReadEncryptedString();
+            accountName = data.ReadString();
             unk1 = data.ReadUInt32();
-            hasLegions = data.ReadUInt32() != 0;
-            useTurbineChat = data.ReadUInt32() != 0;
+            hasLegions = data.ReadBoolean();
+            useTurbineChat = data.ReadBoolean();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write(characters, v => v.write(data));
             data.Write(deletedCharacters, v => v.write(data));
             data.Write(status);
             data.Write(numAllowedCharacters);
-            data.WriteEncryptedString(accountName);
+            data.Write(accountName);
             data.Write(unk1);
-            data.Write((uint)(hasLegions ? 1 : 0));
-            data.Write((uint)(useTurbineChat ? 1 : 0)); // TODO: Double check these three flags - this might actually be the first "1"
+            data.Write(hasLegions);
+            data.Write(useTurbineChat); // TODO: Double check these three flags - this might actually be the first "1"
         }
     }
 }

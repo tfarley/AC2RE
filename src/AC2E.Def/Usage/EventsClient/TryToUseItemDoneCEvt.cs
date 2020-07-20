@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class TryToUseItemDoneCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public TryToUseItemDoneCEvt(BinaryReader data) {
+        public TryToUseItemDoneCEvt(AC2Reader data) {
             _uDesc = data.UnpackPackage<UsageDesc>();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_uDesc);
         }
     }

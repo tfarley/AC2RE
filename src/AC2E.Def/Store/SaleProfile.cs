@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class SaleProfile : IPackage {
 
@@ -19,7 +17,7 @@ namespace AC2E.Def {
 
         }
 
-        public SaleProfile(BinaryReader data, PackageRegistry registry) {
+        public SaleProfile(AC2Reader data, PackageRegistry registry) {
             m_didProduct = data.ReadDataId();
             data.ReadPkgRef<IconDesc>(v => m_productIconDesc = v, registry);
             m_iidProduct = data.ReadInstanceId();
@@ -30,7 +28,7 @@ namespace AC2E.Def {
             m_iMaxStackSize = data.ReadInt32();
         }
 
-        public virtual void write(BinaryWriter data, PackageRegistry registry) {
+        public virtual void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_didProduct);
             data.Write(m_productIconDesc, registry);
             data.Write(m_iidProduct);

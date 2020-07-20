@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class TryToUseItemSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Usage::SendSEvt_Usage_TryToUseItem
         public UsageDesc _uDesc;
 
-        public TryToUseItemSEvt(BinaryReader data) {
+        public TryToUseItemSEvt(AC2Reader data) {
             _uDesc = data.UnpackPackage<UsageDesc>();
         }
     }

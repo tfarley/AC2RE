@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Def {
 
@@ -11,11 +10,11 @@ namespace AC2E.Def {
 
         }
 
-        public AppearanceInfo(BinaryReader data) {
+        public AppearanceInfo(AC2Reader data) {
             appKeyToValue = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write(appKeyToValue, data.Write, data.Write);
         }
     }

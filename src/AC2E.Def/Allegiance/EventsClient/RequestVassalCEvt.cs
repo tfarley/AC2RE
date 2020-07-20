@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class RequestVassalCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public RequestVassalCEvt(BinaryReader data) {
+        public RequestVassalCEvt(AC2Reader data) {
             _vassal_name = data.UnpackPackage<StringInfo>();
             _vassal = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_vassal_name);
             data.Pack(_vassal);
         }

@@ -1,7 +1,4 @@
-﻿using AC2E.Def;
-using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class DeParentMsg : INetMessage {
 
@@ -13,7 +10,7 @@ namespace AC2E.Def {
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public InstanceIdWithStamp childIdWithPositionStamp; // _child_id_and_position_stamp
 
-        public DeParentMsg(BinaryReader data) {
+        public DeParentMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             childIdWithPositionStamp = data.ReadInstanceIdWithStamp();
         }

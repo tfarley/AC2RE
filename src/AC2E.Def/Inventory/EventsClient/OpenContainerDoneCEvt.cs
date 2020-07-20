@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class OpenContainerDoneCEvt : IClientEvent {
 
@@ -16,14 +14,14 @@ namespace AC2E.Def {
 
         }
 
-        public OpenContainerDoneCEvt(BinaryReader data) {
+        public OpenContainerDoneCEvt(AC2Reader data) {
             _statusIn = data.UnpackUInt32();
             _containers = new InstanceIdList(data.UnpackPackage<LList>());
             _contents = new InstanceIdList(data.UnpackPackage<LList>());
             _containerID = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_statusIn);
             data.Pack(_containers);
             data.Pack(_contents);

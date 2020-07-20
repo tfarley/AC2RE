@@ -17,7 +17,7 @@ namespace AC2E.Def {
 
         }
 
-        public ShortcutInfo(BinaryReader data) {
+        public ShortcutInfo(AC2Reader data) {
             // TODO: Guessing on the types here
             _type = (ShortcutType)data.ReadUInt32();
             switch (_type) {
@@ -32,14 +32,14 @@ namespace AC2E.Def {
                     _data_iid = data.ReadInstanceId();
                     break;
                 case ShortcutType.ALIAS:
-                    _data_str = data.ReadEncryptedString(Encoding.Unicode);
+                    _data_str = data.ReadString(Encoding.Unicode);
                     break;
                 default:
                     throw new InvalidDataException(_type.ToString());
             }
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             // TODO: Guessing on the types here
             data.Write((uint)_type);
             switch (_type) {
@@ -54,7 +54,7 @@ namespace AC2E.Def {
                     data.Write(_data_iid);
                     break;
                 case ShortcutType.ALIAS:
-                    data.WriteEncryptedString(_data_str, Encoding.Unicode);
+                    data.Write(_data_str, Encoding.Unicode);
                     break;
                 default:
                     throw new InvalidDataException(_type.ToString());

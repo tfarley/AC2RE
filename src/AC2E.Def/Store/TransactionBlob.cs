@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class TransactionBlob : IPackage {
 
@@ -18,7 +16,7 @@ namespace AC2E.Def {
 
         }
 
-        public TransactionBlob(BinaryReader data, PackageRegistry registry) {
+        public TransactionBlob(AC2Reader data, PackageRegistry registry) {
             m_iidItem = data.ReadInstanceId();
             data.ReadPkgRef<LList>(v => m_tradeItems = new InstanceIdList(v), registry);
             m_iidShopper = data.ReadInstanceId();
@@ -28,7 +26,7 @@ namespace AC2E.Def {
             m_uiSlot = data.ReadUInt32();
         }
 
-        public void write(BinaryWriter data, PackageRegistry registry) {
+        public void write(AC2Writer data, PackageRegistry registry) {
             data.Write(m_iidItem);
             data.Write(m_tradeItems, registry);
             data.Write(m_iidShopper);

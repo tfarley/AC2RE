@@ -60,7 +60,7 @@ namespace AC2E.PacketTool {
             attemptedMessageParse = true;
 
             if (netBlob.payload != null) {
-                using (BinaryReader data = new BinaryReader(new MemoryStream(netBlob.payload))) {
+                using (AC2Reader data = new AC2Reader(new MemoryStream(netBlob.payload))) {
                     try {
                         _message = MessageReader.read(data, isClientToServer);
                         if (_message != null) {

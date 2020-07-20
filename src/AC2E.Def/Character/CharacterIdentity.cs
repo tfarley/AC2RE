@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System.Text;
 
 namespace AC2E.Def {
 
@@ -14,16 +13,16 @@ namespace AC2E.Def {
 
         }
 
-        public CharacterIdentity(BinaryReader data) {
+        public CharacterIdentity(AC2Reader data) {
             id = data.ReadInstanceId();
-            name = data.ReadEncryptedString(Encoding.Unicode);
+            name = data.ReadString(Encoding.Unicode);
             secondsGreyedOut = data.ReadUInt32();
             vDesc = new VisualDesc(data);
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Write(id);
-            data.WriteEncryptedString(name, Encoding.Unicode);
+            data.Write(name, Encoding.Unicode);
             data.Write(secondsGreyedOut);
             vDesc.write(data);
         }

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class EnterPortalSpaceCEvt : IClientEvent {
 
@@ -13,11 +11,11 @@ namespace AC2E.Def {
 
         }
 
-        public EnterPortalSpaceCEvt(BinaryReader data) {
+        public EnterPortalSpaceCEvt(AC2Reader data) {
             _delay = data.UnpackDouble();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_delay);
         }
     }

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class AllegianceTreeExportSEvt : IServerEvent {
 
@@ -9,7 +7,7 @@ namespace AC2E.Def {
         // WM_Allegiance::SendSEvt_AllegianceTreeExport
         public WPString _filename;
 
-        public AllegianceTreeExportSEvt(BinaryReader data) {
+        public AllegianceTreeExportSEvt(AC2Reader data) {
             _filename = data.UnpackPackage<WPString>();
         }
     }

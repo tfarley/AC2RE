@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class EnterStoreCEvt : IClientEvent {
 
@@ -14,12 +12,12 @@ namespace AC2E.Def {
 
         }
 
-        public EnterStoreCEvt(BinaryReader data) {
+        public EnterStoreCEvt(AC2Reader data) {
             _view = data.UnpackPackage<StoreView>();
             _iidStorekeeper = data.UnpackInstanceId();
         }
 
-        public void write(BinaryWriter data) {
+        public void write(AC2Writer data) {
             data.Pack(_view);
             data.Pack(_iidStorekeeper);
         }
