@@ -6,13 +6,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 
 namespace AC2E.Server {
 
     internal class AC2Server {
 
-        private static readonly IPEndPoint ANY_ENDPOINT_V6 = new IPEndPoint(IPAddress.IPv6Any, 0);
         private static readonly IPEndPoint ANY_ENDPOINT = new IPEndPoint(IPAddress.Any, 0);
         private static readonly int MAX_CONNECTIONS = 300;
 
@@ -47,8 +45,8 @@ namespace AC2E.Server {
                 disconnect();
             }
 
-            netInterface1 = port != -1 ? new NetInterface(AddressFamily.InterNetwork, port) : null;
-            netInterface2 = port != -1 ? new NetInterface(AddressFamily.InterNetwork, netInterface1.port + 1) : null;
+            netInterface1 = port != -1 ? new NetInterface(port) : null;
+            netInterface2 = port != -1 ? new NetInterface(netInterface1.port + 1) : null;
 
             active = true;
 
@@ -80,7 +78,7 @@ namespace AC2E.Server {
 
         private void processReceive(NetInterface netInterface) {
             while (netInterface != null && netInterface.available) {
-                EndPoint baseReceiveEndpoint = netInterface.addressFamily == AddressFamily.InterNetworkV6 ? ANY_ENDPOINT_V6 : ANY_ENDPOINT;
+                EndPoint baseReceiveEndpoint = ANY_ENDPOINT;
                 Array.Clear(receiveBuffer, 0, receiveBuffer.Length);
                 int receivedBytes = 0;
                 try {
@@ -171,6 +169,7 @@ namespace AC2E.Server {
 
                         if (packet.flags.HasFlag(NetPacket.Flag.ECHO_REQUEST)) {
                             client.echoRequestedLocalTime = packet.echoRequestHeader.localTime;
+                            client.echoRequestedServerTime = serverTime;
                         }
 
                         if (packet.frags.Count > 0) {

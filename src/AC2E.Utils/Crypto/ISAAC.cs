@@ -1,115 +1,86 @@
 ﻿namespace AC2E.Utils {
 
-    // Borrowed from ACE
     public class ISAAC {
-        private uint offset;
 
-        private uint a, b, c;
-        private uint[] mm;
-        private uint[] randRsl;
+        private static readonly uint GOLDEN_RATIO = 0x9e3779b9;
+
+        private uint[] randrsl = new uint[256];
+        private int randcnt = 255;
+        private uint[] mm = new uint[256];
+        private uint aa, bb, cc;
 
         public ISAAC(uint seed) {
-            mm = new uint[256];
-            randRsl = new uint[256];
-            offset = 255u;
+            uint a, b, c, d, e, f, g, h;
+            a = b = c = d = e = f = g = h = GOLDEN_RATIO;
 
-            Initialize(seed);
-        }
-
-        private bool isReleased;
-
-        public void ReleaseResources() {
-            isReleased = true;
-            mm = null;
-            randRsl = null;
-        }
-
-        public uint Next() {
-            if (isReleased) {
-                return 0;
+            // scramble it
+            for (int i = 0; i < 4; i++) {
+                mix(ref a, ref b, ref c, ref d, ref e, ref f, ref g, ref h);
             }
 
-            var issacValue = randRsl[offset];
-            if (offset > 0)
-                offset--;
-            else {
-                IsaacScramble();
-                offset = 255u;
+            // fill in mm[] with messy stuff
+            for (int i = 0; i < 256; i += 8) {
+                a += randrsl[i]; b += randrsl[i + 1]; c += randrsl[i + 2]; d += randrsl[i + 3];
+                e += randrsl[i + 4]; f += randrsl[i + 5]; g += randrsl[i + 6]; h += randrsl[i + 7];
+                mix(ref a, ref b, ref c, ref d, ref e, ref f, ref g, ref h);
+                mm[i] = a; mm[i + 1] = b; mm[i + 2] = c; mm[i + 3] = d;
+                mm[i + 4] = e; mm[i + 5] = f; mm[i + 6] = g; mm[i + 7] = h;
             }
 
-            return issacValue;
-        }
-
-        private void Initialize(uint seed) {
-            int i;
-            for (i = 0; i < 256; i++)
-                mm[i] = randRsl[i] = 0;
-
-            uint[] abcdefgh = new uint[8];
-            for (i = 0; i < 8; i++)
-                abcdefgh[i] = 0x9E3779B9;
-
-            for (i = 0; i < 4; i++)
-                Shuffle(abcdefgh);
-
-            for (i = 0; i < 2; i++) {
-                int j;
-                for (j = 0; j < 256; j += 8) {
-                    int k;
-                    for (k = 0; k < 8; k++)
-                        abcdefgh[k] += (i < 1) ? randRsl[j + k] : mm[j + k];
-
-                    Shuffle(abcdefgh);
-
-                    for (k = 0; k < 8; k++)
-                        mm[j + k] = abcdefgh[k];
-                }
+            for (int i = 0; i < 256; i += 8) {
+                a += mm[i]; b += mm[i + 1]; c += mm[i + 2]; d += mm[i + 3];
+                e += mm[i + 4]; f += mm[i + 5]; g += mm[i + 6]; h += mm[i + 7];
+                mix(ref a, ref b, ref c, ref d, ref e, ref f, ref g, ref h);
+                mm[i] = a; mm[i + 1] = b; mm[i + 2] = c; mm[i + 3] = d;
+                mm[i + 4] = e; mm[i + 5] = f; mm[i + 6] = g; mm[i + 7] = h;
             }
 
-            a = seed;
-            c = b = a;
-
-            IsaacScramble();
+            aa = bb = cc = seed;
+            isaac();
         }
 
-        private void IsaacScramble() {
-            b += ++c;
+        public uint next() {
+            uint result = randrsl[randcnt];
+
+            // QTIsaac starts at 255 and goes backwards
+            randcnt--;
+
+            if (randcnt < 0) {
+                isaac();
+                randcnt = 255;
+            }
+
+            return result;
+        }
+
+        private static void mix(ref uint a, ref uint b, ref uint c, ref uint d, ref uint e, ref uint f, ref uint g, ref uint h) {
+            a ^= (b << 11); d += a; b += c;
+            b ^= (c >> 2); e += b; c += d;
+            c ^= (d << 8); f += c; d += e;
+            d ^= (e >> 16); g += d; e += f;
+            e ^= (f << 10); h += e; f += g;
+            f ^= (g >> 4); a += f; g += h;
+            g ^= (h << 8); b += g; h += a;
+            h ^= (a >> 9); c += h; a += b;
+        }
+
+        private void isaac() {
+            cc++; // cc just gets incremented once per 256 results
+            bb += cc; // then combined with bb
+
             for (int i = 0; i < 256; i++) {
-                var x = mm[i];
-                switch (i & 3) {
-                    case 0:
-                        a ^= (a << 0x0D);
-                        break;
-                    case 1:
-                        a ^= (a >> 0x06);
-                        break;
-                    case 2:
-                        a ^= (a << 0x02);
-                        break;
-                    case 3:
-                        a ^= (a >> 0x10);
-                        break;
-                    default:
-                        break;
+                uint x = mm[i];
+                switch (i % 4) {
+                    case 0: aa ^= (aa << 13); break;
+                    case 1: aa ^= (aa >> 6); break;
+                    case 2: aa ^= (aa << 2); break;
+                    case 3: aa ^= (aa >> 16); break;
                 }
-
-                a += mm[(i + 128) & 0xFF];
-
-                uint y;
-                mm[i] = y = mm[(int)(x >> 2) & 0xFF] + a + b;
-                randRsl[i] = b = mm[(int)(y >> 10) & 0xFF] + x;
+                aa = mm[(i + 128) % 256] + aa;
+                uint y = mm[(x >> 2) % 256] + aa + bb;
+                mm[i] = y;
+                randrsl[i] = bb = mm[(y >> 10) % 256] + x;
             }
-        }
-
-        private void Shuffle(uint[] x) {
-            x[0] ^= x[1] << 0x0B; x[3] += x[0]; x[1] += x[2];
-            x[1] ^= x[2] >> 0x02; x[4] += x[1]; x[2] += x[3];
-            x[2] ^= x[3] << 0x08; x[5] += x[2]; x[3] += x[4];
-            x[3] ^= x[4] >> 0x10; x[6] += x[3]; x[4] += x[5];
-            x[4] ^= x[5] << 0x0A; x[7] += x[4]; x[5] += x[6];
-            x[5] ^= x[6] >> 0x04; x[0] += x[5]; x[6] += x[7];
-            x[6] ^= x[7] << 0x08; x[1] += x[6]; x[7] += x[0];
-            x[7] ^= x[0] >> 0x09; x[2] += x[7]; x[0] += x[1];
         }
     }
 }

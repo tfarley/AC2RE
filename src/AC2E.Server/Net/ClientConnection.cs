@@ -36,6 +36,7 @@ namespace AC2E.Server {
         public float nextAckTime;
         public float nextTimeSyncTime;
         public float echoRequestedLocalTime = -1.0f;
+        public float echoRequestedServerTime;
 
         private readonly byte[] sendBuffer = new byte[NetPacket.MAX_SIZE];
 
@@ -61,7 +62,7 @@ namespace AC2E.Server {
             highestReceivedPacketSeq = 1;
 
             nextAckTime = serverTime + ACK_INTERVAL;
-            nextAckTime = serverTime + TIME_SYNC_INTERVAL;
+            nextTimeSyncTime = serverTime + TIME_SYNC_INTERVAL;
         }
 
         public void enqueueMessage(INetMessage msg) {
@@ -91,7 +92,7 @@ namespace AC2E.Server {
         }
 
         public void flushSend(NetInterface netInterface, float serverTime) {
-            while (connected && (serverTime > nextAckTime || serverTime > nextTimeSyncTime || fragQueue.Count > 0 || nacksToResend.Count > 0)) {
+            while (connected && (echoRequestedLocalTime != -1.0f || serverTime > nextAckTime || serverTime > nextTimeSyncTime || fragQueue.Count > 0 || nacksToResend.Count > 0)) {
                 if (nacksToResend.TryDequeue(out NetPacket packet)) {
                     rawSendPacket(netInterface, serverTime, packet);
                 } else {
@@ -139,7 +140,7 @@ namespace AC2E.Server {
                 if (remainingSize > 8 && echoRequestedLocalTime != -1.0f) {
                     packet.echoResponseHeader = new EchoResponseHeader {
                         localTime = echoRequestedLocalTime,
-                        localToServerTimeDelta = serverTime - echoRequestedLocalTime,
+                        holdingTime = echoRequestedServerTime - serverTime,
                     };
                     echoRequestedLocalTime = -1.0f;
                     remainingSize -= 8;
@@ -187,7 +188,7 @@ namespace AC2E.Server {
                 // Encrypt checksum if necessary
                 if (packet.flags.HasFlag(NetPacket.Flag.ENCRYPTED_CHECKSUM)) {
                     if (!packet.hasIsaacXor) {
-                        packet.isaacXor = outgoingIsaac.Next();
+                        packet.isaacXor = outgoingIsaac.next();
                         packet.hasIsaacXor = true;
                     }
                     contentChecksum ^= packet.isaacXor;

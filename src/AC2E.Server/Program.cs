@@ -43,7 +43,7 @@ namespace AC2E.Server {
             string wlibFileName = "56000005";
             if (File.Exists(wlibFileName)) {
                 using (AC2Reader data = new AC2Reader(File.OpenRead(wlibFileName))) {
-                    var wlib = new Def.WLib(data);
+                    var wlib = new WLib(data);
                     Log.Information("Parsed wlib.");
                     using (StreamWriter output = new StreamWriter(File.OpenWrite("wlib.packages.txt"))) {
                         Dump.dumpPackages(output, wlib.byteStream);

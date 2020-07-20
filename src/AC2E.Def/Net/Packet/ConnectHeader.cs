@@ -9,6 +9,20 @@
         public uint outgoingSeed; // OutgoingSeed
         public uint incomingSeed; // IncomingSeed
 
+        public ConnectHeader() {
+
+        }
+
+        public ConnectHeader(AC2Reader data) {
+            serverTime = data.ReadDouble();
+            connectionAckCookie = data.ReadUInt64();
+            netId = data.ReadUInt32();
+            outgoingSeed = data.ReadUInt32();
+            incomingSeed = data.ReadUInt32();
+            // TODO: Unknown value - padding?
+            data.ReadUInt32();
+        }
+
         public void write(AC2Writer data) {
             data.Write(serverTime);
             data.Write(connectionAckCookie);

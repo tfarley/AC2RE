@@ -175,7 +175,7 @@ namespace AC2E.Def {
                 throw new NotImplementedException();
             }
             if (flags.HasFlag(Flag.CONNECT)) {
-                throw new NotImplementedException();
+                _connectHeader = new ConnectHeader(data);
             }
             if (flags.HasFlag(Flag.CONNECT_ACK)) {
                 _connectAckHeader = data.ReadUInt64();
@@ -196,7 +196,7 @@ namespace AC2E.Def {
                 _echoRequestHeader = new EchoRequestHeader(data);
             }
             if (flags.HasFlag(Flag.ECHO_RESPONSE)) {
-                throw new NotImplementedException();
+                _echoResponseHeader = new EchoResponseHeader(data);
             }
             if (flags.HasFlag(Flag.FLOW)) {
                 _flowHeader = new FlowHeader(data);
