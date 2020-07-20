@@ -30,7 +30,7 @@
             m_nextRefreshReal = data.ReadInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_recipe);
             data.Write(m_ttLastUsed);
             data.Write(m_iSuccesses);

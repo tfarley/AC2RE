@@ -10,12 +10,12 @@
 
         }
 
-        public PlayerSaleProfile(AC2Reader data, PackageRegistry registry) : base(data, registry) {
+        public PlayerSaleProfile(AC2Reader data) : base(data) {
             m_iQtyInStock = data.ReadInt32();
         }
 
-        public override void write(AC2Writer data, PackageRegistry registry) {
-            base.write(data, registry);
+        public override void write(AC2Writer data) {
+            base.write(data);
             data.Write(m_iQtyInStock);
         }
     }

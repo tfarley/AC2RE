@@ -18,8 +18,8 @@ namespace AC2E.Def {
             contents = data.ReadList(() => new GMSceneInfo(data));
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
-            data.Write(contents, v => v.write(data, registry));
+        public void write(AC2Writer data) {
+            data.Write(contents, v => v.write(data));
         }
     }
 }

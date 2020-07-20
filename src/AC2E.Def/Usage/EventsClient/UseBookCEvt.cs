@@ -15,13 +15,13 @@
 
         public UseBookCEvt(AC2Reader data) {
             _didImage = data.UnpackDataId();
-            _bShowControls = data.UnpackUInt32() != 0;
+            _bShowControls = data.UnpackBoolean();
             _siBookSource = data.UnpackPackage<StringInfo>();
         }
 
         public void write(AC2Writer data) {
             data.Pack(_didImage);
-            data.Pack(_bShowControls ? (uint)1 : (uint)0);
+            data.Pack(_bShowControls);
             data.Pack(_siBookSource);
         }
     }

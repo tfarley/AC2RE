@@ -25,15 +25,15 @@ namespace AC2E.Def {
 
         }
 
-        public LRHash(AC2Reader data, PackageRegistry registry) {
+        public LRHash(AC2Reader data) {
             contents = new Dictionary<ulong, V>();
             foreach (var element in data.ReadDictionary(data.ReadUInt64, data.ReadPackageId)) {
-                registry.addResolver(() => contents[element.Key] = registry.get<V>(element.Value));
+                data.packageRegistry.addResolver(() => contents[element.Key] = data.packageRegistry.get<V>(element.Value));
             }
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
-            data.Write(contents, data.Write, v => data.Write(v, registry));
+        public void write(AC2Writer data) {
+            data.Write(contents, data.Write, data.WritePkg);
         }
     }
 }

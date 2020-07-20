@@ -16,8 +16,8 @@
 
         }
 
-        public Consignment(AC2Reader data, PackageRegistry registry) {
-            data.ReadPkgRef<PlayerSaleProfile>(v => m_profile = v, registry);
+        public Consignment(AC2Reader data) {
+            data.ReadPkg<PlayerSaleProfile>(v => m_profile = v);
             m_iidOwner = data.ReadInstanceId();
             m_saleID = data.ReadUInt32();
             m_quantityOffered = data.ReadInt32();
@@ -26,8 +26,8 @@
             m_uiFlags = data.ReadUInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
-            data.Write(m_profile, registry);
+        public void write(AC2Writer data) {
+            data.WritePkg(m_profile);
             data.Write(m_iidOwner);
             data.Write(m_saleID);
             data.Write(m_quantityOffered);

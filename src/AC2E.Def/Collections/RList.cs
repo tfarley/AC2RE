@@ -25,15 +25,15 @@ namespace AC2E.Def {
 
         }
 
-        public RList(AC2Reader data, PackageRegistry registry) {
+        public RList(AC2Reader data) {
             contents = new List<T>();
             foreach (var element in data.ReadList(data.ReadPackageId)) {
-                registry.addResolver(() => contents.Add(registry.get<T>(element)));
+                data.packageRegistry.addResolver(() => contents.Add(data.packageRegistry.get<T>(element)));
             }
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
-            data.Write(contents, v => data.Write(v, registry));
+        public void write(AC2Writer data) {
+            data.Write(contents, data.WritePkg);
         }
     }
 }

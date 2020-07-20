@@ -20,8 +20,8 @@ namespace AC2E.Def {
             unk1 = data.ReadUInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
-            _request.write(data, registry);
+        public void write(AC2Writer data) {
+            _request.write(data);
             data.Write(_nodeList, v => v.write(data));
             data.Write(unk1);
         }

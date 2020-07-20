@@ -45,7 +45,7 @@ namespace AC2E.Def {
             contents = data.ReadDictionary(data.ReadUInt32, () => data.ReadDictionary(data.ReadUInt32, () => new UILocationData(data)));
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(contents, data.Write, v => data.Write(v, data.Write, v => v.write(data)));
         }
     }

@@ -13,18 +13,18 @@
 
         }
 
-        public Fellow(AC2Reader data, PackageRegistry registry) {
+        public Fellow(AC2Reader data) {
             m_join_ts = data.ReadDouble();
             m_level = data.ReadUInt32();
-            data.ReadPkgRef<FellowVitals>(v => m_vitals = v, registry);
-            data.ReadPkgRef<StringInfo>(v => m_name = v, registry);
+            data.ReadPkg<FellowVitals>(v => m_vitals = v);
+            data.ReadPkg<StringInfo>(v => m_name = v);
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_join_ts);
             data.Write(m_level);
-            data.Write(m_vitals, registry);
-            data.Write(m_name, registry);
+            data.WritePkg(m_vitals);
+            data.WritePkg(m_name);
         }
     }
 }

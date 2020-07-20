@@ -12,11 +12,11 @@
         }
 
         public SetAnimationFrozenCEvt(AC2Reader data) {
-            _bFrozen = data.UnpackUInt32() != 0;
+            _bFrozen = data.UnpackBoolean();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_bFrozen ? (uint)1 : (uint)0);
+            data.Pack(_bFrozen);
         }
     }
 }

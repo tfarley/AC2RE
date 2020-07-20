@@ -22,35 +22,35 @@
 
         }
 
-        public InvTransmuteAllDesc(AC2Reader data, PackageRegistry registry) {
+        public InvTransmuteAllDesc(AC2Reader data) {
             m_lastError = data.ReadUInt32();
             bIgnoreAttunement = data.ReadBoolean();
-            data.ReadPkgRef<LList>(v => m_itemsTransmuted = new InstanceIdList(v), registry);
+            data.ReadPkg<LList>(v => m_itemsTransmuted = new InstanceIdList(v));
             checkTakePermFlag = data.ReadBoolean();
             m_moneyEarned = data.ReadUInt32();
             m_bQuiet = data.ReadBoolean();
             noAnimFlag = data.ReadBoolean();
             m_status = data.ReadUInt32();
             m_fromContainerID = data.ReadInstanceId();
-            data.ReadPkgRef<LList>(v => m_itemsNotTransmuted = new InstanceIdList(v), registry);
+            data.ReadPkg<LList>(v => m_itemsNotTransmuted = new InstanceIdList(v));
             playedAnim = data.ReadBoolean();
             noMoveFlag = data.ReadBoolean();
             m_targetPlayerID = data.ReadInstanceId();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_lastError);
-            data.Write(bIgnoreAttunement ? (uint)1 : (uint)0);
-            data.Write(m_itemsTransmuted, registry);
-            data.Write(checkTakePermFlag ? (uint)1 : (uint)0);
+            data.Write(bIgnoreAttunement);
+            data.WritePkg(m_itemsTransmuted);
+            data.Write(checkTakePermFlag);
             data.Write(m_moneyEarned);
-            data.Write(m_bQuiet ? (uint)1 : (uint)0);
-            data.Write(noAnimFlag ? (uint)1 : (uint)0);
+            data.Write(m_bQuiet);
+            data.Write(noAnimFlag);
             data.Write(m_status);
             data.Write(m_fromContainerID);
-            data.Write(m_itemsNotTransmuted, registry);
-            data.Write(playedAnim ? (uint)1 : (uint)0);
-            data.Write(noMoveFlag ? (uint)1 : (uint)0);
+            data.WritePkg(m_itemsNotTransmuted);
+            data.Write(playedAnim);
+            data.Write(noMoveFlag);
             data.Write(m_targetPlayerID);
         }
     }

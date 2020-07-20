@@ -12,11 +12,11 @@
         }
 
         public UpdateDeathStateCEvt(AC2Reader data) {
-            _dead = data.UnpackUInt32() != 0;
+            _dead = data.UnpackBoolean();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_dead ? (uint)1 : (uint)0);
+            data.Pack(_dead);
         }
     }
 }

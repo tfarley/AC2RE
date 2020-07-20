@@ -11,13 +11,13 @@
 
         }
 
-        public GameSaleProfile(AC2Reader data, PackageRegistry registry) : base(data, registry) {
+        public GameSaleProfile(AC2Reader data) : base(data) {
             m_uiOrdinal = data.ReadUInt32();
             m_bRestricted = data.ReadBoolean();
         }
 
-        public override void write(AC2Writer data, PackageRegistry registry) {
-            base.write(data, registry);
+        public override void write(AC2Writer data) {
+            base.write(data);
             data.Write(m_uiOrdinal);
             data.Write(m_bRestricted);
         }

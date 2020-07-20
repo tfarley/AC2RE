@@ -11,7 +11,7 @@
 
         public CreateFellowshipSEvt(AC2Reader data) {
             _lootingMethod = data.UnpackUInt32();
-            _social = data.UnpackUInt32() != 0;
+            _social = data.UnpackBoolean();
             _name = data.UnpackPackage<WPString>();
         }
     }

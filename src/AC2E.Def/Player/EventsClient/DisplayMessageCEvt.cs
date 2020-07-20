@@ -13,12 +13,12 @@
         }
 
         public DisplayMessageCEvt(AC2Reader data) {
-            _topmost = data.UnpackUInt32() != 0;
+            _topmost = data.UnpackBoolean();
             _msg = data.UnpackPackage<StringInfo>();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_topmost ? (uint)1 : (uint)0);
+            data.Pack(_topmost);
             data.Pack(_msg);
         }
     }

@@ -17,23 +17,23 @@
 
         }
 
-        public SaleProfile(AC2Reader data, PackageRegistry registry) {
+        public SaleProfile(AC2Reader data) {
             m_didProduct = data.ReadDataId();
-            data.ReadPkgRef<IconDesc>(v => m_productIconDesc = v, registry);
+            data.ReadPkg<IconDesc>(v => m_productIconDesc = v);
             m_iidProduct = data.ReadInstanceId();
             m_productIconDID = data.ReadDataId();
-            data.ReadPkgRef<StringInfo>(v => m_siProductName = v, registry);
+            data.ReadPkg<StringInfo>(v => m_siProductName = v);
             m_fCost = data.ReadSingle();
             m_didTrade = data.ReadDataId();
             m_iMaxStackSize = data.ReadInt32();
         }
 
-        public virtual void write(AC2Writer data, PackageRegistry registry) {
+        public virtual void write(AC2Writer data) {
             data.Write(m_didProduct);
-            data.Write(m_productIconDesc, registry);
+            data.WritePkg(m_productIconDesc);
             data.Write(m_iidProduct);
             data.Write(m_productIconDID);
-            data.Write(m_siProductName, registry);
+            data.WritePkg(m_siProductName);
             data.Write(m_fCost);
             data.Write(m_didTrade);
             data.Write(m_iMaxStackSize);

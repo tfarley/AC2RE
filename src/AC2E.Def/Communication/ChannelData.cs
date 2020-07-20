@@ -16,24 +16,24 @@
 
         }
 
-        public ChannelData(AC2Reader data, PackageRegistry registry) {
+        public ChannelData(AC2Reader data) {
             m_fPendingRoomCreation = data.ReadBoolean();
             m_type = (TextType)data.ReadUInt32();
             m_regionID = data.ReadUInt32();
             m_roomID = data.ReadUInt32();
             m_available = data.ReadBoolean();
             m_factionType = data.ReadUInt32();
-            data.ReadPkgRef<WPString>(v => m_name = v, registry);
+            data.ReadPkg<WPString>(v => m_name = v);
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_fPendingRoomCreation);
             data.Write((uint)m_type);
             data.Write(m_regionID);
             data.Write(m_roomID);
             data.Write(m_available);
             data.Write(m_factionType);
-            data.Write(m_name, registry);
+            data.WritePkg(m_name);
         }
     }
 }

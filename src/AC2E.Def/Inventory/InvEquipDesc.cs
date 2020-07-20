@@ -24,9 +24,9 @@
 
         }
 
-        public InvEquipDesc(AC2Reader data, PackageRegistry registry) {
+        public InvEquipDesc(AC2Reader data) {
             m_blockingItemLocation = data.ReadUInt32();
-            data.ReadPkgRef<EquipItemProfile>(v => m_eip = v, registry);
+            data.ReadPkg<EquipItemProfile>(v => m_eip = v);
             m_quantity = data.ReadUInt32();
             m_itemID = data.ReadInstanceId();
             m_precludedSlots = data.ReadUInt32();
@@ -42,9 +42,9 @@
             m_containerSlot = data.ReadUInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_blockingItemLocation);
-            data.Write(m_eip, registry);
+            data.WritePkg(m_eip);
             data.Write(m_quantity);
             data.Write(m_itemID);
             data.Write(m_precludedSlots);

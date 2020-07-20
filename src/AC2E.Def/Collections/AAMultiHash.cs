@@ -18,7 +18,7 @@ namespace AC2E.Def {
             contents = data.ReadMultiDictionary(data.ReadUInt32, data.ReadUInt32);
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.WriteMulti(contents, data.Write, data.Write);
         }
     }

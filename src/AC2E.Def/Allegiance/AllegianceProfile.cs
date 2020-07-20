@@ -22,36 +22,36 @@
 
         }
 
-        public AllegianceProfile(AC2Reader data, PackageRegistry registry) {
-            data.ReadPkgRef<StringInfo>(v => m_allegianceName = v, registry);
-            data.ReadPkgRef<AllegianceData>(v => m_patron = v, registry);
-            data.ReadPkgRef<AllegianceData>(v => m_member = v, registry);
-            data.ReadPkgRef<AllegianceData>(v => m_monarch = v, registry);
+        public AllegianceProfile(AC2Reader data) {
+            data.ReadPkg<StringInfo>(v => m_allegianceName = v);
+            data.ReadPkg<AllegianceData>(v => m_patron = v);
+            data.ReadPkg<AllegianceData>(v => m_member = v);
+            data.ReadPkg<AllegianceData>(v => m_monarch = v);
             m_fMemberOnline = data.ReadBoolean();
             m_fPatronOnline = data.ReadBoolean();
-            data.ReadPkgRef<RList<IPackage>>(v => m_vassals = v.to<AllegianceData>(), registry);
-            data.ReadPkgRef<AList>(v => m_vassalsOnlineBools = new BoolList(v), registry);
-            data.ReadPkgRef<StringInfo>(v => m_motd = v, registry);
+            data.ReadPkg<RList<IPackage>>(v => m_vassals = v.to<AllegianceData>());
+            data.ReadPkg<AList>(v => m_vassalsOnlineBools = new BoolList(v));
+            data.ReadPkg<StringInfo>(v => m_motd = v);
             m_fMonarchOnline = data.ReadBoolean();
             m_factionType = data.ReadUInt32();
             m_total = data.ReadUInt32();
-            data.ReadPkgRef<LAHashSet>(v => m_officerIDs = new InstanceIdHashSet(v), registry);
+            data.ReadPkg<LAHashSet>(v => m_officerIDs = new InstanceIdHashSet(v));
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
-            data.Write(m_allegianceName, registry);
-            data.Write(m_patron, registry);
-            data.Write(m_member, registry);
-            data.Write(m_monarch, registry);
+        public void write(AC2Writer data) {
+            data.WritePkg(m_allegianceName);
+            data.WritePkg(m_patron);
+            data.WritePkg(m_member);
+            data.WritePkg(m_monarch);
             data.Write(m_fMemberOnline);
             data.Write(m_fPatronOnline);
-            data.Write(m_vassals, registry);
-            data.Write(m_vassalsOnlineBools, registry);
-            data.Write(m_motd, registry);
+            data.WritePkg(m_vassals);
+            data.WritePkg(m_vassalsOnlineBools);
+            data.WritePkg(m_motd);
             data.Write(m_fMonarchOnline);
             data.Write(m_factionType);
             data.Write(m_total);
-            data.Write(m_officerIDs, registry);
+            data.WritePkg(m_officerIDs);
         }
     }
 }

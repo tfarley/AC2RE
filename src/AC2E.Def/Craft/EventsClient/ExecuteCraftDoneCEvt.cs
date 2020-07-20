@@ -14,13 +14,13 @@
         }
 
         public ExecuteCraftDoneCEvt(AC2Reader data) {
-            _bNotifyUI = data.UnpackUInt32() != 0;
+            _bNotifyUI = data.UnpackBoolean();
             _err = data.UnpackUInt32();
             _didRecipe = data.UnpackDataId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_bNotifyUI ? (uint)1 : (uint)0);
+            data.Pack(_bNotifyUI);
             data.Pack(_err);
             data.Pack(_didRecipe);
         }

@@ -25,7 +25,7 @@ namespace AC2E.Def {
             contents = data.ReadDictionary(data.ReadInstanceId, data.ReadUInt32);
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(contents, data.Write, data.Write);
         }
     }

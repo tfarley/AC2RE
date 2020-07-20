@@ -10,7 +10,7 @@
         public WPString _alias;
 
         public SetAliasSEvt(AC2Reader data) {
-            _add = data.UnpackUInt32() != 0;
+            _add = data.UnpackBoolean();
             _text = data.UnpackPackage<WPString>();
             _alias = data.UnpackPackage<WPString>();
         }

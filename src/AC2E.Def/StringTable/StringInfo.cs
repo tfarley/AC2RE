@@ -51,9 +51,5 @@ namespace AC2E.Def {
                 }
             }
         }
-
-        public void write(AC2Writer data, PackageRegistry registry) {
-            write(data);
-        }
     }
 }

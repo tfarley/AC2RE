@@ -21,7 +21,7 @@
 
         }
 
-        public InvTakeAllDesc(AC2Reader data, PackageRegistry registry) {
+        public InvTakeAllDesc(AC2Reader data) {
             m_lastError = data.ReadUInt32();
             bIgnoreAttunement = data.ReadBoolean();
             checkTakePermFlag = data.ReadBoolean();
@@ -29,25 +29,25 @@
             noAnimFlag = data.ReadBoolean();
             m_status = data.ReadUInt32();
             m_fromContainerID = data.ReadInstanceId();
-            data.ReadPkgRef<LList>(v => m_itemsNotTaken = new InstanceIdList(v), registry);
+            data.ReadPkg<LList>(v => m_itemsNotTaken = new InstanceIdList(v));
             playedAnim = data.ReadBoolean();
             noMoveFlag = data.ReadBoolean();
-            data.ReadPkgRef<LList>(v => m_itemsTaken = new InstanceIdList(v), registry);
+            data.ReadPkg<LList>(v => m_itemsTaken = new InstanceIdList(v));
             m_targetPlayerID = data.ReadInstanceId();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_lastError);
-            data.Write(bIgnoreAttunement ? (uint)1 : (uint)0);
-            data.Write(checkTakePermFlag ? (uint)1 : (uint)0);
-            data.Write(m_bQuiet ? (uint)1 : (uint)0);
-            data.Write(noAnimFlag ? (uint)1 : (uint)0);
+            data.Write(bIgnoreAttunement);
+            data.Write(checkTakePermFlag);
+            data.Write(m_bQuiet);
+            data.Write(noAnimFlag);
             data.Write(m_status);
             data.Write(m_fromContainerID);
-            data.Write(m_itemsNotTaken, registry);
-            data.Write(playedAnim ? (uint)1 : (uint)0);
-            data.Write(noMoveFlag ? (uint)1 : (uint)0);
-            data.Write(m_itemsTaken, registry);
+            data.WritePkg(m_itemsNotTaken);
+            data.Write(playedAnim);
+            data.Write(noMoveFlag);
+            data.WritePkg(m_itemsTaken);
             data.Write(m_targetPlayerID);
         }
     }

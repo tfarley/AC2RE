@@ -10,7 +10,7 @@
         public InstanceId _iidStorekeeper;
 
         public RequestCollectSEvt(AC2Reader data) {
-            _bProfits = data.UnpackUInt32() != 0;
+            _bProfits = data.UnpackBoolean();
             _target = data.UnpackUInt32();
             _iidStorekeeper = data.UnpackInstanceId();
         }

@@ -25,11 +25,11 @@
 
         }
 
-        public UsageDesc(AC2Reader data, PackageRegistry registry) {
-            data.ReadPkgRef<StringInfo>(v => m_siSuccessMessage = v, registry);
-            data.ReadPkgRef<UsageBlob>(v => m_usageBlob = v, registry);
+        public UsageDesc(AC2Reader data) {
+            data.ReadPkg<StringInfo>(v => m_siSuccessMessage = v);
+            data.ReadPkg<UsageBlob>(v => m_usageBlob = v);
             m_itemID = data.ReadInstanceId();
-            data.ReadPkgRef<Position>(v => m_posUser = v, registry);
+            data.ReadPkg<Position>(v => m_posUser = v);
             m_wtUser = data.ReadUInt32();
             m_userID = data.ReadInstanceId();
             m_fDistanceToUsedItem = data.ReadSingle();
@@ -37,18 +37,18 @@
             m_status = data.ReadUInt32();
             m_effTargetID = data.ReadInstanceId();
             m_uttValid = data.ReadUInt32();
-            data.ReadPkgRef<RList<IPackage>>(v => m_effsToApply = v.to<SingletonPkg>(), registry);
+            data.ReadPkg<RList<IPackage>>(v => m_effsToApply = v.to<SingletonPkg>());
             m_iVigorCost = data.ReadInt32();
             m_controlFlags = data.ReadUInt32();
             m_bCancelsSF = data.ReadBoolean();
             m_iHealthCost = data.ReadInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
-            data.Write(m_siSuccessMessage, registry);
-            data.Write(m_usageBlob, registry);
+        public void write(AC2Writer data) {
+            data.WritePkg(m_siSuccessMessage);
+            data.WritePkg(m_usageBlob);
             data.Write(m_itemID);
-            data.Write(m_posUser, registry);
+            data.WritePkg(m_posUser);
             data.Write(m_wtUser);
             data.Write(m_userID);
             data.Write(m_fDistanceToUsedItem);
@@ -56,7 +56,7 @@
             data.Write(m_status);
             data.Write(m_effTargetID);
             data.Write(m_uttValid);
-            data.Write(m_effsToApply, registry);
+            data.WritePkg(m_effsToApply);
             data.Write(m_iVigorCost);
             data.Write(m_controlFlags);
             data.Write(m_bCancelsSF);

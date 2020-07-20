@@ -10,8 +10,14 @@ namespace AC2E.Def {
 
         private static readonly byte UNINITIALIZED_DATA = 0xCD;
 
-        public AC2Writer(Stream output) : base(output) {
+        public readonly PackageRegistry packageRegistry;
 
+        public AC2Writer(Stream output) : base(output) {
+            packageRegistry = new PackageRegistry();
+        }
+
+        public AC2Writer(Stream output, PackageRegistry packageRegistry) : base(output) {
+            this.packageRegistry = packageRegistry;
         }
 
         public override void Write(string value) {
@@ -25,6 +31,10 @@ namespace AC2E.Def {
         // NOTE: Special naming to avoid stomping on ushort overload
         private void WritePackTag(PackTag value) {
             Write((uint)value);
+        }
+
+        public void Pack(bool value) {
+            Pack((uint)(value ? 1 : 0));
         }
 
         public void Pack(int value) {
@@ -66,81 +76,79 @@ namespace AC2E.Def {
         }
 
         public void Pack(IPackage value) {
-            PackageRegistry tempRegistry = new PackageRegistry();
-            tempRegistry.references.Add(value);
+            packageRegistry.references.Add(value);
 
             MemoryStream buffer = new MemoryStream();
-            using (AC2Writer data = new AC2Writer(buffer)) {
-                for (int i = 0; i < tempRegistry.references.Count; i++) {
-                    IPackage referencedPackage = tempRegistry.references[i];
+            using (AC2Writer data = new AC2Writer(buffer, packageRegistry)) {
+                for (int i = 0; i < packageRegistry.references.Count; i++) {
+                    IPackage referencedPackage = packageRegistry.references[i];
                     if (referencedPackage != null) {
-                        writePackage(data, tempRegistry, referencedPackage);
+                        writePackage(data, referencedPackage);
                     }
                 }
             }
 
-            for (int i = tempRegistry.references.Count - 1; i >= 0; i--) {
-                if (tempRegistry.references[i] == null) {
-                    tempRegistry.references.RemoveAt(i);
+            for (int i = packageRegistry.references.Count - 1; i >= 0; i--) {
+                if (packageRegistry.references[i] == null) {
+                    packageRegistry.references.RemoveAt(i);
                 }
             }
 
             WritePackTag(PackTag.PACKAGE);
-            Write(tempRegistry.references, v => Write(tempRegistry.getId(v)));
+            Write(packageRegistry.references, v => Write(packageRegistry.getId(v)));
             Write(buffer.ToArray());
 
-            tempRegistry.references.Clear();
+            packageRegistry.references.Clear();
         }
 
-        private static void writePackage(AC2Writer data, PackageRegistry registry, IPackage value) {
-            InterpReferenceMeta referenceMeta = registry.getMeta(value).referenceMeta;
+        private void writePackage(AC2Writer data, IPackage value) {
+            InterpReferenceMeta referenceMeta = packageRegistry.getMeta(value).referenceMeta;
 
             data.Write(referenceMeta.id);
 
             if (referenceMeta.isSingleton) {
-                value.write(data, registry);
-                return;
-            }
-
-            data.Write((uint)0);
-            data.Write((ushort)value.nativeType);
-            data.Write(value.nativeType != NativeType.UNDEF ? (ushort)0xFFFF : (ushort)value.packageType);
-            if (value.nativeType != NativeType.UNDEF) {
-                value.write(data, registry);
+                value.write(data);
             } else {
-                // Placeholder for length
                 data.Write((uint)0);
+                data.Write((ushort)value.nativeType);
+                data.Write(value.nativeType != NativeType.UNDEF ? (ushort)0xFFFF : (ushort)value.packageType);
+                if (value.nativeType != NativeType.UNDEF) {
+                    value.write(data);
+                } else {
+                    // Placeholder for length
+                    data.Write((uint)0);
 
-                long contentStart = data.BaseStream.Position;
-                value.write(data, registry);
-                long contentEnd = data.BaseStream.Position;
-                long contentLength = contentEnd - contentStart;
-                data.BaseStream.Seek(-contentLength - 4, SeekOrigin.Current);
-                data.Write((uint)contentLength / 4);
-                data.BaseStream.Seek(contentEnd, SeekOrigin.Begin);
-            }
-
-            // TODO: Still not sure this is the correct condition for whether there are references or not
-            // Write out field descriptions
-            if (value.nativeType == NativeType.UNDEF) {
-                foreach (FieldDesc fieldDesc in InterpMeta.getFieldDescs(value.GetType())) {
-                    data.Write((byte)fieldDesc.fieldType);
-                    if (fieldDesc.numWords == 2) {
-                        data.Write(UNINITIALIZED_DATA);
-                    }
+                    long contentStart = data.BaseStream.Position;
+                    value.write(data);
+                    long contentEnd = data.BaseStream.Position;
+                    long contentLength = contentEnd - contentStart;
+                    data.BaseStream.Seek(-contentLength - 4, SeekOrigin.Current);
+                    data.Write((uint)contentLength / 4);
+                    data.BaseStream.Seek(contentEnd, SeekOrigin.Begin);
                 }
-                // TODO: Should this align occur even if there are no references?
-                data.Align(4);
-            } else {
-                // TODO: Is this needed/correct?
-                data.Write((uint)0);
+
+                // TODO: Still not sure this is the correct condition for whether there are references or not
+                // Write out field descriptions
+                if (value.nativeType == NativeType.UNDEF) {
+                    foreach (FieldDesc fieldDesc in InterpMeta.getFieldDescs(value.GetType())) {
+                        data.Write((byte)fieldDesc.fieldType);
+                        if (fieldDesc.numWords == 2) {
+                            data.Write(UNINITIALIZED_DATA);
+                        }
+                    }
+                    // TODO: Should this align occur even if there are no references?
+                    data.Align(4);
+                } else {
+                    // TODO: Is this needed/correct?
+                    data.Write((uint)0);
+                }
             }
         }
 
-        public void Write<T>(T value, PackageRegistry registry) where T : IPackage {
+        public void WritePkg<T>(T value) where T : IPackage {
             if (value != null) {
-                Write(registry.getId(value));
-                registry.references.Add(value);
+                Write(packageRegistry.getId(value));
+                packageRegistry.references.Add(value);
             } else {
                 Write(PackageId.NULL);
             }

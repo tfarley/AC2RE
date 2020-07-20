@@ -15,13 +15,13 @@
 
         public UpdateStoryQuestDoneCEvt(AC2Reader data) {
             _status = data.UnpackUInt32();
-            _bAddScene = data.UnpackUInt32() != 0;
+            _bAddScene = data.UnpackBoolean();
             _sceneID = data.UnpackUInt32();
         }
 
         public void write(AC2Writer data) {
             data.Pack(_status);
-            data.Pack(_bAddScene ? (uint)1 : (uint)0);
+            data.Pack(_bAddScene);
             data.Pack(_sceneID);
         }
     }

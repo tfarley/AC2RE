@@ -13,12 +13,12 @@
         }
 
         public ToggleSpecialAttackCEvt(AC2Reader data) {
-            _toggled = data.UnpackUInt32() != 0;
+            _toggled = data.UnpackBoolean();
             _maneuver = data.UnpackUInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_toggled ? (uint)1 : (uint)0);
+            data.Pack(_toggled);
             data.Pack(_maneuver);
         }
     }

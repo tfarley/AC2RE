@@ -43,7 +43,7 @@
             _playFXOnUpdate = data.ReadBoolean();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(_questID);
             _strQuestName.write(data);
             _strQuestDescription.write(data);

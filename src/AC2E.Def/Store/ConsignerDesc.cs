@@ -12,15 +12,15 @@
 
         }
 
-        public ConsignerDesc(AC2Reader data, PackageRegistry registry) {
-            data.ReadPkgRef<StringInfo>(v => m_siLocation = v, registry);
-            data.ReadPkgRef<RList<IPackage>>(v => m_consignments = v.to<Consignment>(), registry);
+        public ConsignerDesc(AC2Reader data) {
+            data.ReadPkg<StringInfo>(v => m_siLocation = v);
+            data.ReadPkg<RList<IPackage>>(v => m_consignments = v.to<Consignment>());
             m_didCatalog = data.ReadDataId();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
-            data.Write(m_siLocation, registry);
-            data.Write(m_consignments, registry);
+        public void write(AC2Writer data) {
+            data.WritePkg(m_siLocation);
+            data.WritePkg(m_consignments);
             data.Write(m_didCatalog);
         }
     }

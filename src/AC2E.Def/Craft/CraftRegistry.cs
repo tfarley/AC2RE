@@ -15,22 +15,22 @@
 
         }
 
-        public CraftRegistry(AC2Reader data, PackageRegistry registry) {
-            data.ReadPkgRef<ARHash<IPackage>>(v => m_recipeRecords = v.to<RecipeRecord>(), registry);
+        public CraftRegistry(AC2Reader data) {
+            data.ReadPkg<ARHash<IPackage>>(v => m_recipeRecords = v.to<RecipeRecord>());
             m_CraftSkillScore = data.ReadSingle();
             m_CraftSkillTitle = data.ReadUInt32();
             m_usageResetTime = data.ReadDouble();
-            data.ReadPkgRef<ARHash<IPackage>>(v => m_hashCraftSkillRecords = v.to<CraftSkillRecord>(), registry);
-            data.ReadPkgRef<ARHash<IPackage>>(v => m_hashRecipeRecords = v.to<RecipeRecord>(), registry);
+            data.ReadPkg<ARHash<IPackage>>(v => m_hashCraftSkillRecords = v.to<CraftSkillRecord>());
+            data.ReadPkg<ARHash<IPackage>>(v => m_hashRecipeRecords = v.to<RecipeRecord>());
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
-            data.Write(m_recipeRecords, registry);
+        public void write(AC2Writer data) {
+            data.WritePkg(m_recipeRecords);
             data.Write(m_CraftSkillScore);
             data.Write(m_CraftSkillTitle);
             data.Write(m_usageResetTime);
-            data.Write(m_hashCraftSkillRecords, registry);
-            data.Write(m_hashRecipeRecords, registry);
+            data.WritePkg(m_hashCraftSkillRecords);
+            data.WritePkg(m_hashRecipeRecords);
         }
     }
 }

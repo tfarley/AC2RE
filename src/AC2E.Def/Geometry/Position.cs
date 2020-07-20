@@ -20,9 +20,5 @@
             data.Write(cellId);
             frame.write(data);
         }
-
-        public void write(AC2Writer data, PackageRegistry registry) {
-            write(data);
-        }
     }
 }

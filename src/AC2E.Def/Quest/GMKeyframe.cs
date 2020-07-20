@@ -32,7 +32,7 @@ namespace AC2E.Def {
             m_definedTracks = data.ReadUInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_sceneID);
             data.Write(m_uiFrameNum);
             data.Write(m_ttDuration);

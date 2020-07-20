@@ -22,36 +22,36 @@
 
         }
 
-        public EffectRegistry(AC2Reader data, PackageRegistry registry) {
-            data.ReadPkgRef<AAHash>(v => m_qualitiesModifiedCount = v, registry);
-            data.ReadPkgRef<AAHash>(v => m_appliedFX = v, registry);
-            data.ReadPkgRef<EffectRegistry>(v => m_baseEffectRegistry = v, registry);
+        public EffectRegistry(AC2Reader data) {
+            data.ReadPkg<AAHash>(v => m_qualitiesModifiedCount = v);
+            data.ReadPkg<AAHash>(v => m_appliedFX = v);
+            data.ReadPkg<EffectRegistry>(v => m_baseEffectRegistry = v);
             m_uiEffectIDCounter = data.ReadUInt32();
-            data.ReadPkgRef<ARHash<IPackage>>(v => m_effectInfo = v.to<EffectRecord>(), registry);
+            data.ReadPkg<ARHash<IPackage>>(v => m_effectInfo = v.to<EffectRecord>());
             m_ttLastPulse = data.ReadDouble();
-            data.ReadPkgRef<AList>(v => m_listEquipperEffectEids = v, registry);
-            data.ReadPkgRef<AList>(v => m_listAcquirerEffectEids = v, registry);
+            data.ReadPkg<AList>(v => m_listEquipperEffectEids = v);
+            data.ReadPkg<AList>(v => m_listAcquirerEffectEids = v);
             m_flags = data.ReadUInt32();
-            data.ReadPkgRef<AHashSet>(v => m_setTrackedEffects = v, registry);
-            data.ReadPkgRef<AAHash>(v => m_topEffects = v, registry);
-            data.ReadPkgRef<AAMultiHash>(v => m_effectCategorizationTable = v, registry);
-            data.ReadPkgRef<AAHash>(v => m_appliedAppearances = v, registry);
+            data.ReadPkg<AHashSet>(v => m_setTrackedEffects = v);
+            data.ReadPkg<AAHash>(v => m_topEffects = v);
+            data.ReadPkg<AAMultiHash>(v => m_effectCategorizationTable = v);
+            data.ReadPkg<AAHash>(v => m_appliedAppearances = v);
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
-            data.Write(m_qualitiesModifiedCount, registry);
-            data.Write(m_appliedFX, registry);
-            data.Write(m_baseEffectRegistry, registry);
+        public void write(AC2Writer data) {
+            data.WritePkg(m_qualitiesModifiedCount);
+            data.WritePkg(m_appliedFX);
+            data.WritePkg(m_baseEffectRegistry);
             data.Write(m_uiEffectIDCounter);
-            data.Write(m_effectInfo, registry);
+            data.WritePkg(m_effectInfo);
             data.Write(m_ttLastPulse);
-            data.Write(m_listEquipperEffectEids, registry);
-            data.Write(m_listAcquirerEffectEids, registry);
+            data.WritePkg(m_listEquipperEffectEids);
+            data.WritePkg(m_listAcquirerEffectEids);
             data.Write(m_flags);
-            data.Write(m_setTrackedEffects, registry);
-            data.Write(m_topEffects, registry);
-            data.Write(m_effectCategorizationTable, registry);
-            data.Write(m_appliedAppearances, registry);
+            data.WritePkg(m_setTrackedEffects);
+            data.WritePkg(m_topEffects);
+            data.WritePkg(m_effectCategorizationTable);
+            data.WritePkg(m_appliedAppearances);
         }
     }
 }

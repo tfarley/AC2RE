@@ -29,7 +29,7 @@
 
         }
 
-        public EffectRecord(AC2Reader data, PackageRegistry registry) {
+        public EffectRecord(AC2Reader data) {
             m_timeDemotedFromTopLevel = data.ReadDouble();
             m_timeCast = data.ReadDouble();
             m_iidCaster = data.ReadInstanceId();
@@ -38,9 +38,9 @@
             m_fSpellcraft = data.ReadSingle();
             m_iApp = data.ReadInt32();
             m_bPK = data.ReadBoolean();
-            data.ReadPkgRef<IPackage>(v => m_rApp = v, registry);
+            data.ReadPkg<IPackage>(v => m_rApp = v);
             m_timePromotedToTopLevel = data.ReadDouble();
-            data.ReadPkgRef<SingletonPkg>(v => m_effect = v, registry);
+            data.ReadPkg<SingletonPkg>(v => m_effect = v);
             m_iidActingForWhom = data.ReadInstanceId();
             m_didSkill = data.ReadDataId();
             m_iidFromItem = data.ReadInstanceId();
@@ -52,7 +52,7 @@
             m_uiMaxDurabilityLevel = data.ReadUInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_timeDemotedFromTopLevel);
             data.Write(m_timeCast);
             data.Write(m_iidCaster);
@@ -61,9 +61,9 @@
             data.Write(m_fSpellcraft);
             data.Write(m_iApp);
             data.Write(m_bPK);
-            data.Write(m_rApp, registry);
+            data.WritePkg(m_rApp);
             data.Write(m_timePromotedToTopLevel);
-            data.Write(m_effect, registry);
+            data.WritePkg(m_effect);
             data.Write(m_iidActingForWhom);
             data.Write(m_didSkill);
             data.Write(m_iidFromItem);

@@ -129,13 +129,13 @@ namespace AC2E.Def {
             }
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write((ulong)contentFlags);
             if (contentFlags.HasFlag(ContentFlag.ALIAS_TABLE)) {
                 data.Write(m_aliasTable, k => data.Write(k, Encoding.Unicode), v => data.Write(v, Encoding.Unicode));
             }
             if (contentFlags.HasFlag(ContentFlag.SHORTCUT_ARRAY)) {
-                data.Write(m_shortcutArray, v => v.write(data, registry));
+                data.Write(m_shortcutArray, v => v.write(data));
             }
             if (contentFlags.HasFlag(ContentFlag.SHORTCUT_SET)) {
                 data.Write(m_whichShortcutSet);
@@ -147,7 +147,7 @@ namespace AC2E.Def {
                 data.Write(m_fDamageTextRangeOther);
             }
             if (contentFlags.HasFlag(ContentFlag.SAVED_UI_LOCATIONS)) {
-                m_savedUILocations.write(data, registry);
+                m_savedUILocations.write(data);
             }
             if (contentFlags.HasFlag(ContentFlag.RADAR_MASK)) {
                 data.Write(m_radarMask);

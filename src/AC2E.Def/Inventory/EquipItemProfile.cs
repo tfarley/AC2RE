@@ -16,7 +16,7 @@
 
         }
 
-        public EquipItemProfile(AC2Reader data, PackageRegistry registry) {
+        public EquipItemProfile(AC2Reader data) {
             _weapon_length = data.ReadUInt32();
             _priParentingLoc = data.ReadUInt32();
             _secParentingLoc = data.ReadUInt32();
@@ -26,12 +26,12 @@
             _placement_position = data.ReadUInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(_weapon_length);
             data.Write(_priParentingLoc);
             data.Write(_secParentingLoc);
             data.Write(_inventory_locations);
-            data.Write(_bind_on_use ? (uint)1 : (uint)0);
+            data.Write(_bind_on_use);
             data.Write(_pref_inventory_location);
             data.Write(_placement_position);
         }

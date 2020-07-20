@@ -12,11 +12,11 @@
         }
 
         public UpdateAttackStateCEvt(AC2Reader data) {
-            _attacking = data.UnpackUInt32() != 0;
+            _attacking = data.UnpackBoolean();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_attacking ? (uint)1 : (uint)0);
+            data.Pack(_attacking);
         }
     }
 }

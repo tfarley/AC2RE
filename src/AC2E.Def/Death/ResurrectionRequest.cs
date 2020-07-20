@@ -13,16 +13,16 @@
 
         }
 
-        public ResurrectionRequest(AC2Reader data, PackageRegistry registry) {
+        public ResurrectionRequest(AC2Reader data) {
             m_rezzerID = data.ReadInstanceId();
-            data.ReadPkgRef<StringInfo>(v => m_rezzerName = v, registry);
+            data.ReadPkg<StringInfo>(v => m_rezzerName = v);
             m_focusLossMod = data.ReadSingle();
             m_fx = data.ReadUInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_rezzerID);
-            data.Write(m_rezzerName, registry);
+            data.WritePkg(m_rezzerName);
             data.Write(m_focusLossMod);
             data.Write(m_fx);
         }

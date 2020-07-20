@@ -14,16 +14,16 @@
 
         }
 
-        public InventProfile(AC2Reader data, PackageRegistry registry) {
-            data.ReadPkgRef<VisualDescInfo>(v => m_visualDescInfo = v, registry);
+        public InventProfile(AC2Reader data) {
+            data.ReadPkg<VisualDescInfo>(v => m_visualDescInfo = v);
             m_slotsTaken = data.ReadUInt32();
             m_location = data.ReadUInt32();
             m_it = data.ReadInt32();
             m_iid = data.ReadInstanceId();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
-            data.Write(m_visualDescInfo, registry);
+        public void write(AC2Writer data) {
+            data.WritePkg(m_visualDescInfo);
             data.Write(m_slotsTaken);
             data.Write(m_location);
             data.Write(m_it);

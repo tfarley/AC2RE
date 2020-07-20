@@ -96,9 +96,5 @@ namespace AC2E.Def {
             data.Write(positionList, v => v.write(data));
             data.Write(contextId);
         }
-
-        public void write(AC2Writer data, PackageRegistry registry) {
-            write(data);
-        }
     }
 }

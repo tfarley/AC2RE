@@ -14,7 +14,7 @@
             this.z = z;
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(this);
         }
 

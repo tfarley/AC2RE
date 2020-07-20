@@ -28,14 +28,14 @@ namespace AC2E.Def {
             _keyframeList = data.ReadList(() => new GMKeyframe(data));
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(_ID);
             _siName.write(data);
             data.Write(_actID);
             data.Write(_uiSceneNum);
-            data.Write(_bIsHidden ? (uint)1 : (uint)0);
-            data.Write(_bIsPlayable ? (uint)1 : (uint)0);
-            data.Write(_keyframeList, v => v.write(data, registry));
+            data.Write(_bIsHidden);
+            data.Write(_bIsPlayable);
+            data.Write(_keyframeList, v => v.write(data));
         }
     }
 }

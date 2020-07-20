@@ -11,14 +11,14 @@
 
         }
 
-        public ActRegistry(AC2Reader data, PackageRegistry registry) {
+        public ActRegistry(AC2Reader data) {
             m_viewingProtectionEID = data.ReadInt32();
-            data.ReadPkgRef<ARHash<IPackage>>(v => m_actSceneTable = v.to<AList>(), registry);
+            data.ReadPkg<ARHash<IPackage>>(v => m_actSceneTable = v.to<AList>());
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_viewingProtectionEID);
-            data.Write(m_actSceneTable, registry);
+            data.WritePkg(m_actSceneTable);
         }
     }
 }

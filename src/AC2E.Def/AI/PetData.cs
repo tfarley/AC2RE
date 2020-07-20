@@ -18,7 +18,7 @@
             m_flags = data.ReadUInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_timeLeftWorld);
             data.Write(m_class);
             data.Write(m_flags);

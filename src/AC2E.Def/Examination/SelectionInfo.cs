@@ -28,7 +28,7 @@
             }
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write((uint)m_type);
             if (m_type == SelectionInfoType.AGENT) {
                 data.Write(m_curHealth);

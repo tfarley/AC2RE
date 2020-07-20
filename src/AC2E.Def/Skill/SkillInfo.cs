@@ -34,7 +34,7 @@
             m_typeSkill = data.ReadUInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_timeLastUsed);
             data.Write(m_levelCached);
             data.Write(m_timeCached);

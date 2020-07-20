@@ -15,22 +15,22 @@
 
         }
 
-        public Fellowship(AC2Reader data, PackageRegistry registry) {
+        public Fellowship(AC2Reader data) {
             m_lastClaimant = data.ReadInstanceId();
             m_flags = data.ReadUInt32();
             m_chatRoomID = data.ReadUInt32();
-            data.ReadPkgRef<LRHash<IPackage>>(v => m_table = new InstanceIdRHash<Fellow>(v.to<Fellow>()), registry);
+            data.ReadPkg<LRHash<IPackage>>(v => m_table = new InstanceIdRHash<Fellow>(v.to<Fellow>()));
             m_leader = data.ReadInstanceId();
-            data.ReadPkgRef<WPString>(v => m_name = v, registry);
+            data.ReadPkg<WPString>(v => m_name = v);
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_lastClaimant);
             data.Write(m_flags);
             data.Write(m_chatRoomID);
-            data.Write(m_table, registry);
+            data.WritePkg(m_table);
             data.Write(m_leader);
-            data.Write(m_name, registry);
+            data.WritePkg(m_name);
         }
     }
 }

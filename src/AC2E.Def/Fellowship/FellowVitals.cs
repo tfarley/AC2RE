@@ -16,7 +16,7 @@
 
         }
 
-        public FellowVitals(AC2Reader data, PackageRegistry registry) {
+        public FellowVitals(AC2Reader data) {
             m_max_health = data.ReadUInt32();
             m_cell = data.ReadCellId();
             m_health = data.ReadUInt32();
@@ -26,7 +26,7 @@
             m_PKVigorloss = data.ReadUInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_max_health);
             data.Write(m_cell);
             data.Write(m_health);

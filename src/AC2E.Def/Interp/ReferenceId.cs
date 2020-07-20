@@ -17,8 +17,8 @@
             useCache = data.ReadBoolean();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
-            data.Write(registry.get<IPackage>(id), registry);
+        public void write(AC2Writer data) {
+            data.WritePkg(data.packageRegistry.get<IPackage>(id));
             data.Write(cachedHashValue);
             data.Write(useCache);
         }

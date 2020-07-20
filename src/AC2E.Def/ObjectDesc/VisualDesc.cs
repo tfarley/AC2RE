@@ -218,9 +218,5 @@ namespace AC2E.Def {
                 data.Write(pgdDescTable, data.Write, v => v.write(data));
             }
         }
-
-        public void write(AC2Writer data, PackageRegistry registry) {
-            write(data);
-        }
     }
 }

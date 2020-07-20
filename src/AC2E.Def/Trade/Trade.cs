@@ -16,24 +16,24 @@
 
         }
 
-        public Trade(AC2Reader data, PackageRegistry registry) {
-            data.ReadPkgRef<LAHash>(v => m_slave_table = new InstanceIdAHash(v), registry);
+        public Trade(AC2Reader data) {
+            data.ReadPkg<LAHash>(v => m_slave_table = new InstanceIdAHash(v));
             m_master = data.ReadInstanceId();
             m_slave = data.ReadInstanceId();
             m_master_accepted = data.ReadBoolean();
             m_slave_accepted = data.ReadBoolean();
             m_status = data.ReadUInt32();
-            data.ReadPkgRef<LAHash>(v => m_master_table = new InstanceIdAHash(v), registry);
+            data.ReadPkg<LAHash>(v => m_master_table = new InstanceIdAHash(v));
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
-            data.Write(m_slave_table, registry);
+        public void write(AC2Writer data) {
+            data.WritePkg(m_slave_table);
             data.Write(m_master);
             data.Write(m_slave);
             data.Write(m_master_accepted);
             data.Write(m_slave_accepted);
             data.Write(m_status);
-            data.Write(m_master_table, registry);
+            data.WritePkg(m_master_table);
         }
     }
 }

@@ -52,7 +52,7 @@
 
         }
 
-        public InvMoveDesc(AC2Reader data, PackageRegistry registry) {
+        public InvMoveDesc(AC2Reader data) {
             mergeFlag = data.ReadBoolean();
             actualFromSlot = data.ReadUInt32();
             targetID = data.ReadInstanceId();
@@ -78,7 +78,7 @@
             quantity = data.ReadUInt32();
             generatorRequestFlag = data.ReadBoolean();
             splitItemID = data.ReadInstanceId();
-            data.ReadPkgRef<AAHash>(v => m_itemAppKeyHash = v, registry);
+            data.ReadPkg<AAHash>(v => m_itemAppKeyHash = v);
             noAnimFlag = data.ReadBoolean();
             mergeContainerID = data.ReadInstanceId();
             bUsedOverflowSlot = data.ReadBoolean();
@@ -98,7 +98,7 @@
             mergeSlot = data.ReadUInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(mergeFlag);
             data.Write(actualFromSlot);
             data.Write(targetID);
@@ -124,7 +124,7 @@
             data.Write(quantity);
             data.Write(generatorRequestFlag);
             data.Write(splitItemID);
-            data.Write(m_itemAppKeyHash, registry);
+            data.WritePkg(m_itemAppKeyHash);
             data.Write(noAnimFlag);
             data.Write(mergeContainerID);
             data.Write(bUsedOverflowSlot);

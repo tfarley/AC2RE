@@ -20,7 +20,7 @@
             m_iLevel = data.ReadInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_uliXPEarnedToday);
             data.Write(m_didCraftSkill);
             data.Write(m_uliAvailableCraftXP);

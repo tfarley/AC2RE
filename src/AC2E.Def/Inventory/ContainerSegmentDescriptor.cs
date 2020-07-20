@@ -16,7 +16,7 @@
             mSegmentSize = data.ReadUInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(mSegmentMaxSize);
             data.Write(mSegmentSize);
         }

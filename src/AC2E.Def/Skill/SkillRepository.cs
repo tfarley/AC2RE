@@ -16,24 +16,24 @@
 
         }
 
-        public SkillRepository(AC2Reader data, PackageRegistry registry) {
+        public SkillRepository(AC2Reader data) {
             m_nSkillCredits = data.ReadUInt32();
             m_nUntrainXP = data.ReadUInt64();
             m_nHeroSkillCredits = data.ReadUInt32();
-            data.ReadPkgRef<AAHash>(v => m_hashPerkTypes = v, registry);
+            data.ReadPkg<AAHash>(v => m_hashPerkTypes = v);
             m_typeUntrained = data.ReadUInt32();
-            data.ReadPkgRef<AAHash>(v => m_hashCategories = v, registry);
-            data.ReadPkgRef<ARHash<IPackage>>(v => m_hashSkills = v.to<SkillInfo>(), registry);
+            data.ReadPkg<AAHash>(v => m_hashCategories = v);
+            data.ReadPkg<ARHash<IPackage>>(v => m_hashSkills = v.to<SkillInfo>());
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_nSkillCredits);
             data.Write(m_nUntrainXP);
             data.Write(m_nHeroSkillCredits);
-            data.Write(m_hashPerkTypes, registry);
+            data.WritePkg(m_hashPerkTypes);
             data.Write(m_typeUntrained);
-            data.Write(m_hashCategories, registry);
-            data.Write(m_hashSkills, registry);
+            data.WritePkg(m_hashCategories);
+            data.WritePkg(m_hashSkills);
         }
     }
 }

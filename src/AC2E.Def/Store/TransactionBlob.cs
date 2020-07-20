@@ -16,9 +16,9 @@
 
         }
 
-        public TransactionBlob(AC2Reader data, PackageRegistry registry) {
+        public TransactionBlob(AC2Reader data) {
             m_iidItem = data.ReadInstanceId();
-            data.ReadPkgRef<LList>(v => m_tradeItems = new InstanceIdList(v), registry);
+            data.ReadPkg<LList>(v => m_tradeItems = new InstanceIdList(v));
             m_iidShopper = data.ReadInstanceId();
             m_uiQuantity = data.ReadUInt32();
             m_iidStorekeeper = data.ReadInstanceId();
@@ -26,9 +26,9 @@
             m_uiSlot = data.ReadUInt32();
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_iidItem);
-            data.Write(m_tradeItems, registry);
+            data.WritePkg(m_tradeItems);
             data.Write(m_iidShopper);
             data.Write(m_uiQuantity);
             data.Write(m_iidStorekeeper);

@@ -51,7 +51,7 @@ namespace AC2E.Def {
             }
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write((uint)_type);
             data.Write(_admin);
             switch (_type) {

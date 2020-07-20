@@ -9,8 +9,8 @@
         public bool _fRestrictionsOn;
 
         public AllegianceSetKingdomRestrictionsSEvt(AC2Reader data) {
-            _fAllowNeutrals = data.UnpackUInt32() != 0;
-            _fRestrictionsOn = data.UnpackUInt32() != 0;
+            _fAllowNeutrals = data.UnpackBoolean();
+            _fRestrictionsOn = data.UnpackBoolean();
         }
     }
 }

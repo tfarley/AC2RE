@@ -8,8 +8,14 @@ namespace AC2E.Def {
 
     public class AC2Reader : BinaryReader {
 
-        public AC2Reader(Stream input) : base(input) {
+        public readonly PackageRegistry packageRegistry;
 
+        public AC2Reader(Stream input) : base(input) {
+            packageRegistry = new PackageRegistry();
+        }
+
+        public AC2Reader(Stream input, PackageRegistry packageRegistry) : base(input) {
+            this.packageRegistry = packageRegistry;
         }
 
         public override string ReadString() {
@@ -29,6 +35,10 @@ namespace AC2E.Def {
             if (packTag != expectedPackTag) {
                 throw new InvalidDataException(packTag.ToString());
             }
+        }
+
+        public bool UnpackBoolean() {
+            return UnpackUInt32() != 0;
         }
 
         public int UnpackInt32() {
@@ -72,22 +82,20 @@ namespace AC2E.Def {
         public T UnpackPackage<T>() where T : IPackage {
             checkPackTag(PackTag.PACKAGE);
 
-            PackageRegistry tempRegistry = new PackageRegistry();
-
             List<PackageId> packageIds = ReadList(ReadPackageId);
 
-            T rootPackage = readPackage<T>(tempRegistry, packageIds[0]);
+            T rootPackage = readPackage<T>(packageIds[0]);
 
             for (int i = 1; i < packageIds.Count; i++) {
-                readPackage<IPackage>(tempRegistry, packageIds[i]);
+                readPackage<IPackage>(packageIds[i]);
             }
 
-            tempRegistry.executeResolvers();
+            packageRegistry.executeResolvers();
 
             return rootPackage;
         }
 
-        private T readPackage<T>(PackageRegistry registry, PackageId packageId) {
+        private T readPackage<T>(PackageId packageId) {
             InterpReferenceMeta referenceMeta = new InterpReferenceMeta(ReadUInt32());
 
             IPackage package;
@@ -96,47 +104,43 @@ namespace AC2E.Def {
                 package = new SingletonPkg {
                     did = ReadDataId(),
                 };
-
-                registry.register(packageId, package, referenceMeta);
-
-                return (T)package;
-            }
-
-            uint unk1 = ReadUInt32();
-            NativeType nativeType = (NativeType)ReadUInt16();
-            PackageType packageType = (PackageType)ReadUInt16();
-            if (nativeType != NativeType.UNDEF) {
-                package = PackageManager.read(this, nativeType, registry);
             } else {
-                uint length = ReadUInt32();
-                package = PackageManager.read(this, packageType, registry);
-            }
-
-            // TODO: Still not sure this is the correct condition for whether there are references or not
-            // Skip over field descriptions
-            if (nativeType == NativeType.UNDEF) {
-                foreach (FieldDesc fieldDesc in InterpMeta.getFieldDescs(package.GetType())) {
-                    ReadByte();
-                    if (fieldDesc.numWords == 2) {
-                        ReadByte();
-                    }
+                uint unk1 = ReadUInt32();
+                NativeType nativeType = (NativeType)ReadUInt16();
+                PackageType packageType = (PackageType)ReadUInt16();
+                if (nativeType != NativeType.UNDEF) {
+                    package = PackageManager.read(this, nativeType);
+                } else {
+                    uint length = ReadUInt32();
+                    package = PackageManager.read(this, packageType);
                 }
-                // TODO: Should this align occur even if there are no references?
-                Align(4);
-            } else {
-                // TODO: Is this needed/correct?
-                ReadUInt32();
+
+                // TODO: Still not sure this is the correct condition for whether there are references or not
+                // Skip over field descriptions
+                if (nativeType == NativeType.UNDEF) {
+                    foreach (FieldDesc fieldDesc in InterpMeta.getFieldDescs(package.GetType())) {
+                        ReadByte();
+                        if (fieldDesc.numWords == 2) {
+                            ReadByte();
+                        }
+                    }
+                    // TODO: Should this align occur even if there are no references?
+                    Align(4);
+                } else {
+                    // TODO: Is this needed/correct?
+                    ReadUInt32();
+                }
             }
 
-            registry.register(packageId, package, referenceMeta);
+            packageRegistry.register(packageId, package, referenceMeta);
 
             return (T)package;
         }
 
-        public PackageId ReadPkgRef<T>(Action<T> assigner, PackageRegistry registry) where T : IPackage {
+        public PackageId ReadPkg<T>(Action<T> assigner) where T : IPackage {
             PackageId packageId = ReadPackageId();
             if (packageId.id != PackageId.NULL.id) {
-                registry.addResolver(() => assigner.Invoke(registry.get<T>(packageId)));
+                packageRegistry.addResolver(() => assigner.Invoke(packageRegistry.get<T>(packageId)));
             }
             return packageId;
         }
@@ -146,7 +150,7 @@ namespace AC2E.Def {
                 encoding = Encoding.ASCII;
             }
             MemoryStream buffer = new MemoryStream();
-            using (AC2Writer data = new AC2Writer(buffer)) {
+            using (AC2Writer data = new AC2Writer(buffer, packageRegistry)) {
                 byte val;
                 do {
                     val = ReadByte();

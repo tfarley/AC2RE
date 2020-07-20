@@ -39,7 +39,7 @@ namespace AC2E.Def {
             }
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             // TODO: Guessing on the types here
             data.Write((uint)_type);
             switch (_type) {

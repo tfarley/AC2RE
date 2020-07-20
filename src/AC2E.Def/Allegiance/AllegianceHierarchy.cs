@@ -25,42 +25,42 @@
 
         }
 
-        public AllegianceHierarchy(AC2Reader data, PackageRegistry registry) {
+        public AllegianceHierarchy(AC2Reader data) {
             m_removalRoomID = data.ReadUInt32();
-            data.ReadPkgRef<StringInfo>(v => m_allegianceName = v, registry);
-            data.ReadPkgRef<WPString>(v => m_recallLocation = v, registry);
-            data.ReadPkgRef<AllegianceNode>(v => m_monarch = v, registry);
+            data.ReadPkg<StringInfo>(v => m_allegianceName = v);
+            data.ReadPkg<WPString>(v => m_recallLocation = v);
+            data.ReadPkg<AllegianceNode>(v => m_monarch = v);
             m_realTimeLastRename = data.ReadInt32();
-            data.ReadPkgRef<WPString>(v => m_roomName = v, registry);
+            data.ReadPkg<WPString>(v => m_roomName = v);
             m_fChatRoomCreationInProgress = data.ReadBoolean();
             m_fFactionKingdomRestrictionsOn = data.ReadBoolean();
-            data.ReadPkgRef<NRHash<IPackage, IPackage>>(v => m_NameToNodeHash = v.to<WPString, AllegianceNode>(), registry);
-            data.ReadPkgRef<LRHash<IPackage>>(v => m_IIDToNodeHash = new InstanceIdRHash<AllegianceNode>(v.to<AllegianceNode>()), registry);
-            data.ReadPkgRef<StringInfo>(v => m_motd = v, registry);
+            data.ReadPkg<NRHash<IPackage, IPackage>>(v => m_NameToNodeHash = v.to<WPString, AllegianceNode>());
+            data.ReadPkg<LRHash<IPackage>>(v => m_IIDToNodeHash = new InstanceIdRHash<AllegianceNode>(v.to<AllegianceNode>()));
+            data.ReadPkg<StringInfo>(v => m_motd = v);
             m_chatActive = data.ReadBoolean();
             m_fAllowNeutralsToBypassKingdomRestrictions = data.ReadBoolean();
             m_factionType = data.ReadUInt32();
             m_total = data.ReadUInt32();
-            data.ReadPkgRef<LAHashSet>(v => m_officerIDs = v, registry);
+            data.ReadPkg<LAHashSet>(v => m_officerIDs = v);
         }
 
-        public void write(AC2Writer data, PackageRegistry registry) {
+        public void write(AC2Writer data) {
             data.Write(m_removalRoomID);
-            data.Write(m_allegianceName, registry);
-            data.Write(m_recallLocation, registry);
-            data.Write(m_monarch, registry);
+            data.WritePkg(m_allegianceName);
+            data.WritePkg(m_recallLocation);
+            data.WritePkg(m_monarch);
             data.Write(m_realTimeLastRename);
-            data.Write(m_roomName, registry);
+            data.WritePkg(m_roomName);
             data.Write(m_fChatRoomCreationInProgress);
             data.Write(m_fFactionKingdomRestrictionsOn);
-            data.Write(m_NameToNodeHash, registry);
-            data.Write(m_IIDToNodeHash, registry);
-            data.Write(m_motd, registry);
+            data.WritePkg(m_NameToNodeHash);
+            data.WritePkg(m_IIDToNodeHash);
+            data.WritePkg(m_motd);
             data.Write(m_chatActive);
             data.Write(m_fAllowNeutralsToBypassKingdomRestrictions);
             data.Write(m_factionType);
             data.Write(m_total);
-            data.Write(m_officerIDs, registry);
+            data.WritePkg(m_officerIDs);
         }
     }
 }
