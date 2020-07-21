@@ -13,9 +13,12 @@ namespace AC2E.Def {
             public uint raw;
             public bool dwordFlag;
             public Opcode opcode;
-            public uint? val;
+            public uint immediate;
+            public ulong? val;
+            public ulong? val2;
             public ExportData targetPackage;
             public ExportFunctionData targetFunc;
+            public string targetString;
         }
 
         public readonly ByteStream byteStream;
@@ -51,27 +54,75 @@ namespace AC2E.Def {
                     raw = rawInstruction,
                     dwordFlag = (rawInstruction & (uint)Opcode.DWORD_FLAG) != 0,
                     opcode = (Opcode)(rawInstruction & 0x7F),
+                    immediate = ((rawInstruction & 0x7FFF0000) >> 16),
                 };
                 // TODO: Decode more opcodes - some may be multi-word like the ones below, and may be some with embedded immediates
                 switch (instruction.opcode) {
-                    case Opcode.CALL:
-                    case Opcode.CALL_EFUN:
-                        i += 4;
-                        FunctionId targetFuncId = new FunctionId(BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i));
-                        KeyValuePair<ExportData, ExportFunctionData> target = addrToTarget.GetValueOrDefault(new FunctionId(targetFuncId.funcAddr), new KeyValuePair<ExportData, ExportFunctionData>());
-                        instruction.targetPackage = target.Key;
-                        instruction.targetFunc = target.Value;
-                        break;
                     case Opcode.PUSH:
-                        i += 4;
-                        instruction.val = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
+                        if (instruction.dwordFlag) {
+                            i += 4;
+                            instruction.val = BitConverter.ToUInt64(byteStream.opcodeStream.opcodeBytes, (int)i);
+                            i += 4;
+                        } else {
+                            i += 4;
+                            instruction.val = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
+                        }
                         break;
                     case Opcode.NEW:
                     case Opcode.NEW_NATIVE:
                         i += 4;
-                        instruction.targetPackage = packageIdToPackage.GetValueOrDefault(new PackageId(BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i)), null);
+                        PackageId packageId = new PackageId(BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i));
+                        instruction.targetPackage = packageIdToPackage[packageId];
                         break;
+                    case Opcode.NEW_STRING:
+                        i += 4;
+                        int stringIndex = BitConverter.ToInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
+                        instruction.targetString = byteStream.stringLitTable.strings[stringIndex];
+                        break;
+                    case Opcode.CALL:
+                    case Opcode.CALL_EFUN:
+                        i += 4;
+                        FunctionId targetFuncId = new FunctionId(BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i));
+                        // TODO: There is still a lurking case where the key isn't found in the dictionary (6990)
+                        KeyValuePair<ExportData, ExportFunctionData> target = addrToTarget.GetValueOrDefault(new FunctionId(targetFuncId.funcAddr), new KeyValuePair<ExportData, ExportFunctionData>());
+                        instruction.targetPackage = target.Key;
+                        instruction.targetFunc = target.Value;
+                        break;
+                    case Opcode.RJMP:
+                        instruction.val = i + instruction.immediate + 4;
+                        break;
+                    case Opcode.RLOAD:
+                        instruction.val = instruction.immediate;
+                        break;
+                    case Opcode.SWITCH: {
+                            i += 4;
+                            uint val1 = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
+                            i += 4;
+                            uint numCases = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
+                            instruction.targetString = $"{val1} {numCases}:";
+                            uint switchEndOffset = i + numCases * 2 * 4 + 4;
+                            for (int j = 0; j < numCases; j++) {
+                                i += 4;
+                                uint caseValue = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
+                                i += 4;
+                                uint caseOffset = switchEndOffset + BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
+                                instruction.targetString += $" {caseValue} 0x{caseOffset:X8}";
+                            }
+                            break;
+                        }
                     default:
+                        if (instruction.opcode >= Opcode.FADD && instruction.opcode <= Opcode.FDEC) {
+                            i += 4;
+                            instruction.val = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
+                            if (instruction.dwordFlag) {
+                                i += 4;
+                                instruction.val2 = BitConverter.ToUInt64(byteStream.opcodeStream.opcodeBytes, (int)i);
+                                i += 4;
+                            } else {
+                                i += 4;
+                                instruction.val2 = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
+                            }
+                        }
                         break;
                 }
                 instructions.Add(instruction);
@@ -108,9 +159,23 @@ namespace AC2E.Def {
                     writeFunction(data, functionName);
                     data.WriteLine();
                 }
-                data.Write(instruction.opcode.ToString());
+                data.Write($"0x{instruction.offset:X8} {instruction.opcode}");
+                if (instruction.dwordFlag) {
+                    data.Write("(L)");
+                }
                 if (instruction.val.HasValue) {
-                    data.Write($" 0x{instruction.val.Value:X8}");
+                    if (instruction.dwordFlag) {
+                        data.Write($" 0x{instruction.val.Value:X16}");
+                    } else {
+                        data.Write($" 0x{instruction.val.Value:X8}");
+                    }
+                }
+                if (instruction.val2.HasValue) {
+                    if (instruction.dwordFlag) {
+                        data.Write($" 0x{instruction.val2.Value:X16}");
+                    } else {
+                        data.Write($" 0x{instruction.val2.Value:X8}");
+                    }
                 }
                 if (instruction.targetPackage != null) {
                     data.Write($" {instruction.targetPackage.args.name}");
@@ -123,6 +188,9 @@ namespace AC2E.Def {
                     FunctionId funcId = instruction.targetFunc.funcId;
                     funcId.isAbs = true;
                     data.Write($" [0x{funcId.id:X8}]");
+                }
+                if (instruction.targetString != null) {
+                    data.Write($" \"{instruction.targetString}\"");
                 }
                 data.WriteLine();
             }
