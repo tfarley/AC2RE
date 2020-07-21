@@ -20,9 +20,7 @@ namespace AC2E.Server {
 
             Log.Information("Hello World!");
 
-            //parseWLib();
-
-            //parseDatFiles();
+            parsePortalDat("G:\\Asheron's Call 2\\portal.dat", false, false);
 
             runServer();
         }
@@ -39,39 +37,46 @@ namespace AC2E.Server {
             Log.Information($"Enc: {BitConverter.ToString(bytes).Replace("-", "")}");
         }
 
-        private static void parseWLib() {
-            string wlibFileName = "56000005";
-            if (File.Exists(wlibFileName)) {
-                using (AC2Reader data = new AC2Reader(File.OpenRead(wlibFileName))) {
-                    var wlib = new WLib(data);
-                    Log.Information("Parsed wlib.");
-                    using (StreamWriter output = new StreamWriter(File.OpenWrite("wlib.packages.txt"))) {
-                        Dump.dumpPackages(output, wlib.byteStream);
-                    }
-                    var disasm = new Disasm(wlib.byteStream);
-                    Log.Information("Disassembled bytestream.");
-                    using (StreamWriter output = new StreamWriter(File.OpenWrite("wlib.disasm.txt"))) {
-                        disasm.write(output);
-                    }
-                }
-            }
-        }
+        private static void parsePortalDat(string portalDatFileName, bool parseEnumMappers, bool parseWLib) {
+            string parsedDirectory = "portalparsed";
+            string empDirectory = Path.Combine(parsedDirectory, "emp");
+            string wlibDirectory = Path.Combine(parsedDirectory, "wlib");
+            if (File.Exists(portalDatFileName)) {
+                Directory.CreateDirectory(empDirectory);
+                Directory.CreateDirectory(wlibDirectory);
 
-        private static void parseDatFiles() {
-            string datFilesDirectory = "DatFiles";
-            string parsedExtension = ".txt";
-            if (Directory.Exists(datFilesDirectory)) {
-                foreach (string datFileName in Directory.EnumerateFiles(datFilesDirectory)) {
-                    if (!datFileName.EndsWith(parsedExtension) && !File.Exists(datFileName + parsedExtension)) {
-                        using (AC2Reader data = new AC2Reader(File.OpenRead(datFileName)))
-                        using (StreamWriter output = new StreamWriter(File.OpenWrite(datFileName + parsedExtension))) {
-                            var emp = new EnumMapper(data);
-                            foreach (var mapping in emp.idToString) {
-                                output.WriteLine($"{mapping.Key}\t{mapping.Value}");
+                int numFiles = 0;
+                using (DatReader datReader = new DatReader(new AC2Reader(File.OpenRead(portalDatFileName)))) {
+                    BTree filesystemTree = new BTree(datReader);
+                    foreach (BTree.BTNode node in filesystemTree.offsetToNode.Values) {
+                        numFiles += node.entries.Count;
+                        foreach (BTree.BTEntry entry in node.entries) {
+                            if (parseEnumMappers && (entry.gid >> 24) == 0x23) {
+                                using (StreamWriter output = new StreamWriter(File.OpenWrite(Path.Combine(empDirectory, $"{entry.gid:X8}.emp.txt"))))
+                                using (AC2Reader data = new AC2Reader(new MemoryStream(datReader.readFileBytes(entry.offset, entry.size)))) {
+                                    var emp = new EnumMapper(data);
+                                    foreach (var mapping in emp.idToString) {
+                                        output.WriteLine($"{mapping.Key}\t{mapping.Value}");
+                                    }
+                                }
+                            }
+                            if (parseWLib && (entry.gid >> 24) == 0x56) {
+                                using (AC2Reader data = new AC2Reader(new MemoryStream(datReader.readFileBytes(entry.offset, entry.size)))) {
+                                    var wlib = new WLib(data);
+                                    using (StreamWriter output = new StreamWriter(File.OpenWrite(Path.Combine(wlibDirectory, $"{entry.gid:X8}.wlib.packages.txt")))) {
+                                        Dump.dumpPackages(output, wlib.byteStream);
+                                    }
+                                    var disasm = new Disasm(wlib.byteStream);
+                                    using (StreamWriter output = new StreamWriter(File.OpenWrite(Path.Combine(wlibDirectory, $"{entry.gid:X8}.wlib.disasm.txt")))) {
+                                        disasm.write(output);
+                                    }
+                                }
                             }
                         }
                     }
                 }
+
+                Log.Information($"Parsed portal dat, num files: {numFiles}.");
             }
         }
 

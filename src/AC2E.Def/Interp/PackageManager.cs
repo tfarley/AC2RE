@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace AC2E.Def {
 
     public static class PackageManager {
 
-        private static readonly HashSet<Type> SINGLETON_PACKAGE_TYPES = new HashSet<Type> {
-            typeof(SingletonPkg) // TODO: EffectPkg etc. instead of shared class?
-        };
-
         public static InterpReferenceMeta getReferenceMeta(Type type) {
             InterpReferenceMeta.Flag flags = InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE;
-            if (SINGLETON_PACKAGE_TYPES.Contains(type)) {
+            if (type == typeof(SingletonPkg)) {
                 flags |= InterpReferenceMeta.Flag.SINGLETON;
             }
 
