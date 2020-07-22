@@ -269,6 +269,13 @@ namespace AC2E.Def {
             Write((byte)(value.a * 255.0f));
         }
 
+        public void WriteFull(RGBAColor value) {
+            Write(value.r);
+            Write(value.g);
+            Write(value.b);
+            Write(value.a);
+        }
+
         public void Write(Heading value) {
             Write((uint)(value.rotDegrees / 360.0f * 255.0f) & 0x000000FF);
         }

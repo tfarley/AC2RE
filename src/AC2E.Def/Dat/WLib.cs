@@ -1,10 +1,12 @@
 ﻿namespace AC2E.Def {
 
-    public class WLib : DbObj {
+    public class WLib {
 
+        public DataId did; // m_DID
         public ByteStream byteStream; // m_bstream
 
-        public WLib(AC2Reader data) : base(data) {
+        public WLib(AC2Reader data) {
+            did = data.ReadDataId();
             byteStream = new ByteStream(data);
         }
     }

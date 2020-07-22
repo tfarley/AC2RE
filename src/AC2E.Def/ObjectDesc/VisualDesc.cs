@@ -57,7 +57,7 @@ namespace AC2E.Def {
             public Dictionary<uint, AppearanceInfo> appearances; // m_app_hash
             public DataId fxTableDid; // m_fxtable_did
             public Dictionary<uint, float> startupFx; // m_startup_fx
-            //public Dictionary<uint, List<FXData>> fxOverrides; // m_fx_overrides // TODO: Figure this one out, need to find an example in pcaps
+            public Dictionary<uint, List<FXData>> fxOverrides; // m_fx_overrides
 
             public PartGroupDataDesc() {
 
@@ -91,7 +91,7 @@ namespace AC2E.Def {
                     startupFx = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
                 }
                 if (packFlags.HasFlag(PackFlag.FXOVERRIDES)) {
-                    throw new NotImplementedException("PartGroupDataDesc.fxOverrides");
+                    fxOverrides = data.ReadDictionary(data.ReadUInt32, () => data.ReadList(() => new FXData(data)));
                 }
             }
 
@@ -122,12 +122,13 @@ namespace AC2E.Def {
                     data.Write(startupFx, data.Write, data.Write);
                 }
                 if (packFlags.HasFlag(PackFlag.FXOVERRIDES)) {
-                    throw new NotImplementedException("PartGroupDataDesc.fxOverrides");
+                    data.Write(fxOverrides, data.Write, v => data.Write(v, v => v.write(data)));
                 }
             }
         }
 
         public PackFlag packFlags;
+        public DataId did; // m_DID
         public DataId parentDid; // m_parent_did
         public DataId miDescDid; // m_midesc_did
         public DataId behaviorTableDid; // m_behaviortable_did
@@ -148,7 +149,7 @@ namespace AC2E.Def {
         public VisualDesc(AC2Reader data) {
             packFlags = (PackFlag)data.ReadUInt32();
             if (packFlags.HasFlag(PackFlag.DATABASE)) {
-                throw new NotImplementedException("VisualDesc.database");
+                did = data.ReadDataId();
             }
             if (packFlags.HasFlag(PackFlag.PARENT)) {
                 parentDid = data.ReadDataId();
@@ -185,7 +186,7 @@ namespace AC2E.Def {
         public void write(AC2Writer data) {
             data.Write((uint)packFlags);
             if (packFlags.HasFlag(PackFlag.DATABASE)) {
-                throw new NotImplementedException("VisualDesc.database");
+                data.Write(did);
             }
             if (packFlags.HasFlag(PackFlag.PARENT)) {
                 data.Write(parentDid);

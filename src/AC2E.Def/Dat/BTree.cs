@@ -55,7 +55,7 @@ namespace AC2E.Def {
 
             nodeOffsetQueue.Enqueue(datReader.header.fileInfo.treeRootOffset);
             while (nodeOffsetQueue.TryDequeue(out uint nodeOffset)) {
-                using (AC2Reader fileData = new AC2Reader(new MemoryStream(datReader.readFileBytes(nodeOffset, BTNode.FILE_SIZE)))) {
+                using (AC2Reader fileData = datReader.getFileReader(nodeOffset, BTNode.FILE_SIZE)) {
                     BTNode node = new BTNode(fileData);
                     foreach (uint childOffset in node.childOffsets) {
                         if (visitedOffsets.Add(childOffset)) {

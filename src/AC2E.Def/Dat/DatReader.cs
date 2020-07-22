@@ -14,6 +14,10 @@ namespace AC2E.Def {
             header = new DiskHeaderBlock(data);
         }
 
+        public AC2Reader getFileReader(uint offset, int size) {
+            return new AC2Reader(new MemoryStream(readFileBytes(offset, size)));
+        }
+
         public byte[] readFileBytes(uint offset, int size) {
             byte[] fileData = new byte[size];
 

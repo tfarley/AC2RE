@@ -273,6 +273,15 @@ namespace AC2E.Def {
             };
         }
 
+        public RGBAColor ReadRGBAColorFull() {
+            return new RGBAColor {
+                r = ReadSingle(),
+                g = ReadSingle(),
+                b = ReadSingle(),
+                a = ReadSingle(),
+            };
+        }
+
         public Heading ReadHeading() {
             return new Heading(((ReadUInt32() >> 24) & 0x000000FF) / 255.0f * 360.0f);
         }
