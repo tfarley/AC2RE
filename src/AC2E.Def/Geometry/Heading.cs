@@ -1,6 +1,8 @@
 ﻿namespace AC2E.Def {
 
-    public struct Heading {
+    public class Heading : IPackage {
+
+        public NativeType nativeType => NativeType.HEADING;
 
         public float rotDegrees;
 

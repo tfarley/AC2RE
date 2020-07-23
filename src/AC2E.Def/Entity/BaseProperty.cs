@@ -36,7 +36,7 @@ namespace AC2E.Def {
                     value = data.ReadRGBAColor();
                     break;
                 case PropertyType.STRING:
-                    value = data.ReadString(Encoding.Unicode);
+                    value = data.ReadString();
                     break;
                 case PropertyType.ENUM:
                     value = data.ReadUInt32();
@@ -83,7 +83,7 @@ namespace AC2E.Def {
                     data.Write((RGBAColor)value);
                     break;
                 case PropertyType.STRING:
-                    data.Write((string)value, Encoding.Unicode);
+                    data.Write((string)value);
                     break;
                 case PropertyType.ENUM:
                     data.Write((uint)value);

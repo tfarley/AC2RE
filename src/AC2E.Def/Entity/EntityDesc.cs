@@ -3,11 +3,13 @@ using System.Text;
 
 namespace AC2E.Def {
 
-    public class EntityDesc {
+    public class EntityDesc : IPackage {
+
+        public NativeType nativeType => NativeType.ENTITYDESC;
 
         // Enum EntityDescPack::Flag
         [Flags]
-        public enum PackFlag : ulong {
+        public enum PackFlag : uint {
             NONE = 0,
             DATABASE = 1 << 0, // 0x00000001
             TYPE = 1 << 1, // 0x00000002
@@ -26,7 +28,7 @@ namespace AC2E.Def {
         public InstanceId runtimeId; // m_runtimeID
         public DataId dataId; // m_dataID
         public PackageId packageId; // m_pkgID
-        public Frame offset; // m_offset
+        public Matrix4 offset; // m_offset
         public Vector scale; // m_scale
         public PropertyCollection properties; // m_properties
         public uint version; // m_version
@@ -54,7 +56,7 @@ namespace AC2E.Def {
                 dataId = data.ReadDataId();
             }
             if (packFlags.HasFlag(PackFlag.OFFSET)) {
-                offset = new Frame(data);
+                offset = new Matrix4(data);
             }
             if (packFlags.HasFlag(PackFlag.SCALE)) {
                 scale = data.ReadVector();
@@ -66,7 +68,7 @@ namespace AC2E.Def {
                 version = data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.WBNAME)) {
-                wbName = data.ReadString(Encoding.Unicode);
+                wbName = data.ReadString();
             }
         }
 
@@ -97,7 +99,7 @@ namespace AC2E.Def {
                 data.Write(version);
             }
             if (packFlags.HasFlag(PackFlag.WBNAME)) {
-                data.Write(wbName, Encoding.Unicode);
+                data.Write(wbName);
             }
         }
     }

@@ -11,7 +11,7 @@ namespace AC2E.Def {
         public EnumMapper(AC2Reader data) {
             did = data.ReadDataId();
             baseEnumMapperDid = data.ReadDataId();
-            idToString = data.ReadDictionary(data.ReadUInt32, () => data.ReadString());
+            idToString = data.ReadDictionary(data.ReadUInt32, data.ReadString);
         }
     }
 }

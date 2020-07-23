@@ -1,6 +1,6 @@
 ﻿namespace AC2E.Def {
 
-    public class PositionOffset {
+    public struct PositionOffset {
 
         public CellId cellId; // m_cid
         public Vector offset; // m_offset

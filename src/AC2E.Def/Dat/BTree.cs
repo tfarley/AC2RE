@@ -17,7 +17,7 @@ namespace AC2E.Def {
             public BTNode(AC2Reader data) {
                 for (int i = 0; i < MAX_NUM_CHILDREN; i++) {
                     uint childOffset = data.ReadUInt32();
-                    if (childOffset != 0) {
+                    if (childOffset != 0 && childOffset != 0xCDCDCDCD) {
                         childOffsets.Add(childOffset);
                     }
                 }
@@ -34,13 +34,13 @@ namespace AC2E.Def {
 
             public static readonly int FILE_SIZE = sizeof(uint) * 4;
 
-            public uint gid; // GID_
+            public DataId gid; // GID_
             public uint offset; // Offset_
             public int size; // size_
             public uint date; // date_
 
             public BTEntry(AC2Reader data) {
-                gid = data.ReadUInt32();
+                gid = data.ReadDataId();
                 offset = data.ReadUInt32();
                 size = data.ReadInt32();
                 date = data.ReadUInt32();

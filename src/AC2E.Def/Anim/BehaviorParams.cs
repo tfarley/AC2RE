@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 namespace AC2E.Def {
 
-    public class BehaviorParams {
+    public class BehaviorParams : IPackage {
+
+        public NativeType nativeType => NativeType.BEHAVIORPARAMS;
 
         // Const - globals
         [Flags]

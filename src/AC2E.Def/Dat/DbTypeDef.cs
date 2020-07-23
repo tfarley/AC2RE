@@ -1,9 +1,11 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class DbTypeDef {
 
-        public static readonly DbTypeDef[] DEFS = {
-            new DbTypeDef {
+        public static readonly Dictionary<DbType, DbTypeDef> DEFS = new Dictionary<DbType, DbTypeDef> {
+            { DbType.LANDBLOCKINFO, new DbTypeDef {
                 baseDid = new DataId(0),
                 topDid = new DataId(0),
                 extension = ".lbi",
@@ -24,9 +26,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.LIGHTINFO, new DbTypeDef {
                 baseDid = new DataId(0),
                 topDid = new DataId(0),
                 extension = ".lightinfo",
@@ -47,9 +49,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 8,
                 freelistMaxSize = 16,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.LBO, new DbTypeDef {
                 baseDid = new DataId(0),
                 topDid = new DataId(0),
                 extension = ".lbo",
@@ -70,9 +72,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.SHELL, new DbTypeDef {
                 baseDid = new DataId(0),
                 topDid = new DataId(0),
                 extension = ".shell",
@@ -93,9 +95,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.LIGHTCACHE, new DbTypeDef {
                 baseDid = new DataId(0),
                 topDid = new DataId(0),
                 extension = ".lightcache",
@@ -116,9 +118,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.PATHMAP, new DbTypeDef {
                 baseDid = new DataId(0),
                 topDid = new DataId(0),
                 extension = ".pathmap",
@@ -139,9 +141,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.CELLMESH, new DbTypeDef {
                 baseDid = new DataId(0x01000000),
                 topDid = new DataId(0x01FFFFFF),
                 extension = ".cellmesh",
@@ -162,9 +164,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.SCENE, new DbTypeDef {
                 baseDid = new DataId(0x02000000),
                 topDid = new DataId(0x02FFFFFF),
                 extension = ".scn",
@@ -185,9 +187,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 64,
                 freelistMaxSize = 128,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.ANIMMAP, new DbTypeDef {
                 baseDid = new DataId(0x03000000),
                 topDid = new DataId(0x03FFFFFF),
                 extension = ".animmap",
@@ -208,9 +210,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.SETUP, new DbTypeDef {
                 baseDid = new DataId(0x04000000),
                 topDid = new DataId(0x04FFFFFF),
                 extension = ".set",
@@ -231,9 +233,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 64,
                 freelistMaxSize = 128,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.DBANIMATOR, new DbTypeDef {
                 baseDid = new DataId(0x05000000),
                 topDid = new DataId(0x05FFFFFF),
                 extension = ".anm",
@@ -254,9 +256,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 128,
                 freelistMaxSize = 256,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.MESH, new DbTypeDef {
                 baseDid = new DataId(0x06000000),
                 topDid = new DataId(0x06FFFFFF),
                 extension = ".mesh",
@@ -277,9 +279,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 64,
                 freelistMaxSize = 128,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.QUALITY_FILTER, new DbTypeDef {
                 baseDid = new DataId(0x0A000000),
                 topDid = new DataId(0x0AFFFFFF),
                 extension = ".wqf",
@@ -300,9 +302,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.WAVE, new DbTypeDef {
                 baseDid = new DataId(0x0C000000),
                 topDid = new DataId(0x0CFFFFFF),
                 extension = ".wav",
@@ -323,9 +325,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 128,
                 freelistMaxSize = 256,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.UNK1, new DbTypeDef {
                 baseDid = new DataId(0x0E000003),
                 topDid = new DataId(0x0E000003),
                 extension = "",
@@ -346,9 +348,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.PLACES_TABLE, new DbTypeDef {
                 baseDid = new DataId(0x0E000004),
                 topDid = new DataId(0x0E000004),
                 extension = ".places",
@@ -369,9 +371,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.TABOO_TABLE, new DbTypeDef {
                 baseDid = new DataId(0x0EBADA55),
                 topDid = new DataId(0x0EBADA55),
                 extension = ".taboo",
@@ -392,9 +394,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.REGION, new DbTypeDef {
                 baseDid = new DataId(0x0F000000),
                 topDid = new DataId(0x0FFFFFFF),
                 extension = ".rgn",
@@ -415,9 +417,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.SOUND_DESC, new DbTypeDef {
                 baseDid = new DataId(0x10000000),
                 topDid = new DataId(0x10FFFFFF),
                 extension = ".sod",
@@ -438,9 +440,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.SCENE_DESC, new DbTypeDef {
                 baseDid = new DataId(0x11000000),
                 topDid = new DataId(0x11FFFFFF),
                 extension = ".scd",
@@ -461,9 +463,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.TERRAIN_DESC, new DbTypeDef {
                 baseDid = new DataId(0x12000000),
                 topDid = new DataId(0x12FFFFFF),
                 extension = ".trd",
@@ -484,9 +486,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.SURFACE_DESC, new DbTypeDef {
                 baseDid = new DataId(0x13000000),
                 topDid = new DataId(0x13FFFFFF),
                 extension = ".sfd",
@@ -507,9 +509,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.ENCOUNTER_DESC, new DbTypeDef {
                 baseDid = new DataId(0x14000000),
                 topDid = new DataId(0x14FFFFFF),
                 extension = ".end",
@@ -530,9 +532,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.SKY_DESC, new DbTypeDef {
                 baseDid = new DataId(0x15000000),
                 topDid = new DataId(0x15FFFFFF),
                 extension = ".skd",
@@ -553,9 +555,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.WATER_DESC, new DbTypeDef {
                 baseDid = new DataId(0x16000000),
                 topDid = new DataId(0x16FFFFFF),
                 extension = ".wtd",
@@ -576,9 +578,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.FOG_DESC, new DbTypeDef {
                 baseDid = new DataId(0x17000000),
                 topDid = new DataId(0x17FFFFFF),
                 extension = ".fgd",
@@ -599,9 +601,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.PROPERTY_DESC, new DbTypeDef {
                 baseDid = new DataId(0x18000000),
                 topDid = new DataId(0x18FFFFFF),
                 extension = ".prd",
@@ -622,9 +624,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.UNK2, new DbTypeDef {
                 baseDid = new DataId(0x19000000),
                 topDid = new DataId(0x19FFFFFF),
                 extension = ".bmd",
@@ -645,9 +647,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.DAY_DESC, new DbTypeDef {
                 baseDid = new DataId(0x1A000000),
                 topDid = new DataId(0x1AFFFFFF),
                 extension = ".dyd",
@@ -668,9 +670,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.KEYMAP, new DbTypeDef {
                 baseDid = new DataId(0x1D000000),
                 topDid = new DataId(0x1DFFFFFF),
                 extension = ".keymap",
@@ -691,9 +693,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.FX_TABLE, new DbTypeDef {
                 baseDid = new DataId(0x1E000000),
                 topDid = new DataId(0x1EFFFFFF),
                 extension = ".fxtable",
@@ -714,9 +716,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.VISUAL_DESC, new DbTypeDef {
                 baseDid = new DataId(0x1F000000),
                 topDid = new DataId(0x1FFFFFFF),
                 extension = ".vd",
@@ -737,9 +739,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 64,
                 freelistMaxSize = 128,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.APPEARANCE, new DbTypeDef {
                 baseDid = new DataId(0x20000000),
                 topDid = new DataId(0x20FFFFFF),
                 extension = ".apr",
@@ -760,9 +762,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 64,
                 freelistMaxSize = 128,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.UI_SCENE, new DbTypeDef {
                 baseDid = new DataId(0x21000000),
                 topDid = new DataId(0x21FFFFFF),
                 extension = ".uiscene",
@@ -783,9 +785,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.UI_LAYOUT, new DbTypeDef {
                 baseDid = new DataId(0x22000000),
                 topDid = new DataId(0x22FFFFFF),
                 extension = ".uil",
@@ -806,9 +808,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.ENUM_MAPPER, new DbTypeDef {
                 baseDid = new DataId(0x23000000),
                 topDid = new DataId(0x23FFFFFF),
                 extension = ".emp",
@@ -829,9 +831,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 64,
                 freelistMaxSize = 128,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.MUSICDESC, new DbTypeDef {
                 baseDid = new DataId(0x24000000),
                 topDid = new DataId(0x24FFFFFF),
                 extension = ".mid",
@@ -852,9 +854,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.STRING_TABLE, new DbTypeDef {
                 baseDid = new DataId(0x25000000),
                 topDid = new DataId(0x26FFFFFF),
                 extension = ".stt",
@@ -875,9 +877,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.FILEFORMAT, new DbTypeDef {
                 baseDid = new DataId(0x27000000),
                 topDid = new DataId(0x27FFFFFF),
                 extension = ".fmt",
@@ -898,9 +900,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.INPUTMAPPER, new DbTypeDef {
                 baseDid = new DataId(0x28000000),
                 topDid = new DataId(0x28FFFFFF),
                 extension = ".imp",
@@ -921,9 +923,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.ENVINFO, new DbTypeDef {
                 baseDid = new DataId(0x29000000),
                 topDid = new DataId(0x29FFFFFF),
                 extension = ".snv",
@@ -944,9 +946,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.SOUNDINFO, new DbTypeDef {
                 baseDid = new DataId(0x2A000000),
                 topDid = new DataId(0x2AFFFFFF),
                 extension = ".sif",
@@ -967,9 +969,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 128,
                 freelistMaxSize = 256,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.RENDERMATERIAL, new DbTypeDef {
                 baseDid = new DataId(0x2B000000),
                 topDid = new DataId(0x2BFFFFFF),
                 extension = ".mat",
@@ -990,9 +992,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 64,
                 freelistMaxSize = 128,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.MUSICINFO, new DbTypeDef {
                 baseDid = new DataId(0x2C000000),
                 topDid = new DataId(0x2CFFFFFF),
                 extension = ".mif",
@@ -1013,9 +1015,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 128,
                 freelistMaxSize = 256,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.CHARTEMPLATE, new DbTypeDef {
                 baseDid = new DataId(0x2F000000),
                 topDid = new DataId(0x2FFFFFFF),
                 extension = ".ctp",
@@ -1036,9 +1038,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.MATERIALMODIFIER, new DbTypeDef {
                 baseDid = new DataId(0x30000000),
                 topDid = new DataId(0x30FFFFFF),
                 extension = ".mm",
@@ -1059,9 +1061,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 64,
                 freelistMaxSize = 128,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.MATERIALINSTANCE, new DbTypeDef {
                 baseDid = new DataId(0x31000000),
                 topDid = new DataId(0x31FFFFFF),
                 extension = ".mi",
@@ -1082,9 +1084,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 64,
                 freelistMaxSize = 128,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.MOTIONINTERPDESC, new DbTypeDef {
                 baseDid = new DataId(0x32000000),
                 topDid = new DataId(0x32FFFFFF),
                 extension = ".midesc",
@@ -1105,9 +1107,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.MASTER_PROPERTY, new DbTypeDef {
                 baseDid = new DataId(0x34000000),
                 topDid = new DataId(0x34FFFFFF),
                 extension = ".mpr",
@@ -1128,9 +1130,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.GAME_TIME, new DbTypeDef {
                 baseDid = new DataId(0x35000000),
                 topDid = new DataId(0x35FFFFFF),
                 extension = ".gmt",
@@ -1151,9 +1153,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.LANDSCAPE_DEFS, new DbTypeDef {
                 baseDid = new DataId(0x36000000),
                 topDid = new DataId(0x36FFFFFF),
                 extension = ".lnd",
@@ -1174,9 +1176,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.PHYSICS_MATERIAL, new DbTypeDef {
                 baseDid = new DataId(0x37000000),
                 topDid = new DataId(0x37FFFFFF),
                 extension = ".pmat",
@@ -1197,9 +1199,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.OBSTACLE_DESC, new DbTypeDef {
                 baseDid = new DataId(0x38000000),
                 topDid = new DataId(0x38FFFFFF),
                 extension = ".obstacledesc",
@@ -1220,9 +1222,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.PSDESC, new DbTypeDef {
                 baseDid = new DataId(0x39000000),
                 topDid = new DataId(0x39FFFFFF),
                 extension = ".psdesc",
@@ -1243,9 +1245,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 64,
                 freelistMaxSize = 128,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.RENDERTEXTURE, new DbTypeDef {
                 baseDid = new DataId(0x40000000),
                 topDid = new DataId(0x400FFFFF),
                 extension = ".texture",
@@ -1266,9 +1268,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 128,
                 freelistMaxSize = 256,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.RENDERTEXTURE_LOCAL, new DbTypeDef {
                 baseDid = new DataId(0x40100000),
                 topDid = new DataId(0x40FFFFFF),
                 extension = ".texture_local",
@@ -1289,9 +1291,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 128,
                 freelistMaxSize = 256,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.RENDERSURFACE, new DbTypeDef {
                 baseDid = new DataId(0x41000000),
                 topDid = new DataId(0x410FFFFF),
                 extension = ".dds",
@@ -1312,9 +1314,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 256,
                 freelistMaxSize = 512,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.RENDERSURFACE_LOCAL, new DbTypeDef {
                 baseDid = new DataId(0x41100000),
                 topDid = new DataId(0x41FFFFFF),
                 extension = ".dds_local",
@@ -1335,9 +1337,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 256,
                 freelistMaxSize = 512,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.FONT, new DbTypeDef {
                 baseDid = new DataId(0x42000000),
                 topDid = new DataId(0x42000FFF),
                 extension = ".font",
@@ -1358,9 +1360,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.FONT_LOCAL, new DbTypeDef {
                 baseDid = new DataId(0x42001000),
                 topDid = new DataId(0x42FFFFFF),
                 extension = ".font_local",
@@ -1381,9 +1383,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.BEHAVIORTABLE, new DbTypeDef {
                 baseDid = new DataId(0x44000000),
                 topDid = new DataId(0x44FFFFFF),
                 extension = ".behaviortable",
@@ -1404,9 +1406,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.ENTITYGROUP, new DbTypeDef {
                 baseDid = new DataId(0x46000000),
                 topDid = new DataId(0x46FFFFFF),
                 extension = ".entitygroup",
@@ -1427,9 +1429,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.ENTITYDESC, new DbTypeDef {
                 baseDid = new DataId(0x47000000),
                 topDid = new DataId(0x47FFFFFF),
                 extension = ".entity",
@@ -1450,9 +1452,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 64,
                 freelistMaxSize = 128,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.ACTIONMAP, new DbTypeDef {
                 baseDid = new DataId(0x51000000),
                 topDid = new DataId(0x51FFFFFF),
                 extension = ".actionmap",
@@ -1473,9 +1475,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.CDB_TABLE, new DbTypeDef {
                 baseDid = new DataId(0x52000000),
                 topDid = new DataId(0x527FFFFF),
                 extension = ".cdb",
@@ -1496,9 +1498,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.PERFORMANCE, new DbTypeDef {
                 baseDid = new DataId(0x52800000),
                 topDid = new DataId(0x52FFFFFF),
                 extension = ".prf",
@@ -1519,9 +1521,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.VALIDMODES, new DbTypeDef {
                 baseDid = new DataId(0x54000000),
                 topDid = new DataId(0x54FFFFFF),
                 extension = ".validmodes",
@@ -1542,9 +1544,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.CAMERA_FX, new DbTypeDef {
                 baseDid = new DataId(0x55000000),
                 topDid = new DataId(0x55FFFFFF),
                 extension = ".cfx",
@@ -1565,9 +1567,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.WLIB, new DbTypeDef {
                 baseDid = new DataId(0x56000000),
                 topDid = new DataId(0x56FFFFFF),
                 extension = ".wlib",
@@ -1588,9 +1590,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.FXSCRIPT, new DbTypeDef {
                 baseDid = new DataId(0x57000000),
                 topDid = new DataId(0x57FFFFFF),
                 extension = ".fxscript",
@@ -1611,9 +1613,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.STRING, new DbTypeDef {
                 baseDid = new DataId(0x58000000),
                 topDid = new DataId(0x58FFFFFF),
                 extension = ".sti",
@@ -1634,9 +1636,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.DETAILMAP_DESC, new DbTypeDef {
                 baseDid = new DataId(0x59000000),
                 topDid = new DataId(0x59000FFF),
                 extension = ".detailmap",
@@ -1657,9 +1659,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.MAPNOTE_DESC, new DbTypeDef {
                 baseDid = new DataId(0x5900F000),
                 topDid = new DataId(0x59FFFFFF),
                 extension = ".mapnotes",
@@ -1680,9 +1682,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.CONVERSATION_TREE, new DbTypeDef {
                 baseDid = new DataId(0x60000000),
                 topDid = new DataId(0x60FFFFFF),
                 extension = ".conversation",
@@ -1703,9 +1705,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.UNK3, new DbTypeDef {
                 baseDid = new DataId(0x61000000),
                 topDid = new DataId(0x61FFFFFF),
                 extension = ".wbaseDid",
@@ -1726,9 +1728,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 1,
                 freelistMaxSize = 32,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.DBCATEGORIES, new DbTypeDef {
                 baseDid = new DataId(0x62000000),
                 topDid = new DataId(0x62FFFFFF),
                 extension = ".dbcategories",
@@ -1749,9 +1751,9 @@
                 freelistShrink = true,
                 freelistIdealSize = 32,
                 freelistMaxSize = 64,
-            },
+            } },
 
-            new DbTypeDef {
+            { DbType.UNK4, new DbTypeDef {
                 baseDid = new DataId(0x6F000000),
                 topDid = new DataId(0x7FFFFFFF),
                 extension = ".wc",
@@ -1772,7 +1774,7 @@
                 freelistShrink = true,
                 freelistIdealSize = 128,
                 freelistMaxSize = 256,
-            },
+            } },
         };
 
         public DataId baseDid;
@@ -1795,5 +1797,13 @@
         public bool freelistShrink;
         public uint freelistIdealSize;
         public uint freelistMaxSize;
+
+        public bool contains(DataId did) {
+            return contains(did.id);
+        }
+
+        public bool contains(uint did) {
+            return did >= baseDid.id && did <= topDid.id;
+        }
     }
 }
