@@ -327,7 +327,7 @@ namespace AC2E.Def {
                 freelistMaxSize = 256,
             } },
 
-            { DbType.UNK1, new DbTypeDef {
+            { DbType.FILE2ID_TABLE, new DbTypeDef {
                 baseDid = new DataId(0x0E000003),
                 topDid = new DataId(0x0E000003),
                 extension = "",
@@ -626,7 +626,7 @@ namespace AC2E.Def {
                 freelistMaxSize = 64,
             } },
 
-            { DbType.UNK2, new DbTypeDef {
+            { DbType.BLOCK_MAP, new DbTypeDef {
                 baseDid = new DataId(0x19000000),
                 topDid = new DataId(0x19FFFFFF),
                 extension = ".bmd",
@@ -1615,7 +1615,7 @@ namespace AC2E.Def {
                 freelistMaxSize = 64,
             } },
 
-            { DbType.STRING, new DbTypeDef {
+            { DbType.STRING_STATE, new DbTypeDef {
                 baseDid = new DataId(0x58000000),
                 topDid = new DataId(0x58FFFFFF),
                 extension = ".sti",
@@ -1707,7 +1707,7 @@ namespace AC2E.Def {
                 freelistMaxSize = 64,
             } },
 
-            { DbType.UNK3, new DbTypeDef {
+            { DbType.ENCODED_WAV, new DbTypeDef {
                 baseDid = new DataId(0x61000000),
                 topDid = new DataId(0x61FFFFFF),
                 extension = ".wbaseDid",
@@ -1753,7 +1753,7 @@ namespace AC2E.Def {
                 freelistMaxSize = 64,
             } },
 
-            { DbType.UNK4, new DbTypeDef {
+            { DbType.WSTATE, new DbTypeDef {
                 baseDid = new DataId(0x6F000000),
                 topDid = new DataId(0x7FFFFFFF),
                 extension = ".wc",

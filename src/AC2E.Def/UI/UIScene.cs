@@ -18,8 +18,8 @@ namespace AC2E.Def {
         public UIScene(AC2Reader data) {
             did = data.ReadDataId();
             entityDescs = data.ReadList(() => new EntityDesc(data));
-            wantFog = data.ReadBoolean();
             fogColor = data.ReadRGBAColor();
+            wantFog = data.ReadBoolean();
             fogNear = data.ReadSingle();
             fogFar = data.ReadSingle();
         }
@@ -27,8 +27,8 @@ namespace AC2E.Def {
         public void write(AC2Writer data) {
             data.Write(did);
             data.Write(entityDescs, v => v.write(data));
-            data.Write(wantFog);
             data.Write(fogColor);
+            data.Write(wantFog);
             data.Write(fogNear);
             data.Write(fogFar);
         }

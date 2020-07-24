@@ -90,10 +90,5 @@
         FONT_LOCAL = 0x40000060,
         RENDERSURFACE_LOCAL = 0x40000061,
         RENDERTEXTURE_LOCAL = 0x40000062,
-
-        UNK1 = 0x12345678,
-        UNK2,
-        UNK3,
-        UNK4,
     }
 }
