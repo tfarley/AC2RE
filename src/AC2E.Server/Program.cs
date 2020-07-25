@@ -21,8 +21,9 @@ namespace AC2E.Server {
 
             Log.Information("Hello World!");
 
-            parsePortalDat("G:\\Asheron's Call 2\\portal.dat", DbType.UI_SCENE);
-            parseLocalDat("G:\\Asheron's Call 2\\local_English.dat", DbType.RENDERSURFACE_LOCAL, DbType.STRING, DbType.STRING_TABLE);
+            parseDat("G:\\Asheron's Call 2\\portal.dat", "portalparsed", DbType.GAME_TIME);
+            //parseDat("G:\\Asheron's Call 2\\cell_1.dat", "cell1parsed", DbType.ENVCELL);
+            //parseDat("G:\\Asheron's Call 2\\local_English.dat", "localparsed", DbType.RENDERSURFACE_LOCAL, DbType.STRING, DbType.STRING_TABLE);
 
             runServer();
         }
@@ -39,249 +40,264 @@ namespace AC2E.Server {
             Log.Information($"Enc: {BitConverter.ToString(bytes).Replace("-", "")}");
         }
 
-        private static void parsePortalDat(string datFileName, params DbType[] typesToParse) {
+        private static void parseDat(string datFileName, string outputBaseDir, params DbType[] typesToParse) {
             if (File.Exists(datFileName)) {
                 HashSet<DbType> typesToParseSet = new HashSet<DbType>(typesToParse);
 
-                DbTypeDef cameraFxTypeDef = DbTypeDef.DEFS[DbType.CAMERA_FX];
-                DbTypeDef empTypeDef = DbTypeDef.DEFS[DbType.ENUM_MAPPER];
-                DbTypeDef entityTypeDef = DbTypeDef.DEFS[DbType.ENTITYDESC];
-                DbTypeDef fxScriptTypeDef = DbTypeDef.DEFS[DbType.FXSCRIPT];
-                DbTypeDef mapnoteTypeDef = DbTypeDef.DEFS[DbType.MAPNOTE_DESC];
-                DbTypeDef mprTypeDef = DbTypeDef.DEFS[DbType.MASTER_PROPERTY];
-                DbTypeDef pmatTypeDef = DbTypeDef.DEFS[DbType.PHYSICS_MATERIAL];
-                DbTypeDef surfaceTypeDef = DbTypeDef.DEFS[DbType.RENDERSURFACE];
-                DbTypeDef uiSceneTypeDef = DbTypeDef.DEFS[DbType.UI_SCENE];
-                DbTypeDef validmodesTypeDef = DbTypeDef.DEFS[DbType.VALIDMODES];
-                DbTypeDef vdTypeDef = DbTypeDef.DEFS[DbType.VISUAL_DESC];
-                DbTypeDef wlibTypeDef = DbTypeDef.DEFS[DbType.WLIB];
+                Dictionary<DbType, string> directoryCache = new Dictionary<DbType, string>();
 
-                string parsedDirectory = "portalparsed";
-                string cameraFxDirectory = getOrCreateDir(parsedDirectory, cameraFxTypeDef.strDataDir);
-                string empDirectory = getOrCreateDir(parsedDirectory, empTypeDef.strDataDir);
-                string entityDirectory = getOrCreateDir(parsedDirectory, entityTypeDef.strDataDir);
-                string fxScriptDirectory = getOrCreateDir(parsedDirectory, fxScriptTypeDef.strDataDir);
-                string mapnotesDirectory = getOrCreateDir(parsedDirectory, mapnoteTypeDef.strDataDir);
-                string mprDirectory = getOrCreateDir(parsedDirectory, mprTypeDef.strDataDir);
-                string pmatDirectory = getOrCreateDir(parsedDirectory, pmatTypeDef.strDataDir);
-                string surfaceDirectory = getOrCreateDir(parsedDirectory, surfaceTypeDef.strDataDir);
-                string uiSceneDirectory = getOrCreateDir(parsedDirectory, uiSceneTypeDef.strDataDir);
-                string validmodesDirectory = getOrCreateDir(parsedDirectory, validmodesTypeDef.strDataDir);
-                string vdDirectory = getOrCreateDir(parsedDirectory, vdTypeDef.strDataDir);
-                string wlibDirectory = getOrCreateDir(parsedDirectory, wlibTypeDef.strDataDir);
+                DbTypeDef mprTypeDef = DbTypeDef.TYPE_TO_DEF[DbType.MASTER_PROPERTY];
 
                 int numFiles = 0;
                 using (DatReader datReader = new DatReader(new AC2Reader(File.OpenRead(datFileName)))) {
                     BTree filesystemTree = new BTree(datReader);
                     // Parse data in first pass that is required for second pass
+                    bool foundMasterProperty = false;
                     foreach (BTree.BTNode node in filesystemTree.offsetToNode.Values) {
                         foreach (BTree.BTEntry entry in node.entries) {
                             if (mprTypeDef.contains(entry.gid)) {
+                                if (!directoryCache.TryGetValue(DbType.MASTER_PROPERTY, out string directory)) {
+                                    directory = getOrCreateDir(outputBaseDir, mprTypeDef.strDataDir);
+                                    directoryCache[DbType.MASTER_PROPERTY] = directory;
+                                }
+
                                 using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
                                     MasterProperty.instance = new MasterProperty(data);
 
                                     if (typesToParseSet.Contains(DbType.MASTER_PROPERTY)) {
-                                        File.WriteAllText(Path.Combine(mprDirectory, $"{entry.gid.id:X8}{mprTypeDef.extension}.txt"), Util.objectToString(MasterProperty.instance));
+                                        File.WriteAllText(Path.Combine(directory, $"{entry.gid.id:X8}{mprTypeDef.extension}.txt"), Util.objectToString(MasterProperty.instance));
                                     }
 
                                     checkFullRead(data, entry);
                                 }
+
+                                foundMasterProperty = true;
+                                break;
                             }
+                        }
+
+                        if (foundMasterProperty) {
+                            break;
                         }
                     }
                     foreach (BTree.BTNode node in filesystemTree.offsetToNode.Values) {
                         numFiles += node.entries.Count;
                         foreach (BTree.BTEntry entry in node.entries) {
-                            if (cameraFxTypeDef.contains(entry.gid)) {
-                                if (typesToParseSet.Contains(DbType.CAMERA_FX)) {
-                                    using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                        var cameraFx = new CameraFX(data);
+                            if (entry.gid.id >= 0x80000000) {
+                                //Log.Warning($"Dat gid {entry.gid} beyond known limit.");
+                                continue;
+                            }
 
-                                        File.WriteAllText(Path.Combine(cameraFxDirectory, $"{entry.gid.id:X8}{cameraFxTypeDef.extension}.txt"), Util.objectToString(cameraFx));
+                            DbType dbType = DbTypeDef.getType(entry.gid);
+                            if (dbType == DbType.UNDEFINED) {
+                                Log.Warning($"Unhandled dat gid {entry.gid}.");
+                                continue;
+                            }
 
-                                        checkFullRead(data, entry);
-                                    }
-                                }
-                            } else if (empTypeDef.contains(entry.gid)) {
-                                if (typesToParseSet.Contains(DbType.ENUM_MAPPER)) {
-                                    using (StreamWriter output = new StreamWriter(File.OpenWrite(Path.Combine(empDirectory, $"{entry.gid.id:X8}{empTypeDef.extension}.txt"))))
-                                    using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                        var emp = new EnumMapper(data);
+                            if (!typesToParseSet.Contains(dbType)) {
+                                continue;
+                            }
 
-                                        foreach (var mapping in emp.idToString) {
-                                            output.WriteLine($"{mapping.Key}\t{mapping.Value}");
+                            DbTypeDef dbTypeDef = DbTypeDef.TYPE_TO_DEF[dbType];
+
+                            if (!directoryCache.TryGetValue(dbType, out string directory)) {
+                                directory = getOrCreateDir(outputBaseDir, dbTypeDef.strDataDir);
+                                directoryCache[dbType] = directory;
+                            }
+
+                            string outputPath = Path.Combine(directory, $"{entry.gid.id:X8}{dbTypeDef.extension}");
+
+                            switch (DbTypeDef.getType(entry.gid)) {
+                                case DbType.CAMERA_FX: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var cameraFx = new CameraFX(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(cameraFx));
+
+                                            checkFullRead(data, entry);
                                         }
-
-                                        checkFullRead(data, entry);
+                                        break;
                                     }
-                                }
-                            } else if (entityTypeDef.contains(entry.gid)) {
-                                if (typesToParseSet.Contains(DbType.ENTITYDESC)) {
-                                    using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                        var entityDesc = new EntityDesc(data);
+                                case DbType.ANIMMAP: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            DataId did = data.ReadDataId();
+                                            var mapping = data.ReadDictionary(data.ReadUInt32, data.ReadUInt32);
 
-                                        File.WriteAllText(Path.Combine(entityDirectory, $"{entry.gid.id:X8}{entityTypeDef.extension}.txt"), Util.objectToString(entityDesc));
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(mapping));
 
-                                        checkFullRead(data, entry);
-                                    }
-                                }
-                            } else if (fxScriptTypeDef.contains(entry.gid)) {
-                                if (typesToParseSet.Contains(DbType.FXSCRIPT)) {
-                                    using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                        var fxScript = new FxScript(data);
-
-                                        File.WriteAllText(Path.Combine(fxScriptDirectory, $"{entry.gid.id:X8}{fxScriptTypeDef.extension}.txt"), Util.objectToString(fxScript));
-
-                                        checkFullRead(data, entry);
-                                    }
-                                }
-                            } else if (mapnoteTypeDef.contains(entry.gid)) {
-                                if (typesToParseSet.Contains(DbType.MAPNOTE_DESC)) {
-                                    using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                        var mapNoteDesc = new CMapNoteDesc(data);
-
-                                        File.WriteAllText(Path.Combine(mapnotesDirectory, $"{entry.gid.id:X8}{mapnoteTypeDef.extension}.txt"), Util.objectToString(mapNoteDesc));
-
-                                        checkFullRead(data, entry);
-                                    }
-                                }
-                            } else if (pmatTypeDef.contains(entry.gid)) {
-                                if (typesToParseSet.Contains(DbType.PHYSICS_MATERIAL)) {
-                                    using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                        DataId did = data.ReadDataId();
-                                        var collection = new PropertyCollection(data);
-
-                                        File.WriteAllText(Path.Combine(pmatDirectory, $"{entry.gid.id:X8}{pmatTypeDef.extension}.txt"), Util.objectToString(collection));
-
-                                        checkFullRead(data, entry);
-                                    }
-                                }
-                            } else if (surfaceTypeDef.contains(entry.gid)) {
-                                if (typesToParseSet.Contains(DbType.RENDERSURFACE)) {
-                                    using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                        var surface = new RenderSurface(data);
-
-                                        File.WriteAllBytes(Path.Combine(surfaceDirectory, $"{entry.gid.id:X8}{surfaceTypeDef.extension}"), surface.content);
-
-                                        checkFullRead(data, entry);
-                                    }
-                                }
-                            } else if (uiSceneTypeDef.contains(entry.gid)) {
-                                if (typesToParseSet.Contains(DbType.UI_SCENE)) {
-                                    using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                        var uiScene = new UIScene(data);
-
-                                        File.WriteAllText(Path.Combine(uiSceneDirectory, $"{entry.gid.id:X8}{uiSceneTypeDef.extension}.txt"), Util.objectToString(uiScene));
-
-                                        checkFullRead(data, entry);
-                                    }
-                                }
-                            } else if (validmodesTypeDef.contains(entry.gid)) {
-                                if (typesToParseSet.Contains(DbType.VALIDMODES)) {
-                                    using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                        var availableModes = data.ReadList(data.ReadUInt32);
-
-                                        File.WriteAllText(Path.Combine(validmodesDirectory, $"{entry.gid.id:X8}{validmodesTypeDef.extension}.txt"), Util.objectToString(availableModes));
-
-                                        checkFullRead(data, entry);
-                                    }
-                                }
-                            } else if (vdTypeDef.contains(entry.gid)) {
-                                if (typesToParseSet.Contains(DbType.VISUAL_DESC)) {
-                                    using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                        var vDesc = new VisualDesc(data);
-
-                                        File.WriteAllText(Path.Combine(vdDirectory, $"{entry.gid.id:X8}{vdTypeDef.extension}.txt"), Util.objectToString(vDesc));
-
-                                        checkFullRead(data, entry);
-                                    }
-                                }
-                            } else if (wlibTypeDef.contains(entry.gid)) {
-                                if (typesToParseSet.Contains(DbType.WLIB)) {
-                                    using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                        var wlib = new WLib(data);
-                                        using (StreamWriter output = new StreamWriter(File.OpenWrite(Path.Combine(wlibDirectory, $"{entry.gid.id:X8}{wlibTypeDef.extension}.packages.txt")))) {
-                                            Dump.dumpPackages(output, wlib.byteStream);
+                                            checkFullRead(data, entry);
                                         }
-
-                                        var disasm = new Disasm(wlib.byteStream);
-                                        using (StreamWriter output = new StreamWriter(File.OpenWrite(Path.Combine(wlibDirectory, $"{entry.gid.id:X8}{wlibTypeDef.extension}.disasm.txt")))) {
-                                            disasm.write(output);
-                                        }
-
-                                        checkFullRead(data, entry);
+                                        break;
                                     }
-                                }
+                                case DbType.DAY_DESC: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var dayDesc = new CDayDesc(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(dayDesc));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.ENCOUNTER_DESC: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var encounterDesc = new CEncounterDesc(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(encounterDesc));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.ENUM_MAPPER: {
+                                        using (StreamWriter output = new StreamWriter(File.OpenWrite(outputPath + ".txt")))
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var emp = new EnumMapper(data);
+
+                                            foreach (var mapping in emp.idToString) {
+                                                output.WriteLine($"{mapping.Key}\t{mapping.Value}");
+                                            }
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.ENTITYDESC: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var entityDesc = new EntityDesc(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(entityDesc));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.FXSCRIPT: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var fxScript = new FxScript(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(fxScript));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.GAME_TIME: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var gameTime = new GameTime(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(gameTime));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.MAPNOTE_DESC: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var mapNoteDesc = new CMapNoteDesc(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(mapNoteDesc));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.PHYSICS_MATERIAL: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            DataId did = data.ReadDataId();
+                                            var collection = new PropertyCollection(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(collection));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.RENDERSURFACE: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var surface = new RenderSurface(data);
+
+                                            File.WriteAllBytes(outputPath, surface.sourceBits);
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.RENDERSURFACE_LOCAL: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var surface = new RenderSurface(data);
+
+                                            File.WriteAllBytes(outputPath, surface.sourceBits);
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.SKY_DESC: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var skyDesc = new CSkyDesc(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(skyDesc));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.UI_SCENE: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var uiScene = new UIScene(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(uiScene));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.VALIDMODES: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var availableModes = data.ReadList(data.ReadUInt32);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(availableModes));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.VISUAL_DESC: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var vDesc = new VisualDesc(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(vDesc));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.WLIB: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var wlib = new WLib(data);
+                                            using (StreamWriter output = new StreamWriter(File.OpenWrite(outputPath + ".packages.txt"))) {
+                                                Dump.dumpPackages(output, wlib.byteStream);
+                                            }
+
+                                            var disasm = new Disasm(wlib.byteStream);
+                                            using (StreamWriter output = new StreamWriter(File.OpenWrite(outputPath + ".disasm.txt"))) {
+                                                disasm.write(output);
+                                            }
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                default:
+                                    Log.Warning($"Unhandled DbType {dbType}.");
+                                    break;
                             }
                         }
                     }
                 }
 
-                Log.Information($"Parsed portal dat, num files: {numFiles}.");
-            }
-        }
-
-        private static void parseLocalDat(string datFileName, params DbType[] typesToParse) {
-            if (File.Exists(datFileName)) {
-                HashSet<DbType> typesToParseSet = new HashSet<DbType>(typesToParse);
-
-                DbTypeDef surfacelocalTypeDef = DbTypeDef.DEFS[DbType.RENDERSURFACE_LOCAL];
-                DbTypeDef stringTypeDef = DbTypeDef.DEFS[DbType.STRING];
-                DbTypeDef stringTableTypeDef = DbTypeDef.DEFS[DbType.STRING_TABLE];
-
-                string parsedDirectory = "localparsed";
-                string surfacelocalDirectory = getOrCreateDir(parsedDirectory, surfacelocalTypeDef.strDataDir);
-                string stringDirectory = getOrCreateDir(parsedDirectory, stringTypeDef.strDataDir);
-                string stringTableDirectory = getOrCreateDir(parsedDirectory, stringTableTypeDef.strDataDir);
-
-                int numFiles = 0;
-                using (DatReader datReader = new DatReader(new AC2Reader(File.OpenRead(datFileName)))) {
-                    BTree filesystemTree = new BTree(datReader);
-                    foreach (BTree.BTNode node in filesystemTree.offsetToNode.Values) {
-                        numFiles += node.entries.Count;
-                        foreach (BTree.BTEntry entry in node.entries) {
-                            if (surfacelocalTypeDef.contains(entry.gid)) {
-                                if (typesToParseSet.Contains(DbType.RENDERSURFACE_LOCAL)) {
-                                    using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                        var surface = new RenderSurface(data);
-
-                                        File.WriteAllBytes(Path.Combine(surfacelocalDirectory, $"{entry.gid.id:X8}{surfacelocalTypeDef.extension}"), surface.content);
-
-                                        checkFullRead(data, entry);
-                                    }
-                                }
-                            } else if (stringTypeDef.contains(entry.gid)) {
-                                /*if (typesToParseSet.Contains(DbType.STRING)) {
-                                    using (StreamWriter output = new StreamWriter(File.OpenWrite(Path.Combine(stringDirectory, $"{entry.gid.id:X8}{stringTypeDef.extension}.txt"))))
-                                    using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                        //var emp = new EnumMapper(data);
-
-                                        //foreach (var mapping in emp.idToString) {
-                                        //    output.WriteLine($"{mapping.Key}\t{mapping.Value}");
-                                        //}
-
-                                        checkFullRead(data, entry);
-                                    }
-                                }*/
-                            } else if (stringTableTypeDef.contains(entry.gid)) {
-                                /*if (typesToParseSet.Contains(DbType.STRING_TABLE)) {
-                                    using (StreamWriter output = new StreamWriter(File.OpenWrite(Path.Combine(stringTableDirectory, $"{entry.gid.id:X8}{stringTableTypeDef.extension}.txt"))))
-                                    using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                        //var emp = new EnumMapper(data);
-
-                                        //foreach (var mapping in emp.idToString) {
-                                        //    output.WriteLine($"{mapping.Key}\t{mapping.Value}");
-                                        //}
-
-                                        checkFullRead(data, entry);
-                                    }
-                                }*/
-                            }
-                        }
-                    }
-                }
-
-                Log.Information($"Parsed local dat, num files: {numFiles}.");
+                Log.Information($"Parsed dat {datFileName}, num files: {numFiles}.");
             }
         }
 

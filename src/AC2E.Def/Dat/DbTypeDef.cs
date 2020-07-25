@@ -4,7 +4,7 @@ namespace AC2E.Def {
 
     public class DbTypeDef {
 
-        public static readonly Dictionary<DbType, DbTypeDef> DEFS = new Dictionary<DbType, DbTypeDef> {
+        public static readonly Dictionary<DbType, DbTypeDef> TYPE_TO_DEF = new Dictionary<DbType, DbTypeDef> {
             { DbType.LANDBLOCKINFO, new DbTypeDef {
                 baseDid = new DataId(0),
                 topDid = new DataId(0),
@@ -1804,6 +1804,20 @@ namespace AC2E.Def {
 
         public bool contains(uint did) {
             return did >= baseDid.id && did <= topDid.id;
+        }
+
+        public static DbType getType(DataId did) {
+            return getType(did.id);
+        }
+
+        public static DbType getType(uint did) {
+            foreach (var entry in TYPE_TO_DEF) {
+                if (entry.Value.contains(did)) {
+                    return entry.Key;
+                }
+            }
+
+            return DbType.UNDEFINED;
         }
     }
 }

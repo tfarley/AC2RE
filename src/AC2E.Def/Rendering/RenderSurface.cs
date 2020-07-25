@@ -3,12 +3,12 @@
     public class RenderSurface {
 
         public DataId did; // m_DID
-        public uint unk1; // m_pSurfaceBits?
-        public uint width; // width
-        public uint height; // height
-        public PixelFormat pixelFormat; // pfDesc
-        public uint size; // size
-        public byte[] content;
+        public uint unk1;
+        public uint width; // sourceData.width
+        public uint height; // sourceData.height
+        public uint imageSize; // sourceData.imageSize
+        public byte[] sourceBits; // sourceData.sourceBits
+        public PixelFormat pixelFormat; // sourceData.pfDesc.format
 
         public RenderSurface(AC2Reader data) {
             did = data.ReadDataId();
@@ -16,8 +16,8 @@
             width = data.ReadUInt32();
             height = data.ReadUInt32();
             pixelFormat = (PixelFormat)data.ReadUInt32();
-            size = data.ReadUInt32();
-            content = data.ReadBytes((int)size);
+            imageSize = data.ReadUInt32();
+            sourceBits = data.ReadBytes((int)imageSize);
         }
     }
 }
