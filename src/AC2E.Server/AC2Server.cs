@@ -316,9 +316,9 @@ namespace AC2E.Server {
                                     packFlags = VisualDesc.PackFlag.PARENT | VisualDesc.PackFlag.SCALE | VisualDesc.PackFlag.GLOBALMOD,
                                     parentDid = new DataId(0x1F000023),
                                     scale = new Vector(0.9107999f, 0.9107999f, 0.98999995f),
-                                    globalAppearanceModifiers = new VisualDesc.PartGroupDataDesc {
-                                        packFlags = VisualDesc.PartGroupDataDesc.PackFlag.KEY | VisualDesc.PartGroupDataDesc.PackFlag.APPHASH,
-                                        key = VisualDesc.PartGroupKey.ENTIRE_TREE,
+                                    globalAppearanceModifiers = new PartGroupDataDesc {
+                                        packFlags = PartGroupDataDesc.PackFlag.KEY | PartGroupDataDesc.PackFlag.APPHASH,
+                                        key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
                                         appearances = new Dictionary<uint, AppearanceInfo> {
                                                 { 536870990, new AppearanceInfo {
                                                     appKeyToValue = new Dictionary<uint, float> {

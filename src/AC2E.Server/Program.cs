@@ -21,7 +21,7 @@ namespace AC2E.Server {
 
             Log.Information("Hello World!");
 
-            parseDat("G:\\Asheron's Call 2\\portal.dat", "portalparsed", DbType.PSDESC);
+            parseDat("G:\\Asheron's Call 2\\portal.dat", "portalparsed", DbType.APPEARANCE);
             //parseDat("G:\\Asheron's Call 2\\cell_1.dat", "cell1parsed", DbType.ENVCELL);
             //parseDat("G:\\Asheron's Call 2\\local_English.dat", "localparsed", DbType.RENDERSURFACE_LOCAL, DbType.STRING, DbType.STRING_TABLE);
 
@@ -48,6 +48,8 @@ namespace AC2E.Server {
 
                 DbTypeDef mprTypeDef = DbTypeDef.TYPE_TO_DEF[DbType.MASTER_PROPERTY];
 
+                HashSet<DbType> allSeenTypes = new HashSet<DbType>();
+
                 int numFiles = 0;
                 using (DatReader datReader = new DatReader(new AC2Reader(File.OpenRead(datFileName)))) {
                     BTree filesystemTree = new BTree(datReader);
@@ -55,6 +57,7 @@ namespace AC2E.Server {
                     bool foundMasterProperty = false;
                     foreach (BTree.BTNode node in filesystemTree.offsetToNode.Values) {
                         foreach (BTree.BTEntry entry in node.entries) {
+                            allSeenTypes.Add(DbTypeDef.getType(entry.gid));
                             if (mprTypeDef.contains(entry.gid)) {
                                 if (!directoryCache.TryGetValue(DbType.MASTER_PROPERTY, out string directory)) {
                                     directory = getOrCreateDir(outputBaseDir, mprTypeDef.strDataDir);
@@ -80,6 +83,9 @@ namespace AC2E.Server {
                             break;
                         }
                     }
+
+                    Log.Information($"All seen types in {datFileName}: {Util.objectToString(allSeenTypes)}.");
+
                     foreach (BTree.BTNode node in filesystemTree.offsetToNode.Values) {
                         numFiles += node.entries.Count;
                         foreach (BTree.BTEntry entry in node.entries) {
@@ -108,11 +114,11 @@ namespace AC2E.Server {
                             string outputPath = Path.Combine(directory, $"{entry.gid.id:X8}{dbTypeDef.extension}");
 
                             switch (DbTypeDef.getType(entry.gid)) {
-                                case DbType.CAMERA_FX: {
+                                case DbType.APPEARANCE: {
                                         using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                            var cameraFx = new CameraFX(data);
+                                            var appearanceTable = new AppearanceTable(data);
 
-                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(cameraFx));
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(appearanceTable));
 
                                             checkFullRead(data, entry);
                                         }
@@ -124,6 +130,16 @@ namespace AC2E.Server {
                                             var mapping = data.ReadDictionary(data.ReadUInt32, data.ReadUInt32);
 
                                             File.WriteAllText(outputPath + ".txt", Util.objectToString(mapping));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.CAMERA_FX: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var cameraFx = new CameraFX(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(cameraFx));
 
                                             checkFullRead(data, entry);
                                         }
