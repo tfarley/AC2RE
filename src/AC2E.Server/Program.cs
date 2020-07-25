@@ -21,7 +21,7 @@ namespace AC2E.Server {
 
             Log.Information("Hello World!");
 
-            parseDat("G:\\Asheron's Call 2\\portal.dat", "portalparsed", DbType.GAME_TIME);
+            parseDat("G:\\Asheron's Call 2\\portal.dat", "portalparsed", DbType.PSDESC);
             //parseDat("G:\\Asheron's Call 2\\cell_1.dat", "cell1parsed", DbType.ENVCELL);
             //parseDat("G:\\Asheron's Call 2\\local_English.dat", "localparsed", DbType.RENDERSURFACE_LOCAL, DbType.STRING, DbType.STRING_TABLE);
 
@@ -129,6 +129,16 @@ namespace AC2E.Server {
                                         }
                                         break;
                                     }
+                                case DbType.CHARTEMPLATE: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var charTemplate = new CharTemplate(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(charTemplate));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
                                 case DbType.DAY_DESC: {
                                         using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
                                             var dayDesc = new CDayDesc(data);
@@ -172,6 +182,16 @@ namespace AC2E.Server {
                                         }
                                         break;
                                     }
+                                case DbType.FX_TABLE: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var dbFxTable = new DBFXTable(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(dbFxTable));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
                                 case DbType.FXSCRIPT: {
                                         using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
                                             var fxScript = new FxScript(data);
@@ -187,6 +207,16 @@ namespace AC2E.Server {
                                             var gameTime = new GameTime(data);
 
                                             File.WriteAllText(outputPath + ".txt", Util.objectToString(gameTime));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.INPUTMAPPER: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var enumIdMap = new EnumIDMap(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(enumIdMap));
 
                                             checkFullRead(data, entry);
                                         }
@@ -208,6 +238,16 @@ namespace AC2E.Server {
                                             var collection = new PropertyCollection(data);
 
                                             File.WriteAllText(outputPath + ".txt", Util.objectToString(collection));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.PSDESC: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var psDesc = new PSDesc(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(psDesc));
 
                                             checkFullRead(data, entry);
                                         }
