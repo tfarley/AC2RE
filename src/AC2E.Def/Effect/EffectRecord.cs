@@ -4,75 +4,75 @@
 
         public PackageType packageType => PackageType.EffectRecord;
 
-        public double m_timeDemotedFromTopLevel;
-        public double m_timeCast;
-        public InstanceId m_iidCaster;
-        public float m_ttTimeout;
-        public float m_fApp;
-        public float m_fSpellcraft;
-        public int m_iApp;
-        public bool m_bPK;
-        public IPackage m_rApp;
-        public double m_timePromotedToTopLevel;
-        public SingletonPkg m_effect;
-        public InstanceId m_iidActingForWhom;
-        public DataId m_didSkill;
-        public InstanceId m_iidFromItem;
-        public uint m_flags;
-        public uint m_uiDurabilityLevel;
-        public uint m_relatedEID;
-        public uint m_effectID;
-        public uint m_categories;
-        public uint m_uiMaxDurabilityLevel;
+        public double timeDemotedFromTopLevel; // m_timeDemotedFromTopLevel
+        public double timeCast; // m_timeCast
+        public InstanceId casterId; // m_iidCaster
+        public float timeout; // m_ttTimeout
+        public float appF; // m_fApp
+        public float spellcraft; // m_fSpellcraft
+        public int appI; // m_iApp
+        public bool pk; // m_bPK
+        public IPackage appR; // m_rApp
+        public double timePromotedToTopLevel; // m_timePromotedToTopLevel
+        public SingletonPkg effect; // m_effect
+        public InstanceId actingForWhomId; // m_iidActingForWhom
+        public DataId skillDid; // m_didSkill
+        public InstanceId fromItemId; // m_iidFromItem
+        public uint flags; // m_flags
+        public uint durabilityLevel; // m_uiDurabilityLevel
+        public uint relatedEffectId; // m_relatedEID
+        public uint effectId; // m_effectID
+        public uint categories; // m_categories
+        public uint maxDurabilityLevel; // m_uiMaxDurabilityLevel
 
         public EffectRecord() {
 
         }
 
         public EffectRecord(AC2Reader data) {
-            m_timeDemotedFromTopLevel = data.ReadDouble();
-            m_timeCast = data.ReadDouble();
-            m_iidCaster = data.ReadInstanceId();
-            m_ttTimeout = data.ReadSingle();
-            m_fApp = data.ReadSingle();
-            m_fSpellcraft = data.ReadSingle();
-            m_iApp = data.ReadInt32();
-            m_bPK = data.ReadBoolean();
-            data.ReadPkg<IPackage>(v => m_rApp = v);
-            m_timePromotedToTopLevel = data.ReadDouble();
-            data.ReadPkg<SingletonPkg>(v => m_effect = v);
-            m_iidActingForWhom = data.ReadInstanceId();
-            m_didSkill = data.ReadDataId();
-            m_iidFromItem = data.ReadInstanceId();
-            m_flags = data.ReadUInt32();
-            m_uiDurabilityLevel = data.ReadUInt32();
-            m_relatedEID = data.ReadUInt32();
-            m_effectID = data.ReadUInt32();
-            m_categories = data.ReadUInt32();
-            m_uiMaxDurabilityLevel = data.ReadUInt32();
+            timeDemotedFromTopLevel = data.ReadDouble();
+            timeCast = data.ReadDouble();
+            casterId = data.ReadInstanceId();
+            timeout = data.ReadSingle();
+            appF = data.ReadSingle();
+            spellcraft = data.ReadSingle();
+            appI = data.ReadInt32();
+            pk = data.ReadBoolean();
+            data.ReadPkg<IPackage>(v => appR = v);
+            timePromotedToTopLevel = data.ReadDouble();
+            data.ReadPkg<SingletonPkg>(v => effect = v);
+            actingForWhomId = data.ReadInstanceId();
+            skillDid = data.ReadDataId();
+            fromItemId = data.ReadInstanceId();
+            flags = data.ReadUInt32();
+            durabilityLevel = data.ReadUInt32();
+            relatedEffectId = data.ReadUInt32();
+            effectId = data.ReadUInt32();
+            categories = data.ReadUInt32();
+            maxDurabilityLevel = data.ReadUInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Write(m_timeDemotedFromTopLevel);
-            data.Write(m_timeCast);
-            data.Write(m_iidCaster);
-            data.Write(m_ttTimeout);
-            data.Write(m_fApp);
-            data.Write(m_fSpellcraft);
-            data.Write(m_iApp);
-            data.Write(m_bPK);
-            data.WritePkg(m_rApp);
-            data.Write(m_timePromotedToTopLevel);
-            data.WritePkg(m_effect);
-            data.Write(m_iidActingForWhom);
-            data.Write(m_didSkill);
-            data.Write(m_iidFromItem);
-            data.Write(m_flags);
-            data.Write(m_uiDurabilityLevel);
-            data.Write(m_relatedEID);
-            data.Write(m_effectID);
-            data.Write(m_categories);
-            data.Write(m_uiMaxDurabilityLevel);
+            data.Write(timeDemotedFromTopLevel);
+            data.Write(timeCast);
+            data.Write(casterId);
+            data.Write(timeout);
+            data.Write(appF);
+            data.Write(spellcraft);
+            data.Write(appI);
+            data.Write(pk);
+            data.WritePkg(appR);
+            data.Write(timePromotedToTopLevel);
+            data.WritePkg(effect);
+            data.Write(actingForWhomId);
+            data.Write(skillDid);
+            data.Write(fromItemId);
+            data.Write(flags);
+            data.Write(durabilityLevel);
+            data.Write(relatedEffectId);
+            data.Write(effectId);
+            data.Write(categories);
+            data.Write(maxDurabilityLevel);
         }
     }
 }

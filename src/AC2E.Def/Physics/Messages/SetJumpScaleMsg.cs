@@ -8,11 +8,11 @@
 
         // ECM_Physics::RecvEvt_SetJumpScale
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public float value; // _value
+        public float jumpScale; // _value
 
         public SetJumpScaleMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            value = data.ReadSingle();
+            jumpScale = data.ReadSingle();
         }
     }
 }

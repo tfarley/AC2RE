@@ -5,18 +5,18 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Death__UpdateDeathState;
 
         // WM_Combat::PostCEvt_UpdateAttackState
-        public bool _dead;
+        public bool dead; // _dead
 
         public UpdateDeathStateCEvt() {
 
         }
 
         public UpdateDeathStateCEvt(AC2Reader data) {
-            _dead = data.UnpackBoolean();
+            dead = data.UnpackBoolean();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_dead);
+            data.Pack(dead);
         }
     }
 }

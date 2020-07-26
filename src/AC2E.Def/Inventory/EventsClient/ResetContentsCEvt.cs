@@ -5,24 +5,24 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Inventory__Inventory_ResetContents;
 
         // WM_Inventory::PostCEvt_Inventory_ResetContents
-        public RList<ContainerSegmentDescriptor> _containerSegments;
-        public InstanceIdList _containers;
-        public InstanceIdList _contents;
+        public RList<ContainerSegmentDescriptor> containerSegments; // _containerSegments
+        public InstanceIdList containerIds; // _containers
+        public InstanceIdList contentsIds; // _contents
 
         public ResetContentsCEvt() {
 
         }
 
         public ResetContentsCEvt(AC2Reader data) {
-            _containerSegments = data.UnpackPackage<RList<IPackage>>().to<ContainerSegmentDescriptor>();
-            _containers = new InstanceIdList(data.UnpackPackage<LList>());
-            _contents = new InstanceIdList(data.UnpackPackage<LList>());
+            containerSegments = data.UnpackPackage<RList<IPackage>>().to<ContainerSegmentDescriptor>();
+            containerIds = new InstanceIdList(data.UnpackPackage<LList>());
+            contentsIds = new InstanceIdList(data.UnpackPackage<LList>());
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_containerSegments);
-            data.Pack(_containers);
-            data.Pack(_contents);
+            data.Pack(containerSegments);
+            data.Pack(containerIds);
+            data.Pack(contentsIds);
         }
     }
 }

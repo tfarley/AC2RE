@@ -4,7 +4,7 @@
 
         public NativeType nativeType => NativeType.POSITION;
 
-        public CellId cellId; // objcell_id
+        public CellId cell; // objcell_id
         public Frame frame; // frame
 
         public Position() {
@@ -12,12 +12,12 @@
         }
 
         public Position(AC2Reader data) {
-            cellId = data.ReadCellId();
+            cell = data.ReadCellId();
             frame = new Frame(data);
         }
 
         public void write(AC2Writer data) {
-            data.Write(cellId);
+            data.Write(cell);
             frame.write(data);
         }
     }

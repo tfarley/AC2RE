@@ -4,54 +4,54 @@
 
         public PackageType packageType => PackageType.InvTransmuteAllDesc;
 
-        public uint m_lastError;
-        public bool bIgnoreAttunement;
-        public InstanceIdList m_itemsTransmuted;
-        public bool checkTakePermFlag;
-        public uint m_moneyEarned;
-        public bool m_bQuiet;
-        public bool noAnimFlag;
-        public uint m_status;
-        public InstanceId m_fromContainerID;
-        public InstanceIdList m_itemsNotTransmuted;
-        public bool playedAnim;
-        public bool noMoveFlag;
-        public InstanceId m_targetPlayerID;
+        public uint lastError; // m_lastError
+        public bool ignoreAttunement; // bIgnoreAttunement
+        public InstanceIdList itemsTransmutedIds; // m_itemsTransmuted
+        public bool checkTakePerm; // checkTakePermFlag
+        public uint moneyEarned; // m_moneyEarned
+        public bool quiet; // m_bQuiet
+        public bool noAnim; // noAnimFlag
+        public uint status; // m_status
+        public InstanceId fromContainerId; // m_fromContainerID
+        public InstanceIdList itemsNotTransmutedIds; // m_itemsNotTransmuted
+        public bool playedAnim; // playedAnim
+        public bool noMove; // noMoveFlag
+        public InstanceId targetPlayerId; // m_targetPlayerID
 
         public InvTransmuteAllDesc() {
 
         }
 
         public InvTransmuteAllDesc(AC2Reader data) {
-            m_lastError = data.ReadUInt32();
-            bIgnoreAttunement = data.ReadBoolean();
-            data.ReadPkg<LList>(v => m_itemsTransmuted = new InstanceIdList(v));
-            checkTakePermFlag = data.ReadBoolean();
-            m_moneyEarned = data.ReadUInt32();
-            m_bQuiet = data.ReadBoolean();
-            noAnimFlag = data.ReadBoolean();
-            m_status = data.ReadUInt32();
-            m_fromContainerID = data.ReadInstanceId();
-            data.ReadPkg<LList>(v => m_itemsNotTransmuted = new InstanceIdList(v));
+            lastError = data.ReadUInt32();
+            ignoreAttunement = data.ReadBoolean();
+            data.ReadPkg<LList>(v => itemsTransmutedIds = new InstanceIdList(v));
+            checkTakePerm = data.ReadBoolean();
+            moneyEarned = data.ReadUInt32();
+            quiet = data.ReadBoolean();
+            noAnim = data.ReadBoolean();
+            status = data.ReadUInt32();
+            fromContainerId = data.ReadInstanceId();
+            data.ReadPkg<LList>(v => itemsNotTransmutedIds = new InstanceIdList(v));
             playedAnim = data.ReadBoolean();
-            noMoveFlag = data.ReadBoolean();
-            m_targetPlayerID = data.ReadInstanceId();
+            noMove = data.ReadBoolean();
+            targetPlayerId = data.ReadInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Write(m_lastError);
-            data.Write(bIgnoreAttunement);
-            data.WritePkg(m_itemsTransmuted);
-            data.Write(checkTakePermFlag);
-            data.Write(m_moneyEarned);
-            data.Write(m_bQuiet);
-            data.Write(noAnimFlag);
-            data.Write(m_status);
-            data.Write(m_fromContainerID);
-            data.WritePkg(m_itemsNotTransmuted);
+            data.Write(lastError);
+            data.Write(ignoreAttunement);
+            data.WritePkg(itemsTransmutedIds);
+            data.Write(checkTakePerm);
+            data.Write(moneyEarned);
+            data.Write(quiet);
+            data.Write(noAnim);
+            data.Write(status);
+            data.Write(fromContainerId);
+            data.WritePkg(itemsNotTransmutedIds);
             data.Write(playedAnim);
-            data.Write(noMoveFlag);
-            data.Write(m_targetPlayerID);
+            data.Write(noMove);
+            data.Write(targetPlayerId);
         }
     }
 }

@@ -5,12 +5,12 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Trade__OfferTradeItem;
 
         // WM_Trade::SendSEvt_OfferTradeItem
-        public uint _num;
-        public InstanceId _item;
+        public uint amount; // _num
+        public InstanceId itemId; // _item
 
         public OfferTradeItemSEvt(AC2Reader data) {
-            _num = data.UnpackUInt32();
-            _item = data.UnpackInstanceId();
+            amount = data.UnpackUInt32();
+            itemId = data.UnpackInstanceId();
         }
     }
 }

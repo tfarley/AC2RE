@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Communication__CustomEmote;
 
         // WM_Communication::SendSEvt_CustomEmote
-        public WPString _text;
+        public WPString text; // _text
 
         public CustomEmoteSEvt(AC2Reader data) {
-            _text = data.UnpackPackage<WPString>();
+            text = data.UnpackPackage<WPString>();
         }
     }
 }

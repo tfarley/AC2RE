@@ -5,24 +5,24 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Money__DragToMoneyBag_Done;
 
         // WM_Money::PostCEvt_DragToMoneyBag_Done
-        public InstanceId _iidFromContainer;
-        public uint _fromSlot;
-        public InstanceId _iidItem;
+        public InstanceId fromContainerId; // _iidFromContainer
+        public uint fromSlot; // _fromSlot
+        public InstanceId itemId; // _iidItem
 
         public DragToMoneyBagDoneCEvt() {
 
         }
 
         public DragToMoneyBagDoneCEvt(AC2Reader data) {
-            _iidFromContainer = data.UnpackInstanceId();
-            _fromSlot = data.UnpackUInt32();
-            _iidItem = data.UnpackInstanceId();
+            fromContainerId = data.UnpackInstanceId();
+            fromSlot = data.UnpackUInt32();
+            itemId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_iidFromContainer);
-            data.Pack(_fromSlot);
-            data.Pack(_iidItem);
+            data.Pack(fromContainerId);
+            data.Pack(fromSlot);
+            data.Pack(itemId);
         }
     }
 }

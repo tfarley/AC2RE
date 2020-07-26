@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Inventory__CloseContainer;
 
         // WM_Inventory::SendSEvt_CloseContainer
-        public InstanceId _container_iid;
+        public InstanceId containerId; // _container_iid
 
         public CloseContainerSEvt(AC2Reader data) {
-            _container_iid = data.UnpackInstanceId();
+            containerId = data.UnpackInstanceId();
         }
     }
 }

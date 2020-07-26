@@ -5,18 +5,18 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Quest__PlayScenes;
 
         // WM_Quest::PostCEvt_PlayScenes
-        public GMSceneInfoList _scenes;
+        public GMSceneInfoList scenes; // _scenes
 
         public PlayScenesCEvt() {
 
         }
 
         public PlayScenesCEvt(AC2Reader data) {
-            _scenes = data.UnpackPackage<GMSceneInfoList>();
+            scenes = data.UnpackPackage<GMSceneInfoList>();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_scenes);
+            data.Pack(scenes);
         }
     }
 }

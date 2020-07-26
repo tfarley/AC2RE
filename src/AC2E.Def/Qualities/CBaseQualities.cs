@@ -26,7 +26,7 @@ namespace AC2E.Def {
 
         public PackFlag packFlags;
         public uint dbType; // via DBObj::Pack_Type
-        public WeenieDesc wDesc; // m_wdesc
+        public WeenieDesc weenieDesc; // m_wdesc
         public Dictionary<uint, int> intTable; // m_int_table
         public Dictionary<uint, long> longIntTable; // m_lint_table
         public Dictionary<uint, bool> boolTable; // m_pbool_table
@@ -47,7 +47,7 @@ namespace AC2E.Def {
             packFlags = (PackFlag)data.ReadUInt32();
             dbType = data.ReadUInt32();
             if (packFlags.HasFlag(PackFlag.WEENIE_DESC)) {
-                wDesc = new WeenieDesc(data);
+                weenieDesc = new WeenieDesc(data);
             }
             if (packFlags.HasFlag(PackFlag.INT_HASH_TABLE)) {
                 intTable = data.ReadDictionary(data.ReadUInt32, data.ReadInt32);
@@ -88,7 +88,7 @@ namespace AC2E.Def {
             data.Write((uint)packFlags);
             data.Write(dbType);
             if (packFlags.HasFlag(PackFlag.WEENIE_DESC)) {
-                wDesc.write(data);
+                weenieDesc.write(data);
             }
             if (packFlags.HasFlag(PackFlag.INT_HASH_TABLE)) {
                 data.Write(intTable, data.Write, data.Write);

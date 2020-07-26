@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Combat__StartAttack;
 
         // WM_Combat::SendSEvt_StartAttack
-        public InstanceId _target;
+        public InstanceId targetId; // _target
 
         public StartAttackSEvt(AC2Reader data) {
-            _target = data.UnpackInstanceId();
+            targetId = data.UnpackInstanceId();
         }
     }
 }

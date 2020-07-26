@@ -4,36 +4,36 @@
 
         public PackageType packageType => PackageType.ChannelData;
 
-        public bool m_fPendingRoomCreation;
-        public TextType m_type;
-        public uint m_regionID;
-        public uint m_roomID;
-        public bool m_available;
-        public uint m_factionType;
-        public WPString m_name;
+        public bool pendingRoomCreation; // m_fPendingRoomCreation
+        public TextType type; // m_type
+        public uint regionId; // m_regionID
+        public uint toomId; // m_roomID
+        public bool available; // m_available
+        public uint factionType; // m_factionType
+        public WPString name; // m_name
 
         public ChannelData() {
 
         }
 
         public ChannelData(AC2Reader data) {
-            m_fPendingRoomCreation = data.ReadBoolean();
-            m_type = (TextType)data.ReadUInt32();
-            m_regionID = data.ReadUInt32();
-            m_roomID = data.ReadUInt32();
-            m_available = data.ReadBoolean();
-            m_factionType = data.ReadUInt32();
-            data.ReadPkg<WPString>(v => m_name = v);
+            pendingRoomCreation = data.ReadBoolean();
+            type = (TextType)data.ReadUInt32();
+            regionId = data.ReadUInt32();
+            toomId = data.ReadUInt32();
+            available = data.ReadBoolean();
+            factionType = data.ReadUInt32();
+            data.ReadPkg<WPString>(v => name = v);
         }
 
         public void write(AC2Writer data) {
-            data.Write(m_fPendingRoomCreation);
-            data.Write((uint)m_type);
-            data.Write(m_regionID);
-            data.Write(m_roomID);
-            data.Write(m_available);
-            data.Write(m_factionType);
-            data.WritePkg(m_name);
+            data.Write(pendingRoomCreation);
+            data.Write((uint)type);
+            data.Write(regionId);
+            data.Write(toomId);
+            data.Write(available);
+            data.Write(factionType);
+            data.WritePkg(name);
         }
     }
 }

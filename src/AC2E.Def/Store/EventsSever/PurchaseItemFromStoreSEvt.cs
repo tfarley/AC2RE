@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Store__PurchaseItemFromStore;
 
         // WM_Store::SendSEvt_Store_PurchaseItemFromStore
-        public TransactionBlob _blob;
+        public TransactionBlob transactionBlob; // _blob
 
         public PurchaseItemFromStoreSEvt(AC2Reader data) {
-            _blob = data.UnpackPackage<TransactionBlob>();
+            transactionBlob = data.UnpackPackage<TransactionBlob>();
         }
     }
 }

@@ -5,21 +5,21 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Trade__BeRevoked;
 
         // WM_Trade::PostCEvt_Client_Trade_BeRevoked
-        public InstanceId _item;
-        public InstanceId _src;
+        public InstanceId itemId; // _item
+        public InstanceId sourceId; // _src
 
         public TradeBeRevokedCEvt() {
 
         }
 
         public TradeBeRevokedCEvt(AC2Reader data) {
-            _item = data.UnpackInstanceId();
-            _src = data.UnpackInstanceId();
+            itemId = data.UnpackInstanceId();
+            sourceId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_item);
-            data.Pack(_src);
+            data.Pack(itemId);
+            data.Pack(sourceId);
         }
     }
 }

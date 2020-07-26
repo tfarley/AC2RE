@@ -6,11 +6,11 @@ namespace AC2E.Def {
 
         public NativeType nativeType => NativeType.EXAMINATIONREQUEST;
 
-        public ExaminationRequestType _type;
-        public uint _data_enum;
-        public DataId _data_DataID;
-        public bool _admin;
-        public InstanceId _data_iid;
+        public ExaminationRequestType type; // _type
+        public uint dataEnum; // _data_enum
+        public DataId dataDid; // _data_DataID
+        public bool admin; // _admin
+        public InstanceId dataId; // _data_iid
         public uint unk1;
         public uint unk2;
         public uint unk3;
@@ -20,9 +20,9 @@ namespace AC2E.Def {
         }
 
         public ExaminationRequest(AC2Reader data) {
-            _type = (ExaminationRequestType)data.ReadUInt32();
-            _admin = data.ReadBoolean();
-            switch (_type) {
+            type = (ExaminationRequestType)data.ReadUInt32();
+            admin = data.ReadBoolean();
+            switch (type) {
                 case ExaminationRequestType.UNDEF:
                     break;
                 case ExaminationRequestType.EFFECT:
@@ -30,31 +30,31 @@ namespace AC2E.Def {
                 case ExaminationRequestType.SKILL_PANEL:
                 case ExaminationRequestType.QUEST:
                 case ExaminationRequestType.ACT:
-                    _data_enum = data.ReadUInt32();
+                    dataEnum = data.ReadUInt32();
                     break;
                 case ExaminationRequestType.ITEM:
-                    _data_iid = data.ReadInstanceId();
+                    dataId = data.ReadInstanceId();
                     unk3 = data.ReadUInt32();
                     break;
                 case ExaminationRequestType.RECIPE:
                 case ExaminationRequestType.CRAFT_SKILL:
-                    _data_DataID = data.ReadDataId();
+                    dataDid = data.ReadDataId();
                     break;
                 case ExaminationRequestType.UNK1:
-                    _data_iid = data.ReadInstanceId();
+                    dataId = data.ReadInstanceId();
                     unk1 = data.ReadUInt32();
                     unk2 = data.ReadUInt32();
                     unk3 = data.ReadUInt32();
                     break;
                 default:
-                    throw new InvalidDataException(_type.ToString());
+                    throw new InvalidDataException(type.ToString());
             }
         }
 
         public void write(AC2Writer data) {
-            data.Write((uint)_type);
-            data.Write(_admin);
-            switch (_type) {
+            data.Write((uint)type);
+            data.Write(admin);
+            switch (type) {
                 case ExaminationRequestType.UNDEF:
                     break;
                 case ExaminationRequestType.EFFECT:
@@ -62,24 +62,24 @@ namespace AC2E.Def {
                 case ExaminationRequestType.SKILL_PANEL:
                 case ExaminationRequestType.QUEST:
                 case ExaminationRequestType.ACT:
-                    data.Write(_data_enum);
+                    data.Write(dataEnum);
                     break;
                 case ExaminationRequestType.ITEM:
-                    data.Write(_data_iid);
+                    data.Write(dataId);
                     data.Write(unk3);
                     break;
                 case ExaminationRequestType.RECIPE:
                 case ExaminationRequestType.CRAFT_SKILL:
-                    data.Write(_data_DataID);
+                    data.Write(dataDid);
                     break;
                 case ExaminationRequestType.UNK1:
-                    data.Write(_data_iid);
+                    data.Write(dataId);
                     data.Write(unk1);
                     data.Write(unk2);
                     data.Write(unk3);
                     break;
                 default:
-                    throw new InvalidDataException(_type.ToString());
+                    throw new InvalidDataException(type.ToString());
             }
         }
     }

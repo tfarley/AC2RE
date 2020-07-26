@@ -4,30 +4,30 @@
 
         public PackageType packageType => PackageType.AllegianceNode;
 
-        public RList<AllegianceNode> m_vassalNodes;
-        public AllegianceNode m_patron;
-        public AllegianceData m_data;
-        public AllegianceNode m_vassal;
-        public AllegianceNode m_peer;
+        public RList<AllegianceNode> vassalNodes; // m_vassalNodes
+        public AllegianceNode patron; // m_patron
+        public AllegianceData allegianceData; // m_data
+        public AllegianceNode vassal; // m_vassal
+        public AllegianceNode peer; // m_peer
 
         public AllegianceNode() {
 
         }
 
         public AllegianceNode(AC2Reader data) {
-            data.ReadPkg<RList<IPackage>>(v => m_vassalNodes = v.to<AllegianceNode>());
-            data.ReadPkg<AllegianceNode>(v => m_patron = v);
-            data.ReadPkg<AllegianceData>(v => m_data = v);
-            data.ReadPkg<AllegianceNode>(v => m_vassal = v);
-            data.ReadPkg<AllegianceNode>(v => m_peer = v);
+            data.ReadPkg<RList<IPackage>>(v => vassalNodes = v.to<AllegianceNode>());
+            data.ReadPkg<AllegianceNode>(v => patron = v);
+            data.ReadPkg<AllegianceData>(v => allegianceData = v);
+            data.ReadPkg<AllegianceNode>(v => vassal = v);
+            data.ReadPkg<AllegianceNode>(v => peer = v);
         }
 
         public void write(AC2Writer data) {
-            data.WritePkg(m_vassalNodes);
-            data.WritePkg(m_patron);
-            data.WritePkg(m_data);
-            data.WritePkg(m_vassal);
-            data.WritePkg(m_peer);
+            data.WritePkg(vassalNodes);
+            data.WritePkg(patron);
+            data.WritePkg(allegianceData);
+            data.WritePkg(vassal);
+            data.WritePkg(peer);
         }
     }
 }

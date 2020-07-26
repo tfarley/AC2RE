@@ -4,21 +4,21 @@
 
         public NativeType nativeType => NativeType.GMQUESTINFO;
 
-        public uint _questID;
-        public StringInfo _strQuestName;
-        public StringInfo _strQuestDescription;
-        public DataId _didIcon;
-        public int _iChallengeLevel;
-        public uint _questStatus;
-        public uint _uiCurPhase;
-        public StringInfo _strCurJournalEntry;
-        public double _ttBestowal;
-        public double _ttDone;
-        public bool _bExpires;
-        public bool _bMaxedOut;
-        public double _ttSecondsRemaining;
-        public double _ttSecondsUntilRetry;
-        public bool _playFXOnUpdate;
+        public uint questId; // _questID
+        public StringInfo questName; // _strQuestName
+        public StringInfo questDescription; // _strQuestDescription
+        public DataId iconDid; // _didIcon
+        public int challengeLevel; // _iChallengeLevel
+        public uint questStatus; // _questStatus
+        public uint curPhase; // _uiCurPhase
+        public StringInfo curJournalEntry; // _strCurJournalEntry
+        public double bestowalTime; // _ttBestowal
+        public double doneTime; // _ttDone
+        public bool expired; // _bExpires
+        public bool maxedOut; // _bMaxedOut
+        public double secondsRemaining; // _ttSecondsRemaining
+        public double secondsUntilRetry; // _ttSecondsUntilRetry
+        public bool playFXOnUpdate; // _playFXOnUpdate
 
         public GMQuestInfo() {
 
@@ -26,39 +26,39 @@
 
         public GMQuestInfo(AC2Reader data) {
             // TODO: This format does not match known stuff, so the names/order here may be slightly incorrect
-            _questID = data.ReadUInt32();
-            _strQuestName = new StringInfo(data);
-            _strQuestDescription = new StringInfo(data);
-            _didIcon = data.ReadDataId();
-            _questStatus = data.ReadUInt32();
-            _uiCurPhase = data.ReadUInt32();
-            _strCurJournalEntry = new StringInfo(data);
-            _iChallengeLevel = data.ReadInt32();
-            _ttBestowal = data.ReadDouble();
-            _ttDone = data.ReadDouble();
-            _bExpires = data.ReadBoolean();
-            _ttSecondsRemaining = data.ReadDouble();
-            _ttSecondsUntilRetry = data.ReadDouble();
-            _bMaxedOut = data.ReadBoolean();
-            _playFXOnUpdate = data.ReadBoolean();
+            questId = data.ReadUInt32();
+            questName = new StringInfo(data);
+            questDescription = new StringInfo(data);
+            iconDid = data.ReadDataId();
+            questStatus = data.ReadUInt32();
+            curPhase = data.ReadUInt32();
+            curJournalEntry = new StringInfo(data);
+            challengeLevel = data.ReadInt32();
+            bestowalTime = data.ReadDouble();
+            doneTime = data.ReadDouble();
+            expired = data.ReadBoolean();
+            secondsRemaining = data.ReadDouble();
+            secondsUntilRetry = data.ReadDouble();
+            maxedOut = data.ReadBoolean();
+            playFXOnUpdate = data.ReadBoolean();
         }
 
         public void write(AC2Writer data) {
-            data.Write(_questID);
-            _strQuestName.write(data);
-            _strQuestDescription.write(data);
-            data.Write(_didIcon);
-            data.Write(_questStatus);
-            data.Write(_uiCurPhase);
-            _strCurJournalEntry.write(data);
-            data.Write(_iChallengeLevel);
-            data.Write(_ttBestowal);
-            data.Write(_ttDone);
-            data.Write(_bExpires);
-            data.Write(_ttSecondsRemaining);
-            data.Write(_ttSecondsUntilRetry);
-            data.Write(_bMaxedOut);
-            data.Write(_playFXOnUpdate);
+            data.Write(questId);
+            questName.write(data);
+            questDescription.write(data);
+            data.Write(iconDid);
+            data.Write(questStatus);
+            data.Write(curPhase);
+            curJournalEntry.write(data);
+            data.Write(challengeLevel);
+            data.Write(bestowalTime);
+            data.Write(doneTime);
+            data.Write(expired);
+            data.Write(secondsRemaining);
+            data.Write(secondsUntilRetry);
+            data.Write(maxedOut);
+            data.Write(playFXOnUpdate);
         }
     }
 }

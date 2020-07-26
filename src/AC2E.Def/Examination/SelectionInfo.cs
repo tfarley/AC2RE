@@ -4,39 +4,39 @@
 
         public NativeType nativeType => NativeType.SELECTIONINFO;
 
-        public SelectionInfoType m_type;
-        public int m_curHealth;
-        public int m_PKDamage;
-        public int m_maxHealth;
-        public int m_curVigor;
-        public int m_PKVigorloss;
-        public int m_maxVigor;
+        public SelectionInfoType type; // m_type
+        public int curHealth; // m_curHealth
+        public int pkDamage; // m_PKDamage
+        public int maxHealth; // m_maxHealth
+        public int curVigor; // m_curVigor
+        public int pkVigorloss; // m_PKVigorloss
+        public int maxVigor; // m_maxVigor
 
         public SelectionInfo() {
 
         }
 
         public SelectionInfo(AC2Reader data) {
-            m_type = (SelectionInfoType)data.ReadUInt32();
-            if (m_type == SelectionInfoType.AGENT) {
-                m_curHealth = data.ReadInt32();
-                m_PKDamage = data.ReadInt32();
-                m_maxHealth = data.ReadInt32();
-                m_curVigor = data.ReadInt32();
-                m_PKVigorloss = data.ReadInt32();
-                m_maxVigor = data.ReadInt32();
+            type = (SelectionInfoType)data.ReadUInt32();
+            if (type == SelectionInfoType.AGENT) {
+                curHealth = data.ReadInt32();
+                pkDamage = data.ReadInt32();
+                maxHealth = data.ReadInt32();
+                curVigor = data.ReadInt32();
+                pkVigorloss = data.ReadInt32();
+                maxVigor = data.ReadInt32();
             }
         }
 
         public void write(AC2Writer data) {
-            data.Write((uint)m_type);
-            if (m_type == SelectionInfoType.AGENT) {
-                data.Write(m_curHealth);
-                data.Write(m_PKDamage);
-                data.Write(m_maxHealth);
-                data.Write(m_curVigor);
-                data.Write(m_PKVigorloss);
-                data.Write(m_maxVigor);
+            data.Write((uint)type);
+            if (type == SelectionInfoType.AGENT) {
+                data.Write(curHealth);
+                data.Write(pkDamage);
+                data.Write(maxHealth);
+                data.Write(curVigor);
+                data.Write(pkVigorloss);
+                data.Write(maxVigor);
             }
         }
     }

@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Allegiance__BreakAllegiance;
 
         // WM_Allegiance::SendSEvt_BreakAllegiance
-        public InstanceId _trg;
+        public InstanceId targetId; // _trg
 
         public BreakAllegianceSEvt(AC2Reader data) {
-            _trg = data.UnpackInstanceId();
+            targetId = data.UnpackInstanceId();
         }
     }
 }

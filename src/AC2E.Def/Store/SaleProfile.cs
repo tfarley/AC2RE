@@ -4,39 +4,39 @@
 
         public virtual PackageType packageType => PackageType.SaleProfile;
 
-        public DataId m_didProduct;
-        public IconDesc m_productIconDesc;
-        public InstanceId m_iidProduct;
-        public DataId m_productIconDID;
-        public StringInfo m_siProductName;
-        public float m_fCost;
-        public DataId m_didTrade;
-        public int m_iMaxStackSize;
+        public DataId productDid; // m_didProduct
+        public IconDesc productIconDesc; // m_productIconDesc
+        public InstanceId productId; // m_iidProduct
+        public DataId productIconDid; // m_productIconDID
+        public StringInfo productName; // m_siProductName
+        public float cost; // m_fCost
+        public DataId tradeDid; // m_didTrade
+        public int maxStackSize; // m_iMaxStackSize
 
         public SaleProfile() {
 
         }
 
         public SaleProfile(AC2Reader data) {
-            m_didProduct = data.ReadDataId();
-            data.ReadPkg<IconDesc>(v => m_productIconDesc = v);
-            m_iidProduct = data.ReadInstanceId();
-            m_productIconDID = data.ReadDataId();
-            data.ReadPkg<StringInfo>(v => m_siProductName = v);
-            m_fCost = data.ReadSingle();
-            m_didTrade = data.ReadDataId();
-            m_iMaxStackSize = data.ReadInt32();
+            productDid = data.ReadDataId();
+            data.ReadPkg<IconDesc>(v => productIconDesc = v);
+            productId = data.ReadInstanceId();
+            productIconDid = data.ReadDataId();
+            data.ReadPkg<StringInfo>(v => productName = v);
+            cost = data.ReadSingle();
+            tradeDid = data.ReadDataId();
+            maxStackSize = data.ReadInt32();
         }
 
         public virtual void write(AC2Writer data) {
-            data.Write(m_didProduct);
-            data.WritePkg(m_productIconDesc);
-            data.Write(m_iidProduct);
-            data.Write(m_productIconDID);
-            data.WritePkg(m_siProductName);
-            data.Write(m_fCost);
-            data.Write(m_didTrade);
-            data.Write(m_iMaxStackSize);
+            data.Write(productDid);
+            data.WritePkg(productIconDesc);
+            data.Write(productId);
+            data.Write(productIconDid);
+            data.WritePkg(productName);
+            data.Write(cost);
+            data.Write(tradeDid);
+            data.Write(maxStackSize);
         }
     }
 }

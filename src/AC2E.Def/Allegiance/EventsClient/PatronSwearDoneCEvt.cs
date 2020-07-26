@@ -5,24 +5,24 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Allegiance__Patron_SwearDone;
 
         // WM_Allegiance::PostCEvt_Patron_SwearDone
-        public uint _etype;
-        public StringInfo _vassal_name;
-        public InstanceId _vassal;
+        public uint error; // _etype
+        public StringInfo vassalName; // _vassal_name
+        public InstanceId vassalId; // _vassal
 
         public PatronSwearDoneCEvt() {
 
         }
 
         public PatronSwearDoneCEvt(AC2Reader data) {
-            _etype = data.UnpackUInt32();
-            _vassal_name = data.UnpackPackage<StringInfo>();
-            _vassal = data.UnpackInstanceId();
+            error = data.UnpackUInt32();
+            vassalName = data.UnpackPackage<StringInfo>();
+            vassalId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_etype);
-            data.Pack(_vassal_name);
-            data.Pack(_vassal);
+            data.Pack(error);
+            data.Pack(vassalName);
+            data.Pack(vassalId);
         }
     }
 }

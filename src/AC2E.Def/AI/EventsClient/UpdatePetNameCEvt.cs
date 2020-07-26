@@ -5,21 +5,21 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.AI__UpdatePetName;
 
         // WM_AI::PostCEvt_AI_UpdatePetName
-        public StringInfo _petName;
-        public InstanceId _iidPet;
+        public StringInfo petName; // petName
+        public InstanceId petId; // _iidPet
 
         public UpdatePetNameCEvt() {
 
         }
 
         public UpdatePetNameCEvt(AC2Reader data) {
-            _petName = data.UnpackPackage<StringInfo>();
-            _iidPet = data.UnpackInstanceId();
+            petName = data.UnpackPackage<StringInfo>();
+            petId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_petName);
-            data.Pack(_iidPet);
+            data.Pack(petName);
+            data.Pack(petId);
         }
     }
 }

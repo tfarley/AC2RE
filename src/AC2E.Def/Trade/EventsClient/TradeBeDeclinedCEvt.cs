@@ -5,18 +5,18 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Trade__BeDeclined;
 
         // WM_Trade::PostCEvt_Client_Trade_BeDeclined
-        public InstanceId _src;
+        public InstanceId sourceId; // _src
 
         public TradeBeDeclinedCEvt() {
 
         }
 
         public TradeBeDeclinedCEvt(AC2Reader data) {
-            _src = data.UnpackInstanceId();
+            sourceId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_src);
+            data.Pack(sourceId);
         }
     }
 }

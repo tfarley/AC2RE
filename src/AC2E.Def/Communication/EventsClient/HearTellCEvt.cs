@@ -5,27 +5,27 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Communication__CHearTell;
 
         // WM_Communication::PostCEvt_CHearTell
-        public uint _weenieChatFlags;
-        public StringInfo _msg;
-        public StringInfo _teller;
-        public InstanceId _tellerID;
+        public uint weenieChatFlags; // _weenieChatFlags
+        public StringInfo text; // _msg
+        public StringInfo tellerName; // _teller
+        public InstanceId tellerId; // _tellerID
 
         public HearTellCEvt() {
 
         }
 
         public HearTellCEvt(AC2Reader data) {
-            _weenieChatFlags = data.UnpackUInt32();
-            _msg = data.UnpackPackage<StringInfo>();
-            _teller = data.UnpackPackage<StringInfo>();
-            _tellerID = data.UnpackInstanceId();
+            weenieChatFlags = data.UnpackUInt32();
+            text = data.UnpackPackage<StringInfo>();
+            tellerName = data.UnpackPackage<StringInfo>();
+            tellerId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_weenieChatFlags);
-            data.Pack(_msg);
-            data.Pack(_teller);
-            data.Pack(_tellerID);
+            data.Pack(weenieChatFlags);
+            data.Pack(text);
+            data.Pack(tellerName);
+            data.Pack(tellerId);
         }
     }
 }

@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Allegiance__AcceptVassal;
 
         // WM_Allegiance::SendSEvt_AcceptVassal
-        public InstanceId _vassal;
+        public InstanceId vassalId; // _vassal
 
         public AcceptVassalSEvt(AC2Reader data) {
-            _vassal = data.UnpackInstanceId();
+            vassalId = data.UnpackInstanceId();
         }
     }
 }

@@ -5,30 +5,30 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Player__DisplayMarker;
 
         // WM_Player::PostCEvt_DisplayMarker
-        public StringInfo _msg;
-        public DataId _marker;
-        public CellId _cell;
-        public InstanceId _id;
-        public uint _type;
+        public StringInfo text; // _msg
+        public DataId markerDid; // _marker
+        public CellId cell; // _cell
+        public InstanceId id; // _id
+        public uint type; // _type
 
         public DisplayMarkerCEvt() {
 
         }
 
         public DisplayMarkerCEvt(AC2Reader data) {
-            _msg = data.UnpackPackage<StringInfo>();
-            _marker = data.UnpackDataId();
-            _cell = new CellId(data.UnpackUInt32());
-            _id = data.UnpackInstanceId();
-            _type = data.UnpackUInt32();
+            text = data.UnpackPackage<StringInfo>();
+            markerDid = data.UnpackDataId();
+            cell = new CellId(data.UnpackUInt32());
+            id = data.UnpackInstanceId();
+            type = data.UnpackUInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_msg);
-            data.Pack(_marker);
-            data.Pack(_cell.id);
-            data.Pack(_id);
-            data.Pack(_type);
+            data.Pack(text);
+            data.Pack(markerDid);
+            data.Pack(cell.id);
+            data.Pack(id);
+            data.Pack(type);
         }
     }
 }

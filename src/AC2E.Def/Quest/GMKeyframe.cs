@@ -6,42 +6,42 @@ namespace AC2E.Def {
 
         public NativeType nativeType => NativeType.GMKEYFRAME;
 
-        public uint m_sceneID;
-        public uint m_uiFrameNum;
-        public double m_ttDuration;
-        public DataId m_didVideoFragment;
-        public DataId m_didAudioFragment;
-        public DataId m_didVoiceFragment;
-        public StringInfo m_siTextFragment;
-        public string m_strMovieFragmentFilename;
-        public uint m_definedTracks;
+        public uint sceneId; // m_sceneID
+        public uint frameNum; // m_uiFrameNum
+        public double duration; // m_ttDuration
+        public DataId videoFragmentDid; // m_didVideoFragment
+        public DataId audioFragmentDid; // m_didAudioFragment
+        public DataId voiceFragmentDid; // m_didVoiceFragment
+        public StringInfo textFragment; // m_siTextFragment
+        public string movieFragmentFileName; // m_strMovieFragmentFilename
+        public uint definedTracks; // m_definedTracks
 
         public GMKeyframe() {
 
         }
 
         public GMKeyframe(AC2Reader data) {
-            m_sceneID = data.ReadUInt32();
-            m_uiFrameNum = data.ReadUInt32();
-            m_ttDuration = data.ReadDouble();
-            m_didVideoFragment = data.ReadDataId();
-            m_didAudioFragment = data.ReadDataId();
-            m_didVoiceFragment = data.ReadDataId();
-            m_siTextFragment = new StringInfo(data);
-            m_strMovieFragmentFilename = data.ReadString(Encoding.Unicode);
-            m_definedTracks = data.ReadUInt32();
+            sceneId = data.ReadUInt32();
+            frameNum = data.ReadUInt32();
+            duration = data.ReadDouble();
+            videoFragmentDid = data.ReadDataId();
+            audioFragmentDid = data.ReadDataId();
+            voiceFragmentDid = data.ReadDataId();
+            textFragment = new StringInfo(data);
+            movieFragmentFileName = data.ReadString(Encoding.Unicode);
+            definedTracks = data.ReadUInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Write(m_sceneID);
-            data.Write(m_uiFrameNum);
-            data.Write(m_ttDuration);
-            data.Write(m_didVideoFragment);
-            data.Write(m_didAudioFragment);
-            data.Write(m_didVoiceFragment);
-            m_siTextFragment.write(data);
-            data.Write(m_strMovieFragmentFilename, Encoding.Unicode);
-            data.Write(m_definedTracks);
+            data.Write(sceneId);
+            data.Write(frameNum);
+            data.Write(duration);
+            data.Write(videoFragmentDid);
+            data.Write(audioFragmentDid);
+            data.Write(voiceFragmentDid);
+            textFragment.write(data);
+            data.Write(movieFragmentFileName, Encoding.Unicode);
+            data.Write(definedTracks);
         }
     }
 }

@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Store__RequestLeaveCatalog;
 
         // WM_Store::SendSEvt_Store_RequestLeaveCatalog
-        public InstanceId _iidStorekeeper;
+        public InstanceId storekeeperId; // _iidStorekeeper
 
         public RequestLeaveCatalogSEvt(AC2Reader data) {
-            _iidStorekeeper = data.UnpackInstanceId();
+            storekeeperId = data.UnpackInstanceId();
         }
     }
 }

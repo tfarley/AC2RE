@@ -5,18 +5,18 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Combat__UpdateAttackState;
 
         // WM_Combat::PostCEvt_UpdateAttackState
-        public bool _attacking;
+        public bool attacking; // _attacking
 
         public UpdateAttackStateCEvt() {
 
         }
 
         public UpdateAttackStateCEvt(AC2Reader data) {
-            _attacking = data.UnpackBoolean();
+            attacking = data.UnpackBoolean();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_attacking);
+            data.Pack(attacking);
         }
     }
 }

@@ -4,143 +4,143 @@
 
         public PackageType packageType => PackageType.InvMoveDesc;
 
-        public bool mergeFlag;
-        public uint actualFromSlot;
-        public InstanceId targetID;
-        public bool itemIsContainerFlag;
-        public bool bIgnoreAttunement;
-        public DataId m_itemAprID;
-        public bool noCheckFlag;
-        public InstanceId actualTargetContainer;
-        public bool bShouldUnlock;
-        public uint targetSlot;
-        public uint moveType;
-        public bool checkTakePermFlag;
-        public bool bHidden;
-        public uint targetWeenieType;
-        public InstanceId fromID;
-        public InstanceId splitItemAttunedID;
-        public bool tradeFlag;
-        public bool noRollbackFlag;
-        public DataId splitItemEntityDID;
-        public bool allItemUnitsTakenFlag;
-        public uint actualTargetSlot;
-        public uint quantityLeftToContain;
-        public uint quantity;
-        public bool generatorRequestFlag;
-        public InstanceId splitItemID;
-        public AAHash m_itemAppKeyHash;
-        public bool noAnimFlag;
-        public InstanceId mergeContainerID;
-        public bool bUsedOverflowSlot;
-        public bool grabItem;
-        public InstanceId actualFromContainer;
-        public DataId itemVDescID;
-        public uint fromSlot;
-        public uint status;
-        public bool playedAnim;
-        public bool bQuiet;
-        public bool bAllowOverflowSlots;
-        public InstanceId itemID;
-        public bool noMoveFlag;
-        public bool doContainFlag;
-        public uint splitItemQty;
-        public bool autoMergeFlag;
-        public uint mergeSlot;
+        public bool merge; // mergeFlag
+        public uint actualFromSlot; // actualFromSlot
+        public InstanceId targetId; // targetID
+        public bool itemIsContainer; // itemIsContainerFlag
+        public bool ignoreAttunement; // bIgnoreAttunement
+        public DataId itemAppearanceDid; // m_itemAprID
+        public bool noCheck; // noCheckFlag
+        public InstanceId actualTargetContainerId; // actualTargetContainer
+        public bool shouldUnlock; // bShouldUnlock
+        public uint targetSlot; // targetSlot
+        public uint moveType; // moveType
+        public bool checkTakePerm; // checkTakePermFlag
+        public bool hidden; // bHidden
+        public uint targetWeenieType; // targetWeenieType
+        public InstanceId fromId; // fromID
+        public InstanceId splitItemAttunedId; // splitItemAttunedID
+        public bool trade; // tradeFlag
+        public bool noRollback; // noRollbackFlag
+        public DataId splitItemEntityDid; // splitItemEntityDID
+        public bool allItemUnitsTaken; // allItemUnitsTakenFlag
+        public uint actualTargetSlot; // actualTargetSlot
+        public uint quantityLeftToContain; // quantityLeftToContain
+        public uint quantity; // quantity
+        public bool generatorRequest; // generatorRequestFlag
+        public InstanceId splitItemId; // splitItemID
+        public AAHash itemApppearanceDict; // m_itemAppKeyHash
+        public bool noAnim; // noAnimFlag
+        public InstanceId mergeContainerId; // mergeContainerID
+        public bool usedOverflowSlot; // bUsedOverflowSlot
+        public bool grabItem; // grabItem
+        public InstanceId actualFromContainerId; // actualFromContainer
+        public DataId itemVisualDescDid; // itemVDescID
+        public uint fromSlot; // fromSlot
+        public uint status; // status
+        public bool playedAnim; // playedAnim
+        public bool quiet; // bQuiet
+        public bool allowOverflowSlots; // bAllowOverflowSlots
+        public InstanceId itemId; // itemID
+        public bool noMove; // noMoveFlag
+        public bool doContain; // doContainFlag
+        public uint splitItemQuantity; // splitItemQty
+        public bool autoMerge; // autoMergeFlag
+        public uint mergeSlot; // mergeSlot
 
         public InvMoveDesc() {
 
         }
 
         public InvMoveDesc(AC2Reader data) {
-            mergeFlag = data.ReadBoolean();
+            merge = data.ReadBoolean();
             actualFromSlot = data.ReadUInt32();
-            targetID = data.ReadInstanceId();
-            itemIsContainerFlag = data.ReadBoolean();
-            bIgnoreAttunement = data.ReadBoolean();
-            m_itemAprID = data.ReadDataId();
-            noCheckFlag = data.ReadBoolean();
-            actualTargetContainer = data.ReadInstanceId();
-            bShouldUnlock = data.ReadBoolean();
+            targetId = data.ReadInstanceId();
+            itemIsContainer = data.ReadBoolean();
+            ignoreAttunement = data.ReadBoolean();
+            itemAppearanceDid = data.ReadDataId();
+            noCheck = data.ReadBoolean();
+            actualTargetContainerId = data.ReadInstanceId();
+            shouldUnlock = data.ReadBoolean();
             targetSlot = data.ReadUInt32();
             moveType = data.ReadUInt32();
-            checkTakePermFlag = data.ReadBoolean();
-            bHidden = data.ReadBoolean();
+            checkTakePerm = data.ReadBoolean();
+            hidden = data.ReadBoolean();
             targetWeenieType = data.ReadUInt32();
-            fromID = data.ReadInstanceId();
-            splitItemAttunedID = data.ReadInstanceId();
-            tradeFlag = data.ReadBoolean();
-            noRollbackFlag = data.ReadBoolean();
-            splitItemEntityDID = data.ReadDataId();
-            allItemUnitsTakenFlag = data.ReadBoolean();
+            fromId = data.ReadInstanceId();
+            splitItemAttunedId = data.ReadInstanceId();
+            trade = data.ReadBoolean();
+            noRollback = data.ReadBoolean();
+            splitItemEntityDid = data.ReadDataId();
+            allItemUnitsTaken = data.ReadBoolean();
             actualTargetSlot = data.ReadUInt32();
             quantityLeftToContain = data.ReadUInt32();
             quantity = data.ReadUInt32();
-            generatorRequestFlag = data.ReadBoolean();
-            splitItemID = data.ReadInstanceId();
-            data.ReadPkg<AAHash>(v => m_itemAppKeyHash = v);
-            noAnimFlag = data.ReadBoolean();
-            mergeContainerID = data.ReadInstanceId();
-            bUsedOverflowSlot = data.ReadBoolean();
+            generatorRequest = data.ReadBoolean();
+            splitItemId = data.ReadInstanceId();
+            data.ReadPkg<AAHash>(v => itemApppearanceDict = v);
+            noAnim = data.ReadBoolean();
+            mergeContainerId = data.ReadInstanceId();
+            usedOverflowSlot = data.ReadBoolean();
             grabItem = data.ReadBoolean();
-            actualFromContainer = data.ReadInstanceId();
-            itemVDescID = data.ReadDataId();
+            actualFromContainerId = data.ReadInstanceId();
+            itemVisualDescDid = data.ReadDataId();
             fromSlot = data.ReadUInt32();
             status = data.ReadUInt32();
             playedAnim = data.ReadBoolean();
-            bQuiet = data.ReadBoolean();
-            bAllowOverflowSlots = data.ReadBoolean();
-            itemID = data.ReadInstanceId();
-            noMoveFlag = data.ReadBoolean();
-            doContainFlag = data.ReadBoolean();
-            splitItemQty = data.ReadUInt32();
-            autoMergeFlag = data.ReadBoolean();
+            quiet = data.ReadBoolean();
+            allowOverflowSlots = data.ReadBoolean();
+            itemId = data.ReadInstanceId();
+            noMove = data.ReadBoolean();
+            doContain = data.ReadBoolean();
+            splitItemQuantity = data.ReadUInt32();
+            autoMerge = data.ReadBoolean();
             mergeSlot = data.ReadUInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Write(mergeFlag);
+            data.Write(merge);
             data.Write(actualFromSlot);
-            data.Write(targetID);
-            data.Write(itemIsContainerFlag);
-            data.Write(bIgnoreAttunement);
-            data.Write(m_itemAprID);
-            data.Write(noCheckFlag);
-            data.Write(actualTargetContainer);
-            data.Write(bShouldUnlock);
+            data.Write(targetId);
+            data.Write(itemIsContainer);
+            data.Write(ignoreAttunement);
+            data.Write(itemAppearanceDid);
+            data.Write(noCheck);
+            data.Write(actualTargetContainerId);
+            data.Write(shouldUnlock);
             data.Write(targetSlot);
             data.Write(moveType);
-            data.Write(checkTakePermFlag);
-            data.Write(bHidden);
+            data.Write(checkTakePerm);
+            data.Write(hidden);
             data.Write(targetWeenieType);
-            data.Write(fromID);
-            data.Write(splitItemAttunedID);
-            data.Write(tradeFlag);
-            data.Write(noRollbackFlag);
-            data.Write(splitItemEntityDID);
-            data.Write(allItemUnitsTakenFlag);
+            data.Write(fromId);
+            data.Write(splitItemAttunedId);
+            data.Write(trade);
+            data.Write(noRollback);
+            data.Write(splitItemEntityDid);
+            data.Write(allItemUnitsTaken);
             data.Write(actualTargetSlot);
             data.Write(quantityLeftToContain);
             data.Write(quantity);
-            data.Write(generatorRequestFlag);
-            data.Write(splitItemID);
-            data.WritePkg(m_itemAppKeyHash);
-            data.Write(noAnimFlag);
-            data.Write(mergeContainerID);
-            data.Write(bUsedOverflowSlot);
+            data.Write(generatorRequest);
+            data.Write(splitItemId);
+            data.WritePkg(itemApppearanceDict);
+            data.Write(noAnim);
+            data.Write(mergeContainerId);
+            data.Write(usedOverflowSlot);
             data.Write(grabItem);
-            data.Write(actualFromContainer);
-            data.Write(itemVDescID);
+            data.Write(actualFromContainerId);
+            data.Write(itemVisualDescDid);
             data.Write(fromSlot);
             data.Write(status);
             data.Write(playedAnim);
-            data.Write(bQuiet);
-            data.Write(bAllowOverflowSlots);
-            data.Write(itemID);
-            data.Write(noMoveFlag);
-            data.Write(doContainFlag);
-            data.Write(splitItemQty);
-            data.Write(autoMergeFlag);
+            data.Write(quiet);
+            data.Write(allowOverflowSlots);
+            data.Write(itemId);
+            data.Write(noMove);
+            data.Write(doContain);
+            data.Write(splitItemQuantity);
+            data.Write(autoMerge);
             data.Write(mergeSlot);
         }
     }

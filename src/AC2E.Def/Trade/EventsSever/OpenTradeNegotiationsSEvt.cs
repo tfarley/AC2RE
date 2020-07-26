@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Trade__OpenTradeNegotiations;
 
         // WM_Trade::SendSEvt_OpenTradeNegotiations
-        public InstanceId _trg;
+        public InstanceId targetId; // _trg
 
         public OpenTradeNegotiationsSEvt(AC2Reader data) {
-            _trg = data.UnpackInstanceId();
+            targetId = data.UnpackInstanceId();
         }
     }
 }

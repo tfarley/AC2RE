@@ -4,27 +4,27 @@
 
         public PackageType packageType => PackageType.ResurrectionRequest;
 
-        public InstanceId m_rezzerID;
-        public StringInfo m_rezzerName;
-        public float m_focusLossMod;
-        public uint m_fx;
+        public InstanceId rezzerId; // m_rezzerID
+        public StringInfo rezzerName; // m_rezzerName
+        public float focusLossMod; // m_focusLossMod
+        public uint fx; // m_fx
 
         public ResurrectionRequest() {
 
         }
 
         public ResurrectionRequest(AC2Reader data) {
-            m_rezzerID = data.ReadInstanceId();
-            data.ReadPkg<StringInfo>(v => m_rezzerName = v);
-            m_focusLossMod = data.ReadSingle();
-            m_fx = data.ReadUInt32();
+            rezzerId = data.ReadInstanceId();
+            data.ReadPkg<StringInfo>(v => rezzerName = v);
+            focusLossMod = data.ReadSingle();
+            fx = data.ReadUInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Write(m_rezzerID);
-            data.WritePkg(m_rezzerName);
-            data.Write(m_focusLossMod);
-            data.Write(m_fx);
+            data.Write(rezzerId);
+            data.WritePkg(rezzerName);
+            data.Write(focusLossMod);
+            data.Write(fx);
         }
     }
 }

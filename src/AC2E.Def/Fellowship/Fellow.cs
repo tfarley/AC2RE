@@ -4,27 +4,27 @@
 
         public PackageType packageType => PackageType.Fellow;
 
-        public double m_join_ts;
-        public uint m_level;
-        public FellowVitals m_vitals;
-        public StringInfo m_name;
+        public double joinTime; // m_join_ts
+        public uint level; // m_level
+        public FellowVitals vitals; // m_vitals
+        public StringInfo name; // m_name
 
         public Fellow() {
 
         }
 
         public Fellow(AC2Reader data) {
-            m_join_ts = data.ReadDouble();
-            m_level = data.ReadUInt32();
-            data.ReadPkg<FellowVitals>(v => m_vitals = v);
-            data.ReadPkg<StringInfo>(v => m_name = v);
+            joinTime = data.ReadDouble();
+            level = data.ReadUInt32();
+            data.ReadPkg<FellowVitals>(v => vitals = v);
+            data.ReadPkg<StringInfo>(v => name = v);
         }
 
         public void write(AC2Writer data) {
-            data.Write(m_join_ts);
-            data.Write(m_level);
-            data.WritePkg(m_vitals);
-            data.WritePkg(m_name);
+            data.Write(joinTime);
+            data.Write(level);
+            data.WritePkg(vitals);
+            data.WritePkg(name);
         }
     }
 }

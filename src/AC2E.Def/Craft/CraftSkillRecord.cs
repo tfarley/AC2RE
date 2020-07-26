@@ -4,27 +4,27 @@
 
         public PackageType packageType => PackageType.CraftSkillRecord;
 
-        public ulong m_uliXPEarnedToday;
-        public DataId m_didCraftSkill;
-        public ulong m_uliAvailableCraftXP;
-        public int m_iLevel;
+        public ulong xpEarnedToday; // m_uliXPEarnedToday
+        public DataId craftSkillDid; // m_didCraftSkill
+        public ulong availableCraftXp; // m_uliAvailableCraftXP
+        public int level; // m_iLevel
 
         public CraftSkillRecord() {
 
         }
 
         public CraftSkillRecord(AC2Reader data) {
-            m_uliXPEarnedToday = data.ReadUInt64();
-            m_didCraftSkill = data.ReadDataId();
-            m_uliAvailableCraftXP = data.ReadUInt64();
-            m_iLevel = data.ReadInt32();
+            xpEarnedToday = data.ReadUInt64();
+            craftSkillDid = data.ReadDataId();
+            availableCraftXp = data.ReadUInt64();
+            level = data.ReadInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Write(m_uliXPEarnedToday);
-            data.Write(m_didCraftSkill);
-            data.Write(m_uliAvailableCraftXP);
-            data.Write(m_iLevel);
+            data.Write(xpEarnedToday);
+            data.Write(craftSkillDid);
+            data.Write(availableCraftXp);
+            data.Write(level);
         }
     }
 }

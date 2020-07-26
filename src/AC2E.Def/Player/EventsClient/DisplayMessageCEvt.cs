@@ -5,21 +5,21 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Player__DisplayMessage;
 
         // WM_Player::PostCEvt_DisplayMessage
-        public bool _topmost;
-        public StringInfo _msg;
+        public bool topmost; // _topmost
+        public StringInfo text; // _msg
 
         public DisplayMessageCEvt() {
 
         }
 
         public DisplayMessageCEvt(AC2Reader data) {
-            _topmost = data.UnpackBoolean();
-            _msg = data.UnpackPackage<StringInfo>();
+            topmost = data.UnpackBoolean();
+            text = data.UnpackPackage<StringInfo>();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_topmost);
-            data.Pack(_msg);
+            data.Pack(topmost);
+            data.Pack(text);
         }
     }
 }

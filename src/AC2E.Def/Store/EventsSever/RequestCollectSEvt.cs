@@ -5,14 +5,14 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Store__RequestCollect;
 
         // WM_Store::SendSEvt_Store_RequestCollect
-        public bool _bProfits;
-        public uint _target;
-        public InstanceId _iidStorekeeper;
+        public bool profits; // _bProfits
+        public uint target; // _target
+        public InstanceId storekeeperId; // _iidStorekeeper
 
         public RequestCollectSEvt(AC2Reader data) {
-            _bProfits = data.UnpackBoolean();
-            _target = data.UnpackUInt32();
-            _iidStorekeeper = data.UnpackInstanceId();
+            profits = data.UnpackBoolean();
+            target = data.UnpackUInt32();
+            storekeeperId = data.UnpackInstanceId();
         }
     }
 }

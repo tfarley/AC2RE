@@ -7,7 +7,7 @@
         public MessageOpcode opcode => MessageOpcode.Evt_Physics__CreatePlayer_ID;
 
         // ECM_Physics::RecvEvt_CreatePlayer
-        public InstanceId objectId; // _objectID
+        public InstanceId id; // _objectID
         public uint regionId; // _regionID
 
         public CreatePlayerMsg() {
@@ -15,12 +15,12 @@
         }
 
         public CreatePlayerMsg(AC2Reader data) {
-            objectId = data.ReadInstanceId();
+            id = data.ReadInstanceId();
             regionId = data.ReadUInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Write(objectId);
+            data.Write(id);
             data.Write(regionId);
         }
     }

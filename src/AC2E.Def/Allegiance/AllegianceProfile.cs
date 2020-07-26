@@ -4,54 +4,54 @@
 
         public PackageType packageType => PackageType.AllegianceProfile;
 
-        public StringInfo m_allegianceName;
-        public AllegianceData m_patron;
-        public AllegianceData m_member;
-        public AllegianceData m_monarch;
-        public bool m_fMemberOnline;
-        public bool m_fPatronOnline;
-        public RList<AllegianceData> m_vassals;
-        public BoolList m_vassalsOnlineBools;
-        public StringInfo m_motd;
-        public bool m_fMonarchOnline;
-        public uint m_factionType;
-        public uint m_total;
-        public InstanceIdHashSet m_officerIDs;
+        public StringInfo allegianceName; // m_allegianceName
+        public AllegianceData patron; // m_patron
+        public AllegianceData member; // m_member
+        public AllegianceData monarch; // m_monarch
+        public bool memberOnline; // m_fMemberOnline
+        public bool patronOnline; // m_fPatronOnline
+        public RList<AllegianceData> vassals; // m_vassals
+        public BoolList vassalsOnline; // m_vassalsOnlineBools
+        public StringInfo motd; // m_motd
+        public bool monarchOnline; // m_fMonarchOnline
+        public uint factionType; // m_factionType
+        public uint total; // m_total
+        public InstanceIdHashSet officerIds; // m_officerIDs
 
         public AllegianceProfile() {
 
         }
 
         public AllegianceProfile(AC2Reader data) {
-            data.ReadPkg<StringInfo>(v => m_allegianceName = v);
-            data.ReadPkg<AllegianceData>(v => m_patron = v);
-            data.ReadPkg<AllegianceData>(v => m_member = v);
-            data.ReadPkg<AllegianceData>(v => m_monarch = v);
-            m_fMemberOnline = data.ReadBoolean();
-            m_fPatronOnline = data.ReadBoolean();
-            data.ReadPkg<RList<IPackage>>(v => m_vassals = v.to<AllegianceData>());
-            data.ReadPkg<AList>(v => m_vassalsOnlineBools = new BoolList(v));
-            data.ReadPkg<StringInfo>(v => m_motd = v);
-            m_fMonarchOnline = data.ReadBoolean();
-            m_factionType = data.ReadUInt32();
-            m_total = data.ReadUInt32();
-            data.ReadPkg<LAHashSet>(v => m_officerIDs = new InstanceIdHashSet(v));
+            data.ReadPkg<StringInfo>(v => allegianceName = v);
+            data.ReadPkg<AllegianceData>(v => patron = v);
+            data.ReadPkg<AllegianceData>(v => member = v);
+            data.ReadPkg<AllegianceData>(v => monarch = v);
+            memberOnline = data.ReadBoolean();
+            patronOnline = data.ReadBoolean();
+            data.ReadPkg<RList<IPackage>>(v => vassals = v.to<AllegianceData>());
+            data.ReadPkg<AList>(v => vassalsOnline = new BoolList(v));
+            data.ReadPkg<StringInfo>(v => motd = v);
+            monarchOnline = data.ReadBoolean();
+            factionType = data.ReadUInt32();
+            total = data.ReadUInt32();
+            data.ReadPkg<LAHashSet>(v => officerIds = new InstanceIdHashSet(v));
         }
 
         public void write(AC2Writer data) {
-            data.WritePkg(m_allegianceName);
-            data.WritePkg(m_patron);
-            data.WritePkg(m_member);
-            data.WritePkg(m_monarch);
-            data.Write(m_fMemberOnline);
-            data.Write(m_fPatronOnline);
-            data.WritePkg(m_vassals);
-            data.WritePkg(m_vassalsOnlineBools);
-            data.WritePkg(m_motd);
-            data.Write(m_fMonarchOnline);
-            data.Write(m_factionType);
-            data.Write(m_total);
-            data.WritePkg(m_officerIDs);
+            data.WritePkg(allegianceName);
+            data.WritePkg(patron);
+            data.WritePkg(member);
+            data.WritePkg(monarch);
+            data.Write(memberOnline);
+            data.Write(patronOnline);
+            data.WritePkg(vassals);
+            data.WritePkg(vassalsOnline);
+            data.WritePkg(motd);
+            data.Write(monarchOnline);
+            data.Write(factionType);
+            data.Write(total);
+            data.WritePkg(officerIds);
         }
     }
 }

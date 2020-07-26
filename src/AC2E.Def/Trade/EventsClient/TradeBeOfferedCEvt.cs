@@ -5,24 +5,24 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Trade__BeOffered;
 
         // WM_Trade::PostCEvt_Client_Trade_BeOffered
-        public uint _amt;
-        public InstanceId _item;
-        public InstanceId _src;
+        public uint amount; // _amt
+        public InstanceId itemId; // _item
+        public InstanceId sourceId; // _src
 
         public TradeBeOfferedCEvt() {
 
         }
 
         public TradeBeOfferedCEvt(AC2Reader data) {
-            _amt = data.UnpackUInt32();
-            _item = data.UnpackInstanceId();
-            _src = data.UnpackInstanceId();
+            amount = data.UnpackUInt32();
+            itemId = data.UnpackInstanceId();
+            sourceId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_amt);
-            data.Pack(_item);
-            data.Pack(_src);
+            data.Pack(amount);
+            data.Pack(itemId);
+            data.Pack(sourceId);
         }
     }
 }

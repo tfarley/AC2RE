@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Allegiance__AllegianceMemberSearch;
 
         // WM_Allegiance::SendSEvt_AllegianceMemberSearch
-        public WPString _member;
+        public WPString memberName; // _member
 
         public AllegianceMemberSearchSEvt(AC2Reader data) {
-            _member = data.UnpackPackage<WPString>();
+            memberName = data.UnpackPackage<WPString>();
         }
     }
 }

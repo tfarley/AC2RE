@@ -5,21 +5,21 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Fellowship__UpdateFellowLevel;
 
         // WM_Fellowship::PostCEvt_UpdateFellowLevel
-        public uint _new_level;
-        public InstanceId _fid;
+        public uint level; // _new_level
+        public InstanceId fellowId; // _fid
 
         public UpdateFellowLevelCEvt() {
 
         }
 
         public UpdateFellowLevelCEvt(AC2Reader data) {
-            _new_level = data.UnpackUInt32();
-            _fid = data.UnpackInstanceId();
+            level = data.UnpackUInt32();
+            fellowId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_new_level);
-            data.Pack(_fid);
+            data.Pack(level);
+            data.Pack(fellowId);
         }
     }
 }

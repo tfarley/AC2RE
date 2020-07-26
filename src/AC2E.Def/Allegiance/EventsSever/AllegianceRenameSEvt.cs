@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Allegiance__AllegianceRename;
 
         // WM_Allegiance::SendSEvt_AllegianceRename
-        public WPString _name;
+        public WPString name; // _name
 
         public AllegianceRenameSEvt(AC2Reader data) {
-            _name = data.UnpackPackage<WPString>();
+            name = data.UnpackPackage<WPString>();
         }
     }
 }

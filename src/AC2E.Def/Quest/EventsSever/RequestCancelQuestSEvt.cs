@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Quest__RequestCancelQuest;
 
         // WM_Quest::SendSEvt_RequestCancelQuest
-        public uint _questID;
+        public uint questId; // _questID
 
         public RequestCancelQuestSEvt(AC2Reader data) {
-            _questID = data.UnpackUInt32();
+            questId = data.UnpackUInt32();
         }
     }
 }

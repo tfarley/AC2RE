@@ -5,18 +5,18 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Craft__UpdateCraftSkill_Done;
 
         // WM_Craft::PostCEvt_UpdateCraftSkill_Done
-        public CraftSkillRecord _craftSkillRec;
+        public CraftSkillRecord craftSkillRecord; // _craftSkillRec
 
         public UpdateCraftSkillDoneCEvt() {
 
         }
 
         public UpdateCraftSkillDoneCEvt(AC2Reader data) {
-            _craftSkillRec = data.UnpackPackage<CraftSkillRecord>();
+            craftSkillRecord = data.UnpackPackage<CraftSkillRecord>();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_craftSkillRec);
+            data.Pack(craftSkillRecord);
         }
     }
 }

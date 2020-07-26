@@ -5,18 +5,18 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Allegiance__UpdateAllegianceProfile;
 
         // WM_Allegiance::PostCEvt_UpdateAllegianceProfile
-        public AllegianceProfile _prof;
+        public AllegianceProfile profile; // _prof
 
         public UpdateAllegianceProfileCEvt() {
 
         }
 
         public UpdateAllegianceProfileCEvt(AC2Reader data) {
-            _prof = data.UnpackPackage<AllegianceProfile>();
+            profile = data.UnpackPackage<AllegianceProfile>();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_prof);
+            data.Pack(profile);
         }
     }
 }

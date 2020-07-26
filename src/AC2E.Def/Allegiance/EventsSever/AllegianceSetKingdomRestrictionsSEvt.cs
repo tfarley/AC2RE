@@ -5,12 +5,12 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Allegiance__AllegianceSetKingdomRestrictions;
 
         // WM_Allegiance::SendSEvt_AllegianceSetKingdomRestrictions
-        public bool _fAllowNeutrals;
-        public bool _fRestrictionsOn;
+        public bool allowNeutrals; // _fAllowNeutrals
+        public bool restrictionsOn; // _fRestrictionsOn
 
         public AllegianceSetKingdomRestrictionsSEvt(AC2Reader data) {
-            _fAllowNeutrals = data.UnpackBoolean();
-            _fRestrictionsOn = data.UnpackBoolean();
+            allowNeutrals = data.UnpackBoolean();
+            restrictionsOn = data.UnpackBoolean();
         }
     }
 }

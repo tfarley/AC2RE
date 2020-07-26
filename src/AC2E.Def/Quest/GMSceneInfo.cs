@@ -6,36 +6,36 @@ namespace AC2E.Def {
 
         public NativeType nativeType => NativeType.GMSCENEINFO;
 
-        public uint _ID;
-        public StringInfo _siName;
-        public uint _actID;
-        public uint _uiSceneNum;
-        public bool _bIsHidden;
-        public bool _bIsPlayable;
-        public List<GMKeyframe> _keyframeList;
+        public uint id; // _ID
+        public StringInfo name; // _siName
+        public uint actId; // _actID
+        public uint sceneNum; // _uiSceneNum
+        public bool isHidden; // _bIsHidden
+        public bool isPlayable; // _bIsPlayable
+        public List<GMKeyframe> keyframes; // _keyframeList
 
         public GMSceneInfo() {
 
         }
 
         public GMSceneInfo(AC2Reader data) {
-            _ID = data.ReadUInt32();
-            _siName = new StringInfo(data);
-            _actID = data.ReadUInt32();
-            _uiSceneNum = data.ReadUInt32();
-            _bIsHidden = data.ReadBoolean();
-            _bIsPlayable = data.ReadBoolean();
-            _keyframeList = data.ReadList(() => new GMKeyframe(data));
+            id = data.ReadUInt32();
+            name = new StringInfo(data);
+            actId = data.ReadUInt32();
+            sceneNum = data.ReadUInt32();
+            isHidden = data.ReadBoolean();
+            isPlayable = data.ReadBoolean();
+            keyframes = data.ReadList(() => new GMKeyframe(data));
         }
 
         public void write(AC2Writer data) {
-            data.Write(_ID);
-            _siName.write(data);
-            data.Write(_actID);
-            data.Write(_uiSceneNum);
-            data.Write(_bIsHidden);
-            data.Write(_bIsPlayable);
-            data.Write(_keyframeList, v => v.write(data));
+            data.Write(id);
+            name.write(data);
+            data.Write(actId);
+            data.Write(sceneNum);
+            data.Write(isHidden);
+            data.Write(isPlayable);
+            data.Write(keyframes, v => v.write(data));
         }
     }
 }

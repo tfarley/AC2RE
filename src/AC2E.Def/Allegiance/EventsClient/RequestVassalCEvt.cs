@@ -5,21 +5,21 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Allegiance__RequestVassal;
 
         // WM_Allegiance::PostCEvt_RequestVassal
-        public StringInfo _vassal_name;
-        public InstanceId _vassal;
+        public StringInfo vassalName; // _vassal_name
+        public InstanceId vassalId; // _vassal
 
         public RequestVassalCEvt() {
 
         }
 
         public RequestVassalCEvt(AC2Reader data) {
-            _vassal_name = data.UnpackPackage<StringInfo>();
-            _vassal = data.UnpackInstanceId();
+            vassalName = data.UnpackPackage<StringInfo>();
+            vassalId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_vassal_name);
-            data.Pack(_vassal);
+            data.Pack(vassalName);
+            data.Pack(vassalId);
         }
     }
 }

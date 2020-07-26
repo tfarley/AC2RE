@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Store__RequestLeaveConsignment;
 
         // WM_Store::SendSEvt_Store_RequestLeaveConsignment
-        public InstanceId _iidStorekeeper;
+        public InstanceId storekeeperId; // _iidStorekeeper
 
         public RequestLeaveConsignmentSEvt(AC2Reader data) {
-            _iidStorekeeper = data.UnpackInstanceId();
+            storekeeperId = data.UnpackInstanceId();
         }
     }
 }

@@ -155,7 +155,7 @@ namespace AC2E.Server {
                                 Log.Debug($"Got good connect ack cookie from client id: {packet.recipientId}.");
                                 client.connect(serverTime);
                                 client.enqueueMessage(new WorldNameMsg {
-                                    name = new StringInfo { literalValue = "MyWorld" },
+                                    worldName = new StringInfo { literalValue = "MyWorld" },
                                 });
                                 client.enqueueMessage(new CliDatInterrogationMsg {
                                     regionId = (RegionID)1,
@@ -208,7 +208,7 @@ namespace AC2E.Server {
                                     id = new InstanceId(0x213000000000dd9d),
                                     name = "TestChar",
                                     secondsGreyedOut = 0,
-                                    vDesc = new VisualDesc {
+                                    visualDesc = new VisualDesc {
                                         packFlags = VisualDesc.PackFlag.PARENT,
                                         parentDid = new DataId(0x1F001110),
                                     },
@@ -254,7 +254,7 @@ namespace AC2E.Server {
                             genericMsg = msg;
 
                             client.enqueueMessage(new CreatePlayerMsg {
-                                objectId = msg.characterId,
+                                id = msg.characterId,
                                 regionId = 1,
                             });
 
@@ -262,7 +262,7 @@ namespace AC2E.Server {
                                 baseQualities = new CBaseQualities {
                                     packFlags = CBaseQualities.PackFlag.WEENIE_DESC | CBaseQualities.PackFlag.INT_HASH_TABLE | CBaseQualities.PackFlag.BOOL_HASH_TABLE | CBaseQualities.PackFlag.FLOAT_HASH_TABLE | CBaseQualities.PackFlag.TIMESTAMP_HASH_TABLE | CBaseQualities.PackFlag.DATA_ID_HASH_TABLE | CBaseQualities.PackFlag.LONG_INT_HASH_TABLE,
                                     dbType = 0x81000530,
-                                    wDesc = new WeenieDesc {
+                                    weenieDesc = new WeenieDesc {
                                         packFlags = WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.MONARCH_ID | WeenieDesc.PackFlag.PHYSICS_TYPE_LOW_DWORD | WeenieDesc.PackFlag.PHYSICS_TYPE_HIGH_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD,
                                         name = new StringInfo("Diabesus [M]"),
                                         monarchId = new InstanceId(0x2130000000003B2D),
@@ -311,8 +311,8 @@ namespace AC2E.Server {
                             });
 
                             client.enqueueMessage(new CreateObjectMsg {
-                                objectId = msg.characterId,
-                                vDesc = new VisualDesc {
+                                id = msg.characterId,
+                                visualDesc = new VisualDesc {
                                     packFlags = VisualDesc.PackFlag.PARENT | VisualDesc.PackFlag.SCALE | VisualDesc.PackFlag.GLOBALMOD,
                                     parentDid = new DataId(0x1F000023),
                                     scale = new Vector(0.9107999f, 0.9107999f, 0.98999995f),
@@ -364,7 +364,7 @@ namespace AC2E.Server {
                                             }
                                     },
                                 },
-                                pDesc = new PhysicsDesc {
+                                physicsDesc = new PhysicsDesc {
                                     packFlags = PhysicsDesc.PackFlag.SLIDERS | PhysicsDesc.PackFlag.MODE | PhysicsDesc.PackFlag.POSITION | PhysicsDesc.PackFlag.VELOCITY_SCALE,
                                     sliders = new Dictionary<uint, PhysicsDesc.SliderData> {
                                             { 1073741834, new PhysicsDesc.SliderData {
@@ -374,7 +374,7 @@ namespace AC2E.Server {
                                         },
                                     modeId = 1073741825,
                                     pos = new Position {
-                                        cellId = new CellId(0x8D, 0xB5, 0x00, 0x3E),
+                                        cell = new CellId(0x8D, 0xB5, 0x00, 0x3E),
                                         frame = new Frame(new Vector(158.13483f, 117.91791f, 129.50496f), new Quaternion(0.23793525f, 0.0f, 0.0f, 0.971281f)),
                                     },
                                     velScale = 1.08f,
@@ -382,7 +382,7 @@ namespace AC2E.Server {
                                     instanceStamp = 5,
                                     visualOrderingStamp = 8,
                                 },
-                                wDesc = new WeenieDesc {
+                                weenieDesc = new WeenieDesc {
                                     packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.MONARCH_ID | WeenieDesc.PackFlag.PHYSICS_TYPE_LOW_DWORD | WeenieDesc.PackFlag.PHYSICS_TYPE_HIGH_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.ENTITY_DID,
                                     packageId = new PackageId(895),
                                     name = new StringInfo("Diabesus [M]"),
@@ -400,9 +400,9 @@ namespace AC2E.Server {
                             client.enqueueMessage(new InterpCEventPrivateMsg {
                                 netEvent = new HandleCharacterSessionStartCEvt {
                                     money = 12345,
-                                    _aReg = new ActRegistry {
-                                        m_viewingProtectionEID = 0,
-                                        m_actSceneTable = new ARHash<AList> {
+                                    actRegistry = new ActRegistry {
+                                        viewingProtectionEffectId = 0,
+                                        actSceneTable = new ARHash<AList> {
                                             contents = new Dictionary<uint, AList> {
                                                 { 0x40000005, new AList() },
                                                 { 0x40000006, new AList() },
@@ -413,10 +413,10 @@ namespace AC2E.Server {
                                             }
                                         }
                                     },
-                                    _quests = new GMQuestInfoList {
+                                    quests = new GMQuestInfoList {
 
                                     },
-                                    _options = new GameplayOptionsProfile {
+                                    options = new GameplayOptionsProfile {
                                         contentFlags =
                                             GameplayOptionsProfile.ContentFlag.SHORTCUT_ARRAY
                                             | GameplayOptionsProfile.ContentFlag.SHOW_RANGE_DAMAGE_OTHER
@@ -428,10 +428,10 @@ namespace AC2E.Server {
                                             | GameplayOptionsProfile.ContentFlag.CHAT_FONT_SIZES
                                             | GameplayOptionsProfile.ContentFlag.CHAT_POPUP_FLAGS
                                             | GameplayOptionsProfile.ContentFlag.WINDOW_TO_CHANNEL,
-                                        m_shortcutArray = Enumerable.Repeat(new ShortcutInfo { _type = ShortcutType.UNDEF }, 100).ToList(),
-                                        m_whichShortcutSet = 1,
-                                        m_fDamageTextRangeOther = 1.0f,
-                                        m_savedUILocations = new UISaveLocations(),
+                                        shortcutArray = Enumerable.Repeat(new ShortcutInfo { type = ShortcutType.UNDEF }, 100).ToList(),
+                                        whichShortcutSet = 1,
+                                        damageTextRangeOther = 1.0f,
+                                        savedUILocations = new UISaveLocations(),
                                         /*m_savedUILocations = new UISaveLocationsPkg {
                                             contents = new Dictionary<uint, Dictionary<uint, UISaveLocationsPkg.UILocationData>> {
                                             { 0, new Dictionary<uint, UISaveLocationsPkg.UILocationData> {
@@ -445,16 +445,16 @@ namespace AC2E.Server {
                                             } }
                                         }
                                         },*/
-                                        m_radarMask = 0xFFFFFFFF,
-                                        m_filterHash = new Dictionary<uint, uint> {
+                                        radarMask = 0xFFFFFFFF,
+                                        filterDict = new Dictionary<uint, uint> {
                                             { 0x00800001, 0x0060017B },
                                             { 0x00000002, 0x80000000 },
                                             { 0x00000003, 0x00010000 },
                                             { 0x00000004, 0x00020000 },
                                         },
-                                        m_bitField = (GameplayOptionsProfile.Flag)0x80024FF5,
-                                        m_version = GameplayOptionsProfile.Version.LATEST_VERSION,
-                                        m_chatFontColors = new Dictionary<TextType, uint> {
+                                        bitfield = (GameplayOptionsProfile.Flag)0x80024FF5,
+                                        version = GameplayOptionsProfile.Version.LATEST_VERSION,
+                                        chatFontColors = new Dictionary<TextType, uint> {
                                             { TextType.ERROR, 0 },
                                             { TextType.COMBAT, 1 },
                                             { TextType.ADMIN, 2 },
@@ -474,7 +474,7 @@ namespace AC2E.Server {
                                             { TextType.DEVOTED, 4 },
                                             { TextType.PK, 4 },
                                         },
-                                        m_chatFontSizes = new Dictionary<TextType, uint> {
+                                        chatFontSizes = new Dictionary<TextType, uint> {
                                             { TextType.ERROR, 0 },
                                             { TextType.COMBAT, 0 },
                                             { TextType.ADMIN, 0 },
@@ -500,79 +500,79 @@ namespace AC2E.Server {
                                             { 3, TextType.FELLOWSHIP },
                                             { 4, TextType.ALLEGIANCE },
                                         },
-                                        m_chatPopupFlags = new Dictionary<TextType, bool> {
+                                        chatPopupFlags = new Dictionary<TextType, bool> {
                                             { TextType.BROADCAST, true },
                                             { TextType.FELLOWSHIP, true },
                                             { TextType.ALLEGIANCE, true },
                                         },
-                                        m_windowOpacities = new Dictionary<uint, float> {
+                                        windowOpacities = new Dictionary<uint, float> {
                                             { 0xA05C6B95, 0.65f },
                                             { 0xA0446B95, 0.65f },
                                             { 0xA04C6B95, 0.65f },
                                             { 0xA0746B95, 0.65f },
                                         },
                                     },
-                                    _skills = new SkillRepository {
-                                        m_nSkillCredits = 0,
-                                        m_nUntrainXP = 0,
-                                        m_hashPerkTypes = new AAHash {
+                                    skills = new SkillRepository {
+                                        skillCredits = 0,
+                                        untrainXp = 0,
+                                        perkTypes = new AAHash {
                                             contents = new Dictionary<uint, uint> {
 
                                             }
                                         },
-                                        m_typeUntrained = 0,
-                                        m_hashCategories = new AAHash {
+                                        typeUntrained = 0,
+                                        categories = new AAHash {
                                             contents = new Dictionary<uint, uint> {
 
                                             }
                                         },
-                                        m_hashSkills = new ARHash<SkillInfo> {
+                                        skills = new ARHash<SkillInfo> {
                                             contents = new Dictionary<uint, SkillInfo> {
 
                                             }
                                         },
                                     },
-                                    _regEffect = new EffectRegistry {
-                                        m_qualitiesModifiedCount = null,
-                                        m_appliedFX = new AAHash {
+                                    effectRegistry = new EffectRegistry {
+                                        qualitiesModifiedCount = null,
+                                        appliedFx = new AAHash {
                                             contents = new Dictionary<uint, uint> {
 
                                             },
                                         },
-                                        m_baseEffectRegistry = null,
-                                        m_uiEffectIDCounter = 3,
-                                        m_effectInfo = null,
-                                        m_ttLastPulse = -1.0,
-                                        m_listEquipperEffectEids = null,
-                                        m_listAcquirerEffectEids = null,
-                                        m_flags = 0x000C0001,
-                                        m_setTrackedEffects = null,
-                                        m_topEffects = null,
-                                        m_effectCategorizationTable = null,
-                                        m_appliedAppearances = new AAHash {
+                                        baseEffectRegistry = null,
+                                        effectIdCounter = 3,
+                                        effectInfo = null,
+                                        lastPulseTime = -1.0,
+                                        equipperEffectIds = null,
+                                        acquirerEffectIds = null,
+                                        flags = 0x000C0001,
+                                        trackedEffects = null,
+                                        topEffects = null,
+                                        effectCategorizationTable = null,
+                                        appliedAppearances = new AAHash {
                                             contents = new Dictionary<uint, uint> {
 
                                             },
                                         },
                                     },
-                                    _filledInvLocs = 0,
-                                    _invByLocTable = new ARHash<InventProfile> {
+                                    filledInventoryLocations = 0,
+                                    inventoryByLocationTable = new ARHash<InventProfile> {
 
                                     },
-                                    _invByIIDTable = new LRHash<InventProfile> {
+                                    inventoryByIdTable = new LRHash<InventProfile> {
 
                                     },
-                                    _ContainerSegments = new RList<ContainerSegmentDescriptor> {
+                                    containerSegments = new RList<ContainerSegmentDescriptor> {
 
                                     },
-                                    _Containers = new InstanceIdList {
+                                    containerIds = new InstanceIdList {
 
                                     },
-                                    _Contents = new InstanceIdList {
+                                    contentsIds = new InstanceIdList {
 
                                     },
-                                    _locFactionStatus = 1,
-                                    _srvFactionStatus = 0,
+                                    localFactionStatus = 1,
+                                    serverFactionStatus = 0,
                                 }
                             });
                             break;
@@ -597,56 +597,56 @@ namespace AC2E.Server {
                                     };
                                     client.enqueueMessage(new InterpCEventPrivateMsg {
                                         netEvent = new ClientAddEffectCEvt {
-                                            _record = new EffectRecord {
-                                                m_timeDemotedFromTopLevel = -1.0,
-                                                m_timeCast = 129996502.8136027,
-                                                m_iidCaster = new InstanceId(0x213000000000dd9d),
-                                                m_ttTimeout = 0.0f,
-                                                m_fApp = 0.0f,
-                                                m_fSpellcraft = 1.0f,
-                                                m_iApp = 0,
-                                                m_bPK = false,
-                                                m_rApp = null,
-                                                m_timePromotedToTopLevel = -1.0,
-                                                m_effect = refiningEffect,
-                                                m_iidActingForWhom = default,
-                                                m_didSkill = default,
-                                                m_iidFromItem = new InstanceId(0x213000000000dd9d),
-                                                m_flags = 0x00000051,
-                                                m_uiDurabilityLevel = 0,
-                                                m_relatedEID = 0,
-                                                m_effectID = 0x00000BD9,
-                                                m_categories = 1,
-                                                m_uiMaxDurabilityLevel = 0,
+                                            effectRecord = new EffectRecord {
+                                                timeDemotedFromTopLevel = -1.0,
+                                                timeCast = 129996502.8136027,
+                                                casterId = new InstanceId(0x213000000000dd9d),
+                                                timeout = 0.0f,
+                                                appF = 0.0f,
+                                                spellcraft = 1.0f,
+                                                appI = 0,
+                                                pk = false,
+                                                appR = null,
+                                                timePromotedToTopLevel = -1.0,
+                                                effect = refiningEffect,
+                                                actingForWhomId = default,
+                                                skillDid = default,
+                                                fromItemId = new InstanceId(0x213000000000dd9d),
+                                                flags = 0x00000051,
+                                                durabilityLevel = 0,
+                                                relatedEffectId = 0,
+                                                effectId = 0x00000BD9,
+                                                categories = 1,
+                                                maxDurabilityLevel = 0,
                                             },
-                                            _eid = 0x00000BD9,
+                                            effectId = 0x00000BD9,
                                         }
                                     });
                                 } else {
                                     client.enqueueMessage(new InterpCEventPrivateMsg {
                                         netEvent = new ClientRemoveEffectCEvt {
-                                            _eid = 0x00000BD9,
+                                            effectId = 0x00000BD9,
                                         }
                                     });
                                 }
 
                                 client.enqueueMessage(new CreateObjectMsg {
-                                    objectId = new InstanceId(0x12345 + (ulong)toggleCounter),
-                                    vDesc = new VisualDesc {
+                                    id = new InstanceId(0x12345 + (ulong)toggleCounter),
+                                    visualDesc = new VisualDesc {
                                         packFlags = VisualDesc.PackFlag.PARENT,
                                         parentDid = new DataId(0x1F000000 + (uint)toggleCounter),
                                     },
-                                    pDesc = new PhysicsDesc {
+                                    physicsDesc = new PhysicsDesc {
                                         packFlags = PhysicsDesc.PackFlag.POSITION,
                                         pos = new Position {
-                                            cellId = new CellId(0x8D, 0xB5, 0x00, 0x3E),
+                                            cell = new CellId(0x8D, 0xB5, 0x00, 0x3E),
                                             frame = new Frame(new Vector(158.13483f + toggleCounter * 1.0f, 117.91791f - toggleCounter * 1.0f, 129.50496f), new Quaternion(0.23793525f, 0.0f, 0.0f, 0.971281f)),
                                         },
                                         timestamps = new ushort[] { 1, 0, 0, 0 },
                                         instanceStamp = 5,
                                         visualOrderingStamp = 8,
                                     },
-                                    wDesc = new WeenieDesc {
+                                    weenieDesc = new WeenieDesc {
                                         packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.ENTITY_DID,
                                         packageId = new PackageId(895),
                                         name = new StringInfo($"TestObj 0x{toggleCounter:X}"),

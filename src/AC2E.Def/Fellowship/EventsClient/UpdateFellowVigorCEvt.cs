@@ -5,24 +5,24 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Fellowship__UpdateFellowVigor;
 
         // WM_Fellowship::PostCEvt_UpdateFellowVigor
-        public uint _valuePK;
-        public uint _value;
-        public InstanceId _fid;
+        public uint vigorPk; // _valuePK
+        public uint vigor; // _value
+        public InstanceId fellowId; // _fid
 
         public UpdateFellowVigorCEvt() {
 
         }
 
         public UpdateFellowVigorCEvt(AC2Reader data) {
-            _valuePK = data.UnpackUInt32();
-            _value = data.UnpackUInt32();
-            _fid = data.UnpackInstanceId();
+            vigorPk = data.UnpackUInt32();
+            vigor = data.UnpackUInt32();
+            fellowId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_valuePK);
-            data.Pack(_value);
-            data.Pack(_fid);
+            data.Pack(vigorPk);
+            data.Pack(vigor);
+            data.Pack(fellowId);
         }
     }
 }

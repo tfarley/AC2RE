@@ -4,33 +4,33 @@
 
         public PackageType packageType => PackageType.UsageBlob;
 
-        public StringInfo m_criticalSuccessMessage;
-        public StringInfo m_successMessage;
-        public uint m_userBehaviorRepeatCount;
-        public float m_userBehaviorTimeScale;
-        public uint m_userBehavior;
-        public bool m_userBehaviorFadeChildren;
+        public StringInfo criticalSuccessText; // m_criticalSuccessMessage
+        public StringInfo successText; // m_successMessage
+        public uint userBehaviorRepeatCount; // m_userBehaviorRepeatCount
+        public float userBehaviorTimeScale; // m_userBehaviorTimeScale
+        public uint userBehavior; // m_userBehavior
+        public bool userBehaviorFadeChildren; // m_userBehaviorFadeChildren
 
         public UsageBlob() {
 
         }
 
         public UsageBlob(AC2Reader data) {
-            data.ReadPkg<StringInfo>(v => m_criticalSuccessMessage = v);
-            data.ReadPkg<StringInfo>(v => m_successMessage = v);
-            m_userBehaviorRepeatCount = data.ReadUInt32();
-            m_userBehaviorTimeScale = data.ReadSingle();
-            m_userBehavior = data.ReadUInt32();
-            m_userBehaviorFadeChildren = data.ReadBoolean();
+            data.ReadPkg<StringInfo>(v => criticalSuccessText = v);
+            data.ReadPkg<StringInfo>(v => successText = v);
+            userBehaviorRepeatCount = data.ReadUInt32();
+            userBehaviorTimeScale = data.ReadSingle();
+            userBehavior = data.ReadUInt32();
+            userBehaviorFadeChildren = data.ReadBoolean();
         }
 
         public void write(AC2Writer data) {
-            data.WritePkg(m_criticalSuccessMessage);
-            data.WritePkg(m_successMessage);
-            data.Write(m_userBehaviorRepeatCount);
-            data.Write(m_userBehaviorTimeScale);
-            data.Write(m_userBehavior);
-            data.Write(m_userBehaviorFadeChildren);
+            data.WritePkg(criticalSuccessText);
+            data.WritePkg(successText);
+            data.Write(userBehaviorRepeatCount);
+            data.Write(userBehaviorTimeScale);
+            data.Write(userBehavior);
+            data.Write(userBehaviorFadeChildren);
         }
     }
 }

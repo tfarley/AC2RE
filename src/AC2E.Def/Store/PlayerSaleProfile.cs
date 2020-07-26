@@ -4,19 +4,19 @@
 
         public override PackageType packageType => PackageType.PlayerSaleProfile;
 
-        public int m_iQtyInStock;
+        public int quantityInStock; // m_iQtyInStock
 
         public PlayerSaleProfile() {
 
         }
 
         public PlayerSaleProfile(AC2Reader data) : base(data) {
-            m_iQtyInStock = data.ReadInt32();
+            quantityInStock = data.ReadInt32();
         }
 
         public override void write(AC2Writer data) {
             base.write(data);
-            data.Write(m_iQtyInStock);
+            data.Write(quantityInStock);
         }
     }
 }

@@ -4,44 +4,44 @@ namespace AC2E.Def {
 
     public class ExaminationDataNode {
 
-        public ExaminationDataType _type;
-        public uint _order;
-        public int valInt;
-        public float valFloat;
-        public bool valBool;
-        public DataId valDataID;
-        public long valLongInt;
-        public uint _appearanceID;
-        public double _value_valTime;
-        public StringInfo _value_valStr;
-        public IconDesc _value_valIconDesc;
+        public ExaminationDataType type; // _type
+        public uint order; // _order
+        public int valInt; // valInt
+        public float valFloat; // valFloat
+        public bool valBool; // valBool
+        public DataId valDataID; // valDataID
+        public long valLongInt; // valLongInt
+        public uint appearanceId; // _appearanceID
+        public double valTime; // _value_valTime
+        public StringInfo valString; // _value_valStr
+        public IconDesc valIconDesc; // _value_valIconDesc
 
         public ExaminationDataNode() {
 
         }
 
         public ExaminationDataNode(AC2Reader data) {
-            _type = (ExaminationDataType)data.ReadUInt32();
-            _order = data.ReadUInt32();
-            switch (_type) {
+            type = (ExaminationDataType)data.ReadUInt32();
+            order = data.ReadUInt32();
+            switch (type) {
                 case ExaminationDataType.UNDEF:
                     break;
                 case ExaminationDataType.INT:
                 case ExaminationDataType.EFFECT_ID:
-                    _appearanceID = data.ReadUInt32();
+                    appearanceId = data.ReadUInt32();
                     valInt = data.ReadInt32();
                     break;
                 case ExaminationDataType.FLOAT:
-                    _appearanceID = data.ReadUInt32();
+                    appearanceId = data.ReadUInt32();
                     valFloat = data.ReadSingle();
                     break;
                 case ExaminationDataType.BOOL:
-                    _appearanceID = data.ReadUInt32();
+                    appearanceId = data.ReadUInt32();
                     valBool = data.ReadBoolean();
                     break;
                 case ExaminationDataType.STRING:
-                    _appearanceID = data.ReadUInt32();
-                    _value_valStr = new StringInfo(data);
+                    appearanceId = data.ReadUInt32();
+                    valString = new StringInfo(data);
                     break;
                 case ExaminationDataType.IMAGE:
                     valDataID = data.ReadDataId();
@@ -53,43 +53,43 @@ namespace AC2E.Def {
                     valInt = data.ReadInt32();
                     break;
                 case ExaminationDataType.COUNTDOWN:
-                    _appearanceID = data.ReadUInt32();
-                    _value_valTime = data.ReadDouble();
+                    appearanceId = data.ReadUInt32();
+                    valTime = data.ReadDouble();
                     break;
                 case ExaminationDataType.ICON_DESC:
-                    _value_valIconDesc = new IconDesc(data);
+                    valIconDesc = new IconDesc(data);
                     break;
                 case ExaminationDataType.LONG_INT:
-                    _appearanceID = data.ReadUInt32();
+                    appearanceId = data.ReadUInt32();
                     valLongInt = data.ReadInt64();
                     break;
                 default:
-                    throw new InvalidDataException(_type.ToString());
+                    throw new InvalidDataException(type.ToString());
             }
         }
 
         public void write(AC2Writer data) {
-            data.Write((uint)_type);
-            data.Write(_order);
-            switch (_type) {
+            data.Write((uint)type);
+            data.Write(order);
+            switch (type) {
                 case ExaminationDataType.UNDEF:
                     break;
                 case ExaminationDataType.INT:
                 case ExaminationDataType.EFFECT_ID:
-                    data.Write(_appearanceID);
+                    data.Write(appearanceId);
                     data.Write(valInt);
                     break;
                 case ExaminationDataType.FLOAT:
-                    data.Write(_appearanceID);
+                    data.Write(appearanceId);
                     data.Write(valFloat);
                     break;
                 case ExaminationDataType.BOOL:
-                    data.Write(_appearanceID);
+                    data.Write(appearanceId);
                     data.Write(valBool);
                     break;
                 case ExaminationDataType.STRING:
-                    data.Write(_appearanceID);
-                    _value_valStr.write(data);
+                    data.Write(appearanceId);
+                    valString.write(data);
                     break;
                 case ExaminationDataType.IMAGE:
                     data.Write(valDataID);
@@ -101,18 +101,18 @@ namespace AC2E.Def {
                     data.Write(valInt);
                     break;
                 case ExaminationDataType.COUNTDOWN:
-                    data.Write(_appearanceID);
-                    data.Write(_value_valTime);
+                    data.Write(appearanceId);
+                    data.Write(valTime);
                     break;
                 case ExaminationDataType.ICON_DESC:
-                    _value_valIconDesc.write(data);
+                    valIconDesc.write(data);
                     break;
                 case ExaminationDataType.LONG_INT:
-                    data.Write(_appearanceID);
+                    data.Write(appearanceId);
                     data.Write(valLongInt);
                     break;
                 default:
-                    throw new InvalidDataException(_type.ToString());
+                    throw new InvalidDataException(type.ToString());
             }
         }
     }

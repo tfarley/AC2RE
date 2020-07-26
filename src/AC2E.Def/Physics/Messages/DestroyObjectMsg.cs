@@ -7,18 +7,18 @@
         public MessageOpcode opcode => MessageOpcode.Evt_Physics__DestroyObject_ID;
 
         // ECM_Physics::RecvEvt_DestroyObject
-        public InstanceIdWithStamp objectIdWithStamp; // _object
+        public InstanceIdWithStamp idWithStamp; // _object
 
         public DestroyObjectMsg() {
 
         }
 
         public DestroyObjectMsg(AC2Reader data) {
-            objectIdWithStamp = data.ReadInstanceIdWithStamp();
+            idWithStamp = data.ReadInstanceIdWithStamp();
         }
 
         public void write(AC2Writer data) {
-            data.Write(objectIdWithStamp);
+            data.Write(idWithStamp);
         }
     }
 }

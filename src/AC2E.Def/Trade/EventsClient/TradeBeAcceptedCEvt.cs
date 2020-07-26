@@ -5,18 +5,18 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Trade__BeAccepted;
 
         // WM_Trade::PostCEvt_Client_Trade_BeAccepted
-        public InstanceId _src;
+        public InstanceId sourceId; // _src
 
         public TradeBeAcceptedCEvt() {
 
         }
 
         public TradeBeAcceptedCEvt(AC2Reader data) {
-            _src = data.UnpackInstanceId();
+            sourceId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_src);
+            data.Pack(sourceId);
         }
     }
 }

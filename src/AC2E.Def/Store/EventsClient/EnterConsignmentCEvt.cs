@@ -5,21 +5,21 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Store__EnterConsignment;
 
         // WM_Store::PostCEvt_Store_EnterConsignment
-        public RList<Consignment> _consignments;
-        public InstanceId _iidStorekeeper;
+        public RList<Consignment> consignments; // _consignments
+        public InstanceId storekeeperId; // _iidStorekeeper
 
         public EnterConsignmentCEvt() {
 
         }
 
         public EnterConsignmentCEvt(AC2Reader data) {
-            _consignments = data.UnpackPackage<RList<IPackage>>().to<Consignment>();
-            _iidStorekeeper = data.UnpackInstanceId();
+            consignments = data.UnpackPackage<RList<IPackage>>().to<Consignment>();
+            storekeeperId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_consignments);
-            data.Pack(_iidStorekeeper);
+            data.Pack(consignments);
+            data.Pack(storekeeperId);
         }
     }
 }

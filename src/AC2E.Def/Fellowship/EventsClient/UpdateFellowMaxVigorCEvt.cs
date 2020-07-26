@@ -5,21 +5,21 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Fellowship__UpdateFellowMaxVigor;
 
         // WM_Fellowship::PostCEvt_UpdateFellowMaxVigor
-        public uint _value;
-        public InstanceId _fid;
+        public uint maxVigor; // _value
+        public InstanceId fellowId; // _fid
 
         public UpdateFellowMaxVigorCEvt() {
 
         }
 
         public UpdateFellowMaxVigorCEvt(AC2Reader data) {
-            _value = data.UnpackUInt32();
-            _fid = data.UnpackInstanceId();
+            maxVigor = data.UnpackUInt32();
+            fellowId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_value);
-            data.Pack(_fid);
+            data.Pack(maxVigor);
+            data.Pack(fellowId);
         }
     }
 }

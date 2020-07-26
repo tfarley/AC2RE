@@ -5,21 +5,21 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Effect__ClientAddEffect;
 
         // WM_Effect::PostCEvt_Effect_ClientAddEffect
-        public EffectRecord _record;
-        public uint _eid;
+        public EffectRecord effectRecord; // _record
+        public uint effectId; // _eid
 
         public ClientAddEffectCEvt() {
 
         }
 
         public ClientAddEffectCEvt(AC2Reader data) {
-            _record = data.UnpackPackage<EffectRecord>();
-            _eid = data.UnpackUInt32();
+            effectRecord = data.UnpackPackage<EffectRecord>();
+            effectId = data.UnpackUInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_record);
-            data.Pack(_eid);
+            data.Pack(effectRecord);
+            data.Pack(effectId);
         }
     }
 }

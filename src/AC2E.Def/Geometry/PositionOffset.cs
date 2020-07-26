@@ -2,11 +2,11 @@
 
     public struct PositionOffset {
 
-        public CellId cellId; // m_cid
+        public CellId cell; // m_cid
         public Vector offset; // m_offset
 
         public PositionOffset(AC2Reader data) {
-            cellId = data.ReadCellId();
+            cell = data.ReadCellId();
             offset = data.ReadVector();
         }
     }

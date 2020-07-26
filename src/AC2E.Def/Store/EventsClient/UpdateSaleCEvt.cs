@@ -5,24 +5,24 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Store__UpdateSale;
 
         // WM_Store::PostCEvt_Store_UpdateSale
-        public int __iStockdesc;
-        public InstanceId _iidItem;
-        public InstanceId _iidStorekeeper;
+        public int stockDesc; // __iStockdesc
+        public InstanceId itemId; // _iidItem
+        public InstanceId storekeeperId; // _iidStorekeeper
 
         public UpdateSaleCEvt() {
 
         }
 
         public UpdateSaleCEvt(AC2Reader data) {
-            __iStockdesc = data.UnpackInt32();
-            _iidItem = data.UnpackInstanceId();
-            _iidStorekeeper = data.UnpackInstanceId();
+            stockDesc = data.UnpackInt32();
+            itemId = data.UnpackInstanceId();
+            storekeeperId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(__iStockdesc);
-            data.Pack(_iidItem);
-            data.Pack(_iidStorekeeper);
+            data.Pack(stockDesc);
+            data.Pack(itemId);
+            data.Pack(storekeeperId);
         }
     }
 }

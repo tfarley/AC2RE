@@ -4,24 +4,24 @@
 
         public PackageType packageType => PackageType.PetData;
 
-        public double m_timeLeftWorld;
-        public uint m_class;
-        public uint m_flags;
+        public double timeLeftWorld; // m_timeLeftWorld
+        public uint petClass; // m_class
+        public uint flags; // m_flags
 
         public PetData() {
 
         }
 
         public PetData(AC2Reader data) {
-            m_timeLeftWorld = data.ReadDouble();
-            m_class = data.ReadUInt32();
-            m_flags = data.ReadUInt32();
+            timeLeftWorld = data.ReadDouble();
+            petClass = data.ReadUInt32();
+            flags = data.ReadUInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Write(m_timeLeftWorld);
-            data.Write(m_class);
-            data.Write(m_flags);
+            data.Write(timeLeftWorld);
+            data.Write(petClass);
+            data.Write(flags);
         }
     }
 }

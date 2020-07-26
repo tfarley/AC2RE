@@ -5,24 +5,24 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Usage__UseBook;
 
         // WM_Usage::PostCEvt_Usage_UseBook
-        public DataId _didImage;
-        public bool _bShowControls;
-        public StringInfo _siBookSource;
+        public DataId imageDid; // _didImage
+        public bool showControls; // _bShowControls
+        public StringInfo bookText; // _siBookSource
 
         public UseBookCEvt() {
 
         }
 
         public UseBookCEvt(AC2Reader data) {
-            _didImage = data.UnpackDataId();
-            _bShowControls = data.UnpackBoolean();
-            _siBookSource = data.UnpackPackage<StringInfo>();
+            imageDid = data.UnpackDataId();
+            showControls = data.UnpackBoolean();
+            bookText = data.UnpackPackage<StringInfo>();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_didImage);
-            data.Pack(_bShowControls);
-            data.Pack(_siBookSource);
+            data.Pack(imageDid);
+            data.Pack(showControls);
+            data.Pack(bookText);
         }
     }
 }

@@ -61,21 +61,21 @@ namespace AC2E.Def {
 
         public NativeType nativeType => NativeType.GAMEPLAYOPTIONSPROFILE;
 
-        public ContentFlag contentFlags;
-        public Dictionary<string, string> m_aliasTable;
-        public List<ShortcutInfo> m_shortcutArray;
-        public uint m_whichShortcutSet;
-        public float m_fDamageTextRangeOther;
-        public UISaveLocations m_savedUILocations;
-        public uint m_radarMask;
-        public Dictionary<uint, uint> m_filterHash;
-        public Flag m_bitField;
-        public Version m_version;
-        public Dictionary<TextType, uint> m_chatFontColors;
-        public Dictionary<TextType, uint> m_chatFontSizes;
-        public Dictionary<uint, TextType> windowToChannel;
-        public Dictionary<TextType, bool> m_chatPopupFlags;
-        public Dictionary<uint, float> m_windowOpacities;
+        public ContentFlag contentFlags; // contentFlags
+        public Dictionary<string, string> aliasTable; // m_aliasTable
+        public List<ShortcutInfo> shortcutArray; // m_shortcutArray
+        public uint whichShortcutSet; // m_whichShortcutSet
+        public float damageTextRangeOther; // m_fDamageTextRangeOther
+        public UISaveLocations savedUILocations; // m_savedUILocations
+        public uint radarMask; // m_radarMask
+        public Dictionary<uint, uint> filterDict; // m_filterHash
+        public Flag bitfield; // m_bitField
+        public Version version; // m_version
+        public Dictionary<TextType, uint> chatFontColors; // m_chatFontColors
+        public Dictionary<TextType, uint> chatFontSizes; // m_chatFontSizes
+        public Dictionary<uint, TextType> windowToChannel; // windowToChannel
+        public Dictionary<TextType, bool> chatPopupFlags; // m_chatPopupFlags
+        public Dictionary<uint, float> windowOpacities; // m_windowOpacities
         public uint unk1;
 
         public GameplayOptionsProfile() {
@@ -85,94 +85,94 @@ namespace AC2E.Def {
         public GameplayOptionsProfile(AC2Reader data) {
             contentFlags = (ContentFlag)data.ReadUInt64();
             if (contentFlags.HasFlag(ContentFlag.ALIAS_TABLE)) {
-                m_aliasTable = data.ReadDictionary(() => data.ReadString(Encoding.Unicode), () => data.ReadString(Encoding.Unicode));
+                aliasTable = data.ReadDictionary(() => data.ReadString(Encoding.Unicode), () => data.ReadString(Encoding.Unicode));
             }
             if (contentFlags.HasFlag(ContentFlag.SHORTCUT_ARRAY)) {
-                m_shortcutArray = data.ReadList(() => new ShortcutInfo(data));
+                shortcutArray = data.ReadList(() => new ShortcutInfo(data));
             }
             if (contentFlags.HasFlag(ContentFlag.SHORTCUT_SET)) {
-                m_whichShortcutSet = data.ReadUInt32();
+                whichShortcutSet = data.ReadUInt32();
             }
             if (contentFlags.HasFlag(ContentFlag.UNK1)) {
                 unk1 = data.ReadUInt32();
             }
             if (contentFlags.HasFlag(ContentFlag.SHOW_RANGE_DAMAGE_OTHER)) {
-                m_fDamageTextRangeOther = data.ReadSingle();
+                damageTextRangeOther = data.ReadSingle();
             }
             if (contentFlags.HasFlag(ContentFlag.SAVED_UI_LOCATIONS)) {
-                m_savedUILocations = new UISaveLocations(data);
+                savedUILocations = new UISaveLocations(data);
             }
             if (contentFlags.HasFlag(ContentFlag.RADAR_MASK)) {
-                m_radarMask = data.ReadUInt32();
+                radarMask = data.ReadUInt32();
             }
             if (contentFlags.HasFlag(ContentFlag.FILTER_HASH)) {
-                m_filterHash = data.ReadDictionary(data.ReadUInt32, data.ReadUInt32);
+                filterDict = data.ReadDictionary(data.ReadUInt32, data.ReadUInt32);
             }
             if (contentFlags.HasFlag(ContentFlag.BIT_FIELD)) {
-                m_bitField = (Flag)data.ReadUInt32();
+                bitfield = (Flag)data.ReadUInt32();
             }
-            m_version = (Version)data.ReadUInt32();
+            version = (Version)data.ReadUInt32();
             if (contentFlags.HasFlag(ContentFlag.CHAT_FONT_COLORS)) {
-                m_chatFontColors = data.ReadDictionary(() => (TextType)data.ReadUInt32(), data.ReadUInt32);
+                chatFontColors = data.ReadDictionary(() => (TextType)data.ReadUInt32(), data.ReadUInt32);
             }
             if (contentFlags.HasFlag(ContentFlag.CHAT_FONT_SIZES)) {
-                m_chatFontSizes = data.ReadDictionary(() => (TextType)data.ReadUInt32(), data.ReadUInt32);
+                chatFontSizes = data.ReadDictionary(() => (TextType)data.ReadUInt32(), data.ReadUInt32);
             }
             if (contentFlags.HasFlag(ContentFlag.WINDOW_TO_CHANNEL)) {
                 windowToChannel = data.ReadDictionary(data.ReadUInt32, () => (TextType)data.ReadUInt32());
             }
             if (contentFlags.HasFlag(ContentFlag.CHAT_POPUP_FLAGS)) {
-                m_chatPopupFlags = data.ReadDictionary(() => (TextType)data.ReadUInt32(), data.ReadBoolean);
+                chatPopupFlags = data.ReadDictionary(() => (TextType)data.ReadUInt32(), data.ReadBoolean);
             }
             if (contentFlags.HasFlag(ContentFlag.WINDOW_OPACITIES)) {
-                m_windowOpacities = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
+                windowOpacities = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
             }
         }
 
         public void write(AC2Writer data) {
             data.Write((ulong)contentFlags);
             if (contentFlags.HasFlag(ContentFlag.ALIAS_TABLE)) {
-                data.Write(m_aliasTable, k => data.Write(k, Encoding.Unicode), v => data.Write(v, Encoding.Unicode));
+                data.Write(aliasTable, k => data.Write(k, Encoding.Unicode), v => data.Write(v, Encoding.Unicode));
             }
             if (contentFlags.HasFlag(ContentFlag.SHORTCUT_ARRAY)) {
-                data.Write(m_shortcutArray, v => v.write(data));
+                data.Write(shortcutArray, v => v.write(data));
             }
             if (contentFlags.HasFlag(ContentFlag.SHORTCUT_SET)) {
-                data.Write(m_whichShortcutSet);
+                data.Write(whichShortcutSet);
             }
             if (contentFlags.HasFlag(ContentFlag.UNK1)) {
                 data.Write(unk1);
             }
             if (contentFlags.HasFlag(ContentFlag.SHOW_RANGE_DAMAGE_OTHER)) {
-                data.Write(m_fDamageTextRangeOther);
+                data.Write(damageTextRangeOther);
             }
             if (contentFlags.HasFlag(ContentFlag.SAVED_UI_LOCATIONS)) {
-                m_savedUILocations.write(data);
+                savedUILocations.write(data);
             }
             if (contentFlags.HasFlag(ContentFlag.RADAR_MASK)) {
-                data.Write(m_radarMask);
+                data.Write(radarMask);
             }
             if (contentFlags.HasFlag(ContentFlag.FILTER_HASH)) {
-                data.Write(m_filterHash, data.Write, data.Write);
+                data.Write(filterDict, data.Write, data.Write);
             }
             if (contentFlags.HasFlag(ContentFlag.BIT_FIELD)) {
-                data.Write((uint)m_bitField);
+                data.Write((uint)bitfield);
             }
-            data.Write((uint)m_version);
+            data.Write((uint)version);
             if (contentFlags.HasFlag(ContentFlag.CHAT_FONT_COLORS)) {
-                data.Write(m_chatFontColors, k => data.Write((uint)k), data.Write);
+                data.Write(chatFontColors, k => data.Write((uint)k), data.Write);
             }
             if (contentFlags.HasFlag(ContentFlag.CHAT_FONT_SIZES)) {
-                data.Write(m_chatFontSizes, k => data.Write((uint)k), data.Write);
+                data.Write(chatFontSizes, k => data.Write((uint)k), data.Write);
             }
             if (contentFlags.HasFlag(ContentFlag.WINDOW_TO_CHANNEL)) {
                 data.Write(windowToChannel, data.Write, v => data.Write((uint)v));
             }
             if (contentFlags.HasFlag(ContentFlag.CHAT_POPUP_FLAGS)) {
-                data.Write(m_chatPopupFlags, k => data.Write((uint)k), data.Write);
+                data.Write(chatPopupFlags, k => data.Write((uint)k), data.Write);
             }
             if (contentFlags.HasFlag(ContentFlag.WINDOW_OPACITIES)) {
-                data.Write(m_windowOpacities, data.Write, data.Write);
+                data.Write(windowOpacities, data.Write, data.Write);
             }
         }
     }

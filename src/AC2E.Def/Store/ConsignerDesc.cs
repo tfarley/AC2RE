@@ -4,24 +4,24 @@
 
         public PackageType packageType => PackageType.ConsignerDesc;
 
-        public StringInfo m_siLocation;
-        public RList<Consignment> m_consignments;
-        public DataId m_didCatalog;
+        public StringInfo locationname; // m_siLocation
+        public RList<Consignment> consignments; // m_consignments
+        public DataId catalogDid; // m_didCatalog
 
         public ConsignerDesc() {
 
         }
 
         public ConsignerDesc(AC2Reader data) {
-            data.ReadPkg<StringInfo>(v => m_siLocation = v);
-            data.ReadPkg<RList<IPackage>>(v => m_consignments = v.to<Consignment>());
-            m_didCatalog = data.ReadDataId();
+            data.ReadPkg<StringInfo>(v => locationname = v);
+            data.ReadPkg<RList<IPackage>>(v => consignments = v.to<Consignment>());
+            catalogDid = data.ReadDataId();
         }
 
         public void write(AC2Writer data) {
-            data.WritePkg(m_siLocation);
-            data.WritePkg(m_consignments);
-            data.Write(m_didCatalog);
+            data.WritePkg(locationname);
+            data.WritePkg(consignments);
+            data.Write(catalogDid);
         }
     }
 }

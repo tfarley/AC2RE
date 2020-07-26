@@ -4,36 +4,36 @@
 
         public PackageType packageType => PackageType.Trade;
 
-        public InstanceIdAHash m_slave_table;
-        public InstanceId m_master;
-        public InstanceId m_slave;
-        public bool m_master_accepted;
-        public bool m_slave_accepted;
-        public uint m_status;
-        public InstanceIdAHash m_master_table;
+        public InstanceIdAHash slaveItemIdToAmount; // m_slave_table
+        public InstanceId masterId; // m_master
+        public InstanceId slaveId; // m_slave
+        public bool masterAccepted; // m_master_accepted
+        public bool slaveAcceptec; // m_slave_accepted
+        public uint status; // m_status
+        public InstanceIdAHash masterItemIdToAmount; // m_master_table
 
         public Trade() {
 
         }
 
         public Trade(AC2Reader data) {
-            data.ReadPkg<LAHash>(v => m_slave_table = new InstanceIdAHash(v));
-            m_master = data.ReadInstanceId();
-            m_slave = data.ReadInstanceId();
-            m_master_accepted = data.ReadBoolean();
-            m_slave_accepted = data.ReadBoolean();
-            m_status = data.ReadUInt32();
-            data.ReadPkg<LAHash>(v => m_master_table = new InstanceIdAHash(v));
+            data.ReadPkg<LAHash>(v => slaveItemIdToAmount = new InstanceIdAHash(v));
+            masterId = data.ReadInstanceId();
+            slaveId = data.ReadInstanceId();
+            masterAccepted = data.ReadBoolean();
+            slaveAcceptec = data.ReadBoolean();
+            status = data.ReadUInt32();
+            data.ReadPkg<LAHash>(v => masterItemIdToAmount = new InstanceIdAHash(v));
         }
 
         public void write(AC2Writer data) {
-            data.WritePkg(m_slave_table);
-            data.Write(m_master);
-            data.Write(m_slave);
-            data.Write(m_master_accepted);
-            data.Write(m_slave_accepted);
-            data.Write(m_status);
-            data.WritePkg(m_master_table);
+            data.WritePkg(slaveItemIdToAmount);
+            data.Write(masterId);
+            data.Write(slaveId);
+            data.Write(masterAccepted);
+            data.Write(slaveAcceptec);
+            data.Write(status);
+            data.WritePkg(masterItemIdToAmount);
         }
     }
 }

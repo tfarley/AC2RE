@@ -4,48 +4,48 @@
 
         public PackageType packageType => PackageType.SkillInfo;
 
-        public double m_timeLastUsed;
-        public uint m_levelCached;
-        public double m_timeCached;
-        public ulong m_nXPAllocated;
-        public uint m_mask;
-        public double m_timeGranted;
-        public uint m_nTrainedChildren;
-        public uint m_nTrainedDependents;
-        public uint m_nCostWhenLearned;
-        public uint m_nSkillOverride;
-        public uint m_typeSkill;
+        public double timeLastUsed; // m_timeLastUsed
+        public uint levelCached; // m_levelCached
+        public double timeCached; // m_timeCached
+        public ulong xpAllocated; // m_nXPAllocated
+        public uint mask; // m_mask
+        public double timeGranted; // m_timeGranted
+        public uint trainedChildren; // m_nTrainedChildren
+        public uint trainedDependents; // m_nTrainedDependents
+        public uint costWhenLearned; // m_nCostWhenLearned
+        public uint skillOverride; // m_nSkillOverride
+        public uint typeSkill; // m_typeSkill
 
         public SkillInfo() {
 
         }
 
         public SkillInfo(AC2Reader data) {
-            m_timeLastUsed = data.ReadDouble();
-            m_levelCached = data.ReadUInt32();
-            m_timeCached = data.ReadDouble();
-            m_nXPAllocated = data.ReadUInt64();
-            m_mask = data.ReadUInt32();
-            m_timeGranted = data.ReadDouble();
-            m_nTrainedChildren = data.ReadUInt32();
-            m_nTrainedDependents = data.ReadUInt32();
-            m_nCostWhenLearned = data.ReadUInt32();
-            m_nSkillOverride = data.ReadUInt32();
-            m_typeSkill = data.ReadUInt32();
+            timeLastUsed = data.ReadDouble();
+            levelCached = data.ReadUInt32();
+            timeCached = data.ReadDouble();
+            xpAllocated = data.ReadUInt64();
+            mask = data.ReadUInt32();
+            timeGranted = data.ReadDouble();
+            trainedChildren = data.ReadUInt32();
+            trainedDependents = data.ReadUInt32();
+            costWhenLearned = data.ReadUInt32();
+            skillOverride = data.ReadUInt32();
+            typeSkill = data.ReadUInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Write(m_timeLastUsed);
-            data.Write(m_levelCached);
-            data.Write(m_timeCached);
-            data.Write(m_nXPAllocated);
-            data.Write(m_mask);
-            data.Write(m_timeGranted);
-            data.Write(m_nTrainedChildren);
-            data.Write(m_nTrainedDependents);
-            data.Write(m_nCostWhenLearned);
-            data.Write(m_nSkillOverride);
-            data.Write(m_typeSkill);
+            data.Write(timeLastUsed);
+            data.Write(levelCached);
+            data.Write(timeCached);
+            data.Write(xpAllocated);
+            data.Write(mask);
+            data.Write(timeGranted);
+            data.Write(trainedChildren);
+            data.Write(trainedDependents);
+            data.Write(costWhenLearned);
+            data.Write(skillOverride);
+            data.Write(typeSkill);
         }
     }
 }

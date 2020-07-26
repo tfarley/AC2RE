@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Player__RequestPetDie;
 
         // WM_Player::SendSEvt_RequestPetDie
-        public InstanceId _iidPet;
+        public InstanceId petId; // _iidPet
 
         public RequestPetDieSEvt(AC2Reader data) {
-            _iidPet = data.UnpackInstanceId();
+            petId = data.UnpackInstanceId();
         }
     }
 }

@@ -5,21 +5,21 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Communication__CBroadcastStringInfoLocal;
 
         // WM_Communication::PostCEvt_CBroadcastStringInfoLocal
-        public StringInfo _msg;
-        public TextType _type;
+        public StringInfo text; // _msg
+        public TextType type; // _type
 
         public CBroadcastStringInfoLocalCEvt() {
 
         }
 
         public CBroadcastStringInfoLocalCEvt(AC2Reader data) {
-            _msg = data.UnpackPackage<StringInfo>();
-            _type = (TextType)data.UnpackUInt32();
+            text = data.UnpackPackage<StringInfo>();
+            type = (TextType)data.UnpackUInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_msg);
-            data.Pack((uint)_type);
+            data.Pack(text);
+            data.Pack((uint)type);
         }
     }
 }

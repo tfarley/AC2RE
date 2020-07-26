@@ -7,27 +7,27 @@
         public MessageOpcode opcode => MessageOpcode.Evt_Physics__CreateObject_ID;
 
         // CM_Physics::RecvEvt_CreateObject
-        public InstanceId objectId; // objectID
-        public VisualDesc vDesc; // _vdesc
-        public PhysicsDesc pDesc; // _pdesc
-        public WeenieDesc wDesc; // _wdesc
+        public InstanceId id; // objectID
+        public VisualDesc visualDesc; // _vdesc
+        public PhysicsDesc physicsDesc; // _pdesc
+        public WeenieDesc weenieDesc; // _wdesc
 
         public CreateObjectMsg() {
 
         }
 
         public CreateObjectMsg(AC2Reader data) {
-            objectId = data.ReadInstanceId();
-            vDesc = new VisualDesc(data);
-            pDesc = new PhysicsDesc(data);
-            wDesc = new WeenieDesc(data);
+            id = data.ReadInstanceId();
+            visualDesc = new VisualDesc(data);
+            physicsDesc = new PhysicsDesc(data);
+            weenieDesc = new WeenieDesc(data);
         }
 
         public void write(AC2Writer data) {
-            data.Write(objectId);
-            vDesc.write(data);
-            pDesc.write(data);
-            wDesc.write(data);
+            data.Write(id);
+            visualDesc.write(data);
+            physicsDesc.write(data);
+            weenieDesc.write(data);
         }
     }
 }

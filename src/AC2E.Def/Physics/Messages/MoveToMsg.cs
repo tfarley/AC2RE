@@ -8,12 +8,12 @@
 
         // ECM_Physics::RecvEvt_MoveTo
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public MovementParameters movementParameters; // _params
+        public MovementParameters movementParams; // _params
         public ushort movetoStamp; // _moveto_stamp
 
         public MoveToMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            movementParameters = new MovementParameters(data);
+            movementParams = new MovementParameters(data);
             movetoStamp = data.ReadUInt16();
             data.Align(4);
         }

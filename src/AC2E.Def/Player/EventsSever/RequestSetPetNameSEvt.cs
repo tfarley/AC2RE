@@ -5,12 +5,12 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Player__RequestSetPetName;
 
         // WM_Player::SendSEvt_RequestSetPetName
-        public WPString _sPetName;
-        public InstanceId _iidPet;
+        public WPString petName; // _sPetName
+        public InstanceId petId; // _iidPet
 
         public RequestSetPetNameSEvt(AC2Reader data) {
-            _sPetName = data.UnpackPackage<WPString>();
-            _iidPet = data.UnpackInstanceId();
+            petName = data.UnpackPackage<WPString>();
+            petId = data.UnpackInstanceId();
         }
     }
 }

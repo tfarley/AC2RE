@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Combat__SetNextTarget;
 
         // WM_Combat::SendSEvt_SetNextTarget
-        public InstanceId _target;
+        public InstanceId targetId; // _target
 
         public SetNextTargetSEvt(AC2Reader data) {
-            _target = data.UnpackInstanceId();
+            targetId = data.UnpackInstanceId();
         }
     }
 }

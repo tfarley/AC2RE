@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Skill__RequestRaiseSkill;
 
         // WM_Skill::SendSEvt_RequestRaiseSkill
-        public uint _skillType;
+        public uint skillType; // _skillType
 
         public RequestRaiseSkillSEvt(AC2Reader data) {
-            _skillType = data.UnpackUInt32();
+            skillType = data.UnpackUInt32();
         }
     }
 }

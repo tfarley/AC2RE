@@ -7,10 +7,10 @@
         public MessageOpcode opcode => MessageOpcode.Evt_Physics__CForceCreate_ID;
 
         // ECM_Physics::SendEvt_CForceCreate
-        public InstanceId objectId; // _object_id
+        public InstanceId id; // _object_id
 
         public CForceCreateMsg(AC2Reader data) {
-            objectId = data.ReadInstanceId();
+            id = data.ReadInstanceId();
         }
     }
 }

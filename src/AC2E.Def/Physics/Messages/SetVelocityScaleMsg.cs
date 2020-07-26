@@ -8,11 +8,11 @@
 
         // ECM_Physics::RecvEvt_SetVelocityScale
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public float value; // _value
+        public float velScale; // _value
 
         public SetVelocityScaleMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            value = data.ReadSingle();
+            velScale = data.ReadSingle();
         }
     }
 }

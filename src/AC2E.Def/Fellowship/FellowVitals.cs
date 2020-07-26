@@ -4,36 +4,36 @@
 
         public PackageType packageType => PackageType.FellowVitals;
 
-        public uint m_max_health;
-        public CellId m_cell;
-        public uint m_health;
-        public uint m_PKDamage;
-        public uint m_max_vigor;
-        public uint m_vigor;
-        public uint m_PKVigorloss;
+        public uint maxHealth; // m_max_health
+        public CellId cell; // m_cell
+        public uint health; // m_health
+        public uint pkDamage; // m_PKDamage
+        public uint maxVigor; // m_max_vigor
+        public uint vigor; // m_vigor
+        public uint pkVigorloss; // m_PKVigorloss
 
         public FellowVitals() {
 
         }
 
         public FellowVitals(AC2Reader data) {
-            m_max_health = data.ReadUInt32();
-            m_cell = data.ReadCellId();
-            m_health = data.ReadUInt32();
-            m_PKDamage = data.ReadUInt32();
-            m_max_vigor = data.ReadUInt32();
-            m_vigor = data.ReadUInt32();
-            m_PKVigorloss = data.ReadUInt32();
+            maxHealth = data.ReadUInt32();
+            cell = data.ReadCellId();
+            health = data.ReadUInt32();
+            pkDamage = data.ReadUInt32();
+            maxVigor = data.ReadUInt32();
+            vigor = data.ReadUInt32();
+            pkVigorloss = data.ReadUInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Write(m_max_health);
-            data.Write(m_cell);
-            data.Write(m_health);
-            data.Write(m_PKDamage);
-            data.Write(m_max_vigor);
-            data.Write(m_vigor);
-            data.Write(m_PKVigorloss);
+            data.Write(maxHealth);
+            data.Write(cell);
+            data.Write(health);
+            data.Write(pkDamage);
+            data.Write(maxVigor);
+            data.Write(vigor);
+            data.Write(pkVigorloss);
         }
     }
 }

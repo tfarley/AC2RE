@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Player__Follow;
 
         // WM_Player::SendSEvt_Follow
-        public InstanceId _target;
+        public InstanceId targetId; // _target
 
         public FollowSEvt(AC2Reader data) {
-            _target = data.UnpackInstanceId();
+            targetId = data.UnpackInstanceId();
         }
     }
 }

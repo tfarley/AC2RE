@@ -5,14 +5,14 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Fellowship__CreateFellowship;
 
         // WM_Fellowship::SendSEvt_CreateFellowship
-        public uint _lootingMethod;
-        public bool _social;
-        public WPString _name;
+        public uint lootingMethod; // _lootingMethod
+        public bool social; // _social
+        public WPString name; // _name
 
         public CreateFellowshipSEvt(AC2Reader data) {
-            _lootingMethod = data.UnpackUInt32();
-            _social = data.UnpackBoolean();
-            _name = data.UnpackPackage<WPString>();
+            lootingMethod = data.UnpackUInt32();
+            social = data.UnpackBoolean();
+            name = data.UnpackPackage<WPString>();
         }
     }
 }

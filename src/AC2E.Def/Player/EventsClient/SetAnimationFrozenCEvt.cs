@@ -5,18 +5,18 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Player__SetAnimationFrozen;
 
         // WM_Player::PostCEvt_SetAnimationFrozen
-        public bool _bFrozen;
+        public bool frozen; // _bFrozen
 
         public SetAnimationFrozenCEvt() {
 
         }
 
         public SetAnimationFrozenCEvt(AC2Reader data) {
-            _bFrozen = data.UnpackBoolean();
+            frozen = data.UnpackBoolean();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_bFrozen);
+            data.Pack(frozen);
         }
     }
 }

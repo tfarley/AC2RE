@@ -5,21 +5,21 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.AI__UpdatePetMode;
 
         // WM_AI::PostCEvt_AI_UpdatePetMode
-        public uint _mode;
-        public InstanceId _iidPet;
+        public uint mode; // _mode
+        public InstanceId petId; // _iidPet
 
         public UpdatePetModeCEvt() {
 
         }
 
         public UpdatePetModeCEvt(AC2Reader data) {
-            _mode = data.UnpackUInt32();
-            _iidPet = data.UnpackInstanceId();
+            mode = data.UnpackUInt32();
+            petId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_mode);
-            data.Pack(_iidPet);
+            data.Pack(mode);
+            data.Pack(petId);
         }
     }
 }

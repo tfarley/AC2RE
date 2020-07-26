@@ -5,18 +5,18 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Fellowship__ClearFellow;
 
         // WM_Fellowship::PostCEvt_ClearFellow
-        public InstanceId _fid;
+        public InstanceId fellowId; // _fid
 
         public ClearFellowCEvt() {
 
         }
 
         public ClearFellowCEvt(AC2Reader data) {
-            _fid = data.UnpackInstanceId();
+            fellowId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_fid);
+            data.Pack(fellowId);
         }
     }
 }

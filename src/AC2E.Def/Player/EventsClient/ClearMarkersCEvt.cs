@@ -5,7 +5,7 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Player__ClearMarkers;
 
         // WM_Player::RecvCEvt_ClearMarkers
-        public uint type;
+        public uint type; // type
 
         public ClearMarkersCEvt() {
 

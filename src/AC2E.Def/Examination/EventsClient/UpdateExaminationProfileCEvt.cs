@@ -5,18 +5,18 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Examination__UpdateExaminationProfile;
 
         // WM_Examination::PostCEvt_UpdateExaminationProfile
-        public ExaminationProfile _examineProf;
+        public ExaminationProfile profile; // _examineProf
 
         public UpdateExaminationProfileCEvt() {
 
         }
 
         public UpdateExaminationProfileCEvt(AC2Reader data) {
-            _examineProf = data.UnpackPackage<ExaminationProfile>();
+            profile = data.UnpackPackage<ExaminationProfile>();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_examineProf);
+            data.Pack(profile);
         }
     }
 }

@@ -5,18 +5,18 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Player__ForceExamineItem;
 
         // WM_Player::PostCEvt_ForceExamineItem
-        public InstanceId _targetID;
+        public InstanceId targetId; // _targetID
 
         public ForceExamineItemCEvt() {
 
         }
 
         public ForceExamineItemCEvt(AC2Reader data) {
-            _targetID = data.UnpackInstanceId();
+            targetId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_targetID);
+            data.Pack(targetId);
         }
     }
 }

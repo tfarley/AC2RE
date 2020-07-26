@@ -5,18 +5,18 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Craft__AddRecipe_Done;
 
         // CPlayer::RecvCEvt_AddRecipe_Done
-        public DataId didRecipe;
+        public DataId recipeDid; // didRecipe
 
         public AddRecipeDoneCEvt() {
 
         }
 
         public AddRecipeDoneCEvt(AC2Reader data) {
-            didRecipe = data.UnpackDataId();
+            recipeDid = data.UnpackDataId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(didRecipe);
+            data.Pack(recipeDid);
         }
     }
 }

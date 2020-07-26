@@ -8,11 +8,11 @@
 
         // ECM_Physics::RecvEvt_UpdateVisualDesc
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public VisualDesc vDesc; // _vdesc
+        public VisualDesc visualDesc; // _vdesc
 
         public UpdateVisualDescMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            vDesc = new VisualDesc(data);
+            visualDesc = new VisualDesc(data);
         }
     }
 }

@@ -5,18 +5,18 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Allegiance__UpdateAllegianceChatDone;
 
         // WM_Allegiance::PostCEvt_UpdateAllegianceChatDone
-        public uint _roomID;
+        public uint roomId; // _roomID
 
         public UpdateAllegianceChatDoneCEvt() {
 
         }
 
         public UpdateAllegianceChatDoneCEvt(AC2Reader data) {
-            _roomID = data.UnpackUInt32();
+            roomId = data.UnpackUInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_roomID);
+            data.Pack(roomId);
         }
     }
 }

@@ -47,7 +47,7 @@ namespace AC2E.Def {
         public InstanceId targetId; // mTargetID
         public InstanceId cameraTargetId; // mCameraTargetID
         public uint cameraBehavior; // mCameraBehavior
-        public uint vDescToClone; // mVDescToClone
+        public uint visualDescToClone; // mVDescToClone
         public uint clonedAprId; // m_clonedAprID
         public Dictionary<uint, float> clonedAppAprHash; // m_clonedAppAprHash
         public Vector impulse; // mImpulse
@@ -94,7 +94,7 @@ namespace AC2E.Def {
                 cameraBehavior = data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.VDESC)) {
-                vDescToClone = data.ReadUInt32();
+                visualDescToClone = data.ReadUInt32();
                 clonedAprId = data.ReadUInt32();
                 clonedAppAprHash = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
             }
@@ -173,7 +173,7 @@ namespace AC2E.Def {
                 data.Write(cameraBehavior);
             }
             if (packFlags.HasFlag(PackFlag.VDESC)) {
-                data.Write(vDescToClone);
+                data.Write(visualDescToClone);
                 data.Write(clonedAprId);
                 data.Write(clonedAppAprHash, data.Write, data.Write);
             }

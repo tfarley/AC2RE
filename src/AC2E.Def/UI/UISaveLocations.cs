@@ -6,30 +6,30 @@ namespace AC2E.Def {
 
         public class UILocationData {
 
-            public float m_x0;
-            public float m_y0;
-            public float m_x1;
-            public float m_y1;
-            public bool m_shown;
+            public float x0; // m_x0
+            public float y0; // m_y0
+            public float x1; // m_x1
+            public float y1; // m_y1
+            public bool shown; // m_shown
 
             public UILocationData() {
 
             }
 
             public UILocationData(AC2Reader data) {
-                m_x0 = data.ReadSingle();
-                m_y0 = data.ReadSingle();
-                m_x1 = data.ReadSingle();
-                m_y1 = data.ReadSingle();
-                m_shown = data.ReadBoolean();
+                x0 = data.ReadSingle();
+                y0 = data.ReadSingle();
+                x1 = data.ReadSingle();
+                y1 = data.ReadSingle();
+                shown = data.ReadBoolean();
             }
 
             public void write(AC2Writer data) {
-                data.Write(m_x0);
-                data.Write(m_y0);
-                data.Write(m_x1);
-                data.Write(m_y1);
-                data.Write(m_shown);
+                data.Write(x0);
+                data.Write(y0);
+                data.Write(x1);
+                data.Write(y1);
+                data.Write(shown);
             }
         }
 

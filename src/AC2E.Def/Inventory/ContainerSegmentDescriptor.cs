@@ -4,21 +4,21 @@
 
         public PackageType packageType => PackageType.ContainerSegmentDescriptor;
 
-        public uint mSegmentMaxSize;
-        public uint mSegmentSize;
+        public uint segmentMaxSize; // mSegmentMaxSize
+        public uint segmentSize; // mSegmentSize
 
         public ContainerSegmentDescriptor() {
 
         }
 
         public ContainerSegmentDescriptor(AC2Reader data) {
-            mSegmentMaxSize = data.ReadUInt32();
-            mSegmentSize = data.ReadUInt32();
+            segmentMaxSize = data.ReadUInt32();
+            segmentSize = data.ReadUInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Write(mSegmentMaxSize);
-            data.Write(mSegmentSize);
+            data.Write(segmentMaxSize);
+            data.Write(segmentSize);
         }
     }
 }

@@ -4,48 +4,48 @@
 
         public PackageType packageType => PackageType.AllegianceData;
 
-        public ulong m_xp_passed;
-        public SpeciesType m_species;
-        public uint m_level;
-        public WPString m_userDefinedTitle;
-        public SexType m_sex;
-        public ulong m_xp_pooled;
-        public bool m_fIsOfficer;
-        public InstanceId m_id;
-        public uint m_rank;
-        public uint m_factionType;
-        public StringInfo m_name;
+        public ulong xpPassed; // m_xp_passed
+        public SpeciesType species; // m_species
+        public uint level; // m_level
+        public WPString userDefinedTitle; // m_userDefinedTitle
+        public SexType sex; // m_sex
+        public ulong xpPooled; // m_xp_pooled
+        public bool isOfficer; // m_fIsOfficer
+        public InstanceId id; // m_id
+        public uint rank; // m_rank
+        public uint factionType; // m_factionType
+        public StringInfo name; // m_name
 
         public AllegianceData() {
 
         }
 
         public AllegianceData(AC2Reader data) {
-            m_xp_passed = data.ReadUInt64();
-            m_species = (SpeciesType)data.ReadUInt32();
-            m_level = data.ReadUInt32();
-            data.ReadPkg<WPString>(v => m_userDefinedTitle = v);
-            m_sex = (SexType)data.ReadUInt32();
-            m_xp_pooled = data.ReadUInt64();
-            m_fIsOfficer = data.ReadBoolean();
-            m_id = data.ReadInstanceId();
-            m_rank = data.ReadUInt32();
-            m_factionType = data.ReadUInt32();
-            data.ReadPkg<StringInfo>(v => m_name = v);
+            xpPassed = data.ReadUInt64();
+            species = (SpeciesType)data.ReadUInt32();
+            level = data.ReadUInt32();
+            data.ReadPkg<WPString>(v => userDefinedTitle = v);
+            sex = (SexType)data.ReadUInt32();
+            xpPooled = data.ReadUInt64();
+            isOfficer = data.ReadBoolean();
+            id = data.ReadInstanceId();
+            rank = data.ReadUInt32();
+            factionType = data.ReadUInt32();
+            data.ReadPkg<StringInfo>(v => name = v);
         }
 
         public void write(AC2Writer data) {
-            data.Write(m_xp_passed);
-            data.Write((uint)m_species);
-            data.Write(m_level);
-            data.WritePkg(m_userDefinedTitle);
-            data.Write((uint)m_sex);
-            data.Write(m_xp_pooled);
-            data.Write(m_fIsOfficer);
-            data.Write(m_id);
-            data.Write(m_rank);
-            data.Write(m_factionType);
-            data.WritePkg(m_name);
+            data.Write(xpPassed);
+            data.Write((uint)species);
+            data.Write(level);
+            data.WritePkg(userDefinedTitle);
+            data.Write((uint)sex);
+            data.Write(xpPooled);
+            data.Write(isOfficer);
+            data.Write(id);
+            data.Write(rank);
+            data.Write(factionType);
+            data.WritePkg(name);
         }
     }
 }

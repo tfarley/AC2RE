@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Combat__StopAttacking;
 
         // WM_Combat::SendSEvt_StopAttacking
-        public InstanceId _target;
+        public InstanceId targetId; // _target
 
         public StopAttackingSEvt(AC2Reader data) {
-            _target = data.UnpackInstanceId();
+            targetId = data.UnpackInstanceId();
         }
     }
 }

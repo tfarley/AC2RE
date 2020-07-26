@@ -4,22 +4,22 @@
 
         public override PackageType packageType => PackageType.GameSaleProfile;
 
-        public uint m_uiOrdinal;
-        public bool m_bRestricted;
+        public uint ordinal; // m_uiOrdinal
+        public bool restricted; // m_bRestricted
 
         public GameSaleProfile() {
 
         }
 
         public GameSaleProfile(AC2Reader data) : base(data) {
-            m_uiOrdinal = data.ReadUInt32();
-            m_bRestricted = data.ReadBoolean();
+            ordinal = data.ReadUInt32();
+            restricted = data.ReadBoolean();
         }
 
         public override void write(AC2Writer data) {
             base.write(data);
-            data.Write(m_uiOrdinal);
-            data.Write(m_bRestricted);
+            data.Write(ordinal);
+            data.Write(restricted);
         }
     }
 }

@@ -5,21 +5,21 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Player__ExitPortalScene;
 
         // WM_Player::PostCEvt_ExitPortalScene
-        public GMSceneInfoList _scenes;
-        public double _delay;
+        public GMSceneInfoList scenes; // _scenes
+        public double delay; // _delay
 
         public ExitPortalSceneCEvt() {
 
         }
 
         public ExitPortalSceneCEvt(AC2Reader data) {
-            _scenes = data.UnpackPackage<GMSceneInfoList>();
-            _delay = data.UnpackDouble();
+            scenes = data.UnpackPackage<GMSceneInfoList>();
+            delay = data.UnpackDouble();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_scenes);
-            data.Pack(_delay);
+            data.Pack(scenes);
+            data.Pack(delay);
         }
     }
 }

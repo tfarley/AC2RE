@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Inventory__DirectiveMoveItem;
 
         // WM_Inventory::SendSEvt_DirectiveMoveItem
-        public InvMoveDesc _iDesc;
+        public InvMoveDesc moveDesc; // _iDesc
 
         public DirectiveMoveItemSEvt(AC2Reader data) {
-            _iDesc = data.UnpackPackage<InvMoveDesc>();
+            moveDesc = data.UnpackPackage<InvMoveDesc>();
         }
     }
 }

@@ -5,18 +5,18 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Inventory__DiscreteDestroyContainedItem;
 
         // WM_Inventory::PostCEvt_DiscreteDestroyContainedItem
-        public InstanceId _itemID;
+        public InstanceId itemId; // _itemID
 
         public DiscreteDestroyContainedItemCEvt() {
 
         }
 
         public DiscreteDestroyContainedItemCEvt(AC2Reader data) {
-            _itemID = data.UnpackInstanceId();
+            itemId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_itemID);
+            data.Pack(itemId);
         }
     }
 }

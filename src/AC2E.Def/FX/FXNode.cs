@@ -87,7 +87,7 @@ namespace AC2E.Def {
         public bool waterPlane; // m_water_plane
         public bool fireAndForget; // m_fire_and_forget
         public bool removeRotation; // m_remove_rotation
-        public DataId vDescDid; // m_vdesc_id
+        public DataId visualDescDid; // m_vdesc_id
         public float lifetime; // m_lifetime
         public DataId behaviorDid; // m_behavior
         public bool parent; // m_parent
@@ -161,7 +161,7 @@ namespace AC2E.Def {
                 propagateColor = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.VDESC_ID)) {
-                vDescDid = data.ReadDataId();
+                visualDescDid = data.ReadDataId();
             }
             if (packFlags.HasFlag(PackFlag.LIFE_TIME)) {
                 lifetime = data.ReadSingle();
@@ -290,7 +290,7 @@ namespace AC2E.Def {
                 data.Write(propagateColor);
             }
             if (packFlags.HasFlag(PackFlag.VDESC_ID)) {
-                data.Write(vDescDid);
+                data.Write(visualDescDid);
             }
             if (packFlags.HasFlag(PackFlag.LIFE_TIME)) {
                 data.Write(lifetime);

@@ -7,11 +7,11 @@ namespace AC2E.Def {
 
         public NativeType nativeType => NativeType.SHORTCUTINFO;
 
-        public ShortcutType _type;
-        public string _data_str;
-        public InstanceId _data_iid;
-        public uint _data_enum;
-        public DataId _data_dataid;
+        public ShortcutType type; // _type
+        public string dataStr; // _data_str
+        public InstanceId dataId; // _data_iid
+        public uint dataEnum; // _data_enum
+        public DataId dataDid; // _data_dataid
 
         public ShortcutInfo() {
 
@@ -19,45 +19,45 @@ namespace AC2E.Def {
 
         public ShortcutInfo(AC2Reader data) {
             // TODO: Guessing on the types here
-            _type = (ShortcutType)data.ReadUInt32();
-            switch (_type) {
+            type = (ShortcutType)data.ReadUInt32();
+            switch (type) {
                 case ShortcutType.UNDEF:
                     break;
                 case ShortcutType.SKILL:
                 case ShortcutType.RECIPE:
                 case ShortcutType.NEW_RECIPE:
-                    _data_dataid = data.ReadDataId();
+                    dataDid = data.ReadDataId();
                     break;
                 case ShortcutType.ITEM:
-                    _data_iid = data.ReadInstanceId();
+                    dataId = data.ReadInstanceId();
                     break;
                 case ShortcutType.ALIAS:
-                    _data_str = data.ReadString(Encoding.Unicode);
+                    dataStr = data.ReadString(Encoding.Unicode);
                     break;
                 default:
-                    throw new InvalidDataException(_type.ToString());
+                    throw new InvalidDataException(type.ToString());
             }
         }
 
         public void write(AC2Writer data) {
             // TODO: Guessing on the types here
-            data.Write((uint)_type);
-            switch (_type) {
+            data.Write((uint)type);
+            switch (type) {
                 case ShortcutType.UNDEF:
                     break;
                 case ShortcutType.SKILL:
                 case ShortcutType.RECIPE:
                 case ShortcutType.NEW_RECIPE:
-                    data.Write(_data_dataid);
+                    data.Write(dataDid);
                     break;
                 case ShortcutType.ITEM:
-                    data.Write(_data_iid);
+                    data.Write(dataId);
                     break;
                 case ShortcutType.ALIAS:
-                    data.Write(_data_str, Encoding.Unicode);
+                    data.Write(dataStr, Encoding.Unicode);
                     break;
                 default:
-                    throw new InvalidDataException(_type.ToString());
+                    throw new InvalidDataException(type.ToString());
             }
         }
     }

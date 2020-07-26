@@ -5,16 +5,16 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Money__DragToMoneyBag;
 
         // WM_Money::SendSEvt_DragToMoneyBag
-        public InstanceId _iidFromContainer;
-        public uint _fromSlot;
-        public uint _quantity;
-        public InstanceId _iidItem;
+        public InstanceId fromContainerId; // _iidFromContainer
+        public uint fromSlot; // _fromSlot
+        public uint quantity; // _quantity
+        public InstanceId itemId; // _iidItem
 
         public DragToMoneyBagSEvt(AC2Reader data) {
-            _iidFromContainer = data.UnpackInstanceId();
-            _fromSlot = data.UnpackUInt32();
-            _quantity = data.UnpackUInt32();
-            _iidItem = data.UnpackInstanceId();
+            fromContainerId = data.UnpackInstanceId();
+            fromSlot = data.UnpackUInt32();
+            quantity = data.UnpackUInt32();
+            itemId = data.UnpackInstanceId();
         }
     }
 }

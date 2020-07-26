@@ -5,30 +5,30 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Craft__AddIngredient_Done;
 
         // WM_Craft::PostCEvt_AddIngredient_Done
-        public uint _err;
-        public uint _uiSpinnerVal;
-        public InstanceId _iidIngredient;
-        public uint _uiOrdinal;
-        public DataId _didRecipe;
+        public uint error; // _err
+        public uint spinnerVal; // _uiSpinnerVal
+        public InstanceId ingredientId; // _iidIngredient
+        public uint ordinal; // _uiOrdinal
+        public DataId recipeDid; // _didRecipe
 
         public AddIngredientDoneCEvt() {
 
         }
 
         public AddIngredientDoneCEvt(AC2Reader data) {
-            _err = data.UnpackUInt32();
-            _uiSpinnerVal = data.UnpackUInt32();
-            _iidIngredient = data.UnpackInstanceId();
-            _uiOrdinal = data.UnpackUInt32();
-            _didRecipe = data.UnpackDataId();
+            error = data.UnpackUInt32();
+            spinnerVal = data.UnpackUInt32();
+            ingredientId = data.UnpackInstanceId();
+            ordinal = data.UnpackUInt32();
+            recipeDid = data.UnpackDataId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(_err);
-            data.Pack(_uiSpinnerVal);
-            data.Pack(_iidIngredient);
-            data.Pack(_uiOrdinal);
-            data.Pack(_didRecipe);
+            data.Pack(error);
+            data.Pack(spinnerVal);
+            data.Pack(ingredientId);
+            data.Pack(ordinal);
+            data.Pack(recipeDid);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace AC2E.Def {
         public InstanceId id; // id_
         public string name; // name_
         public uint secondsGreyedOut; // secondsGreyedOut_
-        public VisualDesc vDesc; // vDesc_
+        public VisualDesc visualDesc; // vDesc_
 
         public CharacterIdentity() {
 
@@ -17,14 +17,14 @@ namespace AC2E.Def {
             id = data.ReadInstanceId();
             name = data.ReadString(Encoding.Unicode);
             secondsGreyedOut = data.ReadUInt32();
-            vDesc = new VisualDesc(data);
+            visualDesc = new VisualDesc(data);
         }
 
         public void write(AC2Writer data) {
             data.Write(id);
             data.Write(name, Encoding.Unicode);
             data.Write(secondsGreyedOut);
-            vDesc.write(data);
+            visualDesc.write(data);
         }
     }
 }

@@ -4,33 +4,33 @@
 
         public PackageType packageType => PackageType.CraftRegistry;
 
-        public ARHash<RecipeRecord> m_recipeRecords;
-        public float m_CraftSkillScore;
-        public uint m_CraftSkillTitle; // TODO: CraftSkillTitleType
-        public double m_usageResetTime;
-        public ARHash<CraftSkillRecord> m_hashCraftSkillRecords;
-        public ARHash<RecipeRecord> m_hashRecipeRecords;
+        public ARHash<RecipeRecord> recipeRecords; // m_recipeRecords
+        public float craftSkillScore; // m_CraftSkillScore
+        public uint craftSkillTitle; // m_CraftSkillTitle // TODO: CraftSkillTitleType
+        public double usageResetTime; // m_usageResetTime
+        public ARHash<CraftSkillRecord> craftSkillRecordsDict; // m_hashCraftSkillRecords
+        public ARHash<RecipeRecord> recipeRecordsDict; // m_hashRecipeRecords
 
         public CraftRegistry() {
 
         }
 
         public CraftRegistry(AC2Reader data) {
-            data.ReadPkg<ARHash<IPackage>>(v => m_recipeRecords = v.to<RecipeRecord>());
-            m_CraftSkillScore = data.ReadSingle();
-            m_CraftSkillTitle = data.ReadUInt32();
-            m_usageResetTime = data.ReadDouble();
-            data.ReadPkg<ARHash<IPackage>>(v => m_hashCraftSkillRecords = v.to<CraftSkillRecord>());
-            data.ReadPkg<ARHash<IPackage>>(v => m_hashRecipeRecords = v.to<RecipeRecord>());
+            data.ReadPkg<ARHash<IPackage>>(v => recipeRecords = v.to<RecipeRecord>());
+            craftSkillScore = data.ReadSingle();
+            craftSkillTitle = data.ReadUInt32();
+            usageResetTime = data.ReadDouble();
+            data.ReadPkg<ARHash<IPackage>>(v => craftSkillRecordsDict = v.to<CraftSkillRecord>());
+            data.ReadPkg<ARHash<IPackage>>(v => recipeRecordsDict = v.to<RecipeRecord>());
         }
 
         public void write(AC2Writer data) {
-            data.WritePkg(m_recipeRecords);
-            data.Write(m_CraftSkillScore);
-            data.Write(m_CraftSkillTitle);
-            data.Write(m_usageResetTime);
-            data.WritePkg(m_hashCraftSkillRecords);
-            data.WritePkg(m_hashRecipeRecords);
+            data.WritePkg(recipeRecords);
+            data.Write(craftSkillScore);
+            data.Write(craftSkillTitle);
+            data.Write(usageResetTime);
+            data.WritePkg(craftSkillRecordsDict);
+            data.WritePkg(recipeRecordsDict);
         }
     }
 }

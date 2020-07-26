@@ -5,14 +5,14 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Player__SetAlias;
 
         // WM_Player::SendSEvt_SetAlias
-        public bool _add;
-        public WPString _text;
-        public WPString _alias;
+        public bool add; // _add
+        public WPString text; // _text
+        public WPString alias; // _alias
 
         public SetAliasSEvt(AC2Reader data) {
-            _add = data.UnpackBoolean();
-            _text = data.UnpackPackage<WPString>();
-            _alias = data.UnpackPackage<WPString>();
+            add = data.UnpackBoolean();
+            text = data.UnpackPackage<WPString>();
+            alias = data.UnpackPackage<WPString>();
         }
     }
 }

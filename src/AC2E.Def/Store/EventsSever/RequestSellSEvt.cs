@@ -5,18 +5,18 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Store__RequestSell;
 
         // WM_Store::SendSEvt_Store_RequestSell
-        public DataId _targetStore;
-        public uint _price;
-        public uint _quantity;
-        public InstanceId _iidItem;
-        public InstanceId _iidStorekeeper;
+        public DataId storeDid; // _targetStore
+        public uint price; // _price
+        public uint quantity; // _quantity
+        public InstanceId itemId; // _iidItem
+        public InstanceId storekeeperId; // _iidStorekeeper
 
         public RequestSellSEvt(AC2Reader data) {
-            _targetStore = data.UnpackDataId();
-            _price = data.UnpackUInt32();
-            _quantity = data.UnpackUInt32();
-            _iidItem = data.UnpackInstanceId();
-            _iidStorekeeper = data.UnpackInstanceId();
+            storeDid = data.UnpackDataId();
+            price = data.UnpackUInt32();
+            quantity = data.UnpackUInt32();
+            itemId = data.UnpackInstanceId();
+            storekeeperId = data.UnpackInstanceId();
         }
     }
 }
