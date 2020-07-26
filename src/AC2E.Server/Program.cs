@@ -21,7 +21,7 @@ namespace AC2E.Server {
 
             Log.Information("Hello World!");
 
-            parseDat("G:\\Asheron's Call 2\\portal.dat", "portalparsed", DbType.BLOCK_MAP);
+            parseDat("G:\\Asheron's Call 2\\portal.dat", "portalparsed", DbType.PROPERTY_DESC);
             //parseDat("G:\\Asheron's Call 2\\cell_1.dat", "cell1parsed", DbType.ENVCELL);
             //parseDat("G:\\Asheron's Call 2\\local_English.dat", "localparsed", DbType.RENDERSURFACE_LOCAL, DbType.STRING, DbType.STRING_TABLE);
 
@@ -130,6 +130,16 @@ namespace AC2E.Server {
                                             var mapping = data.ReadDictionary(data.ReadUInt32, data.ReadUInt32);
 
                                             File.WriteAllText(outputPath + ".txt", Util.objectToString(mapping));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.BEHAVIORTABLE: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var behaviorTable = new BehaviorTable(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(behaviorTable));
 
                                             checkFullRead(data, entry);
                                         }
@@ -248,6 +258,16 @@ namespace AC2E.Server {
                                         }
                                         break;
                                     }
+                                case DbType.KEYMAP: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var keyMap = new CKeyMap(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(keyMap));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
                                 case DbType.MAPNOTE_DESC: {
                                         using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
                                             var mapNoteDesc = new CMapNoteDesc(data);
@@ -273,6 +293,16 @@ namespace AC2E.Server {
                                             var materialModifier = new MaterialModifier(data);
 
                                             File.WriteAllText(outputPath + ".txt", Util.objectToString(materialModifier));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.MOTIONINTERPDESC: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var motionInterpDesc = new MotionInterpDesc(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(motionInterpDesc));
 
                                             checkFullRead(data, entry);
                                         }
@@ -309,6 +339,16 @@ namespace AC2E.Server {
                                         }
                                         break;
                                     }
+                                case DbType.PROPERTY_DESC: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var propertyDesc = new PropertyDesc(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(propertyDesc));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
                                 case DbType.QUALITY_FILTER: {
                                         using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
                                             DataId did = data.ReadDataId();
@@ -337,6 +377,26 @@ namespace AC2E.Server {
                                             var texture = new RenderTexture(data);
 
                                             File.WriteAllText(outputPath + ".txt", Util.objectToString(texture));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.SURFACE_DESC: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var surfaceDesc = new CSurfaceDesc(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(surfaceDesc));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.SOUND_DESC: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var soundDesc = new CSoundDesc(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(soundDesc));
 
                                             checkFullRead(data, entry);
                                         }
