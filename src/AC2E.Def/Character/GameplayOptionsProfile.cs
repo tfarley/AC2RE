@@ -49,13 +49,13 @@ namespace AC2E.Def {
 
         // Enum GameplayOptionsProfile::GameplayOptionsProfile_Version
         public enum Version : uint {
-            UNDEFINED_VERSION = 0,
-            CHAT_FONT_VERSION = 1,
-            WINDOW_OPACITIES_VERSION = 2,
-            BROADCAST_TEXTTYPE_VERSION = 3,
-            BROADCAST_FILTERFIX_VERSION = 4,
-            UNK1 = 5,
-            UNK2 = 6,
+            UNDEFINED_VERSION,
+            CHAT_FONT_VERSION,
+            WINDOW_OPACITIES_VERSION,
+            BROADCAST_TEXTTYPE_VERSION,
+            BROADCAST_FILTERFIX_VERSION,
+            UNK1,
+            UNK2,
             LATEST_VERSION = UNK2,
         }
 

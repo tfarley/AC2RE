@@ -6,7 +6,7 @@ namespace AC2E.PacketTool {
 
     public class NetBlobRecord {
 
-        public enum MessageErrorType {
+        public enum MessageErrorType : uint {
             UNDETERMINED,
             NONE,
             PARTIAL_READ,

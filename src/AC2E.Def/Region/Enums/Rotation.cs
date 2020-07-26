@@ -2,9 +2,9 @@
 
     // Enum LandDefs::Rotation
     public enum Rotation : uint {
-        ROT_0 = 0,
-        ROT_90 = 1,
-        ROT_180 = 2,
-        ROT_270 = 3,
+        ROT_0,
+        ROT_90,
+        ROT_180,
+        ROT_270,
     }
 }

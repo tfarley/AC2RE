@@ -206,9 +206,9 @@ namespace AC2E.Def {
         public class FrameDebugInfo {
 
             public enum FrameType : uint {
-                UNDEF = 0,
-                FUNCTION = 1,
-                PACKAGE = 2,
+                UNDEF,
+                FUNCTION,
+                PACKAGE,
             }
 
             public string name; // m_name
@@ -228,16 +228,16 @@ namespace AC2E.Def {
 
             // Enum FrameMemberType
             public enum FrameMemberType : uint {
-                UNDEF = 0,
-                VOID = 1,
-                INT = 2,
-                FLOAT = 3,
-                MIXED = 4,
-                TIME = 5,
-                TYPE_NAME = 6,
-                STRING = 7,
-                ENUM = 8,
-                PACKAGE = 9,
+                UNDEF,
+                VOID,
+                INT,
+                FLOAT,
+                MIXED,
+                TIME,
+                TYPE_NAME,
+                STRING,
+                ENUM,
+                PACKAGE,
             }
 
             public uint offset; // Offset

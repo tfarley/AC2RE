@@ -2,9 +2,9 @@
 
     // Enum tagINVOKEKIND
     public enum InvokeKind : uint {
-        FUNC = 0,
-        PROPERTYGET = 1,
-        PROPERTYPUT = 2,
-        PROPERTYPUTREF = 3,
+        FUNC,
+        PROPERTYGET,
+        PROPERTYPUT,
+        PROPERTYPUTREF,
     }
 }

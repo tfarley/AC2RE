@@ -3,7 +3,7 @@
     public class Slider {
 
         // Enum Slider::Controller
-        public enum Controller {
+        public enum Controller : uint {
 
             CLIENT_CONTROLLED = 0,
             WEENIE_CONTROLLED = 1,

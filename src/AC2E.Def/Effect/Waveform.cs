@@ -3,17 +3,17 @@
     public class Waveform {
 
         // Enum WaveformType
-        public enum WaveformType {
-            INVALID = 0,
-            NONE = 1,
-            SPEED = 2,
-            NOISE = 3,
-            SINE = 4,
-            SQUARE = 5,
-            BOUNCE = 6,
-            PERLIN = 7,
-            FRACTAL = 8,
-            FRAMELOOP = 9,
+        public enum WaveformType : uint {
+            INVALID,
+            NONE,
+            SPEED,
+            NOISE,
+            SINE,
+            SQUARE,
+            BOUNCE,
+            PERLIN,
+            FRACTAL,
+            FRAMELOOP,
         }
 
         public WaveformType type; // type

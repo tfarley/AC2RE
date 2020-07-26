@@ -4,13 +4,13 @@
 
         // Enum IIDUtils::IDType
         public enum IDType : uint {
-            UNKNOWN = 0,
-            UI = 1,
-            CAMERA = 2,
-            TEMPORARY = 3,
-            PLAYER = 4,
-            STATIC = 5,
-            DYNAMIC = 6,
+            UNKNOWN,
+            UI,
+            CAMERA,
+            TEMPORARY,
+            PLAYER,
+            STATIC,
+            DYNAMIC,
         }
 
         public ulong id;

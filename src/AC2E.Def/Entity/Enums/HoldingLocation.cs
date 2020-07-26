@@ -2,16 +2,16 @@
 
 	// Const *_HoldingLocationID
 	public enum HoldingLocation : uint {
-        INVALID = 0,
-		R_HAND = 1,
-		L_HAND = 2,
-		DRUM = 3,
-		ARROW = 4,
-		PARTICLE_FRONT = 5,
-		PARTICLE_BACK = 6,
-		PARTICLE_RIGHT = 7,
-		PARTICLE_LEFT = 8,
-		PARTICLE_CENTER = 9,
+		INVALID,
+		R_HAND,
+		L_HAND,
+		DRUM,
+		ARROW,
+		PARTICLE_FRONT,
+		PARTICLE_BACK,
+		PARTICLE_RIGHT,
+		PARTICLE_LEFT,
+		PARTICLE_CENTER,
 
 		ARROW_OFFHAND = 16,
 		L_HAND2 = 17,

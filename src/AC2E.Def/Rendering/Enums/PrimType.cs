@@ -8,6 +8,7 @@
         TRIANGLELIST = 4,
         TRIANGLESTRIP = 5,
         TRIANGLEFAN = 6,
+
         INVALID = 0x7FFFFFFF,
     }
 }

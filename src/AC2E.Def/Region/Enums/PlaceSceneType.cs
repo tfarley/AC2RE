@@ -2,8 +2,8 @@
 
     // Enum PlaceSceneType
     public enum PlaceSceneType : uint {
-        RANDOM = 0,
-        MIN = 1,
-        MAX = 2,
+        RANDOM,
+        MIN,
+        MAX,
     }
 }

@@ -3,10 +3,10 @@
     public class BasePropertyDesc {
 
         // Enum PropertyWeenieReportType::Type
-        public enum PropertyWeenieReportType {
-            REPORTABLE = 0,
-            INQUIRABLE = 1,
-            IGNORED = 2,
+        public enum PropertyWeenieReportType : uint {
+            REPORTABLE,
+            INQUIRABLE,
+            IGNORED,
         }
 
         public PropertyType type; // m_type

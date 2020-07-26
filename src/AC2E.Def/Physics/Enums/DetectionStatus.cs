@@ -2,8 +2,8 @@
 
     // Enum DetectionStatus
     public enum DetectionStatus : uint {
-        NO_CHANGE = 0,
-        ENTERED = 1,
-        LEFT = 2,
+        NO_CHANGE,
+        ENTERED,
+        LEFT,
     }
 }

@@ -21,7 +21,7 @@ namespace AC2E.Server {
 
             Log.Information("Hello World!");
 
-            parseDat("G:\\Asheron's Call 2\\portal.dat", "portalparsed", DbType.APPEARANCE);
+            parseDat("G:\\Asheron's Call 2\\portal.dat", "portalparsed", DbType.BLOCK_MAP);
             //parseDat("G:\\Asheron's Call 2\\cell_1.dat", "cell1parsed", DbType.ENVCELL);
             //parseDat("G:\\Asheron's Call 2\\local_English.dat", "localparsed", DbType.RENDERSURFACE_LOCAL, DbType.STRING, DbType.STRING_TABLE);
 
@@ -130,6 +130,16 @@ namespace AC2E.Server {
                                             var mapping = data.ReadDictionary(data.ReadUInt32, data.ReadUInt32);
 
                                             File.WriteAllText(outputPath + ".txt", Util.objectToString(mapping));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.BLOCK_MAP: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var blockMap = new BlockMap(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(blockMap));
 
                                             checkFullRead(data, entry);
                                         }
@@ -248,6 +258,36 @@ namespace AC2E.Server {
                                         }
                                         break;
                                     }
+                                case DbType.MATERIALINSTANCE: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var materialInstance = new MaterialInstance(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(materialInstance));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.MATERIALMODIFIER: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var materialModifier = new MaterialModifier(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(materialModifier));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.MUSICINFO: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var musicInfo = new MusicInfo(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(musicInfo));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
                                 case DbType.PHYSICS_MATERIAL: {
                                         using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
                                             DataId did = data.ReadDataId();
@@ -269,7 +309,19 @@ namespace AC2E.Server {
                                         }
                                         break;
                                     }
-                                case DbType.RENDERSURFACE: {
+                                case DbType.QUALITY_FILTER: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            DataId did = data.ReadDataId();
+                                            var qualityFilter = data.ReadDictionary(data.ReadUInt32, data.ReadInt32);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(qualityFilter));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.RENDERSURFACE:
+                                case DbType.RENDERSURFACE_LOCAL: {
                                         using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
                                             var surface = new RenderSurface(data);
 
@@ -279,11 +331,22 @@ namespace AC2E.Server {
                                         }
                                         break;
                                     }
-                                case DbType.RENDERSURFACE_LOCAL: {
+                                case DbType.RENDERTEXTURE:
+                                case DbType.RENDERTEXTURE_LOCAL: {
                                         using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                            var surface = new RenderSurface(data);
+                                            var texture = new RenderTexture(data);
 
-                                            File.WriteAllBytes(outputPath, surface.sourceBits);
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(texture));
+
+                                            checkFullRead(data, entry);
+                                        }
+                                        break;
+                                    }
+                                case DbType.SOUNDINFO: {
+                                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                            var soundInfo = new SoundInfo(data);
+
+                                            File.WriteAllText(outputPath + ".txt", Util.objectToString(soundInfo));
 
                                             checkFullRead(data, entry);
                                         }

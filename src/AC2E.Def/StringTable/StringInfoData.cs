@@ -5,7 +5,7 @@ namespace AC2E.Def {
     public class StringInfoData {
 
         // Const SID_Type_*
-        public enum StringInfoDataType {
+        public enum StringInfoDataType : uint {
             INT = 2,
             FORMATTED_INT = 3,
             FLOAT = 4,

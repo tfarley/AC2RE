@@ -2,8 +2,8 @@
 
     // Enum LandDefs::WaterType
     public enum WaterType : uint {
-        NOT_WATER = 0,
-        PARTIALLY_WATER = 1,
-        ENTIRELY_WATER = 2,
+        NOT_WATER,
+        PARTIALLY_WATER,
+        ENTIRELY_WATER,
     }
 }
