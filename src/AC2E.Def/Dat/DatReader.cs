@@ -5,6 +5,8 @@ namespace AC2E.Def {
 
     public class DatReader : IDisposable {
 
+        public static readonly uint BLOCK_FREE_FLAG = 0x80000000;
+
         private readonly AC2Reader data;
         public readonly DiskHeaderBlock header;
 
@@ -25,13 +27,17 @@ namespace AC2E.Def {
             while (remainingSize > 0) {
                 data.BaseStream.Seek(offset, SeekOrigin.Begin);
 
-                uint nextBlock = data.ReadUInt32();
+                uint nextBlockOffset = data.ReadUInt32();
+
+                if ((nextBlockOffset & BLOCK_FREE_FLAG) != 0) {
+                    throw new InvalidDataException($"Encountered free block in file at offset {offset:X8}.");
+                }
 
                 int sizeToRead = (int)Math.Min(remainingSize, header.fileInfo.blockSize - 4);
                 data.Read(fileData, size - remainingSize, sizeToRead);
                 remainingSize -= sizeToRead;
 
-                offset = nextBlock;
+                offset = nextBlockOffset;
             }
 
             return fileData;
@@ -44,7 +50,11 @@ namespace AC2E.Def {
             while (remainingSize > 0) {
                 data.BaseStream.Seek(offset, SeekOrigin.Begin);
 
-                uint nextBlock = data.ReadUInt32();
+                uint nextBlockOffset = data.ReadUInt32();
+
+                if ((nextBlockOffset & BLOCK_FREE_FLAG) != 0) {
+                    throw new InvalidDataException($"Encountered free block in file at offset {offset:X8}.");
+                }
 
                 int sizeToRead = (int)Math.Min(remainingSize, header.fileInfo.blockSize - 4);
                 if (!skippedDid) {
@@ -56,7 +66,7 @@ namespace AC2E.Def {
                 output.Write(blockBuffer, 0, sizeToRead);
                 remainingSize -= sizeToRead;
 
-                offset = nextBlock;
+                offset = nextBlockOffset;
             }
         }
 

@@ -16,7 +16,7 @@ namespace AC2E.Server {
 
             Log.Information("Hello World!");
 
-            DatParse.parseDat("G:\\Asheron's Call 2\\portal.dat", "portalparsed", DbType.PROPERTY_DESC);
+            DatParse.parseDat("G:\\Asheron's Call 2\\portal.dat", "portalparsed");
             //DatParse.parseDat("G:\\Asheron's Call 2\\cell_1.dat", "cell1parsed", DbType.ENVCELL);
             //DatParse.parseDat("G:\\Asheron's Call 2\\local_English.dat", "localparsed", DbType.RENDERSURFACE_LOCAL, DbType.STRING, DbType.STRING_TABLE);
 

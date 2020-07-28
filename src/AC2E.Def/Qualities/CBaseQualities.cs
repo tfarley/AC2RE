@@ -25,7 +25,7 @@ namespace AC2E.Def {
         }
 
         public PackFlag packFlags;
-        public uint dbType; // via DBObj::Pack_Type
+        public DataId did; // via DBObj::Pack_Type
         public WeenieDesc weenieDesc; // m_wdesc
         public Dictionary<uint, int> intTable; // m_int_table
         public Dictionary<uint, long> longIntTable; // m_lint_table
@@ -45,7 +45,7 @@ namespace AC2E.Def {
 
         public CBaseQualities(AC2Reader data) {
             packFlags = (PackFlag)data.ReadUInt32();
-            dbType = data.ReadUInt32();
+            did = data.ReadDataId();
             if (packFlags.HasFlag(PackFlag.WEENIE_DESC)) {
                 weenieDesc = new WeenieDesc(data);
             }
@@ -62,7 +62,7 @@ namespace AC2E.Def {
                 timestampTable = data.ReadDictionary(data.ReadUInt32, data.ReadDouble);
             }
             if (packFlags.HasFlag(PackFlag.STRING_HASH_TABLE)) {
-                stringTable = data.ReadDictionary(data.ReadUInt32, () => data.ReadString(Encoding.Unicode));
+                stringTable = data.ReadDictionary(data.ReadUInt32, data.ReadString);
             }
             if (packFlags.HasFlag(PackFlag.DATA_ID_HASH_TABLE)) {
                 dataIdTable = data.ReadDictionary(data.ReadUInt32, data.ReadDataId);
@@ -86,7 +86,7 @@ namespace AC2E.Def {
 
         public void write(AC2Writer data) {
             data.Write((uint)packFlags);
-            data.Write(dbType);
+            data.Write(did);
             if (packFlags.HasFlag(PackFlag.WEENIE_DESC)) {
                 weenieDesc.write(data);
             }
@@ -103,7 +103,7 @@ namespace AC2E.Def {
                 data.Write(timestampTable, data.Write, data.Write);
             }
             if (packFlags.HasFlag(PackFlag.STRING_HASH_TABLE)) {
-                data.Write(stringTable, data.Write, v => data.Write(v, Encoding.Unicode));
+                data.Write(stringTable, data.Write, data.Write);
             }
             if (packFlags.HasFlag(PackFlag.DATA_ID_HASH_TABLE)) {
                 data.Write(dataIdTable, data.Write, data.Write);

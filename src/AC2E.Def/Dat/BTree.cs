@@ -7,7 +7,6 @@ namespace AC2E.Def {
 
         public class BTNode {
 
-            private static readonly uint BLOCK_FREE_FLAG = 0x80000000;
             private static readonly int MAX_NUM_CHILDREN = 62;
             private static readonly int MAX_NUM_ENTRIES = 61;
             public static readonly int FILE_SIZE = sizeof(uint) * MAX_NUM_CHILDREN + sizeof(uint) + BTEntry.FILE_SIZE * MAX_NUM_ENTRIES;
@@ -18,7 +17,7 @@ namespace AC2E.Def {
             public BTNode(AC2Reader data) {
                 for (int i = 0; i < MAX_NUM_CHILDREN; i++) {
                     uint childOffset = data.ReadUInt32();
-                    if (childOffset == 0 || childOffset == 0xCDCDCDCD || (childOffset & BLOCK_FREE_FLAG) != 0) {
+                    if (childOffset == 0 || (childOffset & DatReader.BLOCK_FREE_FLAG) != 0) {
                         data.BaseStream.Seek((MAX_NUM_CHILDREN - i - 1) * 4, SeekOrigin.Current);
                         break;
                     }
@@ -58,14 +57,18 @@ namespace AC2E.Def {
 
             nodeOffsetQueue.Enqueue(datReader.header.fileInfo.treeRootOffset);
             while (nodeOffsetQueue.TryDequeue(out uint nodeOffset)) {
-                using (AC2Reader fileData = datReader.getFileReader(nodeOffset, BTNode.FILE_SIZE)) {
-                    BTNode node = new BTNode(fileData);
-                    foreach (uint childOffset in node.childOffsets) {
-                        if (visitedOffsets.Add(childOffset)) {
-                            nodeOffsetQueue.Enqueue(childOffset);
+                try {
+                    using (AC2Reader fileData = datReader.getFileReader(nodeOffset, BTNode.FILE_SIZE)) {
+                        BTNode node = new BTNode(fileData);
+                        foreach (uint childOffset in node.childOffsets) {
+                            if (visitedOffsets.Add(childOffset)) {
+                                nodeOffsetQueue.Enqueue(childOffset);
+                            }
                         }
+                        offsetToNode.Add(nodeOffset, node);
                     }
-                    offsetToNode.Add(nodeOffset, node);
+                } catch (InvalidDataException e) {
+                    // TODO: Log and/or track the bad node
                 }
             }
         }
