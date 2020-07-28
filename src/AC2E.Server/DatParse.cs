@@ -367,16 +367,6 @@ namespace AC2E.Server {
                         }
                         break;
                     }
-                case DbType.SURFACE_DESC: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var surfaceDesc = new CSurfaceDesc(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(surfaceDesc));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
                 case DbType.SOUND_DESC: {
                         using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
                             var soundDesc = new CSoundDesc(data);
@@ -402,6 +392,26 @@ namespace AC2E.Server {
                             var skyDesc = new CSkyDesc(data);
 
                             File.WriteAllText(outputPath + ".txt", Util.objectToString(skyDesc));
+
+                            checkFullRead(data, entry);
+                        }
+                        break;
+                    }
+                case DbType.SURFACE_DESC: {
+                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                            var surfaceDesc = new CSurfaceDesc(data);
+
+                            File.WriteAllText(outputPath + ".txt", Util.objectToString(surfaceDesc));
+
+                            checkFullRead(data, entry);
+                        }
+                        break;
+                    }
+                case DbType.UI_LAYOUT: {
+                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                            var layout = new LayoutDesc(data);
+
+                            File.WriteAllText(outputPath + ".txt", Util.objectToString(layout));
 
                             checkFullRead(data, entry);
                         }
