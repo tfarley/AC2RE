@@ -3,7 +3,7 @@
     public struct InstanceId {
 
         // Enum IIDUtils::IDType
-        public enum IDType : uint {
+        public enum IdType : uint {
             UNKNOWN,
             UI,
             CAMERA,

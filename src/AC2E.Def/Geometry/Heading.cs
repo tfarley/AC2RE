@@ -4,6 +4,12 @@
 
         public NativeType nativeType => NativeType.HEADING;
 
+        // Enum Heading::unit_type
+        public enum Unit : uint {
+            DEGREES,
+            RADIANS,
+        }
+
         public float rotDegrees;
 
         public Heading(float rotDegrees) {

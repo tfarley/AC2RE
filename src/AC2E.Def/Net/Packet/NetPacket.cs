@@ -40,13 +40,14 @@ namespace AC2E.Def {
             FLOW = 1 << 27, // 0x08000000
         }
 
-        public uint seq;
-        public Flag flags;
-        public uint checksum;
-        public ushort recipientId;
-        public ushort interval;
-        public ushort dataLength;
-        public ushort iteration;
+        // ProtoHeader
+        public uint seq; // seqID_
+        public Flag flags; // header_
+        public uint checksum; // checksum_
+        public ushort recipientId; // recID_
+        public ushort interval; // interval_
+        public ushort dataLength; // datalen_
+        public ushort iteration; // iteration_
 
         private List<uint> _nacksHeader;
         public List<uint> nacksHeader {

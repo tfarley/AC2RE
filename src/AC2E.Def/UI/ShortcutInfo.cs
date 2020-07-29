@@ -8,10 +8,10 @@ namespace AC2E.Def {
         public NativeType nativeType => NativeType.SHORTCUTINFO;
 
         public ShortcutType type; // _type
-        public string dataStr; // _data_str
-        public InstanceId dataId; // _data_iid
-        public uint dataEnum; // _data_enum
-        public DataId dataDid; // _data_dataid
+        public string valString; // _data_str
+        public InstanceId valId; // _data_iid
+        public uint valEnum; // _data_enum
+        public DataId valDid; // _data_dataid
 
         public ShortcutInfo() {
 
@@ -26,13 +26,13 @@ namespace AC2E.Def {
                 case ShortcutType.SKILL:
                 case ShortcutType.RECIPE:
                 case ShortcutType.NEW_RECIPE:
-                    dataDid = data.ReadDataId();
+                    valDid = data.ReadDataId();
                     break;
                 case ShortcutType.ITEM:
-                    dataId = data.ReadInstanceId();
+                    valId = data.ReadInstanceId();
                     break;
                 case ShortcutType.ALIAS:
-                    dataStr = data.ReadString(Encoding.Unicode);
+                    valString = data.ReadString(Encoding.Unicode);
                     break;
                 default:
                     throw new InvalidDataException(type.ToString());
@@ -48,13 +48,13 @@ namespace AC2E.Def {
                 case ShortcutType.SKILL:
                 case ShortcutType.RECIPE:
                 case ShortcutType.NEW_RECIPE:
-                    data.Write(dataDid);
+                    data.Write(valDid);
                     break;
                 case ShortcutType.ITEM:
-                    data.Write(dataId);
+                    data.Write(valId);
                     break;
                 case ShortcutType.ALIAS:
-                    data.Write(dataStr, Encoding.Unicode);
+                    data.Write(valString, Encoding.Unicode);
                     break;
                 default:
                     throw new InvalidDataException(type.ToString());

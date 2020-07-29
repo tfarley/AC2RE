@@ -7,7 +7,7 @@
         public bool pendingRoomCreation; // m_fPendingRoomCreation
         public TextType type; // m_type
         public uint regionId; // m_regionID
-        public uint toomId; // m_roomID
+        public uint roomId; // m_roomID
         public bool available; // m_available
         public uint factionType; // m_factionType
         public WPString name; // m_name
@@ -20,7 +20,7 @@
             pendingRoomCreation = data.ReadBoolean();
             type = (TextType)data.ReadUInt32();
             regionId = data.ReadUInt32();
-            toomId = data.ReadUInt32();
+            roomId = data.ReadUInt32();
             available = data.ReadBoolean();
             factionType = data.ReadUInt32();
             data.ReadPkg<WPString>(v => name = v);
@@ -30,7 +30,7 @@
             data.Write(pendingRoomCreation);
             data.Write((uint)type);
             data.Write(regionId);
-            data.Write(toomId);
+            data.Write(roomId);
             data.Write(available);
             data.Write(factionType);
             data.WritePkg(name);

@@ -8,11 +8,11 @@
 
         // ECM_Physics::RecvEvt_Position
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public PositionPack positionPack; // _position_pack
+        public PositionPack pos; // _position_pack
 
         public PositionMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            positionPack = new PositionPack(data);
+            pos = new PositionPack(data);
         }
     }
 }

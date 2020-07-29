@@ -7,18 +7,18 @@
         public MessageOpcode opcode => MessageOpcode.Evt_Login__PlayerDesc_ID;
 
         // ECM_Login::RecvEvt_PlayerDesc
-        public CBaseQualities baseQualities; // _q
+        public CBaseQualities qualities; // _q
 
         public PlayerDescMsg() {
 
         }
 
         public PlayerDescMsg(AC2Reader data) {
-            baseQualities = new CBaseQualities(data);
+            qualities = new CBaseQualities(data);
         }
 
         public void write(AC2Writer data) {
-            baseQualities.write(data);
+            qualities.write(data);
         }
     }
 }

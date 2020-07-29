@@ -4,7 +4,7 @@
 
         public PackageType packageType => PackageType.InvEquipDesc;
 
-        public uint blockingItemLoc; // m_blockingItemLocation
+        public uint blockingItemLocation; // m_blockingItemLocation
         public EquipItemProfile equipProfile; // m_eip
         public uint quantity; // m_quantity
         public InstanceId itemId; // m_itemID
@@ -25,7 +25,7 @@
         }
 
         public InvEquipDesc(AC2Reader data) {
-            blockingItemLoc = data.ReadUInt32();
+            blockingItemLocation = data.ReadUInt32();
             data.ReadPkg<EquipItemProfile>(v => equipProfile = v);
             quantity = data.ReadUInt32();
             itemId = data.ReadInstanceId();
@@ -43,7 +43,7 @@
         }
 
         public void write(AC2Writer data) {
-            data.Write(blockingItemLoc);
+            data.Write(blockingItemLocation);
             data.WritePkg(equipProfile);
             data.Write(quantity);
             data.Write(itemId);

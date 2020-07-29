@@ -1,5 +1,4 @@
-﻿using AC2E.Def;
-using Serilog;
+﻿using Serilog;
 using System.Threading;
 
 namespace AC2E.Server {
@@ -18,7 +17,7 @@ namespace AC2E.Server {
 
             DatParse.parseDat("G:\\Asheron's Call 2\\portal.dat", "portalparsed");
             //DatParse.parseDat("G:\\Asheron's Call 2\\cell_1.dat", "cell1parsed", DbType.ENVCELL);
-            //DatParse.parseDat("G:\\Asheron's Call 2\\local_English.dat", "localparsed", DbType.RENDERSURFACE_LOCAL, DbType.STRING, DbType.STRING_TABLE);
+            //DatParse.parseDat("G:\\Asheron's Call 2\\local_English.dat", "localparsed", DbType.UI_LAYOUT);
 
             runServer();
         }

@@ -7,10 +7,10 @@
         public MessageOpcode opcode => MessageOpcode.Evt_Physics__Contain_ID;
 
         // ECM_Physics::RecvEvt_Contain
-        public InstanceIdWithStamp childIdWithPositionStamp; // _child_id_and_position_stamp
+        public InstanceIdWithStamp childIdWithPosStamp; // _child_id_and_position_stamp
 
         public ContainMsg(AC2Reader data) {
-            childIdWithPositionStamp = data.ReadInstanceIdWithStamp();
+            childIdWithPosStamp = data.ReadInstanceIdWithStamp();
         }
     }
 }

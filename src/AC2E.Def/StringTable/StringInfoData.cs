@@ -5,7 +5,7 @@ namespace AC2E.Def {
     public class StringInfoData {
 
         // Const SID_Type_*
-        public enum StringInfoDataType : uint {
+        public enum DataType : uint {
             INT = 2,
             FORMATTED_INT = 3,
             FLOAT = 4,
@@ -19,40 +19,40 @@ namespace AC2E.Def {
             FORMATTED_ULINT = 13,
         }
 
-        public StringInfoDataType type; // type
+        public DataType type; // type
 
-        public int dataInt;
-        public double dataDouble;
-        public ushort dataDoublePrecision;
-        public uint dataUInt;
-        public long dataLong;
-        public ulong dataULong;
-        public StringInfo stringInfo;
+        public int valInt;
+        public double valDouble;
+        public ushort valDoublePrecision;
+        public uint valUInt;
+        public long valLong;
+        public ulong valULong;
+        public StringInfo valString;
 
         public StringInfoData(AC2Reader data) {
             // TODO: Not sure if this should be full 32 read or 16 + align
-            type = (StringInfoDataType)data.ReadUInt16();
+            type = (DataType)data.ReadUInt16();
             data.Align(4);
             switch (type) {
-                case StringInfoDataType.INT:
-                    dataInt = data.ReadInt32();
+                case DataType.INT:
+                    valInt = data.ReadInt32();
                     break;
-                case StringInfoDataType.FLOAT:
-                    dataDouble = data.ReadDouble();
-                    dataDoublePrecision = data.ReadUInt16();
+                case DataType.FLOAT:
+                    valDouble = data.ReadDouble();
+                    valDoublePrecision = data.ReadUInt16();
                     data.Align(4);
                     break;
-                case StringInfoDataType.UINT:
-                    dataUInt = data.ReadUInt32();
+                case DataType.UINT:
+                    valUInt = data.ReadUInt32();
                     break;
-                case StringInfoDataType.STRING_INFO:
-                    stringInfo = new StringInfo(data);
+                case DataType.STRING_INFO:
+                    valString = new StringInfo(data);
                     break;
-                case StringInfoDataType.LINT:
-                    dataLong = data.ReadInt64();
+                case DataType.LINT:
+                    valLong = data.ReadInt64();
                     break;
-                case StringInfoDataType.ULINT:
-                    dataULong = data.ReadUInt64();
+                case DataType.ULINT:
+                    valULong = data.ReadUInt64();
                     break;
                 default:
                     throw new NotImplementedException($"StringInfoData type {type}.");
@@ -64,25 +64,25 @@ namespace AC2E.Def {
             data.Write((ushort)type);
             data.Align(4);
             switch (type) {
-                case StringInfoDataType.INT:
-                    data.Write(dataInt);
+                case DataType.INT:
+                    data.Write(valInt);
                     break;
-                case StringInfoDataType.FLOAT:
-                    data.Write(dataDouble);
-                    data.Write(dataDoublePrecision);
+                case DataType.FLOAT:
+                    data.Write(valDouble);
+                    data.Write(valDoublePrecision);
                     data.Align(4);
                     break;
-                case StringInfoDataType.UINT:
-                    data.Write(dataUInt);
+                case DataType.UINT:
+                    data.Write(valUInt);
                     break;
-                case StringInfoDataType.STRING_INFO:
-                    stringInfo.write(data);
+                case DataType.STRING_INFO:
+                    valString.write(data);
                     break;
-                case StringInfoDataType.LINT:
-                    data.Write(dataLong);
+                case DataType.LINT:
+                    data.Write(valLong);
                     break;
-                case StringInfoDataType.ULINT:
-                    data.Write(dataULong);
+                case DataType.ULINT:
+                    data.Write(valULong);
                     break;
                 default:
                     throw new NotImplementedException($"StringInfoData type {type}.");

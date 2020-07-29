@@ -24,8 +24,8 @@ namespace AC2E.PacketTool.UI {
 
             originalTitle = Title;
 
-            foreach (NetBlobRecord.MessageErrorType messageErrorType in Enum.GetValues(typeof(NetBlobRecord.MessageErrorType))) {
-                if (messageErrorType != NetBlobRecord.MessageErrorType.UNDETERMINED) {
+            foreach (MessageErrorType messageErrorType in Enum.GetValues(typeof(MessageErrorType))) {
+                if (messageErrorType != MessageErrorType.UNDETERMINED) {
                     errorsFilterComboBox.Items.Add(new ComboBoxItem { Content = messageErrorType });
                 }
             }
@@ -164,7 +164,7 @@ namespace AC2E.PacketTool.UI {
             if (recordsListBox.SelectedItems.Count == 1) {
                 NetBlobRecord netBlobRecord = ((NetBlobRow)recordsListBox.SelectedItem).netBlobRecord;
 
-                bool wasUndetermined = netBlobRecord.messageErrorTypeOptional == NetBlobRecord.MessageErrorType.UNDETERMINED;
+                bool wasUndetermined = netBlobRecord.messageErrorTypeOptional == MessageErrorType.UNDETERMINED;
 
                 if (netBlobRecord.netBlob.payload != null) {
                     recordHexTextBox.Text = BitConverter.ToString(netBlobRecord.netBlob.payload);

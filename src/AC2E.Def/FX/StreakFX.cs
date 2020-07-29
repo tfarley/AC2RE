@@ -6,10 +6,10 @@
         public Vector startPoint; // m_vStartPoint
         public Vector endPoint; // m_vEndPoint
         public DataId materialDid; // m_MaterialInstanceID
-        public float lifespan; // m_fLifespan
+        public float lifetime; // m_fLifespan
         public float trailDuration; // m_fTrailDuration
         public float minSegmentTime; // m_fMinSegmentTime
-        public float minSegmentDistance; // m_fMinSegmentDistance
+        public float minSegmentDist; // m_fMinSegmentDistance
         public float textureScale; // m_fTextureScale
 
         public StreakFX() {
@@ -21,10 +21,10 @@
             startPoint = data.ReadVector();
             endPoint = data.ReadVector();
             materialDid = data.ReadDataId();
-            lifespan = data.ReadSingle();
+            lifetime = data.ReadSingle();
             trailDuration = data.ReadSingle();
             minSegmentTime = data.ReadSingle();
-            minSegmentDistance = data.ReadSingle();
+            minSegmentDist = data.ReadSingle();
             textureScale = data.ReadSingle();
         }
 
@@ -33,10 +33,10 @@
             data.Write(startPoint);
             data.Write(endPoint);
             data.Write(materialDid);
-            data.Write(lifespan);
+            data.Write(lifetime);
             data.Write(trailDuration);
             data.Write(minSegmentTime);
-            data.Write(minSegmentDistance);
+            data.Write(minSegmentDist);
             data.Write(textureScale);
         }
     }

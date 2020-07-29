@@ -18,7 +18,7 @@
         public bool maxedOut; // _bMaxedOut
         public double secondsRemaining; // _ttSecondsRemaining
         public double secondsUntilRetry; // _ttSecondsUntilRetry
-        public bool playFXOnUpdate; // _playFXOnUpdate
+        public bool playFxOnUpdate; // _playFXOnUpdate
 
         public GMQuestInfo() {
 
@@ -40,7 +40,7 @@
             secondsRemaining = data.ReadDouble();
             secondsUntilRetry = data.ReadDouble();
             maxedOut = data.ReadBoolean();
-            playFXOnUpdate = data.ReadBoolean();
+            playFxOnUpdate = data.ReadBoolean();
         }
 
         public void write(AC2Writer data) {
@@ -58,7 +58,7 @@
             data.Write(secondsRemaining);
             data.Write(secondsUntilRetry);
             data.Write(maxedOut);
-            data.Write(playFXOnUpdate);
+            data.Write(playFxOnUpdate);
         }
     }
 }

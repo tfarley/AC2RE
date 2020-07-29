@@ -86,7 +86,7 @@ namespace AC2E.Def {
         public Vector boneOffset; // m_bone_offset
         public bool waterPlane; // m_water_plane
         public bool fireAndForget; // m_fire_and_forget
-        public bool removeRotation; // m_remove_rotation
+        public bool removeRot; // m_remove_rotation
         public DataId visualDescDid; // m_vdesc_id
         public float lifetime; // m_lifetime
         public DataId behaviorDid; // m_behavior
@@ -227,7 +227,7 @@ namespace AC2E.Def {
                 fxScriptDid = data.ReadDataId();
             }
             if (packFlags.HasFlag(PackFlag.REMOVE_ROTATION)) {
-                removeRotation = data.ReadBoolean();
+                removeRot = data.ReadBoolean();
             }
         }
 
@@ -356,7 +356,7 @@ namespace AC2E.Def {
                 data.Write(fxScriptDid);
             }
             if (packFlags.HasFlag(PackFlag.REMOVE_ROTATION)) {
-                data.Write(removeRotation);
+                data.Write(removeRot);
             }
         }
     }

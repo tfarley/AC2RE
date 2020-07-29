@@ -10,7 +10,7 @@
         public Position userPos; // m_posUser
         public uint userWeenieType; // m_wtUser // TODO: WeenieType
         public InstanceId userId; // m_userID
-        public float distanceToUsedItem; // m_fDistanceToUsedItem
+        public float distToUsedItem; // m_fDistanceToUsedItem
         public InstanceId targetId; // m_targetID
         public uint status; // m_status // TODO: ErrorType
         public InstanceId effectTargetId; // m_effTargetID
@@ -32,7 +32,7 @@
             data.ReadPkg<Position>(v => userPos = v);
             userWeenieType = data.ReadUInt32();
             userId = data.ReadInstanceId();
-            distanceToUsedItem = data.ReadSingle();
+            distToUsedItem = data.ReadSingle();
             targetId = data.ReadInstanceId();
             status = data.ReadUInt32();
             effectTargetId = data.ReadInstanceId();
@@ -51,7 +51,7 @@
             data.WritePkg(userPos);
             data.Write(userWeenieType);
             data.Write(userId);
-            data.Write(distanceToUsedItem);
+            data.Write(distToUsedItem);
             data.Write(targetId);
             data.Write(status);
             data.Write(effectTargetId);

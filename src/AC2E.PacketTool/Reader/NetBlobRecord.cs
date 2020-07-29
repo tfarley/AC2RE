@@ -6,16 +6,6 @@ namespace AC2E.PacketTool {
 
     public class NetBlobRecord {
 
-        public enum MessageErrorType : uint {
-            UNDETERMINED,
-            NONE,
-            PARTIAL_READ,
-            INCOMPLETE_BLOB,
-            UNHANDLED_OPCODE,
-            NOT_IMPLEMENTED,
-            PARSE_FAILURE,
-        }
-
         public bool isClientToServer;
         public int startPacketNum;
         public float startTimestamp;
@@ -62,24 +52,27 @@ namespace AC2E.PacketTool {
             if (netBlob.payload != null) {
                 using (AC2Reader data = new AC2Reader(new MemoryStream(netBlob.payload))) {
                     try {
-                        _message = MessageReader.read(data, isClientToServer);
-                        if (_message != null) {
-                            if (data.BaseStream.Position < data.BaseStream.Length) {
-                                _messageErrorType = MessageErrorType.PARTIAL_READ;
-                                _messageException = new NotImplementedException($"NetBlob was not fully read ({data.BaseStream.Position} / {data.BaseStream.Length}).");
+                        MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
+                        try {
+                            _message = INetMessage.read(opcode, data, isClientToServer);
+                            try {
+                                if (data.BaseStream.Position < data.BaseStream.Length) {
+                                    _messageErrorType = MessageErrorType.PARTIAL_READ;
+                                    _messageException = new NotImplementedException($"NetBlob was not fully read ({data.BaseStream.Position} / {data.BaseStream.Length}).");
+                                    parseFailurePos = data.BaseStream.Position;
+                                } else {
+                                    _messageErrorType = MessageErrorType.NONE;
+                                }
+                            } catch (NotImplementedException e) {
+                                _messageErrorType = MessageErrorType.NOT_IMPLEMENTED;
+                                _messageException = e;
                                 parseFailurePos = data.BaseStream.Position;
-                            } else {
-                                _messageErrorType = MessageErrorType.NONE;
                             }
-                        } else {
+                        } catch (NotImplementedException e) {
                             _messageErrorType = MessageErrorType.UNHANDLED_OPCODE;
-                            _messageException = new NotImplementedException("Unhandled message opcode.");
+                            _messageException = e;
                             parseFailurePos = data.BaseStream.Position;
                         }
-                    } catch (NotImplementedException e) {
-                        _messageErrorType = MessageErrorType.NOT_IMPLEMENTED;
-                        _messageException = e;
-                        parseFailurePos = data.BaseStream.Position;
                     } catch (Exception e) {
                         _messageErrorType = MessageErrorType.PARSE_FAILURE;
                         _messageException = e;

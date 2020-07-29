@@ -38,7 +38,7 @@ namespace AC2E.Def {
         public bool restoreCamera; // mRestoreCamera
         public bool playerOnly; // mPlayerOnly
         public bool shake; // mShake
-        public bool cameraDistance; // mCameraDistance
+        public bool cameraDist; // mCameraDistance
         public bool blur; // mBlur
         public bool hasScreenFlash; // mHasScreenFlash
         public RGBAColor screenFlash; // mScreenFlash
@@ -95,7 +95,7 @@ namespace AC2E.Def {
                 playerOnly = data.ReadBoolean();
             }
             if (packFlags.HasFlag(PackFlag.DISTANCE)) {
-                cameraDistance = data.ReadBoolean();
+                cameraDist = data.ReadBoolean();
             }
         }
 
@@ -146,7 +146,7 @@ namespace AC2E.Def {
                 data.Write(playerOnly);
             }
             if (packFlags.HasFlag(PackFlag.DISTANCE)) {
-                data.Write(cameraDistance);
+                data.Write(cameraDist);
             }
         }
     }

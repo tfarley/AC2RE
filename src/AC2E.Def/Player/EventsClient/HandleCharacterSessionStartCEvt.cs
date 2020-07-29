@@ -16,7 +16,7 @@
         public LRHash<InventProfile> inventoryByIdTable; // _invByIIDTable
         public RList<ContainerSegmentDescriptor> containerSegments; // _ContainerSegments
         public InstanceIdList containerIds; // _Containers
-        public InstanceIdList contentsIds; // _Contents
+        public InstanceIdList contentIds; // _Contents
         public uint localFactionStatus; // _locFactionStatus
         public uint serverFactionStatus; // _srvFactionStatus
 
@@ -36,7 +36,7 @@
             inventoryByIdTable = data.UnpackPackage<LRHash<IPackage>>().to<InventProfile>();
             containerSegments = data.UnpackPackage<RList<IPackage>>().to<ContainerSegmentDescriptor>();
             containerIds = new InstanceIdList(data.UnpackPackage<LList>());
-            contentsIds = new InstanceIdList(data.UnpackPackage<LList>());
+            contentIds = new InstanceIdList(data.UnpackPackage<LList>());
             localFactionStatus = data.UnpackUInt32();
             serverFactionStatus = data.UnpackUInt32();
         }
@@ -53,7 +53,7 @@
             data.Pack(inventoryByIdTable);
             data.Pack(containerSegments);
             data.Pack(containerIds);
-            data.Pack(contentsIds);
+            data.Pack(contentIds);
             data.Pack(localFactionStatus);
             data.Pack(serverFactionStatus);
         }

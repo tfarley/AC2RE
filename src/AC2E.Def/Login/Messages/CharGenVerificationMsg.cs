@@ -7,13 +7,13 @@
         public MessageOpcode opcode => MessageOpcode.Evt_Login__CharGenVerification_ID;
 
         // ECM_Login::RecvEvt_CharGenVerification
-        public uint response; // response
-        public CharacterIdentity character; // _identity
+        public CharGenResponse response; // response
+        public CharacterIdentity characterIdentity; // _identity
         public uint weenieCharGenResult; // weenieCharGenResult
 
         public CharGenVerificationMsg(AC2Reader data) {
-            response = data.ReadUInt32();
-            character = new CharacterIdentity(data);
+            response = (CharGenResponse)data.ReadUInt32();
+            characterIdentity = new CharacterIdentity(data);
             weenieCharGenResult = data.ReadUInt32();
         }
     }

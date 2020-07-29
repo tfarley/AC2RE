@@ -1,6 +1,7 @@
 ﻿using AC2E.Def;
 using AC2E.Utils;
 using Serilog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -23,10 +24,10 @@ namespace AC2E.Server {
                     BTree filesystemTree = new BTree(datReader);
                     // Parse data in first pass that is required for second pass
                     bool foundMasterProperty = false;
-                    foreach (BTree.BTNode node in filesystemTree.offsetToNode.Values) {
-                        foreach (BTree.BTEntry entry in node.entries) {
-                            allSeenTypes.Add(DbTypeDef.getType(entry.gid));
-                            if (mprTypeDef.contains(entry.gid)) {
+                    foreach (BTNode node in filesystemTree.offsetToNode.Values) {
+                        foreach (BTEntry entry in node.entries) {
+                            allSeenTypes.Add(DbTypeDef.getType(entry.did));
+                            if (mprTypeDef.contains(entry.did)) {
                                 if (!directoryCache.TryGetValue(DbType.MASTER_PROPERTY, out string directory)) {
                                     directory = getOrCreateDir(outputBaseDir, mprTypeDef.strDataDir);
                                     directoryCache[DbType.MASTER_PROPERTY] = directory;
@@ -36,7 +37,7 @@ namespace AC2E.Server {
                                     MasterProperty.instance = new MasterProperty(data);
 
                                     if (typesToParseSet.Contains(DbType.MASTER_PROPERTY)) {
-                                        File.WriteAllText(Path.Combine(directory, $"{entry.gid.id:X8}{mprTypeDef.extension}.txt"), Util.objectToString(MasterProperty.instance));
+                                        File.WriteAllText(Path.Combine(directory, $"{entry.did.id:X8}{mprTypeDef.extension}.txt"), Util.objectToString(MasterProperty.instance));
                                     }
 
                                     checkFullRead(data, entry);
@@ -54,16 +55,16 @@ namespace AC2E.Server {
 
                     Log.Information($"All seen types in {datFileName}: {Util.objectToString(allSeenTypes)}.");
 
-                    foreach (BTree.BTNode node in filesystemTree.offsetToNode.Values) {
+                    foreach (BTNode node in filesystemTree.offsetToNode.Values) {
                         numFiles += node.entries.Count;
-                        foreach (BTree.BTEntry entry in node.entries) {
-                            DbType dbType = DbTypeDef.getType(entry.gid);
+                        foreach (BTEntry entry in node.entries) {
+                            DbType dbType = DbTypeDef.getType(entry.did);
                             if (dbType == DbType.UNDEFINED) {
-                                Log.Warning($"Unhandled dat gid {entry.gid}.");
+                                Log.Warning($"Unhandled dat gid {entry.did}.");
                                 continue;
                             }
 
-                            if (!typesToParseSet.Contains(dbType)) {
+                            if (dbType == DbType.MASTER_PROPERTY || !typesToParseSet.Contains(dbType)) {
                                 continue;
                             }
 
@@ -74,7 +75,7 @@ namespace AC2E.Server {
                                 directoryCache[dbType] = directory;
                             }
 
-                            string outputPath = Path.Combine(directory, $"{entry.gid.id:X8}{dbTypeDef.extension}");
+                            string outputPath = Path.Combine(directory, $"{entry.did.id:X8}{dbTypeDef.extension}");
 
                             parseFile(datReader, entry, outputPath);
                         }
@@ -85,91 +86,37 @@ namespace AC2E.Server {
             }
         }
 
-        private static void parseFile(DatReader datReader, BTree.BTEntry entry, string outputPath) {
-            DbType dbType = DbTypeDef.getType(entry.gid);
+        private static void parseFile(DatReader datReader, BTEntry entry, string outputPath) {
+            DbType dbType = DbTypeDef.getType(entry.did);
 
             switch (dbType) {
-                case DbType.APPEARANCE: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var appearanceTable = new AppearanceTable(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(appearanceTable));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.ANIMMAP: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            DataId did = data.ReadDataId();
-                            var mapping = data.ReadDictionary(data.ReadUInt32, data.ReadUInt32);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(mapping));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.BEHAVIORTABLE: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var behaviorTable = new BehaviorTable(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(behaviorTable));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.BLOCK_MAP: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var blockMap = new BlockMap(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(blockMap));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.CAMERA_FX: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var cameraFx = new CameraFX(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(cameraFx));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.CHARTEMPLATE: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var charTemplate = new CharTemplate(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(charTemplate));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.DAY_DESC: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var dayDesc = new CDayDesc(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(dayDesc));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.ENCOUNTER_DESC: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var encounterDesc = new CEncounterDesc(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(encounterDesc));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
+                case DbType.APPEARANCE:
+                    readAndDump(datReader, entry, outputPath, data => new AppearanceTable(data));
+                    break;
+                case DbType.ANIMMAP:
+                    readAndDump(datReader, entry, outputPath, data => {
+                        DataId did = data.ReadDataId();
+                        return data.ReadDictionary(data.ReadUInt32, data.ReadUInt32);
+                    });
+                    break;
+                case DbType.BEHAVIORTABLE:
+                    readAndDump(datReader, entry, outputPath, data => new BehaviorTable(data));
+                    break;
+                case DbType.BLOCK_MAP:
+                    readAndDump(datReader, entry, outputPath, data => new BlockMap(data));
+                    break;
+                case DbType.CAMERA_FX:
+                    readAndDump(datReader, entry, outputPath, data => new CameraFX(data));
+                    break;
+                case DbType.CHARTEMPLATE:
+                    readAndDump(datReader, entry, outputPath, data => new CharTemplate(data));
+                    break;
+                case DbType.DAY_DESC:
+                    readAndDump(datReader, entry, outputPath, data => new CDayDesc(data));
+                    break;
+                case DbType.ENCOUNTER_DESC:
+                    readAndDump(datReader, entry, outputPath, data => new CEncounterDesc(data));
+                    break;
                 case DbType.ENUM_MAPPER: {
                         using (StreamWriter output = new StreamWriter(File.OpenWrite(outputPath + ".txt")))
                         using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
@@ -183,270 +130,99 @@ namespace AC2E.Server {
                         }
                         break;
                     }
-                case DbType.ENTITYDESC: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var entityDesc = new EntityDesc(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(entityDesc));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.FX_TABLE: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var dbFxTable = new DBFXTable(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(dbFxTable));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.FXSCRIPT: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var fxScript = new FxScript(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(fxScript));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.GAME_TIME: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var gameTime = new GameTime(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(gameTime));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.INPUTMAPPER: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var enumIdMap = new EnumIDMap(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(enumIdMap));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.KEYMAP: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var keyMap = new CKeyMap(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(keyMap));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.MAPNOTE_DESC: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var mapNoteDesc = new CMapNoteDesc(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(mapNoteDesc));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.MATERIALINSTANCE: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var materialInstance = new MaterialInstance(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(materialInstance));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.MATERIALMODIFIER: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var materialModifier = new MaterialModifier(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(materialModifier));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.MOTIONINTERPDESC: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var motionInterpDesc = new MotionInterpDesc(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(motionInterpDesc));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.MUSICINFO: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var musicInfo = new MusicInfo(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(musicInfo));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.PHYSICS_MATERIAL: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            DataId did = data.ReadDataId();
-                            var collection = new PropertyCollection(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(collection));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.PSDESC: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var psDesc = new PSDesc(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(psDesc));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.PROPERTY_DESC: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var propertyDesc = new PropertyDesc(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(propertyDesc));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.QUALITIES: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var qualities = new CBaseQualities(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(qualities));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.QUALITY_FILTER: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            DataId did = data.ReadDataId();
-                            var qualityFilter = data.ReadDictionary(data.ReadUInt32, data.ReadInt32);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(qualityFilter));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
+                case DbType.ENTITYDESC:
+                    readAndDump(datReader, entry, outputPath, data => new EntityDesc(data));
+                    break;
+                case DbType.FX_TABLE:
+                    readAndDump(datReader, entry, outputPath, data => new DBFXTable(data));
+                    break;
+                case DbType.FXSCRIPT:
+                    readAndDump(datReader, entry, outputPath, data => new FxScript(data));
+                    break;
+                case DbType.GAME_TIME:
+                    readAndDump(datReader, entry, outputPath, data => new GameTime(data));
+                    break;
+                case DbType.INPUTMAPPER:
+                    readAndDump(datReader, entry, outputPath, data => new EnumIDMap(data));
+                    break;
+                case DbType.KEYMAP:
+                    readAndDump(datReader, entry, outputPath, data => new CKeyMap(data));
+                    break;
+                case DbType.MAPNOTE_DESC:
+                    readAndDump(datReader, entry, outputPath, data => new CMapNoteDesc(data));
+                    break;
+                case DbType.MATERIALINSTANCE:
+                    readAndDump(datReader, entry, outputPath, data => new MaterialInstance(data));
+                    break;
+                case DbType.MATERIALMODIFIER:
+                    readAndDump(datReader, entry, outputPath, data => new MaterialModifier(data));
+                    break;
+                case DbType.MOTIONINTERPDESC:
+                    readAndDump(datReader, entry, outputPath, data => new MotionInterpDesc(data));
+                    break;
+                case DbType.MUSICINFO:
+                    readAndDump(datReader, entry, outputPath, data => new MusicInfo(data));
+                    break;
+                case DbType.PHYSICS_MATERIAL:
+                    readAndDump(datReader, entry, outputPath, data => {
+                        DataId did = data.ReadDataId();
+                        return new PropertyCollection(data);
+                    });
+                    break;
+                case DbType.PSDESC:
+                    readAndDump(datReader, entry, outputPath, data => new PSDesc(data));
+                    break;
+                case DbType.PROPERTY_DESC:
+                    readAndDump(datReader, entry, outputPath, data => new PropertyDesc(data));
+                    break;
+                case DbType.QUALITIES:
+                    readAndDump(datReader, entry, outputPath, data => new CBaseQualities(data));
+                    break;
+                case DbType.QUALITY_FILTER:
+                    readAndDump(datReader, entry, outputPath, data => {
+                        DataId did = data.ReadDataId();
+                        return data.ReadDictionary(data.ReadUInt32, data.ReadInt32);
+                    });
+                    break;
                 case DbType.RENDERSURFACE:
                 case DbType.RENDERSURFACE_LOCAL: {
                         using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
                             var surface = new RenderSurface(data);
 
-                            File.WriteAllBytes(outputPath, surface.sourceBits);
+                            File.WriteAllBytes(outputPath, surface.sourceData);
 
                             checkFullRead(data, entry);
                         }
                         break;
                     }
                 case DbType.RENDERTEXTURE:
-                case DbType.RENDERTEXTURE_LOCAL: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var texture = new RenderTexture(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(texture));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.SOUND_DESC: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var soundDesc = new CSoundDesc(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(soundDesc));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.SOUNDINFO: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var soundInfo = new SoundInfo(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(soundInfo));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.SKY_DESC: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var skyDesc = new CSkyDesc(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(skyDesc));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.SURFACE_DESC: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var surfaceDesc = new CSurfaceDesc(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(surfaceDesc));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.UI_LAYOUT: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var layout = new LayoutDesc(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(layout));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.UI_SCENE: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var uiScene = new UIScene(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(uiScene));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.VALIDMODES: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var availableModes = data.ReadList(data.ReadUInt32);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(availableModes));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
-                case DbType.VISUAL_DESC: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            var visualDesc = new VisualDesc(data);
-
-                            File.WriteAllText(outputPath + ".txt", Util.objectToString(visualDesc));
-
-                            checkFullRead(data, entry);
-                        }
-                        break;
-                    }
+                case DbType.RENDERTEXTURE_LOCAL:
+                    readAndDump(datReader, entry, outputPath, data => new RenderTexture(data));
+                    break;
+                case DbType.SOUND_DESC:
+                    readAndDump(datReader, entry, outputPath, data => new CSoundDesc(data));
+                    break;
+                case DbType.SOUNDINFO:
+                    readAndDump(datReader, entry, outputPath, data => new SoundInfo(data));
+                    break;
+                case DbType.SKY_DESC:
+                    readAndDump(datReader, entry, outputPath, data => new CSkyDesc(data));
+                    break;
+                case DbType.SURFACE_DESC:
+                    readAndDump(datReader, entry, outputPath, data => new CSurfaceDesc(data));
+                    break;
+                case DbType.UI_LAYOUT:
+                    readAndDump(datReader, entry, outputPath, data => new LayoutDesc(data));
+                    break;
+                case DbType.UI_SCENE:
+                    readAndDump(datReader, entry, outputPath, data => new UIScene(data));
+                    break;
+                case DbType.VALIDMODES:
+                    readAndDump(datReader, entry, outputPath, data => data.ReadList(data.ReadUInt32));
+                    break;
+                case DbType.VISUAL_DESC:
+                    readAndDump(datReader, entry, outputPath, data => new VisualDesc(data));
+                    break;
                 case DbType.WLIB: {
                         using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
                             var wlib = new WLib(data);
@@ -459,6 +235,8 @@ namespace AC2E.Server {
                                 disasm.write(output);
                             }
 
+                            File.WriteAllText(outputPath + ".frames.txt", Util.objectToString(wlib.byteStream.frames));
+
                             checkFullRead(data, entry);
                         }
                         break;
@@ -469,13 +247,21 @@ namespace AC2E.Server {
             }
         }
 
+        private static void readAndDump(DatReader datReader, BTEntry entry, string outputPath, Func<AC2Reader, object> readFunc) {
+            using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                File.WriteAllText(outputPath + ".txt", Util.objectToString(readFunc.Invoke(data)));
+
+                checkFullRead(data, entry);
+            }
+        }
+
         private static string getOrCreateDir(string baseDir, string path) {
             return Directory.CreateDirectory(Path.Combine(baseDir, path)).FullName;
         }
 
-        private static void checkFullRead(AC2Reader data, BTree.BTEntry entry) {
+        private static void checkFullRead(AC2Reader data, BTEntry entry) {
             if (data.BaseStream.Position < data.BaseStream.Length) {
-                Log.Warning($"File {entry.gid.id:X8} was not fully read ({data.BaseStream.Position} / {data.BaseStream.Length}).");
+                Log.Warning($"File {entry.did.id:X8} was not fully read ({data.BaseStream.Position} / {data.BaseStream.Length}).");
             }
         }
     }

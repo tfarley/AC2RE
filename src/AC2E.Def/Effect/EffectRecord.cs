@@ -8,11 +8,11 @@
         public double timeCast; // m_timeCast
         public InstanceId casterId; // m_iidCaster
         public float timeout; // m_ttTimeout
-        public float appF; // m_fApp
+        public float appFloat; // m_fApp
         public float spellcraft; // m_fSpellcraft
-        public int appI; // m_iApp
+        public int appInt; // m_iApp
         public bool pk; // m_bPK
-        public IPackage appR; // m_rApp
+        public IPackage appPackage; // m_rApp
         public double timePromotedToTopLevel; // m_timePromotedToTopLevel
         public SingletonPkg effect; // m_effect
         public InstanceId actingForWhomId; // m_iidActingForWhom
@@ -34,11 +34,11 @@
             timeCast = data.ReadDouble();
             casterId = data.ReadInstanceId();
             timeout = data.ReadSingle();
-            appF = data.ReadSingle();
+            appFloat = data.ReadSingle();
             spellcraft = data.ReadSingle();
-            appI = data.ReadInt32();
+            appInt = data.ReadInt32();
             pk = data.ReadBoolean();
-            data.ReadPkg<IPackage>(v => appR = v);
+            data.ReadPkg<IPackage>(v => appPackage = v);
             timePromotedToTopLevel = data.ReadDouble();
             data.ReadPkg<SingletonPkg>(v => effect = v);
             actingForWhomId = data.ReadInstanceId();
@@ -57,11 +57,11 @@
             data.Write(timeCast);
             data.Write(casterId);
             data.Write(timeout);
-            data.Write(appF);
+            data.Write(appFloat);
             data.Write(spellcraft);
-            data.Write(appI);
+            data.Write(appInt);
             data.Write(pk);
-            data.WritePkg(appR);
+            data.WritePkg(appPackage);
             data.Write(timePromotedToTopLevel);
             data.WritePkg(effect);
             data.Write(actingForWhomId);

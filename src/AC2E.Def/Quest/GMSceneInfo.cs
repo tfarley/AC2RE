@@ -10,8 +10,8 @@ namespace AC2E.Def {
         public StringInfo name; // _siName
         public uint actId; // _actID
         public uint sceneNum; // _uiSceneNum
-        public bool isHidden; // _bIsHidden
-        public bool isPlayable; // _bIsPlayable
+        public bool hidden; // _bIsHidden
+        public bool playable; // _bIsPlayable
         public List<GMKeyframe> keyframes; // _keyframeList
 
         public GMSceneInfo() {
@@ -23,8 +23,8 @@ namespace AC2E.Def {
             name = new StringInfo(data);
             actId = data.ReadUInt32();
             sceneNum = data.ReadUInt32();
-            isHidden = data.ReadBoolean();
-            isPlayable = data.ReadBoolean();
+            hidden = data.ReadBoolean();
+            playable = data.ReadBoolean();
             keyframes = data.ReadList(() => new GMKeyframe(data));
         }
 
@@ -33,8 +33,8 @@ namespace AC2E.Def {
             name.write(data);
             data.Write(actId);
             data.Write(sceneNum);
-            data.Write(isHidden);
-            data.Write(isPlayable);
+            data.Write(hidden);
+            data.Write(playable);
             data.Write(keyframes, v => v.write(data));
         }
     }

@@ -8,8 +8,8 @@
         public float craftSkillScore; // m_CraftSkillScore
         public uint craftSkillTitle; // m_CraftSkillTitle // TODO: CraftSkillTitleType
         public double usageResetTime; // m_usageResetTime
-        public ARHash<CraftSkillRecord> craftSkillRecordsDict; // m_hashCraftSkillRecords
-        public ARHash<RecipeRecord> recipeRecordsDict; // m_hashRecipeRecords
+        public ARHash<CraftSkillRecord> craftSkillRecords; // m_hashCraftSkillRecords
+        public ARHash<RecipeRecord> recipeRecords2; // m_hashRecipeRecords
 
         public CraftRegistry() {
 
@@ -20,8 +20,8 @@
             craftSkillScore = data.ReadSingle();
             craftSkillTitle = data.ReadUInt32();
             usageResetTime = data.ReadDouble();
-            data.ReadPkg<ARHash<IPackage>>(v => craftSkillRecordsDict = v.to<CraftSkillRecord>());
-            data.ReadPkg<ARHash<IPackage>>(v => recipeRecordsDict = v.to<RecipeRecord>());
+            data.ReadPkg<ARHash<IPackage>>(v => craftSkillRecords = v.to<CraftSkillRecord>());
+            data.ReadPkg<ARHash<IPackage>>(v => recipeRecords2 = v.to<RecipeRecord>());
         }
 
         public void write(AC2Writer data) {
@@ -29,8 +29,8 @@
             data.Write(craftSkillScore);
             data.Write(craftSkillTitle);
             data.Write(usageResetTime);
-            data.WritePkg(craftSkillRecordsDict);
-            data.WritePkg(recipeRecordsDict);
+            data.WritePkg(craftSkillRecords);
+            data.WritePkg(recipeRecords2);
         }
     }
 }

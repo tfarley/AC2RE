@@ -18,7 +18,7 @@ namespace AC2E.Def {
 
         public uint id; // attributeID
         public AttributeType type; // type
-        public uint valStrId; // val_strID
+        public uint valStringId; // val_strID
         public uint valId; // val_ID
         public int valInt; // val_Int
         public float valFloat; // val_Float
@@ -50,7 +50,7 @@ namespace AC2E.Def {
                     valAscii = data.ReadString();
                     break;
                 case AttributeType.STRING:
-                    valStrId = data.ReadUInt32();
+                    valStringId = data.ReadUInt32();
                     break;
                 case AttributeType.DATAID:
                     valDid = data.ReadDataId();
@@ -80,7 +80,7 @@ namespace AC2E.Def {
                     data.Write(valAscii);
                     break;
                 case AttributeType.STRING:
-                    data.Write(valStrId);
+                    data.Write(valStringId);
                     break;
                 case AttributeType.DATAID:
                     data.Write(valDid);

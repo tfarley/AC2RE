@@ -8,11 +8,11 @@
 
         // ECM_Physics::RecvEvt_DeParent
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public InstanceIdWithStamp childIdWithPositionStamp; // _child_id_and_position_stamp
+        public InstanceIdWithStamp childIdWithPosStamp; // _child_id_and_position_stamp
 
         public DeParentMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            childIdWithPositionStamp = data.ReadInstanceIdWithStamp();
+            childIdWithPosStamp = data.ReadInstanceIdWithStamp();
         }
     }
 }

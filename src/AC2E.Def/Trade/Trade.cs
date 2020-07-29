@@ -8,7 +8,7 @@
         public InstanceId masterId; // m_master
         public InstanceId slaveId; // m_slave
         public bool masterAccepted; // m_master_accepted
-        public bool slaveAcceptec; // m_slave_accepted
+        public bool slaveAccepted; // m_slave_accepted
         public uint status; // m_status
         public InstanceIdAHash masterItemIdToAmount; // m_master_table
 
@@ -21,7 +21,7 @@
             masterId = data.ReadInstanceId();
             slaveId = data.ReadInstanceId();
             masterAccepted = data.ReadBoolean();
-            slaveAcceptec = data.ReadBoolean();
+            slaveAccepted = data.ReadBoolean();
             status = data.ReadUInt32();
             data.ReadPkg<LAHash>(v => masterItemIdToAmount = new InstanceIdAHash(v));
         }
@@ -31,7 +31,7 @@
             data.Write(masterId);
             data.Write(slaveId);
             data.Write(masterAccepted);
-            data.Write(slaveAcceptec);
+            data.Write(slaveAccepted);
             data.Write(status);
             data.WritePkg(masterItemIdToAmount);
         }

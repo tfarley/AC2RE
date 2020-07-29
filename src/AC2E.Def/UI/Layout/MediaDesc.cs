@@ -6,6 +6,21 @@ namespace AC2E.Def {
 
     public class MediaDesc {
 
+        // Const MEDIA_*
+        public enum MediaType : uint {
+            UNDEF,
+            ANIMATION,
+            PAUSE,
+            IMAGE,
+            ALPHA,
+            SOUND,
+            JUMP,
+            MESSAGE,
+            STATE,
+            AVI,
+            CURSOR,
+        }
+
         public class AnimationMediaData : IWritable {
 
             // MD_Data_Anim
@@ -208,21 +223,6 @@ namespace AC2E.Def {
                 data.Write(hotspotX);
                 data.Write(hotspotY);
             }
-        }
-
-        // Const MEDIA_*
-        public enum MediaType : uint {
-            UNDEF,
-            ANIMATION,
-            PAUSE,
-            IMAGE,
-            ALPHA,
-            SOUND,
-            JUMP,
-            MESSAGE,
-            STATE,
-            AVI,
-            CURSOR,
         }
 
         public MediaType type; // m_type

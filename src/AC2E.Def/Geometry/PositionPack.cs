@@ -14,15 +14,15 @@ namespace AC2E.Def {
             IMPULSE = 1 << 3, // 0x00000008
         }
 
+        public PackFlag packFlags;
         public double time; // m_time
         public PositionOffset offset; // m_offset
         public Heading heading; // m_heading
-        public PackFlag packFlags;
         public bool contact; // m_contact
         public bool jump; // m_jump
         public bool impulse; // m_impulse
-        public ushort positionStamp; // m_position_stamp
-        public ushort forcePositionStamp; // m_force_position_stamp
+        public ushort posStamp; // m_position_stamp
+        public ushort forcePosStamp; // m_force_position_stamp
         public ushort teleportStamp; // m_teleport_stamp
         public Vector impulseVel; // m_impulseVel
 
@@ -34,8 +34,8 @@ namespace AC2E.Def {
             contact = packFlags.HasFlag(PackFlag.CONTACT);
             jump = packFlags.HasFlag(PackFlag.JUMP);
             impulse = packFlags.HasFlag(PackFlag.IMPULSE);
-            positionStamp = data.ReadUInt16();
-            forcePositionStamp = data.ReadUInt16();
+            posStamp = data.ReadUInt16();
+            forcePosStamp = data.ReadUInt16();
             teleportStamp = data.ReadUInt16();
             if (jump || impulse) {
                 impulseVel = data.ReadVector();

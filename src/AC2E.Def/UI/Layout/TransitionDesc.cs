@@ -4,6 +4,15 @@ namespace AC2E.Def {
 
     public class TransitionDesc {
 
+        // Const TRANS*
+        public enum TransitionType : uint {
+            UNDEF,
+            MOVE,
+            RESIZE,
+            FADE,
+            ROTATE,
+        }
+
         public class MoveResizeTransitionData : IWritable {
 
             // TD_Data_Move, TD_Data_Resize
@@ -92,15 +101,6 @@ namespace AC2E.Def {
                 data.Write(duration);
                 data.Write(flags);
             }
-        }
-
-        // Const TRANS*
-        public enum TransitionType : uint {
-            UNDEF,
-            MOVE,
-            RESIZE,
-            FADE,
-            ROTATE,
         }
 
         public TransitionType type; // type

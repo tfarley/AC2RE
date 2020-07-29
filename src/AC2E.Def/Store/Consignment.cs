@@ -9,7 +9,7 @@
         public uint saleId; // m_saleID
         public int quantityOffered; // m_quantityOffered
         public int quantitySold; // m_quantitySold
-        public double timeEntered; // m_ttTimeEntered
+        public double enteredTime; // m_ttTimeEntered
         public uint flags; // m_uiFlags
 
         public Consignment() {
@@ -22,7 +22,7 @@
             saleId = data.ReadUInt32();
             quantityOffered = data.ReadInt32();
             quantitySold = data.ReadInt32();
-            timeEntered = data.ReadDouble();
+            enteredTime = data.ReadDouble();
             flags = data.ReadUInt32();
         }
 
@@ -32,7 +32,7 @@
             data.Write(saleId);
             data.Write(quantityOffered);
             data.Write(quantitySold);
-            data.Write(timeEntered);
+            data.Write(enteredTime);
             data.Write(flags);
         }
     }

@@ -8,11 +8,11 @@
 
         // ECM_Physics::RecvEvt_LeaveWorld
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public ushort positionStamp; // _position_stamp
+        public ushort posStamp; // _position_stamp
 
         public LeaveWorldMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            positionStamp = data.ReadUInt16();
+            posStamp = data.ReadUInt16();
             data.Align(4);
         }
     }

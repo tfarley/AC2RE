@@ -5,10 +5,10 @@
         public ServerEventFunctionId funcId => ServerEventFunctionId.Quest__HandlePlayScenesDone;
 
         // WM_Quest::SendSEvt_HandlePlayScenesDone
-        public GMSceneInfoList playScenes; // _playScenes
+        public GMSceneInfoList scenes; // _playScenes
 
         public HandlePlayScenesDoneSEvt(AC2Reader data) {
-            playScenes = data.UnpackPackage<GMSceneInfoList>();
+            scenes = data.UnpackPackage<GMSceneInfoList>();
         }
     }
 }

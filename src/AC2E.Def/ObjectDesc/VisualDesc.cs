@@ -27,7 +27,7 @@ namespace AC2E.Def {
         public PackFlag packFlags;
         public DataId did; // m_DID
         public DataId parentDid; // m_parent_did
-        public DataId miDescDid; // m_midesc_did
+        public DataId motionInterpDescDid; // m_midesc_did
         public DataId behaviorTableDid; // m_behaviortable_did
         public DataId modesDid; // m_modes_did
         public Vector scale; // m_scale
@@ -52,7 +52,7 @@ namespace AC2E.Def {
                 parentDid = data.ReadDataId();
             }
             if (packFlags.HasFlag(PackFlag.MIDESC)) {
-                miDescDid = data.ReadDataId();
+                motionInterpDescDid = data.ReadDataId();
             }
             if (packFlags.HasFlag(PackFlag.BEHAVIOR)) {
                 behaviorTableDid = data.ReadDataId();
@@ -89,7 +89,7 @@ namespace AC2E.Def {
                 data.Write(parentDid);
             }
             if (packFlags.HasFlag(PackFlag.MIDESC)) {
-                data.Write(miDescDid);
+                data.Write(motionInterpDescDid);
             }
             if (packFlags.HasFlag(PackFlag.BEHAVIOR)) {
                 data.Write(behaviorTableDid);

@@ -60,7 +60,7 @@ namespace AC2E.Def {
         }
 
         public PackFlag packFlags; // bitfield
-        public uint animframeId; // animframe_id
+        public uint animFrameId; // animframe_id
         public Position pos; // pos
         public Vector vel; // m_velocity
         public Vector accel; // m_acceleration
@@ -88,7 +88,7 @@ namespace AC2E.Def {
         public Dictionary<uint, FXScalarAndTarget> fx; // m_fx
         public ushort[] timestamps = new ushort[4]; // timestamps
         public ushort instanceStamp; // m_instance_stamp
-        public ushort visualOrderingStamp; // m_visual_ordering_stamp
+        public ushort visualOrderStamp; // m_visual_ordering_stamp
 
         public PhysicsDesc() {
 
@@ -97,7 +97,7 @@ namespace AC2E.Def {
         public PhysicsDesc(AC2Reader data) {
             packFlags = (PackFlag)data.ReadUInt32();
             instanceStamp = data.ReadUInt16();
-            visualOrderingStamp = data.ReadUInt16();
+            visualOrderStamp = data.ReadUInt16();
             if (packFlags.HasFlag(PackFlag.MODE)) {
                 modeId = data.ReadUInt32();
             }
@@ -108,7 +108,7 @@ namespace AC2E.Def {
                 sliders = data.ReadStlMap(data.ReadUInt32, () => new SliderData(data));
             }
             if (packFlags.HasFlag(PackFlag.ANIMFRAME_ID)) {
-                animframeId = data.ReadUInt32();
+                animFrameId = data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.POSITION)) {
                 pos = new Position(data);
@@ -173,7 +173,7 @@ namespace AC2E.Def {
         public void write(AC2Writer data) {
             data.Write((uint)packFlags);
             data.Write(instanceStamp);
-            data.Write(visualOrderingStamp);
+            data.Write(visualOrderStamp);
             if (packFlags.HasFlag(PackFlag.MODE)) {
                 data.Write(modeId);
             }
@@ -184,7 +184,7 @@ namespace AC2E.Def {
                 data.WriteStlMap(sliders, data.Write, v => v.write(data));
             }
             if (packFlags.HasFlag(PackFlag.ANIMFRAME_ID)) {
-                data.Write(animframeId);
+                data.Write(animFrameId);
             }
             if (packFlags.HasFlag(PackFlag.POSITION)) {
                 pos.write(data);

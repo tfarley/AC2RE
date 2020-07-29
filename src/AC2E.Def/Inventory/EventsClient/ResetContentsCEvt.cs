@@ -7,7 +7,7 @@
         // WM_Inventory::PostCEvt_Inventory_ResetContents
         public RList<ContainerSegmentDescriptor> containerSegments; // _containerSegments
         public InstanceIdList containerIds; // _containers
-        public InstanceIdList contentsIds; // _contents
+        public InstanceIdList contentIds; // _contents
 
         public ResetContentsCEvt() {
 
@@ -16,13 +16,13 @@
         public ResetContentsCEvt(AC2Reader data) {
             containerSegments = data.UnpackPackage<RList<IPackage>>().to<ContainerSegmentDescriptor>();
             containerIds = new InstanceIdList(data.UnpackPackage<LList>());
-            contentsIds = new InstanceIdList(data.UnpackPackage<LList>());
+            contentIds = new InstanceIdList(data.UnpackPackage<LList>());
         }
 
         public void write(AC2Writer data) {
             data.Pack(containerSegments);
             data.Pack(containerIds);
-            data.Pack(contentsIds);
+            data.Pack(contentIds);
         }
     }
 }

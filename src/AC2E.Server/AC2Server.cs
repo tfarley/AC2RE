@@ -112,8 +112,8 @@ namespace AC2E.Server {
                     Log.Debug($"RCVD: {packet}");
 
                     if (packet.logonHeader != null) {
-                        Log.Debug($"Logon request: seq {packet.logonHeader.netAuth.connectionSeq} acct {packet.logonHeader.netAuth.account}");
-                        ClientConnection client = addClient(receiveEndpoint, packet.logonHeader.netAuth.account);
+                        Log.Debug($"Logon request: seq {packet.logonHeader.netAuth.connectionSeq} acct {packet.logonHeader.netAuth.accountName}");
+                        ClientConnection client = addClient(receiveEndpoint, packet.logonHeader.netAuth.accountName);
                         if (client != null) {
                             sendConnect(client);
                         } else {
@@ -194,14 +194,14 @@ namespace AC2E.Server {
             using (AC2Reader data = new AC2Reader(new MemoryStream(blob.payload))) {
 
                 MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
+                INetMessage genericMsg = INetMessage.read(opcode, data, true);
 
-                INetMessage genericMsg = null;
+                Log.Debug($"Got msg: {genericMsg}");
 
                 bool handled = true;
                 switch (opcode) {
                     case MessageOpcode.CLIDAT_INTERROGATION_RESPONSE_EVENT: {
-                            CliDatInterrogationResponseMsg msg = new CliDatInterrogationResponseMsg(data);
-                            genericMsg = msg;
+                            CliDatInterrogationResponseMsg msg = (CliDatInterrogationResponseMsg)genericMsg;
 
                             List<CharacterIdentity> characters = new List<CharacterIdentity> {
                                 new CharacterIdentity {
@@ -244,14 +244,12 @@ namespace AC2E.Server {
                             break;
                         }
                     case MessageOpcode.CHARACTER_CREATE_EVENT: {
-                            CharacterCreateMsg msg = new CharacterCreateMsg(data);
-                            genericMsg = msg;
+                            CharacterCreateMsg msg = (CharacterCreateMsg)genericMsg;
                             // TODO: Create character
                             break;
                         }
                     case MessageOpcode.CHARACTER_ENTER_GAME_EVENT: {
-                            CharacterEnterGameMsg msg = new CharacterEnterGameMsg(data);
-                            genericMsg = msg;
+                            CharacterEnterGameMsg msg = (CharacterEnterGameMsg)genericMsg;
 
                             client.enqueueMessage(new CreatePlayerMsg {
                                 id = msg.characterId,
@@ -259,7 +257,7 @@ namespace AC2E.Server {
                             });
 
                             client.enqueueMessage(new PlayerDescMsg {
-                                baseQualities = new CBaseQualities {
+                                qualities = new CBaseQualities {
                                     packFlags = CBaseQualities.PackFlag.WEENIE_DESC | CBaseQualities.PackFlag.INT_HASH_TABLE | CBaseQualities.PackFlag.BOOL_HASH_TABLE | CBaseQualities.PackFlag.FLOAT_HASH_TABLE | CBaseQualities.PackFlag.TIMESTAMP_HASH_TABLE | CBaseQualities.PackFlag.DATA_ID_HASH_TABLE | CBaseQualities.PackFlag.LONG_INT_HASH_TABLE,
                                     did = new DataId(0x81000530),
                                     weenieDesc = new WeenieDesc {
@@ -286,7 +284,7 @@ namespace AC2E.Server {
                                         { 263, 280 },
                                         { 264, 280 },
                                     },
-                                    longIntTable = new Dictionary<uint, long> {
+                                    longTable = new Dictionary<uint, long> {
                                         { 300, 902 },
                                         { 301, 722 },
                                         { 1000, 80 },
@@ -301,7 +299,7 @@ namespace AC2E.Server {
                                         { 263, 1.0f },
                                         { 3000, 30.0f },
                                     },
-                                    timestampTable = new Dictionary<uint, double> {
+                                    doubleTable = new Dictionary<uint, double> {
                                         { 303, 121629267.45585053 }
                                     },
                                     dataIdTable = new Dictionary<uint, DataId> {
@@ -319,44 +317,44 @@ namespace AC2E.Server {
                                     globalAppearanceModifiers = new PartGroupDataDesc {
                                         packFlags = PartGroupDataDesc.PackFlag.KEY | PartGroupDataDesc.PackFlag.APPHASH,
                                         key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
-                                        appearances = new Dictionary<uint, AppearanceInfo> {
+                                        appearanceInfos = new Dictionary<uint, AppearanceInfo> {
                                                 { 536870990, new AppearanceInfo {
-                                                    appKeyToValue = new Dictionary<uint, float> {
+                                                    appearances = new Dictionary<uint, float> {
                                                         { 2, 0.14f },
                                                         { 16, 1.0f },
                                                     }
                                                 } },
                                                 { 536870992, new AppearanceInfo {
-                                                    appKeyToValue = new Dictionary<uint, float> {
+                                                    appearances = new Dictionary<uint, float> {
                                                         { 2, 0.24f },
                                                         { 16, 1.0f },
                                                     }
                                                 } },
                                                 { 536870924, new AppearanceInfo {
-                                                    appKeyToValue = new Dictionary<uint, float> {
+                                                    appearances = new Dictionary<uint, float> {
                                                         { 1, 0.3f },
                                                     }
                                                 } },
                                                 { 536870925, new AppearanceInfo {
-                                                    appKeyToValue = new Dictionary<uint, float> {
+                                                    appearances = new Dictionary<uint, float> {
                                                         { 3, 0.2f },
                                                         { 11, 0.15f },
                                                         { 12, 0.3f },
                                                     }
                                                 } },
                                                 { 536870926, new AppearanceInfo {
-                                                    appKeyToValue = new Dictionary<uint, float> {
+                                                    appearances = new Dictionary<uint, float> {
                                                         { 1090519068, 0.06f },
                                                     }
                                                 } },
                                                 { 536871161, new AppearanceInfo {
-                                                    appKeyToValue = new Dictionary<uint, float> {
+                                                    appearances = new Dictionary<uint, float> {
                                                         { 2, 0.04f },
                                                         { 16, 1.0f },
                                                     }
                                                 } },
                                                 { 536870934, new AppearanceInfo {
-                                                    appKeyToValue = new Dictionary<uint, float> {
+                                                    appearances = new Dictionary<uint, float> {
                                                         { 2, 0.2f },
                                                         { 16, 1.0f },
                                                     }
@@ -380,7 +378,7 @@ namespace AC2E.Server {
                                     velScale = 1.08f,
                                     timestamps = new ushort[] { 1, 0, 0, 0 },
                                     instanceStamp = 5,
-                                    visualOrderingStamp = 8,
+                                    visualOrderStamp = 8,
                                 },
                                 weenieDesc = new WeenieDesc {
                                     packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.MONARCH_ID | WeenieDesc.PackFlag.PHYSICS_TYPE_LOW_DWORD | WeenieDesc.PackFlag.PHYSICS_TYPE_HIGH_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.ENTITY_DID,
@@ -446,7 +444,7 @@ namespace AC2E.Server {
                                         }
                                         },*/
                                         radarMask = 0xFFFFFFFF,
-                                        filterDict = new Dictionary<uint, uint> {
+                                        filters = new Dictionary<uint, uint> {
                                             { 0x00800001, 0x0060017B },
                                             { 0x00000002, 0x80000000 },
                                             { 0x00000003, 0x00010000 },
@@ -568,7 +566,7 @@ namespace AC2E.Server {
                                     containerIds = new InstanceIdList {
 
                                     },
-                                    contentsIds = new InstanceIdList {
+                                    contentIds = new InstanceIdList {
 
                                     },
                                     localFactionStatus = 1,
@@ -578,8 +576,7 @@ namespace AC2E.Server {
                             break;
                         }
                     case MessageOpcode.CLIDAT_REQUEST_DATA_EVENT: {
-                            CliDatRequestDataMsg msg = new CliDatRequestDataMsg(data);
-                            genericMsg = msg;
+                            CliDatRequestDataMsg msg = (CliDatRequestDataMsg)genericMsg;
                             client.enqueueMessage(new CliDatErrorMsg {
                                 qdid = msg.qdid,
                                 error = 1,
@@ -587,8 +584,7 @@ namespace AC2E.Server {
                             break;
                         }
                     case MessageOpcode.Evt_Interp__InterpSEvent_ID: {
-                            InterpSEventMsg msg = new InterpSEventMsg(data);
-                            genericMsg = msg;
+                            InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
                             // TODO: Just for testing - when pressing the attack mode button, toggle Refining effect UI image
                             if (msg.netEvent.funcId == ServerEventFunctionId.Combat__StartAttack) {
                                 if (toggleCounter % 2 == 0) {
@@ -602,11 +598,11 @@ namespace AC2E.Server {
                                                 timeCast = 129996502.8136027,
                                                 casterId = new InstanceId(0x213000000000dd9d),
                                                 timeout = 0.0f,
-                                                appF = 0.0f,
+                                                appFloat = 0.0f,
                                                 spellcraft = 1.0f,
-                                                appI = 0,
+                                                appInt = 0,
                                                 pk = false,
-                                                appR = null,
+                                                appPackage = null,
                                                 timePromotedToTopLevel = -1.0,
                                                 effect = refiningEffect,
                                                 actingForWhomId = default,
@@ -644,7 +640,7 @@ namespace AC2E.Server {
                                         },
                                         timestamps = new ushort[] { 1, 0, 0, 0 },
                                         instanceStamp = 5,
-                                        visualOrderingStamp = 8,
+                                        visualOrderStamp = 8,
                                     },
                                     weenieDesc = new WeenieDesc {
                                         packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.ENTITY_DID,
@@ -664,8 +660,6 @@ namespace AC2E.Server {
                             break;
                         }
                 }
-
-                Log.Debug($"Got msg: {genericMsg}");
 
                 if (handled && data.BaseStream.Position < data.BaseStream.Length) {
                     Log.Warning($"NetBlob was not fully read ({data.BaseStream.Position} / {data.BaseStream.Length}).");

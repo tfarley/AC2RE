@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AC2E.Def {
 
@@ -28,14 +27,14 @@ namespace AC2E.Def {
         public DataId did; // via DBObj::Pack_Type
         public WeenieDesc weenieDesc; // m_wdesc
         public Dictionary<uint, int> intTable; // m_int_table
-        public Dictionary<uint, long> longIntTable; // m_lint_table
+        public Dictionary<uint, long> longTable; // m_lint_table
         public Dictionary<uint, bool> boolTable; // m_pbool_table
         public Dictionary<uint, float> floatTable; // m_float_table
-        public Dictionary<uint, double> timestampTable; // m_ts_table
+        public Dictionary<uint, double> doubleTable; // m_ts_table
         public Dictionary<uint, string> stringTable; // m_str_table
         public Dictionary<uint, DataId> dataIdTable; // m_did_table
         public Dictionary<uint, InstanceId> instanceIdTable; // m_iid_table
-        public Dictionary<uint, Position> positionTable; // m_pos_table
+        public Dictionary<uint, Position> posTable; // m_pos_table
         public Dictionary<uint, StringInfo> stringInfoTable; // m_si_table
         public Dictionary<uint, PackageId> packageIdTable; // m_pid_table
 
@@ -59,7 +58,7 @@ namespace AC2E.Def {
                 floatTable = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
             }
             if (packFlags.HasFlag(PackFlag.TIMESTAMP_HASH_TABLE)) {
-                timestampTable = data.ReadDictionary(data.ReadUInt32, data.ReadDouble);
+                doubleTable = data.ReadDictionary(data.ReadUInt32, data.ReadDouble);
             }
             if (packFlags.HasFlag(PackFlag.STRING_HASH_TABLE)) {
                 stringTable = data.ReadDictionary(data.ReadUInt32, data.ReadString);
@@ -71,7 +70,7 @@ namespace AC2E.Def {
                 instanceIdTable = data.ReadDictionary(data.ReadUInt32, data.ReadInstanceId);
             }
             if (packFlags.HasFlag(PackFlag.POSITION_HASH_TABLE)) {
-                positionTable = data.ReadDictionary(data.ReadUInt32, () => new Position(data));
+                posTable = data.ReadDictionary(data.ReadUInt32, () => new Position(data));
             }
             if (packFlags.HasFlag(PackFlag.STRING_INFO_HASH_TABLE)) {
                 stringInfoTable = data.ReadDictionary(data.ReadUInt32, () => new StringInfo(data));
@@ -80,7 +79,7 @@ namespace AC2E.Def {
                 packageIdTable = data.ReadDictionary(data.ReadUInt32, data.ReadPackageId);
             }
             if (packFlags.HasFlag(PackFlag.LONG_INT_HASH_TABLE)) {
-                longIntTable = data.ReadDictionary(data.ReadUInt32, data.ReadInt64);
+                longTable = data.ReadDictionary(data.ReadUInt32, data.ReadInt64);
             }
         }
 
@@ -100,7 +99,7 @@ namespace AC2E.Def {
                 data.Write(floatTable, data.Write, data.Write);
             }
             if (packFlags.HasFlag(PackFlag.TIMESTAMP_HASH_TABLE)) {
-                data.Write(timestampTable, data.Write, data.Write);
+                data.Write(doubleTable, data.Write, data.Write);
             }
             if (packFlags.HasFlag(PackFlag.STRING_HASH_TABLE)) {
                 data.Write(stringTable, data.Write, data.Write);
@@ -112,7 +111,7 @@ namespace AC2E.Def {
                 data.Write(instanceIdTable, data.Write, data.Write);
             }
             if (packFlags.HasFlag(PackFlag.POSITION_HASH_TABLE)) {
-                data.Write(positionTable, data.Write, v => v.write(data));
+                data.Write(posTable, data.Write, v => v.write(data));
             }
             if (packFlags.HasFlag(PackFlag.STRING_INFO_HASH_TABLE)) {
                 data.Write(stringInfoTable, data.Write, v => v.write(data));
@@ -121,7 +120,7 @@ namespace AC2E.Def {
                 data.Write(packageIdTable, data.Write, data.Write);
             }
             if (packFlags.HasFlag(PackFlag.LONG_INT_HASH_TABLE)) {
-                data.Write(longIntTable, data.Write, data.Write);
+                data.Write(longTable, data.Write, data.Write);
             }
         }
     }

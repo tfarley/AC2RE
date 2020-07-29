@@ -29,7 +29,7 @@
         public uint quantity; // quantity
         public bool generatorRequest; // generatorRequestFlag
         public InstanceId splitItemId; // splitItemID
-        public AAHash itemApppearanceDict; // m_itemAppKeyHash
+        public AAHash itemAppearances; // m_itemAppKeyHash
         public bool noAnim; // noAnimFlag
         public InstanceId mergeContainerId; // mergeContainerID
         public bool usedOverflowSlot; // bUsedOverflowSlot
@@ -78,7 +78,7 @@
             quantity = data.ReadUInt32();
             generatorRequest = data.ReadBoolean();
             splitItemId = data.ReadInstanceId();
-            data.ReadPkg<AAHash>(v => itemApppearanceDict = v);
+            data.ReadPkg<AAHash>(v => itemAppearances = v);
             noAnim = data.ReadBoolean();
             mergeContainerId = data.ReadInstanceId();
             usedOverflowSlot = data.ReadBoolean();
@@ -124,7 +124,7 @@
             data.Write(quantity);
             data.Write(generatorRequest);
             data.Write(splitItemId);
-            data.WritePkg(itemApppearanceDict);
+            data.WritePkg(itemAppearances);
             data.Write(noAnim);
             data.Write(mergeContainerId);
             data.Write(usedOverflowSlot);
