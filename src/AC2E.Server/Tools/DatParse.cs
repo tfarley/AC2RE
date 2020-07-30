@@ -111,6 +111,14 @@ namespace AC2E.Server {
                 case DbType.CHARTEMPLATE:
                     readAndDump(datReader, entry, outputPath, data => new CharTemplate(data));
                     break;
+                case DbType.DATFILEDATA: {
+                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                            DatFileDataId datFileDataId = (DatFileDataId)entry.did.id;
+
+                            checkFullRead(data, entry);
+                        }
+                        break;
+                    }
                 case DbType.DAY_DESC:
                     readAndDump(datReader, entry, outputPath, data => new CDayDesc(data));
                     break;

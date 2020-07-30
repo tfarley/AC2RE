@@ -1,4 +1,4 @@
-﻿namespace AC2E.Utils {
+﻿namespace AC2E.Def {
 
     public static class AC2Crypto {
 

@@ -10,9 +10,18 @@
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public float jumpScale; // _value
 
+        public SetJumpScaleMsg() {
+
+        }
+
         public SetJumpScaleMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             jumpScale = data.ReadSingle();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            data.Write(jumpScale);
         }
     }
 }

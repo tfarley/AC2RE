@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 
 namespace AC2E.Server {
 
@@ -175,7 +176,13 @@ namespace AC2E.Server {
                         if (packet.frags.Count > 0) {
                             foreach (NetBlobFrag frag in packet.frags) {
                                 if (frag.fragCount == 1) {
-                                    processNetBlob(client, frag);
+                                    NetBlob blob = new NetBlob {
+                                        blobId = frag.blobId,
+                                        fragCount = frag.fragCount,
+                                        queueId = frag.queueId,
+                                    };
+                                    blob.addFragment(frag);
+                                    processNetBlob(client, blob);
                                 } else {
                                     Log.Error($"Got fragmented packet from client id: {packet.recipientId} - reassembly not implemented yet!");
                                 }
@@ -190,13 +197,19 @@ namespace AC2E.Server {
             }
         }
 
-        private void processNetBlob(ClientConnection client, NetBlobFrag blob) {
+        private void processNetBlob(ClientConnection client, NetBlob blob) {
             using (AC2Reader data = new AC2Reader(new MemoryStream(blob.payload))) {
 
                 MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
                 INetMessage genericMsg = INetMessage.read(opcode, data, true);
 
-                Log.Debug($"Got msg: {genericMsg}");
+                StringBuilder msgString = new StringBuilder(genericMsg.ToString());
+                if (opcode == MessageOpcode.Evt_Interp__InterpSEvent_ID) {
+                    InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
+                    msgString.Append($" {msg.netEvent.funcId}");
+                }
+
+                Log.Debug($"Got msg: {msgString}");
 
                 bool handled = true;
                 switch (opcode) {
@@ -375,7 +388,7 @@ namespace AC2E.Server {
                                         cell = new CellId(0x8D, 0xB5, 0x00, 0x3E),
                                         frame = new Frame(new Vector(158.13483f, 117.91791f, 129.50496f), new Quaternion(0.23793525f, 0.0f, 0.0f, 0.971281f)),
                                     },
-                                    velScale = 1.08f,
+                                    velScale = 20.0f,
                                     timestamps = new ushort[] { 1, 0, 0, 0 },
                                     instanceStamp = 5,
                                     visualOrderStamp = 8,
@@ -648,6 +661,11 @@ namespace AC2E.Server {
                                         name = new StringInfo($"TestObj 0x{toggleCounter:X}"),
                                         entityDid = new DataId(0x47000530),
                                     },
+                                });
+
+                                client.enqueueMessage(new QualUpdateIntPrivateMsg {
+                                    type = 258, // TODO: Health_CurrentLevel_IntStat
+                                    value = toggleCounter,
                                 });
 
                                 toggleCounter++;
