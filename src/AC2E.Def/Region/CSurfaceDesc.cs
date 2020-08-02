@@ -14,9 +14,9 @@ namespace AC2E.Def {
             public float minSaturate; // min_saturate
             public float maxSaturate; // max_saturate
             public uint saturatePower; // saturate_power
-            public float minBright; // min_bright
-            public float maxBright; // max_bright
-            public uint brightPower; // bright_power
+            public float minBrightness; // min_bright
+            public float maxBrightness; // max_bright
+            public uint brightnessPower; // bright_power
             public float frequency; // frequency
 
             public LScapeVertexColorDesc(AC2Reader data) {
@@ -28,9 +28,9 @@ namespace AC2E.Def {
                 minSaturate = data.ReadSingle();
                 maxSaturate = data.ReadSingle();
                 saturatePower = data.ReadUInt32();
-                minBright = data.ReadSingle();
-                maxBright = data.ReadSingle();
-                brightPower = data.ReadUInt32();
+                minBrightness = data.ReadSingle();
+                maxBrightness = data.ReadSingle();
+                brightnessPower = data.ReadUInt32();
                 frequency = data.ReadSingle();
             }
         }

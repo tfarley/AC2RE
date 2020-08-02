@@ -98,9 +98,9 @@ namespace AC2E.Def {
             public RGBAColor directColor; // m_directColor
             public float directHeading; // m_nDirectHeading
             public float directPitch; // m_nDirectPitch
-            public float directBright; // m_nDirectBright
+            public float directBrightness; // m_nDirectBright
             public RGBAColor ambientColor; // m_ambientColor
-            public float ambientBright; // m_nAmbientBright
+            public float ambientBrightness; // m_nAmbientBright
             public RGBAColor shadowColor; // m_shadowColor
             public float rainAmount; // m_nRainAmount
             public float rainWindX; // m_nRainWindX
@@ -114,11 +114,11 @@ namespace AC2E.Def {
                 fogMaxDist = data.ReadSingle();
                 fogSky = data.ReadSingle();
                 fogColor = data.ReadRGBAColor();
-                directBright = data.ReadSingle();
+                directBrightness = data.ReadSingle();
                 directHeading = data.ReadSingle();
                 directPitch = data.ReadSingle();
                 directColor = data.ReadRGBAColor();
-                ambientBright = data.ReadSingle();
+                ambientBrightness = data.ReadSingle();
                 ambientColor = data.ReadRGBAColor();
                 shadowColor = data.ReadRGBAColor();
                 replacements = data.ReadList(() => new SkyObjectReplace(data));

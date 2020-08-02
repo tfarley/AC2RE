@@ -145,6 +145,9 @@ namespace AC2E.Server {
                 case DbType.ENTITYDESC:
                     readAndDump(datReader, entry, outputPath, data => new EntityDesc(data));
                     break;
+                case DbType.FOG_DESC:
+                    readAndDump(datReader, entry, outputPath, data => new CFogDesc(data));
+                    break;
                 case DbType.FX_TABLE:
                     readAndDump(datReader, entry, outputPath, data => new DBFXTable(data));
                     break;
