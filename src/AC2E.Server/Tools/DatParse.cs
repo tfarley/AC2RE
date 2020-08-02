@@ -112,10 +112,14 @@ namespace AC2E.Server {
                     readAndDump(datReader, entry, outputPath, data => new CharTemplate(data));
                     break;
                 case DbType.DATFILEDATA: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                            DatFileDataId datFileDataId = (DatFileDataId)entry.did.id;
+                        DatFileDataId datFileDataId = (DatFileDataId)entry.did.id;
 
-                            checkFullRead(data, entry);
+                        switch (datFileDataId) {
+                            case DatFileDataId.ITERATION_LIST:
+                                readAndDump(datReader, entry, outputPath, data => new CMostlyConsecutiveIntSet(data));
+                                break;
+                            default:
+                                throw new NotImplementedException(datFileDataId.ToString());
                         }
                         break;
                     }

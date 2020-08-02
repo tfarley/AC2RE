@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class CliDatInterrogationResponseMsg : INetMessage {
 
@@ -8,11 +10,11 @@
 
         // CCliDatInterrogationResponseEvent::CDataFormat
         public Language language; // LanguageID
-        // public uint[] IterationListData = new uint[4]; // IterationListData
+        public List<TaggedIterationList> iterationListData; // IterationListData
 
         public CliDatInterrogationResponseMsg(AC2Reader data) {
             language = (Language)data.ReadUInt32();
-            // TODO: Read IterationListData, 88 bytes worth - always?
+            iterationListData = data.ReadList(() => new TaggedIterationList(data));
         }
     }
 }
