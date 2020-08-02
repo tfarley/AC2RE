@@ -226,6 +226,9 @@ namespace AC2E.Server {
                 case DbType.SKY_DESC:
                     readAndDump(datReader, entry, outputPath, data => new CSkyDesc(data));
                     break;
+                case DbType.STRING_STATE:
+                    readAndDump(datReader, entry, outputPath, data => new StringState(data));
+                    break;
                 case DbType.STRING_TABLE:
                     readAndDump(datReader, entry, outputPath, data => new StringTable(data));
                     break;
