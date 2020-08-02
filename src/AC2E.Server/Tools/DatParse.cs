@@ -214,6 +214,9 @@ namespace AC2E.Server {
                 case DbType.RENDERTEXTURE_LOCAL:
                     readAndDump(datReader, entry, outputPath, data => new RenderTexture(data));
                     break;
+                case DbType.SETUP:
+                    readAndDump(datReader, entry, outputPath, data => new CSetup(data));
+                    break;
                 case DbType.SOUND_DESC:
                     readAndDump(datReader, entry, outputPath, data => new CSoundDesc(data));
                     break;
