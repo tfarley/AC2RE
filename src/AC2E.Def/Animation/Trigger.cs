@@ -12,21 +12,21 @@
 
         public Trigger(AC2Reader data) {
             name = data.ReadUInt32();
-            stop = data.ReadBoolean();
             time = data.ReadSingle();
+            stop = data.ReadBoolean();
+            probability = data.ReadSingle();
             intensity = data.ReadSingle();
             intensityVar = data.ReadSingle();
-            probability = data.ReadSingle();
             play = data.ReadBoolean();
         }
 
         public void write(AC2Writer data) {
             data.Write(name);
-            data.Write(stop);
             data.Write(time);
+            data.Write(stop);
+            data.Write(probability);
             data.Write(intensity);
             data.Write(intensityVar);
-            data.Write(probability);
             data.Write(play);
         }
     }

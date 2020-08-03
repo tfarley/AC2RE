@@ -126,6 +126,9 @@ namespace AC2E.Server {
                 case DbType.DAY_DESC:
                     readAndDump(datReader, entry, outputPath, data => new CDayDesc(data));
                     break;
+                case DbType.DBANIMATOR:
+                    readAndDump(datReader, entry, outputPath, data => new DBAnimator(data));
+                    break;
                 case DbType.ENCODED_WAV: {
                         using (Stream output = File.OpenWrite(outputPath + ".wav")) {
                             // 4 DID + 4 file size
