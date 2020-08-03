@@ -7,7 +7,7 @@ namespace AC2E.Def {
 
         public static readonly uint BLOCK_FREE_FLAG = 0x80000000;
 
-        private readonly AC2Reader data;
+        public readonly AC2Reader data;
         public readonly DiskHeaderBlock header;
 
         public DatReader(AC2Reader data) {
@@ -27,13 +27,16 @@ namespace AC2E.Def {
             while (remainingSize > 0) {
                 data.BaseStream.Seek(offset, SeekOrigin.Begin);
 
+                int remainingBlockSize = (int)header.fileInfo.blockSize;
+
                 uint nextBlockOffset = data.ReadUInt32();
+                remainingBlockSize -= sizeof(uint);
 
                 if ((nextBlockOffset & BLOCK_FREE_FLAG) != 0) {
                     throw new InvalidDataException($"Encountered free block in file at offset {offset:X8}.");
                 }
 
-                int sizeToRead = (int)Math.Min(remainingSize, header.fileInfo.blockSize - 4);
+                int sizeToRead = Math.Min(remainingSize, remainingBlockSize);
                 data.Read(fileData, size - remainingSize, sizeToRead);
                 remainingSize -= sizeToRead;
 
@@ -43,25 +46,32 @@ namespace AC2E.Def {
             return fileData;
         }
 
-        public void readFile(Stream output, uint offset, int size) {
+        public void readFile(Stream output, uint offset, int size, int prefixSkipSize = 0) {
             byte[] blockBuffer = new byte[header.fileInfo.blockSize];
-            bool skippedDid = false;
+            int remainingPrefixSkipSize = prefixSkipSize;
             int remainingSize = size;
             while (remainingSize > 0) {
                 data.BaseStream.Seek(offset, SeekOrigin.Begin);
 
+                int remainingBlockSize = (int)header.fileInfo.blockSize;
+
                 uint nextBlockOffset = data.ReadUInt32();
+                remainingBlockSize -= sizeof(uint);
 
                 if ((nextBlockOffset & BLOCK_FREE_FLAG) != 0) {
                     throw new InvalidDataException($"Encountered free block in file at offset {offset:X8}.");
                 }
 
-                int sizeToRead = (int)Math.Min(remainingSize, header.fileInfo.blockSize - 4);
-                if (!skippedDid) {
-                    data.BaseStream.Seek(4, SeekOrigin.Current);
-                    sizeToRead -= 4;
-                    remainingSize -= 4;
+                // Skip things like DID, file length, etc.
+                if (remainingPrefixSkipSize > 0) {
+                    int sizeToSkip = Math.Min(remainingPrefixSkipSize, remainingBlockSize);
+                    data.BaseStream.Seek(sizeToSkip, SeekOrigin.Current);
+                    remainingBlockSize -= sizeToSkip;
+                    remainingSize -= sizeToSkip;
+                    remainingPrefixSkipSize -= sizeToSkip;
                 }
+
+                int sizeToRead = Math.Min(remainingSize, remainingBlockSize);
                 data.Read(blockBuffer, 0, sizeToRead);
                 output.Write(blockBuffer, 0, sizeToRead);
                 remainingSize -= sizeToRead;

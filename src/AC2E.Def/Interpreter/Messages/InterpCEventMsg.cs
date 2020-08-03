@@ -47,7 +47,7 @@ namespace AC2E.Def {
             netEvent.write(data);
             long contentEnd = data.BaseStream.Position;
             long contentLength = contentEnd - contentStart;
-            data.BaseStream.Seek(-contentLength - 4, SeekOrigin.Current);
+            data.BaseStream.Seek(-contentLength - sizeof(uint), SeekOrigin.Current);
             data.Write((uint)contentLength);
             data.BaseStream.Seek(contentEnd, SeekOrigin.Begin);
         }

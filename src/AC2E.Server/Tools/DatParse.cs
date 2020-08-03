@@ -126,6 +126,14 @@ namespace AC2E.Server {
                 case DbType.DAY_DESC:
                     readAndDump(datReader, entry, outputPath, data => new CDayDesc(data));
                     break;
+                case DbType.ENCODED_WAV: {
+                        using (Stream output = File.OpenWrite(outputPath + ".wav")) {
+                            // 4 DID + 4 file size
+                            int ac2HeaderSize = sizeof(uint) + sizeof(uint);
+                            datReader.readFile(output, entry.offset, entry.size, ac2HeaderSize);
+                        }
+                        break;
+                    }
                 case DbType.ENCOUNTER_DESC:
                     readAndDump(datReader, entry, outputPath, data => new CEncounterDesc(data));
                     break;
@@ -246,6 +254,33 @@ namespace AC2E.Server {
                     break;
                 case DbType.VISUAL_DESC:
                     readAndDump(datReader, entry, outputPath, data => new VisualDesc(data));
+                    break;
+                case DbType.WAVE: {
+                        using (Stream output = File.OpenWrite(outputPath))
+                        using (BinaryWriter outputWriter = new BinaryWriter(output)) {
+                            // 4 DID + 4 unk + 4 file size
+                            int ac2HeaderSize = sizeof(uint) + sizeof(uint) + sizeof(uint);
+                            int fmtHeaderSize = 16;
+                            outputWriter.Write(new byte[] { (byte)'R', (byte)'I', (byte)'F', (byte)'F' });
+                            // 4 "WAVE" + 4 "fmt " + 4 fmtHeaderSize + 16 fmtHeader + 4 "data" + 4 dataSize
+                            outputWriter.Write(entry.size - ac2HeaderSize + sizeof(uint) + sizeof(uint) + sizeof(uint) + fmtHeaderSize + sizeof(uint) + sizeof(uint));
+                            outputWriter.Write(new byte[] { (byte)'W', (byte)'A', (byte)'V', (byte)'E' });
+
+                            outputWriter.Write(new byte[] { (byte)'f', (byte)'m', (byte)'t', (byte)' ' });
+                            outputWriter.Write(fmtHeaderSize);
+                            // + 4 to skip nextBlockOffset
+                            datReader.data.BaseStream.Seek(entry.offset + sizeof(uint) + ac2HeaderSize, SeekOrigin.Begin);
+                            byte[] fmtHeader = datReader.data.ReadBytes(fmtHeaderSize);
+                            outputWriter.Write(fmtHeader);
+
+                            outputWriter.Write(new byte[] { (byte)'d', (byte)'a', (byte)'t', (byte)'a' });
+                            outputWriter.Write(entry.size - ac2HeaderSize - fmtHeaderSize);
+                            datReader.readFile(output, entry.offset, entry.size, ac2HeaderSize + fmtHeaderSize);
+                        }
+                        break;
+                    }
+                case DbType.WSTATE:
+                    readAndDump(datReader, entry, outputPath, data => new WState(data));
                     break;
                 case DbType.WLIB: {
                         using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
