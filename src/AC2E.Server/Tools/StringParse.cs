@@ -7,12 +7,12 @@ namespace AC2E.Server {
 
     internal class StringParse {
 
-        private static void printDecryptedString(byte[] bytes, Encoding encoding) {
+        public static void printDecryptedString(byte[] bytes, Encoding encoding) {
             AC2Crypto.decrypt(bytes, 0, bytes.Length);
             Log.Information($"Str: {encoding.GetString(bytes)}");
         }
 
-        private static void printEncryptedString(string str, Encoding encoding) {
+        public static void printEncryptedString(string str, Encoding encoding) {
             byte[] bytes = encoding.GetBytes(str);
             AC2Crypto.encrypt(bytes, 0, bytes.Length);
             Log.Information($"Str: {str}");

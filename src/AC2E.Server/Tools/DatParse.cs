@@ -11,60 +11,76 @@ namespace AC2E.Server {
 
         public static void parseDat(string datFileName, string outputBaseDir, params DbType[] typesToParse) {
             if (File.Exists(datFileName)) {
+                Log.Information($"Parsing dat {datFileName}...");
+
                 HashSet<DbType> typesToParseSet = new HashSet<DbType>(typesToParse);
 
                 Dictionary<DbType, string> directoryCache = new Dictionary<DbType, string>();
-
-                DbTypeDef mprTypeDef = DbTypeDef.TYPE_TO_DEF[DbType.MASTER_PROPERTY];
+                Dictionary<DataId, string> didToFileName = new Dictionary<DataId, string>();
 
                 HashSet<DbType> allSeenTypes = new HashSet<DbType>();
 
                 int numFiles = 0;
                 using (DatReader datReader = new DatReader(new AC2Reader(File.OpenRead(datFileName)))) {
                     BTree filesystemTree = new BTree(datReader);
+
                     // Parse data in first pass that is required for second pass
-                    bool foundMasterProperty = false;
                     foreach (BTNode node in filesystemTree.offsetToNode.Values) {
                         foreach (BTEntry entry in node.entries) {
-                            allSeenTypes.Add(DbTypeDef.getType(entry.did));
-                            if (mprTypeDef.contains(entry.did)) {
-                                if (!directoryCache.TryGetValue(DbType.MASTER_PROPERTY, out string directory)) {
-                                    directory = getOrCreateDir(outputBaseDir, mprTypeDef.strDataDir);
-                                    directoryCache[DbType.MASTER_PROPERTY] = directory;
-                                }
+                            DbType dbType = DbTypeDef.getType(entry.did);
 
+                            DbTypeDef dbTypeDef = DbTypeDef.TYPE_TO_DEF[dbType];
+
+                            if (!directoryCache.TryGetValue(dbType, out string directory)) {
+                                if (typesToParseSet.Contains(dbType)) {
+                                    directory = getOrCreateDir(outputBaseDir, dbTypeDef.strDataDir);
+                                    directoryCache[dbType] = directory;
+                                }
+                            }
+
+                            if (dbType == DbType.MASTER_PROPERTY) {
                                 using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
                                     MasterProperty.instance = new MasterProperty(data);
 
-                                    if (typesToParseSet.Contains(DbType.MASTER_PROPERTY)) {
-                                        File.WriteAllText(Path.Combine(directory, $"{entry.did.id:X8}{mprTypeDef.extension}.txt"), Util.objectToString(MasterProperty.instance));
+                                    if (typesToParseSet.Contains(dbType)) {
+                                        File.WriteAllText(Path.Combine(directory, $"{entry.did.id:X8}{dbTypeDef.extension}.txt"), Util.objectToString(MasterProperty.instance));
                                     }
 
                                     checkFullRead(data, entry);
                                 }
+                            } else if (dbType == DbType.FILE2ID_TABLE) {
+                                using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                                    DBFile2IDTable file2IdTable = new DBFile2IDTable(data);
 
-                                foundMasterProperty = true;
-                                break;
+                                    if (typesToParseSet.Contains(dbType)) {
+                                        File.WriteAllText(Path.Combine(directory, $"{entry.did.id:X8}{dbTypeDef.extension}.txt"), Util.objectToString(file2IdTable));
+                                    }
+
+                                    foreach (var element in file2IdTable.cacheByDid.Values) {
+                                        foreach (var didAndEntry in element.didToEntry) {
+                                            didToFileName.Add(didAndEntry.Key, didAndEntry.Value.fileName);
+                                        }
+                                    }
+
+                                    checkFullRead(data, entry);
+                                }
                             }
                         }
-
-                        if (foundMasterProperty) {
-                            break;
-                        }
                     }
-
-                    Log.Information($"All seen types in {datFileName}: {Util.objectToString(allSeenTypes)}.");
 
                     foreach (BTNode node in filesystemTree.offsetToNode.Values) {
                         numFiles += node.entries.Count;
                         foreach (BTEntry entry in node.entries) {
                             DbType dbType = DbTypeDef.getType(entry.did);
+
+                            allSeenTypes.Add(dbType);
+
                             if (dbType == DbType.UNDEFINED) {
                                 Log.Warning($"Unhandled dat gid {entry.did}.");
                                 continue;
                             }
 
-                            if (dbType == DbType.MASTER_PROPERTY || !typesToParseSet.Contains(dbType)) {
+                            if (dbType == DbType.MASTER_PROPERTY || dbType == DbType.FILE2ID_TABLE || !typesToParseSet.Contains(dbType)) {
                                 continue;
                             }
 
@@ -75,14 +91,20 @@ namespace AC2E.Server {
                                 directoryCache[dbType] = directory;
                             }
 
-                            string outputPath = Path.Combine(directory, $"{entry.did.id:X8}{dbTypeDef.extension}");
+                            if (didToFileName.TryGetValue(entry.did, out string fileName)) {
+                                fileName = $"{entry.did.id:X8}_{fileName}"; ;
+                            } else {
+                                fileName = $"{entry.did.id:X8}{dbTypeDef.extension}";
+                            }
+
+                            string outputPath = Path.Combine(directory, fileName);
 
                             parseFile(datReader, entry, outputPath);
                         }
                     }
                 }
 
-                Log.Information($"Parsed dat {datFileName}, num files: {numFiles}.");
+                Log.Information($"Parsed dat {datFileName}, num files: {numFiles}, all seen types: {Util.objectToString(allSeenTypes)}.");
             }
         }
 
@@ -155,6 +177,9 @@ namespace AC2E.Server {
                     }
                 case DbType.ENTITYDESC:
                     readAndDump(datReader, entry, outputPath, data => new EntityDesc(data));
+                    break;
+                case DbType.FILE2ID_TABLE:
+                    readAndDump(datReader, entry, outputPath, data => new DBFile2IDTable(data));
                     break;
                 case DbType.FOG_DESC:
                     readAndDump(datReader, entry, outputPath, data => new CFogDesc(data));
@@ -311,7 +336,9 @@ namespace AC2E.Server {
 
         private static void readAndDump(DatReader datReader, BTEntry entry, string outputPath, Func<AC2Reader, object> readFunc) {
             using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                File.WriteAllText(outputPath + ".txt", Util.objectToString(readFunc.Invoke(data)));
+                object readObj = readFunc.Invoke(data);
+
+                File.WriteAllText(outputPath + ".txt", Util.objectToString(readObj));
 
                 checkFullRead(data, entry);
             }
