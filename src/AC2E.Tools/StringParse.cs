@@ -3,9 +3,9 @@ using Serilog;
 using System;
 using System.Text;
 
-namespace AC2E.Server {
+namespace AC2E.Tools {
 
-    internal class StringParse {
+    public class StringParse {
 
         public static void printDecryptedString(byte[] bytes, Encoding encoding) {
             AC2Crypto.decrypt(bytes, 0, bytes.Length);

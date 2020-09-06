@@ -7,11 +7,17 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="UI\RenderPreview.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UI\SearchDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="UI\RenderPreview.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="UI\SearchDialog.xaml">
       <SubType>Designer</SubType>
     </Page>

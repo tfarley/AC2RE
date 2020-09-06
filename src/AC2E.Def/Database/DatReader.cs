@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace AC2E.Def {
@@ -9,18 +10,48 @@ namespace AC2E.Def {
 
         public readonly AC2Reader data;
         public readonly DiskHeaderBlock header;
+        public IEnumerable<DataId> dids => didToEntry.Keys;
+        private readonly BTree filesystemTree;
+        private readonly Dictionary<DataId, BTEntry> didToEntry = new Dictionary<DataId, BTEntry>();
+
+        public void Dispose() {
+            data.Dispose();
+        }
 
         public DatReader(AC2Reader data) {
             this.data = data;
 
             header = new DiskHeaderBlock(data);
+            filesystemTree = new BTree(this);
+            foreach (BTNode node in filesystemTree.offsetToNode.Values) {
+                foreach (BTEntry entry in node.entries) {
+                    didToEntry.Add(entry.did, entry);
+                }
+            }
         }
 
-        public AC2Reader getFileReader(uint offset, int size) {
-            return new AC2Reader(new MemoryStream(readFileBytes(offset, size)));
+        public bool contains(DataId did) {
+            return didToEntry.ContainsKey(did);
         }
 
-        public byte[] readFileBytes(uint offset, int size) {
+        public BTEntry getEntry(DataId did) {
+            return didToEntry.GetValueOrDefault(did, null);
+        }
+
+        public AC2Reader getFileReader(DataId did) {
+            return new AC2Reader(new MemoryStream(readFileBytes(did)));
+        }
+
+        public AC2Reader getFileReaderRaw(uint offset, int size) {
+            return new AC2Reader(new MemoryStream(readFileBytesRaw(offset, size)));
+        }
+
+        public byte[] readFileBytes(DataId did) {
+            BTEntry entry = didToEntry[did];
+            return readFileBytesRaw(entry.offset, entry.size);
+        }
+
+        public byte[] readFileBytesRaw(uint offset, int size) {
             byte[] fileData = new byte[size];
 
             int remainingSize = size;
@@ -46,7 +77,12 @@ namespace AC2E.Def {
             return fileData;
         }
 
-        public void readFile(Stream output, uint offset, int size, int prefixSkipSize = 0) {
+        public void readFile(DataId did, Stream output, int prefixSkipSize = 0) {
+            BTEntry entry = didToEntry[did];
+            readFileRaw(entry.offset, entry.size, output, prefixSkipSize);
+        }
+
+        public void readFileRaw(uint offset, int size, Stream output, int prefixSkipSize = 0) {
             byte[] blockBuffer = new byte[header.fileInfo.blockSize];
             int remainingPrefixSkipSize = prefixSkipSize;
             int remainingSize = size;
@@ -78,10 +114,6 @@ namespace AC2E.Def {
 
                 offset = nextBlockOffset;
             }
-        }
-
-        public void Dispose() {
-            data.Dispose();
         }
     }
 }

@@ -19,8 +19,6 @@ namespace AC2E.Server {
         }
 
         ~NetInterface() {
-            // Always close in order to release system resources
-            // (i.e. those that GC is not aware of, such as a socket)
             if (socket != null) {
                 Log.Warning($"Didn't close NetInterface with port {port} before destruction!");
                 close();

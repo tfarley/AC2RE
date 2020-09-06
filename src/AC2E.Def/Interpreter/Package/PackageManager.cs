@@ -76,7 +76,7 @@ namespace AC2E.Def {
                 case NativeType.VISUALDESC:
                     return new VisualDesc(data);
                 default:
-                    throw new NotImplementedException($"Unhandled read for native package type {nativeType}");
+                    throw new NotImplementedException($"Unhandled read for native package type {nativeType}.");
             }
         }
 
@@ -155,7 +155,7 @@ namespace AC2E.Def {
                 case PackageType.VisualDescInfo:
                     return new VisualDescInfo(data);
                 default:
-                    throw new NotImplementedException($"Unhandled read for package type {packageType}");
+                    throw new NotImplementedException($"Unhandled read for package type {packageType}.");
             }
         }
     }

@@ -672,6 +672,11 @@ namespace AC2E.Server {
                             }
                             break;
                         }
+                    case MessageOpcode.Evt_Physics__CPosition_ID: {
+                            CPositionMsg msg = (CPositionMsg)genericMsg;
+                            Log.Information($"Pos: {msg.pos.offset.offset}");
+                            break;
+                        }
                     default: {
                             Log.Error($"Unhandled opcode: {opcode} - message not processed! Header: {blob}");
                             handled = false;

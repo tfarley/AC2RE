@@ -1,4 +1,5 @@
 ﻿using AC2E.Def;
+using AC2E.Tools;
 using Serilog;
 using System.Threading;
 
@@ -16,11 +17,11 @@ namespace AC2E.Server {
 
             Log.Information("Hello World!");
 
-            //DatParse.parseDat("G:\\Asheron's Call 2\\portal.dat", "portalparsed", DbType.DATFILEDATA);
+            //DatParse.parseDat("G:\\Asheron's Call 2\\portal.dat", "portalparsed", DbType.MESH);
             //DatParse.parseDat("G:\\Asheron's Call 2\\cell_1.dat", "cell1parsed", DbType.ENVCELL);
             //DatParse.parseDat("G:\\Asheron's Call 2\\cell_2.dat", "cell2parsed", DbType.DATFILEDATA);
             //DatParse.parseDat("G:\\Asheron's Call 2\\highres.dat", "highresparsed", DbType.DATFILEDATA);
-            //DatParse.parseDat("G:\\Asheron's Call 2\\local_English.dat", "localenglishparsed", DbType.STRING_TABLE);
+            //DatParse.parseDat("G:\\Asheron's Call 2\\local_English.dat", "localenglishparsed", DbType.ENCODED_WAV);
             //CellParse.getMissingCells("G:\\Asheron's Call 2\\cell_1.dat");
 
             runServer();

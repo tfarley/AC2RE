@@ -29,6 +29,8 @@ namespace AC2E.PacketTool.UI {
                     errorsFilterComboBox.Items.Add(new ComboBoxItem { Content = messageErrorType });
                 }
             }
+
+            new RenderPreview().Show();
         }
 
         private void refreshItems() {

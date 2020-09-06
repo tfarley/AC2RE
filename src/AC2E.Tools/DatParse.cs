@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace AC2E.Server {
+namespace AC2E.Tools {
 
-    internal class DatParse {
+    public class DatParse {
 
         public static void parseDat(string datFileName, string outputBaseDir, params DbType[] typesToParse) {
             if (File.Exists(datFileName)) {
@@ -22,85 +22,80 @@ namespace AC2E.Server {
 
                 int numFiles = 0;
                 using (DatReader datReader = new DatReader(new AC2Reader(File.OpenRead(datFileName)))) {
-                    BTree filesystemTree = new BTree(datReader);
-
                     // Parse data in first pass that is required for second pass
-                    foreach (BTNode node in filesystemTree.offsetToNode.Values) {
-                        foreach (BTEntry entry in node.entries) {
-                            DbType dbType = DbTypeDef.getType(entry.did);
+                    foreach (DataId did in datReader.dids) {
+                        DbType dbType = DbTypeDef.getType(did);
 
-                            DbTypeDef dbTypeDef = DbTypeDef.TYPE_TO_DEF[dbType];
+                        DbTypeDef dbTypeDef = DbTypeDef.TYPE_TO_DEF[dbType];
 
-                            if (!directoryCache.TryGetValue(dbType, out string directory)) {
-                                if (typesToParseSet.Contains(dbType)) {
-                                    directory = getOrCreateDir(outputBaseDir, dbTypeDef.strDataDir);
-                                    directoryCache[dbType] = directory;
-                                }
+                        if (!directoryCache.TryGetValue(dbType, out string directory)) {
+                            if (typesToParseSet.Contains(dbType)) {
+                                directory = getOrCreateDir(outputBaseDir, dbTypeDef.strDataDir);
+                                directoryCache[dbType] = directory;
                             }
+                        }
 
-                            if (dbType == DbType.MASTER_PROPERTY) {
-                                using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                    MasterProperty.instance = new MasterProperty(data);
+                        if (dbType == DbType.MASTER_PROPERTY) {
+                            using (AC2Reader data = datReader.getFileReader(did)) {
+                                MasterProperty.instance = new MasterProperty(data);
 
-                                    if (typesToParseSet.Contains(dbType)) {
-                                        File.WriteAllText(Path.Combine(directory, $"{entry.did.id:X8}{dbTypeDef.extension}.txt"), Util.objectToString(MasterProperty.instance));
-                                    }
-
-                                    checkFullRead(data, entry);
+                                if (typesToParseSet.Contains(dbType)) {
+                                    File.WriteAllText(Path.Combine(directory, $"{did.id:X8}{dbTypeDef.extension}.txt"), Util.objectToString(MasterProperty.instance));
                                 }
-                            } else if (dbType == DbType.FILE2ID_TABLE) {
-                                using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
-                                    DBFile2IDTable file2IdTable = new DBFile2IDTable(data);
 
-                                    if (typesToParseSet.Contains(dbType)) {
-                                        File.WriteAllText(Path.Combine(directory, $"{entry.did.id:X8}{dbTypeDef.extension}.txt"), Util.objectToString(file2IdTable));
-                                    }
+                                checkFullRead(data, did);
+                            }
+                        } else if (dbType == DbType.FILE2ID_TABLE) {
+                            using (AC2Reader data = datReader.getFileReader(did)) {
+                                DBFile2IDTable file2IdTable = new DBFile2IDTable(data);
 
-                                    foreach (var element in file2IdTable.cacheByDid.Values) {
-                                        foreach (var didAndEntry in element.didToEntry) {
-                                            didToFileName.Add(didAndEntry.Key, didAndEntry.Value.fileName);
-                                        }
-                                    }
-
-                                    checkFullRead(data, entry);
+                                if (typesToParseSet.Contains(dbType)) {
+                                    File.WriteAllText(Path.Combine(directory, $"{did.id:X8}{dbTypeDef.extension}.txt"), Util.objectToString(file2IdTable));
                                 }
+
+                                foreach (var element in file2IdTable.cacheByDid.Values) {
+                                    foreach (var didAndEntry in element.didToEntry) {
+                                        didToFileName.Add(didAndEntry.Key, didAndEntry.Value.fileName);
+                                    }
+                                }
+
+                                checkFullRead(data, did);
                             }
                         }
                     }
 
-                    foreach (BTNode node in filesystemTree.offsetToNode.Values) {
-                        numFiles += node.entries.Count;
-                        foreach (BTEntry entry in node.entries) {
-                            DbType dbType = DbTypeDef.getType(entry.did);
+                    foreach (DataId did in datReader.dids) {
+                        numFiles++;
 
-                            allSeenTypes.Add(dbType);
+                        DbType dbType = DbTypeDef.getType(did);
 
-                            if (dbType == DbType.UNDEFINED) {
-                                Log.Warning($"Unhandled dat gid {entry.did}.");
-                                continue;
-                            }
+                        allSeenTypes.Add(dbType);
 
-                            if (dbType == DbType.MASTER_PROPERTY || dbType == DbType.FILE2ID_TABLE || !typesToParseSet.Contains(dbType)) {
-                                continue;
-                            }
-
-                            DbTypeDef dbTypeDef = DbTypeDef.TYPE_TO_DEF[dbType];
-
-                            if (!directoryCache.TryGetValue(dbType, out string directory)) {
-                                directory = getOrCreateDir(outputBaseDir, dbTypeDef.strDataDir);
-                                directoryCache[dbType] = directory;
-                            }
-
-                            if (didToFileName.TryGetValue(entry.did, out string fileName)) {
-                                fileName = $"{entry.did.id:X8}_{fileName}"; ;
-                            } else {
-                                fileName = $"{entry.did.id:X8}{dbTypeDef.extension}";
-                            }
-
-                            string outputPath = Path.Combine(directory, fileName);
-
-                            parseFile(datReader, entry, outputPath);
+                        if (dbType == DbType.UNDEFINED) {
+                            Log.Warning($"Unhandled dat gid {did}.");
+                            continue;
                         }
+
+                        if (dbType == DbType.MASTER_PROPERTY || dbType == DbType.FILE2ID_TABLE || !typesToParseSet.Contains(dbType)) {
+                            continue;
+                        }
+
+                        DbTypeDef dbTypeDef = DbTypeDef.TYPE_TO_DEF[dbType];
+
+                        if (!directoryCache.TryGetValue(dbType, out string directory)) {
+                            directory = getOrCreateDir(outputBaseDir, dbTypeDef.strDataDir);
+                            directoryCache[dbType] = directory;
+                        }
+
+                        if (didToFileName.TryGetValue(did, out string fileName)) {
+                            fileName = $"{did.id:X8}_{fileName}"; ;
+                        } else {
+                            fileName = $"{did.id:X8}{dbTypeDef.extension}";
+                        }
+
+                        string outputPath = Path.Combine(directory, fileName);
+
+                        parseFile(datReader, did, outputPath);
                     }
                 }
 
@@ -108,37 +103,37 @@ namespace AC2E.Server {
             }
         }
 
-        private static void parseFile(DatReader datReader, BTEntry entry, string outputPath) {
-            DbType dbType = DbTypeDef.getType(entry.did);
+        private static void parseFile(DatReader datReader, DataId did, string outputPath) {
+            DbType dbType = DbTypeDef.getType(did);
 
             switch (dbType) {
                 case DbType.APPEARANCE:
-                    readAndDump(datReader, entry, outputPath, data => new AppearanceTable(data));
+                    readAndDump(datReader, did, outputPath, data => new AppearanceTable(data));
                     break;
                 case DbType.ANIMMAP:
-                    readAndDump(datReader, entry, outputPath, data => {
+                    readAndDump(datReader, did, outputPath, data => {
                         DataId did = data.ReadDataId();
                         return data.ReadDictionary(data.ReadUInt32, data.ReadUInt32);
                     });
                     break;
                 case DbType.BEHAVIORTABLE:
-                    readAndDump(datReader, entry, outputPath, data => new BehaviorTable(data));
+                    readAndDump(datReader, did, outputPath, data => new BehaviorTable(data));
                     break;
                 case DbType.BLOCK_MAP:
-                    readAndDump(datReader, entry, outputPath, data => new BlockMap(data));
+                    readAndDump(datReader, did, outputPath, data => new BlockMap(data));
                     break;
                 case DbType.CAMERA_FX:
-                    readAndDump(datReader, entry, outputPath, data => new CameraFX(data));
+                    readAndDump(datReader, did, outputPath, data => new CameraFX(data));
                     break;
                 case DbType.CHARTEMPLATE:
-                    readAndDump(datReader, entry, outputPath, data => new CharTemplate(data));
+                    readAndDump(datReader, did, outputPath, data => new CharTemplate(data));
                     break;
                 case DbType.DATFILEDATA: {
-                        DatFileDataId datFileDataId = (DatFileDataId)entry.did.id;
+                        DatFileDataId datFileDataId = (DatFileDataId)did.id;
 
                         switch (datFileDataId) {
                             case DatFileDataId.ITERATION_LIST:
-                                readAndDump(datReader, entry, outputPath, data => new CMostlyConsecutiveIntSet(data));
+                                readAndDump(datReader, did, outputPath, data => new CMostlyConsecutiveIntSet(data));
                                 break;
                             default:
                                 throw new NotImplementedException(datFileDataId.ToString());
@@ -146,146 +141,153 @@ namespace AC2E.Server {
                         break;
                     }
                 case DbType.DAY_DESC:
-                    readAndDump(datReader, entry, outputPath, data => new CDayDesc(data));
+                    readAndDump(datReader, did, outputPath, data => new CDayDesc(data));
                     break;
                 case DbType.DBANIMATOR:
-                    readAndDump(datReader, entry, outputPath, data => new DBAnimator(data));
+                    readAndDump(datReader, did, outputPath, data => new DBAnimator(data));
                     break;
                 case DbType.ENCODED_WAV: {
                         using (Stream output = File.OpenWrite(outputPath + ".wav")) {
                             // 4 DID + 4 file size
                             int ac2HeaderSize = sizeof(uint) + sizeof(uint);
-                            datReader.readFile(output, entry.offset, entry.size, ac2HeaderSize);
+                            datReader.readFile(did, output, ac2HeaderSize);
                         }
                         break;
                     }
                 case DbType.ENCOUNTER_DESC:
-                    readAndDump(datReader, entry, outputPath, data => new CEncounterDesc(data));
+                    readAndDump(datReader, did, outputPath, data => new CEncounterDesc(data));
                     break;
                 case DbType.ENUM_MAPPER: {
                         using (StreamWriter output = new StreamWriter(File.OpenWrite(outputPath + ".txt")))
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                        using (AC2Reader data = datReader.getFileReader(did)) {
                             var emp = new EnumMapper(data);
 
                             foreach (var mapping in emp.idToString) {
                                 output.WriteLine($"{mapping.Key}\t{mapping.Value}");
                             }
 
-                            checkFullRead(data, entry);
+                            checkFullRead(data, did);
                         }
                         break;
                     }
                 case DbType.ENTITYDESC:
-                    readAndDump(datReader, entry, outputPath, data => new EntityDesc(data));
+                    readAndDump(datReader, did, outputPath, data => new EntityDesc(data));
                     break;
                 case DbType.FILE2ID_TABLE:
-                    readAndDump(datReader, entry, outputPath, data => new DBFile2IDTable(data));
+                    readAndDump(datReader, did, outputPath, data => new DBFile2IDTable(data));
                     break;
                 case DbType.FOG_DESC:
-                    readAndDump(datReader, entry, outputPath, data => new CFogDesc(data));
+                    readAndDump(datReader, did, outputPath, data => new CFogDesc(data));
                     break;
                 case DbType.FX_TABLE:
-                    readAndDump(datReader, entry, outputPath, data => new DBFXTable(data));
+                    readAndDump(datReader, did, outputPath, data => new DBFXTable(data));
                     break;
                 case DbType.FXSCRIPT:
-                    readAndDump(datReader, entry, outputPath, data => new FxScript(data));
+                    readAndDump(datReader, did, outputPath, data => new FxScript(data));
                     break;
                 case DbType.GAME_TIME:
-                    readAndDump(datReader, entry, outputPath, data => new GameTime(data));
+                    readAndDump(datReader, did, outputPath, data => new GameTime(data));
                     break;
                 case DbType.INPUTMAPPER:
-                    readAndDump(datReader, entry, outputPath, data => new EnumIDMap(data));
+                    readAndDump(datReader, did, outputPath, data => new EnumIDMap(data));
                     break;
                 case DbType.KEYMAP:
-                    readAndDump(datReader, entry, outputPath, data => new CKeyMap(data));
+                    readAndDump(datReader, did, outputPath, data => new CKeyMap(data));
                     break;
                 case DbType.MAPNOTE_DESC:
-                    readAndDump(datReader, entry, outputPath, data => new CMapNoteDesc(data));
+                    readAndDump(datReader, did, outputPath, data => new CMapNoteDesc(data));
                     break;
                 case DbType.MATERIALINSTANCE:
-                    readAndDump(datReader, entry, outputPath, data => new MaterialInstance(data));
+                    readAndDump(datReader, did, outputPath, data => new MaterialInstance(data));
                     break;
                 case DbType.MATERIALMODIFIER:
-                    readAndDump(datReader, entry, outputPath, data => new MaterialModifier(data));
+                    readAndDump(datReader, did, outputPath, data => new MaterialModifier(data));
+                    break;
+                case DbType.MESH:
+                    readAndDump(datReader, did, outputPath, data => {
+                        DataId did = data.ReadDataId();
+                        return new CStaticMesh(data);
+                    });
                     break;
                 case DbType.MOTIONINTERPDESC:
-                    readAndDump(datReader, entry, outputPath, data => new MotionInterpDesc(data));
+                    readAndDump(datReader, did, outputPath, data => new MotionInterpDesc(data));
                     break;
                 case DbType.MUSICINFO:
-                    readAndDump(datReader, entry, outputPath, data => new MusicInfo(data));
+                    readAndDump(datReader, did, outputPath, data => new MusicInfo(data));
                     break;
                 case DbType.PHYSICS_MATERIAL:
-                    readAndDump(datReader, entry, outputPath, data => {
+                    readAndDump(datReader, did, outputPath, data => {
                         DataId did = data.ReadDataId();
                         return new PropertyCollection(data);
                     });
                     break;
                 case DbType.PSDESC:
-                    readAndDump(datReader, entry, outputPath, data => new PSDesc(data));
+                    readAndDump(datReader, did, outputPath, data => new PSDesc(data));
                     break;
                 case DbType.PROPERTY_DESC:
-                    readAndDump(datReader, entry, outputPath, data => new PropertyDesc(data));
+                    readAndDump(datReader, did, outputPath, data => new PropertyDesc(data));
                     break;
                 case DbType.QUALITIES:
-                    readAndDump(datReader, entry, outputPath, data => new CBaseQualities(data));
+                    readAndDump(datReader, did, outputPath, data => new CBaseQualities(data));
                     break;
                 case DbType.QUALITY_FILTER:
-                    readAndDump(datReader, entry, outputPath, data => {
+                    readAndDump(datReader, did, outputPath, data => {
                         DataId did = data.ReadDataId();
                         return data.ReadDictionary(data.ReadUInt32, data.ReadInt32);
                     });
                     break;
                 case DbType.RENDERSURFACE:
                 case DbType.RENDERSURFACE_LOCAL: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                        using (AC2Reader data = datReader.getFileReader(did)) {
                             var surface = new RenderSurface(data);
 
                             File.WriteAllBytes(outputPath, surface.sourceData);
 
-                            checkFullRead(data, entry);
+                            checkFullRead(data, did);
                         }
                         break;
                     }
                 case DbType.RENDERTEXTURE:
                 case DbType.RENDERTEXTURE_LOCAL:
-                    readAndDump(datReader, entry, outputPath, data => new RenderTexture(data));
+                    readAndDump(datReader, did, outputPath, data => new RenderTexture(data));
                     break;
                 case DbType.SETUP:
-                    readAndDump(datReader, entry, outputPath, data => new CSetup(data));
+                    readAndDump(datReader, did, outputPath, data => new CSetup(data));
                     break;
                 case DbType.SOUND_DESC:
-                    readAndDump(datReader, entry, outputPath, data => new CSoundDesc(data));
+                    readAndDump(datReader, did, outputPath, data => new CSoundDesc(data));
                     break;
                 case DbType.SOUNDINFO:
-                    readAndDump(datReader, entry, outputPath, data => new SoundInfo(data));
+                    readAndDump(datReader, did, outputPath, data => new SoundInfo(data));
                     break;
                 case DbType.SKY_DESC:
-                    readAndDump(datReader, entry, outputPath, data => new CSkyDesc(data));
+                    readAndDump(datReader, did, outputPath, data => new CSkyDesc(data));
                     break;
                 case DbType.STRING_STATE:
-                    readAndDump(datReader, entry, outputPath, data => new StringState(data));
+                    readAndDump(datReader, did, outputPath, data => new StringState(data));
                     break;
                 case DbType.STRING_TABLE:
-                    readAndDump(datReader, entry, outputPath, data => new StringTable(data));
+                    readAndDump(datReader, did, outputPath, data => new StringTable(data));
                     break;
                 case DbType.SURFACE_DESC:
-                    readAndDump(datReader, entry, outputPath, data => new CSurfaceDesc(data));
+                    readAndDump(datReader, did, outputPath, data => new CSurfaceDesc(data));
                     break;
                 case DbType.UI_LAYOUT:
-                    readAndDump(datReader, entry, outputPath, data => new LayoutDesc(data));
+                    readAndDump(datReader, did, outputPath, data => new LayoutDesc(data));
                     break;
                 case DbType.UI_SCENE:
-                    readAndDump(datReader, entry, outputPath, data => new UIScene(data));
+                    readAndDump(datReader, did, outputPath, data => new UIScene(data));
                     break;
                 case DbType.VALIDMODES:
-                    readAndDump(datReader, entry, outputPath, data => data.ReadList(data.ReadUInt32));
+                    readAndDump(datReader, did, outputPath, data => data.ReadList(data.ReadUInt32));
                     break;
                 case DbType.VISUAL_DESC:
-                    readAndDump(datReader, entry, outputPath, data => new VisualDesc(data));
+                    readAndDump(datReader, did, outputPath, data => new VisualDesc(data));
                     break;
                 case DbType.WAVE: {
                         using (Stream output = File.OpenWrite(outputPath))
                         using (BinaryWriter outputWriter = new BinaryWriter(output)) {
+                            BTEntry entry = datReader.getEntry(did);
                             // 4 DID + 4 unk + 4 file size
                             int ac2HeaderSize = sizeof(uint) + sizeof(uint) + sizeof(uint);
                             int fmtHeaderSize = 16;
@@ -303,15 +305,15 @@ namespace AC2E.Server {
 
                             outputWriter.Write(new byte[] { (byte)'d', (byte)'a', (byte)'t', (byte)'a' });
                             outputWriter.Write(entry.size - ac2HeaderSize - fmtHeaderSize);
-                            datReader.readFile(output, entry.offset, entry.size, ac2HeaderSize + fmtHeaderSize);
+                            datReader.readFile(did, output, ac2HeaderSize + fmtHeaderSize);
                         }
                         break;
                     }
                 case DbType.WSTATE:
-                    readAndDump(datReader, entry, outputPath, data => new WState(data));
+                    readAndDump(datReader, did, outputPath, data => new WState(data));
                     break;
                 case DbType.WLIB: {
-                        using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+                        using (AC2Reader data = datReader.getFileReader(did)) {
                             var wlib = new WLib(data);
                             using (StreamWriter output = new StreamWriter(File.OpenWrite(outputPath + ".packages.txt"))) {
                                 Dump.dumpPackages(output, wlib.byteStream);
@@ -324,7 +326,7 @@ namespace AC2E.Server {
 
                             File.WriteAllText(outputPath + ".frames.txt", Util.objectToString(wlib.byteStream.frames));
 
-                            checkFullRead(data, entry);
+                            checkFullRead(data, did);
                         }
                         break;
                     }
@@ -334,13 +336,13 @@ namespace AC2E.Server {
             }
         }
 
-        private static void readAndDump(DatReader datReader, BTEntry entry, string outputPath, Func<AC2Reader, object> readFunc) {
-            using (AC2Reader data = datReader.getFileReader(entry.offset, entry.size)) {
+        private static void readAndDump(DatReader datReader, DataId did, string outputPath, Func<AC2Reader, object> readFunc) {
+            using (AC2Reader data = datReader.getFileReader(did)) {
                 object readObj = readFunc.Invoke(data);
 
                 File.WriteAllText(outputPath + ".txt", Util.objectToString(readObj));
 
-                checkFullRead(data, entry);
+                checkFullRead(data, did);
             }
         }
 
@@ -348,9 +350,9 @@ namespace AC2E.Server {
             return Directory.CreateDirectory(Path.Combine(baseDir, path)).FullName;
         }
 
-        private static void checkFullRead(AC2Reader data, BTEntry entry) {
+        private static void checkFullRead(AC2Reader data, DataId did) {
             if (data.BaseStream.Position < data.BaseStream.Length) {
-                Log.Warning($"File {entry.did.id:X8} was not fully read ({data.BaseStream.Position} / {data.BaseStream.Length}).");
+                Log.Warning($"File {did.id:X8} was not fully read ({data.BaseStream.Position} / {data.BaseStream.Length}).");
             }
         }
     }
