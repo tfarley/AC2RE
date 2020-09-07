@@ -63,9 +63,9 @@ namespace AC2E.Render.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] tex_lit_frag {
+        internal static byte[] uber_frag {
             get {
-                object obj = ResourceManager.GetObject("tex_lit_frag", resourceCulture);
+                object obj = ResourceManager.GetObject("uber_frag", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace AC2E.Render.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] tex_lit_vert {
+        internal static byte[] uber_vert {
             get {
-                object obj = ResourceManager.GetObject("tex_lit_vert", resourceCulture);
+                object obj = ResourceManager.GetObject("uber_vert", resourceCulture);
                 return ((byte[])(obj));
             }
         }

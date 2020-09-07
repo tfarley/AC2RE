@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using Veldrid.OpenGLBinding;
 using static AC2E.RenderCommon.OpenGL.OGLUtil;
@@ -34,6 +35,9 @@ namespace AC2E.RenderCommon.OpenGL {
             checkError();
 
             unsafe {
+                int maxVertexAttribs;
+                glGetIntegerv(GetPName.MaxVertexAttribs, &maxVertexAttribs);
+
                 fixed (void* vertexDataPtr = vertexData) {
                     glBufferData(BufferTarget.ArrayBuffer, (UIntPtr)vertexData.Length, vertexDataPtr, BufferUsageHint.StaticDraw);
                     checkError();
@@ -44,7 +48,11 @@ namespace AC2E.RenderCommon.OpenGL {
                     }
                 }
                 foreach (VertexAttribute vertexAttribute in vertexAttributes) {
-                    glVertexAttribPointer(vertexAttribute.id, (int)vertexAttribute.numComponents, TYPE_TO_VERT_ATTRIB_TYPE[vertexAttribute.componentType], GLboolean.False, vertexSize, (void*)vertexAttribute.offset);
+                    if (vertexAttribute.id > maxVertexAttribs) {
+                        throw new IndexOutOfRangeException($"Vertex attribute with id {vertexAttribute.id} exceeds max of {maxVertexAttribs}.");
+                    }
+
+                    glVertexAttribPointer(vertexAttribute.id, (int)vertexAttribute.numComponents, TYPE_TO_VERT_ATTRIB_TYPE[vertexAttribute.componentType], vertexAttribute.normalize ? GLboolean.True : GLboolean.False, vertexSize, (void*)vertexAttribute.offset);
                     checkError();
                     glEnableVertexAttribArray(vertexAttribute.id);
                     checkError();

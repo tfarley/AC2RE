@@ -14,12 +14,12 @@ namespace AC2E.Def {
 
         public DataId did; // m_DID
         public TextureType textureType; // m_SourceTextureType
-        public List<DataId> levelDids; // m_SourceLevels
+        public List<DataId> levelSurfaceDids; // m_SourceLevels
 
         public RenderTexture(AC2Reader data) {
             did = data.ReadDataId();
             textureType = (TextureType)data.ReadUInt32();
-            levelDids = data.ReadList(data.ReadDataId);
+            levelSurfaceDids = data.ReadList(data.ReadDataId);
         }
     }
 }

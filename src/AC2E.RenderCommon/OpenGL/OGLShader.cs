@@ -15,8 +15,9 @@ namespace AC2E.RenderCommon.OpenGL {
             checkError();
 
             unsafe {
+                int shaderSourceLen = shaderSource.Length;
                 fixed (byte* shaderSourcePtr = shaderSource) {
-                    glShaderSource(id, 1, &shaderSourcePtr, null);
+                    glShaderSource(id, 1, &shaderSourcePtr, &shaderSourceLen);
                     checkError();
                 }
             }

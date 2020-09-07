@@ -136,13 +136,29 @@ namespace AC2E.RenderCommon.OpenGL {
             return new OGLMesh(vertexData, vertexAttributes, vertexSize, indexData, indexType);
         }
 
-        public void draw(IMesh mesh, IShaderProgram shader) {
+        public ITexture loadTexture(byte[] textureData, uint width, uint height, TextureFormat format) {
+            return new OGLTexture(textureData, width, height, format);
+        }
+
+        public void draw(IMesh mesh, IShaderProgram shader, List<ITexture> textures) {
             if (shader == null) {
                 shader = defaultShader;
             }
 
             OGLShaderProgram oglShader = (OGLShaderProgram)shader;
             oglShader.use();
+
+            for (int i = 0; i < NUM_TEXTURE_UNITS; i++) {
+                if (textures != null && i < textures.Count && textures[i] != null) {
+                    ((OGLTexture)textures[i]).bind(i);
+                } else {
+                    glActiveTexture((TextureUnit)((uint)TextureUnit.Texture0 + i));
+                    checkError();
+
+                    glBindTexture(TextureTarget.Texture2D, 0);
+                    checkError();
+                }
+            }
 
             OGLMesh oglMesh = (OGLMesh)mesh;
             oglMesh.draw();

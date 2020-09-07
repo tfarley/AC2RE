@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:AC2E.PacketTool.UI"
         mc:Ignorable="d"
         Title="RenderPreview" Height="450" Width="800">
-    <Grid>
-        <Border x:Name="renderContainer" BorderThickness="1" BorderBrush="Black"/>
-    </Grid>
+    <DockPanel>
+        <TextBox x:Name="renderDidTextBox" DockPanel.Dock="Bottom" Text="0x1F000023" TextWrapping="Wrap" Height="20"/>
+        <Border x:Name="renderContainer" BorderThickness="1" BorderBrush="Black" Width="Auto" Height="Auto"/>
+    </DockPanel>
 </Window>

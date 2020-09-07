@@ -236,6 +236,9 @@ namespace AC2E.Tools {
                         return data.ReadDictionary(data.ReadUInt32, data.ReadInt32);
                     });
                     break;
+                case DbType.RENDERMATERIAL:
+                    readAndDump(datReader, did, outputPath, data => new RenderMaterial(data));
+                    break;
                 case DbType.RENDERSURFACE:
                 case DbType.RENDERSURFACE_LOCAL: {
                         using (AC2Reader data = datReader.getFileReader(did)) {

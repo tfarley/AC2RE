@@ -2,6 +2,8 @@
 using AC2E.Render;
 using AC2E.RenderCommon;
 using AC2E.UICommon;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
 using System.Windows;
@@ -33,8 +35,6 @@ namespace AC2E.PacketTool.UI {
             renderer = IRenderer.createWinOGL(renderElement.hwnd);
             renderManager = new RenderManager(renderer);
 
-            testObject = renderManager.addRenderObject(renderManager.loadDatMeshes(new DataId(0x1F000023)));
-
             CompositionTarget.Rendering += CompositionTarget_Rendering;
 
             renderElement.SizeChanged += (sender, e) => {
@@ -48,6 +48,34 @@ namespace AC2E.PacketTool.UI {
             };
 
             renderStopwatch.Start();
+
+            updateRenderObject();
+
+            renderDidTextBox.TextChanged += (sender, e) => updateRenderObject();
+        }
+
+        private void updateRenderObject() {
+            uint inputDid;
+            try {
+                inputDid = Convert.ToUInt32(renderDidTextBox.Text, 16);
+            } catch (Exception e) {
+                return;
+            }
+
+            if (testObject != null) {
+                renderManager.removeRenderObject(testObject);
+                testObject = null;
+            }
+
+            try {
+                // 0x1F000023 = human male, 0x1F001110 = rabbit
+                List<RenderMesh> meshes = renderManager.loadDatMeshes(new DataId(inputDid));
+                if (meshes != null) {
+                    testObject = renderManager.addRenderObject(meshes);
+                }
+            } catch (Exception e) {
+                return;
+            }
         }
 
         private void CompositionTarget_Rendering(object sender, System.EventArgs e) {

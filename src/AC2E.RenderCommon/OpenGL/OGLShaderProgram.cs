@@ -49,24 +49,16 @@ namespace AC2E.RenderCommon.OpenGL {
         }
 
         private void bindUbo(string uboName, uint uboBinding) {
-            uint uboIndex = getUboIndex(uboName);
-            if (uboIndex != GL_INVALID_INDEX) {
-                glUniformBlockBinding(id, uboIndex, uboBinding);
-                checkError();
-            }
-        }
-
-        private uint getUboIndex(string uboName) {
-            int byteCount = Encoding.UTF8.GetByteCount(uboName) + 1;
             unsafe {
-                byte* uboNamePtr = stackalloc byte[byteCount];
-                fixed (char* charPtr = uboName) {
-                    Encoding.UTF8.GetBytes(charPtr, uboName.Length, uboNamePtr, byteCount);
+                fixed (byte* uboNameBytes = getNullTermStringBytes(uboName)) {
+                    uint uboIndex = glGetUniformBlockIndex(id, uboNameBytes);
+                    checkError();
+
+                    if (uboIndex != GL_INVALID_INDEX) {
+                        glUniformBlockBinding(id, uboIndex, uboBinding);
+                        checkError();
+                    }
                 }
-                uboNamePtr[byteCount - 1] = 0;
-                uint uboIndex = glGetUniformBlockIndex(id, uboNamePtr);
-                checkError();
-                return uboIndex;
             }
         }
 

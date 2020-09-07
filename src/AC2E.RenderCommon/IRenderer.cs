@@ -28,7 +28,9 @@ namespace AC2E.RenderCommon {
 
         IMesh loadMesh(byte[] vertexData, List<VertexAttribute> vertexAttributes, uint vertexSize, byte[] indexData, Type indexType);
 
-        void draw(IMesh mesh, IShaderProgram shader = null);
+        ITexture loadTexture(byte[] textureData, uint width, uint height, TextureFormat format);
+
+        void draw(IMesh mesh, IShaderProgram shader = null, List<ITexture> textures = null);
 
         void clear();
 

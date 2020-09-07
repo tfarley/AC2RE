@@ -22,27 +22,20 @@ namespace AC2E.Render {
 
         private readonly List<RenderObject> renderObjects = new List<RenderObject>();
 
-        private IShaderProgram texLitShader;
         private DirLight dirLight = new DirLight {
             dir = new Vector3(-1.0f, 0.0f, -1.0f),
-            color = new Vector3(1.0f, 1.0f, 1.0f),
+            color = new Vector3(0.75f, 0.75f, 0.75f),
         };
 
         public void Dispose() {
             resourceManager.Dispose();
-            texLitShader.Dispose();
         }
 
         public RenderManager(IRenderer renderer) {
             this.renderer = renderer;
 
             renderer.setClearColor(0.0f, 0.25f, 0.25f);
-            renderer.setAmbientLight(0.5f, 0.5f, 0.5f);
-
-            using (IShader vertShader = renderer.loadVertexShader(Properties.Resources.tex_lit_vert))
-            using (IShader fragShader = renderer.loadFragmentShader(Properties.Resources.tex_lit_frag)) {
-                texLitShader = renderer.createShaderProgram(vertShader, fragShader);
-            }
+            renderer.setAmbientLight(0.25f, 0.25f, 0.25f);
         }
 
         public void resize(uint width, uint height) {
@@ -50,19 +43,19 @@ namespace AC2E.Render {
             cameraToClipMatrix = RenderUtil.perspective(vFov, width, height, nearClip, farClip);
         }
 
-        public List<IMesh> loadDatMeshes(DataId did) {
+        public List<RenderMesh> loadDatMeshes(DataId did) {
             return resourceManager.loadDatMeshes(renderer, "G:\\Asheron's Call 2\\portal.dat", did);
         }
 
-        public RenderObject addRenderObject(List<IMesh> meshes) {
+        public RenderObject addRenderObject(List<RenderMesh> meshes) {
             return addRenderObject(meshes, Vector3.Zero, Quaternion.Identity);
         }
 
-        public RenderObject addRenderObject(List<IMesh> meshes, Vector3 pos) {
+        public RenderObject addRenderObject(List<RenderMesh> meshes, Vector3 pos) {
             return addRenderObject(meshes, pos, Quaternion.Identity);
         }
 
-        public RenderObject addRenderObject(List<IMesh> meshes, Vector3 pos, Quaternion rot) {
+        public RenderObject addRenderObject(List<RenderMesh> meshes, Vector3 pos, Quaternion rot) {
             RenderObject renderObject = new RenderObject {
                 meshes = meshes,
                 pos = pos,
@@ -71,6 +64,10 @@ namespace AC2E.Render {
             renderObjects.Add(renderObject);
 
             return renderObject;
+        }
+
+        public void removeRenderObject(RenderObject renderObject) {
+            renderObjects.Remove(renderObject);
         }
 
         public void draw() {
@@ -90,8 +87,8 @@ namespace AC2E.Render {
                 Matrix4x4 modelToCameraMatrix = modelToWorldMatrix * worldToCameraMatrix;
                 renderer.setTransforms(modelToClipMatrix, modelToCameraMatrix);
 
-                foreach (IMesh mesh in renderObject.meshes) {
-                    renderer.draw(mesh, texLitShader);
+                foreach (RenderMesh mesh in renderObject.meshes) {
+                    renderer.draw(mesh.mesh, resourceManager.uberShaderManager.getShader(renderer, mesh.vertexFormat), mesh.textures);
                 }
             }
 

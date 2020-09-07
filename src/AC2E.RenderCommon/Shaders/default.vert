@@ -1,5 +1,5 @@
-﻿// NOTE: Perform a Rebuild for changes to this file to take effect
-#version 410 core
+﻿#version 410 core
+// NOTE: Perform a Rebuild for changes to this file to take effect
 
 layout(location = 0) in vec3 pos;
 
