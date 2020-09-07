@@ -72,7 +72,7 @@ namespace AC2E.Def {
                 case NativeType.UISAVELOCATIONS:
                     return new UISaveLocations(data);
                 case NativeType.VECTOR:
-                    return data.ReadVector();
+                    return new VectorPkg(data.ReadVector());
                 case NativeType.VISUALDESC:
                     return new VisualDesc(data);
                 default:

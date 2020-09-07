@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Numerics;
 
 namespace AC2E.Def {
 
@@ -76,7 +77,7 @@ namespace AC2E.Def {
                     data.Write((float)value);
                     break;
                 case PropertyType.VECTOR:
-                    data.Write((Vector)value);
+                    data.Write((Vector3)value);
                     break;
                 case PropertyType.COLOR:
                     data.Write((RGBAColor)value);

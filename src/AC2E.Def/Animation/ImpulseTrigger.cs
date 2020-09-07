@@ -1,8 +1,10 @@
-﻿namespace AC2E.Def {
+﻿using System.Numerics;
+
+namespace AC2E.Def {
 
     public class ImpulseTrigger {
 
-        public Vector impulse; // mImpulse
+        public Vector3 impulse; // mImpulse
         public bool jump; // mJump
         public uint impulseNum; // mImpulseNum
         public float time; // mTime

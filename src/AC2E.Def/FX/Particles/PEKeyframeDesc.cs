@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 
 namespace AC2E.Def {
 
@@ -13,7 +14,7 @@ namespace AC2E.Def {
         public uint pcType; // m_PCType
         public uint keyframeFlags; // m_KeyframeFlags
         public WaveformVector3 pos; // m_wvPosition
-        public List<Vector> points; // m_aPoints
+        public List<Vector3> points; // m_aPoints
 
         public PEKeyframeDesc(AC2Reader data) {
             time = data.ReadSingle();

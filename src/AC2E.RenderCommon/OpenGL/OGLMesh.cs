@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Veldrid.OpenGLBinding;
-using static AC2E.RenderCommon.WinOpenGL;
 using static AC2E.RenderCommon.OpenGL.OGLUtil;
+using static AC2E.RenderCommon.WinOpenGL;
 using static Veldrid.OpenGLBinding.OpenGLNative;
 
 namespace AC2E.RenderCommon.OpenGL {
@@ -14,7 +14,7 @@ namespace AC2E.RenderCommon.OpenGL {
         public readonly DrawElementsType elementType;
         public readonly uint numIndices;
 
-        public OGLMesh(byte[] vertexData, List<VertexAttribute> vertexAttributes, uint vertexSize, byte[] elementData, Type elementType) {
+        public OGLMesh(byte[] vertexData, List<VertexAttribute> vertexAttributes, uint vertexSize, byte[] indexData, Type indexType) {
             glGenVertexArrays(1, out vaoId);
             checkError();
 
@@ -50,8 +50,8 @@ namespace AC2E.RenderCommon.OpenGL {
                     checkError();
                 }
 
-                fixed (void* elementDataPtr = elementData) {
-                    glBufferData(BufferTarget.ElementArrayBuffer, (UIntPtr)elementData.Length, elementDataPtr, BufferUsageHint.StaticDraw);
+                fixed (void* indexDataPtr = indexData) {
+                    glBufferData(BufferTarget.ElementArrayBuffer, (UIntPtr)indexData.Length, indexDataPtr, BufferUsageHint.StaticDraw);
                     checkError();
                 }
             }
@@ -66,8 +66,8 @@ namespace AC2E.RenderCommon.OpenGL {
             glDeleteBuffers(1, ref eboId);
             checkError();
 
-            this.elementType = TYPE_TO_ELEMENT_TYPE[elementType];
-            numIndices = (uint)elementData.Length / (uint)Marshal.SizeOf(elementType);
+            elementType = TYPE_TO_ELEMENT_TYPE[indexType];
+            numIndices = (uint)indexData.Length / (uint)Marshal.SizeOf(indexType);
         }
 
         public void Dispose() {

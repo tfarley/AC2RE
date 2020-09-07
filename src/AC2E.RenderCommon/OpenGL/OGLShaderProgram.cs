@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Veldrid.OpenGLBinding;
 using static AC2E.RenderCommon.OpenGL.OGLUtil;
 using static Veldrid.OpenGLBinding.OpenGLNative;
@@ -8,7 +9,9 @@ namespace AC2E.RenderCommon.OpenGL {
     internal class OGLShaderProgram : IShaderProgram {
 
         public static readonly string VIEW_DATA_UBO_NAME = "ViewData";
-        public static readonly string LIGHT_DATA_UBO_NAME = "LightData";
+        public static readonly string AMBIENT_LIGHT_DATA_UBO_NAME = "AmbientLightData";
+        public static readonly string DIR_LIGHT_DATA_UBO_NAME = "DirLightData";
+        public static readonly string POINT_LIGHT_DATA_UBO_NAME = "PointLightData";
 
         public readonly uint id;
 
@@ -35,19 +38,20 @@ namespace AC2E.RenderCommon.OpenGL {
                         checkError();
                     }
                     string infoLogText = Encoding.UTF8.GetString(infoLog);
-                    System.Console.WriteLine(infoLogText);
+                    throw new Exception(infoLogText);
                 }
             }
 
-            uint viewDataUboIndex = getUboIndex(VIEW_DATA_UBO_NAME);
-            if (viewDataUboIndex != GL_INVALID_INDEX) {
-                glUniformBlockBinding(id, viewDataUboIndex, WinOGLRenderer.VIEW_DATA_UBO_BINDING);
-                checkError();
-            }
+            bindUbo(VIEW_DATA_UBO_NAME, OGLRenderer.VIEW_DATA_UBO_BINDING);
+            bindUbo(AMBIENT_LIGHT_DATA_UBO_NAME, OGLRenderer.AMBIENT_LIGHT_DATA_UBO_BINDING);
+            bindUbo(DIR_LIGHT_DATA_UBO_NAME, OGLRenderer.DIR_LIGHT_DATA_UBO_BINDING);
+            bindUbo(POINT_LIGHT_DATA_UBO_NAME, OGLRenderer.POINT_LIGHT_DATA_UBO_BINDING);
+        }
 
-            uint lightDataUboIndex = getUboIndex(LIGHT_DATA_UBO_NAME);
-            if (lightDataUboIndex != GL_INVALID_INDEX) {
-                glUniformBlockBinding(id, lightDataUboIndex, WinOGLRenderer.LIGHT_DATA_UBO_BINDING);
+        private void bindUbo(string uboName, uint uboBinding) {
+            uint uboIndex = getUboIndex(uboName);
+            if (uboIndex != GL_INVALID_INDEX) {
+                glUniformBlockBinding(id, uboIndex, uboBinding);
                 checkError();
             }
         }

@@ -1,9 +1,11 @@
-﻿namespace AC2E.Def {
+﻿using System.Numerics;
+
+namespace AC2E.Def {
 
     public struct BBox {
 
-        public Vector min; // min
-        public Vector max; // max
+        public Vector3 min; // min
+        public Vector3 max; // max
 
         public BBox(AC2Reader data) {
             min = data.ReadVector();

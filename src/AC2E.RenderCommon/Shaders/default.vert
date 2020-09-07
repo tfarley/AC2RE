@@ -5,6 +5,7 @@ layout(location = 0) in vec3 pos;
 
 layout(std140) uniform ViewData {
     mat4 modelToClipMatrix;
+    mat4 modelToCameraMatrix;
 };
 
 void main() {

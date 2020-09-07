@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Numerics;
 using System.Text;
 
 namespace AC2E.Server {
@@ -326,7 +327,7 @@ namespace AC2E.Server {
                                 visualDesc = new VisualDesc {
                                     packFlags = VisualDesc.PackFlag.PARENT | VisualDesc.PackFlag.SCALE | VisualDesc.PackFlag.GLOBALMOD,
                                     parentDid = new DataId(0x1F000023),
-                                    scale = new Vector(0.9107999f, 0.9107999f, 0.98999995f),
+                                    scale = new Vector3(0.9107999f, 0.9107999f, 0.98999995f),
                                     globalAppearanceModifiers = new PartGroupDataDesc {
                                         packFlags = PartGroupDataDesc.PackFlag.KEY | PartGroupDataDesc.PackFlag.APPHASH,
                                         key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
@@ -386,7 +387,7 @@ namespace AC2E.Server {
                                     modeId = 1073741825,
                                     pos = new Position {
                                         cell = new CellId(0x8D, 0xB5, 0x00, 0x3E),
-                                        frame = new Frame(new Vector(158.13483f, 117.91791f, 129.50496f), new Quaternion(0.23793525f, 0.0f, 0.0f, 0.971281f)),
+                                        frame = new Frame(new Vector3(158.13483f, 117.91791f, 129.50496f), new Quaternion(0.23793525f, 0.0f, 0.0f, 0.971281f)),
                                     },
                                     velScale = 20.0f,
                                     timestamps = new ushort[] { 1, 0, 0, 0 },
@@ -649,7 +650,7 @@ namespace AC2E.Server {
                                         packFlags = PhysicsDesc.PackFlag.POSITION,
                                         pos = new Position {
                                             cell = new CellId(0x8D, 0xB5, 0x00, 0x3E),
-                                            frame = new Frame(new Vector(158.13483f + toggleCounter * 1.0f, 117.91791f - toggleCounter * 1.0f, 129.50496f), new Quaternion(0.23793525f, 0.0f, 0.0f, 0.971281f)),
+                                            frame = new Frame(new Vector3(158.13483f + toggleCounter * 1.0f, 117.91791f - toggleCounter * 1.0f, 129.50496f), new Quaternion(0.23793525f, 0.0f, 0.0f, 0.971281f)),
                                         },
                                         timestamps = new ushort[] { 1, 0, 0, 0 },
                                         instanceStamp = 5,

@@ -9,6 +9,7 @@ namespace AC2E.Render {
     public class RenderResourceManager : IDisposable {
 
         public static readonly uint POS_ATTRIB_ID = 0;
+        public static readonly uint NORMAL_ATTRIB_ID = 1;
 
         private readonly Dictionary<DataId, IMesh> meshDidToMesh = new Dictionary<DataId, IMesh>();
         private readonly Dictionary<DataId, List<IMesh>> didToMeshes = new Dictionary<DataId, List<IMesh>>();
@@ -67,18 +68,15 @@ namespace AC2E.Render {
             if (mesh.vertexArray.vertexFormat.hasOrigin) {
                 vertexAttributes.Add(new VertexAttribute { id = POS_ATTRIB_ID, numComponents = 3, componentType = typeof(float), offset = 0 });
             }
-
-            /*ushort[] indices = new ushort[mesh.vertexArray.vertexData.Length / mesh.vertexArray.vertexFormat.vertexSize];
-            for (ushort i = 0; i < indices.Length; i++) {
-                indices[i] = i;
-            }*/
+            if (mesh.vertexArray.vertexFormat.offsetNormal != 0) {
+                vertexAttributes.Add(new VertexAttribute { id = NORMAL_ATTRIB_ID, numComponents = 3, componentType = typeof(float), offset = mesh.vertexArray.vertexFormat.offsetNormal });
+            }
 
             ushort[] indices = mesh.geometry.indices.ToArray();
+            byte[] indexData = new byte[indices.Length * sizeof(ushort)];
+            Buffer.BlockCopy(indices, 0, indexData, 0, indexData.Length);
 
-            byte[] elementData = new byte[indices.Length * sizeof(ushort)];
-            Buffer.BlockCopy(indices, 0, elementData, 0, elementData.Length);
-
-            return renderer.loadMesh(mesh.vertexArray.vertexData, vertexAttributes, mesh.vertexArray.vertexFormat.vertexSize, elementData, typeof(ushort));
+            return renderer.loadMesh(mesh.vertexArray.vertexData, vertexAttributes, mesh.vertexArray.vertexFormat.vertexSize, indexData, typeof(ushort));
         }
 
         private List<IMesh> loadSetups(IRenderer renderer, DatReader datReader, List<DataId> setupDids) {

@@ -1,11 +1,13 @@
-﻿namespace AC2E.Def {
+﻿using System.Numerics;
+
+namespace AC2E.Def {
 
     public class Ray : IPackage {
 
         public NativeType nativeType => NativeType.RAY;
 
-        public Vector origin; // pt
-        public Vector direction; // dir
+        public Vector3 origin; // pt
+        public Vector3 direction; // dir
         public float length; // length
 
         public Ray(AC2Reader data) {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 
 namespace AC2E.Def {
 
@@ -24,7 +25,7 @@ namespace AC2E.Def {
         public ushort posStamp; // m_position_stamp
         public ushort forcePosStamp; // m_force_position_stamp
         public ushort teleportStamp; // m_teleport_stamp
-        public Vector impulseVel; // m_impulseVel
+        public Vector3 impulseVel; // m_impulseVel
 
         public PositionPack(AC2Reader data) {
             time = data.ReadDouble();

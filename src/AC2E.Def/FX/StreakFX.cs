@@ -1,10 +1,12 @@
-﻿namespace AC2E.Def {
+﻿using System.Numerics;
+
+namespace AC2E.Def {
 
     public class StreakFX {
 
         public RGBAColor color; // m_cColor
-        public Vector startPoint; // m_vStartPoint
-        public Vector endPoint; // m_vEndPoint
+        public Vector3 startPoint; // m_vStartPoint
+        public Vector3 endPoint; // m_vEndPoint
         public DataId materialDid; // m_MaterialInstanceID
         public float lifetime; // m_fLifespan
         public float trailDuration; // m_fTrailDuration

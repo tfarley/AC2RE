@@ -1,8 +1,10 @@
-﻿namespace AC2E.Def {
+﻿using System.Numerics;
+
+namespace AC2E.Def {
 
     public class Cylsphere {
 
-        public Vector lowPoint; // low_pt
+        public Vector3 lowPoint; // low_pt
         public float height; // height
         public float radius; // radius
 

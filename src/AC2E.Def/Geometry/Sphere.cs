@@ -1,8 +1,10 @@
-﻿namespace AC2E.Def {
+﻿using System.Numerics;
+
+namespace AC2E.Def {
 
     public class Sphere {
 
-        public Vector center; // center
+        public Vector3 center; // center
         public float radius; // radius
 
         public Sphere(AC2Reader data) {

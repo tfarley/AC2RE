@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AC2E.Def {
+﻿namespace AC2E.Def {
 
     public class CStaticMesh : CBaseMesh {
 

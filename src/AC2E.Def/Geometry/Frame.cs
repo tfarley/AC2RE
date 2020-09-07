@@ -1,13 +1,15 @@
-﻿namespace AC2E.Def {
+﻿using System.Numerics;
+
+namespace AC2E.Def {
 
     public class Frame : IPackage {
 
         public NativeType nativeType => NativeType.FRAME;
 
-        public Vector pos;
+        public Vector3 pos;
         public Quaternion rot;
 
-        public Frame(Vector pos, Quaternion rot) {
+        public Frame(Vector3 pos, Quaternion rot) {
             this.pos = pos;
             this.rot = rot;
         }

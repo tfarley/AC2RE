@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AC2E.RenderCommon", "AC2E.R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AC2E.Render", "AC2E.Render\AC2E.Render.csproj", "{4F9CAF8B-DA96-405E-96C4-9F81F44BEA23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC2E.Tools", "AC2E.Tools\AC2E.Tools.csproj", "{17E88F04-2A23-4DE2-A35C-D1826F230DE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AC2E.Tools", "AC2E.Tools\AC2E.Tools.csproj", "{17E88F04-2A23-4DE2-A35C-D1826F230DE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

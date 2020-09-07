@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 
 namespace AC2E.Def {
 
@@ -9,7 +10,7 @@ namespace AC2E.Def {
         public int maxX; // m_max_x
         public int maxY; // m_max_y
         public BBox box; // m_box
-        public Vector pos; // m_pos
+        public Vector3 pos; // m_pos
         public List<float> undersideProbes; // m_underside_probes
 
         public UndersideInfo(AC2Reader data) {

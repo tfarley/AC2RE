@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace AC2E.Def {
 
@@ -62,10 +63,10 @@ namespace AC2E.Def {
         public PackFlag packFlags; // bitfield
         public uint animFrameId; // animframe_id
         public Position pos; // pos
-        public Vector vel; // m_velocity
-        public Vector accel; // m_acceleration
-        public Vector omega; // m_omega
-        public Vector externalAccel; // m_external_acl
+        public Vector3 vel; // m_velocity
+        public Vector3 accel; // m_acceleration
+        public Vector3 omega; // m_omega
+        public Vector3 externalAccel; // m_external_acl
         public float velScale; // m_velocity_scale
         public float jumpScale; // m_jump_scale
         public InstanceId lookAtId; // m_lookAt_id
@@ -73,7 +74,7 @@ namespace AC2E.Def {
         public float headingZ; // m_headz
         public InstanceId targetId; // target_id
         public Position targetPos; // target_pos
-        public Vector targetOffset; // target_offset
+        public Vector3 targetOffset; // target_offset
         public uint targetHeight; // target_height
         public bool useTargetScale; // use_target_scale
         public bool missileIsActivated; // m_missile_is_activated

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace AC2E.Def {
 
@@ -30,7 +31,7 @@ namespace AC2E.Def {
         public DataId motionInterpDescDid; // m_midesc_did
         public DataId behaviorTableDid; // m_behaviortable_did
         public DataId modesDid; // m_modes_did
-        public Vector scale; // m_scale
+        public Vector3 scale; // m_scale
         public float childScale; // m_child_scale
         public float particleScale; // m_particle_scale
         public PartGroupDataDesc root; // m_root

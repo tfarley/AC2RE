@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 
 namespace AC2E.Def {
 
@@ -27,8 +28,8 @@ namespace AC2E.Def {
         public InstanceId runtimeId; // m_runtimeID
         public DataId dataId; // m_dataID
         public PackageId packageId; // m_pkgID
-        public Matrix4 offset; // m_offset
-        public Vector scale; // m_scale
+        public Matrix4x4 offset; // m_offset
+        public Vector3 scale; // m_scale
         public PropertyCollection properties; // m_properties
         public uint version; // m_version
         public InstanceId wbId; // m_wbID
@@ -55,7 +56,7 @@ namespace AC2E.Def {
                 dataId = data.ReadDataId();
             }
             if (packFlags.HasFlag(PackFlag.OFFSET)) {
-                offset = new Matrix4(data);
+                offset = data.ReadMatrix4x4();
             }
             if (packFlags.HasFlag(PackFlag.SCALE)) {
                 scale = data.ReadVector();
@@ -86,7 +87,7 @@ namespace AC2E.Def {
                 data.Write(dataId);
             }
             if (packFlags.HasFlag(PackFlag.OFFSET)) {
-                offset.write(data);
+                data.Write(offset);
             }
             if (packFlags.HasFlag(PackFlag.SCALE)) {
                 data.Write(scale);

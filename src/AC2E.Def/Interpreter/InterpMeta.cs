@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Reflection;
 
 namespace AC2E.Def {
@@ -7,6 +8,10 @@ namespace AC2E.Def {
     public static class InterpMeta {
 
         private static readonly Dictionary<Type, FieldDesc[]> fieldDescCache = new Dictionary<Type, FieldDesc[]>();
+
+        private static readonly Dictionary<Type, Type> TYPE_REPLACEMENTS = new Dictionary<Type, Type> {
+            { typeof(Vector3), typeof(VectorPkg) },
+        };
 
         private static readonly Dictionary<Type, uint> TYPE_TO_NUM_WORDS = new Dictionary<Type, uint> {
             { typeof(bool), 1 },
@@ -33,6 +38,7 @@ namespace AC2E.Def {
                 for (int i = 0; i < fieldInfos.Length; i++) {
                     FieldInfo fieldInfo = fieldInfos[i];
                     Type fieldType = fieldInfo.FieldType;
+                    fieldType = TYPE_REPLACEMENTS.GetValueOrDefault(fieldType, fieldType);
                     StackType stackType;
                     if (typeof(IPackage).IsAssignableFrom(fieldType)) {
                         fieldType = typeof(IPackage);

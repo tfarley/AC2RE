@@ -1,9 +1,11 @@
-﻿namespace AC2E.Def {
+﻿using System.Numerics;
+
+namespace AC2E.Def {
 
     public class DecalFX {
 
         public DataId materialDid; // m_MaterialDID
-        public Vector origin; // m_vOrigin
+        public Vector3 origin; // m_vOrigin
         public float lifetime; // m_fLifespan
         public RGBAColor color; // m_cColor
         public Waveform size; // m_wSize

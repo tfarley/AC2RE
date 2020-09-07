@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace AC2E.Def {
 
@@ -50,7 +51,7 @@ namespace AC2E.Def {
         public uint visualDescToClone; // mVDescToClone
         public uint clonedAprId; // m_clonedAprID
         public Dictionary<uint, float> clonedAppAprHash; // m_clonedAppAprHash
-        public Vector impulse; // mImpulse
+        public Vector3 impulse; // mImpulse
         public bool earlyCallback; // mEarlyCallBack
         public bool moveToCancels; // mMoveToCancels
         public bool cameraParent; // mCameraParent

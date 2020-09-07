@@ -3,6 +3,7 @@ using AC2E.Render;
 using AC2E.RenderCommon;
 using AC2E.UICommon;
 using System.Diagnostics;
+using System.Numerics;
 using System.Windows;
 using System.Windows.Media;
 
@@ -10,10 +11,17 @@ namespace AC2E.PacketTool.UI {
 
     public partial class RenderPreview : Window {
 
+        private static readonly float MIN_DT = 1.0f / 120.0f;
+
+        public Vector3 cameraOffset = new Vector3(0.0f, -5.0f, 0.0f);
+        public Quaternion cameraRot = Quaternion.Identity;
+
         private IRenderer renderer;
         private RenderManager renderManager;
         private Stopwatch renderStopwatch = new Stopwatch();
-        private long lastRenderMs;
+        private float lastRenderTime;
+
+        private RenderObject testObject;
 
         public RenderPreview() {
             InitializeComponent();
@@ -24,9 +32,8 @@ namespace AC2E.PacketTool.UI {
 
             renderer = IRenderer.createWinOGL(renderElement.hwnd);
             renderManager = new RenderManager(renderer);
-            renderManager.setCamera(0.0f, -5.0f, 0.0f);
 
-            renderManager.addRenderObject(renderManager.loadDatMeshes(new DataId(0x1F000023)), 0.0f, 0.0f, 0.0f);
+            testObject = renderManager.addRenderObject(renderManager.loadDatMeshes(new DataId(0x1F000023)));
 
             CompositionTarget.Rendering += CompositionTarget_Rendering;
 
@@ -44,10 +51,19 @@ namespace AC2E.PacketTool.UI {
         }
 
         private void CompositionTarget_Rendering(object sender, System.EventArgs e) {
-            long curElapsedMs = renderStopwatch.ElapsedMilliseconds;
-            if (renderManager != null && curElapsedMs - lastRenderMs >= (1000.0f / 120.0f)) {
+            float curElapsedTime = (float)renderStopwatch.Elapsed.TotalSeconds;
+            float dt = curElapsedTime - lastRenderTime;
+            if (renderManager != null && dt >= MIN_DT) {
+                renderManager.worldToCameraMatrix = Matrix4x4.CreateFromQuaternion(cameraRot);
+                renderManager.worldToCameraMatrix.Translation -= cameraOffset;
+
+                // For absolute translation:
+                //renderManager.worldToCameraMatrix.Translation -= Vector3.Transform(cameraOffset, renderManager.worldToCameraMatrix);
+
                 renderManager.draw();
-                lastRenderMs = curElapsedMs;
+                lastRenderTime = curElapsedTime;
+
+                cameraRot = cameraRot * Quaternion.CreateFromAxisAngle(new Vector3(0.0f, 0.0f, 1.0f), 1.0f * dt);
             }
         }
     }

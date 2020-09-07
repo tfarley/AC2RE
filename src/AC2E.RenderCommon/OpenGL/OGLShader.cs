@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Veldrid.OpenGLBinding;
 using static AC2E.RenderCommon.OpenGL.OGLUtil;
 using static Veldrid.OpenGLBinding.OpenGLNative;
@@ -34,7 +35,7 @@ namespace AC2E.RenderCommon.OpenGL {
                         checkError();
                     }
                     string infoLogText = Encoding.UTF8.GetString(infoLog);
-                    System.Console.WriteLine(infoLogText);
+                    throw new Exception(infoLogText);
                 }
             }
         }

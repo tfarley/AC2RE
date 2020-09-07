@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Numerics;
 
 namespace AC2E.Def {
 
@@ -23,7 +24,7 @@ namespace AC2E.Def {
 
             public class AnimAssetScaleKey : IWritable {
 
-                public Vector scale; // scale
+                public Vector3 scale; // scale
                 public float time; // sTime
 
                 public AnimAssetScaleKey() {
@@ -43,7 +44,7 @@ namespace AC2E.Def {
 
             public class AnimAssetOffsetKey : IWritable {
 
-                public Vector offset; // offset
+                public Vector3 offset; // offset
                 public float time; // sTime
 
                 public AnimAssetOffsetKey() {

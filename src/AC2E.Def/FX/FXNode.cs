@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace AC2E.Def {
 
@@ -83,7 +84,7 @@ namespace AC2E.Def {
         public List<DataId> particleSystemDids; // m_psdesc_list
         public HoldingLocation holdingLocation; // m_holding_location
         public uint boneName; // m_bone_name
-        public Vector boneOffset; // m_bone_offset
+        public Vector3 boneOffset; // m_bone_offset
         public bool waterPlane; // m_water_plane
         public bool fireAndForget; // m_fire_and_forget
         public bool removeRot; // m_remove_rotation

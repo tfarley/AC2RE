@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace AC2E.Def {
 
@@ -33,7 +34,7 @@ namespace AC2E.Def {
         public InstanceId targetId; // m_target_object_id
         public Position targetPos; // m_target_position
         public List<Position> posList; // m_position_list
-        public Vector offset; // m_offset_vector
+        public Vector3 offset; // m_offset_vector
         public uint offsetId; // m_offset_id
         public uint contextId; // m_context_id
 

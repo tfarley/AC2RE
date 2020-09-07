@@ -1,7 +1,7 @@
-﻿using AC2E.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Numerics;
 using System.Text;
 
 namespace AC2E.Def {
@@ -249,17 +249,36 @@ namespace AC2E.Def {
             Write(value.otherStamp);
         }
 
-        public void Write(Vector value) {
-            Write(value.x);
-            Write(value.y);
-            Write(value.z);
+        public void Write(Vector3 value) {
+            Write(value.X);
+            Write(value.Y);
+            Write(value.Z);
         }
 
         public void Write(Quaternion value) {
-            Write(value.x);
-            Write(value.y);
-            Write(value.z);
-            Write(value.w);
+            Write(value.X);
+            Write(value.Y);
+            Write(value.Z);
+            Write(value.W);
+        }
+
+        public void Write(Matrix4x4 value) {
+            Write(value.M11);
+            Write(value.M12);
+            Write(value.M13);
+            Write(value.M14);
+            Write(value.M21);
+            Write(value.M22);
+            Write(value.M23);
+            Write(value.M24);
+            Write(value.M31);
+            Write(value.M32);
+            Write(value.M33);
+            Write(value.M34);
+            Write(value.M41);
+            Write(value.M42);
+            Write(value.M43);
+            Write(value.M44);
         }
 
         public void Write(RGBAColor value) {

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Numerics;
 using System.Text;
 
 namespace AC2E.Def {
@@ -247,21 +248,42 @@ namespace AC2E.Def {
             };
         }
 
-        public Vector ReadVector() {
-            return new Vector {
-                x = ReadSingle(),
-                y = ReadSingle(),
-                z = ReadSingle(),
-            };
+        public Vector3 ReadVector() {
+            return new Vector3(
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle()
+                );
         }
 
         public Quaternion ReadQuaternion() {
-            return new Quaternion {
-                x = ReadSingle(),
-                y = ReadSingle(),
-                z = ReadSingle(),
-                w = ReadSingle(),
-            };
+            return new Quaternion(
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle()
+                );
+        }
+
+        public Matrix4x4 ReadMatrix4x4() {
+            return new Matrix4x4(
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle(),
+                ReadSingle()
+                );
         }
 
         public RGBAColor ReadRGBAColor() {
