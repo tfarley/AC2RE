@@ -18,8 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AC2E.Def\AC2E.Def.csproj" />
-    <ProjectReference Include="..\AC2E.Render\AC2E.Render.csproj" />
-    <ProjectReference Include="..\AC2E.RenderCommon\AC2E.RenderCommon.csproj" />
     <ProjectReference Include="..\AC2E.UICommon\AC2E.UICommon.csproj" />
     <ProjectReference Include="..\AC2E.Utils\AC2E.Utils.csproj" />
   </ItemGroup>

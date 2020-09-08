@@ -17,12 +17,42 @@ namespace AC2E.Server {
 
             Log.Information("Hello World!");
 
-            //DatParse.parseDat("G:\\Asheron's Call 2\\portal.dat", "portalparsed", DbType.MESH);
-            //DatParse.parseDat("G:\\Asheron's Call 2\\cell_1.dat", "cell1parsed", DbType.ENVCELL);
-            //DatParse.parseDat("G:\\Asheron's Call 2\\cell_2.dat", "cell2parsed", DbType.DATFILEDATA);
-            //DatParse.parseDat("G:\\Asheron's Call 2\\highres.dat", "highresparsed", DbType.DATFILEDATA);
-            //DatParse.parseDat("G:\\Asheron's Call 2\\local_English.dat", "localenglishparsed", DbType.ENCODED_WAV);
-            //CellParse.getMissingCells("G:\\Asheron's Call 2\\cell_1.dat");
+            /*
+            using (DatReader datReader = new DatReader("G:\\Asheron's Call 2\\portal.dat")) {
+                DatParse.parseDat(datReader, "portalparsed", DbType.MESH);
+            }
+            */
+
+            /*
+            using (DatReader datReader = new DatReader("G:\\Asheron's Call 2\\cell_1.dat")) {
+                //DatParse.parseDat(datReader, "cell1parsed", DbType.ENVCELL);
+                CellParse.getMissingCells(datReader);
+            }
+            */
+
+            /*
+            using (DatReader datReader = new DatReader("G:\\Asheron's Call 2\\cell_2.dat")) {
+                DatParse.parseDat(datReader, "cell2parsed", DbType.DATFILEDATA);
+            }
+            */
+
+            /*
+            using (DatReader datReader = new DatReader("G:\\Asheron's Call 2\\highres.dat")) {
+                DatParse.parseDat(datReader, "highresparsed", DbType.DATFILEDATA);
+            }
+            */
+
+            /*
+            using (DatReader datReader = new DatReader("G:\\Asheron's Call 2\\local_English.dat")) {
+                DatParse.parseDat(datReader, "localenglishparsed", DbType.ENCODED_WAV);
+            }
+            */
+
+            /*
+            using (DatReader datReader = new DatReader("G:\\Asheron's Call 2\\local_English.dat")) {
+                DatParse.parseDat(datReader, "localenglishparsed", DbType.ENCODED_WAV);
+            }
+            */
 
             runServer();
         }

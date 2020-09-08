@@ -1,8 +1,27 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AC2E.Def\AC2E.Def.csproj" />
+    <ProjectReference Include="..\AC2E.Render\AC2E.Render.csproj" />
+    <ProjectReference Include="..\AC2E.RenderCommon\AC2E.RenderCommon.csproj" />
+    <ProjectReference Include="..\AC2E.Utils\AC2E.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="UI\RenderPreview.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="UI\RenderPreview.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
 
 </Project>

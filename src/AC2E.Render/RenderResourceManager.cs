@@ -2,7 +2,6 @@
 using AC2E.RenderCommon;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace AC2E.Render {
 
@@ -17,6 +16,7 @@ namespace AC2E.Render {
 
         public readonly UberShaderManager uberShaderManager = new UberShaderManager();
 
+        private readonly DatReader datReader;
         private readonly Dictionary<DataId, RenderMesh> meshDidToMesh = new Dictionary<DataId, RenderMesh>();
         private readonly Dictionary<DataId, List<RenderMesh>> didToMeshes = new Dictionary<DataId, List<RenderMesh>>();
         private readonly Dictionary<DataId, ITexture> surfaceDidToTexture = new Dictionary<DataId, ITexture>();
@@ -28,24 +28,24 @@ namespace AC2E.Render {
             uberShaderManager.Dispose();
         }
 
-        public List<RenderMesh> loadDatMeshes(IRenderer renderer, string datFileName, DataId did) {
-            if (!didToMeshes.TryGetValue(did, out List<RenderMesh> meshes)) {
-                if (File.Exists(datFileName)) {
-                    using (DatReader datReader = new DatReader(new AC2Reader(File.OpenRead(datFileName)))) {
-                        if (!datReader.contains(did)) {
-                            return null;
-                        }
+        public RenderResourceManager(DatReader datReader) {
+            this.datReader = datReader;
+        }
 
-                        DbType dbType = DbTypeDef.getType(did);
-                        using (AC2Reader data = datReader.getFileReader(did)) {
-                            if (dbType == DbType.MESH) {
-                                meshes = new List<RenderMesh> { loadMesh(renderer, datReader, data) };
-                            } else if (dbType == DbType.SETUP) {
-                                meshes = loadSetup(renderer, datReader, data);
-                            } else if (dbType == DbType.VISUAL_DESC) {
-                                meshes = loadVisualDesc(renderer, datReader, data);
-                            }
-                        }
+        public List<RenderMesh> loadDatMeshes(IRenderer renderer, DataId did) {
+            if (!didToMeshes.TryGetValue(did, out List<RenderMesh> meshes)) {
+                if (!datReader.contains(did)) {
+                    return null;
+                }
+
+                DbType dbType = DbTypeDef.getType(did);
+                using (AC2Reader data = datReader.getFileReader(did)) {
+                    if (dbType == DbType.MESH) {
+                        meshes = new List<RenderMesh> { loadMesh(renderer, data) };
+                    } else if (dbType == DbType.SETUP) {
+                        meshes = loadSetup(renderer, data);
+                    } else if (dbType == DbType.VISUAL_DESC) {
+                        meshes = loadVisualDesc(renderer, data);
                     }
                 }
                 didToMeshes[did] = meshes;
@@ -54,29 +54,29 @@ namespace AC2E.Render {
             return meshes;
         }
 
-        private List<RenderMesh> loadMeshes(IRenderer renderer, DatReader datReader, List<DataId> meshDids) {
+        private List<RenderMesh> loadMeshes(IRenderer renderer, List<DataId> meshDids) {
             List<RenderMesh> meshes = new List<RenderMesh>();
             foreach (DataId meshDid in meshDids) {
                 using (AC2Reader data = datReader.getFileReader(meshDid)) {
-                    meshes.Add(loadMesh(renderer, datReader, data));
+                    meshes.Add(loadMesh(renderer, data));
                 }
             }
 
             return meshes;
         }
 
-        private RenderMesh loadMesh(IRenderer renderer, DatReader datReader, AC2Reader data) {
+        private RenderMesh loadMesh(IRenderer renderer, AC2Reader data) {
             DataId did = data.ReadDataId();
             if (!meshDidToMesh.TryGetValue(did, out RenderMesh mesh)) {
                 CStaticMesh meshData = new CStaticMesh(data);
-                mesh = loadMesh(renderer, datReader, meshData);
+                mesh = loadMesh(renderer, meshData);
                 meshDidToMesh[did] = mesh;
             }
 
             return mesh;
         }
 
-        private ITexture loadSurface(IRenderer renderer, DatReader datReader, DataId did) {
+        private ITexture loadSurface(IRenderer renderer, DataId did) {
             if (!surfaceDidToTexture.TryGetValue(did, out ITexture texture)) {
                 using (AC2Reader data = datReader.getFileReader(did)) {
                     RenderSurface surface = new RenderSurface(data);
@@ -88,7 +88,7 @@ namespace AC2E.Render {
             return texture;
         }
 
-        private List<ITexture> loadMaterial(IRenderer renderer, DatReader datReader, DataId did) {
+        private List<ITexture> loadMaterial(IRenderer renderer, DataId did) {
             List<ITexture> textures = new List<ITexture>();
             using (AC2Reader data = datReader.getFileReader(did)) {
                 MaterialInstance materialInstance = new MaterialInstance(data);
@@ -101,7 +101,7 @@ namespace AC2E.Render {
                                 RenderTexture tex = new RenderTexture(dataTexture);
                                 // TODO: These textures likely need to be ordered by nameId, not just serialization order
                                 // TODO: Level [0] for SOME textures needs to be loaded from highres.dat, not portal.dat
-                                textures.Add(loadSurface(renderer, datReader, tex.levelSurfaceDids.Count > 1 ? tex.levelSurfaceDids[1] : tex.levelSurfaceDids[0]));
+                                textures.Add(loadSurface(renderer, tex.levelSurfaceDids.Count > 1 ? tex.levelSurfaceDids[1] : tex.levelSurfaceDids[0]));
                             }
                         }
                     }
@@ -111,7 +111,7 @@ namespace AC2E.Render {
             return textures;
         }
 
-        private RenderMesh loadMesh(IRenderer renderer, DatReader datReader, CBaseMesh mesh) {
+        private RenderMesh loadMesh(IRenderer renderer, CBaseMesh mesh) {
 
             List<VertexAttribute> vertexAttributes = new List<VertexAttribute>();
             if (mesh.vertexArray.vertexFormat.hasOrigin) {
@@ -146,7 +146,7 @@ namespace AC2E.Render {
 
             List<ITexture> textures = new List<ITexture>();
             foreach (DataId materialInstanceDid in mesh.materialInstanceDids) {
-                textures.AddRange(loadMaterial(renderer, datReader, materialInstanceDid));
+                textures.AddRange(loadMaterial(renderer, materialInstanceDid));
             }
 
             return new RenderMesh {
@@ -156,24 +156,24 @@ namespace AC2E.Render {
             };
         }
 
-        private List<RenderMesh> loadSetups(IRenderer renderer, DatReader datReader, List<DataId> setupDids) {
+        private List<RenderMesh> loadSetups(IRenderer renderer, List<DataId> setupDids) {
             List<RenderMesh> meshes = new List<RenderMesh>();
             foreach (DataId setupDid in setupDids) {
                 using (AC2Reader data = datReader.getFileReader(setupDid)) {
-                    meshes.AddRange(loadSetup(renderer, datReader, data));
+                    meshes.AddRange(loadSetup(renderer, data));
                 }
             }
 
             return meshes;
         }
 
-        private List<RenderMesh> loadSetup(IRenderer renderer, DatReader datReader, AC2Reader data) {
+        private List<RenderMesh> loadSetup(IRenderer renderer, AC2Reader data) {
             CSetup setup = new CSetup(data);
 
-            return loadMeshes(renderer, datReader, setup.meshes);
+            return loadMeshes(renderer, setup.meshes);
         }
 
-        private List<RenderMesh> loadVisualDesc(IRenderer renderer, DatReader datReader, AC2Reader data) {
+        private List<RenderMesh> loadVisualDesc(IRenderer renderer, AC2Reader data) {
             VisualDesc visualDesc = new VisualDesc(data);
 
             List<DataId> setupDids = new List<DataId>();
@@ -183,7 +183,7 @@ namespace AC2E.Render {
                 }
             }
 
-            return loadSetups(renderer, datReader, setupDids);
+            return loadSetups(renderer, setupDids);
         }
     }
 }

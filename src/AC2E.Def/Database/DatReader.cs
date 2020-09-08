@@ -8,6 +8,7 @@ namespace AC2E.Def {
 
         public static readonly uint BLOCK_FREE_FLAG = 0x80000000;
 
+        public readonly string datFileName;
         public readonly AC2Reader data;
         public readonly DiskHeaderBlock header;
         public IEnumerable<DataId> dids => didToEntry.Keys;
@@ -18,9 +19,23 @@ namespace AC2E.Def {
             data.Dispose();
         }
 
-        public DatReader(AC2Reader data) {
-            this.data = data;
+        public DatReader(string datFileName) {
+            if (!File.Exists(datFileName)) {
+                throw new FileNotFoundException("Dat file not found.", datFileName);
+            }
 
+            this.datFileName = datFileName;
+            data = new AC2Reader(File.OpenRead(datFileName));
+            init(ref header, ref filesystemTree);
+        }
+
+        public DatReader(AC2Reader data, string datFileName = null) {
+            this.datFileName = datFileName;
+            this.data = data;
+            init(ref header, ref filesystemTree);
+        }
+
+        private void init(ref DiskHeaderBlock header, ref BTree filesystemTree) {
             header = new DiskHeaderBlock(data);
             filesystemTree = new BTree(this);
             foreach (BTNode node in filesystemTree.offsetToNode.Values) {

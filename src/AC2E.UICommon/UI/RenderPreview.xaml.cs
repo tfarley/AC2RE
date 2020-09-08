@@ -1,7 +1,6 @@
 ﻿using AC2E.Def;
 using AC2E.Render;
 using AC2E.RenderCommon;
-using AC2E.UICommon;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +8,7 @@ using System.Numerics;
 using System.Windows;
 using System.Windows.Media;
 
-namespace AC2E.PacketTool.UI {
+namespace AC2E.UICommon {
 
     public partial class RenderPreview : Window {
 
@@ -25,7 +24,7 @@ namespace AC2E.PacketTool.UI {
 
         private RenderObject testObject;
 
-        public RenderPreview() {
+        public RenderPreview(DatReader datReader, DataId initialDid) {
             InitializeComponent();
 
             HwndElement renderElement = new HwndElement();
@@ -33,7 +32,7 @@ namespace AC2E.PacketTool.UI {
             renderContainer.Child = renderElement;
 
             renderer = IRenderer.createWinOGL(renderElement.hwnd);
-            renderManager = new RenderManager(renderer);
+            renderManager = new RenderManager(renderer, datReader);
 
             CompositionTarget.Rendering += CompositionTarget_Rendering;
 
@@ -49,9 +48,9 @@ namespace AC2E.PacketTool.UI {
 
             renderStopwatch.Start();
 
-            updateRenderObject();
-
             renderDidTextBox.TextChanged += (sender, e) => updateRenderObject();
+
+            renderDidTextBox.Text = initialDid.ToString();
         }
 
         private void updateRenderObject() {
@@ -68,7 +67,6 @@ namespace AC2E.PacketTool.UI {
             }
 
             try {
-                // 0x1F000023 = human male, 0x1F001110 = rabbit
                 List<RenderMesh> meshes = renderManager.loadDatMeshes(new DataId(inputDid));
                 if (meshes != null) {
                     testObject = renderManager.addRenderObject(meshes);

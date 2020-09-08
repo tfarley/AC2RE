@@ -11,8 +11,8 @@ namespace AC2E.Render {
 
         public Matrix4x4 worldToCameraMatrix;
 
-        private readonly RenderResourceManager resourceManager = new RenderResourceManager();
         private readonly IRenderer renderer;
+        private readonly RenderResourceManager resourceManager;
 
         private float vFov = 60.0f;
         private float nearClip = 0.05f;
@@ -31,8 +31,9 @@ namespace AC2E.Render {
             resourceManager.Dispose();
         }
 
-        public RenderManager(IRenderer renderer) {
+        public RenderManager(IRenderer renderer, DatReader datReader) {
             this.renderer = renderer;
+            resourceManager = new RenderResourceManager(datReader);
 
             renderer.setClearColor(0.0f, 0.25f, 0.25f);
             renderer.setAmbientLight(0.25f, 0.25f, 0.25f);
@@ -44,7 +45,7 @@ namespace AC2E.Render {
         }
 
         public List<RenderMesh> loadDatMeshes(DataId did) {
-            return resourceManager.loadDatMeshes(renderer, "G:\\Asheron's Call 2\\portal.dat", did);
+            return resourceManager.loadDatMeshes(renderer, did);
         }
 
         public RenderObject addRenderObject(List<RenderMesh> meshes) {

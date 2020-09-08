@@ -1,13 +1,13 @@
-﻿<Window x:Class="AC2E.PacketTool.UI.RenderPreview"
+﻿<Window x:Class="AC2E.UICommon.RenderPreview"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AC2E.PacketTool.UI"
+        xmlns:local="clr-namespace:AC2E.UICommon"
         mc:Ignorable="d"
-        Title="RenderPreview" Height="450" Width="800">
+        Title="AC2E Render Preview" Height="450" Width="800">
     <DockPanel>
-        <TextBox x:Name="renderDidTextBox" DockPanel.Dock="Bottom" Text="0x1F000023" TextWrapping="Wrap" Height="20"/>
+        <TextBox x:Name="renderDidTextBox" DockPanel.Dock="Bottom" TextWrapping="Wrap" Height="20"/>
         <Border x:Name="renderContainer" BorderThickness="1" BorderBrush="Black" Width="Auto" Height="Auto"/>
     </DockPanel>
 </Window>

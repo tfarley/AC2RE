@@ -3,3 +3,4 @@
 
 # Project/editor files
 .vs/
+*.user
