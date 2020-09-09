@@ -1,12 +1,14 @@
 ﻿using Serilog;
+using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace AC2E.Server {
 
     internal class NetInterface {
 
-        public bool available => socket.Available > 0;
+        public static readonly IPEndPoint ANY_ENDPOINT = new IPEndPoint(IPAddress.Any, 0);
 
         public int port => ((IPEndPoint)socket.LocalEndPoint).Port;
 
@@ -14,7 +16,6 @@ namespace AC2E.Server {
 
         public NetInterface(int port = 0) {
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            socket.Blocking = false;
             socket.Bind(new IPEndPoint(IPAddress.Any, port));
         }
 
@@ -25,19 +26,22 @@ namespace AC2E.Server {
             }
         }
 
-        internal bool sendTo(byte[] sendBuffer, int size, EndPoint sendEndpoint) {
+        internal async Task<bool> sendToAsync(byte[] sendBuffer, int size, EndPoint sendEndpoint) {
             // UDP is all-or-nothing when sending a message
-            return socket.SendTo(sendBuffer, size, SocketFlags.None, sendEndpoint) == size;
+            return await socket.SendToAsync(new ArraySegment<byte>(sendBuffer, 0, size), SocketFlags.None, sendEndpoint) == size;
         }
 
-        internal int receiveFrom(byte[] receiveBuffer, ref EndPoint receiveEndpoint) {
-            // NOTE: Must check available first, or else will get exception for non-blocking sockets
-            return socket.ReceiveFrom(receiveBuffer, ref receiveEndpoint);
+        internal async Task<SocketReceiveFromResult> receiveFromAsync(byte[] receiveBuffer) {
+            return await socket.ReceiveFromAsync(receiveBuffer, SocketFlags.None, ANY_ENDPOINT);
         }
 
         internal void close() {
             socket.Close();
             socket = null;
+        }
+
+        public override string ToString() {
+            return $"{port}";
         }
     }
 }

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace AC2E.Server {
 
@@ -40,8 +40,14 @@ namespace AC2E.Server {
 
         private readonly byte[] sendBuffer = new byte[NetPacket.MAX_SIZE];
 
-        private readonly Dictionary<uint, List<NetPacket>> sentSeqToPackets = new Dictionary<uint, List<NetPacket>>();
-        private readonly Queue<NetPacket> nacksToResend = new Queue<NetPacket>();
+        private readonly Dictionary<uint, List<SendablePacket>> sentSeqToPackets = new Dictionary<uint, List<SendablePacket>>();
+        private readonly Queue<SendablePacket> nacksToResend = new Queue<SendablePacket>();
+
+        private struct SendablePacket {
+
+            public NetPacket packet;
+            public NetInterface netInterface;
+        }
 
         public ClientConnection(ushort id, IPEndPoint endpoint, string accountName) {
             this.id = id;
@@ -91,18 +97,18 @@ namespace AC2E.Server {
             blobSeq++;
         }
 
-        public void flushSend(NetInterface netInterface, float serverTime) {
+        public async Task flushSendAsync(NetInterface netInterface, float serverTime) {
             while (connected && (echoRequestedLocalTime != -1.0f || serverTime > nextAckTime || serverTime > nextTimeSyncTime || fragQueue.Count > 0 || nacksToResend.Count > 0)) {
-                if (nacksToResend.TryDequeue(out NetPacket packet)) {
-                    rawSendPacket(netInterface, serverTime, packet);
+                if (nacksToResend.TryPeek(out SendablePacket packet) && packet.netInterface == netInterface) {
+                    await rawSendPacketAsync(packet);
+                    nacksToResend.Dequeue();
                 } else {
-                    sendPacket(netInterface, serverTime, new NetPacket());
+                    await sendPacketAsync(netInterface, serverTime, new NetPacket());
                 }
-                Thread.Sleep(10);
             }
         }
 
-        public void sendPacket(NetInterface netInterface, float serverTime, NetPacket packet) {
+        public async Task<bool> sendPacketAsync(NetInterface netInterface, float serverTime, NetPacket packet) {
             packet.recipientId = id;
             packet.interval = (ushort)serverTime;
             // TODO: Need to advance this?
@@ -156,12 +162,20 @@ namespace AC2E.Server {
 
             packet.seq = packetSeq;
 
-            rawSendPacket(netInterface, serverTime, packet);
+            SendablePacket sendablePacket = new SendablePacket {
+                packet = packet,
+                netInterface = netInterface,
+            };
 
-            sentSeqToPackets.GetOrCreate(packet.seq).Add(packet);
+            bool sendResult = await rawSendPacketAsync(sendablePacket);
+
+            sentSeqToPackets.GetOrCreate(packet.seq).Add(sendablePacket);
+
+            return sendResult;
         }
 
-        private void rawSendPacket(NetInterface netInterface, float serverTime, NetPacket packet) {
+        private async Task<bool> rawSendPacketAsync(SendablePacket sendablePacket) {
+            NetPacket packet = sendablePacket.packet;
             using (AC2Writer data = new AC2Writer(new MemoryStream(sendBuffer))) {
                 // Write header
                 packet.writeHeader(data);
@@ -204,12 +218,14 @@ namespace AC2E.Server {
                 // Replace the checksum
                 BitConverter.GetBytes(headerChecksum + contentChecksum).CopyTo(sendBuffer, 8);
 
-                netInterface.sendTo(sendBuffer, packetLength, endpoint);
-
                 Log.Debug($"Send[{packetLength}] to {endpoint} - {BitConverter.ToString(sendBuffer, 0, packetLength)}.");
-            }
 
-            Log.Debug($"SENT: {packet}");
+                bool sendResult = await sendablePacket.netInterface.sendToAsync(sendBuffer, packetLength, endpoint);
+
+                Log.Debug($"SENT: {packet}");
+
+                return sendResult;
+            }
         }
 
         public void ackPacket(uint seq) {
@@ -220,9 +236,9 @@ namespace AC2E.Server {
         }
 
         public void nackPacket(uint seq) {
-            if (sentSeqToPackets.TryGetValue(seq, out List<NetPacket> packets)) {
-                foreach (NetPacket packet in packets) {
-                    packet.flags |= NetPacket.Flag.RETRANSMITTING;
+            if (sentSeqToPackets.TryGetValue(seq, out List<SendablePacket> packets)) {
+                foreach (SendablePacket packet in packets) {
+                    packet.packet.flags |= NetPacket.Flag.RETRANSMITTING;
                     nacksToResend.Enqueue(packet);
                 }
             }

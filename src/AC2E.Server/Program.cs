@@ -22,7 +22,7 @@ namespace AC2E.Server {
             SERVER.start(7777);
 
             while (true) {
-                SERVER.processReceive();
+                SERVER.sendAsync();
                 Thread.Sleep(10);
             }
         }
