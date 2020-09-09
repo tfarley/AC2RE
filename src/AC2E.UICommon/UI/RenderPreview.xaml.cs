@@ -42,6 +42,7 @@ namespace AC2E.UICommon {
 
             Closed += (sender, e) => {
                 CompositionTarget.Rendering -= CompositionTarget_Rendering;
+                renderElement.Dispose();
                 renderManager.Dispose();
                 renderer.Dispose();
             };

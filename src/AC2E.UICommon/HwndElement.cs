@@ -16,10 +16,11 @@ namespace AC2E.UICommon {
         private const int GWL_STYLE = -16;
         private const int WS_CHILD = 0x40000000;
 
+        Window window;
         public IntPtr hwnd { get; private set; }
 
         public HwndElement() {
-            Window window = new Window();
+            window = new Window();
             window.Show();
 
             hwnd = new WindowInteropHelper(window).Handle;
@@ -33,7 +34,7 @@ namespace AC2E.UICommon {
         }
 
         protected override void DestroyWindowCore(HandleRef hwnd) {
-
+            window.Close();
         }
     }
 }

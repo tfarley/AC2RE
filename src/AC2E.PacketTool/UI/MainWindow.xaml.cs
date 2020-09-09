@@ -1,6 +1,4 @@
-﻿using AC2E.Def;
-using AC2E.UICommon;
-using AC2E.Utils;
+﻿using AC2E.Utils;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -30,13 +28,6 @@ namespace AC2E.PacketTool.UI {
                 if (messageErrorType != MessageErrorType.UNDETERMINED) {
                     errorsFilterComboBox.Items.Add(new ComboBoxItem { Content = messageErrorType });
                 }
-            }
-
-            string datFileName = "G:\\Asheron's Call 2\\portal.dat";
-            if (File.Exists(datFileName)) {
-                DatReader datReader = new DatReader(new AC2Reader(File.OpenRead(datFileName)));
-                // 0x1F000023 = human male, 0x1F001110 = rabbit
-                new RenderPreview(datReader, new DataId(0x1F000023)).Show();
             }
         }
 
