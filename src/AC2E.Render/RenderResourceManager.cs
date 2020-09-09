@@ -121,7 +121,7 @@ namespace AC2E.Render {
                 vertexAttributes.Add(new VertexAttribute { id = UberShaderManager.NORMAL_ATTRIB_ID, numComponents = 3, componentType = typeof(float), offset = mesh.vertexArray.vertexFormat.offsetNormal });
             }
             if (mesh.vertexArray.vertexFormat.offsetDiffuseColor != 0) {
-                vertexAttributes.Add(new VertexAttribute { id = UberShaderManager.DIFFUSE_COLOR_ATTRIB_ID, numComponents = 4, componentType = typeof(byte), normalize = true, offset = mesh.vertexArray.vertexFormat.offsetDiffuseColor });;
+                vertexAttributes.Add(new VertexAttribute { id = UberShaderManager.DIFFUSE_COLOR_ATTRIB_ID, numComponents = 4, componentType = typeof(byte), normalize = true, offset = mesh.vertexArray.vertexFormat.offsetDiffuseColor });
             }
             if (mesh.vertexArray.vertexFormat.offsetSpecularColor != 0) {
                 vertexAttributes.Add(new VertexAttribute { id = UberShaderManager.SPECULAR_COLOR_ATTRIB_ID, numComponents = 4, componentType = typeof(byte), normalize = true, offset = mesh.vertexArray.vertexFormat.offsetSpecularColor });

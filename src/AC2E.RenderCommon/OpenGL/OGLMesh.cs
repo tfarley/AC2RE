@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime.InteropServices;
 using Veldrid.OpenGLBinding;
 using static AC2E.RenderCommon.OpenGL.OGLUtil;

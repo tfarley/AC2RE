@@ -3,7 +3,7 @@ using Serilog;
 using System;
 using System.Text;
 
-namespace AC2E.Tools {
+namespace AC2E.Server {
 
     public class StringParse {
 

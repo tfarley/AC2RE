@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AC2E.Def\AC2E.Def.csproj" />
-    <ProjectReference Include="..\AC2E.Tools\AC2E.Tools.csproj" />
     <ProjectReference Include="..\AC2E.Utils\AC2E.Utils.csproj" />
   </ItemGroup>
 

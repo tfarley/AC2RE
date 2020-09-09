@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace AC2E.Tools {
+namespace AC2E.DatTool {
 
     public class DatParse {
 
