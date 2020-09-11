@@ -11,27 +11,30 @@ namespace AC2E.Server {
 
         public delegate Task ProcessReceiveDelegate(NetInterface netInterface, byte[] rawData, int dataLen, IPEndPoint receiveEndpoint);
 
-        public NetInterface netInterface;
+        public readonly NetInterface netInterface;
+        private bool stopped;
 
         private readonly byte[] receiveBuffer = new byte[NetPacket.MAX_SIZE];
 
+        public ServerListener(NetInterface netInterface, ProcessReceiveDelegate processReceive) {
+            this.netInterface = netInterface;
+            runAsync(processReceive);
+            Log.Debug($"Initialized server listener with interface {netInterface}.");
+        }
+
         ~ServerListener() {
-            if (netInterface != null) {
-                Log.Warning($"Didn't disconnect server listener with interface {netInterface} before destruction!");
-                disconnect();
+            if (!stopped) {
+                Log.Warning($"Didn't stop server listener with interface {netInterface} before destruction!");
+                stop();
             }
         }
 
-        public async void runAsync(ProcessReceiveDelegate processReceive, int port = 0) {
-            if (netInterface != null) {
-                disconnect();
-            }
-
-            netInterface = port != -1 ? new NetInterface(port) : null;
-
-            Log.Debug($"Initialized server listener with interface {netInterface}.");
-
+        private async Task runAsync(ProcessReceiveDelegate processReceive) {
             while (true) {
+                if (stopped) {
+                    break;
+                }
+
                 Array.Clear(receiveBuffer, 0, receiveBuffer.Length);
 
                 SocketReceiveFromResult receivedInfo;
@@ -41,6 +44,10 @@ namespace AC2E.Server {
                     if (receivedInfo.ReceivedBytes <= 0) {
                         continue;
                     }
+                } catch (ObjectDisposedException e) {
+                    // Socket closed (stop was called)
+                    Log.Debug($"Server listener interface {netInterface} closed.");
+                    continue;
                 } catch (Exception e) {
                     Log.Error(e, "Bad receive.");
                     continue;
@@ -49,17 +56,14 @@ namespace AC2E.Server {
                 try {
                     await processReceive(netInterface, receiveBuffer, receivedInfo.ReceivedBytes, (IPEndPoint)receivedInfo.RemoteEndPoint);
                 } catch (Exception e) {
-                    Log.Error(e, "Exception when reading packet, discarded.");
+                    Log.Error(e, $"Exception when reading packet on interface {netInterface}, discarded.");
                     continue;
                 }
             }
         }
 
-        public void disconnect() {
-            if (netInterface != null) {
-                netInterface.close();
-                netInterface = null;
-            }
+        public void stop() {
+            stopped = true;
         }
     }
 }

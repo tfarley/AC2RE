@@ -32,7 +32,9 @@ namespace AC2E.Server {
         public uint highestAckedPacketSeq;
         public readonly List<uint> nackedSeqs = new List<uint>();
         public uint blobSeq;
-        public readonly Queue<NetBlobFrag> fragQueue = new Queue<NetBlobFrag>();
+        public readonly Queue<NetBlobFrag> outgoingFragQueue = new Queue<NetBlobFrag>();
+        public readonly Dictionary<NetBlobId, NetBlob> incomingBlobs = new Dictionary<NetBlobId, NetBlob>();
+        public readonly Queue<NetBlob> incomingCompleteBlobs = new Queue<NetBlob>();
         public float nextAckTime;
         public float nextTimeSyncTime;
         public float echoRequestedLocalTime = -1.0f;
@@ -71,6 +73,26 @@ namespace AC2E.Server {
             nextTimeSyncTime = serverTime + TIME_SYNC_INTERVAL;
         }
 
+        public void addFragment(NetBlobFrag frag) {
+            // TODO: Need to track processed blob ids and discard if duplicate
+            // TODO: Need to handle blob ordering instead of just adding at end of queue
+            if (frag.fragCount == 1) {
+                incomingCompleteBlobs.Enqueue(new NetBlob(frag));
+            } else {
+                if (!incomingBlobs.TryGetValue(frag.blobId, out NetBlob blob)) {
+                    blob = new NetBlob(frag);
+                    incomingBlobs[frag.blobId] = blob;
+                } else {
+                    blob.addFragment(frag);
+                }
+
+                if (blob.payload != null) {
+                    incomingCompleteBlobs.Enqueue(blob);
+                    incomingBlobs.Remove(blob.blobId);
+                }
+            }
+        }
+
         public void enqueueMessage(INetMessage msg) {
             MemoryStream buffer = new MemoryStream();
             using (AC2Writer data = new AC2Writer(buffer)) {
@@ -92,13 +114,13 @@ namespace AC2E.Server {
             };
             blob.fragmentize();
             foreach (NetBlobFrag frag in blob.frags.Values) {
-                fragQueue.Enqueue(frag);
+                outgoingFragQueue.Enqueue(frag);
             }
             blobSeq++;
         }
 
         public async Task flushSendAsync(NetInterface netInterface, float serverTime) {
-            while (connected && (echoRequestedLocalTime != -1.0f || serverTime > nextAckTime || serverTime > nextTimeSyncTime || fragQueue.Count > 0 || nacksToResend.Count > 0)) {
+            while (connected && (echoRequestedLocalTime != -1.0f || serverTime > nextAckTime || serverTime > nextTimeSyncTime || outgoingFragQueue.Count > 0 || nacksToResend.Count > 0)) {
                 if (nacksToResend.TryPeek(out SendablePacket packet) && packet.netInterface == netInterface) {
                     await rawSendPacketAsync(packet);
                     nacksToResend.Dequeue();
@@ -120,12 +142,12 @@ namespace AC2E.Server {
                 int remainingSize = NetPacket.MAX_SIZE - 20; // Subtracts packet header
 
                 // Fill with fragments until full
-                if (fragQueue.Count > 0) {
+                if (outgoingFragQueue.Count > 0) {
                     packet.flags |= NetPacket.Flag.FRAGMENTS;
 
-                    while (fragQueue.TryPeek(out NetBlobFrag frag) && remainingSize >= frag.fragSize) {
+                    while (outgoingFragQueue.TryPeek(out NetBlobFrag frag) && remainingSize >= frag.fragSize) {
                         packet.frags.Add(frag);
-                        fragQueue.Dequeue();
+                        outgoingFragQueue.Dequeue();
                         remainingSize -= frag.fragSize;
                     }
                 }

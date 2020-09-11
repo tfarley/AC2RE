@@ -9,24 +9,26 @@ namespace AC2E.Server {
 
         private static readonly int MAX_CONNECTIONS = 300;
 
-        private ushort clientCounter = 1;
-        private readonly Dictionary<ushort, ClientConnection> clients = new Dictionary<ushort, ClientConnection>();
+        public IEnumerable<ClientConnection> clients => _clients.Values;
+
+        private ushort clientIdCounter = 1;
+        private readonly Dictionary<ushort, ClientConnection> _clients = new Dictionary<ushort, ClientConnection>();
 
         public bool tryGetClient(ushort recipientId, out ClientConnection client) {
             lock (this) {
-                return clients.TryGetValue(recipientId, out client);
+                return _clients.TryGetValue(recipientId, out client);
             }
         }
 
-        public async Task<ClientConnection> addClient(NetInterface netInterface, float serverTime, IPEndPoint clientEndpoint, string accountName) {
-            if (clients.Count > MAX_CONNECTIONS) {
-                return null;
-            }
-
-            ClientConnection client = new ClientConnection(clientCounter, clientEndpoint, accountName);
+        public async Task<ClientConnection> addClientAsync(NetInterface netInterface, float serverTime, IPEndPoint clientEndpoint, string accountName) {
+            ClientConnection client;
             lock (this) {
-                clients[clientCounter] = client;
-                clientCounter++;
+                if (_clients.Count > MAX_CONNECTIONS) {
+                    return null;
+                }
+                client = new ClientConnection(clientIdCounter, clientEndpoint, accountName);
+                _clients[clientIdCounter] = client;
+                clientIdCounter++;
             }
 
             await client.sendPacketAsync(netInterface, serverTime, new NetPacket {
@@ -43,18 +45,8 @@ namespace AC2E.Server {
 
         public void removeClient(ushort clientId) {
             lock (this) {
-                clients.Remove(clientId);
+                _clients.Remove(clientId);
             }
-        }
-
-        public async Task flushSendAsync(NetInterface netInterface, float serverTime) {
-            List<Task> sendTasks = new List<Task>();
-            lock (this) {
-                foreach (ClientConnection client in clients.Values) {
-                    sendTasks.Add(client.flushSendAsync(netInterface, serverTime));
-                }
-            }
-            await Task.WhenAll(sendTasks);
         }
     }
 }

@@ -15,17 +15,13 @@ namespace AC2E.PacketTool {
                         isClientToServer = isClientToServer,
                         startPacketNum = packetNum,
                         startTimestamp = timestamp,
-                        netBlob = new NetBlob {
-                            blobId = frag.blobId,
-                            fragCount = frag.fragCount,
-                            queueId = frag.queueId,
-                        },
+                        netBlob = new NetBlob(frag),
                     };
                     netBlobIdToRecord[frag.blobId] = netBlobRecord;
                     records.Add(netBlobRecord);
+                } else {
+                    netBlobRecord.netBlob.addFragment(frag);
                 }
-
-                netBlobRecord.netBlob.addFragment(frag);
 
                 if (netBlobRecord.netBlob.payload != null) {
                     netBlobRecord.endPacketNum = packetNum;

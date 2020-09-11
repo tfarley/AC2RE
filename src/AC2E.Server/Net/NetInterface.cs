@@ -8,19 +8,20 @@ namespace AC2E.Server {
 
     internal class NetInterface {
 
-        public static readonly IPEndPoint ANY_ENDPOINT = new IPEndPoint(IPAddress.Any, 0);
+        private static readonly IPEndPoint ANY_ENDPOINT = new IPEndPoint(IPAddress.Any, 0);
 
-        public int port => ((IPEndPoint)socket.LocalEndPoint).Port;
+        public readonly int port;
 
-        private Socket socket;
+        private bool closed;
+        private readonly Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
         public NetInterface(int port = 0) {
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             socket.Bind(new IPEndPoint(IPAddress.Any, port));
+            this.port = ((IPEndPoint)socket.LocalEndPoint).Port;
         }
 
         ~NetInterface() {
-            if (socket != null) {
+            if (!closed) {
                 Log.Warning($"Didn't close NetInterface with port {port} before destruction!");
                 close();
             }
@@ -37,7 +38,7 @@ namespace AC2E.Server {
 
         internal void close() {
             socket.Close();
-            socket = null;
+            closed = true;
         }
 
         public override string ToString() {

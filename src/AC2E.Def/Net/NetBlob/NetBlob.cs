@@ -12,6 +12,17 @@ namespace AC2E.Def {
 
         public SortedDictionary<ushort, NetBlobFrag> frags = new SortedDictionary<ushort, NetBlobFrag>();
 
+        public NetBlob() {
+
+        }
+
+        public NetBlob(NetBlobFrag frag) {
+            blobId = frag.blobId;
+            fragCount = frag.fragCount;
+            queueId = frag.queueId;
+            addFragment(frag);
+        }
+
         // TODO: Use/test this frag combining for receiving
         public void addFragment(NetBlobFrag newFrag) {
             if (!frags.ContainsKey(newFrag.fragIndex)) {

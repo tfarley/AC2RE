@@ -1,6 +1,9 @@
-﻿using Serilog;
+﻿using AC2E.Def;
+using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace AC2E.Server {
 
@@ -10,42 +13,75 @@ namespace AC2E.Server {
 
         public float serverTime => (DateTime.Now.Ticks - Process.GetCurrentProcess().StartTime.Ticks) / TimeSpan.TicksPerSecond;
 
+        private bool active;
         private PacketHandler packetHandler;
-        private ServerListener logonServerListener = new ServerListener();
-        private ServerListener gameServerListener = new ServerListener();
+        private NetInterface logonNetInterface;
+        private NetInterface gameNetInterface;
+        private List<ServerListener> serverListeners = new List<ServerListener>();
 
-        public AC2Server() {
-            packetHandler = new PacketHandler(this);
-        }
-
+        [MethodImpl(MethodImplOptions.Synchronized)]
         ~AC2Server() {
-            if (logonServerListener != null || gameServerListener != null) {
-                Log.Warning($"Didn't disconnect AC2Server before destruction!");
-                disconnect();
+            if (active) {
+                Log.Warning($"Didn't stop AC2Server before destruction!");
+                stop();
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void start(int port = 0) {
-            logonServerListener.runAsync(packetHandler.processReceive, port);
-            gameServerListener.runAsync(packetHandler.processReceive, logonServerListener.netInterface.port + 1);
+            if (active) {
+                stop();
+            }
+
+            packetHandler = new PacketHandler(this);
+
+            logonNetInterface = new NetInterface(port);
+            gameNetInterface = new NetInterface(logonNetInterface.port + 1);
+            serverListeners.Add(new ServerListener(logonNetInterface, packetHandler.processReceiveAsync));
+            serverListeners.Add(new ServerListener(gameNetInterface, packetHandler.processReceiveAsync));
 
             Log.Debug($"Initialized AC2Server.");
+
+            active = true;
         }
 
-        public void disconnect() {
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void stop() {
+            if (!active) {
+                return;
+            }
+
             // TODO: Disconnect and clear all connections
-            if (logonServerListener != null) {
-                logonServerListener.disconnect();
-                logonServerListener = null;
+
+            foreach (ServerListener serverListener in serverListeners) {
+                serverListener.stop();
             }
-            if (gameServerListener != null) {
-                gameServerListener.disconnect();
-                gameServerListener = null;
-            }
+            serverListeners.Clear();
+
+            logonNetInterface.close();
+            gameNetInterface.close();
+
+            packetHandler = null;
+
+            active = false;
         }
 
-        public async void sendAsync() {
-            await clientManager.flushSendAsync(gameServerListener.netInterface, serverTime);
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void tick() {
+            if (!active) {
+                return;
+            }
+
+            lock (clientManager) {
+                foreach (ClientConnection client in clientManager.clients) {
+                    lock (client) {
+                        while (client.incomingCompleteBlobs.TryDequeue(out NetBlob blob)) {
+                            packetHandler.processNetBlob(client, blob);
+                        }
+                        client.flushSendAsync(gameNetInterface, serverTime);
+                    }
+                }
+            }
         }
     }
 }

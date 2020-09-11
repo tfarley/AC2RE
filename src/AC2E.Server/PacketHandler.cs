@@ -24,17 +24,72 @@ namespace AC2E.Server {
             this.server = server;
         }
 
-        public async Task processReceive(NetInterface netInterface, byte[] rawData, int dataLen, IPEndPoint receiveEndpoint) {
+        public async Task processReceiveAsync(NetInterface netInterface, byte[] rawData, int dataLen, IPEndPoint receiveEndpoint) {
+            // NOTE: This method should complete as quickly as possible so that the executing thread can be returned to the pool used by IOCP
             using (AC2Reader data = new AC2Reader(new MemoryStream(rawData, 0, dataLen))) {
                 NetPacket packet = new NetPacket(data);
 
                 Log.Debug($"RCVD: {packet}");
 
                 if (packet.logonHeader != null) {
-                    await processNewClientReceive(netInterface, packet, receiveEndpoint);
+                    Log.Debug($"Logon request: seq {packet.logonHeader.netAuth.connectionSeq} acct {packet.logonHeader.netAuth.accountName}");
+                    await server.clientManager.addClientAsync(netInterface, 0.0f, receiveEndpoint, packet.logonHeader.netAuth.accountName);
+                } else if (packet.flags.HasFlag(NetPacket.Flag.LOGOFF)) {
+                    Log.Information($"Client disconnected, id {packet.recipientId}.");
+                    server.clientManager.removeClient(packet.recipientId);
                 } else if (server.clientManager.tryGetClient(packet.recipientId, out ClientConnection client)) {
-                    lock (this) {
-                        processExistingClientReceive(packet);
+                    lock (client) {
+                        // TODO: Need to handle client acking the re-sent (nacked) packets
+                        if (packet.flags.HasFlag(NetPacket.Flag.PAK)) {
+                            client.ackPacket(packet.ackHeader);
+                        }
+
+                        if (packet.flags.HasFlag(NetPacket.Flag.NAK)) {
+                            foreach (uint seq in packet.nacksHeader) {
+                                client.nackPacket(seq);
+                            }
+                        }
+
+                        if (client.connected && packet.seq <= client.highestReceivedPacketSeq) {
+                            if (!packet.flags.HasFlag(NetPacket.Flag.PAK) && !packet.flags.HasFlag(NetPacket.Flag.NAK)) {
+                                Log.Warning($"Got dupe packet with seq {packet.seq}, expecting {client.highestReceivedPacketSeq}.");
+                            }
+                            return;
+                        }
+
+                        for (uint i = client.highestReceivedPacketSeq + 1; i < packet.seq; i++) {
+                            client.nackedSeqs.Add(i);
+                            Log.Warning($"Nacked seq {i}, client id {packet.recipientId}.");
+                        }
+                        client.highestReceivedPacketSeq = packet.seq;
+
+                        if (packet.connectAckHeader != 0) {
+                            if (packet.connectAckHeader == client.connectionAckCookie) {
+                                Log.Debug($"Got good connect ack cookie from client id: {packet.recipientId}.");
+                                client.connect(server.serverTime);
+                                client.enqueueMessage(new WorldNameMsg {
+                                    worldName = new StringInfo { literalValue = "MyWorld" },
+                                });
+                                client.enqueueMessage(new CliDatInterrogationMsg {
+                                    regionId = (RegionID)1,
+                                    nameRuleLanguage = Language.ENGLISH,
+                                    supportedLanguages = SUPPORTED_LANGUAGES,
+                                });
+                            } else {
+                                Log.Warning($"Got bad connect ack cookie from client id: {packet.recipientId} - {packet.connectAckHeader} sent, {client.connectionAckCookie} expected.");
+                            }
+                        }
+
+                        if (packet.flags.HasFlag(NetPacket.Flag.ECHO_REQUEST)) {
+                            client.echoRequestedLocalTime = packet.echoRequestHeader.localTime;
+                            client.echoRequestedServerTime = server.serverTime;
+                        }
+
+                        if (packet.frags.Count > 0) {
+                            foreach (NetBlobFrag frag in packet.frags) {
+                                client.addFragment(frag);
+                            }
+                        }
                     }
                 } else {
                     Log.Warning($"Got packet from unknown client id: {packet.recipientId}.");
@@ -42,86 +97,7 @@ namespace AC2E.Server {
             }
         }
 
-        private async Task processNewClientReceive(NetInterface netInterface, NetPacket packet, IPEndPoint receiveEndpoint) {
-            Log.Debug($"Logon request: seq {packet.logonHeader.netAuth.connectionSeq} acct {packet.logonHeader.netAuth.accountName}");
-            await server.clientManager.addClient(netInterface, 0.0f, receiveEndpoint, packet.logonHeader.netAuth.accountName);
-        }
-
-        private void processExistingClientReceive(NetPacket packet) {
-            if (server.clientManager.tryGetClient(packet.recipientId, out ClientConnection client)) {
-                if (packet.flags.HasFlag(NetPacket.Flag.LOGOFF)) {
-                    Log.Information($"Client disconnected, id {packet.recipientId}.");
-                    server.clientManager.removeClient(packet.recipientId);
-                    return;
-                }
-
-                // TODO: Need to handle client acking the re-sent (nacked) packets
-                if (packet.flags.HasFlag(NetPacket.Flag.PAK)) {
-                    client.ackPacket(packet.ackHeader);
-                }
-
-                if (packet.flags.HasFlag(NetPacket.Flag.NAK)) {
-                    foreach (uint seq in packet.nacksHeader) {
-                        client.nackPacket(seq);
-                    }
-                }
-
-                if (client.connected && packet.seq <= client.highestReceivedPacketSeq) {
-                    if (!packet.flags.HasFlag(NetPacket.Flag.PAK) && !packet.flags.HasFlag(NetPacket.Flag.NAK)) {
-                        Log.Warning($"Got dupe packet with seq {packet.seq}, expecting {client.highestReceivedPacketSeq}.");
-                    }
-                    return;
-                }
-
-                for (uint i = client.highestReceivedPacketSeq + 1; i < packet.seq; i++) {
-                    client.nackedSeqs.Add(i);
-                    Log.Warning($"Nacked seq {i}, client id {packet.recipientId}.");
-                }
-                client.highestReceivedPacketSeq = packet.seq;
-
-                if (packet.connectAckHeader != 0) {
-                    if (packet.connectAckHeader == client.connectionAckCookie) {
-                        Log.Debug($"Got good connect ack cookie from client id: {packet.recipientId}.");
-                        client.connect(server.serverTime);
-                        client.enqueueMessage(new WorldNameMsg {
-                            worldName = new StringInfo { literalValue = "MyWorld" },
-                        });
-                        client.enqueueMessage(new CliDatInterrogationMsg {
-                            regionId = (RegionID)1,
-                            nameRuleLanguage = Language.ENGLISH,
-                            supportedLanguages = SUPPORTED_LANGUAGES,
-                        });
-                    } else {
-                        Log.Warning($"Got bad connect ack cookie from client id: {packet.recipientId} - {packet.connectAckHeader} sent, {client.connectionAckCookie} expected.");
-                    }
-                }
-
-                if (packet.flags.HasFlag(NetPacket.Flag.ECHO_REQUEST)) {
-                    client.echoRequestedLocalTime = packet.echoRequestHeader.localTime;
-                    client.echoRequestedServerTime = server.serverTime;
-                }
-
-                if (packet.frags.Count > 0) {
-                    foreach (NetBlobFrag frag in packet.frags) {
-                        if (frag.fragCount == 1) {
-                            NetBlob blob = new NetBlob {
-                                blobId = frag.blobId,
-                                fragCount = frag.fragCount,
-                                queueId = frag.queueId,
-                            };
-                            blob.addFragment(frag);
-                            processNetBlob(client, blob);
-                        } else {
-                            Log.Error($"Got fragmented packet from client id: {packet.recipientId} - reassembly not implemented yet!");
-                        }
-                    }
-                }
-            } else {
-                Log.Warning($"Got packet from unknown client id: {packet.recipientId}.");
-            }
-        }
-
-        private void processNetBlob(ClientConnection client, NetBlob blob) {
+        public void processNetBlob(ClientConnection client, NetBlob blob) {
             using (AC2Reader data = new AC2Reader(new MemoryStream(blob.payload))) {
 
                 MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
