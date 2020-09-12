@@ -16,12 +16,14 @@ namespace AC2E.Server {
             Language.ENGLISH,
         };
 
-        private readonly AC2Server server;
+        private readonly ClientManager clientManager;
+        private readonly ServerTime serverTime;
 
         private int toggleCounter = 0;
 
-        public PacketHandler(AC2Server server) {
-            this.server = server;
+        public PacketHandler(ClientManager clientManager, ServerTime serverTime) {
+            this.clientManager = clientManager;
+            this.serverTime = serverTime;
         }
 
         public void processReceive(NetInterface netInterface, byte[] rawData, int dataLen, IPEndPoint receiveEndpoint) {
@@ -33,11 +35,11 @@ namespace AC2E.Server {
 
                 if (packet.logonHeader != null) {
                     Log.Debug($"Logon request: seq {packet.logonHeader.netAuth.connectionSeq} acct {packet.logonHeader.netAuth.accountName}");
-                    server.clientManager.addClient(netInterface, 0.0f, receiveEndpoint, packet.logonHeader.netAuth.accountName);
+                    clientManager.addClient(netInterface, 0.0f, receiveEndpoint, packet.logonHeader.netAuth.accountName);
                 } else if (packet.flags.HasFlag(NetPacket.Flag.LOGOFF)) {
                     Log.Information($"Client disconnected, id {packet.recipientId}.");
-                    server.clientManager.removeClient(packet.recipientId);
-                } else if (server.clientManager.tryGetClient(packet.recipientId, out ClientConnection client)) {
+                    clientManager.removeClient(packet.recipientId);
+                } else if (clientManager.tryGetClient(packet.recipientId, out ClientConnection client)) {
                     lock (client) {
                         // TODO: Need to handle client acking the re-sent (nacked) packets
                         if (packet.flags.HasFlag(NetPacket.Flag.PAK)) {
@@ -66,7 +68,7 @@ namespace AC2E.Server {
                         if (packet.connectAckHeader != 0) {
                             if (packet.connectAckHeader == client.connectionAckCookie) {
                                 Log.Debug($"Got good connect ack cookie from client id: {packet.recipientId}.");
-                                client.connect(server.serverTime);
+                                client.connect(serverTime.time);
                                 client.enqueueMessage(new WorldNameMsg {
                                     worldName = new StringInfo { literalValue = "MyWorld" },
                                 });
@@ -82,7 +84,7 @@ namespace AC2E.Server {
 
                         if (packet.flags.HasFlag(NetPacket.Flag.ECHO_REQUEST)) {
                             client.echoRequestedLocalTime = packet.echoRequestHeader.localTime;
-                            client.echoRequestedServerTime = server.serverTime;
+                            client.echoRequestedServerTime = serverTime.time;
                         }
 
                         if (packet.frags.Count > 0) {

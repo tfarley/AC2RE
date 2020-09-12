@@ -18,7 +18,10 @@ namespace AC2E.Server {
 
         public ServerListener(NetInterface netInterface, ProcessReceiveDelegate processReceive) {
             this.netInterface = netInterface;
+            // Async call without await is intentional, so that IOCP thread pool handles the incoming requests
+#pragma warning disable CS4014
             runAsync(processReceive);
+#pragma warning restore CS4014
             Log.Debug($"Initialized server listener with interface {netInterface}.");
         }
 

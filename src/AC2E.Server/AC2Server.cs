@@ -1,8 +1,6 @@
 ﻿using AC2E.Def;
 using Serilog;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace AC2E.Server {
@@ -11,7 +9,7 @@ namespace AC2E.Server {
 
         public ClientManager clientManager = new ClientManager();
 
-        public float serverTime => (DateTime.Now.Ticks - Process.GetCurrentProcess().StartTime.Ticks) / TimeSpan.TicksPerSecond;
+        public ServerTime time = new ServerTime();
 
         private bool active;
         private PacketHandler packetHandler;
@@ -33,7 +31,9 @@ namespace AC2E.Server {
                 stop();
             }
 
-            packetHandler = new PacketHandler(this);
+            time.restart();
+
+            packetHandler = new PacketHandler(clientManager, time);
 
             logonNetInterface = new NetInterface(port);
             gameNetInterface = new NetInterface(logonNetInterface.port + 1);
@@ -72,13 +72,15 @@ namespace AC2E.Server {
                 return;
             }
 
+            time.tick();
+
             lock (clientManager) {
                 foreach (ClientConnection client in clientManager.clients) {
                     lock (client) {
                         while (client.incomingCompleteBlobs.TryDequeue(out NetBlob blob)) {
                             packetHandler.processNetBlob(client, blob);
                         }
-                        client.flushSend(gameNetInterface, serverTime);
+                        client.flushSend(gameNetInterface, time.time);
                     }
                 }
             }
