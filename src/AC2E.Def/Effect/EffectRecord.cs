@@ -14,7 +14,7 @@
         public bool pk; // m_bPK
         public IPackage appPackage; // m_rApp
         public double timePromotedToTopLevel; // m_timePromotedToTopLevel
-        public SingletonPkg effect; // m_effect
+        public SingletonPkg<Effect> effect; // m_effect
         public InstanceId actingForWhomId; // m_iidActingForWhom
         public DataId skillDid; // m_didSkill
         public InstanceId fromItemId; // m_iidFromItem
@@ -40,7 +40,7 @@
             pk = data.ReadBoolean();
             data.ReadPkg<IPackage>(v => appPackage = v);
             timePromotedToTopLevel = data.ReadDouble();
-            data.ReadPkg<SingletonPkg>(v => effect = v);
+            data.ReadPkg<SingletonPkg<IPackage>>(v => effect = v.to<Effect>());
             actingForWhomId = data.ReadInstanceId();
             skillDid = data.ReadDataId();
             fromItemId = data.ReadInstanceId();

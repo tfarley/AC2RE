@@ -80,8 +80,10 @@ namespace AC2E.Def {
             return new DataId(UnpackUInt32());
         }
 
-        public T UnpackPackage<T>() where T : IPackage {
-            checkPackTag(PackTag.PACKAGE);
+        public T UnpackPackage<T>(bool skipPackTag = false) where T : IPackage {
+            if (!skipPackTag) {
+                checkPackTag(PackTag.PACKAGE);
+            }
 
             List<PackageId> packageIds = ReadList(ReadPackageId);
 
@@ -102,7 +104,7 @@ namespace AC2E.Def {
             IPackage package;
 
             if (referenceMeta.isSingleton) {
-                package = new SingletonPkg {
+                package = new SingletonPkg<IPackage> {
                     did = ReadDataId(),
                 };
             } else {
@@ -112,8 +114,13 @@ namespace AC2E.Def {
                 if (nativeType != NativeType.UNDEF) {
                     package = PackageManager.read(this, nativeType);
                 } else {
-                    uint length = ReadUInt32();
+                    uint packageLength = ReadUInt32() * 4;
+                    long startPos = BaseStream.Position;
                     package = PackageManager.read(this, packageType);
+                    uint readLength = (uint)(BaseStream.Position - startPos);
+                    if (readLength != packageLength) {
+                        throw new InvalidDataException(readLength.ToString());
+                    }
                 }
 
                 // TODO: Still not sure this is the correct condition for whether there are references or not

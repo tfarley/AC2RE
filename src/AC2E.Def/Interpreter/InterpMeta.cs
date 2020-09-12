@@ -31,12 +31,24 @@ namespace AC2E.Def {
             { typeof(InstanceId), 2 },
         };
 
+        private static void addFieldsInOrder(Type type, List<FieldInfo> orderedFieldInfos) {
+            if (type.BaseType != null) {
+                addFieldsInOrder(type.BaseType, orderedFieldInfos);
+            }
+
+            FieldInfo[] fieldInfos = type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
+            // Undocumented way to sort in declaration order
+            Array.Sort(fieldInfos, (f1, f2) => f1.MetadataToken.CompareTo(f2.MetadataToken));
+            orderedFieldInfos.AddRange(fieldInfos);
+        }
+
         public static FieldDesc[] getFieldDescs(Type type) {
             if (!fieldDescCache.TryGetValue(type, out FieldDesc[] fieldDescs)) {
-                FieldInfo[] fieldInfos = type.GetFields();
-                fieldDescs = new FieldDesc[fieldInfos.Length];
-                for (int i = 0; i < fieldInfos.Length; i++) {
-                    FieldInfo fieldInfo = fieldInfos[i];
+                List<FieldInfo> orderedFieldInfos = new List<FieldInfo>();
+                addFieldsInOrder(type, orderedFieldInfos);
+                fieldDescs = new FieldDesc[orderedFieldInfos.Count];
+                for (int i = 0; i < orderedFieldInfos.Count; i++) {
+                    FieldInfo fieldInfo = orderedFieldInfos[i];
                     Type fieldType = fieldInfo.FieldType;
                     fieldType = TYPE_REPLACEMENTS.GetValueOrDefault(fieldType, fieldType);
                     StackType stackType;

@@ -1,8 +1,16 @@
 ﻿namespace AC2E.Def {
 
-    public class SingletonPkg : IPackage {
+    public class SingletonPkg<T> : IPackage where T : IPackage {
 
         public DataId did;
+        public T package;
+
+        public SingletonPkg<U> to<U>() where U : class, IPackage {
+            return new SingletonPkg<U> {
+                did = did,
+                package = package as U,
+            };
+        }
 
         public SingletonPkg() {
 

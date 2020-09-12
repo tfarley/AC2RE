@@ -501,7 +501,7 @@ namespace AC2E.Server {
                             // TODO: Just for testing - when pressing the attack mode button, toggle Refining effect UI image
                             if (msg.netEvent.funcId == ServerEventFunctionId.Combat__StartAttack) {
                                 if (toggleCounter % 2 == 0) {
-                                    SingletonPkg refiningEffect = new SingletonPkg {
+                                    SingletonPkg<Effect> refiningEffect = new SingletonPkg<Effect> {
                                         did = new DataId(0x6F0011ED),
                                     };
                                     client.enqueueMessage(new InterpCEventPrivateMsg {
