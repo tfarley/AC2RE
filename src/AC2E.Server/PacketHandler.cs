@@ -1,12 +1,12 @@
 ﻿using AC2E.Def;
 using Serilog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Numerics;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AC2E.Server {
 
@@ -24,16 +24,16 @@ namespace AC2E.Server {
             this.server = server;
         }
 
-        public async Task processReceiveAsync(NetInterface netInterface, byte[] rawData, int dataLen, IPEndPoint receiveEndpoint) {
+        public void processReceive(NetInterface netInterface, byte[] rawData, int dataLen, IPEndPoint receiveEndpoint) {
             // NOTE: This method should complete as quickly as possible so that the executing thread can be returned to the pool used by IOCP
             using (AC2Reader data = new AC2Reader(new MemoryStream(rawData, 0, dataLen))) {
                 NetPacket packet = new NetPacket(data);
 
-                Log.Debug($"RCVD: {packet}");
+                Log.Debug($"RCVD [{dataLen}] on {receiveEndpoint} | {packet}\n{BitConverter.ToString(rawData, 0, dataLen)}.");
 
                 if (packet.logonHeader != null) {
                     Log.Debug($"Logon request: seq {packet.logonHeader.netAuth.connectionSeq} acct {packet.logonHeader.netAuth.accountName}");
-                    await server.clientManager.addClientAsync(netInterface, 0.0f, receiveEndpoint, packet.logonHeader.netAuth.accountName);
+                    server.clientManager.addClient(netInterface, 0.0f, receiveEndpoint, packet.logonHeader.netAuth.accountName);
                 } else if (packet.flags.HasFlag(NetPacket.Flag.LOGOFF)) {
                     Log.Information($"Client disconnected, id {packet.recipientId}.");
                     server.clientManager.removeClient(packet.recipientId);

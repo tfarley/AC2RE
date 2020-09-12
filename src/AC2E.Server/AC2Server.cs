@@ -37,8 +37,8 @@ namespace AC2E.Server {
 
             logonNetInterface = new NetInterface(port);
             gameNetInterface = new NetInterface(logonNetInterface.port + 1);
-            serverListeners.Add(new ServerListener(logonNetInterface, packetHandler.processReceiveAsync));
-            serverListeners.Add(new ServerListener(gameNetInterface, packetHandler.processReceiveAsync));
+            serverListeners.Add(new ServerListener(logonNetInterface, packetHandler.processReceive));
+            serverListeners.Add(new ServerListener(gameNetInterface, packetHandler.processReceive));
 
             Log.Debug($"Initialized AC2Server.");
 
@@ -78,7 +78,7 @@ namespace AC2E.Server {
                         while (client.incomingCompleteBlobs.TryDequeue(out NetBlob blob)) {
                             packetHandler.processNetBlob(client, blob);
                         }
-                        client.flushSendAsync(gameNetInterface, serverTime);
+                        client.flushSend(gameNetInterface, serverTime);
                     }
                 }
             }

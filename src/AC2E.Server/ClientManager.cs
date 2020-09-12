@@ -1,7 +1,6 @@
 ﻿using AC2E.Def;
 using System.Collections.Generic;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace AC2E.Server {
 
@@ -20,7 +19,7 @@ namespace AC2E.Server {
             }
         }
 
-        public async Task<ClientConnection> addClientAsync(NetInterface netInterface, float serverTime, IPEndPoint clientEndpoint, string accountName) {
+        public ClientConnection addClient(NetInterface netInterface, float serverTime, IPEndPoint clientEndpoint, string accountName) {
             ClientConnection client;
             lock (this) {
                 if (_clients.Count > MAX_CONNECTIONS) {
@@ -31,7 +30,7 @@ namespace AC2E.Server {
                 clientIdCounter++;
             }
 
-            await client.sendPacketAsync(netInterface, serverTime, new NetPacket {
+            client.sendPacket(netInterface, serverTime, new NetPacket {
                 connectHeader = new ConnectHeader {
                     connectionAckCookie = client.connectionAckCookie,
                     netId = client.id,

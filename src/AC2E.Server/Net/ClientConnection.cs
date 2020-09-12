@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace AC2E.Server {
 
@@ -119,18 +118,18 @@ namespace AC2E.Server {
             blobSeq++;
         }
 
-        public async Task flushSendAsync(NetInterface netInterface, float serverTime) {
+        public void flushSend(NetInterface netInterface, float serverTime) {
             while (connected && (echoRequestedLocalTime != -1.0f || serverTime > nextAckTime || serverTime > nextTimeSyncTime || outgoingFragQueue.Count > 0 || nacksToResend.Count > 0)) {
                 if (nacksToResend.TryPeek(out SendablePacket packet) && packet.netInterface == netInterface) {
-                    await rawSendPacketAsync(packet);
+                    rawSendPacket(packet);
                     nacksToResend.Dequeue();
                 } else {
-                    await sendPacketAsync(netInterface, serverTime, new NetPacket());
+                    sendPacket(netInterface, serverTime, new NetPacket());
                 }
             }
         }
 
-        public async Task<bool> sendPacketAsync(NetInterface netInterface, float serverTime, NetPacket packet) {
+        public bool sendPacket(NetInterface netInterface, float serverTime, NetPacket packet) {
             packet.recipientId = id;
             packet.interval = (ushort)serverTime;
             // TODO: Need to advance this?
@@ -189,14 +188,12 @@ namespace AC2E.Server {
                 netInterface = netInterface,
             };
 
-            bool sendResult = await rawSendPacketAsync(sendablePacket);
-
             sentSeqToPackets.GetOrCreate(packet.seq).Add(sendablePacket);
 
-            return sendResult;
+            return rawSendPacket(sendablePacket);
         }
 
-        private async Task<bool> rawSendPacketAsync(SendablePacket sendablePacket) {
+        private bool rawSendPacket(SendablePacket sendablePacket) {
             NetPacket packet = sendablePacket.packet;
             using (AC2Writer data = new AC2Writer(new MemoryStream(sendBuffer))) {
                 // Write header
@@ -240,13 +237,9 @@ namespace AC2E.Server {
                 // Replace the checksum
                 BitConverter.GetBytes(headerChecksum + contentChecksum).CopyTo(sendBuffer, 8);
 
-                Log.Debug($"Send[{packetLength}] to {endpoint} - {BitConverter.ToString(sendBuffer, 0, packetLength)}.");
+                Log.Debug($"SENT [{packetLength}] to {endpoint} | {packet}\n{BitConverter.ToString(sendBuffer, 0, packetLength)}.");
 
-                bool sendResult = await sendablePacket.netInterface.sendToAsync(sendBuffer, packetLength, endpoint);
-
-                Log.Debug($"SENT: {packet}");
-
-                return sendResult;
+                return sendablePacket.netInterface.sendTo(sendBuffer, packetLength, endpoint); ;
             }
         }
 

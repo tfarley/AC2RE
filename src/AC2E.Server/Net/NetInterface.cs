@@ -1,5 +1,4 @@
 ﻿using Serilog;
-using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -27,13 +26,13 @@ namespace AC2E.Server {
             }
         }
 
-        internal async Task<bool> sendToAsync(byte[] sendBuffer, int size, EndPoint sendEndpoint) {
+        internal bool sendTo(byte[] buffer, int size, EndPoint sendEndpoint) {
             // UDP is all-or-nothing when sending a message
-            return await socket.SendToAsync(new ArraySegment<byte>(sendBuffer, 0, size), SocketFlags.None, sendEndpoint) == size;
+            return socket.SendTo(buffer, size, SocketFlags.None, sendEndpoint) == size;
         }
 
-        internal async Task<SocketReceiveFromResult> receiveFromAsync(byte[] receiveBuffer) {
-            return await socket.ReceiveFromAsync(receiveBuffer, SocketFlags.None, ANY_ENDPOINT);
+        internal async Task<SocketReceiveFromResult> receiveFromAsync(byte[] buffer) {
+            return await socket.ReceiveFromAsync(buffer, SocketFlags.None, ANY_ENDPOINT);
         }
 
         internal void close() {

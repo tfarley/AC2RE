@@ -9,7 +9,7 @@ namespace AC2E.Server {
 
     internal class ServerListener {
 
-        public delegate Task ProcessReceiveDelegate(NetInterface netInterface, byte[] rawData, int dataLen, IPEndPoint receiveEndpoint);
+        public delegate void ProcessReceiveDelegate(NetInterface netInterface, byte[] rawData, int dataLen, IPEndPoint receiveEndpoint);
 
         public readonly NetInterface netInterface;
         private bool stopped;
@@ -54,7 +54,7 @@ namespace AC2E.Server {
                 }
 
                 try {
-                    await processReceive(netInterface, receiveBuffer, receivedInfo.ReceivedBytes, (IPEndPoint)receivedInfo.RemoteEndPoint);
+                    processReceive(netInterface, receiveBuffer, receivedInfo.ReceivedBytes, (IPEndPoint)receivedInfo.RemoteEndPoint);
                 } catch (Exception e) {
                     Log.Error(e, $"Exception when reading packet on interface {netInterface}, discarded.");
                     continue;
