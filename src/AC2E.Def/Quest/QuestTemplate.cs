@@ -7,7 +7,7 @@
         public SingletonPkg<QuestGlobals> questGlobals; // questGlobals
 
         public QuestTemplate(AC2Reader data) : base(data) {
-            data.ReadPkg<SingletonPkg<IPackage>>(v => questGlobals = v.to<QuestGlobals>());
+            data.ReadSingletonPkg(v => questGlobals = v.to<QuestGlobals>());
         }
     }
 }

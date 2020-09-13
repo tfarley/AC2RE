@@ -16,7 +16,7 @@
 
         public StoreTemplate(AC2Reader data) {
             data.ReadPkg<RList<IPackage>>(v => filters = v.to<StoreFilter>());
-            data.ReadPkg<SingletonPkg<IPackage>>(v => sorter = v.to<StoreSorter>());
+            data.ReadSingletonPkg(v => sorter = v.to<StoreSorter>());
             data.ReadPkg<StringInfo>(v => name = v);
             data.ReadPkg<StringInfo>(v => description = v);
             totalSales = data.ReadInt32();

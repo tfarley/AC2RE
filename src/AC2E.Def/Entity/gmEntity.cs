@@ -28,12 +28,12 @@
             data.ReadPkg<AAHash>(v => hashLock = v);
             data.ReadPkg<VisualDescInfo>(v => pileVisualDesc = v);
             data.ReadPkg<AAHash>(v => appearanceMutationHash = v);
-            data.ReadPkg<SingletonPkg<IPackage>>(v => usagePermission = v.to<UsagePermission>());
-            data.ReadPkg<SingletonPkg<IPackage>>(v => biasProfile = v.to<BiasProfile>());
-            data.ReadPkg<SingletonPkg<IPackage>>(v => usageAction = v.to<UsageAction>());
+            data.ReadSingletonPkg(v => usagePermission = v.to<UsagePermission>());
+            data.ReadSingletonPkg(v => biasProfile = v.to<BiasProfile>());
+            data.ReadSingletonPkg(v => usageAction = v.to<UsageAction>());
             data.ReadPkg<EffectRegistry>(v => effectRegistry = v);
             data.ReadPkg<AList>(v => thresholdList = v);
-            data.ReadPkg<SingletonPkg<IPackage>>(v => usageTakePermission = v);
+            data.ReadSingletonPkg(v => usageTakePermission = v);
         }
     }
 }

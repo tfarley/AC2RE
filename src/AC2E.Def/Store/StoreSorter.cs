@@ -8,7 +8,6 @@
 
         public StoreSorter(AC2Reader data) {
             data.ReadPkg<StringInfo>(v => name = v);
-            throw new System.Exception("TODO: This needs to be verified against real data.");
         }
     }
 }

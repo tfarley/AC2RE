@@ -1,8 +1,8 @@
 ﻿namespace AC2E.Def {
 
-    public class RemoveRecipeEffect : Effect {
+    public class RemoveRecipeEffect : InstantEffect {
 
-        public override PackageType packageType => PackageType.InstantEffect;
+        public override PackageType packageType => PackageType.RemoveRecipeEffect;
 
         public DataId recipeDid; // m_didRecipe
 

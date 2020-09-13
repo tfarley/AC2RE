@@ -26,7 +26,7 @@
         public uint stRequired1; // m_stRequired1
         public uint stRequired2; // m_stRequired2
         public uint questRequired; // m_questRequired
-        public uint speciesRequired; // m_speciesRequired
+        public SpeciesType speciesRequired; // m_speciesRequired
         public Position lastPosition; // m_posLastPosition
         public int requiredCraftSkillRating; // m_iRequiredCraftSkillRating
         public uint stRequired2Rating; // m_stRequired2Rating
@@ -67,7 +67,7 @@
             stRequired1 = data.ReadUInt32();
             stRequired2 = data.ReadUInt32();
             questRequired = data.ReadUInt32();
-            speciesRequired = data.ReadUInt32();
+            speciesRequired = (SpeciesType)data.ReadUInt32();
             data.ReadPkg<Position>(v => lastPosition = v);
             requiredCraftSkillRating = data.ReadInt32();
             stRequired2Rating = data.ReadUInt32();

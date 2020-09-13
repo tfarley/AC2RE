@@ -8,7 +8,7 @@
         public uint effectCategory; // m_effectCategory
 
         public ApplyEffect(AC2Reader data) : base(data) {
-            data.ReadPkg<SingletonPkg<IPackage>>(v => effect = v.to<Effect>());
+            data.ReadSingletonPkg(v => effect = v.to<Effect>());
             effectCategory = data.ReadUInt32();
         }
     }

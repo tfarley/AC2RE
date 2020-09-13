@@ -153,6 +153,24 @@ namespace AC2E.Def {
             return packageId;
         }
 
+        public PackageId ReadSingletonPkg(Action<SingletonPkg<IPackage>> assigner) {
+            PackageId packageId = ReadPackageId();
+            if (packageId.id != PackageId.NULL.id) {
+                packageRegistry.addResolver(() => {
+                    IPackage package = packageRegistry.get<IPackage>(packageId);
+                    Type packageType = package.GetType();
+                    if (packageType.IsGenericType && packageType.GetGenericTypeDefinition() == typeof(SingletonPkg<>)) {
+                        assigner.Invoke((SingletonPkg<IPackage>)package);
+                    } else {
+                        assigner.Invoke(new SingletonPkg<IPackage> {
+                            package = package,
+                        });
+                    }
+                });
+            }
+            return packageId;
+        }
+
         public string ReadNullTermString(Encoding encoding = null) {
             if (encoding == null) {
                 encoding = Encoding.ASCII;
