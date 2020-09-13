@@ -4,6 +4,29 @@ namespace AC2E.Def {
 
     public static class ClothingPackages {
 
+        public static readonly HashSet<PackageType> ARMOR_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.BootsOpalHuman,
+            PackageType.BootsOpalLugian,
+            PackageType.BootsOpalTumerok,
+        };
+
+        public static readonly HashSet<PackageType> CLOTHING_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.BootsHumanStarter,
+            PackageType.BootsLugianStarter,
+            PackageType.GauntletsHumanStarter,
+            PackageType.GlovesLugianStarter,
+            PackageType.HumanQuiver,
+            PackageType.JerkinTumerokStarter,
+            PackageType.KiltLugianStarter,
+            PackageType.LeggingsTumerokStarter,
+            PackageType.PantsHumanStarter,
+            PackageType.RareArmorTemplate,
+            PackageType.SashLugianStarter,
+            PackageType.ShirtHumanStarter,
+            PackageType.Toga,
+            PackageType.TogaLugianBarbs,
+        };
+
         public static readonly HashSet<PackageType> HUMAN_ARMOR_TEMPLATE_PACKAGES = new HashSet<PackageType> {
             PackageType.BootsHumanLeather,
             PackageType.BootsHumanLeatherHard,
@@ -22,6 +45,9 @@ namespace AC2E.Def {
             PackageType.JacketHumanPadded,
             PackageType.JacketHumanReinforced,
             PackageType.RobeHuman,
+
+            PackageType.BreastplateHumanDarkfoe,
+            PackageType.GauntletsGhostfireHuman,
         };
 
         public static readonly HashSet<PackageType> LUGIAN_ARMOR_TEMPLATE_PACKAGES = new HashSet<PackageType> {
@@ -46,6 +72,9 @@ namespace AC2E.Def {
             PackageType.SandalsLugianQuilted,
             PackageType.SandalsLugianRaider,
             PackageType.SandalsLugianStudded,
+
+            PackageType.BreastplateLugianDarkfoe,
+            PackageType.GauntletsGhostfireLugian,
         };
 
         public static readonly HashSet<PackageType> RING_TEMPLATE_PACKAGES = new HashSet<PackageType> {
@@ -97,6 +126,9 @@ namespace AC2E.Def {
             PackageType.TailguardTumerokInitiate,
             PackageType.TailguardTumerokReed,
             PackageType.TailguardTumerokSpirit,
+
+            PackageType.BreastplateTumerokDarkfoe,
+            PackageType.GauntletsGhostfireTumerok,
         };
     }
 }

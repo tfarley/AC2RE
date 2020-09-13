@@ -107,6 +107,10 @@ namespace AC2E.Def {
                 packageType = PackageType.NPCTemplate;
             } else if (AgentPackages.TEACHING_STONE_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.TeachingStoneTemplate;
+            } else if (ClothingPackages.ARMOR_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.ArmorTemplate;
+            } else if (ClothingPackages.CLOTHING_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.ClothingTemplate;
             } else if (ClothingPackages.HUMAN_ARMOR_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.HumanArmorTemplate;
             } else if (ClothingPackages.LUGIAN_ARMOR_TEMPLATE_PACKAGES.Contains(packageType)) {
@@ -217,8 +221,8 @@ namespace AC2E.Def {
                 packageType = PackageType.BowTemplate;
             } else if (ItemPackages.CESTAS_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.CestasTemplate;
-            } else if (ItemPackages.CLOTHING_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ClothingTemplate;
+            } else if (ItemPackages.DAGGER_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.DaggerTemplate;
             } else if (ItemPackages.DEATH_PORTAL_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.DeathPortal;
             } else if (ItemPackages.DOOR_TEMPLATE_PACKAGES.Contains(packageType)) {
@@ -238,11 +242,19 @@ namespace AC2E.Def {
             } else if (ItemPackages.GLYPH_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.GlyphTemplate;
             } else if (ItemPackages.GUNBLADE_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.HandbladeTemplate;
+                packageType = PackageType.GunbladeTemplate;
+            } else if (ItemPackages.HAMMER_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.HammerTemplate;
             } else if (ItemPackages.HANDBLADE_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.HandbladeTemplate;
+            } else if (ItemPackages.JAILAI_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.JailaiTemplate;
             } else if (ItemPackages.KEY_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.KeyTemplate;
+            } else if (ItemPackages.LIFESTONE_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.LifestoneTemplate;
+            } else if (ItemPackages.LUTE_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.LuteTemplate;
             } else if (ItemPackages.MAP_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.MapTemplate;
             } else if (ItemPackages.MINE_TEMPLATE_PACKAGES.Contains(packageType)) {
@@ -253,12 +265,18 @@ namespace AC2E.Def {
                 packageType = PackageType.MoteTemplate;
             } else if (ItemPackages.POTION_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.PotionTemplate;
+            } else if (ItemPackages.POTION_TUTORIAL_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.PotionTutorialTemplate;
+            } else if (ItemPackages.QUEST_DISPENSER_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.QuestDispenserTemplate;
             } else if (ItemPackages.ROAD_SIGN_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.RoadSignTemplate;
             } else if (ItemPackages.POLEARM_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.PolearmTemplate;
             } else if (ItemPackages.SCEPTER_LUGIAN_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.ScepterLugianTemplate;
+            } else if (ItemPackages.SCYTHE_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.ScytheTemplate;
             } else if (ItemPackages.SHARPSTICK_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.SharpstickTemplate;
             } else if (ItemPackages.SHARD_TEMPLATE_PACKAGES.Contains(packageType)) {
@@ -442,6 +460,8 @@ namespace AC2E.Def {
                     return new CustomSuccessRecipeAction(data);
                 case PackageType.CWeapon:
                     return new CWeapon(data);
+                case PackageType.DaggerTemplate:
+                    return new DaggerTemplate(data);
                 case PackageType.DeathPortal:
                     return new DeathPortal(data);
                 case PackageType.DestroyRecipeAction:
@@ -520,6 +540,8 @@ namespace AC2E.Def {
                     return new Generator(data);
                 case PackageType.GenericPortal:
                     return new GenericPortal(data);
+                case PackageType.GenericShard:
+                    return new GenericShard(data);
                 case PackageType.GenesisEffect:
                     return new GenesisEffect(data);
                 case PackageType.GlyphTemplate:
@@ -534,6 +556,8 @@ namespace AC2E.Def {
                     return new GRSystemTemplate(data);
                 case PackageType.GunbladeTemplate:
                     return new GunbladeTemplate(data);
+                case PackageType.HammerTemplate:
+                    return new HammerTemplate(data);
                 case PackageType.HandTemplate:
                     return new HandTemplate(data);
                 case PackageType.HandbladeTemplate:
@@ -592,6 +616,8 @@ namespace AC2E.Def {
                     return new ItemInteractionOutcome(data);
                 case PackageType.IWeapon:
                     return new IWeapon(data);
+                case PackageType.JailaiTemplate:
+                    return new JailaiTemplate(data);
                 case PackageType.Jewelry:
                     return new Jewelry(data);
                 case PackageType.JewelryTemplate:
@@ -606,6 +632,10 @@ namespace AC2E.Def {
                     return new LevelMappingTable(data);
                 case PackageType.LinearAttackHook:
                     return new LinearAttackHook(data);
+                case PackageType.Lifestone:
+                    return new Lifestone(data);
+                case PackageType.LifestoneTemplate:
+                    return new LifestoneTemplate(data);
                 case PackageType.LinkerEffect:
                     return new LinkerEffect(data);
                 case PackageType.LogInfo:
@@ -614,6 +644,8 @@ namespace AC2E.Def {
                     return new LoreFilter(data);
                 case PackageType.LugianArmorTemplate:
                     return new LugianArmorTemplate(data);
+                case PackageType.LuteTemplate:
+                    return new LuteTemplate(data);
                 case PackageType.MajorSpellbindingRecipe:
                     return new MajorSpellbindingRecipe(data);
                 case PackageType.MapTemplate:
@@ -626,6 +658,8 @@ namespace AC2E.Def {
                     return new MasterList(data);
                 case PackageType.MasterListMember:
                     return new MasterListMember(data);
+                case PackageType.MasterSkillList:
+                    return new MasterSkillList(data);
                 case PackageType.MineGenesisEffect:
                     return new MineGenesisEffect(data);
                 case PackageType.MineTemplate:
@@ -678,6 +712,8 @@ namespace AC2E.Def {
                     return new PetChangerEffect(data);
                 case PackageType.PhaseInfo:
                     return new PhaseInfo(data);
+                case PackageType.PKRankBoard:
+                    return new PKRankBoard(data);
                 case PackageType.PlayerEffectRecipeAction:
                     return new PlayerEffectRecipeAction(data);
                 case PackageType.PlayerSaleProfile:
@@ -696,6 +732,8 @@ namespace AC2E.Def {
                     return new PortalTemplate(data);
                 case PackageType.PotionTemplate:
                     return new PotionTemplate(data);
+                case PackageType.PotionTutorialTemplate:
+                    return new PotionTutorialTemplate(data);
                 case PackageType.ProduceRecipeAction:
                     return new ProduceRecipeAction(data);
                 case PackageType.ProtectionEffect:
@@ -704,6 +742,8 @@ namespace AC2E.Def {
                     return new QualitiesEffect(data);
                 case PackageType.Quest:
                     return new Quest(data);
+                case PackageType.QuestDispenserTemplate:
+                    return new QuestDispenserTemplate(data);
                 case PackageType.QuestGGWDreamT:
                     return new QuestTemplate(data);
                 case PackageType.QuestGlobals:
@@ -762,6 +802,8 @@ namespace AC2E.Def {
                     return new ScepterLugianTemplate(data);
                 case PackageType.SceneryObject:
                     return new SceneryObject(data);
+                case PackageType.ScytheTemplate:
+                    return new ScytheTemplate(data);
                 case PackageType.SecretRecipe:
                     return new SecretRecipe(data);
                 case PackageType.Shard:
@@ -858,6 +900,8 @@ namespace AC2E.Def {
                     return new UsageDesc(data);
                 case PackageType.UsagePermission:
                     return new UsagePermission(data);
+                case PackageType.VaultTemplate:
+                    return new VaultTemplate(data);
                 case PackageType.VisualDescEffect:
                     return new VisualDescEffect(data);
                 case PackageType.VisualDescInfo:

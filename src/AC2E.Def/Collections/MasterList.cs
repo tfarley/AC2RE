@@ -3,7 +3,7 @@
     // TODO: Make this generic for the ARHash?
     public class MasterList : IPackage {
 
-        public PackageType packageType => PackageType.MasterList;
+        public virtual PackageType packageType => PackageType.MasterList;
 
         public uint emapperID; // mEmapperID
         public DataIdArray subDids; // mSubDataIDs

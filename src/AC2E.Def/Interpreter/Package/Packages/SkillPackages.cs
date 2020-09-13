@@ -1774,6 +1774,23 @@ namespace AC2E.Def {
             PackageType.Tum_Mi_TaintBlood,
             PackageType.Tum_Mi_VisceralMalady,
             PackageType.Tum_Mi_Volley,
+
+            PackageType.Mn_Gen_MagicArrowShadowStrong,
+            PackageType.Mn_Gen_MagicArrowShadowWeak,
+            PackageType.Mn_Gen_MagicArrowStrong,
+            PackageType.Mn_Gen_MagicArrowWeak,
+            PackageType.Mn_Gen_MagicArrowVirindiStrong,
+            PackageType.Mn_Gen_MagicArrowVirindiWeak,
+            PackageType.Mn_Gen_MeleeNormal1,
+            PackageType.Mn_Gen_MeleeStrong1,
+            PackageType.Mn_Gen_MeleeWeak1,
+            PackageType.Mn_Gen_MeleeWeak2,
+            PackageType.Mn_Gen_MissileArrowStrong,
+            PackageType.Mn_Gen_MissileArrowWeak,
+            PackageType.Mn_Gen_MissileAttackThornlingStrong,
+            PackageType.Mn_Gen_MissileAttackThornlingWeak,
+            PackageType.Mn_Ma_AttackStrong_Drudge,
+            PackageType.Mn_Ma_AttackWeak_Drudge,
         };
 
         public static readonly HashSet<PackageType> ATTRIBUTE_SKILL_PACKAGES = new HashSet<PackageType> {

@@ -15,7 +15,7 @@ namespace AC2E.Def {
                 if (frame.type == FrameDebugInfo.FrameType.PACKAGE) {
                     ExportData export = packageNameToExport[frame.name];
                     data.WriteLine();
-                    data.Write($"0x{export.args.packageId:X8} package {frame.name}");
+                    data.Write($"{export.args.packageId} package {frame.name}");
                     if (export.args.baseName.Length > 0) {
                         data.Write($" : {export.args.baseName} - 0x{export.args.parentIndex:X8}");
                     }

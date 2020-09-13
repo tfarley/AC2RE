@@ -102,21 +102,11 @@ namespace AC2E.Def {
             PackageType.CestasTumerokSkullSunBlaze,
         };
 
-        public static readonly HashSet<PackageType> CLOTHING_TEMPLATE_PACKAGES = new HashSet<PackageType> {
-            PackageType.BootsHumanStarter,
-            PackageType.BootsLugianStarter,
-            PackageType.GauntletsHumanStarter,
-            PackageType.GlovesLugianStarter,
-            PackageType.HumanQuiver,
-            PackageType.JerkinTumerokStarter,
-            PackageType.KiltLugianStarter,
-            PackageType.LeggingsTumerokStarter,
-            PackageType.PantsHumanStarter,
-            PackageType.RareArmorTemplate,
-            PackageType.SashLugianStarter,
-            PackageType.ShirtHumanStarter,
-            PackageType.Toga,
-            PackageType.TogaLugianBarbs,
+        public static readonly HashSet<PackageType> DAGGER_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.DaggerDrudgeStone,
+            PackageType.DaggerTumerokBone,
+            PackageType.DaggerTumerokMetal,
+            PackageType.DaggerTumerokWood,
         };
 
         public static readonly HashSet<PackageType> DEATH_PORTAL_PACKAGES = new HashSet<PackageType> {
@@ -257,6 +247,19 @@ namespace AC2E.Def {
             PackageType.GunbladeThornlingWorrier,
         };
 
+        public static readonly HashSet<PackageType> HAMMER_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.HammerChuck,
+            PackageType.HammerCrusher,
+            PackageType.HammerLugianStarter,
+            PackageType.HammerMaul,
+            PackageType.HammerRockslide,
+            PackageType.HammerRockslideGoldenAge,
+            PackageType.HammerStone,
+
+            PackageType.HammerRockslideAncients,
+            PackageType.HammerRockslideSunBlaze,
+        };
+
         public static readonly HashSet<PackageType> HANDBLADE_TEMPLATE_PACKAGES = new HashSet<PackageType> {
             PackageType.Handblade,
             PackageType.HandbladeBladefist,
@@ -267,6 +270,18 @@ namespace AC2E.Def {
 
             PackageType.HandbladeRavagerAncients,
             PackageType.HandbladeRavagerSunBlaze,
+        };
+
+        public static readonly HashSet<PackageType> JAILAI_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.JailaiTumerokBladeSling,
+            PackageType.JailaiTumerokFangSling,
+            PackageType.JailaiTumerokSkullSling,
+            PackageType.JailaiTumerokSkullSlingGoldenAge,
+            PackageType.JailaiTumerokSling,
+            PackageType.JailaiTumerokTuskSling,
+
+            PackageType.JailaiTumerokSkullSlingAncients,
+            PackageType.JailaiTumerokSkullSlingSunBlaze,
         };
 
         public static readonly HashSet<PackageType> KEY_TEMPLATE_PACKAGES = new HashSet<PackageType> {
@@ -289,6 +304,26 @@ namespace AC2E.Def {
             PackageType.Key_VesayenVaultDoor,
             PackageType.Key_WinterhollowsVaultDoor,
             PackageType.KeyTreasuryEeruk,
+        };
+
+        public static readonly HashSet<PackageType> LIFESTONE_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.LifestoneHuman,
+            PackageType.LifestoneLugian,
+            PackageType.LifestoneTumerok,
+        };
+
+        public static readonly HashSet<PackageType> LUTE_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.FlutePanpipes,
+            PackageType.FluteRecorder,
+            PackageType.Lute,
+            PackageType.LuteBass,
+            PackageType.LuteBassCantalee,
+            PackageType.LuteBassPunchan,
+            PackageType.LuteBurun,
+            PackageType.LuteCantalee,
+            PackageType.LuteIce,
+            PackageType.LutePunchan,
+            PackageType.LuteVirindi,
         };
 
         public static readonly HashSet<PackageType> MAP_TEMPLATE_PACKAGES = new HashSet<PackageType> {
@@ -356,6 +391,20 @@ namespace AC2E.Def {
             PackageType.RattleBlindDeath,
             PackageType.SanguineFangUnguent,
             PackageType.WaterDivined,
+        };
+
+        public static readonly HashSet<PackageType> POTION_TUTORIAL_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.PotionTutorialAcid,
+            PackageType.PotionTutorialCrystal,
+            PackageType.PotionTutorialMetal,
+            PackageType.PotionTutorialStone,
+            PackageType.PotionTutorialWood,
+        };
+
+        public static readonly HashSet<PackageType> QUEST_DISPENSER_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.QuestDispenserMendStatue_Human,
+            PackageType.QuestDispenserMendStatue_Lugian,
+            PackageType.QuestDispenserMendStatue_Tumerok,
         };
 
         public static readonly HashSet<PackageType> ROAD_SIGN_TEMPLATE_PACKAGES = new HashSet<PackageType> {
@@ -462,6 +511,12 @@ namespace AC2E.Def {
 
             PackageType.SlamstickAvalancheScepterAncients,
             PackageType.SlamstickAvalancheScepterSunBlaze,
+        };
+
+        public static readonly HashSet<PackageType> SCYTHE_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.ScytheLugian,
+            PackageType.ScytheLugianBattle,
+            PackageType.ScytheLugianWarFork,
         };
 
         public static readonly HashSet<PackageType> SHARPSTICK_TEMPLATE_PACKAGES = new HashSet<PackageType> {
@@ -642,6 +697,11 @@ namespace AC2E.Def {
             PackageType.SwordTumerokRakeblade,
             PackageType.SwordTumerokStarter,
             PackageType.Torch,
+
+            PackageType.SwordHumanKingsAncients,
+            PackageType.SwordHumanKingsSunBlaze,
+            PackageType.SwordLugianGreatswordAncients,
+            PackageType.SwordLugianGreatswordSunBlaze,
         };
 
         public static readonly HashSet<PackageType> TOOL_TEMPLATE_PACKAGES = new HashSet<PackageType> {
