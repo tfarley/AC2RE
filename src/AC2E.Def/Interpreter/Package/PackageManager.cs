@@ -31,6 +31,8 @@ namespace AC2E.Def {
                     return new AppInfoHash(data);
                 case NativeType.ARHASH:
                     return new ARHash<IPackage>(data);
+                case NativeType.BEHAVIORPARAMS:
+                    return new BehaviorParams(data);
                 case NativeType.EXAMINATIONPROFILE:
                     return new ExaminationProfile(data);
                 case NativeType.EXAMINATIONREQUEST:
@@ -93,10 +95,16 @@ namespace AC2E.Def {
         }
 
         public static IPackage read(AC2Reader data, PackageType packageType) {
-            if (AgentPackages.NPC_IMMOBILE_TEMPLATE_PACKAGES.Contains(packageType)) {
+            if (AgentPackages.QUEST_PET_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.QuestPetTemplate;
+            } else if (AgentPackages.NPC_IMMOBILE_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.NPCImmobileTemplate;
+            } else if (AgentPackages.NPC_NON_USABLE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.NPCNonUsableTemplate;
             } else if (AgentPackages.NPC_TABLE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.NPCTable;
+            } else if (AgentPackages.NPC_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.NPCTemplate;
             } else if (AgentPackages.TEACHING_STONE_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.TeachingStoneTemplate;
             } else if (ClothingPackages.HUMAN_ARMOR_TEMPLATE_PACKAGES.Contains(packageType)) {
@@ -117,6 +125,8 @@ namespace AC2E.Def {
                 packageType = PackageType.AIConcealEffect;
             } else if (EffectPackages.AI_PET_EFFECT_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.AIPetEffect;
+            } else if (EffectPackages.AI_TAUNT_DETAUNT_EFFECT_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.AITauntDetauntEffect;
             } else if (EffectPackages.AI_VOTER_SWAP_EFFECT_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.AIVoterSwapEffect;
             } else if (EffectPackages.APPLY_EFFECT_PACKAGES.Contains(packageType)) {
@@ -143,26 +153,36 @@ namespace AC2E.Def {
                 packageType = PackageType.GenesisEffect;
             } else if (EffectPackages.GRANT_RECIPE_EFFECT_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.GrantRecipeEffect;
+            } else if (EffectPackages.IMMUNITY_APPLIER_EFFECT_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.ImmunityApplierEffect;
             } else if (EffectPackages.IMPULSE_EFFECT_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.ImpulseEffect;
+            } else if (EffectPackages.INSTANT_BEHAVIOR_EFFECT_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.InstantBehaviorEffect;
             } else if (EffectPackages.INSTANT_EFFECT_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.InstantEffect;
             } else if (EffectPackages.INSTANT_NUMERIC_QUALITIES_EFFECT_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.InstantNumericQualitiesEffect;
             } else if (EffectPackages.INSTANT_VITAL_EFFECT_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.InstantVitalEffect;
+            } else if (EffectPackages.LINKER_EFFECT_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.LinkerEffect;
             } else if (EffectPackages.MOUNT_EFFECT_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.MountEffect;
             } else if (EffectPackages.NULL_EFFECT_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.Eff_NullEffect;
             } else if (EffectPackages.PERK_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.PerkTemplate;
+            } else if (EffectPackages.PET_CHANGER_EFFECT_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.PetChangerEffect;
             } else if (EffectPackages.POPUP_EFFECT_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.PopupEffectTemplate;
             } else if (EffectPackages.PROTECTION_EFFECT_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.ProtectionEffect;
             } else if (EffectPackages.RANDOM_RECALL_EFFECT_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.RandomRecallEffect;
+            } else if (EffectPackages.REFLECTIVE_EFFECT_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.ReflectiveEffect;
             } else if (EffectPackages.REFLECTIVE_VITAL_EFFECT_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.ReflectiveVitalEffect;
             } else if (EffectPackages.REMOVE_RECIPE_EFFECT_PACKAGES.Contains(packageType)) {
@@ -191,20 +211,36 @@ namespace AC2E.Def {
                 packageType = PackageType.AlchemyTemplate;
             } else if (ItemPackages.AXE_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.AxeTemplate;
+            } else if (ItemPackages.BOULDER_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.BoulderTemplate;
+            } else if (ItemPackages.BOW_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.BowTemplate;
             } else if (ItemPackages.CESTAS_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.CestasTemplate;
+            } else if (ItemPackages.CLOTHING_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.ClothingTemplate;
             } else if (ItemPackages.DEATH_PORTAL_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.DeathPortal;
             } else if (ItemPackages.DOOR_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.DoorTemplate;
             } else if (ItemPackages.DRUM_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.DrumTemplate;
+            } else if (ItemPackages.FACTION_SHRINE_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.FactionShrineTemplate;
+            } else if (ItemPackages.FLAIL_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.FlailTemplate;
+            } else if (ItemPackages.FORGE_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.ForgeTemplate;
             } else if (ItemPackages.FROGSTAVE_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.FrogstaveTemplate;
             } else if (ItemPackages.GENERIC_PORTAL_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.GenericPortal;
             } else if (ItemPackages.GLYPH_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.GlyphTemplate;
+            } else if (ItemPackages.GUNBLADE_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.HandbladeTemplate;
+            } else if (ItemPackages.HANDBLADE_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.HandbladeTemplate;
             } else if (ItemPackages.KEY_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.KeyTemplate;
             } else if (ItemPackages.MAP_TEMPLATE_PACKAGES.Contains(packageType)) {
@@ -219,10 +255,16 @@ namespace AC2E.Def {
                 packageType = PackageType.PotionTemplate;
             } else if (ItemPackages.ROAD_SIGN_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.RoadSignTemplate;
+            } else if (ItemPackages.POLEARM_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.PolearmTemplate;
             } else if (ItemPackages.SCEPTER_LUGIAN_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.ScepterLugianTemplate;
+            } else if (ItemPackages.SHARPSTICK_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.SharpstickTemplate;
             } else if (ItemPackages.SHARD_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.ShardTemplate;
+            } else if (ItemPackages.SHIELD_TEMPLATE_PACKAGES.Contains(packageType)) {
+                packageType = PackageType.ShieldTemplate;
             } else if (ItemPackages.SPEAR_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.SpearTemplate;
             } else if (ItemPackages.STAVE_TEMPLATE_PACKAGES.Contains(packageType)) {
@@ -237,6 +279,10 @@ namespace AC2E.Def {
                 packageType = PackageType.WaspnestTemplate;
             } else if (ItemPackages.WRENCH_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.WrenchTemplate;
+            } else if (ManagerPackages.SYSTEM_PACKAGES.Contains(packageType)) {
+                return new GenericPackage(packageType);
+            } else if (ManagerPackages.WM_PACKAGES.Contains(packageType)) {
+                return new GenericPackage(packageType);
             } else if (QuestPackages.ACT_TEMPLATE_PACKAGES.Contains(packageType)) {
                 packageType = PackageType.ActTemplate;
             } else if (QuestPackages.QUEST_TEMPLATE_PACKAGES.Contains(packageType)) {
@@ -272,6 +318,8 @@ namespace AC2E.Def {
                     return new ActRegistry(data);
                 case PackageType.ActTemplate:
                     return new ActTemplate(data);
+                case PackageType.AdvancementTable:
+                    return new AdvancementTable(data);
                 case PackageType.Agent:
                     return new Agent(data);
                 case PackageType.AIBehaviorEffect:
@@ -280,10 +328,14 @@ namespace AC2E.Def {
                     return new AIConcealEffect(data);
                 case PackageType.AIPetEffect:
                     return new AIPetEffect(data);
+                case PackageType.AITauntDetauntEffect:
+                    return new AITauntDetauntEffect(data);
                 case PackageType.AIVoterSwapEffect:
                     return new AIVoterSwapEffect(data);
                 case PackageType.AlchemyTemplate:
                     return new AlchemyTemplate(data);
+                case PackageType.Allegiance:
+                    return new Allegiance(data);
                 case PackageType.AllegianceData:
                     return new AllegianceData(data);
                 case PackageType.AllegianceHierarchy:
@@ -314,6 +366,10 @@ namespace AC2E.Def {
                     return new Book(data);
                 case PackageType.BookTemplate:
                     return new BookTemplate(data);
+                case PackageType.BoulderTemplate:
+                    return new BoulderTemplate(data);
+                case PackageType.BowTemplate:
+                    return new BowTemplate(data);
                 case PackageType.ButcheryProfile:
                     return new ButcheryProfile(data);
                 case PackageType.CAExcavationPoint:
@@ -376,6 +432,8 @@ namespace AC2E.Def {
                     return new CraftSkill(data);
                 case PackageType.CraftSkillRecord:
                     return new CraftSkillRecord(data);
+                case PackageType.CShield:
+                    return new CShield(data);
                 case PackageType.CustomCorpseTemplate:
                     return new CustomCorpseTemplate(data);
                 case PackageType.CustomFailureRecipeAction:
@@ -398,6 +456,8 @@ namespace AC2E.Def {
                     return new DoorTemplate(data);
                 case PackageType.DrudgeArmorTemplate:
                     return new DrudgeArmorTemplate(data);
+                case PackageType.DrudgeMonsterTemplate:
+                    return new DrudgeMonsterTemplate(data);
                 case PackageType.DrumTemplate:
                     return new DrumTemplate(data);
                 case PackageType.DurabilityFilter:
@@ -426,6 +486,8 @@ namespace AC2E.Def {
                     return new EntityFilter(data);
                 case PackageType.ExperienceEffect:
                     return new ExperienceEffect(data);
+                case PackageType.FactionShrineTemplate:
+                    return new FactionShrineTemplate(data);
                 case PackageType.Fellow:
                     return new Fellow(data);
                 case PackageType.Fellowship:
@@ -436,8 +498,14 @@ namespace AC2E.Def {
                     return new FineItemClassFilter(data);
                 case PackageType.FlagRecipeAction:
                     return new FlagRecipeAction(data);
+                case PackageType.FlailTemplate:
+                    return new FlailTemplate(data);
                 case PackageType.FloatScaleDuple:
                     return new FloatScaleDuple(data);
+                case PackageType.Forge:
+                    return new Forge(data);
+                case PackageType.ForgeTemplate:
+                    return new ForgeTemplate(data);
                 case PackageType.FrogstaveTemplate:
                     return new FrogstaveTemplate(data);
                 case PackageType.GameEventEffect:
@@ -464,8 +532,12 @@ namespace AC2E.Def {
                     return new GrantRecipeEffect(data);
                 case PackageType.GRSystemTemplate:
                     return new GRSystemTemplate(data);
+                case PackageType.GunbladeTemplate:
+                    return new GunbladeTemplate(data);
                 case PackageType.HandTemplate:
                     return new HandTemplate(data);
+                case PackageType.HandbladeTemplate:
+                    return new HandbladeTemplate(data);
                 case PackageType.HarmonizeRecipeAction:
                     return new HarmonizeRecipeAction(data);
                 case PackageType.HotspotEffect:
@@ -478,12 +550,16 @@ namespace AC2E.Def {
                     return new IItem(data);
                 case PackageType.ImbuingStone:
                     return new Interactor(data);
+                case PackageType.ImmunityApplierEffect:
+                    return new ImmunityApplierEffect(data);
                 case PackageType.ImpulseEffect:
                     return new ImpulseEffect(data);
                 case PackageType.Ingredient:
                     return new Ingredient(data);
                 case PackageType.InstantAuraEffect:
                     return new InstantAuraEffect(data);
+                case PackageType.InstantBehaviorEffect:
+                    return new InstantBehaviorEffect(data);
                 case PackageType.InstantEffect:
                     return new InstantEffect(data);
                 case PackageType.InstantNumericQualitiesEffect:
@@ -506,6 +582,8 @@ namespace AC2E.Def {
                     return new InvTakeAllDesc(data);
                 case PackageType.InvTransmuteAllDesc:
                     return new InvTransmuteAllDesc(data);
+                case PackageType.IShield:
+                    return new IShield(data);
                 case PackageType.Item:
                     return new Item(data);
                 case PackageType.ItemEffectRecipeAction:
@@ -540,6 +618,8 @@ namespace AC2E.Def {
                     return new MajorSpellbindingRecipe(data);
                 case PackageType.MapTemplate:
                     return new MapTemplate(data);
+                case PackageType.MasterDIDList:
+                    return new MasterDIDList(data);
                 case PackageType.MasterDIDListMember:
                     return new MasterDIDListMember(data);
                 case PackageType.MasterList:
@@ -572,8 +652,18 @@ namespace AC2E.Def {
                     return new NPCGuardTemplate(data);
                 case PackageType.NPCImmobileTemplate:
                     return new NPCImmobileTemplate(data);
+                case PackageType.NPCInanimateTemplate:
+                    return new NPCInanimateTemplate(data);
+                case PackageType.NPCNonUsableTemplate:
+                    return new NPCNonUsableTemplate(data);
                 case PackageType.NPCTable:
                     return new NPCTable(data);
+                case PackageType.NPCTemplate:
+                    return new NPCTemplate(data);
+                case PackageType.OrbTemplate:
+                    return new OrbTemplate(data);
+                case PackageType.OrderedDIDEntryTable:
+                    return new OrderedDIDEntryTable(data);
                 case PackageType.ParameterizedNumericEffect:
                     return new ParameterizedNumericEffect(data);
                 case PackageType.PassiveSkillTemplate:
@@ -584,12 +674,16 @@ namespace AC2E.Def {
                     return new PerkSkill(data);
                 case PackageType.PerkTemplate:
                     return new PerkTemplate(data);
+                case PackageType.PetChangerEffect:
+                    return new PetChangerEffect(data);
                 case PackageType.PhaseInfo:
                     return new PhaseInfo(data);
                 case PackageType.PlayerEffectRecipeAction:
                     return new PlayerEffectRecipeAction(data);
                 case PackageType.PlayerSaleProfile:
                     return new PlayerSaleProfile(data);
+                case PackageType.PolearmTemplate:
+                    return new PolearmTemplate(data);
                 case PackageType.PopupEffectTemplate:
                     return new PopupEffectTemplate(data);
                 case PackageType.Portal:
@@ -614,6 +708,8 @@ namespace AC2E.Def {
                     return new QuestTemplate(data);
                 case PackageType.QuestGlobals:
                     return new QuestGlobals(data);
+                case PackageType.QuestPetTemplate:
+                    return new QuestPetTemplate(data);
                 case PackageType.QuestTemplate:
                     return new QuestTemplate(data);
                 case PackageType.QuestTriggerEffect:
@@ -624,16 +720,26 @@ namespace AC2E.Def {
                     return new RaceFilter(data);
                 case PackageType.RandomRecallEffect:
                     return new RandomRecallEffect(data);
+                case PackageType.RankBoard:
+                    return new RankBoard(data);
+                case PackageType.RankBoardTemplate:
+                    return new RankBoardTemplate(data);
                 case PackageType.Recipe:
                     return new Recipe(data);
                 case PackageType.RecipeAction:
                     return new RecipeAction(data);
+                case PackageType.RecipeDifficultyTable:
+                    return new RecipeDifficultyTable(data);
                 case PackageType.RecipeNameColoringTable:
                     return new RecipeNameColoringTable(data);
                 case PackageType.RecipeRecord:
                     return new RecipeRecord(data);
+                case PackageType.RecipeTrainingTable:
+                    return new GenericPackage(packageType);
                 case PackageType.RefiningRecipe:
                     return new RefiningRecipe(data);
+                case PackageType.ReflectiveEffect:
+                    return new ReflectiveEffect(data);
                 case PackageType.ReflectiveVitalEffect:
                     return new ReflectiveVitalEffect(data);
                 case PackageType.RemoveRecipeEffect:
@@ -656,10 +762,18 @@ namespace AC2E.Def {
                     return new ScepterLugianTemplate(data);
                 case PackageType.SceneryObject:
                     return new SceneryObject(data);
+                case PackageType.SecretRecipe:
+                    return new SecretRecipe(data);
                 case PackageType.Shard:
                     return new Shard(data);
                 case PackageType.ShardTemplate:
                     return new ShardTemplate(data);
+                case PackageType.SharpstickTemplate:
+                    return new SharpstickTemplate(data);
+                case PackageType.Shield:
+                    return new Shield(data);
+                case PackageType.ShieldTemplate:
+                    return new ShieldTemplate(data);
                 case PackageType.Skill:
                     return new Skill(data);
                 case PackageType.SkillCheck:

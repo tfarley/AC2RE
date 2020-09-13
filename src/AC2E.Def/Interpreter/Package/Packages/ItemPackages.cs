@@ -57,6 +57,39 @@ namespace AC2E.Def {
             PackageType.AxeSpine,
         };
 
+        public static readonly HashSet<PackageType> BOULDER_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.Boulder,
+            PackageType.BoulderFallingStar,
+            PackageType.BoulderFallingStarGoldenAge,
+            PackageType.BoulderObsidian,
+            PackageType.BoulderStone,
+
+            PackageType.BoulderFallingStarAncients,
+            PackageType.BoulderFallingStarSunBlaze,
+        };
+
+        public static readonly HashSet<PackageType> BOW_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.BowHumanCompound,
+            PackageType.BowHumanCrystal,
+            PackageType.BowHumanGear,
+            PackageType.BowHumanLong,
+            PackageType.BowHumanMagma,
+            PackageType.BowHumanRoot,
+            PackageType.BowHumanRune,
+            PackageType.BowHumanRuneGoldenAge,
+            PackageType.BowHumanShort,
+            PackageType.BowHumanSmall,
+            PackageType.BowHumanStarter,
+            PackageType.BowHumanThorn,
+            PackageType.BowHumanWar,
+            PackageType.BowHumanWhipstock,
+            PackageType.BowLilithan,
+            PackageType.BowStrathelar,
+
+            PackageType.BowHumanRuneAncients,
+            PackageType.BowHumanRuneSunBlaze,
+        };
+
         public static readonly HashSet<PackageType> CESTAS_TEMPLATE_PACKAGES = new HashSet<PackageType> {
             PackageType.CestasTumerok,
             PackageType.CestasTumerokBlade,
@@ -67,6 +100,23 @@ namespace AC2E.Def {
 
             PackageType.CestasTumerokSkullAncients,
             PackageType.CestasTumerokSkullSunBlaze,
+        };
+
+        public static readonly HashSet<PackageType> CLOTHING_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.BootsHumanStarter,
+            PackageType.BootsLugianStarter,
+            PackageType.GauntletsHumanStarter,
+            PackageType.GlovesLugianStarter,
+            PackageType.HumanQuiver,
+            PackageType.JerkinTumerokStarter,
+            PackageType.KiltLugianStarter,
+            PackageType.LeggingsTumerokStarter,
+            PackageType.PantsHumanStarter,
+            PackageType.RareArmorTemplate,
+            PackageType.SashLugianStarter,
+            PackageType.ShirtHumanStarter,
+            PackageType.Toga,
+            PackageType.TogaLugianBarbs,
         };
 
         public static readonly HashSet<PackageType> DEATH_PORTAL_PACKAGES = new HashSet<PackageType> {
@@ -108,6 +158,41 @@ namespace AC2E.Def {
 
             PackageType.DrumTumerokAncestorAncients,
             PackageType.DrumTumerokAncestorSunBlaze,
+        };
+
+        public static readonly HashSet<PackageType> FACTION_SHRINE_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.FactionShrineDominion,
+            PackageType.FactionShrineNeutral,
+            PackageType.FactionShrineOrder,
+            PackageType.FactionShrineShadow,
+        };
+
+        public static readonly HashSet<PackageType> FLAIL_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.FlailHuman,
+            PackageType.FlailHumanHeavy,
+            PackageType.FlailHumanHeavyGoldenAge,
+            PackageType.FlailHumanRedeemer,
+            PackageType.FlailHumanRockRope,
+            PackageType.FlailHumanTriple,
+
+            PackageType.FlailHumanHeavyAncients,
+            PackageType.FlailHumanHeavySunBlaze,
+        };
+
+        public static readonly HashSet<PackageType> FORGE_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.Forge_Dyeing_HumanRegion,
+            PackageType.Forge_Dyeing_LugianRegion,
+            PackageType.Forge_Dyeing_TumerokRegion,
+            PackageType.Forge_ItemCreation_HumanRegion,
+            PackageType.Forge_ItemCreation_LugianRegion,
+            PackageType.Forge_ItemCreation_TumerokRegion,
+            PackageType.Forge_ItemImprovement_HumanRegion,
+            PackageType.Forge_ItemImprovement_LugianRegion,
+            PackageType.Forge_ItemImprovement_TumerokRegion,
+            PackageType.Forge_Toolmaking_HumanRegion,
+            PackageType.Forge_Toolmaking_LugianRegion,
+            PackageType.Forge_Toolmaking_TumerokRegion,
+            PackageType.HotspotTemplate,
         };
 
         public static readonly HashSet<PackageType> FROGSTAVE_TEMPLATE_PACKAGES = new HashSet<PackageType> {
@@ -160,6 +245,28 @@ namespace AC2E.Def {
             PackageType.Glyph_Vesayen,
             PackageType.Glyph_Winterhollows,
             PackageType.GlyphCragstone,
+        };
+
+        public static readonly HashSet<PackageType> GUNBLADE_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.GunbladeThornlingAgony,
+            PackageType.GunbladeThornlingCrippler,
+            PackageType.GunbladeThornlingHarrower,
+            PackageType.GunbladeThornlingRankle,
+            PackageType.GunbladeThornlingRingleader,
+            PackageType.GunbladeThornlingRogue,
+            PackageType.GunbladeThornlingWorrier,
+        };
+
+        public static readonly HashSet<PackageType> HANDBLADE_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.Handblade,
+            PackageType.HandbladeBladefist,
+            PackageType.HandbladeClaw,
+            PackageType.HandbladeRavager,
+            PackageType.HandbladeRavagerGoldenAge,
+            PackageType.HandbladeSlasher,
+
+            PackageType.HandbladeRavagerAncients,
+            PackageType.HandbladeRavagerSunBlaze,
         };
 
         public static readonly HashSet<PackageType> KEY_TEMPLATE_PACKAGES = new HashSet<PackageType> {
@@ -329,6 +436,20 @@ namespace AC2E.Def {
             PackageType.ZuTownSign,
         };
 
+        public static readonly HashSet<PackageType> POLEARM_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.PolearmLugianAssaultStaff,
+            PackageType.PolearmLugianBladestaff,
+            PackageType.PolearmLugianDoubleFork,
+            PackageType.PolearmLugianHammerblade,
+            PackageType.PolearmLugianHammerbladeGoldenAge,
+            PackageType.PolearmLugianQuarterstaff,
+            PackageType.PolearmLugianScimitarstaff,
+            PackageType.PolearmLugianSwordstaff,
+
+            PackageType.PolearmLugianHammerbladeAncients,
+            PackageType.PolearmLugianHammerbladeSunBlaze,
+        };
+
         public static readonly HashSet<PackageType> SCEPTER_LUGIAN_TEMPLATE_PACKAGES = new HashSet<PackageType> {
             PackageType.ScepterLugian,
             PackageType.ScepterLugianAvalanche,
@@ -343,8 +464,43 @@ namespace AC2E.Def {
             PackageType.SlamstickAvalancheScepterSunBlaze,
         };
 
+        public static readonly HashSet<PackageType> SHARPSTICK_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.SharpstickBoneHatchet,
+            PackageType.SharpstickNotchedAxe,
+            PackageType.SharpstickPainAxe,
+            PackageType.SharpstickSkewer,
+            PackageType.SharpstickVengefulAxe,
+            PackageType.SharpstickVengefulAxeGoldenAge,
+
+            PackageType.SharpstickVengefulAxeAncients,
+            PackageType.SharpstickVengefulAxeSunBlaze,
+        };
+
         public static readonly HashSet<PackageType> SHARD_TEMPLATE_PACKAGES = new HashSet<PackageType> {
             PackageType.Shard_Cragstone,
+        };
+
+        public static readonly HashSet<PackageType> SHIELD_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.ShieldGurogHenchman,
+            PackageType.ShieldGurogLackey,
+            PackageType.ShieldGurogMinion,
+            PackageType.ShieldHumanBuckler,
+            PackageType.ShieldHumanGrand,
+            PackageType.ShieldHumanKite,
+            PackageType.ShieldHumanTarge,
+            PackageType.ShieldHumanTower,
+            PackageType.ShieldLugianBladed,
+            PackageType.ShieldLugianFortress,
+            PackageType.ShieldLugianSpine,
+            PackageType.ShieldLugianSteel,
+            PackageType.ShieldLugianStone,
+            PackageType.ShieldLugianWall,
+            PackageType.ShieldTumerokBuckler,
+            PackageType.ShieldTumerokGuardian,
+            PackageType.ShieldTumerokHide,
+            PackageType.ShieldTumerokHorned,
+            PackageType.ShieldTumerokMask,
+            PackageType.ShieldUk,
         };
 
         public static readonly HashSet<PackageType> SPEAR_TEMPLATE_PACKAGES = new HashSet<PackageType> {

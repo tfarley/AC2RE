@@ -4,6 +4,15 @@ namespace AC2E.Def {
 
     public static class AgentPackages {
 
+        public static readonly HashSet<PackageType> QUEST_PET_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.MagicBeanPlantTemplate,
+            PackageType.PetDyePlantTemplate,
+            PackageType.PlantSiegeStoresTemplate,
+            PackageType.QuestPetEtherealTemplate,
+
+            PackageType.PetMiningCarenziTemplate,
+        };
+
         public static readonly HashSet<PackageType> NPC_IMMOBILE_TEMPLATE_PACKAGES = new HashSet<PackageType> {
             PackageType.AltarAncients,
             PackageType.AltarJustice,
@@ -41,6 +50,11 @@ namespace AC2E.Def {
             PackageType.StatueTrainingHall_Tumerok,
             PackageType.TanuaOutpostTemplate,
             PackageType.TotemVakentu,
+        };
+
+        public static readonly HashSet<PackageType> NPC_NON_USABLE_PACKAGES = new HashSet<PackageType> {
+            PackageType.MusicianGeneric,
+            PackageType.MusicianTumerok,
         };
 
         public static readonly HashSet<PackageType> NPC_TABLE_PACKAGES = new HashSet<PackageType> {
@@ -136,6 +150,21 @@ namespace AC2E.Def {
             PackageType.ShrineRootTable,
             PackageType.StatueTrainingHallTable,
             PackageType.TotemVakentuTable,
+        };
+
+        public static readonly HashSet<PackageType> NPC_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.Dansova,
+            PackageType.DarkenfowlTame,
+            PackageType.GhostNPC_Template,
+            PackageType.GhostNPCBorelean_Template,
+            PackageType.HeroShrine_Template,
+            PackageType.MimbuFlocktender,
+            PackageType.NPCEthereal,
+            PackageType.NPCInvisibleTemplate,
+            PackageType.NPCTemplate,
+            PackageType.ShinokoBountyNPC,
+            PackageType.ShinokoBulletinBoard,
+            PackageType.VendorTemplate,
         };
 
         public static readonly HashSet<PackageType> TEACHING_STONE_TEMPLATE_PACKAGES = new HashSet<PackageType> {

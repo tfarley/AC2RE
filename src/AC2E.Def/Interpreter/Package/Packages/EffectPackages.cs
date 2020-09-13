@@ -107,6 +107,30 @@ namespace AC2E.Def {
             PackageType.Eff_WildMagic6_SummonGreyNibbler,
         };
 
+        public static readonly HashSet<PackageType> AI_TAUNT_DETAUNT_EFFECT_PACKAGES = new HashSet<PackageType> {
+            PackageType.Eff_Com_Hero_TauntForce_Taunt,
+            PackageType.Eff_Hum_Me_Begrudge,
+            PackageType.Eff_Hum_Me_BountyHunter_RuseTaunt,
+            PackageType.Eff_Hum_Me_Defender_ExpulseTaunt,
+            PackageType.Eff_Hum_Me_Defender_Hero_CragstonesRebuke,
+            PackageType.Eff_Hum_Me_Insult,
+            PackageType.Eff_Hum_Mi_Bluff,
+            PackageType.Eff_Hum_Mi_Ranger_BlindingArrow,
+            PackageType.Eff_Lug_Me_BattleCry,
+            PackageType.Eff_Lug_Me_Ignore,
+            PackageType.Eff_Lug_Me_Juggernaut_Challenge,
+            PackageType.Eff_Lug_Me_Juggernaut_ChallengeDetaunt,
+            PackageType.Eff_Lug_Me_Sneer,
+            PackageType.Eff_Lug_Mi_Raider_Sidearm,
+            PackageType.Eff_Mn_Ma_WaxStatue,
+            PackageType.Eff_Mn_Me_OrbTaunt,
+            PackageType.Eff_Mn_Shreth_Me_Tenderize,
+            PackageType.Eff_Tum_Me_AvertEyes,
+            PackageType.Eff_Tum_Me_FeralIntendant_SoftUnderbelly_Taunt,
+            PackageType.Eff_Tum_Me_Growl,
+            PackageType.Eff_Tum_Mi_ClawBearer_Misdirection,
+        };
+
         public static readonly HashSet<PackageType> AI_VOTER_SWAP_EFFECT_PACKAGES = new HashSet<PackageType> {
             PackageType.Eff_Hum_Ma_Enchanter_Confuse,
             PackageType.Eff_Hum_Ma_Enchanter_Mesmerize,
@@ -1379,6 +1403,25 @@ namespace AC2E.Def {
             PackageType.Eff_GrantRecipeTyrantHeart,
         };
 
+        public static readonly HashSet<PackageType> IMMUNITY_APPLIER_EFFECT_PACKAGES = new HashSet<PackageType> {
+            PackageType.Eff_Com_ImmunityCold,
+            PackageType.Eff_Com_ImmunityNumb,
+            PackageType.Eff_Com_ImmunityOubliette,
+            PackageType.Eff_Com_ImmunityRoot,
+            PackageType.Eff_Com_ImmunityRunSpeed,
+            PackageType.Eff_Com_ImmunityStun,
+            PackageType.Eff_Emp_Mi_Mentalist_Dementia_Immunity,
+            PackageType.Eff_Emp_Mi_Mentalist_Nightmares_Immunity,
+            PackageType.Eff_Emp_Mi_Mentalist_Terrors_Immunity,
+            PackageType.Eff_Tum_Me_Zealot_BackBreaker_Immunity,
+            PackageType.Eff_Tum_Me_Zealot_BoneCrusher_Immunity,
+            PackageType.Eff_Tum_Me_Zealot_Hero_Fanaticism_BleedImmunity,
+            PackageType.Eff_Tum_Me_Zealot_SkullCracker_Immunity,
+            PackageType.Eff_Tum_Me_Zealot_SpineRipper_Immunity,
+            PackageType.Eff_Tum_Mi_HiveKeeper_ReleaseTheSwarm_Immunity,
+            PackageType.Eff_Tum_Mi_HiveKeeper_SeepingHives_Immunity,
+        };
+
         public static readonly HashSet<PackageType> IMPULSE_EFFECT_PACKAGES = new HashSet<PackageType> {
             PackageType.Eff_Hum_Me_Defender_Expulse,
             PackageType.Eff_Hum_Mi_Alchemist_ConcussionGrenade,
@@ -1396,6 +1439,11 @@ namespace AC2E.Def {
             PackageType.Eff_Mn_Me_ArmorsmithsLament_Hurricane,
             PackageType.Eff_Mn_Me_ArmorsmithsLament_Torrent,
             PackageType.Eff_Tum_Mi_ClawBearer_Mortor,
+        };
+
+        public static readonly HashSet<PackageType> INSTANT_BEHAVIOR_EFFECT_PACKAGES = new HashSet<PackageType> {
+            PackageType.Eff_Hum_Me_BountyHunter_FeignDeathSelf_Collapse,
+            PackageType.Eff_Hum_Me_BountyHunter_Hero_Stealth,
         };
 
         public static readonly HashSet<PackageType> INSTANT_EFFECT_PACKAGES = new HashSet<PackageType> {
@@ -1690,6 +1738,77 @@ namespace AC2E.Def {
             PackageType.Eff_Tum_Mi_VisceralMalady,
         };
 
+        public static readonly HashSet<PackageType> LINKER_EFFECT_PACKAGES = new HashSet<PackageType> {
+            PackageType.Eff_Emp_Ma_Hieromancer_RiteOfArtifice,
+            PackageType.Eff_Emp_Ma_Hieromancer_RiteOfStrife,
+            PackageType.Eff_Emp_Ma_Hieromancer_RiteOfVerdancy,
+            PackageType.Eff_Emp_Me_Templar_Empowerment1,
+            PackageType.Eff_Emp_Me_Templar_Empowerment2,
+            PackageType.Eff_Emp_Me_Templar_Empowerment3,
+            PackageType.Eff_Fac_Dominion_Conduct,
+            PackageType.Eff_Fac_Order_LendPower,
+            PackageType.Eff_Fac_Order_Sigil,
+            PackageType.Eff_Fac_Shadow_DarkBlessing,
+            PackageType.Eff_Fac_Shadow_Penumbra,
+            PackageType.Eff_Hum_Me_BackstabLinker,
+            PackageType.Eff_Hum_Me_BegrudgeLinker,
+            PackageType.Eff_Hum_Me_BideLinker,
+            PackageType.Eff_Hum_Me_BountyHunter_AnemiaLinker,
+            PackageType.Eff_Hum_Me_BountyHunter_FalsePretensesLinker,
+            PackageType.Eff_Hum_Me_BountyHunter_NettleLinker,
+            PackageType.Eff_Hum_Me_BountyHunter_RuseLinker,
+            PackageType.Eff_Hum_Me_Defender_BashLinker,
+            PackageType.Eff_Hum_Me_Defender_SmashLinker,
+            PackageType.Eff_Hum_Me_Defender_SwipeLinker,
+            PackageType.Eff_Hum_Me_InsultLinker,
+            PackageType.Eff_Hum_Me_KidneyStrikeLinker,
+            PackageType.Eff_Hum_Me_PeripheralBlowLinker,
+            PackageType.Eff_Hum_Me_TwinBladesLinker,
+            PackageType.Eff_Hum_Mi_Ranger_PairedAttackLinker,
+            PackageType.Eff_Hum_Mi_Ranger_SinewSnapLinker,
+            PackageType.Eff_Lug_Me_Berserker_CascadeLinker,
+            PackageType.Eff_Lug_Me_Berserker_CircleOfPainLinker,
+            PackageType.Eff_Lug_Me_Berserker_DelugeLinker,
+            PackageType.Eff_Lug_Me_Berserker_DisruptionLinker,
+            PackageType.Eff_Lug_Me_Berserker_ExpelLinker,
+            PackageType.Eff_Lug_Me_Berserker_FlurryLinker,
+            PackageType.Eff_Lug_Me_Berserker_FurysFocusLinker,
+            PackageType.Eff_Lug_Me_Berserker_Hero_TorrentLinker,
+            PackageType.Eff_Lug_Me_Berserker_OverwhelmLinker,
+            PackageType.Eff_Lug_Me_Berserker_StormOfPainLinker,
+            PackageType.Eff_Lug_Me_Berserker_WheelOfPainLinker,
+            PackageType.Eff_Lug_Me_Juggernaut_BlindingSerumLinker,
+            PackageType.Eff_Lug_Me_Juggernaut_DisembowelLinker,
+            PackageType.Eff_Lug_Me_Juggernaut_DismemberLinker,
+            PackageType.Eff_Lug_Me_Juggernaut_MaimLinker,
+            PackageType.Eff_Lug_Me_Juggernaut_TectonicShiftLinker,
+            PackageType.Eff_Lug_Me_Juggernaut_TremorLinker,
+            PackageType.Eff_Lug_Me_SmiteLinker,
+            PackageType.Eff_Lug_Me_Titan_CloudedThoughtsLinker,
+            PackageType.Eff_Lug_Me_Titan_DeliberationLinker,
+            PackageType.Eff_Lug_Me_Titan_EndureLinker,
+            PackageType.Eff_Lug_Me_UnbalanceLinker,
+            PackageType.Eff_Lug_Mi_CrossAttackLinker,
+            PackageType.Eff_Lug_Mi_ParryLinker,
+            PackageType.Eff_Lug_Mi_RoutLinker,
+            PackageType.Eff_Lug_Mi_Tactician_PrecisionTargetingLinker,
+            PackageType.Eff_Mn_Brat_Ma_BratVulnLinker,
+            PackageType.Eff_Mn_Lasher_Me_HuntersIntuitionLinker,
+            PackageType.Eff_Tum_Me_BesiegeLinker,
+            PackageType.Eff_Tum_Me_FeralIntendant_ReaveLinker,
+            PackageType.Eff_Tum_Me_LungeLinker,
+            PackageType.Eff_Tum_Me_StolenYouthLinker,
+            PackageType.Eff_Tum_Me_Zealot_BlurLinker,
+            PackageType.Eff_Tum_Me_Zealot_BruiseLinker,
+            PackageType.Eff_Tum_Me_Zealot_OnslaughtLinker,
+            PackageType.Eff_Tum_Me_Zealot_ShredHopeLinker,
+            PackageType.Eff_Tum_Me_Zealot_SoftFleshLinker,
+            PackageType.Eff_Tum_Mi_BarbedSpear,
+            PackageType.Eff_Tum_Mi_ClawBearer_RendArmorLinker,
+            PackageType.Eff_Tum_Mi_InfectLinker,
+            PackageType.Eff_Tum_Mi_TaintBlood,
+        };
+
         public static readonly HashSet<PackageType> MOUNT_EFFECT_PACKAGES = new HashSet<PackageType> {
             PackageType.Eff_BarnesLostWish1,
             PackageType.Eff_BarnesLostWish2,
@@ -1940,6 +2059,19 @@ namespace AC2E.Def {
             PackageType.Com_Hero_Perk_WildMagic6,
         };
 
+        public static readonly HashSet<PackageType> PET_CHANGER_EFFECT_TEMPLATE_PACKAGES = new HashSet<PackageType> {
+            PackageType.Eff_Hum_Mi_Ranger_ScentOfThePrey,
+            PackageType.Eff_Lug_Mi_Tactician_ArmorPiercingAmmo,
+            PackageType.Eff_Lug_Mi_Tactician_Bombard,
+            PackageType.Eff_Lug_Mi_Tactician_Grapeshot,
+            PackageType.Eff_Lug_Mi_Tactician_Hero_OverdriveTurret,
+            PackageType.Eff_Lug_Mi_Tactician_SelfDestructSequence,
+            PackageType.Eff_Lug_Mi_Tactician_SingleBarrel,
+            PackageType.Eff_Lug_Mi_Tactician_TwinBarrels,
+            PackageType.Eff_Tum_Me_FeralIntendant_SanguineOrders,
+            PackageType.Eff_Tum_Me_FeralIntendant_Tenderize,
+        };
+
         public static readonly HashSet<PackageType> POPUP_EFFECT_TEMPLATE_PACKAGES = new HashSet<PackageType> {
             PackageType.Eff_Popup_FirstCharacterSession,
             PackageType.Eff_Popup_Glyph,
@@ -2006,6 +2138,15 @@ namespace AC2E.Def {
             PackageType.Eff_PortalCellDomCenter,
             PackageType.Eff_PortalCellDomMaze,
             PackageType.Eff_PortalCellDomZone,
+        };
+
+        public static readonly HashSet<PackageType> REFLECTIVE_EFFECT_PACKAGES = new HashSet<PackageType> {
+            PackageType.Eff_Com_Hero_TauntForce,
+            PackageType.Eff_Hum_Ma_Enchanter_Bladeskin_Immunity,
+            PackageType.Eff_Hum_Mi_Alchemist_ExtinguishBlaze_Protection,
+            PackageType.Eff_Hum_Mi_Alchemist_Hero_Immolation,
+            PackageType.Eff_Hum_Mi_Alchemist_Hero_Immolation_Protection,
+            PackageType.Eff_Lug_Ma_Sage_CureDisease_Protection,
         };
 
         public static readonly HashSet<PackageType> REFLECTIVE_VITAL_EFFECT_PACKAGES = new HashSet<PackageType> {
