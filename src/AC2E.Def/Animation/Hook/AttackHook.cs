@@ -14,7 +14,7 @@
         public uint weaponBehaviorHit; // mWeaponBehaviorHit
         public uint targetBehaviorCrit; // mTargetBehaviorCrit
         public uint weaponFxMiss; // mWeaponFXMiss
-        public Effect tequiredEffect; // m_RequiredEffect
+        public SingletonPkg<Effect> requiredEffect; // m_RequiredEffect
         public float missileSourceOffset; // m_missileSourceOffset
         public RList<IPackage> userEffects; // m_UserEffects
         public uint animHookIndex; // m_animHookIndex
@@ -47,7 +47,7 @@
             weaponBehaviorHit = data.ReadUInt32();
             targetBehaviorCrit = data.ReadUInt32();
             weaponFxMiss = data.ReadUInt32();
-            data.ReadPkg<Effect>(v => tequiredEffect = v);
+            data.ReadSingletonPkg<Effect>(v => requiredEffect = v);
             missileSourceOffset = data.ReadSingle();
             data.ReadPkg<RList<IPackage>>(v => userEffects = v);
             animHookIndex = data.ReadUInt32();

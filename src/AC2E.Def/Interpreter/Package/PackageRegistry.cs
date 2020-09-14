@@ -1,5 +1,8 @@
-﻿using System;
+﻿//#define DEEPTRACE
+
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace AC2E.Def {
 
@@ -17,6 +20,7 @@ namespace AC2E.Def {
         private uint packageIdCounter;
 
         private readonly List<Action> resolvers = new List<Action>();
+        private readonly List<StackTrace> resolverDebugs = new List<StackTrace>();
         public readonly List<IPackage> references = new List<IPackage>();
 
         public bool contains(IPackage package) {
@@ -89,15 +93,27 @@ namespace AC2E.Def {
 
         public void addResolver(Action resolver) {
             resolvers.Add(resolver);
+#if DEEPTRACE
+            resolverDebugs.Add(new StackTrace(true));
+#endif
         }
 
         public void executeResolvers() {
             // Reverse resolvers to ensure we convert the nested packages before the parents
             resolvers.Reverse();
-            foreach (Action resolver in resolvers) {
-                resolver.Invoke();
+#if DEEPTRACE
+            resolverDebugs.Reverse();
+#endif
+            for (int i = 0; i < resolvers.Count; i++) {
+#if DEEPTRACE
+                StackTrace resolverDebug = resolverDebugs[i];
+#endif
+                resolvers[i].Invoke();
             }
             resolvers.Clear();
+#if DEEPTRACE
+            resolverDebugs.Clear();
+#endif
         }
     }
 }

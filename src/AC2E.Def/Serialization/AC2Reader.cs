@@ -122,7 +122,7 @@ namespace AC2E.Def {
                         package = PackageManager.read(this, packageType);
                         uint readLength = (uint)(BaseStream.Position - startPos);
                         if (readLength != packageLength) {
-                            throw new InvalidDataException(readLength.ToString());
+                            throw new InvalidDataException(((int)(readLength - packageLength)).ToString());
                         }
                     }
                 }

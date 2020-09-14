@@ -4,10 +4,10 @@
 
         public PackageType packageType => PackageType.ClassFilter;
 
-        public AList classPids; // m_classPIDs
+        public AList classPackageIds; // m_classPIDs
 
         public ClassFilter(AC2Reader data) {
-            data.ReadPkg<AList>(v => classPids = v);
+            data.ReadPkg<AList>(v => classPackageIds = v);
         }
     }
 }

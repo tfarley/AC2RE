@@ -2,7 +2,7 @@
 
     public class UsageBlob : IPackage {
 
-        public PackageType packageType => PackageType.UsageBlob;
+        public virtual PackageType packageType => PackageType.UsageBlob;
 
         public StringInfo criticalSuccessText; // m_criticalSuccessMessage
         public StringInfo successText; // m_successMessage
@@ -24,7 +24,7 @@
             userBehaviorFadeChildren = data.ReadBoolean();
         }
 
-        public void write(AC2Writer data) {
+        public virtual void write(AC2Writer data) {
             data.WritePkg(criticalSuccessText);
             data.WritePkg(successText);
             data.Write(userBehaviorRepeatCount);
