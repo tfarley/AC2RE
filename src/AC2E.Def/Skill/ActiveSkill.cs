@@ -8,15 +8,15 @@
         public uint behaviorOtherHit; // m_BehaviorOtherHit
         public int maxVigor; // m_MaxVigor
         public float minUseTime; // m_MinUseTime
-        public RList<IPackage> reqEffects; // m_ReqEffects
+        public RList<SingletonPkg<IPackage>> reqEffects; // m_ReqEffects
         public int minHealth; // m_MinHealth
         public int allowedImplementsRight; // m_AllowedImplementsRight
-        public RList<IPackage> barringEffects; // m_BarringEffects
+        public RList<SingletonPkg<IPackage>> barringEffects; // m_BarringEffects
         public float minRange; // m_MinRange
         public int endFocusModAdd; // m_endFocusModAdd
         public float recoveryTime; // m_RecoveryTime
         public int maxHealth; // m_MaxHealth
-        public RList<IPackage> userEffects; // m_UserEffects
+        public RList<SingletonPkg<IPackage>> userEffects; // m_UserEffects
         public AHashSet validWeenieTypes; // m_validWeenieTypes
         public uint behaviorSelfHit; // m_BehaviorSelfHit
         public int minVigor; // m_MinVigor
@@ -38,7 +38,7 @@
         public int maxFocus; // m_MaxFocus
         public AAHash usePrereqSkills; // m_UsePrereqSkills
         public float endFocusModMult; // m_endFocusModMult
-        public RList<IPackage> targetEffects; // m_TargetEffects
+        public RList<SingletonPkg<IPackage>> targetEffects; // m_TargetEffects
         public int startFocusModAdd; // m_startFocusModAdd
         public int vigorModAdd; // m_VigorModAdd
         public AList invalidAISuperClasses; // m_invalidAISuperClasses
@@ -57,15 +57,15 @@
             behaviorOtherHit = data.ReadUInt32();
             maxVigor = data.ReadInt32();
             minUseTime = data.ReadSingle();
-            data.ReadPkg<RList<IPackage>>(v => reqEffects = v);
+            data.ReadPkg<RList<IPackage>>(v => reqEffects = v.to<SingletonPkg<IPackage>>());
             minHealth = data.ReadInt32();
             allowedImplementsRight = data.ReadInt32();
-            data.ReadPkg<RList<IPackage>>(v => barringEffects = v);
+            data.ReadPkg<RList<IPackage>>(v => barringEffects = v.to<SingletonPkg<IPackage>>());
             minRange = data.ReadSingle();
             endFocusModAdd = data.ReadInt32();
             recoveryTime = data.ReadSingle();
             maxHealth = data.ReadInt32();
-            data.ReadPkg<RList<IPackage>>(v => userEffects = v);
+            data.ReadPkg<RList<IPackage>>(v => userEffects = v.to<SingletonPkg<IPackage>>());
             data.ReadPkg<AHashSet>(v => validWeenieTypes = v);
             behaviorSelfHit = data.ReadUInt32();
             minVigor = data.ReadInt32();
@@ -87,7 +87,7 @@
             maxFocus = data.ReadInt32();
             data.ReadPkg<AAHash>(v => usePrereqSkills = v);
             endFocusModMult = data.ReadSingle();
-            data.ReadPkg<RList<IPackage>>(v => targetEffects = v);
+            data.ReadPkg<RList<IPackage>>(v => targetEffects = v.to<SingletonPkg<IPackage>>());
             startFocusModAdd = data.ReadInt32();
             vigorModAdd = data.ReadInt32();
             data.ReadPkg<AList>(v => invalidAISuperClasses = v);

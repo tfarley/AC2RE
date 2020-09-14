@@ -7,7 +7,7 @@
         public InstanceId lastSelectionId; // m_lastSelectionID
         public WPString logFile; // m_logFile
         public uint curSpecialAttackId; // m_curr_special_attack_id
-        public IPackage shopperContext; // m_shopperContext
+        public CShopperContext shopperContext; // m_shopperContext
         public RList<IPackage> friendList; // m_friendList
         public SelectionInfo selectionInfo; // m_selectionInfo
         public uint curWarmupBehavior; // m_currentWarmupBehavior
@@ -21,14 +21,14 @@
         public RList<IPackage> squelchList; // m_squelchList
         public HistoryList retellHistoryList; // m_retellHistoryList
         public bool isExamining; // m_isExamining
-        public IPackage curVendor; // m_pvpCurrentVendor
+        public PublicVendorProfile curVendor; // m_pvpCurrentVendor
         public InstanceId selectionInfoTarget; // m_selectionInfoTgt
 
         public CPlayer(AC2Reader data) : base(data) {
             lastSelectionId = data.ReadInstanceId();
             data.ReadPkg<WPString>(v => logFile = v);
             curSpecialAttackId = data.ReadUInt32();
-            data.ReadPkg<IPackage>(v => shopperContext = v); // TODO: CShopperContext
+            data.ReadPkg<CShopperContext>(v => shopperContext = v);
             data.ReadPkg<RList<IPackage>>(v => friendList = v);
             data.ReadPkg<SelectionInfo>(v => selectionInfo = v);
             curWarmupBehavior = data.ReadUInt32();
@@ -42,7 +42,7 @@
             data.ReadPkg<RList<IPackage>>(v => squelchList = v);
             data.ReadPkg<HistoryList>(v => retellHistoryList = v);
             isExamining = data.ReadBoolean();
-            data.ReadPkg<IPackage>(v => curVendor = v); // TODO: PublicVendorProfile
+            data.ReadPkg<PublicVendorProfile>(v => curVendor = v);
             selectionInfoTarget = data.ReadInstanceId();
         }
     }

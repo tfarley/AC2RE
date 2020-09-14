@@ -2,7 +2,7 @@
 
     public class ToolPermissionBlob : IPackage {
 
-        public virtual PackageType packageType => PackageType.ToolPermissionBlob;
+        public PackageType packageType => PackageType.ToolPermissionBlob;
 
         public AList requiredSkills; // m_RequiredSkillList
         public uint skillLevel; // m_uiSkillLevel

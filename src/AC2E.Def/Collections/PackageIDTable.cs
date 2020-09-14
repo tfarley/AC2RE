@@ -2,7 +2,7 @@
 
     public class PackageIDTable : IPackage {
 
-        public virtual PackageType packageType => PackageType.PackageIDTable;
+        public PackageType packageType => PackageType.PackageIDTable;
 
         public AAHash pidHash; // m_pidHash
 

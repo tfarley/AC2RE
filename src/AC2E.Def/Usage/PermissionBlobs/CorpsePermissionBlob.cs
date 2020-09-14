@@ -2,7 +2,7 @@
 
     public class CorpsePermissionBlob : IPackage {
 
-        public virtual PackageType packageType => PackageType.CorpsePermissionBlob;
+        public PackageType packageType => PackageType.CorpsePermissionBlob;
 
         public bool lootProof; // m_lootProof
         public bool hasBeenOpened; // m_hasBeenOpened

@@ -60,6 +60,8 @@ namespace AC2E.Def {
                     return new GMQuestInfoList(data);
                 case NativeType.GMQUESTINFO:
                     return new GMQuestInfo(data);
+                case NativeType.GMRACESEXINFO:
+                    return new GMRaceSexInfo(data);
                 case NativeType.GMSCENEINFO:
                     return new GMSceneInfo(data);
                 case NativeType.GMSCENEINFOLIST:
@@ -134,6 +136,8 @@ namespace AC2E.Def {
 
         private static IPackage readInternal(AC2Reader data, PackageType packageType) {
             switch (packageType) {
+                case PackageType.ACFraction:
+                    return new ACFraction(data);
                 case PackageType.Act:
                     return new Act(data);
                 case PackageType.ActiveSkill:
@@ -152,6 +156,8 @@ namespace AC2E.Def {
                     return new AIPetEffect(data);
                 case PackageType.AITauntDetauntEffect:
                     return new AITauntDetauntEffect(data);
+                case PackageType.AllegianceControl:
+                    return new AllegianceControl(data);
                 case PackageType.AllegianceData:
                     return new AllegianceData(data);
                 case PackageType.AllegianceHallBindingStoneUsageBlob:
@@ -162,6 +168,8 @@ namespace AC2E.Def {
                     return new AllegianceHierarchy.AllegianceNode(data);
                 case PackageType.AllegianceProfile:
                     return new AllegianceProfile(data);
+                case PackageType.AllegianceRankTable:
+                    return new AllegianceRankTable(data);
                 case PackageType.AnimationRecipeAction:
                     return new AnimationRecipeAction(data);
                 case PackageType.AppearanceModRecipeAction:
@@ -172,6 +180,8 @@ namespace AC2E.Def {
                     return new ApplyEffect(data);
                 case PackageType.AttackHook:
                     return new AttackHook(data);
+                case PackageType.AttackHookData:
+                    return new AttackHookData(data);
                 case PackageType.AttributeProfile:
                     return new AttributeProfile(data);
                 case PackageType.AttributeSkill:
@@ -186,6 +196,8 @@ namespace AC2E.Def {
                     return new BiasProfile(data);
                 case PackageType.BindRecipeAction:
                     return new BindRecipeAction(data);
+                case PackageType.BookEffect:
+                    return new BookEffect(data);
                 case PackageType.BookUsageBlob:
                     return new BookUsageBlob(data);
                 case PackageType.ButcheryToolUsageBlob:
@@ -200,6 +212,8 @@ namespace AC2E.Def {
                     return new ChainedNumericEffect(data);
                 case PackageType.ChannelData:
                     return new ChannelData(data);
+                case PackageType.CharacterGenSystem:
+                    return new CharacterGenSystem(data);
                 case PackageType.CharGenMatrix:
                     return new CharGenMatrix(data);
                 case PackageType.ChatChannelControl:
@@ -210,6 +224,8 @@ namespace AC2E.Def {
                     return new Clothing(data);
                 case PackageType.ComboEffect:
                     return new ComboEffect(data);
+                case PackageType.CommunicationControl:
+                    return new CommunicationControl(data);
                 case PackageType.ConsignerDesc:
                     return new ConsignerDesc(data);
                 case PackageType.Consignment:
@@ -258,8 +274,12 @@ namespace AC2E.Def {
                     return new DestroyRecipeAction(data);
                 case PackageType.DefaultPermissionBlob:
                     return new DefaultPermissionBlob(data);
+                case PackageType.DefaultTakePermissionBlob:
+                    return new DefaultTakePermissionBlob(data);
                 case PackageType.Door:
                     return new Door(data);
+                case PackageType.DoorUsageBlob:
+                    return new DoorUsageBlob(data);
                 case PackageType.DurabilityFilter:
                     return new DurabilityFilter(data);
                 case PackageType.Eff_Com_Hero_FickleFate_HealthHealDecrease:
@@ -288,8 +308,12 @@ namespace AC2E.Def {
                     return new Eff_Mn_Golem_Clone(data);
                 case PackageType.Eff_Mn_Ma_CorruptorsTouch:
                     return new Eff_Mn_Ma_CorruptorsTouch(data);
+                case PackageType.Eff_Popup_FirstCharacterSession:
+                    return new Eff_Popup_FirstCharacterSession(data);
                 case PackageType.Eff_PortalBeacon_PortalDeflectionGem:
                     return new Eff_PortalBeacon_PortalDeflectionGem(data);
+                case PackageType.Eff_RashanDrudgeBane:
+                    return new Eff_RashanDrudgeBane(data);
                 case PackageType.Eff_RemoveMonsterWeaponsFromPlayersMay05:
                     return new Eff_RemoveMonsterWeaponsFromPlayersMay05(data);
                 case PackageType.Eff_ResetLinvakResetTimers:
@@ -324,6 +348,8 @@ namespace AC2E.Def {
                     return new EquipItemProfile(data);
                 case PackageType.EmoteInfo:
                     return new EmoteInfo(data);
+                case PackageType.EmoteTable:
+                    return new EmoteTable(data);
                 case PackageType.Entity:
                     return new Entity(data);
                 case PackageType.EntityFilter:
@@ -334,12 +360,18 @@ namespace AC2E.Def {
                     return new ExportToXMLOp(data);
                 case PackageType.ExportToXMLCleanupOp:
                     return new ExportToXMLCleanupOp(data);
+                case PackageType.FactionChangeEffect:
+                    return new FactionChangeEffect(data);
                 case PackageType.FactionEffectEntry:
                     return new FactionEffectEntry(data);
+                case PackageType.FactionGlobals:
+                    return new FactionGlobals(data);
                 case PackageType.Fellow:
                     return new Fellow(data);
                 case PackageType.Fellowship:
                     return new Fellowship(data);
+                case PackageType.FellowshipControl:
+                    return new FellowshipControl(data);
                 case PackageType.FellowVitals:
                     return new FellowVitals(data);
                 case PackageType.FineItemClassFilter:
@@ -364,6 +396,8 @@ namespace AC2E.Def {
                     return new HeroControl(data);
                 case PackageType.HistoryList:
                     return new HistoryList(data);
+                case PackageType.HookData:
+                    return new HookData(data);
                 case PackageType.HotspotEffect:
                     return new HotspotEffect(data);
                 case PackageType.Ingredient:
@@ -378,10 +412,14 @@ namespace AC2E.Def {
                     return new InteractionTable(data);
                 case PackageType.Inventory:
                     return new Inventory(data);
+                case PackageType.InventoryGlobals:
+                    return new InventoryGlobals(data);
                 case PackageType.InventProfile:
                     return new InventProfile(data);
                 case PackageType.InvEquipDesc:
                     return new InvEquipDesc(data);
+                case PackageType.InvLocCategory:
+                    return new InvLocCategory(data);
                 case PackageType.InvMoveDesc:
                     return new InvMoveDesc(data);
                 case PackageType.InvTakeAllDesc:
@@ -394,6 +432,10 @@ namespace AC2E.Def {
                     return new ItemInteractionOutcome(data);
                 case PackageType.ItemInteractionUsageBlob:
                     return new ItemInteractionUsageBlob(data);
+                case PackageType.ItemProfile:
+                    return new ItemProfile(data);
+                case PackageType.KeyUsageBlob:
+                    return new KeyUsageBlob(data);
                 case PackageType.LevelData:
                     return new LevelData(data);
                 case PackageType.LevelFilter:
@@ -422,6 +464,10 @@ namespace AC2E.Def {
                     return new MineCraftBlob(data);
                 case PackageType.MineGenesisEffect:
                     return new MineGenesisEffect(data);
+                case PackageType.MineUsageAction:
+                    return new MineUsageAction(data);
+                case PackageType.MineUsageBlob:
+                    return new MineUsageBlob(data);
                 case PackageType.ModifyHierarchyHashesOp:
                     return new ModifyHierarchyHashesOp(data);
                 case PackageType.MountEffect:
@@ -448,6 +494,8 @@ namespace AC2E.Def {
                     return new PerkSkill(data);
                 case PackageType.PhaseInfo:
                     return new PhaseInfo(data);
+                case PackageType.PKStatus:
+                    return new PKStatus(data);
                 case PackageType.Player:
                     return new Player(data);
                 case PackageType.PlayerEffectRecipeAction:
@@ -456,8 +504,14 @@ namespace AC2E.Def {
                     return new PlayerSaleProfile(data);
                 case PackageType.PortalSummonEffect:
                     return new PortalSummonEffect(data);
+                case PackageType.PotionUsageBlob:
+                    return new PotionUsageBlob(data);
                 case PackageType.ProduceRecipeAction:
                     return new ProduceRecipeAction(data);
+                case PackageType.PropertyMapper:
+                    return new PropertyMapper(data);
+                case PackageType.PublicVendorProfile:
+                    return new PublicVendorProfile(data);
                 case PackageType.QualitiesEffect:
                     return new QualitiesEffect(data);
                 case PackageType.Quest:
@@ -514,6 +568,10 @@ namespace AC2E.Def {
                     return new SecretProduct(data);
                 case PackageType.SecretRecipe:
                     return new SecretRecipe(data);
+                case PackageType.ShardUsageBlob:
+                    return new ShardUsageBlob(data);
+                case PackageType.SimpleMasterList:
+                    return new SimpleMasterList(data);
                 case PackageType.Skill:
                     return new Skill(data);
                 case PackageType.SkillCheck:
@@ -570,12 +628,20 @@ namespace AC2E.Def {
                     return new TotemUsageBlob(data);
                 case PackageType.Trade:
                     return new Trade(data);
+                case PackageType.TradeSystem:
+                    return new TradeSystem(data);
+                case PackageType.TransactInfo:
+                    return new TransactInfo(data);
                 case PackageType.TransactionBlob:
                     return new TransactionBlob(data);
+                case PackageType.TransactResult:
+                    return new TransactResult(data);
                 case PackageType.TravelRecallEffect:
                     return new TravelRecallEffect(data);
                 case PackageType.TravelTieEffect:
                     return new TravelTieEffect(data);
+                case PackageType.TravelUsageBlob:
+                    return new TravelUsageBlob(data);
                 case PackageType.UIDamageControl:
                     return new UIDamageControl(data);
                 case PackageType.UsageBlob:

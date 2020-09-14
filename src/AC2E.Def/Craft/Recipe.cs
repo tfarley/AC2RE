@@ -6,12 +6,12 @@
 
         public int difficultyMinusSkillCutoff; // m_difficultyMinusSkillCutoff
         public SingletonPkg<LevelMappingTable> costMappingTable; // m_costMappingTable
-        public ARHash<IPackage> craftMessageOverrides; // m_craftMessageOverrides
+        public ARHash<StringInfo> craftMessageOverrides; // m_craftMessageOverrides
         public SingletonPkg<LevelMappingTable> m_difficultyMappingTable; // m_difficultyMappingTable
         public DataId iconDid; // m_iconDID
-        public ARHash<IPackage> craftCheckEntries; // m_craftCheckEntries
+        public ARHash<CraftCheckEntry> craftCheckEntries; // m_craftCheckEntries
         public uint craftSkillCategory; // m_craftSkillCategory
-        public RList<IPackage> ingredients; // m_ingredients
+        public RList<Ingredient> ingredients; // m_ingredients
         public StringInfo name; // m_siName
         public StringInfo description; // m_siDesc
         public uint maxLevel; // m_maxLevel
@@ -45,12 +45,12 @@
         public Recipe(AC2Reader data) {
             difficultyMinusSkillCutoff = data.ReadInt32();
             data.ReadSingletonPkg<LevelMappingTable>(v => costMappingTable = v);
-            data.ReadPkg<ARHash<IPackage>>(v => craftMessageOverrides = v);
+            data.ReadPkg<ARHash<IPackage>>(v => craftMessageOverrides = v.to<StringInfo>());
             data.ReadSingletonPkg<LevelMappingTable>(v => m_difficultyMappingTable = v);
             iconDid = data.ReadDataId();
-            data.ReadPkg<ARHash<IPackage>>(v => craftCheckEntries = v);
+            data.ReadPkg<ARHash<IPackage>>(v => craftCheckEntries = v.to<CraftCheckEntry>());
             craftSkillCategory = data.ReadUInt32();
-            data.ReadPkg<RList<IPackage>>(v => ingredients = v);
+            data.ReadPkg<RList<IPackage>>(v => ingredients = v.to<Ingredient>());
             data.ReadPkg<StringInfo>(v => name = v);
             data.ReadPkg<StringInfo>(v => description = v);
             maxLevel = data.ReadUInt32();

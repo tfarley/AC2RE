@@ -4,7 +4,7 @@
 
         public virtual PackageType packageType => PackageType.Effect;
 
-        public RArray<IPackage> durationData; // m_durationData
+        public RArray<FloatScaleDuple> durationData; // m_durationData
         public uint fxId; // m_fxID
         public float aprValue; // m_fAprValue
         public uint externalFlags; // m_uiExternalFlags
@@ -16,7 +16,7 @@
         public StringInfo tsysItemName; // m_strTsysItemName
         public StringInfo description; // m_strDescription
         public uint aprKey; // m_aprKey
-        public RArray<IPackage> forceData; // m_forceData
+        public RArray<FloatScaleDuple> forceData; // m_forceData
         public uint examinationFlags; // m_ExaminationFlags
         public float variance; // m_fVariance
         public DefaultPermissionBlob usagePermissions; // m_usagePermissions
@@ -40,7 +40,7 @@
         public uint eqClass; // m_eqClass
 
         public Effect(AC2Reader data) {
-            data.ReadPkg<RArray<IPackage>>(v => durationData = v);
+            data.ReadPkg<RArray<IPackage>>(v => durationData = v.to<FloatScaleDuple>());
             fxId = data.ReadUInt32();
             aprValue = data.ReadSingle();
             externalFlags = data.ReadUInt32();
@@ -52,7 +52,7 @@
             data.ReadPkg<StringInfo>(v => tsysItemName = v);
             data.ReadPkg<StringInfo>(v => description = v);
             aprKey = data.ReadUInt32();
-            data.ReadPkg<RArray<IPackage>>(v => forceData = v);
+            data.ReadPkg<RArray<IPackage>>(v => forceData = v.to<FloatScaleDuple>());
             examinationFlags = data.ReadUInt32();
             variance = data.ReadSingle();
             data.ReadPkg<DefaultPermissionBlob>(v => usagePermissions = v);

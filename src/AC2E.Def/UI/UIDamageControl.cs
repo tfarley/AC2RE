@@ -2,7 +2,7 @@
 
     public class UIDamageControl : IPackage {
 
-        public virtual PackageType packageType => PackageType.UIDamageControl;
+        public PackageType packageType => PackageType.UIDamageControl;
 
         public float defaultFloatyNumberDuration; // m_fDefaultFloatyNumberDuration
 

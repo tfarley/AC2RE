@@ -10,7 +10,7 @@
         public ARHash<PhaseInfo> questPhaseInfo; // m_questPhaseInfo
         public StringInfo description; // m_siDescription
         public bool playFxOnUpdate; // m_bPlayFXOnUpdate
-        public ARHash<IPackage> questUpdateEffects; // m_questUpdateEffects
+        public ARHash<RList<IPackage>> questUpdateEffects; // m_questUpdateEffects
 
         public Quest(AC2Reader data) : base(data) {
             data.ReadPkg<StringInfo>(v => longName = v);
@@ -19,7 +19,7 @@
             data.ReadPkg<ARHash<IPackage>>(v => questPhaseInfo = v.to<PhaseInfo>());
             data.ReadPkg<StringInfo>(v => description = v);
             playFxOnUpdate = data.ReadBoolean();
-            data.ReadPkg<ARHash<IPackage>>(v => questUpdateEffects = v);
+            data.ReadPkg<ARHash<IPackage>>(v => questUpdateEffects = v.to<RList<IPackage>>());
         }
     }
 }

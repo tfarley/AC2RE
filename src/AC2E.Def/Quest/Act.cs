@@ -12,7 +12,7 @@
         public StringInfo description; // m_siDescription
         public ARHash<IPackage> sceneExaminationInfo; // m_sceneExaminationInfo
         public uint numToComplete; // m_uiNumToComplete
-        public ARHash<IPackage> sceneTable; // m_sceneTable
+        public ARHash<GMSceneInfo> sceneTable; // m_sceneTable
         public bool isActive; // m_bIsActive
         public uint actNum; // m_uiActNum
         public StringInfo name; // m_strName
@@ -26,7 +26,7 @@
             data.ReadPkg<StringInfo>(v => description = v);
             data.ReadPkg<ARHash<IPackage>>(v => sceneExaminationInfo = v);
             numToComplete = data.ReadUInt32();
-            data.ReadPkg<ARHash<IPackage>>(v => sceneTable = v);
+            data.ReadPkg<ARHash<IPackage>>(v => sceneTable = v.to<GMSceneInfo>());
             isActive = data.ReadBoolean();
             actNum = data.ReadUInt32();
             data.ReadPkg<StringInfo>(v => name = v);

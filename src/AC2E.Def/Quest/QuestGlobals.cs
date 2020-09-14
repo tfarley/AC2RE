@@ -8,7 +8,6 @@
 
         public QuestGlobals(AC2Reader data) {
             notApplicable = data.ReadUInt32();
-            throw new System.Exception("TODO: This needs to be verified against real data.");
         }
     }
 }

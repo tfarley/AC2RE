@@ -9,7 +9,7 @@
         public StringInfo name; // m_siName
         public StringInfo description; // m_siDesc
         public int totalSales; // m_iTotalSales
-        public RArray<IPackage> sales; // m_sales
+        public RArray<SaleTemplate> sales; // m_sales
         public DataId portraitDid; // m_didPortrait
         public int version; // m_iVersion
         public uint flags; // m_uiFlags
@@ -20,7 +20,7 @@
             data.ReadPkg<StringInfo>(v => name = v);
             data.ReadPkg<StringInfo>(v => description = v);
             totalSales = data.ReadInt32();
-            data.ReadPkg<RArray<IPackage>>(v => sales = v);
+            data.ReadPkg<RArray<IPackage>>(v => sales = v.to<SaleTemplate>());
             portraitDid = data.ReadDataId();
             version = data.ReadInt32();
             flags = data.ReadUInt32();

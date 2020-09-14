@@ -2,7 +2,7 @@
 
     public class StrictAliasControl : IPackage {
 
-        public virtual PackageType packageType => PackageType.StrictAliasControl;
+        public PackageType packageType => PackageType.StrictAliasControl;
 
         public NRHash<IPackage, IPackage> strictAliasTable; // m_strictAliasTable
 

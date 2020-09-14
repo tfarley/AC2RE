@@ -6,12 +6,12 @@
 
         public AList randomThresholds; // m_listRandThresh
         public float threshold; // m_fThresh
-        public ARHash<IPackage> randEntries; // m_hashRandEntries
+        public ARHash<CraftRandomEntry> randEntries; // m_hashRandEntries
 
         public CraftCheckEntry(AC2Reader data) {
             data.ReadPkg<AList>(v => randomThresholds = v);
             threshold = data.ReadSingle();
-            data.ReadPkg<ARHash<IPackage>>(v => randEntries = v);
+            data.ReadPkg<ARHash<IPackage>>(v => randEntries = v.to<CraftRandomEntry>());
         }
     }
 }

@@ -4,12 +4,12 @@
 
         public override PackageType packageType => PackageType.LinearAttackHook;
 
-        public RArray<IPackage> addDmgData; // m_addDmgData
-        public RArray<IPackage> multDmgData; // m_multDmgData
+        public RArray<FloatScaleDuple> addDmgData; // m_addDmgData
+        public RArray<FloatScaleDuple> multDmgData; // m_multDmgData
 
         public LinearAttackHook(AC2Reader data) : base(data) {
-            data.ReadPkg<RArray<IPackage>>(v => addDmgData = v);
-            data.ReadPkg<RArray<IPackage>>(v => multDmgData = v);
+            data.ReadPkg<RArray<IPackage>>(v => addDmgData = v.to<FloatScaleDuple>());
+            data.ReadPkg<RArray<IPackage>>(v => multDmgData = v.to<FloatScaleDuple>());
         }
     }
 }
