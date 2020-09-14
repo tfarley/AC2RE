@@ -1,6 +1,6 @@
 ﻿namespace AC2E.Def {
 
-    public class AITauntDetauntEffect : InstantEffect {
+    public class AITauntDetauntEffect : Effect {
 
         public override PackageType packageType => PackageType.AITauntDetauntEffect;
 

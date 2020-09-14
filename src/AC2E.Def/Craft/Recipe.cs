@@ -44,9 +44,9 @@
 
         public Recipe(AC2Reader data) {
             difficultyMinusSkillCutoff = data.ReadInt32();
-            data.ReadSingletonPkg(v => costMappingTable = v.to<LevelMappingTable>());
+            data.ReadSingletonPkg<LevelMappingTable>(v => costMappingTable = v);
             data.ReadPkg<ARHash<IPackage>>(v => craftMessageOverrides = v);
-            data.ReadSingletonPkg(v => m_difficultyMappingTable = v.to<LevelMappingTable>());
+            data.ReadSingletonPkg<LevelMappingTable>(v => m_difficultyMappingTable = v);
             iconDid = data.ReadDataId();
             data.ReadPkg<ARHash<IPackage>>(v => craftCheckEntries = v);
             craftSkillCategory = data.ReadUInt32();
@@ -59,7 +59,7 @@
             minSpinnerVal = data.ReadUInt32();
             bonus = data.ReadSingle();
             charges = data.ReadInt32();
-            data.ReadSingletonPkg(v => nameColoringTable = v.to<RecipeNameColoringTable>());
+            data.ReadSingletonPkg<RecipeNameColoringTable>(v => nameColoringTable = v);
             chargeRefreshPeriod = data.ReadInt32();
             numAnimCycles = data.ReadUInt32();
             data.ReadPkg<AList>(v => craftThresholds = v);
@@ -67,14 +67,14 @@
             maxSpinnerVal = data.ReadUInt32();
             minLevel = data.ReadUInt32();
             lastProductOrdinal = data.ReadUInt32();
-            data.ReadSingletonPkg(v => craftXpMappingTable = v.to<LevelMappingTable>());
+            data.ReadSingletonPkg<LevelMappingTable>(v => craftXpMappingTable = v);
             data.ReadPkg<CraftRandomEntry>(v => curRandEntry = v);
             data.ReadPkg<AAHash>(v => targetsHash = v);
             craftXp = data.ReadUInt32();
             requiresTarget = data.ReadBoolean();
             difficulty = data.ReadUInt32();
-            data.ReadSingletonPkg(v => skillCheckOverride = v.to<SkillCheck>());
-            data.ReadSingletonPkg(v => requiredEffect = v.to<Effect>());
+            data.ReadSingletonPkg<SkillCheck>(v => skillCheckOverride = v);
+            data.ReadSingletonPkg<Effect>(v => requiredEffect = v);
             animation = data.ReadUInt32();
             recoveryTime = data.ReadSingle();
             cost = data.ReadInt32();

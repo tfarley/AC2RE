@@ -1,6 +1,6 @@
 ﻿namespace AC2E.Def {
 
-    public class InstantBehaviorEffect : InstantEffect {
+    public class InstantBehaviorEffect : Effect {
 
         public override PackageType packageType => PackageType.InstantBehaviorEffect;
 

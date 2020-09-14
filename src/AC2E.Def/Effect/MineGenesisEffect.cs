@@ -1,6 +1,6 @@
 ﻿namespace AC2E.Def {
 
-    public class MineGenesisEffect : GenesisEffect {
+    public class MineGenesisEffect : ParameterizedNumericEffect {
 
         public override PackageType packageType => PackageType.MineGenesisEffect;
 

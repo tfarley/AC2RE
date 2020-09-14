@@ -1,6 +1,6 @@
 ﻿namespace AC2E.Def {
 
-    public class AIPetEffect : GenesisEffect {
+    public class AIPetEffect : ParameterizedNumericEffect {
 
         public override PackageType packageType => PackageType.AIPetEffect;
 

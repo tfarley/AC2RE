@@ -1,6 +1,6 @@
 ﻿namespace AC2E.Def {
 
-    public class Skill : AbilityCalculator {
+    public class Skill : MasterListMember {
 
         public override PackageType packageType => PackageType.Skill;
 

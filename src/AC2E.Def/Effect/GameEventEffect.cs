@@ -1,6 +1,6 @@
 ﻿namespace AC2E.Def {
 
-    public class GameEventEffect : InstantEffect {
+    public class GameEventEffect : Effect {
 
         public override PackageType packageType => PackageType.GameEventEffect;
 

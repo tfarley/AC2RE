@@ -1,6 +1,6 @@
 ﻿namespace AC2E.Def {
 
-    public class ComboEffect : InstantEffect {
+    public class ComboEffect : Effect {
 
         public override PackageType packageType => PackageType.ComboEffect;
 
@@ -14,14 +14,14 @@
         public SingletonPkg<Effect> effectToAddIfNotPresent; // m_effToAddIfNotPresent
 
         public ComboEffect(AC2Reader data) : base(data) {
-            data.ReadSingletonPkg(v => effectToGiveBackIfNotPresent = v.to<Effect>());
-            data.ReadSingletonPkg(v => effectToGiveBackIfPresent = v.to<Effect>());
-            data.ReadSingletonPkg(v => effectToAddIfPresent = v.to<Effect>());
+            data.ReadSingletonPkg<Effect>(v => effectToGiveBackIfNotPresent = v);
+            data.ReadSingletonPkg<Effect>(v => effectToGiveBackIfPresent = v);
+            data.ReadSingletonPkg<Effect>(v => effectToAddIfPresent = v);
             data.ReadPkg<AList>(v => effectPresentByClass = v);
             data.ReadPkg<AList>(v => effectPresentByType = v);
             spellcraftAdjustmentIfNotPresent = data.ReadInt32();
             spellcraftAdjustmentIfPresent = data.ReadInt32();
-            data.ReadSingletonPkg(v => effectToAddIfNotPresent = v.to<Effect>());
+            data.ReadSingletonPkg<Effect>(v => effectToAddIfNotPresent = v);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace AC2E.Def {
 
-    public class SlayerEffect : InstantEffect {
+    public class SlayerEffect : Effect {
 
         public override PackageType packageType => PackageType.SlayerEffect;
 

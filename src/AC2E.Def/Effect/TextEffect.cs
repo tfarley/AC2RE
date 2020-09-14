@@ -1,6 +1,6 @@
 ﻿namespace AC2E.Def {
 
-    public class TextEffect : InstantEffect {
+    public class TextEffect : Effect {
 
         public override PackageType packageType => PackageType.TextEffect;
 

@@ -20,8 +20,8 @@ namespace AC2E.Def {
         public uint checksum; // m_checksum
         public uint size; // m_size
         public TypeFlag flags; // m_flags
-        public PackageId packageId; // m_pkg_id
-        public uint parentIndex; // m_parent_index
+        public PackageTypeId packageTypeId; // m_pkg_id
+        public int parentIndex; // m_parent_index
         public Dictionary<string, CheckpointExportData> checkpoints; // m_checkpoint
 
         public ExportPackageArgs(AC2Reader data) {
@@ -30,8 +30,8 @@ namespace AC2E.Def {
             checksum = data.ReadUInt32();
             size = data.ReadUInt32();
             flags = (TypeFlag)data.ReadUInt32();
-            packageId = data.ReadPackageId();
-            parentIndex = data.ReadUInt32();
+            packageTypeId = data.ReadPackageTypeId();
+            parentIndex = data.ReadInt32();
             checkpoints = data.ReadDictionary(data.ReadString, () => new CheckpointExportData(data));
         }
     }

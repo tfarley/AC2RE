@@ -12,9 +12,9 @@
         public AAHash hashLock; // m_hashLock
         public VisualDescInfo pileVisualDesc; // m_PileAppearanceInfo
         public AAHash appearanceMutationHash; // m_appearanceMutationHash
-        public SingletonPkg<UsagePermission> usagePermission; // m_usage_usagePermission
+        public SingletonPkg<IPackage> usagePermission; // m_usage_usagePermission
         public SingletonPkg<BiasProfile> biasProfile; // m_mf
-        public SingletonPkg<UsageAction> usageAction; // m_usage_usageAction
+        public SingletonPkg<IPackage> usageAction; // m_usage_usageAction
         public EffectRegistry effectRegistry; // m_regEffect
         public AList thresholdList; // m_thresholdList
         public SingletonPkg<IPackage> usageTakePermission; // m_usage_takePermission
@@ -28,12 +28,12 @@
             data.ReadPkg<AAHash>(v => hashLock = v);
             data.ReadPkg<VisualDescInfo>(v => pileVisualDesc = v);
             data.ReadPkg<AAHash>(v => appearanceMutationHash = v);
-            data.ReadSingletonPkg(v => usagePermission = v.to<UsagePermission>());
-            data.ReadSingletonPkg(v => biasProfile = v.to<BiasProfile>());
-            data.ReadSingletonPkg(v => usageAction = v.to<UsageAction>());
+            data.ReadSingletonPkg<IPackage>(v => usagePermission = v);
+            data.ReadSingletonPkg<BiasProfile>(v => biasProfile = v);
+            data.ReadSingletonPkg<IPackage>(v => usageAction = v);
             data.ReadPkg<EffectRegistry>(v => effectRegistry = v);
             data.ReadPkg<AList>(v => thresholdList = v);
-            data.ReadSingletonPkg(v => usageTakePermission = v);
+            data.ReadSingletonPkg<IPackage>(v => usageTakePermission = v);
         }
     }
 }

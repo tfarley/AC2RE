@@ -1,8 +1,8 @@
 ﻿namespace AC2E.Def {
 
-    public class MutateRecipeAction : RecipeAction {
+    public class MutateRecipeAction : IPackage {
 
-        public override PackageType packageType => PackageType.MutateRecipeAction;
+        public PackageType packageType => PackageType.MutateRecipeAction;
 
         public uint ordinal; // m_uiOrdinal
         public IPackage treasureProfile; // m_prof
@@ -12,7 +12,7 @@
         public uint minSpinnerVal; // m_uiMinSpinnerVal
         public uint maxSpinnerVal; // m_uiMaxSpinnerVal
 
-        public MutateRecipeAction(AC2Reader data) : base(data) {
+        public MutateRecipeAction(AC2Reader data) {
             ordinal = data.ReadUInt32();
             // TODO: Unknown type "TreasureProfile" - perhaps newer native type?
             data.ReadPkg<IPackage>(v => treasureProfile = v);

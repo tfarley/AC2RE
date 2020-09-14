@@ -1,13 +1,13 @@
 ﻿namespace AC2E.Def {
 
-    public class LevelFilter : StoreFilter {
+    public class LevelFilter : IPackage {
 
-        public override PackageType packageType => PackageType.LevelFilter;
+        public PackageType packageType => PackageType.LevelFilter;
 
         public int minLevel; // m_iMinLevel
         public int maxLevel; // m_iMaxLevel
 
-        public LevelFilter(AC2Reader data) : base(data) {
+        public LevelFilter(AC2Reader data) {
             minLevel = data.ReadInt32();
             maxLevel = data.ReadInt32();
         }

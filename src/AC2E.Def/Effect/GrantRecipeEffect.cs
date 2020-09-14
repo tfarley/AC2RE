@@ -1,6 +1,6 @@
 ﻿namespace AC2E.Def {
 
-    public class GrantRecipeEffect : InstantEffect {
+    public class GrantRecipeEffect : Effect {
 
         public override PackageType packageType => PackageType.GrantRecipeEffect;
 

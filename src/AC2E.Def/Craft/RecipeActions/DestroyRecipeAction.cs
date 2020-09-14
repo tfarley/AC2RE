@@ -1,8 +1,8 @@
 ﻿namespace AC2E.Def {
 
-    public class DestroyRecipeAction : RecipeAction {
+    public class DestroyRecipeAction : IPackage {
 
-        public override PackageType packageType => PackageType.DestroyRecipeAction;
+        public PackageType packageType => PackageType.DestroyRecipeAction;
 
         public uint ordinal; // m_uiOrdinal
         public uint flags; // m_flags
@@ -11,7 +11,7 @@
         public uint quantity; // m_uiQuantity
         public uint maxSpinnerVal; // m_uiMaxSpinnerVal
 
-        public DestroyRecipeAction(AC2Reader data) : base(data) {
+        public DestroyRecipeAction(AC2Reader data) {
             ordinal = data.ReadUInt32();
             flags = data.ReadUInt32();
             mappingTableDid = data.ReadDataId();

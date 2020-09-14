@@ -1,12 +1,12 @@
 ﻿namespace AC2E.Def {
 
-    public class EntityFilter : StoreFilter {
+    public class EntityFilter : IPackage {
 
-        public override PackageType packageType => PackageType.EntityFilter;
+        public PackageType packageType => PackageType.EntityFilter;
 
         public DataIdList entityDids; // m_entityDIDs
 
-        public EntityFilter(AC2Reader data) : base(data) {
+        public EntityFilter(AC2Reader data) {
             data.ReadPkg<AList>(v => entityDids = new DataIdList(v));
         }
     }

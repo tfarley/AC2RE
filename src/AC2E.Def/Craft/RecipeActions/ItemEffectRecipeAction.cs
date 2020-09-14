@@ -1,8 +1,8 @@
 ﻿namespace AC2E.Def {
 
-    public class ItemEffectRecipeAction : RecipeAction {
+    public class ItemEffectRecipeAction : IPackage {
 
-        public override PackageType packageType => PackageType.ItemEffectRecipeAction;
+        public PackageType packageType => PackageType.ItemEffectRecipeAction;
 
         public uint ordinal; // m_uiOrdinal
         public float timeout; // m_ttTimeout
@@ -14,11 +14,11 @@
         public uint minSpinnerVal; // m_uiMinSpinnerVal
         public uint maxSpinnerVal; // m_uiMaxSpinnerVal
 
-        public ItemEffectRecipeAction(AC2Reader data) : base(data) {
+        public ItemEffectRecipeAction(AC2Reader data) {
             ordinal = data.ReadUInt32();
             timeout = data.ReadSingle();
             spellcraft = data.ReadSingle();
-            data.ReadSingletonPkg(v => effect = v.to<Effect>());
+            data.ReadSingletonPkg<Effect>(v => effect = v);
             effectKind = data.ReadInt32();
             flags = data.ReadUInt32();
             mappingTableDid = data.ReadDataId();

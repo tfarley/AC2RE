@@ -1,8 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AC2E.Def {
 
     public static class PackageManager {
+
+        private static PackageTypes packageTypes;
+
+        public static void loadPackageTypes(DatReader datReader) {
+            DataId wlibDid = new DataId(0x56000005);
+            using (AC2Reader data = datReader.getFileReader(wlibDid)) {
+                var wlib = new WLib(data);
+                packageTypes = new PackageTypes();
+                foreach (ByteStream.ExportData export in wlib.byteStream.exports) {
+                    packageTypes.add(export.args.packageTypeId, export.args.parentIndex);
+                }
+                packageTypes.calculate();
+            }
+        }
 
         public static InterpReferenceMeta getReferenceMeta(Type type) {
             InterpReferenceMeta.Flag flags = InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE;
@@ -95,243 +110,32 @@ namespace AC2E.Def {
         }
 
         public static IPackage read(AC2Reader data, PackageType packageType) {
-            if (AgentPackages.QUEST_PET_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.QuestPetTemplate;
-            } else if (AgentPackages.NPC_IMMOBILE_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.NPCImmobileTemplate;
-            } else if (AgentPackages.NPC_NON_USABLE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.NPCNonUsableTemplate;
-            } else if (AgentPackages.NPC_TABLE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.NPCTable;
-            } else if (AgentPackages.NPC_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.NPCTemplate;
-            } else if (AgentPackages.TEACHING_STONE_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.TeachingStoneTemplate;
-            } else if (ClothingPackages.ARMOR_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ArmorTemplate;
-            } else if (ClothingPackages.CLOTHING_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ClothingTemplate;
-            } else if (ClothingPackages.HUMAN_ARMOR_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.HumanArmorTemplate;
-            } else if (ClothingPackages.LUGIAN_ARMOR_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.LugianArmorTemplate;
-            } else if (ClothingPackages.RING_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.RingTemplate;
-            } else if (ClothingPackages.TALISMAN_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.TalismanTemplate;
-            } else if (ClothingPackages.TUMEROK_ARMOR_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.TumerokArmorTemplate;
-            } else if (CraftPackages.REFINING_RECIPE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.RefiningRecipe;
-            } else if (EffectPackages.AI_BEHAVIOR_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.AIBehaviorEffect;
-            } else if (EffectPackages.AI_CONCEAL_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.AIConcealEffect;
-            } else if (EffectPackages.AI_PET_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.AIPetEffect;
-            } else if (EffectPackages.AI_TAUNT_DETAUNT_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.AITauntDetauntEffect;
-            } else if (EffectPackages.AI_VOTER_SWAP_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.AIVoterSwapEffect;
-            } else if (EffectPackages.APPLY_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ApplyEffect;
-            } else if (EffectPackages.ATTUNEMENT_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.AttunementEffect;
-            } else if (EffectPackages.COMBO_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ComboEffect;
-            } else if (EffectPackages.COUNTDOWN_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.CountdownEffect;
-            } else if (EffectPackages.CHAINED_INSTANT_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ChainedInstantEffect;
-            } else if (EffectPackages.CHAINED_NUMERIC_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ChainedNumericEffect;
-            } else if (EffectPackages.DISPEL_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.DispelEffect;
-            } else if (EffectPackages.EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.Effect;
-            } else if (EffectPackages.EXPERIENCE_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ExperienceEffect;
-            } else if (EffectPackages.GAME_EVENT_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.GameEventEffect;
-            } else if (EffectPackages.GENESIS_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.GenesisEffect;
-            } else if (EffectPackages.GRANT_RECIPE_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.GrantRecipeEffect;
-            } else if (EffectPackages.IMMUNITY_APPLIER_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ImmunityApplierEffect;
-            } else if (EffectPackages.IMPULSE_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ImpulseEffect;
-            } else if (EffectPackages.INSTANT_BEHAVIOR_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.InstantBehaviorEffect;
-            } else if (EffectPackages.INSTANT_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.InstantEffect;
-            } else if (EffectPackages.INSTANT_NUMERIC_QUALITIES_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.InstantNumericQualitiesEffect;
-            } else if (EffectPackages.INSTANT_VITAL_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.InstantVitalEffect;
-            } else if (EffectPackages.LINKER_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.LinkerEffect;
-            } else if (EffectPackages.MOUNT_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.MountEffect;
-            } else if (EffectPackages.NULL_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.Eff_NullEffect;
-            } else if (EffectPackages.PERK_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.PerkTemplate;
-            } else if (EffectPackages.PET_CHANGER_EFFECT_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.PetChangerEffect;
-            } else if (EffectPackages.POPUP_EFFECT_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.PopupEffectTemplate;
-            } else if (EffectPackages.PROTECTION_EFFECT_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ProtectionEffect;
-            } else if (EffectPackages.RANDOM_RECALL_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.RandomRecallEffect;
-            } else if (EffectPackages.REFLECTIVE_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ReflectiveEffect;
-            } else if (EffectPackages.REFLECTIVE_VITAL_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ReflectiveVitalEffect;
-            } else if (EffectPackages.REMOVE_RECIPE_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.RemoveRecipeEffect;
-            } else if (EffectPackages.SKILL_TRAINING_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.SkillTrainingEffect;
-            } else if (EffectPackages.SLAYER_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.SlayerEffect;
-            } else if (EffectPackages.STORY_QUEST_TRIGGER_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.StoryQuestTriggerEffect;
-            } else if (EffectPackages.TRANSPARENT_NUMERIC_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.TransparentNumericEffect;
-            } else if (EffectPackages.USE_XP_STONE_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.Eff_UseXPStone;
-            } else if (EffectPackages.VISUAL_DESC_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.VisualDescEffect;
-            } else if (EffectPackages.VITAL_OVER_TIME_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.VitalOverTimeEffect;
-            } else if (EffectPackages.VITAL_TRANSFER_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.VitalTransferEffect;
-            } else if (InventoryPackages.CHEST_ADMIN_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ChestAdminTemplate;
-            } else if (InventoryPackages.CHEST_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ChestTemplate;
-            } else if (ItemPackages.ALCHEMY_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.AlchemyTemplate;
-            } else if (ItemPackages.AXE_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.AxeTemplate;
-            } else if (ItemPackages.BOULDER_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.BoulderTemplate;
-            } else if (ItemPackages.BOW_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.BowTemplate;
-            } else if (ItemPackages.CESTAS_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.CestasTemplate;
-            } else if (ItemPackages.DAGGER_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.DaggerTemplate;
-            } else if (ItemPackages.DEATH_PORTAL_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.DeathPortal;
-            } else if (ItemPackages.DOOR_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.DoorTemplate;
-            } else if (ItemPackages.DRUM_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.DrumTemplate;
-            } else if (ItemPackages.FACTION_SHRINE_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.FactionShrineTemplate;
-            } else if (ItemPackages.FLAIL_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.FlailTemplate;
-            } else if (ItemPackages.FORGE_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ForgeTemplate;
-            } else if (ItemPackages.FROGSTAVE_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.FrogstaveTemplate;
-            } else if (ItemPackages.GENERIC_PORTAL_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.GenericPortal;
-            } else if (ItemPackages.GLYPH_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.GlyphTemplate;
-            } else if (ItemPackages.GUNBLADE_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.GunbladeTemplate;
-            } else if (ItemPackages.HAMMER_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.HammerTemplate;
-            } else if (ItemPackages.HANDBLADE_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.HandbladeTemplate;
-            } else if (ItemPackages.JAILAI_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.JailaiTemplate;
-            } else if (ItemPackages.KEY_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.KeyTemplate;
-            } else if (ItemPackages.LIFESTONE_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.LifestoneTemplate;
-            } else if (ItemPackages.LUTE_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.LuteTemplate;
-            } else if (ItemPackages.MAP_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.MapTemplate;
-            } else if (ItemPackages.MINE_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.MineTemplate;
-            } else if (ItemPackages.MINING_TOOL_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.MiningToolTemplate;
-            } else if (ItemPackages.MOTE_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.MoteTemplate;
-            } else if (ItemPackages.POTION_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.PotionTemplate;
-            } else if (ItemPackages.POTION_TUTORIAL_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.PotionTutorialTemplate;
-            } else if (ItemPackages.QUEST_DISPENSER_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.QuestDispenserTemplate;
-            } else if (ItemPackages.ROAD_SIGN_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.RoadSignTemplate;
-            } else if (ItemPackages.POLEARM_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.PolearmTemplate;
-            } else if (ItemPackages.SCEPTER_LUGIAN_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ScepterLugianTemplate;
-            } else if (ItemPackages.SCYTHE_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ScytheTemplate;
-            } else if (ItemPackages.SHARPSTICK_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.SharpstickTemplate;
-            } else if (ItemPackages.SHARD_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ShardTemplate;
-            } else if (ItemPackages.SHIELD_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ShieldTemplate;
-            } else if (ItemPackages.SPEAR_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.SpearTemplate;
-            } else if (ItemPackages.STAVE_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.StaveTemplate;
-            } else if (ItemPackages.SWORD_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.SwordTemplate;
-            } else if (ItemPackages.TOOL_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ToolTemplate;
-            } else if (ItemPackages.TROPHY_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.TrophyTemplate;
-            } else if (ItemPackages.WASPNEST_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.WaspnestTemplate;
-            } else if (ItemPackages.WRENCH_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.WrenchTemplate;
-            } else if (ManagerPackages.SYSTEM_PACKAGES.Contains(packageType)) {
-                return new GenericPackage(packageType);
-            } else if (ManagerPackages.WM_PACKAGES.Contains(packageType)) {
-                return new GenericPackage(packageType);
-            } else if (QuestPackages.ACT_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ActTemplate;
-            } else if (QuestPackages.QUEST_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.QuestTemplate;
-            } else if (QuestPackages.QUEST_VAULT_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.QuestVaultTemplate;
-            } else if (QuestPackages.QUEST_TRIGGER_EFFECT_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.QuestTriggerEffect;
-            } else if (SkillPackages.ACTIVE_SKILL_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.ActiveSkillTemplate;
-            } else if (SkillPackages.ATTRIBUTE_SKILL_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.AttributeSkill;
-            } else if (SkillPackages.PASSIVE_SKILL_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.PassiveSkillTemplate;
-            } else if (SkillPackages.SKILL_PANEL_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.SkillPanelTemplate;
-            } else if (SkillPackages.SR_FORMULA_TEMPLATE_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.SRFormulaTemplate;
-            } else if (UsagePackages.USAGE_ACTION_PACKAGES.Contains(packageType)) {
-                packageType = PackageType.UsageAction;
+            IPackage package = readInternal(data, packageType);
+
+            // Deserialize as the most derived "known" package type
+            if (package == null && packageTypes != null) {
+                List<PackageTypeId> packageTypeHierarchy = packageTypes.getPackageTypeHierarchy(new PackageTypeId((uint)packageType));
+                foreach (PackageTypeId packageTypeId in packageTypeHierarchy) {
+                    package = readInternal(data, (PackageType)packageTypeId.id);
+                    if (package != null) {
+                        break;
+                    }
+                }
             }
 
+            if (package == null) {
+                throw new NotImplementedException($"Unhandled read for package type {packageType}.");
+            }
+
+            return package;
+        }
+
+        private static IPackage readInternal(AC2Reader data, PackageType packageType) {
             switch (packageType) {
-                case PackageType.AbilityCalculator:
-                    return new AbilityCalculator(data);
                 case PackageType.Act:
                     return new Act(data);
                 case PackageType.ActiveSkill:
                     return new ActiveSkill(data);
-                case PackageType.ActiveSkillTemplate:
-                    return new ActiveSkillTemplate(data);
                 case PackageType.ActRegistry:
                     return new ActRegistry(data);
                 case PackageType.ActTemplate:
@@ -340,20 +144,10 @@ namespace AC2E.Def {
                     return new AdvancementTable(data);
                 case PackageType.Agent:
                     return new Agent(data);
-                case PackageType.AIBehaviorEffect:
-                    return new AIBehaviorEffect(data);
-                case PackageType.AIConcealEffect:
-                    return new AIConcealEffect(data);
                 case PackageType.AIPetEffect:
                     return new AIPetEffect(data);
                 case PackageType.AITauntDetauntEffect:
                     return new AITauntDetauntEffect(data);
-                case PackageType.AIVoterSwapEffect:
-                    return new AIVoterSwapEffect(data);
-                case PackageType.AlchemyTemplate:
-                    return new AlchemyTemplate(data);
-                case PackageType.Allegiance:
-                    return new Allegiance(data);
                 case PackageType.AllegianceData:
                     return new AllegianceData(data);
                 case PackageType.AllegianceHierarchy:
@@ -364,64 +158,28 @@ namespace AC2E.Def {
                     return new AllegianceProfile(data);
                 case PackageType.ApplyEffect:
                     return new ApplyEffect(data);
-                case PackageType.ArmorTemplate:
-                    return new ArmorTemplate(data);
                 case PackageType.AttackHook:
                     return new AttackHook(data);
                 case PackageType.AttributeSkill:
                     return new AttributeSkill(data);
-                case PackageType.AttunementEffect:
-                    return new AttunementEffect(data);
                 case PackageType.AuraEffect:
                     return new AuraEffect(data);
-                case PackageType.AxeTemplate:
-                    return new AxeTemplate(data);
                 case PackageType.BiasProfile:
                     return new BiasProfile(data);
                 case PackageType.BindRecipeAction:
                     return new BindRecipeAction(data);
-                case PackageType.Book:
-                    return new Book(data);
-                case PackageType.BookTemplate:
-                    return new BookTemplate(data);
-                case PackageType.BoulderTemplate:
-                    return new BoulderTemplate(data);
-                case PackageType.BowTemplate:
-                    return new BowTemplate(data);
-                case PackageType.ButcheryProfile:
-                    return new ButcheryProfile(data);
                 case PackageType.CAExcavationPoint:
                     return new CAExcavationPoint(data);
-                case PackageType.CAgent:
-                    return new CAgent(data);
-                case PackageType.CContainer:
-                    return new CContainer(data);
-                case PackageType.CestasTemplate:
-                    return new CestasTemplate(data);
                 case PackageType.ChainedInstantEffect:
                     return new ChainedInstantEffect(data);
                 case PackageType.ChainedNumericEffect:
                     return new ChainedNumericEffect(data);
                 case PackageType.ChannelData:
                     return new ChannelData(data);
-                case PackageType.ChestAdminTemplate:
-                    return new ChestAdminTemplate(data);
-                case PackageType.ChestTemplate:
-                    return new ChestTemplate(data);
-                case PackageType.CItem:
-                    return new CItem(data);
                 case PackageType.ClassFilter:
                     return new ClassFilter(data);
                 case PackageType.Clothing:
                     return new Clothing(data);
-                case PackageType.ClothingTemplate:
-                    return new ClothingTemplate(data);
-                case PackageType.CMoneySystem:
-                    return new CMoneySystem(data);
-                case PackageType.CMonster:
-                    return new CMonster(data);
-                case PackageType.Coin:
-                    return new Coin(data);
                 case PackageType.ComboEffect:
                     return new ComboEffect(data);
                 case PackageType.ConsignerDesc:
@@ -432,16 +190,10 @@ namespace AC2E.Def {
                     return new Container(data);
                 case PackageType.ContainerSegmentDescriptor:
                     return new ContainerSegmentDescriptor(data);
-                case PackageType.ContainerTemplate:
-                    return new ContainerTemplate(data);
-                case PackageType.Corpse:
-                    return new Corpse(data);
                 case PackageType.CountdownEffect:
                     return new CountdownEffect(data);
                 case PackageType.CraftCheckEntry:
                     return new CraftCheckEntry(data);
-                case PackageType.CraftNumericEffect:
-                    return new CraftNumericEffect(data);
                 case PackageType.CraftRandomEntry:
                     return new CraftRandomEntry(data);
                 case PackageType.CraftRegistry:
@@ -450,44 +202,18 @@ namespace AC2E.Def {
                     return new CraftSkill(data);
                 case PackageType.CraftSkillRecord:
                     return new CraftSkillRecord(data);
-                case PackageType.CShield:
-                    return new CShield(data);
-                case PackageType.CustomCorpseTemplate:
-                    return new CustomCorpseTemplate(data);
                 case PackageType.CustomFailureRecipeAction:
                     return new CustomFailureRecipeAction(data);
                 case PackageType.CustomSuccessRecipeAction:
                     return new CustomSuccessRecipeAction(data);
-                case PackageType.CWeapon:
-                    return new CWeapon(data);
-                case PackageType.DaggerTemplate:
-                    return new DaggerTemplate(data);
-                case PackageType.DeathPortal:
-                    return new DeathPortal(data);
                 case PackageType.DestroyRecipeAction:
                     return new DestroyRecipeAction(data);
                 case PackageType.DefaultPermissionBlob:
                     return new DefaultPermissionBlob(data);
-                case PackageType.DispelEffect:
-                    return new DispelEffect(data);
                 case PackageType.Door:
                     return new Door(data);
-                case PackageType.DoorTemplate:
-                    return new DoorTemplate(data);
-                case PackageType.DrudgeArmorTemplate:
-                    return new DrudgeArmorTemplate(data);
-                case PackageType.DrudgeMonsterTemplate:
-                    return new DrudgeMonsterTemplate(data);
-                case PackageType.DrumTemplate:
-                    return new DrumTemplate(data);
                 case PackageType.DurabilityFilter:
                     return new DurabilityFilter(data);
-                case PackageType.EarringsToadfang:
-                    return new JewelryTemplate(data);
-                case PackageType.Eff_AIPetIgnore:
-                    return new AIBehaviorEffect(data);
-                case PackageType.Eff_NullEffect:
-                    return new Eff_NullEffect(data);
                 case PackageType.Eff_UseXPStone:
                     return new Eff_UseXPStone(data);
                 case PackageType.Effect:
@@ -500,14 +226,10 @@ namespace AC2E.Def {
                     return new EffectTypeFilter(data);
                 case PackageType.EquipItemProfile:
                     return new EquipItemProfile(data);
-                case PackageType.EmpyreanArmorTemplate:
-                    return new EmpyreanArmorTemplate(data);
                 case PackageType.EntityFilter:
                     return new EntityFilter(data);
                 case PackageType.ExperienceEffect:
                     return new ExperienceEffect(data);
-                case PackageType.FactionShrineTemplate:
-                    return new FactionShrineTemplate(data);
                 case PackageType.Fellow:
                     return new Fellow(data);
                 case PackageType.Fellowship:
@@ -518,82 +240,30 @@ namespace AC2E.Def {
                     return new FineItemClassFilter(data);
                 case PackageType.FlagRecipeAction:
                     return new FlagRecipeAction(data);
-                case PackageType.FlailTemplate:
-                    return new FlailTemplate(data);
                 case PackageType.FloatScaleDuple:
                     return new FloatScaleDuple(data);
-                case PackageType.Forge:
-                    return new Forge(data);
-                case PackageType.ForgeTemplate:
-                    return new ForgeTemplate(data);
-                case PackageType.FrogstaveTemplate:
-                    return new FrogstaveTemplate(data);
                 case PackageType.GameEventEffect:
                     return new GameEventEffect(data);
-                case PackageType.GameplayContainer:
-                    return new GameplayContainer(data);
                 case PackageType.GameSaleProfile:
                     return new GameSaleProfile(data);
-                case PackageType.GemTemplate:
-                    return new GemTemplate(data);
-                case PackageType.Generator:
-                    return new Generator(data);
-                case PackageType.GenericPortal:
-                    return new GenericPortal(data);
-                case PackageType.GenericShard:
-                    return new GenericShard(data);
-                case PackageType.GenesisEffect:
-                    return new GenesisEffect(data);
-                case PackageType.GlyphTemplate:
-                    return new GlyphTemplate(data);
                 case PackageType.gmCEntity:
                     return new gmCEntity(data);
                 case PackageType.gmEntity:
                     return new gmEntity(data);
                 case PackageType.GrantRecipeEffect:
                     return new GrantRecipeEffect(data);
-                case PackageType.GRSystemTemplate:
-                    return new GRSystemTemplate(data);
-                case PackageType.GunbladeTemplate:
-                    return new GunbladeTemplate(data);
-                case PackageType.HammerTemplate:
-                    return new HammerTemplate(data);
-                case PackageType.HandTemplate:
-                    return new HandTemplate(data);
-                case PackageType.HandbladeTemplate:
-                    return new HandbladeTemplate(data);
                 case PackageType.HarmonizeRecipeAction:
                     return new HarmonizeRecipeAction(data);
                 case PackageType.HotspotEffect:
                     return new HotspotEffect(data);
-                case PackageType.HumanArmorTemplate:
-                    return new HumanArmorTemplate(data);
-                case PackageType.IClothing:
-                    return new IClothing(data);
-                case PackageType.IItem:
-                    return new IItem(data);
-                case PackageType.ImbuingStone:
-                    return new Interactor(data);
-                case PackageType.ImmunityApplierEffect:
-                    return new ImmunityApplierEffect(data);
-                case PackageType.ImpulseEffect:
-                    return new ImpulseEffect(data);
                 case PackageType.Ingredient:
                     return new Ingredient(data);
-                case PackageType.InstantAuraEffect:
-                    return new InstantAuraEffect(data);
                 case PackageType.InstantBehaviorEffect:
                     return new InstantBehaviorEffect(data);
-                case PackageType.InstantEffect:
-                    return new InstantEffect(data);
-                case PackageType.InstantNumericQualitiesEffect:
-                    return new InstantNumericQualitiesEffect(data);
                 case PackageType.InstantVitalEffect:
                     return new InstantVitalEffect(data);
                 case PackageType.InteractionTable:
                     return new InteractionTable(data);
-                case PackageType.Interactor:
-                    return new Interactor(data);
                 case PackageType.Inventory:
                     return new Inventory(data);
                 case PackageType.InventProfile:
@@ -606,50 +276,20 @@ namespace AC2E.Def {
                     return new InvTakeAllDesc(data);
                 case PackageType.InvTransmuteAllDesc:
                     return new InvTransmuteAllDesc(data);
-                case PackageType.IShield:
-                    return new IShield(data);
-                case PackageType.Item:
-                    return new Item(data);
                 case PackageType.ItemEffectRecipeAction:
                     return new ItemEffectRecipeAction(data);
                 case PackageType.ItemInteractionOutcome:
                     return new ItemInteractionOutcome(data);
-                case PackageType.IWeapon:
-                    return new IWeapon(data);
-                case PackageType.JailaiTemplate:
-                    return new JailaiTemplate(data);
-                case PackageType.Jewelry:
-                    return new Jewelry(data);
-                case PackageType.JewelryTemplate:
-                    return new JewelryTemplate(data);
-                case PackageType.Key:
-                    return new Key(data);
-                case PackageType.KeyTemplate:
-                    return new KeyTemplate(data);
                 case PackageType.LevelFilter:
                     return new LevelFilter(data);
                 case PackageType.LevelMappingTable:
                     return new LevelMappingTable(data);
                 case PackageType.LinearAttackHook:
                     return new LinearAttackHook(data);
-                case PackageType.Lifestone:
-                    return new Lifestone(data);
-                case PackageType.LifestoneTemplate:
-                    return new LifestoneTemplate(data);
-                case PackageType.LinkerEffect:
-                    return new LinkerEffect(data);
                 case PackageType.LogInfo:
                     return new LogInfo(data);
                 case PackageType.LoreFilter:
                     return new LoreFilter(data);
-                case PackageType.LugianArmorTemplate:
-                    return new LugianArmorTemplate(data);
-                case PackageType.LuteTemplate:
-                    return new LuteTemplate(data);
-                case PackageType.MajorSpellbindingRecipe:
-                    return new MajorSpellbindingRecipe(data);
-                case PackageType.MapTemplate:
-                    return new MapTemplate(data);
                 case PackageType.MasterDIDList:
                     return new MasterDIDList(data);
                 case PackageType.MasterDIDListMember:
@@ -658,98 +298,36 @@ namespace AC2E.Def {
                     return new MasterList(data);
                 case PackageType.MasterListMember:
                     return new MasterListMember(data);
-                case PackageType.MasterSkillList:
-                    return new MasterSkillList(data);
                 case PackageType.MineGenesisEffect:
                     return new MineGenesisEffect(data);
-                case PackageType.MineTemplate:
-                    return new MineTemplate(data);
-                case PackageType.MiningToolTemplate:
-                    return new MiningToolTemplate(data);
-                case PackageType.MinorSpellbindingRecipe:
-                    return new MinorSpellbindingRecipe(data);
-                case PackageType.MoneySystem:
-                    return new MoneySystem(data);
-                case PackageType.Monster:
-                    return new Monster(data);
-                case PackageType.MonsterTemplate:
-                    return new MonsterTemplate(data);
-                case PackageType.MoteTemplate:
-                    return new MoteTemplate(data);
                 case PackageType.MountEffect:
                     return new MountEffect(data);
                 case PackageType.MutateRecipeAction:
                     return new MutateRecipeAction(data);
-                case PackageType.NPC:
-                    return new NPC(data);
-                case PackageType.NPCGuardTemplate:
-                    return new NPCGuardTemplate(data);
-                case PackageType.NPCImmobileTemplate:
-                    return new NPCImmobileTemplate(data);
-                case PackageType.NPCInanimateTemplate:
-                    return new NPCInanimateTemplate(data);
-                case PackageType.NPCNonUsableTemplate:
-                    return new NPCNonUsableTemplate(data);
-                case PackageType.NPCTable:
-                    return new NPCTable(data);
-                case PackageType.NPCTemplate:
-                    return new NPCTemplate(data);
-                case PackageType.OrbTemplate:
-                    return new OrbTemplate(data);
                 case PackageType.OrderedDIDEntryTable:
                     return new OrderedDIDEntryTable(data);
                 case PackageType.ParameterizedNumericEffect:
                     return new ParameterizedNumericEffect(data);
-                case PackageType.PassiveSkillTemplate:
-                    return new PassiveSkillTemplate(data);
                 case PackageType.PetData:
                     return new PetData(data);
                 case PackageType.PerkSkill:
                     return new PerkSkill(data);
-                case PackageType.PerkTemplate:
-                    return new PerkTemplate(data);
-                case PackageType.PetChangerEffect:
-                    return new PetChangerEffect(data);
                 case PackageType.PhaseInfo:
                     return new PhaseInfo(data);
-                case PackageType.PKRankBoard:
-                    return new PKRankBoard(data);
                 case PackageType.PlayerEffectRecipeAction:
                     return new PlayerEffectRecipeAction(data);
                 case PackageType.PlayerSaleProfile:
                     return new PlayerSaleProfile(data);
-                case PackageType.PolearmTemplate:
-                    return new PolearmTemplate(data);
-                case PackageType.PopupEffectTemplate:
-                    return new PopupEffectTemplate(data);
-                case PackageType.Portal:
-                    return new Portal(data);
-                case PackageType.PortalDoorTemplate:
-                    return new PortalDoorTemplate(data);
-                case PackageType.PortalSummoned:
-                    return new PortalTemplate(data);
-                case PackageType.PortalTemplate:
-                    return new PortalTemplate(data);
-                case PackageType.PotionTemplate:
-                    return new PotionTemplate(data);
-                case PackageType.PotionTutorialTemplate:
-                    return new PotionTutorialTemplate(data);
                 case PackageType.ProduceRecipeAction:
                     return new ProduceRecipeAction(data);
-                case PackageType.ProtectionEffect:
-                    return new ProtectionEffect(data);
                 case PackageType.QualitiesEffect:
                     return new QualitiesEffect(data);
                 case PackageType.Quest:
                     return new Quest(data);
-                case PackageType.QuestDispenserTemplate:
-                    return new QuestDispenserTemplate(data);
                 case PackageType.QuestGGWDreamT:
                     return new QuestTemplate(data);
                 case PackageType.QuestGlobals:
                     return new QuestGlobals(data);
-                case PackageType.QuestPetTemplate:
-                    return new QuestPetTemplate(data);
                 case PackageType.QuestTemplate:
                     return new QuestTemplate(data);
                 case PackageType.QuestTriggerEffect:
@@ -762,12 +340,8 @@ namespace AC2E.Def {
                     return new RandomRecallEffect(data);
                 case PackageType.RankBoard:
                     return new RankBoard(data);
-                case PackageType.RankBoardTemplate:
-                    return new RankBoardTemplate(data);
                 case PackageType.Recipe:
                     return new Recipe(data);
-                case PackageType.RecipeAction:
-                    return new RecipeAction(data);
                 case PackageType.RecipeDifficultyTable:
                     return new RecipeDifficultyTable(data);
                 case PackageType.RecipeNameColoringTable:
@@ -776,8 +350,6 @@ namespace AC2E.Def {
                     return new RecipeRecord(data);
                 case PackageType.RecipeTrainingTable:
                     return new GenericPackage(packageType);
-                case PackageType.RefiningRecipe:
-                    return new RefiningRecipe(data);
                 case PackageType.ReflectiveEffect:
                     return new ReflectiveEffect(data);
                 case PackageType.ReflectiveVitalEffect:
@@ -786,36 +358,12 @@ namespace AC2E.Def {
                     return new RemoveRecipeEffect(data);
                 case PackageType.ResurrectionRequest:
                     return new ResurrectionRequest(data);
-                case PackageType.RingTemplate:
-                    return new RingTemplate(data);
-                case PackageType.RoadSignTemplate:
-                    return new RoadSignTemplate(data);
-                case PackageType.SaddleTemplate:
-                    return new SaddleTemplate(data);
-                case PackageType.SaddleTest:
-                    return new SaddleTemplate(data);
                 case PackageType.SaleProfile:
                     return new SaleProfile(data);
                 case PackageType.SaleTemplate:
                     return new SaleTemplate(data);
-                case PackageType.ScepterLugianTemplate:
-                    return new ScepterLugianTemplate(data);
-                case PackageType.SceneryObject:
-                    return new SceneryObject(data);
-                case PackageType.ScytheTemplate:
-                    return new ScytheTemplate(data);
                 case PackageType.SecretRecipe:
                     return new SecretRecipe(data);
-                case PackageType.Shard:
-                    return new Shard(data);
-                case PackageType.ShardTemplate:
-                    return new ShardTemplate(data);
-                case PackageType.SharpstickTemplate:
-                    return new SharpstickTemplate(data);
-                case PackageType.Shield:
-                    return new Shield(data);
-                case PackageType.ShieldTemplate:
-                    return new ShieldTemplate(data);
                 case PackageType.Skill:
                     return new Skill(data);
                 case PackageType.SkillCheck:
@@ -824,28 +372,16 @@ namespace AC2E.Def {
                     return new SkillInfo(data);
                 case PackageType.SkillPanel:
                     return new SkillPanel(data);
-                case PackageType.SkillPanelTemplate:
-                    return new SkillPanelTemplate(data);
                 case PackageType.SkillRepository:
                     return new SkillRepository(data);
-                case PackageType.SkillTrainingEffect:
-                    return new SkillTrainingEffect(data);
                 case PackageType.SlayerEffect:
                     return new SlayerEffect(data);
-                case PackageType.SpearTemplate:
-                    return new SpearTemplate(data);
-                case PackageType.SpellbindingRecipe:
-                    return new SpellbindingRecipe(data);
                 case PackageType.StampRecipeAction:
                     return new StampRecipeAction(data);
                 case PackageType.StaticAttackHook:
                     return new StaticAttackHook(data);
                 case PackageType.SRFormula:
                     return new SRFormula(data);
-                case PackageType.SRFormulaTemplate:
-                    return new SRFormulaTemplate(data);
-                case PackageType.StaveTemplate:
-                    return new StaveTemplate(data);
                 case PackageType.StoreGroup:
                     return new StoreGroup(data);
                 case PackageType.StoreSorter:
@@ -856,52 +392,24 @@ namespace AC2E.Def {
                     return new StoreView(data);
                 case PackageType.StoryQuestTriggerEffect:
                     return new StoryQuestTriggerEffect(data);
-                case PackageType.SwordTemplate:
-                    return new SwordTemplate(data);
-                case PackageType.TalismanTemplate:
-                    return new TalismanTemplate(data);
                 case PackageType.TargetInteraction:
                     return new TargetInteraction(data);
                 case PackageType.TargetLevelFilter:
                     return new TargetLevelFilter(data);
                 case PackageType.TargetLoreFilter:
                     return new TargetLoreFilter(data);
-                case PackageType.TeachingStoneTemplate:
-                    return new TeachingStoneTemplate(data);
                 case PackageType.TextEffect:
                     return new TextEffect(data);
                 case PackageType.TextRecipeAction:
                     return new TextRecipeAction(data);
-                case PackageType.Tool:
-                    return new Tool(data);
-                case PackageType.ToolTemplate:
-                    return new ToolTemplate(data);
                 case PackageType.Trade:
                     return new Trade(data);
                 case PackageType.TransactionBlob:
                     return new TransactionBlob(data);
-                case PackageType.TransparentNumericEffect:
-                    return new TransparentNumericEffect(data);
-                case PackageType.TrophyTemplate:
-                    return new TrophyTemplate(data);
-                case PackageType.TrumpSceptersTemplate:
-                    return new TrumpSceptersTemplate(data);
-                case PackageType.TrumpSwordsTemplate:
-                    return new TrumpSwordsTemplate(data);
-                case PackageType.TrumpTemplate:
-                    return new TrumpTemplate(data);
-                case PackageType.TumerokArmorTemplate:
-                    return new TumerokArmorTemplate(data);
                 case PackageType.UsageBlob:
                     return new UsageBlob(data);
-                case PackageType.UsageAction:
-                    return new UsageAction(data);
                 case PackageType.UsageDesc:
                     return new UsageDesc(data);
-                case PackageType.UsagePermission:
-                    return new UsagePermission(data);
-                case PackageType.VaultTemplate:
-                    return new VaultTemplate(data);
                 case PackageType.VisualDescEffect:
                     return new VisualDescEffect(data);
                 case PackageType.VisualDescInfo:
@@ -910,16 +418,10 @@ namespace AC2E.Def {
                     return new VitalOverTimeEffect(data);
                 case PackageType.VitalTransferEffect:
                     return new VitalTransferEffect(data);
-                case PackageType.WaspnestTemplate:
-                    return new WaspnestTemplate(data);
-                case PackageType.Weapon:
-                    return new Weapon(data);
                 case PackageType.WeaponTemplate:
                     return new WeaponTemplate(data);
-                case PackageType.WrenchTemplate:
-                    return new WrenchTemplate(data);
                 default:
-                    throw new NotImplementedException($"Unhandled read for package type {packageType}.");
+                    return null;
             }
         }
     }

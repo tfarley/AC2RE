@@ -13,11 +13,11 @@
 
         public InstantVitalEffect(AC2Reader data) : base(data) {
             data.ReadPkg<RArray<IPackage>>(v => lowBounds = v);
-            data.ReadSingletonPkg(v => hateComboEffect = v.to<Effect>());
+            data.ReadSingletonPkg<Effect>(v => hateComboEffect = v);
             data.ReadPkg<RArray<IPackage>>(v => changeData = v);
             initialChangeVar = data.ReadSingle();
             data.ReadPkg<RArray<IPackage>>(v => highBounds = v);
-            data.ReadSingletonPkg(v => hateLinkerEffect = v.to<Effect>());
+            data.ReadSingletonPkg<Effect>(v => hateLinkerEffect = v);
         }
     }
 }

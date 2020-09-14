@@ -40,7 +40,7 @@
             pk = data.ReadBoolean();
             data.ReadPkg<IPackage>(v => appPackage = v);
             timePromotedToTopLevel = data.ReadDouble();
-            data.ReadSingletonPkg(v => effect = v.to<Effect>());
+            data.ReadSingletonPkg<Effect>(v => effect = v);
             actingForWhomId = data.ReadInstanceId();
             skillDid = data.ReadDataId();
             fromItemId = data.ReadInstanceId();

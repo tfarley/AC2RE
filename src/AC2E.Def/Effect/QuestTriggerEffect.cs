@@ -1,6 +1,6 @@
 ﻿namespace AC2E.Def {
 
-    public class QuestTriggerEffect : InstantEffect {
+    public class QuestTriggerEffect : Effect {
 
         public override PackageType packageType => PackageType.QuestTriggerEffect;
 

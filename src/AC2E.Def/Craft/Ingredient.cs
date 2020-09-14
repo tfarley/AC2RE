@@ -27,7 +27,7 @@
         public Ingredient(AC2Reader data) {
             ordinal = data.ReadUInt32();
             data.ReadPkg<StringInfo>(v => description = v);
-            data.ReadSingletonPkg(v => loreMappingTable = v.to<LevelMappingTable>());
+            data.ReadSingletonPkg<LevelMappingTable>(v => loreMappingTable = v);
             autoSpinner = data.ReadBoolean();
             minSpinnerVal = data.ReadUInt32();
             requiredFlags = data.ReadUInt32();
@@ -36,14 +36,14 @@
             data.ReadPkg<StringInfo>(v => pluralDescription = v);
             autoPopulate = data.ReadBoolean();
             maxSpinnerVal = data.ReadUInt32();
-            data.ReadSingletonPkg(v => levelMappingTable = v.to<LevelMappingTable>());
+            data.ReadSingletonPkg<LevelMappingTable>(v => levelMappingTable = v);
             quantity = data.ReadUInt32();
             data.ReadPkg<AAHash>(v => itemClasses = v);
             restrictedFlags = data.ReadUInt32();
             data.ReadPkg<StringInfo>(v => forcedDescription = v);
             level = data.ReadInt32();
             lore = data.ReadInt32();
-            data.ReadSingletonPkg(v => stackMappingTable = v.to<LevelMappingTable>());
+            data.ReadSingletonPkg<LevelMappingTable>(v => stackMappingTable = v);
         }
     }
 }

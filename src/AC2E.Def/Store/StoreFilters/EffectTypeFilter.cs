@@ -1,12 +1,12 @@
 ﻿namespace AC2E.Def {
 
-    public class EffectTypeFilter : StoreFilter {
+    public class EffectTypeFilter : IPackage {
 
-        public override PackageType packageType => PackageType.EntityFilter;
+        public PackageType packageType => PackageType.EntityFilter;
 
         public AList effectTypes; // m_effectTypes
 
-        public EffectTypeFilter(AC2Reader data) : base(data) {
+        public EffectTypeFilter(AC2Reader data) {
             data.ReadPkg<AList>(v => effectTypes = v);
         }
     }

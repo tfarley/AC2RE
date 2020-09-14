@@ -37,7 +37,7 @@
             reflectVar = data.ReadSingle();
             data.ReadPkg<AList>(v => generateClasses = v);
             generateSpellcraftEnd = data.ReadSingle();
-            data.ReadSingletonPkg(v => generateEffect = v.to<Effect>());
+            data.ReadSingletonPkg<Effect>(v => generateEffect = v);
             absorbVar = data.ReadSingle();
             generateSpellcraftBegin = data.ReadSingle();
             generateProbBegin = data.ReadSingle();

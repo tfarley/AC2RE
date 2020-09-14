@@ -115,11 +115,15 @@ namespace AC2E.Def {
                     package = PackageManager.read(this, nativeType);
                 } else {
                     uint packageLength = ReadUInt32() * 4;
-                    long startPos = BaseStream.Position;
-                    package = PackageManager.read(this, packageType);
-                    uint readLength = (uint)(BaseStream.Position - startPos);
-                    if (readLength != packageLength) {
-                        throw new InvalidDataException(readLength.ToString());
+                    if (packageLength == 0) {
+                        package = new GenericPackage(packageType);
+                    } else {
+                        long startPos = BaseStream.Position;
+                        package = PackageManager.read(this, packageType);
+                        uint readLength = (uint)(BaseStream.Position - startPos);
+                        if (readLength != packageLength) {
+                            throw new InvalidDataException(readLength.ToString());
+                        }
                     }
                 }
 
@@ -153,17 +157,17 @@ namespace AC2E.Def {
             return packageId;
         }
 
-        public PackageId ReadSingletonPkg(Action<SingletonPkg<IPackage>> assigner) {
+        public PackageId ReadSingletonPkg<T>(Action<SingletonPkg<T>> assigner) where T : class, IPackage {
             PackageId packageId = ReadPackageId();
             if (packageId.id != PackageId.NULL.id) {
                 packageRegistry.addResolver(() => {
                     IPackage package = packageRegistry.get<IPackage>(packageId);
                     Type packageType = package.GetType();
                     if (packageType.IsGenericType && packageType.GetGenericTypeDefinition() == typeof(SingletonPkg<>)) {
-                        assigner.Invoke((SingletonPkg<IPackage>)package);
+                        assigner.Invoke(((SingletonPkg<IPackage>)package).to<T>());
                     } else {
-                        assigner.Invoke(new SingletonPkg<IPackage> {
-                            package = package,
+                        assigner.Invoke(new SingletonPkg<T> {
+                            package = (T)package,
                         });
                     }
                 });
@@ -255,6 +259,10 @@ namespace AC2E.Def {
                 dict.Add(keyReader.Invoke(), valueReader.Invoke());
             }
             return dict;
+        }
+
+        public PackageTypeId ReadPackageTypeId() {
+            return new PackageTypeId(ReadUInt32());
         }
 
         public PackageId ReadPackageId() {

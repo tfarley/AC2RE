@@ -5,7 +5,7 @@
         public PackageType packageType => PackageType.SkillCheck;
 
         public float maxSr; // mMaxSR
-        public SRFormula srFormula; // mSRFormula
+        public SingletonPkg<SRFormula> srFormula; // mSRFormula
         public bool seeded; // mSeeded
         public float luckMod; // mLuckMod
         public float slopeMod; // mSlopeMod
@@ -15,7 +15,7 @@
 
         public SkillCheck(AC2Reader data) {
             maxSr = data.ReadSingle();
-            data.ReadPkg<SRFormula>(v => srFormula = v);
+            data.ReadSingletonPkg<SRFormula>(v => srFormula = v);
             seeded = data.ReadBoolean();
             luckMod = data.ReadSingle();
             slopeMod = data.ReadSingle();

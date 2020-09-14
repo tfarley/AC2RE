@@ -1,6 +1,6 @@
 ﻿namespace AC2E.Def {
 
-    public class ChainedInstantEffect : InstantEffect {
+    public class ChainedInstantEffect : Effect {
 
         public override PackageType packageType => PackageType.ChainedInstantEffect;
 

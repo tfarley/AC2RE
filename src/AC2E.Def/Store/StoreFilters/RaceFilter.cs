@@ -1,12 +1,12 @@
 ﻿namespace AC2E.Def {
 
-    public class RaceFilter : StoreFilter {
+    public class RaceFilter : IPackage {
 
-        public override PackageType packageType => PackageType.RaceFilter;
+        public PackageType packageType => PackageType.RaceFilter;
 
         public SpeciesType race; // m_race
 
-        public RaceFilter(AC2Reader data) : base(data) {
+        public RaceFilter(AC2Reader data) {
             race = (SpeciesType)data.ReadUInt32();
         }
     }
