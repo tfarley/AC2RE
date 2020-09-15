@@ -14,8 +14,10 @@ namespace AC2E.Def {
             public bool dwordFlag;
             public Opcode opcode;
             public uint immediate;
-            public ulong? val;
-            public ulong? val2;
+            public bool valIsDec;
+            public bool val2IsDec;
+            public long? val;
+            public long? val2;
             public ExportData targetPackage;
             public ExportFunctionData targetFunc;
             public string targetString;
@@ -59,13 +61,14 @@ namespace AC2E.Def {
                 // TODO: Decode more opcodes - some may be multi-word like the ones below, and may be some with embedded immediates
                 switch (instruction.opcode) {
                     case Opcode.PUSH:
+                        instruction.valIsDec = true;
                         if (instruction.dwordFlag) {
                             i += 4;
-                            instruction.val = BitConverter.ToUInt64(byteStream.opcodeStream.opcodeBytes, (int)i);
+                            instruction.val = BitConverter.ToInt64(byteStream.opcodeStream.opcodeBytes, (int)i);
                             i += 4;
                         } else {
                             i += 4;
-                            instruction.val = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
+                            instruction.val = BitConverter.ToInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
                         }
                         break;
                     case Opcode.NEW:
@@ -88,8 +91,17 @@ namespace AC2E.Def {
                         instruction.targetPackage = target.Key;
                         instruction.targetFunc = target.Value;
                         break;
+                    case Opcode.IF:
                     case Opcode.RJMP:
                         instruction.val = i + instruction.immediate + 4;
+                        break;
+                    case Opcode.LOAD:
+                    case Opcode.POPN:
+                    case Opcode.PUSH_FRAME:
+                    case Opcode.PUSHV:
+                    case Opcode.SADDR:
+                        instruction.valIsDec = true;
+                        instruction.val = instruction.immediate;
                         break;
                     case Opcode.RLOAD:
                         instruction.val = instruction.immediate;
@@ -113,14 +125,14 @@ namespace AC2E.Def {
                     default:
                         if (instruction.opcode >= Opcode.FADD && instruction.opcode <= Opcode.FDEC) {
                             i += 4;
-                            instruction.val = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
+                            instruction.val = BitConverter.ToInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
                             if (instruction.dwordFlag) {
                                 i += 4;
-                                instruction.val2 = BitConverter.ToUInt64(byteStream.opcodeStream.opcodeBytes, (int)i);
+                                instruction.val2 = BitConverter.ToInt64(byteStream.opcodeStream.opcodeBytes, (int)i);
                                 i += 4;
                             } else {
                                 i += 4;
-                                instruction.val2 = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
+                                instruction.val2 = BitConverter.ToInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
                             }
                         }
                         break;
@@ -164,14 +176,18 @@ namespace AC2E.Def {
                     data.Write("(L)");
                 }
                 if (instruction.val.HasValue) {
-                    if (instruction.dwordFlag) {
+                    if (instruction.valIsDec) {
+                        data.Write($" {instruction.val.Value}");
+                    } else if (instruction.dwordFlag) {
                         data.Write($" 0x{instruction.val.Value:X16}");
                     } else {
                         data.Write($" 0x{instruction.val.Value:X8}");
                     }
                 }
                 if (instruction.val2.HasValue) {
-                    if (instruction.dwordFlag) {
+                    if (instruction.val2IsDec) {
+                        data.Write($" {instruction.val2.Value}");
+                    } else if (instruction.dwordFlag) {
                         data.Write($" 0x{instruction.val2.Value:X16}");
                     } else {
                         data.Write($" 0x{instruction.val2.Value:X8}");
@@ -192,6 +208,7 @@ namespace AC2E.Def {
                 if (instruction.targetString != null) {
                     data.Write($" \"{instruction.targetString}\"");
                 }
+                //data.Write($" {instruction.raw:X8}");
                 data.WriteLine();
             }
         }

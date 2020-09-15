@@ -20,6 +20,11 @@ namespace AC2E.Def {
             this.literalValue = literalValue;
         }
 
+        public StringInfo(DataId tableDid, uint stringId) {
+            this.tableDid = tableDid;
+            this.stringId = stringId;
+        }
+
         public StringInfo(AC2Reader data) {
             stringId = data.ReadUInt32();
             tableDid = data.ReadDataId();

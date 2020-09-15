@@ -7,11 +7,11 @@
         public MessageOpcode opcode => MessageOpcode.Evt_Qualities__UpdateStringInfo_Private_ID;
 
         // ECM_Qualities::RecvEvt_UpdateStringInfo_Private
-        public uint type; // _stype
+        public StringInfoStat type; // _stype
         public StringInfo value; // _data
 
         public QualUpdateStringInfoPrivateMsg(AC2Reader data) {
-            type = data.ReadUInt32();
+            type = (StringInfoStat)data.ReadUInt32();
             value = new StringInfo(data);
         }
     }
@@ -24,12 +24,12 @@
 
         // ECM_Qualities::RecvEvt_UpdateStringInfo_Visual
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public uint type; // _stype
+        public StringInfoStat type; // _stype
         public StringInfo value; // _data
 
         public QualUpdateStringInfoVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            type = data.ReadUInt32();
+            type = (StringInfoStat)data.ReadUInt32();
             value = new StringInfo(data);
         }
     }

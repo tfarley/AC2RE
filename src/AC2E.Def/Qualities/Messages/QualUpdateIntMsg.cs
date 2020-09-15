@@ -7,7 +7,7 @@
         public MessageOpcode opcode => MessageOpcode.Evt_Qualities__UpdateInt_Private_ID;
 
         // ECM_Qualities::RecvEvt_UpdateInt_Private
-        public uint type; // _stype
+        public IntStat type; // _stype
         public int value; // _data
 
         public QualUpdateIntPrivateMsg() {
@@ -15,12 +15,12 @@
         }
 
         public QualUpdateIntPrivateMsg(AC2Reader data) {
-            type = data.ReadUInt32();
+            type = (IntStat)data.ReadUInt32();
             value = data.ReadInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Write(type);
+            data.Write((uint)type);
             data.Write(value);
         }
     }
@@ -33,12 +33,12 @@
 
         // ECM_Qualities::RecvEvt_UpdateInt_Visual
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public uint type; // _stype
+        public IntStat type; // _stype
         public int value; // _data
 
         public QualUpdateIntVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            type = data.ReadUInt32();
+            type = (IntStat)data.ReadUInt32();
             value = data.ReadInt32();
         }
     }

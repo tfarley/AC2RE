@@ -12,6 +12,16 @@ namespace AC2E.Server {
 
     internal class PacketHandler {
 
+        private static readonly Position TUTORIAL_START_POS = new Position {
+            cell = new CellId(0x02, 0x98, 0x01, 0x09),
+            frame = new Frame(new Vector3(59.060577f, 240.199f, -44.894524f), new Quaternion(0.70710677f, 0.0f, 0.0f, 0.70710677f)),
+        };
+
+        private static readonly Position ARWIC_START_POS = new Position {
+            cell = new CellId(0x75, 0xB9, 0x00, 0x31),
+            frame = new Frame(new Vector3(131.13126f, 13.535009f, 127.25996f), new Quaternion(1.0f, 0.0f, 0.0f, 0.0f)),
+        };
+
         private readonly List<Language> SUPPORTED_LANGUAGES = new List<Language> {
             Language.ENGLISH,
         };
@@ -186,39 +196,39 @@ namespace AC2E.Server {
                                         placementEtherealLow = 65011856,
                                         placementEtherealHigh = 0,
                                     },
-                                    intTable = new Dictionary<uint, int> {
-                                        { 280, 78 },
-                                        { 290, 1 },
-                                        { 291, 4096 },
-                                        { 292, 2 },
-                                        { 302, 7 },
-                                        { 950, -1 },
-                                        { 3100, 391 },
-                                        { 258, 310 },
-                                        { 259, 280 },
-                                        { 263, 280 },
-                                        { 264, 280 },
+                                    intTable = new Dictionary<IntStat, int> {
+                                        { IntStat.CONTAINERMAXCAPACITY, 78 },
+                                        { IntStat.SPECIES, 1 },
+                                        { IntStat.SEX, 4096 },
+                                        { IntStat.CLASS, 2 },
+                                        { IntStat.LEVEL, 7 },
+                                        { IntStat.GROOVELEVEL, -1 },
+                                        { IntStat.MONEY, 391 },
+                                        { IntStat.HEALTH_CURRENTLEVEL, 310 },
+                                        { IntStat.VIGOR_CURRENTLEVEL, 280 },
+                                        { IntStat.HEALTH_CACHEDMAX, 280 },
+                                        { IntStat.VIGOR_CACHEDMAX, 280 },
                                     },
-                                    longTable = new Dictionary<uint, long> {
-                                        { 300, 902 },
-                                        { 301, 722 },
-                                        { 1000, 80 },
-                                        { 1001, 40 },
+                                    longTable = new Dictionary<LongIntStat, long> {
+                                        { LongIntStat.TOTALXP, 902 },
+                                        { LongIntStat.AVAILABLEXP, 722 },
+                                        { LongIntStat.TOTALCRAFTXP, 80 },
+                                        { LongIntStat.AVAILABLECRAFTXP, 40 },
                                     },
-                                    boolTable = new Dictionary<uint, bool> {
-                                        { 2002, false }
+                                    boolTable = new Dictionary<BoolStat, bool> {
+                                        { BoolStat.PLAYER_ISONMOUNT, false }
                                     },
-                                    floatTable = new Dictionary<uint, float> {
-                                        { 286, 100.0f },
-                                        { 262, 1.0f },
-                                        { 263, 1.0f },
-                                        { 3000, 30.0f },
+                                    floatTable = new Dictionary<FloatStat, float> {
+                                        { FloatStat.CURRENTVITAE, 100.0f },
+                                        { FloatStat.HEALTH_REGENRATE, 1.0f },
+                                        { FloatStat.VIGOR_REGENRATE, 1.0f },
+                                        { FloatStat.SKILL_RESETTIMEDURATION, 30.0f },
                                     },
-                                    doubleTable = new Dictionary<uint, double> {
-                                        { 303, 121629267.45585053 }
+                                    doubleTable = new Dictionary<TimestampStat, double> {
+                                        { TimestampStat.SKILL_TIMELASTRESET, 121629267.45585053 }
                                     },
-                                    dataIdTable = new Dictionary<uint, DataId> {
-                                        { 1, new DataId(0x470000CD) }
+                                    dataIdTable = new Dictionary<DataIdStat, DataId> {
+                                        { DataIdStat.PHYSOBJ, new DataId(0x470000CD) }
                                     },
                                 },
                             });
@@ -286,10 +296,7 @@ namespace AC2E.Server {
                                             } }
                                         },
                                     modeId = 1073741825,
-                                    pos = new Position {
-                                        cell = new CellId(0x8D, 0xB5, 0x00, 0x3E),
-                                        frame = new Frame(new Vector3(158.13483f, 117.91791f, 129.50496f), new Quaternion(0.23793525f, 0.0f, 0.0f, 0.971281f)),
-                                    },
+                                    pos = ARWIC_START_POS,
                                     velScale = 20.0f,
                                     timestamps = new ushort[] { 1, 0, 0, 0 },
                                     instanceStamp = 5,
@@ -327,7 +334,25 @@ namespace AC2E.Server {
                                         }
                                     },
                                     quests = new GMQuestInfoList {
-
+                                        contents = new List<GMQuestInfo> {
+                                            new GMQuestInfo {
+                                                questId = 1073741957,
+                                                questName = new StringInfo(new DataId(0x250017EB), 2824895724),
+                                                questDescription = new StringInfo(new DataId(0x250017EB), 1816499044),
+                                                iconDid = new DataId(0x4100034B),
+                                                challengeLevel = -999,
+                                                questStatus = 268435456,
+                                                curPhase = 1,
+                                                curJournalEntry = new StringInfo(new DataId(0x250017EB), 777789010),
+                                                bestowalTime = 129500898.25912432,
+                                                doneTime = -1355582621.7408757,
+                                                expired = true,
+                                                maxedOut = true,
+                                                secondsRemaining = 10800,
+                                                secondsUntilRetry = 0,
+                                                playFxOnUpdate = false,
+                                            },
+                                        },
                                     },
                                     options = new GameplayOptionsProfile {
                                         contentFlags =
@@ -440,8 +465,29 @@ namespace AC2E.Server {
                                             }
                                         },
                                         skills = new ARHash<SkillInfo> {
+                                            // Skill ids from enum mapper 0x2300000F
                                             contents = new Dictionary<uint, SkillInfo> {
-
+                                                { 176, new SkillInfo {
+                                                    lastUsedTime = -1,
+                                                    mask = 33,
+                                                    grantedTime = -1,
+                                                    skillOverride = 1,
+                                                    typeSkill = 176,
+                                                } },
+                                                { 178, new SkillInfo {
+                                                    lastUsedTime = -1,
+                                                    mask = 33,
+                                                    grantedTime = -1,
+                                                    skillOverride = 1,
+                                                    typeSkill = 178,
+                                                } },
+                                                { 835, new SkillInfo {
+                                                    lastUsedTime = -1,
+                                                    mask = 33,
+                                                    grantedTime = -1,
+                                                    skillOverride = 1,
+                                                    typeSkill = 835,
+                                                } },
                                             }
                                         },
                                     },
@@ -550,8 +596,8 @@ namespace AC2E.Server {
                                     physicsDesc = new PhysicsDesc {
                                         packFlags = PhysicsDesc.PackFlag.POSITION,
                                         pos = new Position {
-                                            cell = new CellId(0x8D, 0xB5, 0x00, 0x3E),
-                                            frame = new Frame(new Vector3(158.13483f + toggleCounter * 1.0f, 117.91791f - toggleCounter * 1.0f, 129.50496f), new Quaternion(0.23793525f, 0.0f, 0.0f, 0.971281f)),
+                                            cell = new CellId(0x75, 0xB9, 0x00, 0x31),
+                                            frame = new Frame(new Vector3(131.13126f - toggleCounter * 1.0f, 13.535009f + toggleCounter * 1.0f, 127.25996f), new Quaternion(0.70710677f, 0.0f, 0.0f, 0.70710677f)),
                                         },
                                         timestamps = new ushort[] { 1, 0, 0, 0 },
                                         instanceStamp = 5,
@@ -566,11 +612,28 @@ namespace AC2E.Server {
                                 });
 
                                 client.enqueueMessage(new QualUpdateIntPrivateMsg {
-                                    type = 258, // TODO: Health_CurrentLevel_IntStat
+                                    type = IntStat.HEALTH_CURRENTLEVEL, // TODO: Health_CurrentLevel_IntStat
                                     value = toggleCounter,
                                 });
 
                                 toggleCounter++;
+                            } else if (msg.netEvent.funcId == ServerEventFunctionId.Examination__QueryExaminationProfile) {
+                                QueryExaminationProfileSEvt sEvent = (QueryExaminationProfileSEvt)msg.netEvent;
+                                client.enqueueMessage(new InterpCEventPrivateMsg {
+                                    netEvent = new UpdateExaminationProfileCEvt {
+                                        profile = new ExaminationProfile {
+                                            request = sEvent.request,
+                                            nodes = new List<ExaminationDataNode> {
+                                                new ExaminationDataNode {
+                                                    order = 2,
+                                                    type = ExaminationDataNode.DataType.INT,
+                                                    valInt = 12345,
+                                                    appearanceId = 3193660691,
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
                             }
                             break;
                         }

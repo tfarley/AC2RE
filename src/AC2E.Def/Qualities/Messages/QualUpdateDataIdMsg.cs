@@ -7,11 +7,11 @@
         public MessageOpcode opcode => MessageOpcode.Evt_Qualities__UpdateDataID_Private_ID;
 
         // ECM_Qualities::RecvEvt_UpdateDataID_Private
-        public uint type; // _stype
+        public DataIdStat type; // _stype
         public DataId value; // _data
 
         public QualUpdateDataIdPrivateMsg(AC2Reader data) {
-            type = data.ReadUInt32();
+            type = (DataIdStat)data.ReadUInt32();
             value = data.ReadDataId();
         }
     }
@@ -24,12 +24,12 @@
 
         // ECM_Qualities::RecvEvt_UpdateDataID_Visual
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public uint type; // _stype
+        public DataIdStat type; // _stype
         public DataId value; // _data
 
         public QualUpdateDataIdVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            type = data.ReadUInt32();
+            type = (DataIdStat)data.ReadUInt32();
             value = data.ReadDataId();
         }
     }
