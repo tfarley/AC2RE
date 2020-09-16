@@ -8,13 +8,23 @@
 
         // ECM_Physics::RecvEvt_DoFX
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public uint fxId; // _fx_id
+        public FxId fxId; // _fx_id
         public float scalar; // __scalar
+
+        public DoFxMsg() {
+
+        }
 
         public DoFxMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            fxId = data.ReadUInt32();
+            fxId = (FxId)data.ReadUInt32();
             scalar = data.ReadSingle();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            data.Write((uint)fxId);
+            data.Write(scalar);
         }
     }
 }

@@ -9,10 +9,18 @@ namespace AC2E.Def {
         public MessageOpcode opcode => MessageOpcode.Evt_Physics__DoFX_Private_ID;
 
         // ECM_Physics::RecvEvt_DoFX_Private
-        public List<uint> fxIds; // _fxIDs
+        public List<FxId> fxIds; // _fxIDs
+
+        public DoFxPrivateMsg() {
+
+        }
 
         public DoFxPrivateMsg(AC2Reader data) {
-            fxIds = data.ReadList(data.ReadUInt32);
+            fxIds = data.ReadList(() => (FxId)data.ReadUInt32());
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(fxIds, v => data.Write((uint)v));
         }
     }
 }

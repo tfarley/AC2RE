@@ -336,12 +336,12 @@ namespace AC2E.Server {
                                     quests = new GMQuestInfoList {
                                         contents = new List<GMQuestInfo> {
                                             new GMQuestInfo {
-                                                questId = 1073741957,
+                                                questId = QuestId.QUESTFINDEXPLORERARWIC,
                                                 questName = new StringInfo(new DataId(0x250017EB), 2824895724),
                                                 questDescription = new StringInfo(new DataId(0x250017EB), 1816499044),
                                                 iconDid = new DataId(0x4100034B),
                                                 challengeLevel = -999,
-                                                questStatus = 268435456,
+                                                questStatus = QuestStatus.UNDERWAY,
                                                 curPhase = 1,
                                                 curJournalEntry = new StringInfo(new DataId(0x250017EB), 777789010),
                                                 bestowalTime = 129500898.25912432,
@@ -467,26 +467,26 @@ namespace AC2E.Server {
                                         skills = new ARHash<SkillInfo> {
                                             // Skill ids from enum mapper 0x2300000F
                                             contents = new Dictionary<uint, SkillInfo> {
-                                                { 176, new SkillInfo {
+                                                { (uint)SkillId.HUM_ME_RIPOSTE, new SkillInfo {
                                                     lastUsedTime = -1,
                                                     mask = 33,
                                                     grantedTime = -1,
                                                     skillOverride = 1,
-                                                    typeSkill = 176,
+                                                    typeSkill = SkillId.HUM_ME_RIPOSTE,
                                                 } },
-                                                { 178, new SkillInfo {
+                                                { (uint)SkillId.HUM_ME_UNPREDICTABLEBLOW, new SkillInfo {
                                                     lastUsedTime = -1,
                                                     mask = 33,
                                                     grantedTime = -1,
                                                     skillOverride = 1,
-                                                    typeSkill = 178,
+                                                    typeSkill = SkillId.HUM_ME_UNPREDICTABLEBLOW,
                                                 } },
-                                                { 835, new SkillInfo {
+                                                { (uint)SkillId.COM_LIFESTONERECALL, new SkillInfo {
                                                     lastUsedTime = -1,
                                                     mask = 33,
                                                     grantedTime = -1,
                                                     skillOverride = 1,
-                                                    typeSkill = 835,
+                                                    typeSkill = SkillId.COM_LIFESTONERECALL,
                                                 } },
                                             }
                                         },
@@ -614,6 +614,16 @@ namespace AC2E.Server {
                                 client.enqueueMessage(new QualUpdateIntPrivateMsg {
                                     type = IntStat.HEALTH_CURRENTLEVEL, // TODO: Health_CurrentLevel_IntStat
                                     value = toggleCounter,
+                                });
+
+                                client.enqueueMessage(new DoFxMsg {
+                                    senderIdWithStamp = new InstanceIdWithStamp {
+                                        id = new InstanceId(0x213000000000dd9d),
+                                        instanceStamp = 5,
+                                        otherStamp = 9,
+                                    },
+                                    fxId = FxId.PORTAL_USE,
+                                    scalar = 1.0f,
                                 });
 
                                 toggleCounter++;

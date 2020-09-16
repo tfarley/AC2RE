@@ -4,12 +4,12 @@
 
         public NativeType nativeType => NativeType.GMQUESTINFO;
 
-        public uint questId; // _questID
+        public QuestId questId; // _questID
         public StringInfo questName; // _strQuestName
         public StringInfo questDescription; // _strQuestDescription
         public DataId iconDid; // _didIcon
         public int challengeLevel; // _iChallengeLevel
-        public uint questStatus; // _questStatus
+        public QuestStatus questStatus; // _questStatus
         public uint curPhase; // _uiCurPhase
         public StringInfo curJournalEntry; // _strCurJournalEntry
         public double bestowalTime; // _ttBestowal
@@ -26,11 +26,11 @@
 
         public GMQuestInfo(AC2Reader data) {
             // TODO: This format does not match known stuff, so the names/order here may be slightly incorrect
-            questId = data.ReadUInt32();
+            questId = (QuestId)data.ReadUInt32();
             questName = new StringInfo(data);
             questDescription = new StringInfo(data);
             iconDid = data.ReadDataId();
-            questStatus = data.ReadUInt32();
+            questStatus = (QuestStatus)data.ReadUInt32();
             curPhase = data.ReadUInt32();
             curJournalEntry = new StringInfo(data);
             challengeLevel = data.ReadInt32();
@@ -44,11 +44,11 @@
         }
 
         public void write(AC2Writer data) {
-            data.Write(questId);
+            data.Write((uint)questId);
             questName.write(data);
             questDescription.write(data);
             data.Write(iconDid);
-            data.Write(questStatus);
+            data.Write((uint)questStatus);
             data.Write(curPhase);
             curJournalEntry.write(data);
             data.Write(challengeLevel);
