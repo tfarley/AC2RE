@@ -6,6 +6,21 @@ namespace AC2E.Def {
 
     public class VisualDesc : IPackage {
 
+        // Dat file 70000390
+        public static readonly Dictionary<PhysiqueType, AppearanceKey> PHYSIQUE_TO_APPEARANCE = new Dictionary<PhysiqueType, AppearanceKey> {
+            { PhysiqueType.SKIN_TONE, AppearanceKey.SKINCOLOR },
+            { PhysiqueType.SKIN_DETAIL, AppearanceKey.SKINTEXTURE },
+            { PhysiqueType.HEAD_DETAIL, AppearanceKey.HEADMESH },
+            { PhysiqueType.HEAD_FRILL, AppearanceKey.BEARDMESH },
+            { PhysiqueType.FRILL_COLOR, AppearanceKey.HEADCOLOR },
+            { PhysiqueType.SPECIAL, AppearanceKey.SPECIAL },
+            { PhysiqueType.SHIRT_CLOTHING_COLOR, AppearanceKey.CLOTHINGCOLOR },
+            { PhysiqueType.PANTS_CLOTHING_COLOR, AppearanceKey.CLOTHINGCOLOR },
+            { PhysiqueType.BOOTS_CLOTHING_COLOR, AppearanceKey.CLOTHINGCOLOR },
+            { PhysiqueType.FACE_DETAIL, AppearanceKey.FACETEXTURE },
+            { PhysiqueType.EYE_COLOR, AppearanceKey.EYES },
+        };
+
         public NativeType nativeType => NativeType.VISUALDESC;
 
         // Enum VisualDescPack::Flag

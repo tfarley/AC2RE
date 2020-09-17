@@ -9,7 +9,7 @@
         public InstanceId targetId; // targetID
         public bool itemIsContainer; // itemIsContainerFlag
         public bool ignoreAttunement; // bIgnoreAttunement
-        public DataId itemAppearanceDid; // m_itemAprID
+        public DataId itemAprDid; // m_itemAprID
         public bool noCheck; // noCheckFlag
         public InstanceId actualTargetContainerId; // actualTargetContainer
         public bool shouldUnlock; // bShouldUnlock
@@ -58,7 +58,7 @@
             targetId = data.ReadInstanceId();
             itemIsContainer = data.ReadBoolean();
             ignoreAttunement = data.ReadBoolean();
-            itemAppearanceDid = data.ReadDataId();
+            itemAprDid = data.ReadDataId();
             noCheck = data.ReadBoolean();
             actualTargetContainerId = data.ReadInstanceId();
             shouldUnlock = data.ReadBoolean();
@@ -104,7 +104,7 @@
             data.Write(targetId);
             data.Write(itemIsContainer);
             data.Write(ignoreAttunement);
-            data.Write(itemAppearanceDid);
+            data.Write(itemAprDid);
             data.Write(noCheck);
             data.Write(actualTargetContainerId);
             data.Write(shouldUnlock);

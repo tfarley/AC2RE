@@ -72,8 +72,8 @@ namespace AC2E.Def {
         public bool hasRepulsor; // m_has_repulsor
         public DataId fxScriptDid; // m_fx_script_id
         public DataId cameraFxDid; // m_cameraFX_id
-        public DataId appearanceDid; // m_apr_id
-        public AppliedAppearanceKey appearanceKey; // m_apr_key
+        public DataId aprDid; // m_apr_id
+        public AppliedAppearanceKey appKey; // m_apr_key
         public DataId sliderDid; // m_slider
         public float intensity; // m_intensity
         public bool restore; // m_restore
@@ -118,10 +118,10 @@ namespace AC2E.Def {
                 cameraFxDid = data.ReadDataId();
             }
             if (packFlags.HasFlag(PackFlag.APEAR_ID)) {
-                appearanceDid = data.ReadDataId();
+                aprDid = data.ReadDataId();
             }
             if (packFlags.HasFlag(PackFlag.APEAR_KEY)) {
-                appearanceKey = new AppliedAppearanceKey(data);
+                appKey = new AppliedAppearanceKey(data);
             }
             if (packFlags.HasFlag(PackFlag.RAMP_TIME)) {
                 rampTime = data.ReadSingle();
@@ -247,10 +247,10 @@ namespace AC2E.Def {
                 data.Write(cameraFxDid);
             }
             if (packFlags.HasFlag(PackFlag.APEAR_ID)) {
-                data.Write(appearanceDid);
+                data.Write(aprDid);
             }
             if (packFlags.HasFlag(PackFlag.APEAR_KEY)) {
-                appearanceKey.write(data);
+                appKey.write(data);
             }
             if (packFlags.HasFlag(PackFlag.RAMP_TIME)) {
                 data.Write(rampTime);

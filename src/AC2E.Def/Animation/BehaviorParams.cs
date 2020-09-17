@@ -49,8 +49,8 @@ namespace AC2E.Def {
         public InstanceId cameraTargetId; // mCameraTargetID
         public uint cameraBehavior; // mCameraBehavior
         public uint visualDescToClone; // mVDescToClone
-        public uint clonedAprId; // m_clonedAprID
-        public Dictionary<uint, float> clonedAppAprHash; // m_clonedAppAprHash
+        public DataId clonedAprDid; // m_clonedAprID
+        public Dictionary<AppearanceKey, float> clonedAppHash; // m_clonedAppAprHash
         public Vector3 impulse; // mImpulse
         public bool earlyCallback; // mEarlyCallBack
         public bool moveToCancels; // mMoveToCancels
@@ -96,8 +96,8 @@ namespace AC2E.Def {
             }
             if (packFlags.HasFlag(PackFlag.VDESC)) {
                 visualDescToClone = data.ReadUInt32();
-                clonedAprId = data.ReadUInt32();
-                clonedAppAprHash = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
+                clonedAprDid = data.ReadDataId();
+                clonedAppHash = data.ReadDictionary(() => (AppearanceKey)data.ReadUInt32(), data.ReadSingle);
             }
             if (packFlags.HasFlag(PackFlag.IMPULSE)) {
                 impulse = data.ReadVector();
@@ -175,8 +175,8 @@ namespace AC2E.Def {
             }
             if (packFlags.HasFlag(PackFlag.VDESC)) {
                 data.Write(visualDescToClone);
-                data.Write(clonedAprId);
-                data.Write(clonedAppAprHash, data.Write, data.Write);
+                data.Write(clonedAprDid);
+                data.Write(clonedAppHash, v => data.Write((uint)v), data.Write);
             }
             if (packFlags.HasFlag(PackFlag.IMPULSE)) {
                 data.Write(impulse);

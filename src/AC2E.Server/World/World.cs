@@ -162,46 +162,46 @@ namespace AC2E.Server {
                                 globalAppearanceModifiers = new PartGroupDataDesc {
                                     packFlags = PartGroupDataDesc.PackFlag.KEY | PartGroupDataDesc.PackFlag.APPHASH,
                                     key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
-                                    appearanceInfos = new Dictionary<uint, AppearanceInfo> {
-                                        { 536870990, new AppearanceInfo {
-                                            appearances = new Dictionary<uint, float> {
-                                                { 2, 0.14f },
-                                                { 16, 1.0f },
+                                    appearanceInfos = new Dictionary<DataId, AppearanceInfo> {
+                                        { new DataId(0x2000004E), new AppearanceInfo {
+                                            appearances = new Dictionary<AppearanceKey, float> {
+                                                { AppearanceKey.CLOTHINGCOLOR, 0.14f },
+                                                { AppearanceKey.WORN, 1.0f },
                                             }
                                         } },
-                                        { 536870992, new AppearanceInfo {
-                                            appearances = new Dictionary<uint, float> {
-                                                { 2, 0.24f },
-                                                { 16, 1.0f },
+                                        { new DataId(0x20000050), new AppearanceInfo {
+                                            appearances = new Dictionary<AppearanceKey, float> {
+                                                { AppearanceKey.CLOTHINGCOLOR, 0.24f },
+                                                { AppearanceKey.WORN, 1.0f },
                                             }
                                         } },
-                                        { 536870924, new AppearanceInfo {
-                                            appearances = new Dictionary<uint, float> {
-                                                { 1, 0.3f },
+                                        { new DataId(0x2000000C), new AppearanceInfo {
+                                            appearances = new Dictionary<AppearanceKey, float> {
+                                                { AppearanceKey.SKINCOLOR, 0.3f },
                                             }
                                         } },
-                                        { 536870925, new AppearanceInfo {
-                                            appearances = new Dictionary<uint, float> {
-                                                { 3, 0.2f },
-                                                { 11, 0.15f },
-                                                { 12, 0.3f },
+                                        { new DataId(0x2000000D), new AppearanceInfo {
+                                            appearances = new Dictionary<AppearanceKey, float> {
+                                                { AppearanceKey.HEADMESH, 0.2f },
+                                                { AppearanceKey.HEADCOLOR, 0.15f },
+                                                { AppearanceKey.BEARDMESH, 0.3f },
                                             }
                                         } },
-                                        { 536870926, new AppearanceInfo {
-                                            appearances = new Dictionary<uint, float> {
-                                                { 1090519068, 0.06f },
+                                        { new DataId(0x2000000E), new AppearanceInfo {
+                                            appearances = new Dictionary<AppearanceKey, float> {
+                                                { AppearanceKey.FACETEXTURE, 0.06f },
                                             }
                                         } },
-                                        { 536871161, new AppearanceInfo {
-                                            appearances = new Dictionary<uint, float> {
-                                                { 2, 0.04f },
-                                                { 16, 1.0f },
+                                        { new DataId(0x200000F9), new AppearanceInfo {
+                                            appearances = new Dictionary<AppearanceKey, float> {
+                                                { AppearanceKey.CLOTHINGCOLOR, 0.04f },
+                                                { AppearanceKey.WORN, 1.0f },
                                             }
                                         } },
-                                        { 536870934, new AppearanceInfo {
-                                            appearances = new Dictionary<uint, float> {
-                                                { 2, 0.2f },
-                                                { 16, 1.0f },
+                                        { new DataId(0x20000016), new AppearanceInfo {
+                                            appearances = new Dictionary<AppearanceKey, float> {
+                                                { AppearanceKey.CLOTHINGCOLOR, 0.2f },
+                                                { AppearanceKey.WORN, 1.0f },
                                             }
                                         } },
                                     }

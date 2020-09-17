@@ -33,7 +33,7 @@ namespace AC2E.Def {
         public uint connectionPoint; // m_conn_pt
         public DataId setupDid; // m_setupDID
         public DataId animMapDid; // m_animMapDID
-        public Dictionary<uint, AppearanceInfo> appearanceInfos; // m_app_hash
+        public Dictionary<DataId, AppearanceInfo> appearanceInfos; // m_app_hash
         public DataId fxTableDid; // m_fxtable_did
         public Dictionary<uint, float> startupFx; // m_startup_fx
         public Dictionary<uint, List<FXData>> fxOverrides; // m_fx_overrides
@@ -61,7 +61,7 @@ namespace AC2E.Def {
                 animMapDid = data.ReadDataId();
             }
             if (packFlags.HasFlag(PackFlag.APPHASH)) {
-                appearanceInfos = data.ReadDictionary(data.ReadUInt32, () => new AppearanceInfo(data));
+                appearanceInfos = data.ReadDictionary(data.ReadDataId, () => new AppearanceInfo(data));
             }
             if (packFlags.HasFlag(PackFlag.FXTABLE)) {
                 fxTableDid = data.ReadDataId();
