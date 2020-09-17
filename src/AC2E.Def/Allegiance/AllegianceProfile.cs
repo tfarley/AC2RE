@@ -14,7 +14,7 @@
         public BoolList vassalsOnline; // m_vassalsOnlineBools
         public StringInfo motd; // m_motd
         public bool monarchOnline; // m_fMonarchOnline
-        public uint factionType; // m_factionType
+        public FactionType factionType; // m_factionType
         public uint total; // m_total
         public InstanceIdHashSet officerIds; // m_officerIDs
 
@@ -33,7 +33,7 @@
             data.ReadPkg<AList>(v => vassalsOnline = new BoolList(v));
             data.ReadPkg<StringInfo>(v => motd = v);
             monarchOnline = data.ReadBoolean();
-            factionType = data.ReadUInt32();
+            factionType = (FactionType)data.ReadUInt32();
             total = data.ReadUInt32();
             data.ReadPkg<LAHashSet>(v => officerIds = new InstanceIdHashSet(v));
         }
@@ -49,7 +49,7 @@
             data.WritePkg(vassalsOnline);
             data.WritePkg(motd);
             data.Write(monarchOnline);
-            data.Write(factionType);
+            data.Write((uint)factionType);
             data.Write(total);
             data.WritePkg(officerIds);
         }

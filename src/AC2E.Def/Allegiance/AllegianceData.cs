@@ -13,7 +13,7 @@
         public bool isOfficer; // m_fIsOfficer
         public InstanceId id; // m_id
         public uint rank; // m_rank
-        public uint factionType; // m_factionType
+        public FactionType factionType; // m_factionType
         public StringInfo name; // m_name
 
         public AllegianceData() {
@@ -30,7 +30,7 @@
             isOfficer = data.ReadBoolean();
             id = data.ReadInstanceId();
             rank = data.ReadUInt32();
-            factionType = data.ReadUInt32();
+            factionType = (FactionType)data.ReadUInt32();
             data.ReadPkg<StringInfo>(v => name = v);
         }
 
@@ -44,7 +44,7 @@
             data.Write(isOfficer);
             data.Write(id);
             data.Write(rank);
-            data.Write(factionType);
+            data.Write((uint)factionType);
             data.WritePkg(name);
         }
     }

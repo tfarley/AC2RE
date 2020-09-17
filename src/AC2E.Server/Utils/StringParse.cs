@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AC2E.Server {
 
-    public class StringParse {
+    internal class StringParse {
 
         public static void printDecryptedString(byte[] bytes, Encoding encoding) {
             AC2Crypto.decrypt(bytes, 0, bytes.Length);

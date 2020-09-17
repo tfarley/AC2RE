@@ -67,7 +67,7 @@ namespace AC2E.Def {
         public InstanceId petSummonerId; // _petSummoner
         public uint quantity; // _quantity // TODO: Many of these are signed?
         public uint value; // _value
-        public uint factionType; // _factionType // TODO: Any enum for this?
+        public FactionType factionType; // _factionType
         public bool pkAlwaysTrue; // _pkAlwaysTrue // TODO: Really a bool?
         public bool pkAlwaysFalse; // _pkAlwaysFalse // TODO: Really a bool?
         public uint physicsTypeLow; // _physicsTypeLowDWord // TODO: How to combine?
@@ -135,7 +135,7 @@ namespace AC2E.Def {
                 value = data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.FACTION_TYPE)) {
-                factionType = data.ReadUInt32();
+                factionType = (FactionType)data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.PK_ALWAYS_TRUE_PERMISSIONS)) {
                 pkAlwaysTrue = data.ReadBoolean();
@@ -220,7 +220,7 @@ namespace AC2E.Def {
                 data.Write(value);
             }
             if (packFlags.HasFlag(PackFlag.FACTION_TYPE)) {
-                data.Write(factionType);
+                data.Write((uint)factionType);
             }
             if (packFlags.HasFlag(PackFlag.PK_ALWAYS_TRUE_PERMISSIONS)) {
                 data.Write(pkAlwaysTrue);

@@ -5,7 +5,7 @@
         public PackageType packageType => PackageType.DefaultPermissionBlob;
 
         public DataId stringTableForErrorsDid; // m_didStringTableForErrors
-        public uint factionRequired; // m_factionRequired
+        public FactionType factionRequired; // m_factionRequired
         public InstanceId boundToId; // m_iidBoundTo
         public uint stRequired1Rating; // m_stRequired1Rating
         public InstanceId lastUserId; // m_iidLastUser
@@ -46,7 +46,7 @@
 
         public DefaultPermissionBlob(AC2Reader data) {
             stringTableForErrorsDid = data.ReadDataId();
-            factionRequired = data.ReadUInt32();
+            factionRequired = (FactionType)data.ReadUInt32();
             boundToId = data.ReadInstanceId();
             stRequired1Rating = data.ReadUInt32();
             lastUserId = data.ReadInstanceId();

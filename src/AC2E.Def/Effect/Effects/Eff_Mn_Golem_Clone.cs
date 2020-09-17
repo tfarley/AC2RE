@@ -10,7 +10,7 @@
         public int health; // m_health
         public int damage; // m_damage
         public int meleeAttack; // m_meleeAttack
-        public uint faction; // m_faction
+        public FactionType faction; // m_faction
         public float meleeDefense; // m_meleeDefense
         public float vigor; // m_vigor
         public float armor; // m_armor
@@ -27,7 +27,7 @@
             health = data.ReadInt32();
             damage = data.ReadInt32();
             meleeAttack = data.ReadInt32();
-            faction = data.ReadUInt32();
+            faction = (FactionType)data.ReadUInt32();
             meleeDefense = data.ReadSingle();
             vigor = data.ReadSingle();
             armor = data.ReadSingle();

@@ -9,7 +9,7 @@
         public uint regionId; // m_regionID
         public uint roomId; // m_roomID
         public bool available; // m_available
-        public uint factionType; // m_factionType
+        public FactionType factionType; // m_factionType
         public WPString name; // m_name
 
         public ChannelData() {
@@ -22,7 +22,7 @@
             regionId = data.ReadUInt32();
             roomId = data.ReadUInt32();
             available = data.ReadBoolean();
-            factionType = data.ReadUInt32();
+            factionType = (FactionType)data.ReadUInt32();
             data.ReadPkg<WPString>(v => name = v);
         }
 
@@ -32,7 +32,7 @@
             data.Write(regionId);
             data.Write(roomId);
             data.Write(available);
-            data.Write(factionType);
+            data.Write((uint)factionType);
             data.WritePkg(name);
         }
     }

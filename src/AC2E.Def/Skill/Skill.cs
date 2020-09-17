@@ -21,7 +21,7 @@
         public DataId advTableDid; // mdidAdvTable
         public uint heroCost; // mHeroCost
         public int advCap; // mAdvCap
-        public uint allowedFactions; // m_allowedFactions
+        public FactionType allowedFactions; // m_allowedFactions
         public StringInfo description; // mDesc
         public uint cost; // mCost
         public DataId iconDid; // mIcon
@@ -46,7 +46,7 @@
             advTableDid = data.ReadDataId();
             heroCost = data.ReadUInt32();
             advCap = data.ReadInt32();
-            allowedFactions = data.ReadUInt32();
+            allowedFactions = (FactionType)data.ReadUInt32();
             data.ReadPkg<StringInfo>(v => description = v);
             cost = data.ReadUInt32();
             iconDid = data.ReadDataId();

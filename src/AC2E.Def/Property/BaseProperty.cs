@@ -8,6 +8,8 @@ namespace AC2E.Def {
         NativeType nativeType => NativeType.BASEPROPERTY;
 
         public uint name; // m_propertyName
+        [PackageIgnore]
+        public string nameStr;
         public PropertyType type; // m_propertyType
         public PropertyGroupName group; // m_propertyGroup
         public object value; // m_propertyValue
@@ -18,7 +20,10 @@ namespace AC2E.Def {
 
         public BaseProperty(AC2Reader data) {
             name = data.ReadUInt32();
-            type = MasterProperty.instance.properties[name].type;
+            BasePropertyDesc propertyDesc = MasterProperty.instance.properties[name];
+            nameStr = MasterProperty.instance.enumMapper.idToString[name];
+            type = propertyDesc.type;
+            group = propertyDesc.group;
             switch (type) {
                 case PropertyType.BOOL:
                     value = data.ReadBoolean();

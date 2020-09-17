@@ -6,23 +6,61 @@ namespace AC2E.Server {
 
     internal class ServerTime {
 
-        public float startTime { get; private set; }
-        public float time { get; private set; }
+        public readonly double tickDeltaTime;
+        public readonly double maxDeltaTime;
+
+        public double startTime { get; private set; }
+        public double time { get; private set; }
         public float elapsedTime { get; private set; }
-        private Stopwatch stopwatch = new Stopwatch();
+
+        private readonly Stopwatch stopwatch = new Stopwatch();
+
+        private uint tick;
+        private double frameAccum;
+        private double frameTime;
+        private double lastFrameTime;
+
+        public ServerTime(double tickDeltaTime, double maxDeltaTime) {
+            this.tickDeltaTime = tickDeltaTime;
+            this.maxDeltaTime = maxDeltaTime;
+        }
 
         public void restart() {
             if (!Stopwatch.IsHighResolution) {
                 Log.Warning($"High resolution stopwatch is not available.");
             }
 
-            startTime = DateTime.UtcNow.Ticks / TimeSpan.TicksPerSecond;
+            startTime = (double)(DateTime.UtcNow - new DateTime(2020, 1, 1)).Ticks / TimeSpan.TicksPerSecond;
             stopwatch.Restart();
+            tick = 0;
         }
 
-        public void tick() {
-            elapsedTime = (float)stopwatch.Elapsed.TotalSeconds;
-            time = startTime + elapsedTime;
+        internal void beginFrame() {
+            frameTime = stopwatch.Elapsed.TotalSeconds;
+            frameAccum += frameTime - lastFrameTime;
+            lastFrameTime = frameTime;
+        }
+
+        internal bool tryTick() {
+            if (stopwatch.Elapsed.TotalSeconds - frameTime > maxDeltaTime) {
+                // Ran overtime - reset accumulator to try and catch up, and stop ticking which effectively slows down the simulation
+                frameAccum = 0.0f;
+                return false;
+            }
+
+            if (frameAccum < tickDeltaTime) {
+                // Not enough time remaining in accumulator for a full tick, so stop ticking
+                return false;
+            }
+
+            frameAccum -= tickDeltaTime;
+
+            tick++;
+            double elapsedTimeDouble = tick * tickDeltaTime;
+            elapsedTime = (float)elapsedTimeDouble;
+            time = startTime + elapsedTimeDouble;
+
+            return true;
         }
     }
 }

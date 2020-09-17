@@ -17,9 +17,9 @@ namespace AC2E.Server {
         private static readonly byte ORDERING_TYPE_UNK1 = 0x02;
         private static readonly byte ORDERING_TYPE_NORMAL = 0x03;
 
-        public readonly ushort id;
+        public readonly ClientId id;
         public readonly IPEndPoint endpoint;
-        public readonly string accountName;
+        public readonly Account account;
         public readonly ulong connectionAckCookie;
         public readonly uint outgoingSeed;
         public readonly uint incomingSeed;
@@ -50,10 +50,10 @@ namespace AC2E.Server {
             public NetInterface netInterface;
         }
 
-        public ClientConnection(ushort id, IPEndPoint endpoint, string accountName) {
+        public ClientConnection(ClientId id, IPEndPoint endpoint, Account account) {
             this.id = id;
             this.endpoint = endpoint;
-            this.accountName = accountName;
+            this.account = account;
 
             Random rand = new Random();
             connectionAckCookie = rand.NextULong();
@@ -61,15 +61,12 @@ namespace AC2E.Server {
             incomingSeed = rand.NextUInt();
         }
 
-        public void connect(float serverTime) {
+        public void connect() {
             connected = true;
 
             outgoingIsaac = new ISAAC(outgoingSeed);
             packetSeq = 1;
             highestReceivedPacketSeq = 1;
-
-            nextAckTime = serverTime + ACK_INTERVAL;
-            nextTimeSyncTime = serverTime + TIME_SYNC_INTERVAL;
         }
 
         public void addFragment(NetBlobFrag frag) {
@@ -118,20 +115,20 @@ namespace AC2E.Server {
             blobSeq++;
         }
 
-        public void flushSend(NetInterface netInterface, float serverTime) {
-            while (connected && (echoRequestedLocalTime != -1.0f || serverTime > nextAckTime || serverTime > nextTimeSyncTime || outgoingFragQueue.Count > 0 || nacksToResend.Count > 0)) {
+        public void flushSend(NetInterface netInterface, double time, float elapsedTime) {
+            while (connected && (echoRequestedLocalTime != -1.0f || elapsedTime > nextAckTime || elapsedTime > nextTimeSyncTime || outgoingFragQueue.Count > 0 || nacksToResend.Count > 0)) {
                 if (nacksToResend.TryPeek(out SendablePacket packet) && packet.netInterface == netInterface) {
                     rawSendPacket(packet);
                     nacksToResend.Dequeue();
                 } else {
-                    sendPacket(netInterface, serverTime, new NetPacket());
+                    sendPacket(netInterface, time, elapsedTime, new NetPacket());
                 }
             }
         }
 
-        public bool sendPacket(NetInterface netInterface, float serverTime, NetPacket packet) {
-            packet.recipientId = id;
-            packet.interval = (ushort)serverTime;
+        public bool sendPacket(NetInterface netInterface, double time, float elapsedTime, NetPacket packet) {
+            packet.recipientId = id.id;
+            packet.interval = (ushort)elapsedTime;
             // TODO: Need to advance this?
             packet.iteration = 1;
 
@@ -152,22 +149,22 @@ namespace AC2E.Server {
                 }
 
                 // Allocate remaining space to optional headers
-                if (remainingSize > 4 && serverTime > nextAckTime) {
+                if (remainingSize > 4 && elapsedTime > nextAckTime) {
                     packet.ackHeader = highestReceivedPacketSeq;
-                    nextAckTime = serverTime + ACK_INTERVAL;
+                    nextAckTime = elapsedTime + ACK_INTERVAL;
                     remainingSize -= 4;
                 }
 
-                if (remainingSize > 8 && serverTime > nextTimeSyncTime) {
-                    packet.timeSyncHeader = serverTime;
-                    nextTimeSyncTime = serverTime + TIME_SYNC_INTERVAL;
+                if (remainingSize > 8 && elapsedTime > nextTimeSyncTime) {
+                    packet.timeSyncHeader = time;
+                    nextTimeSyncTime = elapsedTime + TIME_SYNC_INTERVAL;
                     remainingSize -= 8;
                 }
 
                 if (remainingSize > 8 && echoRequestedLocalTime != -1.0f) {
                     packet.echoResponseHeader = new EchoResponseHeader {
                         localTime = echoRequestedLocalTime,
-                        holdingTime = echoRequestedServerTime - serverTime,
+                        holdingTime = echoRequestedServerTime - elapsedTime,
                     };
                     echoRequestedLocalTime = -1.0f;
                     remainingSize -= 8;

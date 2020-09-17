@@ -10,30 +10,30 @@ namespace AC2E.Server {
 
         public IEnumerable<ClientConnection> clients => _clients.Values;
 
-        private ushort clientIdCounter = 1;
-        private readonly Dictionary<ushort, ClientConnection> _clients = new Dictionary<ushort, ClientConnection>();
+        private readonly ClientIdGenerator clientIdGenerator = new ClientIdGenerator();
+        private readonly Dictionary<ClientId, ClientConnection> _clients = new Dictionary<ClientId, ClientConnection>();
 
-        public bool tryGetClient(ushort recipientId, out ClientConnection client) {
+        public bool tryGetClient(ClientId clientId, out ClientConnection client) {
             lock (this) {
-                return _clients.TryGetValue(recipientId, out client);
+                return _clients.TryGetValue(clientId, out client);
             }
         }
 
-        public ClientConnection addClient(NetInterface netInterface, float serverTime, IPEndPoint clientEndpoint, string accountName) {
+        public ClientConnection addClient(NetInterface netInterface, double time, float elapsedTime, IPEndPoint clientEndpoint, Account account) {
             ClientConnection client;
             lock (this) {
                 if (_clients.Count > MAX_CONNECTIONS) {
                     return null;
                 }
-                client = new ClientConnection(clientIdCounter, clientEndpoint, accountName);
-                _clients[clientIdCounter] = client;
-                clientIdCounter++;
+                ClientId clientId = clientIdGenerator.next();
+                client = new ClientConnection(clientId, clientEndpoint, account);
+                _clients[clientId] = client;
             }
 
-            client.sendPacket(netInterface, serverTime, new NetPacket {
+            client.sendPacket(netInterface, time, elapsedTime, new NetPacket {
                 connectHeader = new ConnectHeader {
                     connectionAckCookie = client.connectionAckCookie,
-                    netId = client.id,
+                    netId = client.id.id,
                     outgoingSeed = client.outgoingSeed,
                     incomingSeed = client.incomingSeed,
                 },
@@ -42,7 +42,7 @@ namespace AC2E.Server {
             return client;
         }
 
-        public void removeClient(ushort clientId) {
+        public void removeClient(ClientId clientId) {
             lock (this) {
                 _clients.Remove(clientId);
             }

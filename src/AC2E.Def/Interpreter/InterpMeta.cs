@@ -39,7 +39,12 @@ namespace AC2E.Def {
             FieldInfo[] fieldInfos = type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
             // Undocumented way to sort in declaration order
             Array.Sort(fieldInfos, (f1, f2) => f1.MetadataToken.CompareTo(f2.MetadataToken));
-            orderedFieldInfos.AddRange(fieldInfos);
+            foreach (FieldInfo fieldInfo in fieldInfos) {
+                if (fieldInfo.GetCustomAttribute<PackageIgnoreAttribute>() != null) {
+                    continue;
+                }
+                orderedFieldInfos.Add(fieldInfo);
+            }
         }
 
         public static FieldDesc[] getFieldDescs(Type type) {

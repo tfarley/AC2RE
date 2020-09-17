@@ -48,7 +48,7 @@
         public StringInfo motd; // m_motd
         public bool chatActive; // m_chatActive
         public bool allowNeutralsToBypassKingdomRestrictions; // m_fAllowNeutralsToBypassKingdomRestrictions
-        public uint factionType; // m_factionType
+        public FactionType factionType; // m_factionType
         public uint total; // m_total
         public LAHashSet officerIds; // m_officerIDs
 
@@ -70,7 +70,7 @@
             data.ReadPkg<StringInfo>(v => motd = v);
             chatActive = data.ReadBoolean();
             allowNeutralsToBypassKingdomRestrictions = data.ReadBoolean();
-            factionType = data.ReadUInt32();
+            factionType = (FactionType)data.ReadUInt32();
             total = data.ReadUInt32();
             data.ReadPkg<LAHashSet>(v => officerIds = v);
         }
@@ -89,7 +89,7 @@
             data.WritePkg(motd);
             data.Write(chatActive);
             data.Write(allowNeutralsToBypassKingdomRestrictions);
-            data.Write(factionType);
+            data.Write((uint)factionType);
             data.Write(total);
             data.WritePkg(officerIds);
         }

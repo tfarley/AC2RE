@@ -1,6 +1,7 @@
 ﻿namespace AC2E.Def {
 
     // Const *_HoldingLocationID
+    // Dat file 2300001A
     public enum HoldingLocation : uint {
         INVALID,
         R_HAND,
