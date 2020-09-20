@@ -1,4 +1,6 @@
-﻿using Serilog;
+﻿using AC2E.Def;
+using AC2E.Server.Database;
+using Serilog;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -6,17 +8,27 @@ namespace AC2E.Server {
 
     internal class AC2Server {
 
+        private static readonly string MONGODB_CONNECTION_ENDPOINT = "mongodb://localhost:27017?replicaSet=rs0";
+
         private static readonly double TICK_DELTA_TIME = 1.0 / 20.0;
         private static readonly double MAX_DELTA_TIME = TICK_DELTA_TIME * 3.0;
 
-        public AccountManager accountManager = new AccountManager();
-        public ClientManager clientManager = new ClientManager();
-
-        public ServerTime time = new ServerTime(TICK_DELTA_TIME, MAX_DELTA_TIME);
-        public World world;
+        private ServerTime time = new ServerTime(TICK_DELTA_TIME, MAX_DELTA_TIME);
 
         private bool active;
+
+        private AccountDatabase accountDb;
+        private WorldDatabase worldDb;
+
+        private AccountManager accountManager;
+        private ClientManager clientManager;
+
         private PacketHandler packetHandler;
+
+        private DatReader portalDatReader;
+
+        private World world;
+
         private NetInterface logonNetInterface;
         private NetInterface gameNetInterface;
         private List<ServerListener> serverListeners = new List<ServerListener>();
@@ -37,9 +49,20 @@ namespace AC2E.Server {
 
             time.restart();
 
+            accountDb = new AccountDatabase(MONGODB_CONNECTION_ENDPOINT);
+            worldDb = new WorldDatabase(MONGODB_CONNECTION_ENDPOINT);
+
+            accountManager = new AccountManager(accountDb);
+            clientManager = new ClientManager();
+
             packetHandler = new PacketHandler(accountManager, clientManager, time);
 
-            world = new World(time, packetHandler);
+            portalDatReader = new DatReader("G:\\Asheron's Call 2\\portal.dat");
+            using (AC2Reader data = portalDatReader.getFileReader(DbTypeDef.TYPE_TO_DEF[DbType.MASTER_PROPERTY].baseDid)) {
+                MasterProperty.instance = new MasterProperty(data);
+            }
+
+            world = new World(accountManager, worldDb, time, packetHandler, portalDatReader);
 
             logonNetInterface = new NetInterface(port);
             gameNetInterface = new NetInterface(logonNetInterface.port + 1);
@@ -57,6 +80,16 @@ namespace AC2E.Server {
                 return;
             }
 
+            world.save();
+
+            world.disconnectAll();
+
+            lock (clientManager) {
+                foreach (ClientConnection client in clientManager.clients) {
+                    client.flushSend(gameNetInterface, time.time, time.elapsedTime);
+                }
+            }
+
             // TODO: Disconnect and clear all connections
 
             foreach (ServerListener serverListener in serverListeners) {
@@ -67,9 +100,18 @@ namespace AC2E.Server {
             logonNetInterface.close();
             gameNetInterface.close();
 
-            packetHandler = null;
+            portalDatReader.Dispose();
+            portalDatReader = null;
 
             world = null;
+
+            packetHandler = null;
+
+            accountManager = null;
+            clientManager = null;
+
+            accountDb = null;
+            worldDb = null;
 
             active = false;
         }

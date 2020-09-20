@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace AC2E.Server {
 
-    internal class Account {
+    public class Account {
 
-        public readonly string accountName;
-        public readonly List<Character> characters;
+        public Guid id { get; private set; }
 
-        public Account(string accountName, List<Character> characters) {
-            this.accountName = accountName;
-            this.characters = characters;
-        }
+        public string userName;
+        public string password;
     }
 }

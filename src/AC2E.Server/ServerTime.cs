@@ -31,8 +31,15 @@ namespace AC2E.Server {
             }
 
             startTime = (double)(DateTime.UtcNow - new DateTime(2020, 1, 1)).Ticks / TimeSpan.TicksPerSecond;
+            time = 0.0;
+            elapsedTime = 0.0f;
+
             stopwatch.Restart();
+
             tick = 0;
+            frameAccum = 0.0;
+            frameTime = 0.0;
+            lastFrameTime = 0.0;
         }
 
         internal void beginFrame() {

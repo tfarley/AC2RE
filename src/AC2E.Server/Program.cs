@@ -1,7 +1,6 @@
 ﻿using Serilog;
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace AC2E.Server {
 
@@ -22,10 +21,12 @@ namespace AC2E.Server {
         }
 
         private static void runServer() {
+            AppDomain.CurrentDomain.ProcessExit += (sender, e) => SERVER.stop();
+
             SERVER.start(SERVER_LOGON_PORT);
 
-            Task.Run(() => {
-                while (true) {
+            while (true) {
+                if (Console.KeyAvailable) {
                     switch (Console.ReadKey(true).Key) {
                         case ConsoleKey.Enter:
                             SERVER.start(SERVER_LOGON_PORT);
@@ -35,9 +36,7 @@ namespace AC2E.Server {
                             break;
                     }
                 }
-            });
 
-            while (true) {
                 SERVER.tick();
                 Thread.Sleep(10);
             }

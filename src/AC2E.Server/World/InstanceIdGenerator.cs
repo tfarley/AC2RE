@@ -4,7 +4,13 @@ namespace AC2E.Server {
 
     internal class InstanceIdGenerator : IIdGenerator<InstanceId> {
 
-        private ulong idCounter;
+        public readonly string type;
+        public ulong idCounter { get; private set; }
+
+        public InstanceIdGenerator(string type, ulong initialId = 1) {
+            this.type = type;
+            idCounter = initialId;
+        }
 
         public InstanceId next() {
             InstanceId id = new InstanceId(idCounter);

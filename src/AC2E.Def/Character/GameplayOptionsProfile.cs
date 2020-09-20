@@ -68,7 +68,7 @@ namespace AC2E.Def {
         public float damageTextRangeOther; // m_fDamageTextRangeOther
         public UISaveLocations savedUILocations; // m_savedUILocations
         public uint radarMask; // m_radarMask
-        public Dictionary<uint, uint> filters; // m_filterHash
+        public Dictionary<uint, TextType> filters; // m_filterHash
         public Flag bitfield; // m_bitField
         public Version version; // m_version
         public Dictionary<TextType, uint> chatFontColors; // m_chatFontColors
@@ -106,7 +106,7 @@ namespace AC2E.Def {
                 radarMask = data.ReadUInt32();
             }
             if (contentFlags.HasFlag(ContentFlag.FILTER_HASH)) {
-                filters = data.ReadDictionary(data.ReadUInt32, data.ReadUInt32);
+                filters = data.ReadDictionary(data.ReadUInt32, () => (TextType)data.ReadUInt32());
             }
             if (contentFlags.HasFlag(ContentFlag.BIT_FIELD)) {
                 bitfield = (Flag)data.ReadUInt32();
@@ -153,7 +153,7 @@ namespace AC2E.Def {
                 data.Write(radarMask);
             }
             if (contentFlags.HasFlag(ContentFlag.FILTER_HASH)) {
-                data.Write(filters, data.Write, data.Write);
+                data.Write(filters, data.Write, v => data.Write((uint)v));
             }
             if (contentFlags.HasFlag(ContentFlag.BIT_FIELD)) {
                 data.Write((uint)bitfield);

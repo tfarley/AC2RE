@@ -62,7 +62,7 @@ namespace AC2E.Def {
         }
 
         public T get<T>(PackageId packageId) where T : IPackage {
-            if (packageId.id == PackageId.NULL.id) {
+            if (packageId == PackageId.NULL) {
                 return default;
             }
 
@@ -81,7 +81,7 @@ namespace AC2E.Def {
         }
 
         public PackageMeta getMeta(PackageId packageId) {
-            if (packageId.id == PackageId.NULL.id) {
+            if (packageId == PackageId.NULL) {
                 return default;
             }
 

@@ -1,27 +1,13 @@
 ﻿using AC2E.Def;
+using System;
 
 namespace AC2E.Server {
 
-    internal class Character {
+    public class Character {
 
-        public readonly InstanceId id;
-        public readonly string name;
+        public Guid id { get; private set; }
 
-        public Character(InstanceId id, string name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        public CharacterIdentity toIdentity() {
-            return new CharacterIdentity {
-                id = id,
-                name = name,
-                secondsGreyedOut = 0,
-                visualDesc = new VisualDesc {
-                    packFlags = VisualDesc.PackFlag.PARENT,
-                    parentDid = new DataId(0x1F001110),
-                },
-            };
-        }
+        public Guid ownerAccountId;
+        public InstanceId worldObjectId;
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace AC2E.Def {
+﻿using System;
 
-    public struct PackageId {
+namespace AC2E.Def {
+
+    public struct PackageId : IEquatable<PackageId> {
 
         public static readonly PackageId NULL = new PackageId(0xFFFFFFFF);
 
@@ -10,8 +12,12 @@
             this.id = id;
         }
 
-        public override string ToString() {
-            return $"0x{id:X8}";
-        }
+        public static bool operator ==(PackageId lhs, PackageId rhs) => lhs.id == rhs.id;
+        public static bool operator !=(PackageId lhs, PackageId rhs) => lhs.id != rhs.id;
+        public bool Equals(PackageId other) => id == other.id;
+        public override bool Equals(object obj) => obj is PackageId castObj && id == castObj.id;
+        public override int GetHashCode() => id.GetHashCode();
+
+        public override string ToString() => $"0x{id:X8}";
     }
 }

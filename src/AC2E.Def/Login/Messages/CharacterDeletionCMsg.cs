@@ -9,8 +9,16 @@
         // ECM_Login::RecvEvt_CharacterDeletion
         public InstanceId characterId; // id
 
+        public CharacterDeletionCMsg() {
+
+        }
+
         public CharacterDeletionCMsg(AC2Reader data) {
             characterId = data.ReadInstanceId();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(characterId);
         }
     }
 }

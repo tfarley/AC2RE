@@ -11,10 +11,20 @@
         public CharacterIdentity characterIdentity; // _identity
         public uint weenieCharGenResult; // weenieCharGenResult
 
+        public CharGenVerificationMsg() {
+
+        }
+
         public CharGenVerificationMsg(AC2Reader data) {
             response = (CharGenResponse)data.ReadUInt32();
             characterIdentity = new CharacterIdentity(data);
             weenieCharGenResult = data.ReadUInt32();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write((uint)response);
+            characterIdentity.write(data);
+            data.Write(weenieCharGenResult);
         }
     }
 }

@@ -151,7 +151,7 @@ namespace AC2E.Def {
 
         public PackageId ReadPkg<T>(Action<T> assigner) where T : IPackage {
             PackageId packageId = ReadPackageId();
-            if (packageId.id != PackageId.NULL.id) {
+            if (packageId != PackageId.NULL) {
                 packageRegistry.addResolver(() => assigner.Invoke(packageRegistry.get<T>(packageId)));
             }
             return packageId;
@@ -159,7 +159,7 @@ namespace AC2E.Def {
 
         public PackageId ReadSingletonPkg<T>(Action<SingletonPkg<T>> assigner) where T : class, IPackage {
             PackageId packageId = ReadPackageId();
-            if (packageId.id != PackageId.NULL.id) {
+            if (packageId != PackageId.NULL) {
                 packageRegistry.addResolver(() => {
                     IPackage package = packageRegistry.get<IPackage>(packageId);
                     Type packageType = package.GetType();

@@ -1,6 +1,8 @@
-﻿namespace AC2E.Server {
+﻿using System;
 
-    internal struct ClientId {
+namespace AC2E.Server {
+
+    internal struct ClientId : IEquatable<ClientId> {
 
         public ushort id;
 
@@ -8,8 +10,12 @@
             this.id = id;
         }
 
-        public override string ToString() {
-            return id.ToString();
-        }
+        public static bool operator ==(ClientId lhs, ClientId rhs) => lhs.id == rhs.id;
+        public static bool operator !=(ClientId lhs, ClientId rhs) => lhs.id != rhs.id;
+        public bool Equals(ClientId other) => id == other.id;
+        public override bool Equals(object obj) => obj is ClientId castObj && id == castObj.id;
+        public override int GetHashCode() => id.GetHashCode();
+
+        public override string ToString() => id.ToString();
     }
 }

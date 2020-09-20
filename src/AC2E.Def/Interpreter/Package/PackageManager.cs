@@ -215,6 +215,7 @@ namespace AC2E.Def {
                 case PackageType.CharacterGenSystem:
                     return new CharacterGenSystem(data);
                 case PackageType.CharGenMatrix:
+                case PackageType.CharGenMatrixData:
                     return new CharGenMatrix(data);
                 case PackageType.ChatChannelControl:
                     return new ChatChannelControl(data);

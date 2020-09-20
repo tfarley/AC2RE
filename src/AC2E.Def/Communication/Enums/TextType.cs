@@ -17,15 +17,15 @@ namespace AC2E.Def {
         LOG = 1 << 7, // 0x00000080
         BROADCAST = 1 << 8, // 0x00000100
 
-        FELLOWSHIP = 1 << 16, // 0x00000200
-        ALLEGIANCE = 1 << 17, // 0x00000400
-        CHAT_ENTRY = 1 << 18, // 0x00000800
-        GENERAL = 1 << 19, // 0x00001000
-        TRADE = 1 << 20, // 0x00002000
-        REGION = 1 << 21, // 0x00004000
-        FACTION = 1 << 22, // 0x00008000
-        DEVOTED = 1 << 23, // 0x00010000
-        PK = 1 << 24, // 0x00020000
+        FELLOWSHIP = 1 << 16, // 0x00010000
+        ALLEGIANCE = 1 << 17, // 0x00020000
+        CHAT_ENTRY = 1 << 18, // 0x00040000
+        GENERAL = 1 << 19, // 0x00080000
+        TRADE = 1 << 20, // 0x00100000
+        REGION = 1 << 21, // 0x00200000
+        FACTION = 1 << 22, // 0x00400000
+        DEVOTED = 1 << 23, // 0x00800000
+        PK = 1 << 24, // 0x01000000
         ALL = uint.MaxValue, // 0xFFFFFFFF
     }
 }

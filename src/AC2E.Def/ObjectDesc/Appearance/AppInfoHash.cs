@@ -8,18 +8,18 @@ namespace AC2E.Def {
         public NativeType nativeType => NativeType.APPINFOHASH;
         public object delegatedToStringObject => contents;
 
-        public Dictionary<DataId, AppearanceInfo> contents;
+        public Dictionary<DataId, Dictionary<AppearanceKey, float>> contents;
 
         public AppInfoHash() {
 
         }
 
         public AppInfoHash(AC2Reader data) {
-            contents = data.ReadDictionary(data.ReadDataId, () => new AppearanceInfo(data));
+            contents = data.ReadDictionary(data.ReadDataId, () => data.ReadDictionary(() => (AppearanceKey)data.ReadUInt32(), data.ReadSingle));
         }
 
         public void write(AC2Writer data) {
-            data.Write(contents, data.Write, v => v.write(data));
+            data.Write(contents, data.Write, v => data.Write(v, v => data.Write((uint)v), data.Write));
         }
     }
 }

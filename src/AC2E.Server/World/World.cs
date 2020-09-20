@@ -1,5 +1,7 @@
 ﻿using AC2E.Def;
+using AC2E.Server.Database;
 using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -18,17 +20,22 @@ namespace AC2E.Server {
             frame = new Frame(new Vector3(131.13126f, 13.535009f, 127.25996f), new Quaternion(1.0f, 0.0f, 0.0f, 0.0f)),
         };
 
+        private readonly AccountManager accountManager;
         private readonly ServerTime serverTime;
         private readonly PacketHandler packetHandler;
+        private readonly DatReader portalDatReader;
 
         private readonly Dictionary<ClientId, Player> players = new Dictionary<ClientId, Player>();
-        private readonly Dictionary<InstanceId, WorldObject> worldObjects = new Dictionary<InstanceId, WorldObject>();
+        private readonly WorldObjectManager objectManager;
 
         private int toggleCounter = 0;
 
-        public World(ServerTime serverTime, PacketHandler packetHandler) {
+        public World(AccountManager accountManager, WorldDatabase worldDb, ServerTime serverTime, PacketHandler packetHandler, DatReader portalDatReader) {
+            this.accountManager = accountManager;
             this.serverTime = serverTime;
             this.packetHandler = packetHandler;
+            this.portalDatReader = portalDatReader;
+            objectManager = new WorldObjectManager(worldDb);
         }
 
         public void addPlayer(ClientId clientId, Account account) {
@@ -39,14 +46,6 @@ namespace AC2E.Server {
             return players.ContainsKey(clientId);
         }
 
-        public void addObject(WorldObject worldObject) {
-            worldObjects[worldObject.id] = worldObject;
-        }
-
-        public void removeObject(WorldObject worldObject) {
-            worldObjects.Remove(worldObject.id);
-        }
-
         public bool processMessage(ClientId clientId, INetMessage genericMsg) {
             Player player = players[clientId];
 
@@ -55,46 +54,62 @@ namespace AC2E.Server {
                 case MessageOpcode.CLIDAT_INTERROGATION_RESPONSE_EVENT: {
                         CliDatInterrogationResponseMsg msg = (CliDatInterrogationResponseMsg)genericMsg;
 
-                        List<CharacterIdentity> characterIdentities = new List<CharacterIdentity>();
-                        foreach (Character character in player.account.characters) {
-                            characterIdentities.Add(character.toIdentity());
-                        }
-
-                        List<string> characterNames = new List<string>();
-                        List<InstanceId> characterIds = new List<InstanceId>();
-                        foreach (CharacterIdentity characterIdentity in characterIdentities) {
-                            characterNames.Add(characterIdentity.name);
-                            characterIds.Add(characterIdentity.id);
-                        }
-
                         packetHandler.send(player.clientId, new CliDatEndDDDMsg());
+                        sendCharacters(player);
 
-                        packetHandler.send(player.clientId, new MinCharSetMsg {
-                            numAllowedCharacters = 0,
-                            accountName = player.account.accountName,
-                            characterNames = characterNames,
-                            characterIds = characterIds,
-                        });
-
-                        packetHandler.send(player.clientId, new CharacterSetMsg {
-                            characters = characterIdentities,
-                            deletedCharacters = null,
-                            status = 0,
-                            numAllowedCharacters = 10,
-                            accountName = player.account.accountName,
-                            unk1 = 1,
-                            hasLegions = true,
-                            useTurbineChat = true,
-                        });
                         break;
                     }
                 case MessageOpcode.CHARACTER_CREATE_EVENT: {
                         CharacterCreateMsg msg = (CharacterCreateMsg)genericMsg;
-                        // TODO: Create character
+
+                        WorldObject characterObject = CharacterGeneration.createCharacterObject(objectManager, portalDatReader, msg.characterName, msg.species, msg.sex, msg.physiqueTypeValues);
+
+                        Character character = accountManager.createCharacter(new Character {
+                            ownerAccountId = player.account.id,
+                            worldObjectId = characterObject.id,
+                        });
+
+                        packetHandler.send(player.clientId, new CharGenVerificationMsg {
+                            response = CharGenResponse.OK,
+                            characterIdentity = new CharacterIdentity {
+                                id = characterObject.id,
+                                name = characterObject.name.literalValue,
+                                secondsGreyedOut = 0,
+                                visualDesc = characterObject.visual.visualDesc,
+                            },
+                            weenieCharGenResult = 0,
+                        });
+
+                        break;
+                    }
+                case MessageOpcode.Evt_Login__CharacterDeletion_ID: {
+                        CharacterDeletionSMsg msg = (CharacterDeletionSMsg)genericMsg;
+
+                        WorldObject characterObject = objectManager.get(msg.characterId);
+                        Character character = accountManager.getCharacterWithAccountAndWorldObject(player.account.id, characterObject.id);
+
+                        accountManager.deleteCharacter(character.id);
+                        objectManager.destroy(characterObject.id);
+
+                        packetHandler.send(player.clientId, new CharacterDeletionCMsg {
+                            characterId = characterObject.id,
+                        });
+                        sendCharacters(player);
+
                         break;
                     }
                 case MessageOpcode.CHARACTER_ENTER_GAME_EVENT: {
                         CharacterEnterGameMsg msg = (CharacterEnterGameMsg)genericMsg;
+
+                        if (!accountManager.characterExistsWithAccountAndWorldObject(player.account.id, msg.characterId)) {
+                            throw new ArgumentException($"Account {player.account.id} attempted to log in with unowned character object {msg.characterId}.");
+                        }
+
+                        player.characterId = msg.characterId;
+
+                        WorldObject playerObject = objectManager.get(msg.characterId);
+                        playerObject.visual.visualDesc.packFlags = VisualDesc.PackFlag.PARENT | VisualDesc.PackFlag.SCALE | VisualDesc.PackFlag.GLOBALMOD;
+                        playerObject.visual.visualDesc.globalAppearanceModifiers.packFlags = PartGroupDataDesc.PackFlag.KEY | PartGroupDataDesc.PackFlag.APPHASH;
 
                         packetHandler.send(player.clientId, new CreatePlayerMsg {
                             id = msg.characterId,
@@ -107,7 +122,7 @@ namespace AC2E.Server {
                                 did = new DataId(0x81000530),
                                 weenieDesc = new WeenieDesc {
                                     packFlags = WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.MONARCH_ID | WeenieDesc.PackFlag.PHYSICS_TYPE_LOW_DWORD | WeenieDesc.PackFlag.PHYSICS_TYPE_HIGH_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD,
-                                    name = new StringInfo("Diabesus [M]"),
+                                    name = playerObject.name,
                                     monarchId = new InstanceId(0x2130000000003B2D),
                                     physicsTypeLow = 75497504,
                                     physicsTypeHigh = 0,
@@ -154,59 +169,8 @@ namespace AC2E.Server {
                         });
 
                         packetHandler.send(player.clientId, new CreateObjectMsg {
-                            id = msg.characterId,
-                            visualDesc = new VisualDesc {
-                                packFlags = VisualDesc.PackFlag.PARENT | VisualDesc.PackFlag.SCALE | VisualDesc.PackFlag.GLOBALMOD,
-                                parentDid = new DataId(0x1F000023),
-                                scale = new Vector3(0.9107999f, 0.9107999f, 0.98999995f),
-                                globalAppearanceModifiers = new PartGroupDataDesc {
-                                    packFlags = PartGroupDataDesc.PackFlag.KEY | PartGroupDataDesc.PackFlag.APPHASH,
-                                    key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
-                                    appearanceInfos = new Dictionary<DataId, AppearanceInfo> {
-                                        { new DataId(0x2000004E), new AppearanceInfo {
-                                            appearances = new Dictionary<AppearanceKey, float> {
-                                                { AppearanceKey.CLOTHINGCOLOR, 0.14f },
-                                                { AppearanceKey.WORN, 1.0f },
-                                            }
-                                        } },
-                                        { new DataId(0x20000050), new AppearanceInfo {
-                                            appearances = new Dictionary<AppearanceKey, float> {
-                                                { AppearanceKey.CLOTHINGCOLOR, 0.24f },
-                                                { AppearanceKey.WORN, 1.0f },
-                                            }
-                                        } },
-                                        { new DataId(0x2000000C), new AppearanceInfo {
-                                            appearances = new Dictionary<AppearanceKey, float> {
-                                                { AppearanceKey.SKINCOLOR, 0.3f },
-                                            }
-                                        } },
-                                        { new DataId(0x2000000D), new AppearanceInfo {
-                                            appearances = new Dictionary<AppearanceKey, float> {
-                                                { AppearanceKey.HEADMESH, 0.2f },
-                                                { AppearanceKey.HEADCOLOR, 0.15f },
-                                                { AppearanceKey.BEARDMESH, 0.3f },
-                                            }
-                                        } },
-                                        { new DataId(0x2000000E), new AppearanceInfo {
-                                            appearances = new Dictionary<AppearanceKey, float> {
-                                                { AppearanceKey.FACETEXTURE, 0.06f },
-                                            }
-                                        } },
-                                        { new DataId(0x200000F9), new AppearanceInfo {
-                                            appearances = new Dictionary<AppearanceKey, float> {
-                                                { AppearanceKey.CLOTHINGCOLOR, 0.04f },
-                                                { AppearanceKey.WORN, 1.0f },
-                                            }
-                                        } },
-                                        { new DataId(0x20000016), new AppearanceInfo {
-                                            appearances = new Dictionary<AppearanceKey, float> {
-                                                { AppearanceKey.CLOTHINGCOLOR, 0.2f },
-                                                { AppearanceKey.WORN, 1.0f },
-                                            }
-                                        } },
-                                    }
-                                },
-                            },
+                            id = playerObject.id,
+                            visualDesc = playerObject.visual.visualDesc,
                             physicsDesc = new PhysicsDesc {
                                 packFlags = PhysicsDesc.PackFlag.SLIDERS | PhysicsDesc.PackFlag.MODE | PhysicsDesc.PackFlag.POSITION | PhysicsDesc.PackFlag.VELOCITY_SCALE,
                                 sliders = new Dictionary<uint, PhysicsDesc.SliderData> {
@@ -225,7 +189,7 @@ namespace AC2E.Server {
                             weenieDesc = new WeenieDesc {
                                 packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.MONARCH_ID | WeenieDesc.PackFlag.PHYSICS_TYPE_LOW_DWORD | WeenieDesc.PackFlag.PHYSICS_TYPE_HIGH_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.ENTITY_DID,
                                 packageId = new PackageId(895),
-                                name = new StringInfo("Diabesus [M]"),
+                                name = playerObject.name,
                                 monarchId = new InstanceId(0x2130000000003B2D),
                                 physicsTypeLow = 75497504,
                                 physicsTypeHigh = 0,
@@ -304,11 +268,11 @@ namespace AC2E.Server {
                                     }
                                     },*/
                                     radarMask = 0xFFFFFFFF,
-                                    filters = new Dictionary<uint, uint> {
-                                        { 0x00800001, 0x0060017B },
-                                        { 0x00000002, 0x80000000 },
-                                        { 0x00000003, 0x00010000 },
-                                        { 0x00000004, 0x00020000 },
+                                    filters = new Dictionary<uint, TextType> {
+                                        { 1, TextType.ALL },
+                                        { 2, TextType.GENERAL },
+                                        { 3, TextType.FELLOWSHIP },
+                                        { 4, TextType.ALLEGIANCE },
                                     },
                                     bitfield = (GameplayOptionsProfile.Flag)0x80024FF5,
                                     version = GameplayOptionsProfile.Version.LATEST_VERSION,
@@ -456,6 +420,16 @@ namespace AC2E.Server {
                         });
                         break;
                     }
+                case MessageOpcode.Evt_Login__CharExitGame_ID: {
+                        CharacterExitGameSMsg msg = (CharacterExitGameSMsg)genericMsg;
+
+                        if (player.characterId == msg.characterId) {
+                            packetHandler.send(player.clientId, new CharacterExitGameCMsg());
+                            sendCharacters(player);
+                        }
+
+                        break;
+                    }
                 case MessageOpcode.CLIDAT_REQUEST_DATA_EVENT: {
                         CliDatRequestDataMsg msg = (CliDatRequestDataMsg)genericMsg;
                         packetHandler.send(player.clientId, new CliDatErrorMsg {
@@ -477,7 +451,7 @@ namespace AC2E.Server {
                                         effectRecord = new EffectRecord {
                                             timeDemotedFromTopLevel = -1.0,
                                             timeCast = 129996502.8136027,
-                                            casterId = new InstanceId(0x213000000000dd9d),
+                                            casterId = player.characterId,
                                             timeout = 0.0f,
                                             appFloat = 0.0f,
                                             spellcraft = 1.0f,
@@ -488,7 +462,7 @@ namespace AC2E.Server {
                                             effect = refiningEffect,
                                             actingForWhomId = default,
                                             skillDid = default,
-                                            fromItemId = new InstanceId(0x213000000000dd9d),
+                                            fromItemId = player.characterId,
                                             flags = 0x00000051,
                                             durabilityLevel = 0,
                                             relatedEffectId = 0,
@@ -507,8 +481,11 @@ namespace AC2E.Server {
                                 });
                             }
 
+                            WorldObject newTestObject = objectManager.create();
+                            newTestObject.name = new StringInfo($"TestObj 0x{toggleCounter:X}");
+
                             packetHandler.send(player.clientId, new CreateObjectMsg {
-                                id = new InstanceId(0x12345 + (ulong)toggleCounter),
+                                id = newTestObject.id,
                                 visualDesc = new VisualDesc {
                                     packFlags = VisualDesc.PackFlag.PARENT,
                                     parentDid = new DataId(0x1F000000 + (uint)toggleCounter),
@@ -526,7 +503,7 @@ namespace AC2E.Server {
                                 weenieDesc = new WeenieDesc {
                                     packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.ENTITY_DID,
                                     packageId = new PackageId(895),
-                                    name = new StringInfo($"TestObj 0x{toggleCounter:X}"),
+                                    name = newTestObject.name,
                                     entityDid = new DataId(0x47000530),
                                 },
                             });
@@ -538,7 +515,7 @@ namespace AC2E.Server {
 
                             packetHandler.send(player.clientId, new DoFxMsg {
                                 senderIdWithStamp = new InstanceIdWithStamp {
-                                    id = new InstanceId(0x213000000000dd9d),
+                                    id = player.characterId,
                                     instanceStamp = 5,
                                     otherStamp = 9,
                                 },
@@ -581,8 +558,78 @@ namespace AC2E.Server {
             return handled;
         }
 
+        private void sendCharacters(Player player) {
+            List<CharacterIdentity> characterIdentities = new List<CharacterIdentity>();
+            foreach (Character character in accountManager.getCharactersWithAccount(player.account.id)) {
+                WorldObject playerObject = objectManager.get(character.worldObjectId);
+                playerObject.visual.visualDesc.packFlags = VisualDesc.PackFlag.PARENT | VisualDesc.PackFlag.SCALE | VisualDesc.PackFlag.GLOBALMOD;
+                playerObject.visual.visualDesc.globalAppearanceModifiers.packFlags = PartGroupDataDesc.PackFlag.KEY | PartGroupDataDesc.PackFlag.APPHASH;
+
+                characterIdentities.Add(new CharacterIdentity {
+                    id = playerObject.id,
+                    name = playerObject.name.literalValue,
+                    secondsGreyedOut = 0,
+                    visualDesc = playerObject.visual.visualDesc,
+                });
+            }
+
+            List<string> characterNames = new List<string>();
+            List<InstanceId> characterIds = new List<InstanceId>();
+            foreach (CharacterIdentity characterIdentity in characterIdentities) {
+                characterNames.Add(characterIdentity.name);
+                characterIds.Add(characterIdentity.id);
+            }
+
+            packetHandler.send(player.clientId, new MinCharSetMsg {
+                numAllowedCharacters = 0,
+                accountName = player.account.userName,
+                characterNames = characterNames,
+                characterIds = characterIds,
+            });
+
+            packetHandler.send(player.clientId, new CharacterSetMsg {
+                characters = characterIdentities,
+                deletedCharacters = null,
+                status = 0,
+                numAllowedCharacters = 10,
+                accountName = player.account.userName,
+                unk1 = 1,
+                hasLegions = true,
+                useTurbineChat = true,
+            });
+        }
+
         public void tick() {
             packetHandler.processNetBlobs(this);
+        }
+
+        public void save() {
+            objectManager.save();
+        }
+
+        public void disconnectAll() {
+            foreach (Player player in players.Values) {
+                packetHandler.send(player.clientId, new DisplayStringInfoMsg {
+                    type = TextType.ADMIN,
+                    text = new StringInfo(new DataId(0x25000626), 165844726),
+                });
+                disconnectPlayer(player);
+            }
+        }
+
+        public void disconnectPlayer(Player player) {
+            packetHandler.send(player.clientId, new DoFxMsg {
+                senderIdWithStamp = new InstanceIdWithStamp {
+                    id = player.characterId,
+                    instanceStamp = 5,
+                    otherStamp = 9,
+                },
+                fxId = FxId.ENTER_WORLD,
+                scalar = 1.0f,
+            });
+            packetHandler.send(player.clientId, new InterpCEventPrivateMsg {
+                netEvent = new EnterPortalSpaceCEvt()
+            });
         }
     }
 }

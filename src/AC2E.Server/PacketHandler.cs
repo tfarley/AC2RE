@@ -33,7 +33,14 @@ namespace AC2E.Server {
 
                 if (packet.logonHeader != null) {
                     Log.Debug($"Logon request: seq {packet.logonHeader.netAuth.connectionSeq} acct {packet.logonHeader.netAuth.accountName}");
-                    Account account = accountManager.authenticate(packet.logonHeader.netAuth.accountName);
+
+                    // TODO: Remove, just to create a temporary new account
+                    if (!accountManager.accountExistsWithUserName(packet.logonHeader.netAuth.accountName)) {
+                        accountManager.register(packet.logonHeader.netAuth.accountName, "");
+                    }
+
+                    Account account = accountManager.authenticate(packet.logonHeader.netAuth.accountName, "");
+
                     clientManager.addClient(netInterface, 0.0f, 0.0f, receiveEndpoint, account);
                 } else if (packet.flags.HasFlag(NetPacket.Flag.LOGOFF)) {
                     Log.Information($"Client disconnected, id {packet.recipientId}.");
