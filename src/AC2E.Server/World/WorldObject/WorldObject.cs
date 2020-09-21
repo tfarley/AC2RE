@@ -5,11 +5,12 @@ namespace AC2E.Server {
     internal class WorldObject {
 
         public readonly InstanceId id;
+        public bool deleted;
         public readonly ushort instanceStamp;
 
-        public StringInfo name;
-        public PhysicsComponent physics;
-        public VisualComponent visual;
+        public PhysicsDesc physics;
+        public VisualDesc visual;
+        public WeenieDesc weenie;
 
         public WorldObject(InstanceId id, ushort instanceStamp) {
             this.id = id;

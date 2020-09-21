@@ -21,20 +21,24 @@ namespace AC2E.Server {
         };
 
         private readonly AccountManager accountManager;
+        private readonly WorldDatabase worldDb;
         private readonly ServerTime serverTime;
         private readonly PacketHandler packetHandler;
         private readonly DatReader portalDatReader;
 
         private readonly Dictionary<ClientId, Player> players = new Dictionary<ClientId, Player>();
+        private readonly CharacterManager characterManager;
         private readonly WorldObjectManager objectManager;
 
         private int toggleCounter = 0;
 
         public World(AccountManager accountManager, WorldDatabase worldDb, ServerTime serverTime, PacketHandler packetHandler, DatReader portalDatReader) {
             this.accountManager = accountManager;
+            this.worldDb = worldDb;
             this.serverTime = serverTime;
             this.packetHandler = packetHandler;
             this.portalDatReader = portalDatReader;
+            characterManager = new CharacterManager(worldDb);
             objectManager = new WorldObjectManager(worldDb);
         }
 
@@ -62,20 +66,17 @@ namespace AC2E.Server {
                 case MessageOpcode.CHARACTER_CREATE_EVENT: {
                         CharacterCreateMsg msg = (CharacterCreateMsg)genericMsg;
 
-                        WorldObject characterObject = CharacterGeneration.createCharacterObject(objectManager, portalDatReader, msg.characterName, msg.species, msg.sex, msg.physiqueTypeValues);
+                        WorldObject characterObject = CharacterGeneration.createCharacterObject(objectManager, portalDatReader, ARWIC_START_POS, msg.characterName, msg.species, msg.sex, msg.physiqueTypeValues);
 
-                        Character character = accountManager.createCharacter(new Character {
-                            ownerAccountId = player.account.id,
-                            worldObjectId = characterObject.id,
-                        });
+                        Character character = characterManager.createWithAccountAndWorldObject(player.account.id, characterObject.id);
 
                         packetHandler.send(player.clientId, new CharGenVerificationMsg {
                             response = CharGenResponse.OK,
                             characterIdentity = new CharacterIdentity {
                                 id = characterObject.id,
-                                name = characterObject.name.literalValue,
+                                name = characterObject.weenie.name.literalValue,
                                 secondsGreyedOut = 0,
-                                visualDesc = characterObject.visual.visualDesc,
+                                visualDesc = characterObject.visual,
                             },
                             weenieCharGenResult = 0,
                         });
@@ -86,10 +87,10 @@ namespace AC2E.Server {
                         CharacterDeletionSMsg msg = (CharacterDeletionSMsg)genericMsg;
 
                         WorldObject characterObject = objectManager.get(msg.characterId);
-                        Character character = accountManager.getCharacterWithAccountAndWorldObject(player.account.id, characterObject.id);
+                        Character character = characterManager.getWithAccountAndWorldObject(player.account.id, characterObject.id);
 
-                        accountManager.deleteCharacter(character.id);
-                        objectManager.destroy(characterObject.id);
+                        character.deleted = true;
+                        characterObject.deleted = true;
 
                         packetHandler.send(player.clientId, new CharacterDeletionCMsg {
                             characterId = characterObject.id,
@@ -101,15 +102,13 @@ namespace AC2E.Server {
                 case MessageOpcode.CHARACTER_ENTER_GAME_EVENT: {
                         CharacterEnterGameMsg msg = (CharacterEnterGameMsg)genericMsg;
 
-                        if (!accountManager.characterExistsWithAccountAndWorldObject(player.account.id, msg.characterId)) {
+                        if (!characterManager.existsWithAccountAndWorldObject(player.account.id, msg.characterId)) {
                             throw new ArgumentException($"Account {player.account.id} attempted to log in with unowned character object {msg.characterId}.");
                         }
 
                         player.characterId = msg.characterId;
 
                         WorldObject playerObject = objectManager.get(msg.characterId);
-                        playerObject.visual.visualDesc.packFlags = VisualDesc.PackFlag.PARENT | VisualDesc.PackFlag.SCALE | VisualDesc.PackFlag.GLOBALMOD;
-                        playerObject.visual.visualDesc.globalAppearanceModifiers.packFlags = PartGroupDataDesc.PackFlag.KEY | PartGroupDataDesc.PackFlag.APPHASH;
 
                         packetHandler.send(player.clientId, new CreatePlayerMsg {
                             id = msg.characterId,
@@ -120,17 +119,7 @@ namespace AC2E.Server {
                             qualities = new CBaseQualities {
                                 packFlags = CBaseQualities.PackFlag.WEENIE_DESC | CBaseQualities.PackFlag.INT_HASH_TABLE | CBaseQualities.PackFlag.BOOL_HASH_TABLE | CBaseQualities.PackFlag.FLOAT_HASH_TABLE | CBaseQualities.PackFlag.TIMESTAMP_HASH_TABLE | CBaseQualities.PackFlag.DATA_ID_HASH_TABLE | CBaseQualities.PackFlag.LONG_INT_HASH_TABLE,
                                 did = new DataId(0x81000530),
-                                weenieDesc = new WeenieDesc {
-                                    packFlags = WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.MONARCH_ID | WeenieDesc.PackFlag.PHYSICS_TYPE_LOW_DWORD | WeenieDesc.PackFlag.PHYSICS_TYPE_HIGH_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD,
-                                    name = playerObject.name,
-                                    monarchId = new InstanceId(0x2130000000003B2D),
-                                    physicsTypeLow = 75497504,
-                                    physicsTypeHigh = 0,
-                                    movementEtherealLow = 1042284560,
-                                    movementEtherealHigh = 0,
-                                    placementEtherealLow = 65011856,
-                                    placementEtherealHigh = 0,
-                                },
+                                weenieDesc = playerObject.weenie,
                                 intTable = new Dictionary<IntStat, int> {
                                     { IntStat.CONTAINERMAXCAPACITY, 78 },
                                     { IntStat.SPECIES, 1 },
@@ -170,35 +159,9 @@ namespace AC2E.Server {
 
                         packetHandler.send(player.clientId, new CreateObjectMsg {
                             id = playerObject.id,
-                            visualDesc = playerObject.visual.visualDesc,
-                            physicsDesc = new PhysicsDesc {
-                                packFlags = PhysicsDesc.PackFlag.SLIDERS | PhysicsDesc.PackFlag.MODE | PhysicsDesc.PackFlag.POSITION | PhysicsDesc.PackFlag.VELOCITY_SCALE,
-                                sliders = new Dictionary<uint, PhysicsDesc.SliderData> {
-                                    { 1073741834, new PhysicsDesc.SliderData {
-                                        value = 1.0f,
-                                        velocity = 0.0f,
-                                    } }
-                                },
-                                modeId = 1073741825,
-                                pos = ARWIC_START_POS,
-                                velScale = 20.0f,
-                                timestamps = new ushort[] { 1, 0, 0, 0 },
-                                instanceStamp = 5,
-                                visualOrderStamp = 8,
-                            },
-                            weenieDesc = new WeenieDesc {
-                                packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.MONARCH_ID | WeenieDesc.PackFlag.PHYSICS_TYPE_LOW_DWORD | WeenieDesc.PackFlag.PHYSICS_TYPE_HIGH_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.ENTITY_DID,
-                                packageId = new PackageId(895),
-                                name = playerObject.name,
-                                monarchId = new InstanceId(0x2130000000003B2D),
-                                physicsTypeLow = 75497504,
-                                physicsTypeHigh = 0,
-                                movementEtherealLow = 1042284560,
-                                movementEtherealHigh = 0,
-                                placementEtherealLow = 65011856,
-                                placementEtherealHigh = 0,
-                                entityDid = new DataId(0x47000530),
-                            },
+                            visualDesc = playerObject.visual,
+                            physicsDesc = playerObject.physics,
+                            weenieDesc = playerObject.weenie,
                         });
 
                         packetHandler.send(player.clientId, new InterpCEventPrivateMsg {
@@ -482,30 +445,32 @@ namespace AC2E.Server {
                             }
 
                             WorldObject newTestObject = objectManager.create();
-                            newTestObject.name = new StringInfo($"TestObj 0x{toggleCounter:X}");
+                            newTestObject.visual = new VisualDesc {
+                                packFlags = VisualDesc.PackFlag.PARENT,
+                                parentDid = new DataId(0x1F000000 + (uint)toggleCounter),
+                            };
+                            newTestObject.physics = new PhysicsDesc {
+                                packFlags = PhysicsDesc.PackFlag.POSITION,
+                                pos = new Position {
+                                    cell = new CellId(0x75, 0xB9, 0x00, 0x31),
+                                    frame = new Frame(new Vector3(131.13126f - toggleCounter * 1.0f, 13.535009f + toggleCounter * 1.0f, 127.25996f), new Quaternion(0.70710677f, 0.0f, 0.0f, 0.70710677f)),
+                                },
+                                timestamps = new ushort[] { 1, 0, 0, 0 },
+                                instanceStamp = 5,
+                                visualOrderStamp = 8,
+                            };
+                            newTestObject.weenie = new WeenieDesc {
+                                packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.ENTITY_DID,
+                                packageId = new PackageId(895),
+                                name = new StringInfo($"TestObj 0x{toggleCounter:X}"),
+                                entityDid = new DataId(0x47000530),
+                            };
 
                             packetHandler.send(player.clientId, new CreateObjectMsg {
                                 id = newTestObject.id,
-                                visualDesc = new VisualDesc {
-                                    packFlags = VisualDesc.PackFlag.PARENT,
-                                    parentDid = new DataId(0x1F000000 + (uint)toggleCounter),
-                                },
-                                physicsDesc = new PhysicsDesc {
-                                    packFlags = PhysicsDesc.PackFlag.POSITION,
-                                    pos = new Position {
-                                        cell = new CellId(0x75, 0xB9, 0x00, 0x31),
-                                        frame = new Frame(new Vector3(131.13126f - toggleCounter * 1.0f, 13.535009f + toggleCounter * 1.0f, 127.25996f), new Quaternion(0.70710677f, 0.0f, 0.0f, 0.70710677f)),
-                                    },
-                                    timestamps = new ushort[] { 1, 0, 0, 0 },
-                                    instanceStamp = 5,
-                                    visualOrderStamp = 8,
-                                },
-                                weenieDesc = new WeenieDesc {
-                                    packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.ENTITY_DID,
-                                    packageId = new PackageId(895),
-                                    name = newTestObject.name,
-                                    entityDid = new DataId(0x47000530),
-                                },
+                                visualDesc = newTestObject.visual,
+                                physicsDesc = newTestObject.physics,
+                                weenieDesc = newTestObject.weenie,
                             });
 
                             packetHandler.send(player.clientId, new QualUpdateIntPrivateMsg {
@@ -560,16 +525,14 @@ namespace AC2E.Server {
 
         private void sendCharacters(Player player) {
             List<CharacterIdentity> characterIdentities = new List<CharacterIdentity>();
-            foreach (Character character in accountManager.getCharactersWithAccount(player.account.id)) {
+            foreach (Character character in characterManager.getWithAccount(player.account.id)) {
                 WorldObject playerObject = objectManager.get(character.worldObjectId);
-                playerObject.visual.visualDesc.packFlags = VisualDesc.PackFlag.PARENT | VisualDesc.PackFlag.SCALE | VisualDesc.PackFlag.GLOBALMOD;
-                playerObject.visual.visualDesc.globalAppearanceModifiers.packFlags = PartGroupDataDesc.PackFlag.KEY | PartGroupDataDesc.PackFlag.APPHASH;
 
                 characterIdentities.Add(new CharacterIdentity {
                     id = playerObject.id,
-                    name = playerObject.name.literalValue,
+                    name = playerObject.weenie.name.literalValue,
                     secondsGreyedOut = 0,
-                    visualDesc = playerObject.visual.visualDesc,
+                    visualDesc = playerObject.visual,
                 });
             }
 
@@ -604,7 +567,10 @@ namespace AC2E.Server {
         }
 
         public void save() {
-            objectManager.save();
+            WorldSave worldSave = new WorldSave();
+            characterManager.contributeToSave(worldSave);
+            objectManager.contributeToSave(worldSave);
+            worldDb.save(worldSave);
         }
 
         public void disconnectAll() {

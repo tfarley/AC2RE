@@ -36,7 +36,7 @@ namespace AC2E.Server {
 
                     // TODO: Remove, just to create a temporary new account
                     if (!accountManager.accountExistsWithUserName(packet.logonHeader.netAuth.accountName)) {
-                        accountManager.register(packet.logonHeader.netAuth.accountName, "");
+                        accountManager.create(packet.logonHeader.netAuth.accountName, "");
                     }
 
                     Account account = accountManager.authenticate(packet.logonHeader.netAuth.accountName, "");

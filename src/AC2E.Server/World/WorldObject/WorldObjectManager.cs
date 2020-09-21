@@ -22,7 +22,7 @@ namespace AC2E.Server {
                 worldObject = worldDb.getWorldObjectWithId(id);
                 worldObjects[id] = worldObject;
             }
-            return worldObject;
+            return (worldObject == null || worldObject.deleted) ? null : worldObject;
         }
 
         public WorldObject create() {
@@ -31,13 +31,9 @@ namespace AC2E.Server {
             return newObject;
         }
 
-        public void destroy(InstanceId id) {
-            worldObjects.Remove(id);
-            worldDb.enqueueDeleteWorldObject(id);
-        }
-
-        public void save() {
-            worldDb.saveWorld(instanceIdGenerator, worldObjects.Values);
+        public void contributeToSave(WorldSave worldSave) {
+            worldSave.idGenerator = instanceIdGenerator;
+            worldSave.worldObjects.AddRange(worldObjects.Values);
         }
     }
 }

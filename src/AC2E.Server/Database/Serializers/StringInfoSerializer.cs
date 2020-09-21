@@ -19,6 +19,10 @@ namespace AC2E.Server.Database {
         public override StringInfo Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args) {
             var bsonType = context.Reader.GetCurrentBsonType();
             switch (bsonType) {
+                case BsonType.Null:
+                    context.Reader.ReadNull();
+                    return null;
+
                 case BsonType.String:
                     return new StringInfo(context.Reader.ReadString());
 
@@ -28,7 +32,9 @@ namespace AC2E.Server.Database {
         }
 
         public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, StringInfo value) {
-            if (value.literalValue != null) {
+            if (value == null) {
+                context.Writer.WriteNull();
+            } else if (value.literalValue != null) {
                 context.Writer.WriteString(value.literalValue);
             } else {
                 classMapSerializer.Serialize(context, args, value);

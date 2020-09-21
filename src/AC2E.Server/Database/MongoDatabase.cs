@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization;
+﻿using AC2E.Def;
+using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using System.Collections.Generic;
@@ -24,9 +25,14 @@ namespace AC2E.Server.Database {
                     },
                     type => true);
 
-                BsonSerializer.RegisterSerializer(new DataIdSerializer());
-                BsonSerializer.RegisterSerializer(new InstanceIdSerializer());
+                BsonSerializer.RegisterSerializer(new GuidIdSerializer<AccountId>(id => new AccountId(id), v => v.id));
+                BsonSerializer.RegisterSerializer(new GuidIdSerializer<CharacterId>(id => new CharacterId(id), v => v.id));
+                BsonSerializer.RegisterSerializer(new QuaternionSerializer());
                 BsonSerializer.RegisterSerializer(new StringInfoSerializer());
+                BsonSerializer.RegisterSerializer(new UInt32IdSerializer<CellId>(id => new CellId(id), v => v.id));
+                BsonSerializer.RegisterSerializer(new UInt32IdSerializer<DataId>(id => new DataId(id), v => v.id));
+                BsonSerializer.RegisterSerializer(new UInt32IdSerializer<PackageId>(id => new PackageId(id), v => v.id));
+                BsonSerializer.RegisterSerializer(new UInt64IdSerializer<InstanceId>(id => new InstanceId(id), v => v.id));
                 BsonSerializer.RegisterSerializer(new Vector3Serializer());
 
                 mongoInited = true;
