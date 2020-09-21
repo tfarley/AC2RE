@@ -26,7 +26,7 @@ namespace AC2E.Server {
         }
 
         public WorldObject create() {
-            WorldObject newObject = new WorldObject(instanceIdGenerator.next(), 5);
+            WorldObject newObject = new WorldObject(instanceIdGenerator.next());
             worldObjects[newObject.id] = newObject;
             return newObject;
         }

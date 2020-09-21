@@ -11,5 +11,10 @@ namespace AC2E.Def {
             cell = data.ReadCellId();
             offset = data.ReadVector();
         }
+
+        public void write(AC2Writer data) {
+            data.Write(cell);
+            data.Write(offset);
+        }
     }
 }

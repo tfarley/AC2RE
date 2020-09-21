@@ -10,6 +10,9 @@ namespace AC2E.Server {
 
     internal class World {
 
+        public const float DEG_TO_RAG = MathF.PI / 180.0f;
+        public const float RAD_TO_DEG = 180.0f / MathF.PI;
+
         private static readonly Position TUTORIAL_START_POS = new Position {
             cell = new CellId(0x02, 0x98, 0x01, 0x09),
             frame = new Frame(new Vector3(59.060577f, 240.199f, -44.894524f), new Quaternion(0.70710677f, 0.0f, 0.0f, 0.70710677f)),
@@ -17,7 +20,7 @@ namespace AC2E.Server {
 
         private static readonly Position ARWIC_START_POS = new Position {
             cell = new CellId(0x75, 0xB9, 0x00, 0x31),
-            frame = new Frame(new Vector3(131.13126f, 13.535009f, 127.25996f), new Quaternion(1.0f, 0.0f, 0.0f, 0.0f)),
+            frame = new Frame(new Vector3(131.13126f, 13.535009f, 127.25996f), Quaternion.Identity),
         };
 
         private readonly AccountManager accountManager;
@@ -26,9 +29,11 @@ namespace AC2E.Server {
         private readonly PacketHandler packetHandler;
         private readonly DatReader portalDatReader;
 
-        private readonly Dictionary<ClientId, Player> players = new Dictionary<ClientId, Player>();
         private readonly CharacterManager characterManager;
         private readonly WorldObjectManager objectManager;
+
+        private readonly Dictionary<ClientId, Player> players = new Dictionary<ClientId, Player>();
+        private readonly Dictionary<InstanceId, WorldObject> activeWorldObjects = new Dictionary<InstanceId, WorldObject>();
 
         private int toggleCounter = 0;
 
@@ -48,6 +53,31 @@ namespace AC2E.Server {
 
         public bool playerExists(ClientId clientId) {
             return players.ContainsKey(clientId);
+        }
+
+        public void enterWorld(WorldObject worldObject) {
+            if (!activeWorldObjects.ContainsKey(worldObject.id)) {
+                activeWorldObjects[worldObject.id] = worldObject;
+
+                packetHandler.send(players.Keys, new CreateObjectMsg {
+                    id = worldObject.id,
+                    visualDesc = worldObject.visual,
+                    physicsDesc = worldObject.physics,
+                    weenieDesc = worldObject.weenie,
+                });
+            }
+        }
+
+        public void leaveWorld(WorldObject worldObject) {
+            if (activeWorldObjects.ContainsKey(worldObject.id)) {
+                activeWorldObjects.Remove(worldObject.id);
+
+                packetHandler.send(players.Keys, new DestroyObjectMsg {
+                    idWithStamp = new InstanceIdWithStamp { id = worldObject.id, instanceStamp = worldObject.instanceStamp, otherStamp = 0 },
+                });
+
+                worldObject.instanceStamp++;
+            }
         }
 
         public bool processMessage(ClientId clientId, INetMessage genericMsg) {
@@ -115,6 +145,17 @@ namespace AC2E.Server {
                             regionId = 1,
                         });
 
+                        foreach (WorldObject activeWorldObject in activeWorldObjects.Values) {
+                            packetHandler.send(player.clientId, new CreateObjectMsg {
+                                id = activeWorldObject.id,
+                                visualDesc = activeWorldObject.visual,
+                                physicsDesc = activeWorldObject.physics,
+                                weenieDesc = activeWorldObject.weenie,
+                            });
+                        }
+
+                        enterWorld(playerObject);
+
                         packetHandler.send(player.clientId, new PlayerDescMsg {
                             qualities = new CBaseQualities {
                                 packFlags = CBaseQualities.PackFlag.WEENIE_DESC | CBaseQualities.PackFlag.INT_HASH_TABLE | CBaseQualities.PackFlag.BOOL_HASH_TABLE | CBaseQualities.PackFlag.FLOAT_HASH_TABLE | CBaseQualities.PackFlag.TIMESTAMP_HASH_TABLE | CBaseQualities.PackFlag.DATA_ID_HASH_TABLE | CBaseQualities.PackFlag.LONG_INT_HASH_TABLE,
@@ -155,13 +196,6 @@ namespace AC2E.Server {
                                     { DataIdStat.PHYSOBJ, new DataId(0x470000CD) }
                                 },
                             },
-                        });
-
-                        packetHandler.send(player.clientId, new CreateObjectMsg {
-                            id = playerObject.id,
-                            visualDesc = playerObject.visual,
-                            physicsDesc = playerObject.physics,
-                            weenieDesc = playerObject.weenie,
                         });
 
                         packetHandler.send(player.clientId, new InterpCEventPrivateMsg {
@@ -453,11 +487,8 @@ namespace AC2E.Server {
                                 packFlags = PhysicsDesc.PackFlag.POSITION,
                                 pos = new Position {
                                     cell = new CellId(0x75, 0xB9, 0x00, 0x31),
-                                    frame = new Frame(new Vector3(131.13126f - toggleCounter * 1.0f, 13.535009f + toggleCounter * 1.0f, 127.25996f), new Quaternion(0.70710677f, 0.0f, 0.0f, 0.70710677f)),
+                                    frame = new Frame(new Vector3(131.13126f - toggleCounter * 1.0f, 13.535009f + toggleCounter * 1.0f, 127.25996f), Quaternion.Identity),
                                 },
-                                timestamps = new ushort[] { 1, 0, 0, 0 },
-                                instanceStamp = 5,
-                                visualOrderStamp = 8,
                             };
                             newTestObject.weenie = new WeenieDesc {
                                 packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.ENTITY_DID,
@@ -466,27 +497,26 @@ namespace AC2E.Server {
                                 entityDid = new DataId(0x47000530),
                             };
 
-                            packetHandler.send(player.clientId, new CreateObjectMsg {
-                                id = newTestObject.id,
-                                visualDesc = newTestObject.visual,
-                                physicsDesc = newTestObject.physics,
-                                weenieDesc = newTestObject.weenie,
-                            });
+                            enterWorld(newTestObject);
 
                             packetHandler.send(player.clientId, new QualUpdateIntPrivateMsg {
                                 type = IntStat.HEALTH_CURRENTLEVEL, // TODO: Health_CurrentLevel_IntStat
                                 value = toggleCounter,
                             });
 
-                            packetHandler.send(player.clientId, new DoFxMsg {
-                                senderIdWithStamp = new InstanceIdWithStamp {
-                                    id = player.characterId,
-                                    instanceStamp = 5,
-                                    otherStamp = 9,
-                                },
-                                fxId = FxId.PORTAL_USE,
-                                scalar = 1.0f,
-                            });
+                            if (activeWorldObjects.TryGetValue(player.characterId, out WorldObject character)) {
+                                packetHandler.send(player.clientId, new DoFxMsg {
+                                    senderIdWithStamp = new InstanceIdWithStamp {
+                                        id = character.id,
+                                        instanceStamp = character.instanceStamp,
+                                        otherStamp = character.physics.visualOrderStamp,
+                                    },
+                                    fxId = FxId.PORTAL_USE,
+                                    scalar = 1.0f,
+                                });
+
+                                character.physics.visualOrderStamp++;
+                            }
 
                             toggleCounter++;
                         } else if (msg.netEvent.funcId == ServerEventFunctionId.Examination__QueryExaminationProfile) {
@@ -509,9 +539,58 @@ namespace AC2E.Server {
                         }
                         break;
                     }
+                case MessageOpcode.Evt_Physics__CLookAtDir_ID: {
+                        CLookAtDirMsg msg = (CLookAtDirMsg)genericMsg;
+
+                        if (activeWorldObjects.TryGetValue(player.characterId, out WorldObject character)) {
+                            character.physics.headingX = msg.y;
+                            character.physics.headingZ = msg.x;
+
+                            packetHandler.send(players.Keys, player.clientId, new LookAtDirMsg {
+                                senderIdWithStamp = new InstanceIdWithStamp { id = character.id, instanceStamp = character.instanceStamp },
+                                z = character.physics.headingZ,
+                                x = character.physics.headingX,
+                            });
+                        }
+
+                        break;
+                    }
                 case MessageOpcode.Evt_Physics__CPosition_ID: {
                         CPositionMsg msg = (CPositionMsg)genericMsg;
-                        Log.Information($"Pos: {msg.pos.offset.offset}");
+
+                        if (activeWorldObjects.TryGetValue(player.characterId, out WorldObject character)) {
+                            character.heading = msg.pos.heading.rotDegrees;
+                            character.motion = msg.pos.doMotion;
+                            character.physics.pos = new Position {
+                                cell = msg.pos.offset.cell,
+                                frame = new Frame(msg.pos.offset.offset, Quaternion.CreateFromAxisAngle(new Vector3(0.0f, 0.0f, 1.0f), -msg.pos.heading.rotDegrees * DEG_TO_RAG)),
+                            };
+
+                            PositionPack pos = new PositionPack {
+                                time = serverTime.time,
+                                offset = new PositionOffset {
+                                    cell = character.physics.pos.cell,
+                                    offset = character.physics.pos.frame.pos,
+                                },
+                                doMotion = character.motion,
+                                heading = new Heading(character.heading),
+                                packFlags = PositionPack.PackFlag.CONTACT,
+                                posStamp = (ushort)(character.physics.timestamps[0] + 1),
+                            };
+                            if (msg.pos.packFlags.HasFlag(CPositionPack.PackFlag.JUMP)) {
+                                pos.packFlags |= PositionPack.PackFlag.JUMP;
+                                pos.impulseVel = msg.pos.jumpVel;
+                            }
+
+                            // TODO: If cell has changed, might need to send PositionCellMsg instead
+                            packetHandler.send(players.Keys, player.clientId, new PositionMsg {
+                                senderIdWithStamp = new InstanceIdWithStamp { id = character.id, instanceStamp = character.instanceStamp },
+                                pos = pos,
+                            });
+
+                            character.physics.timestamps[0]++;
+                        }
+
                         break;
                     }
                 default: {

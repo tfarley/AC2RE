@@ -11,10 +11,20 @@
         public float z; // _z
         public float x; // _x
 
+        public LookAtDirMsg() {
+
+        }
+
         public LookAtDirMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             z = data.ReadSingle();
             x = data.ReadSingle();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            data.Write(z);
+            data.Write(x);
         }
     }
 }

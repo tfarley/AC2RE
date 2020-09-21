@@ -144,5 +144,19 @@ namespace AC2E.Server {
                 }
             }
         }
+
+        public void send(IEnumerable<ClientId> clientIds, INetMessage message) {
+            foreach (ClientId clientId in clientIds) {
+                send(clientId, message);
+            }
+        }
+
+        public void send(IEnumerable<ClientId> clientIds, ClientId excludeClientId, INetMessage message) {
+            foreach (ClientId clientId in clientIds) {
+                if (clientId != excludeClientId) {
+                    send(clientId, message);
+                }
+            }
+        }
     }
 }

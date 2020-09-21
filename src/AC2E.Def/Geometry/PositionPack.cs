@@ -15,31 +15,44 @@ namespace AC2E.Def {
             IMPULSE = 1 << 3, // 0x00000008
         }
 
-        public PackFlag packFlags;
         public double time; // m_time
         public PositionOffset offset; // m_offset
+        public Vector3 doMotion; // m_doMotion
         public Heading heading; // m_heading
-        public bool contact; // m_contact
-        public bool jump; // m_jump
-        public bool impulse; // m_impulse
+        public PackFlag packFlags; // m_contact, m_jump, m_impulse
         public ushort posStamp; // m_position_stamp
         public ushort forcePosStamp; // m_force_position_stamp
         public ushort teleportStamp; // m_teleport_stamp
         public Vector3 impulseVel; // m_impulseVel
 
+        public PositionPack() {
+
+        }
+
         public PositionPack(AC2Reader data) {
             time = data.ReadDouble();
             offset = new PositionOffset(data);
-            heading = data.ReadHeading();
+            (doMotion, heading) = data.ReadVectorHeadingPack();
             packFlags = (PackFlag)data.ReadUInt32();
-            contact = packFlags.HasFlag(PackFlag.CONTACT);
-            jump = packFlags.HasFlag(PackFlag.JUMP);
-            impulse = packFlags.HasFlag(PackFlag.IMPULSE);
             posStamp = data.ReadUInt16();
             forcePosStamp = data.ReadUInt16();
             teleportStamp = data.ReadUInt16();
-            if (jump || impulse) {
+            if (packFlags.HasFlag(PackFlag.JUMP) || packFlags.HasFlag(PackFlag.IMPULSE)) {
                 impulseVel = data.ReadVector();
+            }
+            data.Align(4);
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(time);
+            offset.write(data);
+            data.Write(doMotion, heading);
+            data.Write((uint)packFlags);
+            data.Write(posStamp);
+            data.Write(forcePosStamp);
+            data.Write(teleportStamp);
+            if (packFlags.HasFlag(PackFlag.JUMP) || packFlags.HasFlag(PackFlag.IMPULSE)) {
+                data.Write(impulseVel);
             }
             data.Align(4);
         }

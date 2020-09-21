@@ -10,9 +10,18 @@
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public PositionPack pos; // __pp
 
+        public PositionCellMsg() {
+
+        }
+
         public PositionCellMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             pos = new PositionPack(data);
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            pos.write(data);
         }
     }
 }

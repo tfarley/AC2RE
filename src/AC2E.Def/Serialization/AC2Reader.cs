@@ -290,11 +290,12 @@ namespace AC2E.Def {
         }
 
         public Quaternion ReadQuaternion() {
+            float w = ReadSingle();
             return new Quaternion(
                 ReadSingle(),
                 ReadSingle(),
                 ReadSingle(),
-                ReadSingle()
+                w
                 );
         }
 
@@ -337,8 +338,11 @@ namespace AC2E.Def {
             };
         }
 
-        public Heading ReadHeading() {
-            return new Heading(((ReadUInt32() >> 24) & 0x000000FF) / 255.0f * 360.0f);
+        public Tuple<Vector3,  Heading> ReadVectorHeadingPack() {
+            float z = ReadByte() / 255.0f * 2.0f - 1.0f;
+            float y = ReadByte() / 255.0f * 2.0f - 1.0f;
+            float x = ReadByte() / 255.0f * 2.0f - 1.0f;
+            return new Tuple<Vector3, Heading>(new Vector3(x, y, z), new Heading(ReadByte() / 255.0f * 360.0f));
         }
 
         public CellId ReadCellId() {

@@ -60,10 +60,7 @@ namespace AC2E.Server {
                 },
                 modeId = 1073741825,
                 pos = startPos,
-                velScale = 20.0f,
-                timestamps = new ushort[] { 1, 0, 0, 0 },
-                instanceStamp = 5,
-                visualOrderStamp = 8,
+                velScale = 2.0f,
             };
         }
 
@@ -145,15 +142,14 @@ namespace AC2E.Server {
             return new WeenieDesc {
                 packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.MONARCH_ID | WeenieDesc.PackFlag.PHYSICS_TYPE_LOW_DWORD | WeenieDesc.PackFlag.PHYSICS_TYPE_HIGH_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.ENTITY_DID,
                 packageId = new PackageId(895),
+                entityDid = new DataId(0x47000530),
                 name = name,
-                monarchId = new InstanceId(0x2130000000003B2D),
                 physicsTypeLow = 75497504,
                 physicsTypeHigh = 0,
                 movementEtherealLow = 1042284560,
                 movementEtherealHigh = 0,
                 placementEtherealLow = 65011856,
                 placementEtherealHigh = 0,
-                entityDid = new DataId(0x47000530),
             };
         }
     }

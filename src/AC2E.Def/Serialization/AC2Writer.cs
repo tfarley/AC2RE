@@ -256,10 +256,10 @@ namespace AC2E.Def {
         }
 
         public void Write(Quaternion value) {
+            Write(value.W);
             Write(value.X);
             Write(value.Y);
             Write(value.Z);
-            Write(value.W);
         }
 
         public void Write(Matrix4x4 value) {
@@ -295,8 +295,11 @@ namespace AC2E.Def {
             Write(value.a);
         }
 
-        public void Write(Heading value) {
-            Write((uint)(value.rotDegrees / 360.0f * 255.0f) & 0x000000FF);
+        public void Write(Vector3 vectorValue, Heading headingValue) {
+            Write((byte)((vectorValue.Z + 1.0f) * 255.0f / 2.0f));
+            Write((byte)((vectorValue.Y + 1.0f) * 255.0f / 2.0f));
+            Write((byte)((vectorValue.X + 1.0f) * 255.0f / 2.0f));
+            Write((byte)(headingValue.rotDegrees / 360.0f * 255.0f));
         }
 
         public void Write(CellId value) {

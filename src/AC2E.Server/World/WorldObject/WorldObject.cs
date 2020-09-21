@@ -1,4 +1,5 @@
 ﻿using AC2E.Def;
+using System.Numerics;
 
 namespace AC2E.Server {
 
@@ -6,15 +7,16 @@ namespace AC2E.Server {
 
         public readonly InstanceId id;
         public bool deleted;
-        public readonly ushort instanceStamp;
+        public ushort instanceStamp;
 
+        public float heading;
+        public Vector3 motion;
         public PhysicsDesc physics;
         public VisualDesc visual;
         public WeenieDesc weenie;
 
-        public WorldObject(InstanceId id, ushort instanceStamp) {
+        public WorldObject(InstanceId id) {
             this.id = id;
-            this.instanceStamp = instanceStamp;
         }
     }
 }

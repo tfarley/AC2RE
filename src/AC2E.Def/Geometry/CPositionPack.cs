@@ -14,12 +14,11 @@ namespace AC2E.Def {
             CANCELMOVETO = 1 << 2, // 0x00000004
         }
 
-        public PackFlag packFlags;
         public double time; // m_time
         public PositionOffset offset; // m_offset
+        public Vector3 doMotion; // m_doMotion
         public Heading heading; // m_heading
-        public bool cancelMoveTo; // m_cancel_moveto
-        public bool jump; // m_jump
+        public PackFlag packFlags;// m_cancel_moveto, m_jump
         public ushort instanceStamp; // m_instance_stamp
         public ushort teleportStamp; // m_teleport_stamp
         public ushort forcePosStamp; // m_force_position_stamp
@@ -29,15 +28,13 @@ namespace AC2E.Def {
         public CPositionPack(AC2Reader data) {
             time = data.ReadDouble();
             offset = new PositionOffset(data);
-            heading = data.ReadHeading();
+            (doMotion, heading) = data.ReadVectorHeadingPack();
             packFlags = (PackFlag)data.ReadUInt32();
-            cancelMoveTo = packFlags.HasFlag(PackFlag.CANCELMOVETO);
-            jump = packFlags.HasFlag(PackFlag.JUMP);
             instanceStamp = data.ReadUInt16();
             teleportStamp = data.ReadUInt16();
             forcePosStamp = data.ReadUInt16();
             movetoStamp = data.ReadUInt16();
-            if (jump) {
+            if (packFlags.HasFlag(PackFlag.JUMP)) {
                 jumpVel = data.ReadVector();
             }
             data.Align(4);

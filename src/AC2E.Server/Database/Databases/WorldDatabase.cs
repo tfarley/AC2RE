@@ -63,7 +63,8 @@ namespace AC2E.Server.Database {
                 BsonClassMap.RegisterClassMap<WorldObject>(c => {
                     c.AutoMap();
                     c.MapIdField(r => r.id);
-                    c.MapCreator(r => new WorldObject(r.id, 0));
+                    c.MapCreator(r => new WorldObject(r.id));
+                    c.UnmapField(r => r.instanceStamp);
                 });
 
                 BsonClassMap.RegisterClassMap<PhysicsDesc>(c => {
