@@ -8,11 +8,11 @@
 
         // ECM_Physics::SendEvt_CLookAtDir
         public float x; // _x
-        public float y; // _y
+        public float z; // _y
 
         public CLookAtDirMsg(AC2Reader data) {
             x = data.ReadSingle();
-            y = data.ReadSingle();
+            z = data.ReadSingle();
         }
     }
 }

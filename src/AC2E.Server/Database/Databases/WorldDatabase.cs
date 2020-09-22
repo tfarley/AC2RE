@@ -3,7 +3,6 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
-using System;
 using System.Collections.Generic;
 
 namespace AC2E.Server.Database {
@@ -27,7 +26,7 @@ namespace AC2E.Server.Database {
         private IMongoCollection<Character> setupCharacters() {
             if (!inited) {
                 BsonClassMap.RegisterClassMap<Character>(c => {
-                    c.AutoMap();
+                    c.autoMapCustom();
                     c.MapIdField(r => r.id);
                     c.MapCreator(r => new Character(r.id));
                 });
@@ -61,14 +60,14 @@ namespace AC2E.Server.Database {
         private IMongoCollection<WorldObject> setupWorldObjects() {
             if (!inited) {
                 BsonClassMap.RegisterClassMap<WorldObject>(c => {
-                    c.AutoMap();
+                    c.autoMapCustom();
                     c.MapIdField(r => r.id);
                     c.MapCreator(r => new WorldObject(r.id));
                     c.UnmapField(r => r.instanceStamp);
                 });
 
                 BsonClassMap.RegisterClassMap<PhysicsDesc>(c => {
-                    c.AutoMap();
+                    c.autoMapCustom();
                     c.MapField(r => r.sliders).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<uint, PhysicsDesc.SliderData>>()
                         .WithKeySerializer(new UInt32Serializer(BsonType.String))
                         .WithValueSerializer(new BsonClassMapSerializer<PhysicsDesc.SliderData>(new BsonClassMap<PhysicsDesc.SliderData>(c => c.AutoMap()).Freeze())));
@@ -78,21 +77,21 @@ namespace AC2E.Server.Database {
                 });
 
                 BsonClassMap.RegisterClassMap<BehaviorParams>(c => {
-                    c.AutoMap();
+                    c.autoMapCustom();
                     c.MapField(r => r.clonedAppHash).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<AppearanceKey, float>>()
                         .WithKeySerializer(new EnumSerializer<AppearanceKey>(BsonType.String))
                         .WithValueSerializer(new SingleSerializer()));
                 });
 
                 BsonClassMap.RegisterClassMap<VisualDesc>(c => {
-                    c.AutoMap();
+                    c.autoMapCustom();
                     c.UnmapField(r => r.iconDesc); // TODO: Serialize this
                     c.MapField(r => r.pgdDescTable).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<uint, PartGroupDataDesc>>()
                         .WithKeySerializer(new UInt32Serializer(BsonType.String)));
                 });
 
                 BsonClassMap.RegisterClassMap<PartGroupDataDesc>(c => {
-                    c.AutoMap();
+                    c.autoMapCustom();
                     c.UnmapField(r => r.fxOverrides); // TODO: Serialize this
                     c.MapField(r => r.appearanceInfos).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<DataId, Dictionary<AppearanceKey, float>>>()
                         .WithKeySerializer(new UInt32IdSerializer<DataId>(id => new DataId(id), v => v.id, BsonType.String))
@@ -102,7 +101,7 @@ namespace AC2E.Server.Database {
                 });
 
                 BsonClassMap.RegisterClassMap<WeenieDesc>(c => {
-                    c.AutoMap();
+                    c.autoMapCustom();
                 });
             }
 
@@ -123,8 +122,8 @@ namespace AC2E.Server.Database {
             return instanceIdGenerators.Find(r => r.type == type).FirstOrDefault();
         }
 
-        public List<WorldObject> getWorldObjects() {
-            return worldObjects.Find(r => !r.deleted).ToList();
+        public List<WorldObject> getWorldObjectsInWorld() {
+            return worldObjects.Find(r => !r.deleted && r.inWorld).ToList();
         }
 
         public WorldObject getWorldObjectWithId(InstanceId id) {

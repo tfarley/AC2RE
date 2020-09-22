@@ -1,6 +1,7 @@
 ﻿using AC2E.Def;
 using AC2E.Render;
 using AC2E.RenderCommon;
+using AC2E.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -90,7 +91,7 @@ namespace AC2E.UICommon {
                 renderManager.draw();
                 lastRenderTime = curElapsedTime;
 
-                cameraRot = cameraRot * Quaternion.CreateFromAxisAngle(new Vector3(0.0f, 0.0f, 1.0f), 1.0f * dt);
+                cameraRot = cameraRot * Util.quaternionFromAxisAngleLeftHanded(new Vector3(0.0f, 0.0f, 1.0f), 1.0f * dt);
             }
         }
     }

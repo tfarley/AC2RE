@@ -338,7 +338,7 @@ namespace AC2E.Def {
             };
         }
 
-        public Tuple<Vector3,  Heading> ReadVectorHeadingPack() {
+        public Tuple<Vector3, Heading> ReadVectorHeadingPack() {
             float z = ReadByte() / 255.0f * 2.0f - 1.0f;
             float y = ReadByte() / 255.0f * 2.0f - 1.0f;
             float x = ReadByte() / 255.0f * 2.0f - 1.0f;

@@ -62,7 +62,7 @@ namespace AC2E.Server {
                 MasterProperty.instance = new MasterProperty(data);
             }
 
-            world = new World(accountManager, worldDb, time, packetHandler, portalDatReader);
+            world = new World(worldDb, time, packetHandler, portalDatReader);
 
             logonNetInterface = new NetInterface(port);
             gameNetInterface = new NetInterface(logonNetInterface.port + 1);

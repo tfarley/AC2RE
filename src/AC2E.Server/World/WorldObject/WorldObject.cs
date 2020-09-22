@@ -9,6 +9,7 @@ namespace AC2E.Server {
         public bool deleted;
         public ushort instanceStamp;
 
+        public bool inWorld;
         public float heading;
         public Vector3 motion;
         public PhysicsDesc physics;

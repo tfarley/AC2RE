@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -134,6 +135,10 @@ namespace AC2E.Utils {
             } else {
                 stringBuilder.Append("{ }");
             }
+        }
+
+        public static Quaternion quaternionFromAxisAngleLeftHanded(Vector3 axis, float angle) {
+            return Quaternion.CreateFromAxisAngle(-axis, angle);
         }
     }
 }

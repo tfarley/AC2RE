@@ -110,9 +110,7 @@ namespace AC2E.Server {
                         continue;
                     }
 
-                    if (!world.playerExists(client.id)) {
-                        world.addPlayer(client.id, client.account);
-                    }
+                    world.addPlayerIfNecessary(client.id, client.account);
 
                     while (client.incomingCompleteBlobs.TryDequeue(out NetBlob blob)) {
                         using (AC2Reader data = new AC2Reader(new MemoryStream(blob.payload))) {

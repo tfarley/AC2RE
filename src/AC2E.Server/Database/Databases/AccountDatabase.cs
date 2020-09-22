@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using System;
 
 namespace AC2E.Server.Database {
 
@@ -19,7 +18,7 @@ namespace AC2E.Server.Database {
         private IMongoCollection<Account> setupAccounts() {
             if (!inited) {
                 BsonClassMap.RegisterClassMap<Account>(c => {
-                    c.AutoMap();
+                    c.autoMapCustom();
                     c.MapIdField(r => r.id);
                     c.MapCreator(r => new Account(r.id));
                 });

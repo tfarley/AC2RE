@@ -1,5 +1,6 @@
 ﻿using AC2E.Def;
 using AC2E.Server.Database;
+using AC2E.Utils;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -23,65 +24,37 @@ namespace AC2E.Server {
             frame = new Frame(new Vector3(131.13126f, 13.535009f, 127.25996f), Quaternion.Identity),
         };
 
-        private readonly AccountManager accountManager;
         private readonly WorldDatabase worldDb;
         private readonly ServerTime serverTime;
         private readonly PacketHandler packetHandler;
         private readonly DatReader portalDatReader;
 
+        private readonly PlayerManager playerManager;
         private readonly CharacterManager characterManager;
         private readonly WorldObjectManager objectManager;
 
-        private readonly Dictionary<ClientId, Player> players = new Dictionary<ClientId, Player>();
-        private readonly Dictionary<InstanceId, WorldObject> activeWorldObjects = new Dictionary<InstanceId, WorldObject>();
-
         private int toggleCounter = 0;
 
-        public World(AccountManager accountManager, WorldDatabase worldDb, ServerTime serverTime, PacketHandler packetHandler, DatReader portalDatReader) {
-            this.accountManager = accountManager;
+        public World(WorldDatabase worldDb, ServerTime serverTime, PacketHandler packetHandler, DatReader portalDatReader) {
             this.worldDb = worldDb;
             this.serverTime = serverTime;
             this.packetHandler = packetHandler;
             this.portalDatReader = portalDatReader;
+            playerManager = new PlayerManager(packetHandler);
             characterManager = new CharacterManager(worldDb);
-            objectManager = new WorldObjectManager(worldDb);
+            objectManager = new WorldObjectManager(worldDb, packetHandler, playerManager);
+
+            objectManager.loadAllInWorld();
         }
 
-        public void addPlayer(ClientId clientId, Account account) {
-            players[clientId] = new Player(clientId, account);
-        }
-
-        public bool playerExists(ClientId clientId) {
-            return players.ContainsKey(clientId);
-        }
-
-        public void enterWorld(WorldObject worldObject) {
-            if (!activeWorldObjects.ContainsKey(worldObject.id)) {
-                activeWorldObjects[worldObject.id] = worldObject;
-
-                packetHandler.send(players.Keys, new CreateObjectMsg {
-                    id = worldObject.id,
-                    visualDesc = worldObject.visual,
-                    physicsDesc = worldObject.physics,
-                    weenieDesc = worldObject.weenie,
-                });
-            }
-        }
-
-        public void leaveWorld(WorldObject worldObject) {
-            if (activeWorldObjects.ContainsKey(worldObject.id)) {
-                activeWorldObjects.Remove(worldObject.id);
-
-                packetHandler.send(players.Keys, new DestroyObjectMsg {
-                    idWithStamp = new InstanceIdWithStamp { id = worldObject.id, instanceStamp = worldObject.instanceStamp, otherStamp = 0 },
-                });
-
-                worldObject.instanceStamp++;
+        public void addPlayerIfNecessary(ClientId clientId, Account account) {
+            if (!playerManager.exists(clientId)) {
+                playerManager.add(clientId, account);
             }
         }
 
         public bool processMessage(ClientId clientId, INetMessage genericMsg) {
-            Player player = players[clientId];
+            Player player = playerManager.get(clientId);
 
             bool handled = true;
             switch (genericMsg.opcode) {
@@ -145,16 +118,9 @@ namespace AC2E.Server {
                             regionId = 1,
                         });
 
-                        foreach (WorldObject activeWorldObject in activeWorldObjects.Values) {
-                            packetHandler.send(player.clientId, new CreateObjectMsg {
-                                id = activeWorldObject.id,
-                                visualDesc = activeWorldObject.visual,
-                                physicsDesc = activeWorldObject.physics,
-                                weenieDesc = activeWorldObject.weenie,
-                            });
-                        }
+                        objectManager.enterWorld(playerObject);
 
-                        enterWorld(playerObject);
+                        objectManager.syncNewClient(player.clientId);
 
                         packetHandler.send(player.clientId, new PlayerDescMsg {
                             qualities = new CBaseQualities {
@@ -497,14 +463,15 @@ namespace AC2E.Server {
                                 entityDid = new DataId(0x47000530),
                             };
 
-                            enterWorld(newTestObject);
+                            objectManager.enterWorld(newTestObject);
 
                             packetHandler.send(player.clientId, new QualUpdateIntPrivateMsg {
                                 type = IntStat.HEALTH_CURRENTLEVEL, // TODO: Health_CurrentLevel_IntStat
                                 value = toggleCounter,
                             });
 
-                            if (activeWorldObjects.TryGetValue(player.characterId, out WorldObject character)) {
+                            WorldObject character = objectManager.getInWorld(player.characterId);
+                            if (character != null) {
                                 packetHandler.send(player.clientId, new DoFxMsg {
                                     senderIdWithStamp = new InstanceIdWithStamp {
                                         id = character.id,
@@ -542,14 +509,15 @@ namespace AC2E.Server {
                 case MessageOpcode.Evt_Physics__CLookAtDir_ID: {
                         CLookAtDirMsg msg = (CLookAtDirMsg)genericMsg;
 
-                        if (activeWorldObjects.TryGetValue(player.characterId, out WorldObject character)) {
-                            character.physics.headingX = msg.y;
-                            character.physics.headingZ = msg.x;
+                        WorldObject character = objectManager.getInWorld(player.characterId);
+                        if (character != null) {
+                            character.physics.headingX = msg.x;
+                            character.physics.headingZ = msg.z;
 
-                            packetHandler.send(players.Keys, player.clientId, new LookAtDirMsg {
+                            playerManager.broadcastSend(player.clientId, new LookAtDirMsg {
                                 senderIdWithStamp = new InstanceIdWithStamp { id = character.id, instanceStamp = character.instanceStamp },
-                                z = character.physics.headingZ,
                                 x = character.physics.headingX,
+                                z = character.physics.headingZ,
                             });
                         }
 
@@ -558,12 +526,13 @@ namespace AC2E.Server {
                 case MessageOpcode.Evt_Physics__CPosition_ID: {
                         CPositionMsg msg = (CPositionMsg)genericMsg;
 
-                        if (activeWorldObjects.TryGetValue(player.characterId, out WorldObject character)) {
+                        WorldObject character = objectManager.getInWorld(player.characterId);
+                        if (character != null) {
                             character.heading = msg.pos.heading.rotDegrees;
                             character.motion = msg.pos.doMotion;
                             character.physics.pos = new Position {
                                 cell = msg.pos.offset.cell,
-                                frame = new Frame(msg.pos.offset.offset, Quaternion.CreateFromAxisAngle(new Vector3(0.0f, 0.0f, 1.0f), -msg.pos.heading.rotDegrees * DEG_TO_RAG)),
+                                frame = new Frame(msg.pos.offset.offset, Util.quaternionFromAxisAngleLeftHanded(new Vector3(0.0f, 0.0f, 1.0f), msg.pos.heading.rotDegrees * DEG_TO_RAG)),
                             };
 
                             PositionPack pos = new PositionPack {
@@ -583,7 +552,7 @@ namespace AC2E.Server {
                             }
 
                             // TODO: If cell has changed, might need to send PositionCellMsg instead
-                            packetHandler.send(players.Keys, player.clientId, new PositionMsg {
+                            playerManager.broadcastSend(player.clientId, new PositionMsg {
                                 senderIdWithStamp = new InstanceIdWithStamp { id = character.id, instanceStamp = character.instanceStamp },
                                 pos = pos,
                             });
@@ -653,28 +622,7 @@ namespace AC2E.Server {
         }
 
         public void disconnectAll() {
-            foreach (Player player in players.Values) {
-                packetHandler.send(player.clientId, new DisplayStringInfoMsg {
-                    type = TextType.ADMIN,
-                    text = new StringInfo(new DataId(0x25000626), 165844726),
-                });
-                disconnectPlayer(player);
-            }
-        }
-
-        public void disconnectPlayer(Player player) {
-            packetHandler.send(player.clientId, new DoFxMsg {
-                senderIdWithStamp = new InstanceIdWithStamp {
-                    id = player.characterId,
-                    instanceStamp = 5,
-                    otherStamp = 9,
-                },
-                fxId = FxId.ENTER_WORLD,
-                scalar = 1.0f,
-            });
-            packetHandler.send(player.clientId, new InterpCEventPrivateMsg {
-                netEvent = new EnterPortalSpaceCEvt()
-            });
+            playerManager.disconnectAll();
         }
     }
 }
