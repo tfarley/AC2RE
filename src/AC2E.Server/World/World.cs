@@ -27,7 +27,7 @@ namespace AC2E.Server {
         private readonly WorldDatabase worldDb;
         private readonly ServerTime serverTime;
         private readonly PacketHandler packetHandler;
-        private readonly DatReader portalDatReader;
+        private readonly ContentManager contentManager;
 
         private readonly PlayerManager playerManager;
         private readonly CharacterManager characterManager;
@@ -35,11 +35,11 @@ namespace AC2E.Server {
 
         private int toggleCounter = 0;
 
-        public World(WorldDatabase worldDb, ServerTime serverTime, PacketHandler packetHandler, DatReader portalDatReader) {
+        public World(WorldDatabase worldDb, ServerTime serverTime, PacketHandler packetHandler, ContentManager contentManager) {
             this.worldDb = worldDb;
             this.serverTime = serverTime;
             this.packetHandler = packetHandler;
-            this.portalDatReader = portalDatReader;
+            this.contentManager = contentManager;
             playerManager = new PlayerManager(packetHandler);
             characterManager = new CharacterManager(worldDb);
             objectManager = new WorldObjectManager(worldDb, packetHandler, playerManager);
@@ -69,7 +69,7 @@ namespace AC2E.Server {
                 case MessageOpcode.CHARACTER_CREATE_EVENT: {
                         CharacterCreateMsg msg = (CharacterCreateMsg)genericMsg;
 
-                        WorldObject characterObject = CharacterGeneration.createCharacterObject(objectManager, portalDatReader, ARWIC_START_POS, msg.characterName, msg.species, msg.sex, msg.physiqueTypeValues);
+                        WorldObject characterObject = CharacterGeneration.createCharacterObject(objectManager, contentManager, ARWIC_START_POS, msg.characterName, msg.species, msg.sex, msg.physiqueTypeValues);
 
                         Character character = characterManager.createWithAccountAndWorldObject(player.account.id, characterObject.id);
 
@@ -164,9 +164,9 @@ namespace AC2E.Server {
                             },
                         });
 
-                        ARHash<InventProfile> inventoryByLocationTable = new ARHash<InventProfile> { contents = new Dictionary<uint, InventProfile>() };
-                        LRHash<InventProfile> inventoryByIdTable = new LRHash<InventProfile> { contents = new Dictionary<ulong, InventProfile>() };
-                        InstanceIdList contentIds = new InstanceIdList { contents = new List<InstanceId>() };
+                        ARHash<InventProfile> inventoryByLocationTable = new ARHash<InventProfile>();
+                        LRHash<InventProfile> inventoryByIdTable = new LRHash<InventProfile>();
+                        InstanceIdList contentIds = new InstanceIdList();
 
                         List<WorldObject> playerInventory = objectManager.getAllInContainer(character.id);
                         uint slotCounter = 1;
@@ -174,9 +174,6 @@ namespace AC2E.Server {
                             InventProfile profile = new InventProfile {
                                 visualDescInfo = new VisualDescInfo {
                                     scale = Vector3.One,
-                                    appInfoHash = new AppInfoHash {
-                                        contents = item.visual.globalAppearanceModifiers.appearanceInfos,
-                                    },
                                     cachedVisualDesc = item.visual,
                                 },
                                 slotsTaken = slotCounter,
@@ -184,8 +181,13 @@ namespace AC2E.Server {
                                 it = 1,
                                 id = item.id,
                             };
-                            inventoryByLocationTable.contents[slotCounter] = profile;
-                            inventoryByIdTable.contents[item.id.id] = profile;
+                            if (item.visual.globalAppearanceModifiers != null) {
+                                profile.visualDescInfo.appInfoHash = new AppInfoHash {
+                                    contents = item.visual.globalAppearanceModifiers.appearanceInfos,
+                                };
+                            }
+                            inventoryByLocationTable[slotCounter] = profile;
+                            inventoryByIdTable[item.id.id] = profile;
                             //contentIds.contents.Add(item.id);
                             slotCounter <<= 1;
                         }
@@ -198,14 +200,12 @@ namespace AC2E.Server {
                                 actRegistry = new ActRegistry {
                                     viewingProtectionEffectId = 0,
                                     actSceneTable = new ARHash<AList> {
-                                        contents = new Dictionary<uint, AList> {
-                                            { 0x40000005, new AList() },
-                                            { 0x40000006, new AList() },
-                                            { 0x40000007, new AList() },
-                                            { 0x40000008, new AList() },
-                                            { 0x40000009, new AList() },
-                                            { 0x4000000A, new AList() },
-                                        }
+                                        { 0x40000005, new AList() },
+                                        { 0x40000006, new AList() },
+                                        { 0x40000007, new AList() },
+                                        { 0x40000008, new AList() },
+                                        { 0x40000009, new AList() },
+                                        { 0x4000000A, new AList() },
                                     }
                                 },
                                 quests = new GMQuestInfoList {
@@ -328,51 +328,37 @@ namespace AC2E.Server {
                                 skills = new SkillRepository {
                                     skillCredits = 0,
                                     untrainXp = 0,
-                                    perkTypes = new AAHash {
-                                        contents = new Dictionary<uint, uint> {
-
-                                        }
-                                    },
+                                    perkTypes = new AAHash(),
                                     typeUntrained = 0,
-                                    categories = new AAHash {
-                                        contents = new Dictionary<uint, uint> {
-
-                                        }
-                                    },
+                                    categories = new AAHash(),
                                     skills = new ARHash<SkillInfo> {
                                         // Skill ids from enum mapper 0x2300000F
-                                        contents = new Dictionary<uint, SkillInfo> {
-                                            { (uint)SkillId.HUM_ME_RIPOSTE, new SkillInfo {
-                                                lastUsedTime = -1,
-                                                mask = 33,
-                                                grantedTime = -1,
-                                                skillOverride = 1,
-                                                typeSkill = SkillId.HUM_ME_RIPOSTE,
-                                            } },
-                                            { (uint)SkillId.HUM_ME_UNPREDICTABLEBLOW, new SkillInfo {
-                                                lastUsedTime = -1,
-                                                mask = 33,
-                                                grantedTime = -1,
-                                                skillOverride = 1,
-                                                typeSkill = SkillId.HUM_ME_UNPREDICTABLEBLOW,
-                                            } },
-                                            { (uint)SkillId.COM_LIFESTONERECALL, new SkillInfo {
-                                                lastUsedTime = -1,
-                                                mask = 33,
-                                                grantedTime = -1,
-                                                skillOverride = 1,
-                                                typeSkill = SkillId.COM_LIFESTONERECALL,
-                                            } },
-                                        }
+                                        { (uint)SkillId.HUM_ME_RIPOSTE, new SkillInfo {
+                                            lastUsedTime = -1,
+                                            mask = 33,
+                                            grantedTime = -1,
+                                            skillOverride = 1,
+                                            typeSkill = SkillId.HUM_ME_RIPOSTE,
+                                        } },
+                                        { (uint)SkillId.HUM_ME_UNPREDICTABLEBLOW, new SkillInfo {
+                                            lastUsedTime = -1,
+                                            mask = 33,
+                                            grantedTime = -1,
+                                            skillOverride = 1,
+                                            typeSkill = SkillId.HUM_ME_UNPREDICTABLEBLOW,
+                                        } },
+                                        { (uint)SkillId.COM_LIFESTONERECALL, new SkillInfo {
+                                            lastUsedTime = -1,
+                                            mask = 33,
+                                            grantedTime = -1,
+                                            skillOverride = 1,
+                                            typeSkill = SkillId.COM_LIFESTONERECALL,
+                                        } },
                                     },
                                 },
                                 effectRegistry = new EffectRegistry {
                                     qualitiesModifiedCount = null,
-                                    appliedFx = new AAHash {
-                                        contents = new Dictionary<uint, uint> {
-
-                                        },
-                                    },
+                                    appliedFx = new AAHash(),
                                     baseEffectRegistry = null,
                                     effectIdCounter = 3,
                                     effectInfo = null,
@@ -383,33 +369,27 @@ namespace AC2E.Server {
                                     trackedEffects = null,
                                     topEffects = null,
                                     effectCategorizationTable = null,
-                                    appliedAppearances = new AAHash {
-                                        contents = new Dictionary<uint, uint> {
-
-                                        },
-                                    },
+                                    appliedAppearances = new AAHash(),
                                 },
                                 filledInventoryLocations = (InvLoc)1531,
                                 inventoryByLocationTable = inventoryByLocationTable,
                                 inventoryByIdTable = inventoryByIdTable,
                                 containerSegments = new RList<ContainerSegmentDescriptor> {
-                                    contents = new List<ContainerSegmentDescriptor> {
-                                        new ContainerSegmentDescriptor {
-                                            segmentMaxSize = 12,
-                                            segmentSize = 8,
-                                        },
-                                        new ContainerSegmentDescriptor {
-                                            segmentMaxSize = 12,
-                                            segmentSize = 12,
-                                        },
-                                        new ContainerSegmentDescriptor {
-                                            segmentMaxSize = 12,
-                                            segmentSize = 11,
-                                        },
-                                        new ContainerSegmentDescriptor {
-                                            segmentMaxSize = 42,
-                                            segmentSize = 30,
-                                        },
+                                    new ContainerSegmentDescriptor {
+                                        segmentMaxSize = 12,
+                                        segmentSize = 8,
+                                    },
+                                    new ContainerSegmentDescriptor {
+                                        segmentMaxSize = 12,
+                                        segmentSize = 12,
+                                    },
+                                    new ContainerSegmentDescriptor {
+                                        segmentMaxSize = 12,
+                                        segmentSize = 11,
+                                    },
+                                    new ContainerSegmentDescriptor {
+                                        segmentMaxSize = 42,
+                                        segmentSize = 30,
                                     },
                                 },
                                 containerIds = new InstanceIdList {

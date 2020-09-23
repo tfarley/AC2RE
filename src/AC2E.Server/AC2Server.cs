@@ -22,6 +22,7 @@ namespace AC2E.Server {
 
         private AccountManager accountManager;
         private ClientManager clientManager;
+        private ContentManager contentManager;
 
         private PacketHandler packetHandler;
 
@@ -54,15 +55,11 @@ namespace AC2E.Server {
 
             accountManager = new AccountManager(accountDb);
             clientManager = new ClientManager();
+            contentManager = new ContentManager();
 
             packetHandler = new PacketHandler(accountManager, clientManager, time);
 
-            portalDatReader = new DatReader("G:\\Asheron's Call 2\\portal.dat");
-            using (AC2Reader data = portalDatReader.getFileReader(DbTypeDef.TYPE_TO_DEF[DbType.MASTER_PROPERTY].baseDid)) {
-                MasterProperty.instance = new MasterProperty(data);
-            }
-
-            world = new World(worldDb, time, packetHandler, portalDatReader);
+            world = new World(worldDb, time, packetHandler, contentManager);
 
             logonNetInterface = new NetInterface(port);
             gameNetInterface = new NetInterface(logonNetInterface.port + 1);

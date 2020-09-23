@@ -1,32 +1,27 @@
-﻿using AC2E.Utils;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace AC2E.Def {
 
-    public class InstanceIdList : IPackage, IDelegateToString {
+    public class InstanceIdList : List<InstanceId>, IPackage {
 
         public NativeType nativeType => NativeType.LLIST;
-        public object delegatedToStringObject => contents;
-
-        public List<InstanceId> contents;
 
         public InstanceIdList() {
 
         }
 
         public InstanceIdList(LList list) {
-            contents = new List<InstanceId>();
-            foreach (var element in list.contents) {
-                contents.Add(new InstanceId(element));
+            foreach (var element in list) {
+                Add(new InstanceId(element));
             }
         }
 
         public InstanceIdList(AC2Reader data) {
-            contents = data.ReadList(data.ReadInstanceId);
+            data.ReadList(this, data.ReadInstanceId);
         }
 
         public void write(AC2Writer data) {
-            data.Write(contents, data.Write);
+            data.Write(this, data.Write);
         }
     }
 }

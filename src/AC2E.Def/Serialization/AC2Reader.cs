@@ -206,6 +206,11 @@ namespace AC2E.Def {
 
         public List<T> ReadList<T>(Func<T> elementReader, uint sizeOfSize = 4) {
             List<T> list = new List<T>();
+            ReadList(list, elementReader, sizeOfSize);
+            return list;
+        }
+
+        public void ReadList<T>(List<T> list, Func<T> elementReader, uint sizeOfSize = 4) {
             uint numElements;
             if (sizeOfSize == 1) {
                 numElements = ReadByte();
@@ -219,46 +224,61 @@ namespace AC2E.Def {
             for (int i = 0; i < numElements; i++) {
                 list.Add(elementReader.Invoke());
             }
-            return list;
         }
 
         public HashSet<T> ReadSet<T>(Func<T> elementReader) {
             HashSet<T> set = new HashSet<T>();
+            ReadSet(set, elementReader);
+            return set;
+        }
+
+        public void ReadSet<T>(HashSet<T> set, Func<T> elementReader) {
             ushort numElements = ReadUInt16();
             ushort setSize = ReadUInt16();
             for (int i = 0; i < numElements; i++) {
                 set.Add(elementReader.Invoke());
             }
-            return set;
         }
 
         public Dictionary<K, List<V>> ReadMultiDictionary<K, V>(Func<K> keyReader, Func<V> valueReader) {
             Dictionary<K, List<V>> dict = new Dictionary<K, List<V>>();
+            ReadMultiDictionary(dict, keyReader, valueReader);
+            return dict;
+        }
+
+        public void ReadMultiDictionary<K, V>(Dictionary<K, List<V>> dict, Func<K> keyReader, Func<V> valueReader) {
             uint numElements = ReadUInt32();
             for (int i = 0; i < numElements; i++) {
                 dict.GetOrCreate(keyReader.Invoke()).Add(valueReader.Invoke());
             }
-            return dict;
         }
 
         public Dictionary<K, V> ReadDictionary<K, V>(Func<K> keyReader, Func<V> valueReader) {
             Dictionary<K, V> dict = new Dictionary<K, V>();
+            ReadDictionary(dict, keyReader, valueReader);
+            return dict;
+        }
+
+        public void ReadDictionary<K, V>(Dictionary<K, V> dict, Func<K> keyReader, Func<V> valueReader) {
             ushort numElements = ReadUInt16();
             ushort tableSize = ReadUInt16();
             for (int i = 0; i < numElements; i++) {
                 dict.Add(keyReader.Invoke(), valueReader.Invoke());
             }
-            return dict;
         }
 
         public Dictionary<K, V> ReadStlMap<K, V>(Func<K> keyReader, Func<V> valueReader) {
-            // Variation of dictionary where the count is a full 32 bits without any table size (used for std::map specifically, see STREAMPACK_STL)
             Dictionary<K, V> dict = new Dictionary<K, V>();
+            ReadStlMap(dict, keyReader, valueReader);
+            return dict;
+        }
+
+        public void ReadStlMap<K, V>(Dictionary<K, V> dict, Func<K> keyReader, Func<V> valueReader) {
+            // Variation of dictionary where the count is a full 32 bits without any table size (used for std::map specifically, see STREAMPACK_STL)
             uint numElements = ReadUInt32();
             for (int i = 0; i < numElements; i++) {
                 dict.Add(keyReader.Invoke(), valueReader.Invoke());
             }
-            return dict;
         }
 
         public PackageId ReadPackageId() {
