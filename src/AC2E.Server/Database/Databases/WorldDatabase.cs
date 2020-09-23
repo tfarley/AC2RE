@@ -26,8 +26,7 @@ namespace AC2E.Server.Database {
         private IMongoCollection<Character> setupCharacters() {
             if (!inited) {
                 BsonClassMap.RegisterClassMap<Character>(c => {
-                    c.autoMapCustom();
-                    c.MapIdField(r => r.id);
+                    c.AutoMap();
                     c.MapCreator(r => new Character(r.id));
                 });
             }
@@ -36,8 +35,8 @@ namespace AC2E.Server.Database {
 
             if (!inited) {
                 characters.Indexes.CreateOne(new CreateIndexModel<Character>(
-                Builders<Character>.IndexKeys.Ascending(r => r.worldObjectId),
-                new CreateIndexOptions<Character>() { Unique = true }));
+                    Builders<Character>.IndexKeys.Ascending(r => r.worldObjectId),
+                    new CreateIndexOptions<Character>() { Unique = true }));
             }
 
             return characters;
@@ -60,49 +59,52 @@ namespace AC2E.Server.Database {
         private IMongoCollection<WorldObject> setupWorldObjects() {
             if (!inited) {
                 BsonClassMap.RegisterClassMap<WorldObject>(c => {
-                    c.autoMapCustom();
+                    c.AutoMap();
                     c.MapIdField(r => r.id);
                     c.MapCreator(r => new WorldObject(r.id));
                     c.UnmapField(r => r.instanceStamp);
                 });
 
                 BsonClassMap.RegisterClassMap<PhysicsDesc>(c => {
-                    c.autoMapCustom();
+                    c.AutoMap();
                     c.MapField(r => r.sliders).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<uint, PhysicsDesc.SliderData>>()
-                        .WithKeySerializer(new UInt32Serializer(BsonType.String))
-                        .WithValueSerializer(new BsonClassMapSerializer<PhysicsDesc.SliderData>(new BsonClassMap<PhysicsDesc.SliderData>(c => c.AutoMap()).Freeze())));
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
+                        .WithValueSerializer(new BsonClassMapSerializer<PhysicsDesc.SliderData>(new BsonClassMap<PhysicsDesc.SliderData>().Freeze())));
                     c.MapField(r => r.fx).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<uint, FXScalarAndTarget>>()
-                        .WithKeySerializer(new UInt32Serializer(BsonType.String))
-                        .WithValueSerializer(new BsonClassMapSerializer<FXScalarAndTarget>(new BsonClassMap<FXScalarAndTarget>(c => c.AutoMap()).Freeze())));
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
+                        .WithValueSerializer(new BsonClassMapSerializer<FXScalarAndTarget>(new BsonClassMap<FXScalarAndTarget>().Freeze())));
                 });
 
                 BsonClassMap.RegisterClassMap<BehaviorParams>(c => {
-                    c.autoMapCustom();
+                    c.AutoMap();
                     c.MapField(r => r.clonedAppHash).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<AppearanceKey, float>>()
-                        .WithKeySerializer(new EnumSerializer<AppearanceKey>(BsonType.String))
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
                         .WithValueSerializer(new SingleSerializer()));
                 });
 
                 BsonClassMap.RegisterClassMap<VisualDesc>(c => {
-                    c.autoMapCustom();
-                    c.UnmapField(r => r.iconDesc); // TODO: Serialize this
+                    c.AutoMap();
                     c.MapField(r => r.pgdDescTable).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<uint, PartGroupDataDesc>>()
-                        .WithKeySerializer(new UInt32Serializer(BsonType.String)));
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String)));
                 });
 
                 BsonClassMap.RegisterClassMap<PartGroupDataDesc>(c => {
-                    c.autoMapCustom();
+                    c.AutoMap();
                     c.UnmapField(r => r.fxOverrides); // TODO: Serialize this
                     c.MapField(r => r.appearanceInfos).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<DataId, Dictionary<AppearanceKey, float>>>()
                         .WithKeySerializer(new UInt32IdSerializer<DataId>(id => new DataId(id), v => v.id, BsonType.String))
                         .WithValueSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<AppearanceKey, float>>()
-                            .WithKeySerializer(new EnumSerializer<AppearanceKey>(BsonType.String))
+                            .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
                             .WithValueSerializer(new SingleSerializer())));
+                    c.MapField(r => r.startupFx).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<uint, float>>()
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
+                        .WithValueSerializer(new SingleSerializer()));
                 });
 
-                BsonClassMap.RegisterClassMap<WeenieDesc>(c => {
-                    c.autoMapCustom();
-                });
+                BsonClassMap.RegisterClassMap<IconDesc>();
+                BsonClassMap.RegisterClassMap<IconLayerDesc>();
+
+                BsonClassMap.RegisterClassMap<WeenieDesc>();
             }
 
             IMongoCollection<WorldObject> worldObjects = database.GetCollection<WorldObject>("worldobj");
@@ -130,16 +132,21 @@ namespace AC2E.Server.Database {
             return worldObjects.Find(r => !r.deleted && r.id == id).FirstOrDefault();
         }
 
+        public List<WorldObject> getWorldObjectsWithContainer(InstanceId containerId) {
+            return worldObjects.Find(r => !r.deleted && r.weenie.containerId == containerId).ToList();
+        }
+
         public bool save(WorldSave worldSave) {
             using (var session = client.StartSession()) {
                 // TODO: Define TransactionOptions?
                 return session.WithTransaction((s, ct) => {
                     // TODO: Needed individual replace calls here because ReplaceOneModel in BulkWrite does not support Upsert, and the alternative requires specifying every field in UpdateOneModel
                     foreach (Character character in worldSave.characters) {
-                        characters.ReplaceOne(r => r.id == character.id, character, new ReplaceOptions() { IsUpsert = true }, ct);
+                        characters.ReplaceOne(session, r => r.id == character.id, character, new ReplaceOptions() { IsUpsert = true }, ct);
                     }
 
                     instanceIdGenerators.UpdateOne(
+                        session,
                         r => r.type == worldSave.idGenerator.type,
                         Builders<InstanceIdGenerator>.Update
                             .SetOnInsert(r => r.type, worldSave.idGenerator.type)
@@ -149,7 +156,7 @@ namespace AC2E.Server.Database {
 
                     // TODO: Needed individual replace calls here because ReplaceOneModel in BulkWrite does not support Upsert, and the alternative requires specifying every field in UpdateOneModel
                     foreach (WorldObject worldObject in worldSave.worldObjects) {
-                        worldObjects.ReplaceOne(r => r.id == worldObject.id, worldObject, new ReplaceOptions() { IsUpsert = true }, ct);
+                        worldObjects.ReplaceOne(session, r => r.id == worldObject.id, worldObject, new ReplaceOptions() { IsUpsert = true }, ct);
                     }
 
                     return true;

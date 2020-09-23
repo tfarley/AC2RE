@@ -4,39 +4,39 @@ namespace AC2E.Def {
 
     public class PackageTypes {
 
-        private readonly List<PackageTypeId> packageTypeIds = new List<PackageTypeId>();
-        private readonly Dictionary<PackageTypeId, int> packageTypeIdToParentIndex = new Dictionary<PackageTypeId, int>();
-        private readonly Dictionary<PackageTypeId, List<PackageTypeId>> packageTypeIdToHierarchyCache = new Dictionary<PackageTypeId, List<PackageTypeId>>();
+        private readonly List<PackageType> packageTypes = new List<PackageType>();
+        private readonly Dictionary<PackageType, int> packageTypeToParentIndex = new Dictionary<PackageType, int>();
+        private readonly Dictionary<PackageType, List<PackageType>> packageTypeToHierarchyCache = new Dictionary<PackageType, List<PackageType>>();
 
-        public void add(PackageTypeId packageTypeId, int parentIndex) {
-            packageTypeIds.Add(packageTypeId);
-            packageTypeIdToParentIndex[packageTypeId] = parentIndex;
+        public void add(PackageType packageType, int parentIndex) {
+            packageTypes.Add(packageType);
+            packageTypeToParentIndex[packageType] = parentIndex;
         }
 
         public void calculate() {
-            foreach (PackageTypeId packageTypeId in packageTypeIds) {
-                packageTypeIdToHierarchyCache[packageTypeId] = calculatePackageTypeHierarchy(packageTypeId);
+            foreach (PackageType packageType in packageTypes) {
+                packageTypeToHierarchyCache[packageType] = calculatePackageTypeHierarchy(packageType);
             }
         }
 
-        private List<PackageTypeId> calculatePackageTypeHierarchy(PackageTypeId packageTypeId) {
-            List<PackageTypeId> typeHierarchy = new List<PackageTypeId>();
-            while (packageTypeIdToParentIndex.TryGetValue(packageTypeId, out int parentIndex) && parentIndex != -1) {
-                PackageTypeId parentType = packageTypeIds[parentIndex];
+        private List<PackageType> calculatePackageTypeHierarchy(PackageType packageType) {
+            List<PackageType> typeHierarchy = new List<PackageType>();
+            while (packageTypeToParentIndex.TryGetValue(packageType, out int parentIndex) && parentIndex != -1) {
+                PackageType parentType = packageTypes[parentIndex];
 
                 typeHierarchy.Add(parentType);
-                if (packageTypeIdToHierarchyCache.TryGetValue(parentType, out List<PackageTypeId> parentTypeHierarchy)) {
+                if (packageTypeToHierarchyCache.TryGetValue(parentType, out List<PackageType> parentTypeHierarchy)) {
                     typeHierarchy.AddRange(parentTypeHierarchy);
                     break;
                 } else {
-                    packageTypeId = parentType;
+                    packageType = parentType;
                 }
             }
             return typeHierarchy;
         }
 
-        public List<PackageTypeId> getPackageTypeHierarchy(PackageTypeId packageTypeId) {
-            return packageTypeIdToHierarchyCache[packageTypeId];
+        public List<PackageType> getPackageTypeHierarchy(PackageType packageType) {
+            return packageTypeToHierarchyCache[packageType];
         }
     }
 }

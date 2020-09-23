@@ -1,6 +1,7 @@
 ﻿using AC2E.Def;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Options;
 using MongoDB.Bson.Serialization.Serializers;
 
 namespace AC2E.Server.Database {
@@ -12,7 +13,7 @@ namespace AC2E.Server.Database {
         public StringInfoSerializer() {
             classMapSerializer = new BsonClassMapSerializer<StringInfo>(new BsonClassMap<StringInfo>(c => {
                 c.MapField(r => r.tableDid);
-                c.MapField(r => r.stringId);
+                c.MapField(r => r.stringId).SetSerializer(new UInt32Serializer(BsonType.Int32, new RepresentationConverter(true, false)));
             }).Freeze());
         }
 

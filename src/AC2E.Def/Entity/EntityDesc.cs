@@ -27,7 +27,7 @@ namespace AC2E.Def {
         public EntityType type; // m_type
         public InstanceId runtimeId; // m_runtimeID
         public DataId dataId; // m_dataID
-        public PackageId packageId; // m_pkgID
+        public PackageType packageType; // m_pkgID
         public Matrix4x4 offset; // m_offset
         public Vector3 scale; // m_scale
         public PropertyCollection properties; // m_properties
@@ -53,7 +53,9 @@ namespace AC2E.Def {
                 runtimeId = data.ReadInstanceId();
             }
             if (packFlags.HasFlag(PackFlag.DATAID)) {
-                dataId = data.ReadDataId();
+                uint dataIdOrPackageType = data.ReadUInt32();
+                dataId = new DataId(dataIdOrPackageType);
+                packageType = (PackageType)dataIdOrPackageType;
             }
             if (packFlags.HasFlag(PackFlag.OFFSET)) {
                 offset = data.ReadMatrix4x4();
@@ -84,7 +86,11 @@ namespace AC2E.Def {
                 data.Write(runtimeId);
             }
             if (packFlags.HasFlag(PackFlag.DATAID)) {
-                data.Write(dataId);
+                if (dataId.id != 0) {
+                    data.Write(dataId);
+                } else {
+                    data.Write((uint)packageType);
+                }
             }
             if (packFlags.HasFlag(PackFlag.OFFSET)) {
                 data.Write(offset);

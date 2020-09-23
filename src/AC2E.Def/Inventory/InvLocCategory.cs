@@ -4,24 +4,24 @@
 
         public PackageType packageType => PackageType.InvLocCategory;
 
-        public uint weaponInvLoc; // Weapon_InvLoc
-        public uint clothingInvLoc; // Clothing_InvLoc
-        public uint readySlotInvLoc; // ReadySlot_InvLoc
-        public uint armorInvLoc; // Armor_InvLoc
-        public uint jewelryInvLoc; // Jewelry_InvLoc
-        public uint wristWearInvLoc; // WristWear_InvLoc
-        public uint allInvLoc; // All_InvLoc
-        public uint fingerWearInvLoc; // FingerWear_InvLoc
+        public InvLoc weaponInvLoc; // Weapon_InvLoc
+        public InvLoc clothingInvLoc; // Clothing_InvLoc
+        public InvLoc readySlotInvLoc; // ReadySlot_InvLoc
+        public InvLoc armorInvLoc; // Armor_InvLoc
+        public InvLoc jewelryInvLoc; // Jewelry_InvLoc
+        public InvLoc wristWearInvLoc; // WristWear_InvLoc
+        public InvLoc allInvLoc; // All_InvLoc
+        public InvLoc fingerWearInvLoc; // FingerWear_InvLoc
 
         public InvLocCategory(AC2Reader data) {
-            weaponInvLoc = data.ReadUInt32();
-            clothingInvLoc = data.ReadUInt32();
-            readySlotInvLoc = data.ReadUInt32();
-            armorInvLoc = data.ReadUInt32();
-            jewelryInvLoc = data.ReadUInt32();
-            wristWearInvLoc = data.ReadUInt32();
-            allInvLoc = data.ReadUInt32();
-            fingerWearInvLoc = data.ReadUInt32();
+            weaponInvLoc = (InvLoc)data.ReadUInt32();
+            clothingInvLoc = (InvLoc)data.ReadUInt32();
+            readySlotInvLoc = (InvLoc)data.ReadUInt32();
+            armorInvLoc = (InvLoc)data.ReadUInt32();
+            jewelryInvLoc = (InvLoc)data.ReadUInt32();
+            wristWearInvLoc = (InvLoc)data.ReadUInt32();
+            allInvLoc = (InvLoc)data.ReadUInt32();
+            fingerWearInvLoc = (InvLoc)data.ReadUInt32();
         }
     }
 }

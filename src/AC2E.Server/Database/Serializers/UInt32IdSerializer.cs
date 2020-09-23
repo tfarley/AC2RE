@@ -9,56 +9,28 @@ namespace AC2E.Server.Database {
 
         private readonly Func<uint, T> converter;
         private readonly Func<T, uint> extractor;
+        private readonly UInt32SafeSerializer uInt32Serializer;
 
-        public BsonType Representation { get; }
+        public BsonType Representation => uInt32Serializer.Representation;
 
-        public UInt32IdSerializer(Func<uint, T> converter, Func<T, uint> extractor) : this(converter, extractor, BsonType.Int32) {
-
+        public UInt32IdSerializer(Func<uint, T> converter, Func<T, uint> extractor) {
+            this.converter = converter;
+            this.extractor = extractor;
+            uInt32Serializer = new UInt32SafeSerializer();
         }
 
         public UInt32IdSerializer(Func<uint, T> converter, Func<T, uint> extractor, BsonType representation) {
             this.converter = converter;
             this.extractor = extractor;
-
-            switch (representation) {
-                case BsonType.Int32:
-                case BsonType.String:
-                    break;
-
-                default:
-                    throw new ArgumentException($"{representation} is not a valid representation for an UInt32IdSerializer.");
-            }
-
-            Representation = representation;
+            uInt32Serializer = new UInt32SafeSerializer(representation);
         }
 
         public override T Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args) {
-            var bsonType = context.Reader.GetCurrentBsonType();
-            switch (bsonType) {
-                case BsonType.Int32:
-                    return converter.Invoke((uint)context.Reader.ReadInt32());
-
-                case BsonType.String:
-                    return converter.Invoke(uint.Parse(context.Reader.ReadString()));
-
-                default:
-                    throw CreateCannotDeserializeFromBsonTypeException(bsonType);
-            }
+            return converter.Invoke(uInt32Serializer.Deserialize(context, args));
         }
 
         public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, T value) {
-            switch (Representation) {
-                case BsonType.Int32:
-                    context.Writer.WriteInt32((int)extractor.Invoke(value));
-                    break;
-
-                case BsonType.String:
-                    context.Writer.WriteString(extractor.Invoke(value).ToString());
-                    break;
-
-                default:
-                    throw new BsonSerializationException($"'{Representation}' is not a valid UInt32Id representation.");
-            }
+            uInt32Serializer.Serialize(context, args, extractor.Invoke(value));
         }
 
         public UInt32IdSerializer<T> WithRepresentation(BsonType representation) {

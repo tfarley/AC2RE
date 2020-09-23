@@ -261,10 +261,6 @@ namespace AC2E.Def {
             return dict;
         }
 
-        public PackageTypeId ReadPackageTypeId() {
-            return new PackageTypeId(ReadUInt32());
-        }
-
         public PackageId ReadPackageId() {
             return new PackageId(ReadUInt32());
         }

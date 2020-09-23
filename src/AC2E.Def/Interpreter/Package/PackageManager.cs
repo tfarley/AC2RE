@@ -13,7 +13,7 @@ namespace AC2E.Def {
                 var wlib = new WLib(data);
                 packageTypes = new PackageTypes();
                 foreach (ByteStream.ExportData export in wlib.byteStream.exports) {
-                    packageTypes.add(export.args.packageTypeId, export.args.parentIndex);
+                    packageTypes.add(export.args.packageType, export.args.parentIndex);
                 }
                 packageTypes.calculate();
             }
@@ -118,9 +118,9 @@ namespace AC2E.Def {
 
             // Deserialize as the most derived "known" package type
             if (package == null && packageTypes != null) {
-                List<PackageTypeId> packageTypeHierarchy = packageTypes.getPackageTypeHierarchy(new PackageTypeId((uint)packageType));
-                foreach (PackageTypeId packageTypeId in packageTypeHierarchy) {
-                    package = readInternal(data, (PackageType)packageTypeId.id);
+                List<PackageType> packageTypeHierarchy = packageTypes.getPackageTypeHierarchy(packageType);
+                foreach (PackageType inheritedPackageType in packageTypeHierarchy) {
+                    package = readInternal(data, inheritedPackageType);
                     if (package != null) {
                         break;
                     }

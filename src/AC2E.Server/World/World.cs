@@ -44,7 +44,7 @@ namespace AC2E.Server {
             characterManager = new CharacterManager(worldDb);
             objectManager = new WorldObjectManager(worldDb, packetHandler, playerManager);
 
-            objectManager.loadAllInWorld();
+            objectManager.enterWorld(objectManager.getAllInWorld());
         }
 
         public void addPlayerIfNecessary(ClientId clientId, Account account) {
@@ -109,24 +109,24 @@ namespace AC2E.Server {
                             throw new ArgumentException($"Account {player.account.id} attempted to log in with unowned character object {msg.characterId}.");
                         }
 
+                        objectManager.syncNewClient(player.clientId);
+
                         player.characterId = msg.characterId;
 
-                        WorldObject playerObject = objectManager.get(msg.characterId);
+                        WorldObject character = objectManager.get(msg.characterId);
 
                         packetHandler.send(player.clientId, new CreatePlayerMsg {
                             id = msg.characterId,
                             regionId = 1,
                         });
 
-                        objectManager.enterWorld(playerObject);
-
-                        objectManager.syncNewClient(player.clientId);
+                        objectManager.enterWorld(character);
 
                         packetHandler.send(player.clientId, new PlayerDescMsg {
                             qualities = new CBaseQualities {
                                 packFlags = CBaseQualities.PackFlag.WEENIE_DESC | CBaseQualities.PackFlag.INT_HASH_TABLE | CBaseQualities.PackFlag.BOOL_HASH_TABLE | CBaseQualities.PackFlag.FLOAT_HASH_TABLE | CBaseQualities.PackFlag.TIMESTAMP_HASH_TABLE | CBaseQualities.PackFlag.DATA_ID_HASH_TABLE | CBaseQualities.PackFlag.LONG_INT_HASH_TABLE,
                                 did = new DataId(0x81000530),
-                                weenieDesc = playerObject.weenie,
+                                weenieDesc = character.weenie,
                                 intTable = new Dictionary<IntStat, int> {
                                     { IntStat.CONTAINERMAXCAPACITY, 78 },
                                     { IntStat.SPECIES, 1 },
@@ -163,6 +163,34 @@ namespace AC2E.Server {
                                 },
                             },
                         });
+
+                        ARHash<InventProfile> inventoryByLocationTable = new ARHash<InventProfile> { contents = new Dictionary<uint, InventProfile>() };
+                        LRHash<InventProfile> inventoryByIdTable = new LRHash<InventProfile> { contents = new Dictionary<ulong, InventProfile>() };
+                        InstanceIdList contentIds = new InstanceIdList { contents = new List<InstanceId>() };
+
+                        List<WorldObject> playerInventory = objectManager.getAllInContainer(character.id);
+                        uint slotCounter = 1;
+                        foreach (WorldObject item in playerInventory) {
+                            InventProfile profile = new InventProfile {
+                                visualDescInfo = new VisualDescInfo {
+                                    scale = Vector3.One,
+                                    appInfoHash = new AppInfoHash {
+                                        contents = item.visual.globalAppearanceModifiers.appearanceInfos,
+                                    },
+                                    cachedVisualDesc = item.visual,
+                                },
+                                slotsTaken = slotCounter,
+                                location = (InvLoc)slotCounter,
+                                it = 1,
+                                id = item.id,
+                            };
+                            inventoryByLocationTable.contents[slotCounter] = profile;
+                            inventoryByIdTable.contents[item.id.id] = profile;
+                            //contentIds.contents.Add(item.id);
+                            slotCounter <<= 1;
+                        }
+
+                        objectManager.enterWorld(playerInventory);
 
                         packetHandler.send(player.clientId, new InterpCEventPrivateMsg {
                             netEvent = new HandleCharacterSessionStartCEvt {
@@ -361,22 +389,33 @@ namespace AC2E.Server {
                                         },
                                     },
                                 },
-                                filledInventoryLocations = 0,
-                                inventoryByLocationTable = new ARHash<InventProfile> {
-
-                                },
-                                inventoryByIdTable = new LRHash<InventProfile> {
-
-                                },
+                                filledInventoryLocations = (InvLoc)1531,
+                                inventoryByLocationTable = inventoryByLocationTable,
+                                inventoryByIdTable = inventoryByIdTable,
                                 containerSegments = new RList<ContainerSegmentDescriptor> {
-
+                                    contents = new List<ContainerSegmentDescriptor> {
+                                        new ContainerSegmentDescriptor {
+                                            segmentMaxSize = 12,
+                                            segmentSize = 8,
+                                        },
+                                        new ContainerSegmentDescriptor {
+                                            segmentMaxSize = 12,
+                                            segmentSize = 12,
+                                        },
+                                        new ContainerSegmentDescriptor {
+                                            segmentMaxSize = 12,
+                                            segmentSize = 11,
+                                        },
+                                        new ContainerSegmentDescriptor {
+                                            segmentMaxSize = 42,
+                                            segmentSize = 30,
+                                        },
+                                    },
                                 },
                                 containerIds = new InstanceIdList {
 
                                 },
-                                contentIds = new InstanceIdList {
-
-                                },
+                                contentIds = contentIds,
                                 localFactionStatus = 1,
                                 serverFactionStatus = 0,
                             }
@@ -458,7 +497,7 @@ namespace AC2E.Server {
                             };
                             newTestObject.weenie = new WeenieDesc {
                                 packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.ENTITY_DID,
-                                packageId = new PackageId(895),
+                                packageType = PackageType.PlayerAvatar,
                                 name = new StringInfo($"TestObj 0x{toggleCounter:X}"),
                                 entityDid = new DataId(0x47000530),
                             };
@@ -470,8 +509,8 @@ namespace AC2E.Server {
                                 value = toggleCounter,
                             });
 
-                            WorldObject character = objectManager.getInWorld(player.characterId);
-                            if (character != null) {
+                            WorldObject character = objectManager.get(player.characterId);
+                            if (character != null && character.inWorld) {
                                 packetHandler.send(player.clientId, new DoFxMsg {
                                     senderIdWithStamp = new InstanceIdWithStamp {
                                         id = character.id,
@@ -509,8 +548,8 @@ namespace AC2E.Server {
                 case MessageOpcode.Evt_Physics__CLookAtDir_ID: {
                         CLookAtDirMsg msg = (CLookAtDirMsg)genericMsg;
 
-                        WorldObject character = objectManager.getInWorld(player.characterId);
-                        if (character != null) {
+                        WorldObject character = objectManager.get(player.characterId);
+                        if (character != null && character.inWorld) {
                             character.physics.headingX = msg.x;
                             character.physics.headingZ = msg.z;
 
@@ -526,8 +565,8 @@ namespace AC2E.Server {
                 case MessageOpcode.Evt_Physics__CPosition_ID: {
                         CPositionMsg msg = (CPositionMsg)genericMsg;
 
-                        WorldObject character = objectManager.getInWorld(player.characterId);
-                        if (character != null) {
+                        WorldObject character = objectManager.get(player.characterId);
+                        if (character != null && character.inWorld) {
                             character.heading = msg.pos.heading.rotDegrees;
                             character.motion = msg.pos.doMotion;
                             character.physics.pos = new Position {

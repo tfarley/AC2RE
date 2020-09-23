@@ -9,44 +9,43 @@ namespace AC2E.Server {
 
         public static WorldObject createCharacterObject(WorldObjectManager objectManager, DatReader portalDatReader, Position startPos, string name, SpeciesType species, SexType sex, Dictionary<PhysiqueType, float> physiqueTypeValues) {
             Dictionary<PhysiqueType, Dictionary<float, Tuple<AppearanceKey, DataId>>> appProfileMap = new Dictionary<PhysiqueType, Dictionary<float, Tuple<AppearanceKey, DataId>>>();
-            GMRaceSexInfo raceSexInfo;
 
+            CharGenMatrix charGenMatrix;
             using (AC2Reader data = portalDatReader.getFileReader(new DataId(0x70000390))) {
                 WState wState = new WState(data);
-
-                CharGenMatrix charGenMatrix = (CharGenMatrix)wState.package;
-
-                foreach (KeyValuePair<uint, RList<IPackage>> physiqueAndAppProfiles in ((ARHash<IPackage>)charGenMatrix.physiqueTypeModifierTable.contents[(uint)species].contents[(uint)sex]).to<RList<IPackage>>().contents) {
-                    PhysiqueType physiqueType = (PhysiqueType)physiqueAndAppProfiles.Key;
-                    RList<AppearanceProfile> appProfiles = physiqueAndAppProfiles.Value.to<AppearanceProfile>();
-
-                    if (!appProfileMap.TryGetValue(physiqueType, out Dictionary<float, Tuple<AppearanceKey, DataId>> modifierToApp)) {
-                        modifierToApp = new Dictionary<float, Tuple<AppearanceKey, DataId>>();
-                        appProfileMap[physiqueType] = modifierToApp;
-                    }
-
-                    foreach (AppearanceProfile appProfile in appProfiles.contents) {
-                        modifierToApp[appProfile.modifier] = new Tuple<AppearanceKey, DataId>(appProfile.appKey, appProfile.aprDid);
-                    }
-                }
-
-                raceSexInfo = charGenMatrix.raceSexInfoTable.contents[(uint)species | (uint)sex];
+                charGenMatrix = (CharGenMatrix)wState.package;
             }
 
-            DataId visualDescDid;
+            foreach (KeyValuePair<uint, RList<IPackage>> physiqueAndAppProfiles in charGenMatrix.physiqueTypeModifierTable.contents[(uint)species].to<ARHash<IPackage>>().contents[(uint)sex].to<RList<IPackage>>().contents) {
+                PhysiqueType physiqueType = (PhysiqueType)physiqueAndAppProfiles.Key;
+                RList<AppearanceProfile> appProfiles = physiqueAndAppProfiles.Value.to<AppearanceProfile>();
 
+                if (!appProfileMap.TryGetValue(physiqueType, out Dictionary<float, Tuple<AppearanceKey, DataId>> modifierToApp)) {
+                    modifierToApp = new Dictionary<float, Tuple<AppearanceKey, DataId>>();
+                    appProfileMap[physiqueType] = modifierToApp;
+                }
+
+                foreach (AppearanceProfile appProfile in appProfiles.contents) {
+                    modifierToApp[appProfile.modifier] = new Tuple<AppearanceKey, DataId>(appProfile.appKey, appProfile.aprDid);
+                }
+            }
+
+            GMRaceSexInfo raceSexInfo = charGenMatrix.raceSexInfoTable.contents[(uint)species | (uint)sex];
+
+            DataId visualDescDid;
             using (AC2Reader data = portalDatReader.getFileReader(raceSexInfo.physObjDid)) {
                 EntityDesc entityDesc = new EntityDesc(data);
-
                 visualDescDid = entityDesc.dataId;
             }
 
-            WorldObject characterObject = objectManager.create();
-            characterObject.physics = createCharacterPhysics(startPos);
-            characterObject.visual = createCharacterVisual(visualDescDid, appProfileMap, physiqueTypeValues);
-            characterObject.weenie = createCharacterWeenie(new StringInfo(name));
+            WorldObject character = objectManager.create();
+            character.physics = createCharacterPhysics(startPos);
+            character.visual = createCharacterVisual(visualDescDid, appProfileMap, physiqueTypeValues);
+            character.weenie = createCharacterWeenie(new StringInfo(name));
 
-            return characterObject;
+            createStartingInventory(objectManager, portalDatReader, character, charGenMatrix, species);
+
+            return character;
         }
 
         private static PhysicsDesc createCharacterPhysics(Position startPos) {
@@ -140,8 +139,8 @@ namespace AC2E.Server {
 
         private static WeenieDesc createCharacterWeenie(StringInfo name) {
             return new WeenieDesc {
-                packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.MONARCH_ID | WeenieDesc.PackFlag.PHYSICS_TYPE_LOW_DWORD | WeenieDesc.PackFlag.PHYSICS_TYPE_HIGH_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.ENTITY_DID,
-                packageId = new PackageId(895),
+                packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.PHYSICS_TYPE_LOW_DWORD | WeenieDesc.PackFlag.PHYSICS_TYPE_HIGH_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.ENTITY_DID,
+                packageType = PackageType.PlayerAvatar,
                 entityDid = new DataId(0x47000530),
                 name = name,
                 physicsTypeLow = 75497504,
@@ -151,6 +150,75 @@ namespace AC2E.Server {
                 placementEtherealLow = 65011856,
                 placementEtherealHigh = 0,
             };
+        }
+
+        private static void createStartingInventory(WorldObjectManager objectManager, DatReader portalDatReader, WorldObject character, CharGenMatrix charGenMatrix, SpeciesType species) {
+            RList<StartInvData> startInvItems = charGenMatrix.startingInventoryTable.contents[(uint)species].to<ARHash<IPackage>>().contents[0].to<RList<IPackage>>().contents[0].to<StartInvData>();
+            foreach (StartInvData startInvItem in startInvItems.contents) {
+                WorldObject item = objectManager.create();
+                item.physics = new PhysicsDesc();
+                item.visual = new VisualDesc();
+                using (AC2Reader data = portalDatReader.getFileReader(startInvItem.entityDid)) {
+                    EntityDesc entityDesc = new EntityDesc(data);
+                    item.weenie = new WeenieDesc {
+                        packFlags = WeenieDesc.PackFlag.PHYSICS_TYPE_LOW_DWORD | WeenieDesc.PackFlag.PHYSICS_TYPE_HIGH_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.ENTITY_DID,
+                        packageType = entityDesc.packageType,
+                        entityDid = startInvItem.entityDid,
+                        physicsTypeLow = 75497504,
+                        physicsTypeHigh = 0,
+                        movementEtherealLow = 1042284560,
+                        movementEtherealHigh = 0,
+                        placementEtherealLow = 65011856,
+                        placementEtherealHigh = 0,
+                        containerId = character.id,
+                    };
+                    if (entityDesc.packFlags.HasFlag(EntityDesc.PackFlag.DATAID)) {
+                        item.weenie.packageType = entityDesc.packageType;
+                        item.weenie.packFlags |= WeenieDesc.PackFlag.MY_PACKAGE_ID;
+                    }
+                    if (entityDesc.packFlags.HasFlag(EntityDesc.PackFlag.PROPERTIES)) {
+                        foreach (PropertyGroup propertyGroup in entityDesc.properties.groups) {
+                            foreach (BaseProperty property in propertyGroup.properties) {
+                                switch (property.name) {
+                                    case PropertyName.PHYSOBJ:
+                                        using (AC2Reader physicsEntityData = portalDatReader.getFileReader((DataId)property.value)) {
+                                            EntityDesc physicsEntityDesc = new EntityDesc(physicsEntityData);
+                                            if (physicsEntityDesc.packFlags.HasFlag(EntityDesc.PackFlag.DATAID)) {
+                                                using (AC2Reader visualDescData = portalDatReader.getFileReader(physicsEntityDesc.dataId)) {
+                                                    item.visual = new VisualDesc(visualDescData);
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    case PropertyName.NAME:
+                                        item.weenie.name = (StringInfo)property.value;
+                                        item.weenie.packFlags |= WeenieDesc.PackFlag.NAME;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                    }
+
+                    // TODO: Temp hack, remove
+                    if (item.visual == null || item.visual.globalAppearanceModifiers == null) {
+                        item.visual.packFlags |= VisualDesc.PackFlag.GLOBALMOD;
+                        item.visual.globalAppearanceModifiers = new PartGroupDataDesc {
+                            packFlags = PartGroupDataDesc.PackFlag.KEY | PartGroupDataDesc.PackFlag.APPHASH,
+                            key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
+                            appearanceInfos = new Dictionary<DataId, Dictionary<AppearanceKey, float>> {
+                                { new DataId(0x2000011B), new Dictionary<AppearanceKey, float> {
+                                    { AppearanceKey.CLOTHINGCOLOR, 0.04f },
+                                    { AppearanceKey.CLOTHINGCOLORSECONDARY, 0.23f },
+                                    { AppearanceKey.WORN, 1.0f },
+                                    { AppearanceKey.CLOTHINGCOLORTERTIARY, 0.13f },
+                                } },
+                            }
+                        };
+                    }
+                }
+            }
         }
     }
 }

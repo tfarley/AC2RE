@@ -126,9 +126,11 @@ namespace AC2E.Utils {
                 stringBuilder.AppendLine("{");
                 string fieldIndent = new string(' ', indentLevel + 2);
                 foreach (FieldInfo fieldInfo in fieldInfos) {
-                    stringBuilder.Append($"{fieldIndent}{fieldInfo.Name} = ");
-                    objectToString(stringBuilder, levelVisited, indentLevel + 2, fieldInfo.GetValue(target));
-                    stringBuilder.AppendLine();
+                    if (!fieldInfo.IsStatic) {
+                        stringBuilder.Append($"{fieldIndent}{fieldInfo.Name} = ");
+                        objectToString(stringBuilder, levelVisited, indentLevel + 2, fieldInfo.GetValue(target));
+                        stringBuilder.AppendLine();
+                    }
                 }
                 stringBuilder.Append(' ', indentLevel);
                 stringBuilder.Append('}');

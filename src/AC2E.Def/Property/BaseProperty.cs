@@ -7,9 +7,7 @@ namespace AC2E.Def {
 
         NativeType nativeType => NativeType.BASEPROPERTY;
 
-        public uint name; // m_propertyName
-        [PackageIgnore]
-        public string nameStr;
+        public PropertyName name; // m_propertyName
         public PropertyType type; // m_propertyType
         public PropertyGroupName group; // m_propertyGroup
         public object value; // m_propertyValue
@@ -19,9 +17,8 @@ namespace AC2E.Def {
         }
 
         public BaseProperty(AC2Reader data) {
-            name = data.ReadUInt32();
-            BasePropertyDesc propertyDesc = MasterProperty.instance.properties[name];
-            nameStr = MasterProperty.instance.enumMapper.idToString[name];
+            name = (PropertyName)data.ReadUInt32();
+            BasePropertyDesc propertyDesc = MasterProperty.instance.properties[(uint)name];
             type = propertyDesc.type;
             group = propertyDesc.group;
             switch (type) {
@@ -56,7 +53,7 @@ namespace AC2E.Def {
                     value = new StringInfo(data);
                     break;
                 case PropertyType.PACKAGE_ID:
-                    value = data.ReadPackageId();
+                    value = (PackageType)data.ReadUInt32();
                     break;
                 case PropertyType.LONG_INTEGER:
                     value = data.ReadInt64();
@@ -70,7 +67,7 @@ namespace AC2E.Def {
         }
 
         public void write(AC2Writer data) {
-            data.Write(name);
+            data.Write((uint)name);
             switch (type) {
                 case PropertyType.BOOL:
                     data.Write((bool)value);
@@ -103,7 +100,7 @@ namespace AC2E.Def {
                     ((StringInfo)value).write(data);
                     break;
                 case PropertyType.PACKAGE_ID:
-                    data.Write((PackageId)value);
+                    data.Write((uint)value);
                     break;
                 case PropertyType.LONG_INTEGER:
                     data.Write((long)value);

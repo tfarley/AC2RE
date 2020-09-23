@@ -1,5 +1,6 @@
 ﻿namespace AC2E.Def {
 
+    // Dat file 56000005
     public enum PackageType : uint {
         UNDEF = 0,
         BalanceExceptionList = 0x00000015,

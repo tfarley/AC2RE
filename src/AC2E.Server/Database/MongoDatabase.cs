@@ -21,13 +21,18 @@ namespace AC2E.Server.Database {
                 ConventionRegistry.Register(
                     "GlobalConventions",
                     new ConventionPack {
-                        new IgnoreExtraElementsConvention(true)
+                        new DatabaseIgnoreConvention(),
+                        new IgnoreIfDefaultConvention(true),
+                        new IgnoreExtraElementsConvention(true),
                     },
                     type => true);
+
+                BsonSerializer.RegisterSerializationProvider(new SerializationProvider());
 
                 BsonSerializer.RegisterSerializer(new GuidIdSerializer<AccountId>(id => new AccountId(id), v => v.id));
                 BsonSerializer.RegisterSerializer(new GuidIdSerializer<CharacterId>(id => new CharacterId(id), v => v.id));
                 BsonSerializer.RegisterSerializer(new QuaternionSerializer());
+                BsonSerializer.RegisterSerializer(new RGBAColorSerializer());
                 BsonSerializer.RegisterSerializer(new StringInfoSerializer());
                 BsonSerializer.RegisterSerializer(new UInt32IdSerializer<CellId>(id => new CellId(id), v => v.id));
                 BsonSerializer.RegisterSerializer(new UInt32IdSerializer<DataId>(id => new DataId(id), v => v.id));

@@ -11,7 +11,7 @@
         public GameplayOptionsProfile options; // _options
         public SkillRepository skills; // _skills
         public EffectRegistry effectRegistry; // _regEffect
-        public uint filledInventoryLocations; // _filledInvLocs
+        public InvLoc filledInventoryLocations; // _filledInvLocs
         public ARHash<InventProfile> inventoryByLocationTable; // _invByLocTable
         public LRHash<InventProfile> inventoryByIdTable; // _invByIIDTable
         public RList<ContainerSegmentDescriptor> containerSegments; // _ContainerSegments
@@ -31,7 +31,7 @@
             options = data.UnpackPackage<GameplayOptionsProfile>();
             skills = data.UnpackPackage<SkillRepository>();
             effectRegistry = data.UnpackPackage<EffectRegistry>();
-            filledInventoryLocations = data.UnpackUInt32();
+            filledInventoryLocations = (InvLoc)data.UnpackUInt32();
             inventoryByLocationTable = data.UnpackPackage<ARHash<IPackage>>().to<InventProfile>();
             inventoryByIdTable = data.UnpackPackage<LRHash<IPackage>>().to<InventProfile>();
             containerSegments = data.UnpackPackage<RList<IPackage>>().to<ContainerSegmentDescriptor>();
@@ -48,7 +48,7 @@
             data.Pack(options);
             data.Pack(skills);
             data.Pack(effectRegistry);
-            data.Pack(filledInventoryLocations);
+            data.Pack((uint)filledInventoryLocations);
             data.Pack(inventoryByLocationTable);
             data.Pack(inventoryByIdTable);
             data.Pack(containerSegments);

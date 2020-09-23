@@ -18,8 +18,7 @@ namespace AC2E.Server.Database {
         private IMongoCollection<Account> setupAccounts() {
             if (!inited) {
                 BsonClassMap.RegisterClassMap<Account>(c => {
-                    c.autoMapCustom();
-                    c.MapIdField(r => r.id);
+                    c.AutoMap();
                     c.MapCreator(r => new Account(r.id));
                 });
             }
@@ -28,13 +27,13 @@ namespace AC2E.Server.Database {
 
             if (!inited) {
                 accounts.Indexes.CreateOne(new CreateIndexModel<Account>(
-                Builders<Account>.IndexKeys.Ascending(r => r.userName),
-                new CreateIndexOptions<Account>() { Unique = true }));
+                    Builders<Account>.IndexKeys.Ascending(r => r.userName),
+                    new CreateIndexOptions<Account>() { Unique = true }));
 
                 accounts.Indexes.CreateOne(new CreateIndexModel<Account>(
                     Builders<Account>.IndexKeys
-                    .Ascending(r => r.userName)
-                    .Ascending(r => r.password)));
+                        .Ascending(r => r.userName)
+                        .Ascending(r => r.password)));
             }
 
             return accounts;

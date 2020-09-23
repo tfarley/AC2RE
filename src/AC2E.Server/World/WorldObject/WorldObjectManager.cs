@@ -12,8 +12,9 @@ namespace AC2E.Server {
         private readonly PacketHandler packetHandler;
         private readonly PlayerManager playerManager;
         private readonly InstanceIdGenerator instanceIdGenerator;
+        private bool loadedWorld;
+        private readonly HashSet<InstanceId> loadedContainers = new HashSet<InstanceId>();
         private readonly Dictionary<InstanceId, WorldObject> worldObjects = new Dictionary<InstanceId, WorldObject>();
-        private readonly Dictionary<InstanceId, WorldObject> inWorldObjects = new Dictionary<InstanceId, WorldObject>();
 
         public WorldObjectManager(WorldDatabase worldDb, PacketHandler packetHandler, PlayerManager playerManager) {
             this.worldDb = worldDb;
@@ -30,15 +31,9 @@ namespace AC2E.Server {
             return (worldObject == null || worldObject.deleted) ? null : worldObject;
         }
 
-        public WorldObject getInWorld(InstanceId id) {
-            return inWorldObjects.GetValueOrDefault(id, null);
-        }
-
         public void enterWorld(WorldObject worldObject) {
-            if (!inWorldObjects.ContainsKey(worldObject.id)) {
+            if (!worldObject.inWorld) {
                 worldObject.inWorld = true;
-
-                inWorldObjects[worldObject.id] = worldObject;
 
                 playerManager.broadcastSend(new CreateObjectMsg {
                     id = worldObject.id,
@@ -49,11 +44,15 @@ namespace AC2E.Server {
             }
         }
 
-        public void leaveWorld(WorldObject worldObject) {
-            if (inWorldObjects.ContainsKey(worldObject.id)) {
-                worldObject.inWorld = false;
+        public void enterWorld(IEnumerable<WorldObject> worldObjects) {
+            foreach (WorldObject worldObject in worldObjects) {
+                enterWorld(worldObject);
+            }
+        }
 
-                inWorldObjects.Remove(worldObject.id);
+        public void leaveWorld(WorldObject worldObject) {
+            if (worldObject.inWorld) {
+                worldObject.inWorld = false;
 
                 playerManager.broadcastSend(new DestroyObjectMsg {
                     idWithStamp = new InstanceIdWithStamp { id = worldObject.id, instanceStamp = worldObject.instanceStamp, otherStamp = 0 },
@@ -63,13 +62,51 @@ namespace AC2E.Server {
             }
         }
 
-        public void loadAllInWorld() {
-            foreach (WorldObject worldObject in worldDb.getWorldObjectsInWorld()) {
-                if (!worldObjects.ContainsKey(worldObject.id)) {
-                    worldObjects[worldObject.id] = worldObject;
-                    enterWorld(worldObject);
+        public void leaveWorld(IEnumerable<WorldObject> worldObjects) {
+            foreach (WorldObject worldObject in worldObjects) {
+                leaveWorld(worldObject);
+            }
+        }
+
+        private void loadAllInWorld() {
+            if (!loadedWorld) {
+                loadedWorld = true;
+                List<WorldObject> dbWorldObjects = worldDb.getWorldObjectsInWorld();
+                foreach (WorldObject worldObject in dbWorldObjects) {
+                    worldObjects.TryAdd(worldObject.id, worldObject);
                 }
             }
+        }
+
+        public List<WorldObject> getAllInWorld() {
+            loadAllInWorld();
+            List<WorldObject> worldObjects = new List<WorldObject>();
+            foreach (WorldObject worldObject in worldObjects) {
+                if (worldObject.inWorld) {
+                    worldObjects.Add(worldObject);
+                }
+            }
+            return worldObjects;
+        }
+
+        private void loadWithContainer(InstanceId containerId) {
+            if (loadedContainers.Add(containerId)) {
+                List<WorldObject> dbWorldObjects = worldDb.getWorldObjectsWithContainer(containerId);
+                foreach (WorldObject worldObject in dbWorldObjects) {
+                    worldObjects.TryAdd(worldObject.id, worldObject);
+                }
+            }
+        }
+
+        public List<WorldObject> getAllInContainer(InstanceId containerId) {
+            loadWithContainer(containerId);
+            List<WorldObject> contents = new List<WorldObject>();
+            foreach (WorldObject worldObject in worldObjects.Values) {
+                if (worldObject.weenie.containerId == containerId) {
+                    contents.Add(worldObject);
+                }
+            }
+            return contents;
         }
 
         public WorldObject create() {
@@ -79,13 +116,15 @@ namespace AC2E.Server {
         }
 
         public void syncNewClient(ClientId clientId) {
-            foreach (WorldObject worldObject in inWorldObjects.Values) {
-                packetHandler.send(clientId, new CreateObjectMsg {
-                    id = worldObject.id,
-                    visualDesc = worldObject.visual,
-                    physicsDesc = worldObject.physics,
-                    weenieDesc = worldObject.weenie,
-                });
+            foreach (WorldObject worldObject in worldObjects.Values) {
+                if (worldObject.inWorld) {
+                    packetHandler.send(clientId, new CreateObjectMsg {
+                        id = worldObject.id,
+                        visualDesc = worldObject.visual,
+                        physicsDesc = worldObject.physics,
+                        weenieDesc = worldObject.weenie,
+                    });
+                }
             }
         }
 

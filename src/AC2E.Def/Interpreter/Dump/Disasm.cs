@@ -27,7 +27,7 @@ namespace AC2E.Def {
         public readonly Dictionary<uint, string> funcLocToName = new Dictionary<uint, string>();
         public readonly Dictionary<string, FrameDebugInfo> nameToFrame = new Dictionary<string, FrameDebugInfo>();
         public readonly Dictionary<FunctionId, KeyValuePair<ExportData, ExportFunctionData>> addrToTarget = new Dictionary<FunctionId, KeyValuePair<ExportData, ExportFunctionData>>();
-        public readonly Dictionary<PackageTypeId, ExportData> packageTypeIdToExport = new Dictionary<PackageTypeId, ExportData>();
+        public readonly Dictionary<PackageType, ExportData> packageTypeToExport = new Dictionary<PackageType, ExportData>();
 
         public readonly List<Instruction> instructions = new List<Instruction>();
 
@@ -43,7 +43,7 @@ namespace AC2E.Def {
             }
 
             foreach (ExportData export in byteStream.exports) {
-                packageTypeIdToExport[export.args.packageTypeId] = export;
+                packageTypeToExport[export.args.packageType] = export;
                 foreach (ExportFunctionData func in export.funcs) {
                     addrToTarget[func.funcId] = new KeyValuePair<ExportData, ExportFunctionData>(export, func);
                 }
@@ -74,8 +74,8 @@ namespace AC2E.Def {
                     case Opcode.NEW:
                     case Opcode.NEW_NATIVE:
                         i += 4;
-                        PackageTypeId packageTypeId = new PackageTypeId(BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i));
-                        instruction.targetPackage = packageTypeIdToExport[packageTypeId];
+                        PackageType packageType = (PackageType)(BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i));
+                        instruction.targetPackage = packageTypeToExport[packageType];
                         break;
                     case Opcode.NEW_STRING:
                         i += 4;
@@ -163,8 +163,8 @@ namespace AC2E.Def {
                     string[] fullNameSplit = functionName.Split("::");
                     string packageName = fullNameSplit[0];
                     string funcName = fullNameSplit[1];
-                    PackageTypeId packageTypeId = byteStream.vTable.packageTypeIdStrMap[packageName];
-                    FunctionId funcId = packageTypeIdToExport[packageTypeId].funcs.Find(f => f.name == funcName).funcId;
+                    PackageType packageType = byteStream.vTable.packageNameToType[packageName];
+                    FunctionId funcId = packageTypeToExport[packageType].funcs.Find(f => f.name == funcName).funcId;
                     funcId.isAbs = true;
                     data.WriteLine();
                     data.Write($"0x{funcId.id:X8} func ");
@@ -196,7 +196,7 @@ namespace AC2E.Def {
                 if (instruction.targetPackage != null) {
                     data.Write($" {instruction.targetPackage.args.name}");
                     if (instruction.targetFunc == null) {
-                        data.Write($" (0x{instruction.targetPackage.args.packageTypeId:X8})");
+                        data.Write($" (0x{(uint)instruction.targetPackage.args.packageType:X8})");
                     }
                 }
                 if (instruction.targetFunc != null) {
