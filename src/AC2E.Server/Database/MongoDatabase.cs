@@ -40,6 +40,9 @@ namespace AC2E.Server.Database {
                 BsonSerializer.RegisterSerializer(new UInt64IdSerializer<InstanceId>(id => new InstanceId(id), v => v.id));
                 BsonSerializer.RegisterSerializer(new Vector3Serializer());
 
+                BsonClassMap.RegisterClassMap<Position>();
+                BsonClassMap.RegisterClassMap<Frame>();
+
                 mongoInited = true;
             }
 

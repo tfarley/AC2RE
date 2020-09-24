@@ -111,6 +111,10 @@ namespace AC2E.Server {
 
         public WorldObject create() {
             WorldObject newObject = new WorldObject(instanceIdGenerator.next());
+            newObject.physics = new PhysicsDesc();
+            newObject.visual = new VisualDesc();
+            newObject.weenie = new WeenieDesc();
+            newObject.qualities = new CBaseQualities();
             worldObjects[newObject.id] = newObject;
             return newObject;
         }

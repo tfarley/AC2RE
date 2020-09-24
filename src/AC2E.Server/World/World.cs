@@ -69,7 +69,7 @@ namespace AC2E.Server {
                 case MessageOpcode.CHARACTER_CREATE_EVENT: {
                         CharacterCreateMsg msg = (CharacterCreateMsg)genericMsg;
 
-                        WorldObject characterObject = CharacterGeneration.createCharacterObject(objectManager, contentManager, ARWIC_START_POS, msg.characterName, msg.species, msg.sex, msg.physiqueTypeValues);
+                        WorldObject characterObject = CharacterGen.createCharacterObject(objectManager, contentManager, ARWIC_START_POS, msg.characterName, msg.species, msg.sex, msg.physiqueTypeValues);
 
                         Character character = characterManager.createWithAccountAndWorldObject(player.account.id, characterObject.id);
 
@@ -120,77 +120,51 @@ namespace AC2E.Server {
                             regionId = 1,
                         });
 
-                        objectManager.enterWorld(character);
-
-                        packetHandler.send(player.clientId, new PlayerDescMsg {
-                            qualities = new CBaseQualities {
-                                packFlags = CBaseQualities.PackFlag.WEENIE_DESC | CBaseQualities.PackFlag.INT_HASH_TABLE | CBaseQualities.PackFlag.BOOL_HASH_TABLE | CBaseQualities.PackFlag.FLOAT_HASH_TABLE | CBaseQualities.PackFlag.TIMESTAMP_HASH_TABLE | CBaseQualities.PackFlag.DATA_ID_HASH_TABLE | CBaseQualities.PackFlag.LONG_INT_HASH_TABLE,
-                                did = new DataId(0x81000530),
-                                weenieDesc = character.weenie,
-                                intTable = new Dictionary<IntStat, int> {
-                                    { IntStat.CONTAINERMAXCAPACITY, 78 },
-                                    { IntStat.SPECIES, 1 },
-                                    { IntStat.SEX, 4096 },
-                                    { IntStat.CLASS, 2 },
-                                    { IntStat.LEVEL, 7 },
-                                    { IntStat.GROOVELEVEL, -1 },
-                                    { IntStat.MONEY, 391 },
-                                    { IntStat.HEALTH_CURRENTLEVEL, 310 },
-                                    { IntStat.VIGOR_CURRENTLEVEL, 280 },
-                                    { IntStat.HEALTH_CACHEDMAX, 280 },
-                                    { IntStat.VIGOR_CACHEDMAX, 280 },
-                                },
-                                longTable = new Dictionary<LongIntStat, long> {
-                                    { LongIntStat.TOTALXP, 902 },
-                                    { LongIntStat.AVAILABLEXP, 722 },
-                                    { LongIntStat.TOTALCRAFTXP, 80 },
-                                    { LongIntStat.AVAILABLECRAFTXP, 40 },
-                                },
-                                boolTable = new Dictionary<BoolStat, bool> {
-                                    { BoolStat.PLAYER_ISONMOUNT, false }
-                                },
-                                floatTable = new Dictionary<FloatStat, float> {
-                                    { FloatStat.CURRENTVITAE, 100.0f },
-                                    { FloatStat.HEALTH_REGENRATE, 1.0f },
-                                    { FloatStat.VIGOR_REGENRATE, 1.0f },
-                                    { FloatStat.SKILL_RESETTIMEDURATION, 30.0f },
-                                },
-                                doubleTable = new Dictionary<TimestampStat, double> {
-                                    { TimestampStat.SKILL_TIMELASTRESET, 121629267.45585053 }
-                                },
-                                dataIdTable = new Dictionary<DataIdStat, DataId> {
-                                    { DataIdStat.PHYSOBJ, new DataId(0x470000CD) }
-                                },
-                            },
-                        });
-
                         ARHash<InventProfile> inventoryByLocationTable = new ARHash<InventProfile>();
                         LRHash<InventProfile> inventoryByIdTable = new LRHash<InventProfile>();
                         InstanceIdList contentIds = new InstanceIdList();
 
                         List<WorldObject> playerInventory = objectManager.getAllInContainer(character.id);
-                        uint slotCounter = 1;
                         foreach (WorldObject item in playerInventory) {
-                            InventProfile profile = new InventProfile {
-                                visualDescInfo = new VisualDescInfo {
-                                    scale = Vector3.One,
-                                    cachedVisualDesc = item.visual,
-                                },
-                                slotsTaken = slotCounter,
-                                location = (InvLoc)slotCounter,
-                                it = 1,
-                                id = item.id,
-                            };
-                            if (item.visual.globalAppearanceModifiers != null) {
-                                profile.visualDescInfo.appInfoHash = new AppInfoHash {
-                                    contents = item.visual.globalAppearanceModifiers.appearanceInfos,
-                                };
+                            EntityDef weenieDef = contentManager.getEntityDef(item.weenie.entityDid);
+                            if (weenieDef != null) {
+                                if (weenieDef.enums.TryGetValue(PropertyName.ITEM_PREFERREDINVENTORYLOCATION, out uint startSlot)) {
+                                    InventProfile profile = new InventProfile {
+                                        visualDescInfo = new VisualDescInfo {
+                                            scale = Vector3.One,
+                                            cachedVisualDesc = item.visual,
+                                        },
+                                        slotsTaken = startSlot,
+                                        location = (InvLoc)startSlot,
+                                        it = 1,
+                                        id = item.id,
+                                    };
+                                    if (item.visual.globalAppearanceModifiers != null) {
+                                        profile.visualDescInfo.appInfoHash = new AppInfoHash();
+                                        foreach (var entry in item.visual.globalAppearanceModifiers.appearanceInfos) {
+                                            profile.visualDescInfo.appInfoHash[entry.Key] = entry.Value;
+                                        }
+                                    }
+                                    inventoryByLocationTable[startSlot] = profile;
+                                    inventoryByIdTable[item.id.id] = profile;
+                                } else {
+                                    contentIds.Add(item.id);
+                                }
+
+                                if (weenieDef.dids.TryGetValue(PropertyName.ITEM_WORNAPPEARANCEFILE1, out DataId wornAppearanceDid)) {
+                                    character.visual.globalAppearanceModifiers.appearanceInfos[wornAppearanceDid] = new Dictionary<AppearanceKey, float> {
+                                        { AppearanceKey.CLOTHINGCOLOR, 0.2f },
+                                        { AppearanceKey.WORN, 1.0f },
+                                    };
+                                }
                             }
-                            inventoryByLocationTable[slotCounter] = profile;
-                            inventoryByIdTable[item.id.id] = profile;
-                            //contentIds.contents.Add(item.id);
-                            slotCounter <<= 1;
                         }
+
+                        objectManager.enterWorld(character);
+
+                        packetHandler.send(player.clientId, new PlayerDescMsg {
+                            qualities = character.qualities,
+                        });
 
                         objectManager.enterWorld(playerInventory);
 
@@ -209,24 +183,22 @@ namespace AC2E.Server {
                                     }
                                 },
                                 quests = new GMQuestInfoList {
-                                    contents = new List<GMQuestInfo> {
-                                        new GMQuestInfo {
-                                            questId = QuestId.QUESTFINDEXPLORERARWIC,
-                                            questName = new StringInfo(new DataId(0x250017EB), 2824895724),
-                                            questDescription = new StringInfo(new DataId(0x250017EB), 1816499044),
-                                            iconDid = new DataId(0x4100034B),
-                                            challengeLevel = -999,
-                                            questStatus = QuestStatus.UNDERWAY,
-                                            curPhase = 1,
-                                            curJournalEntry = new StringInfo(new DataId(0x250017EB), 777789010),
-                                            bestowalTime = 129500898.25912432,
-                                            doneTime = -1355582621.7408757,
-                                            expired = true,
-                                            maxedOut = true,
-                                            secondsRemaining = 10800,
-                                            secondsUntilRetry = 0,
-                                            playFxOnUpdate = false,
-                                        },
+                                    new GMQuestInfo {
+                                        questId = QuestId.QUESTFINDEXPLORERARWIC,
+                                        questName = new StringInfo(new DataId(0x250017EB), 2824895724),
+                                        questDescription = new StringInfo(new DataId(0x250017EB), 1816499044),
+                                        iconDid = new DataId(0x4100034B),
+                                        challengeLevel = -999,
+                                        questStatus = QuestStatus.UNDERWAY,
+                                        curPhase = 1,
+                                        curJournalEntry = new StringInfo(new DataId(0x250017EB), 777789010),
+                                        bestowalTime = 129500898.25912432,
+                                        doneTime = -1355582621.7408757,
+                                        expired = true,
+                                        maxedOut = true,
+                                        secondsRemaining = 10800,
+                                        secondsUntilRetry = 0,
+                                        playFxOnUpdate = false,
                                     },
                                 },
                                 options = new GameplayOptionsProfile {

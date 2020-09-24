@@ -12,9 +12,11 @@ namespace AC2E.Server {
         public bool inWorld;
         public float heading;
         public Vector3 motion;
+
         public PhysicsDesc physics;
         public VisualDesc visual;
         public WeenieDesc weenie;
+        public CBaseQualities qualities;
 
         public WorldObject(InstanceId id) {
             this.id = id;

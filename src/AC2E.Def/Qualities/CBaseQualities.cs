@@ -26,17 +26,17 @@ namespace AC2E.Def {
         public PackFlag packFlags;
         public DataId did; // via DBObj::Pack_Type
         public WeenieDesc weenieDesc; // m_wdesc
-        public Dictionary<IntStat, int> intTable; // m_int_table
-        public Dictionary<LongIntStat, long> longTable; // m_lint_table
-        public Dictionary<BoolStat, bool> boolTable; // m_pbool_table
-        public Dictionary<FloatStat, float> floatTable; // m_float_table
-        public Dictionary<TimestampStat, double> doubleTable; // m_ts_table
-        public Dictionary<StringStat, string> stringTable; // m_str_table
-        public Dictionary<DataIdStat, DataId> dataIdTable; // m_did_table
-        public Dictionary<InstanceIdStat, InstanceId> instanceIdTable; // m_iid_table
-        public Dictionary<PositionStat, Position> posTable; // m_pos_table
-        public Dictionary<StringInfoStat, StringInfo> stringInfoTable; // m_si_table
-        public Dictionary<uint, PackageId> packageIdTable; // m_pid_table
+        public Dictionary<IntStat, int> ints; // m_int_table
+        public Dictionary<LongIntStat, long> longs; // m_lint_table
+        public Dictionary<BoolStat, bool> bools; // m_pbool_table
+        public Dictionary<FloatStat, float> floats; // m_float_table
+        public Dictionary<TimestampStat, double> doubles; // m_ts_table
+        public Dictionary<StringStat, string> strings; // m_str_table
+        public Dictionary<DataIdStat, DataId> dids; // m_did_table
+        public Dictionary<InstanceIdStat, InstanceId> ids; // m_iid_table
+        public Dictionary<PositionStat, Position> poss; // m_pos_table
+        public Dictionary<StringInfoStat, StringInfo> stringInfos; // m_si_table
+        public Dictionary<uint, PackageId> packageIds; // m_pid_table
 
         public CBaseQualities() {
 
@@ -49,37 +49,37 @@ namespace AC2E.Def {
                 weenieDesc = new WeenieDesc(data);
             }
             if (packFlags.HasFlag(PackFlag.INT_HASH_TABLE)) {
-                intTable = data.ReadDictionary(() => (IntStat)data.ReadUInt32(), data.ReadInt32);
+                ints = data.ReadDictionary(() => (IntStat)data.ReadUInt32(), data.ReadInt32);
             }
             if (packFlags.HasFlag(PackFlag.BOOL_HASH_TABLE)) {
-                boolTable = data.ReadDictionary(() => (BoolStat)data.ReadUInt32(), data.ReadBoolean);
+                bools = data.ReadDictionary(() => (BoolStat)data.ReadUInt32(), data.ReadBoolean);
             }
             if (packFlags.HasFlag(PackFlag.FLOAT_HASH_TABLE)) {
-                floatTable = data.ReadDictionary(() => (FloatStat)data.ReadUInt32(), data.ReadSingle);
+                floats = data.ReadDictionary(() => (FloatStat)data.ReadUInt32(), data.ReadSingle);
             }
             if (packFlags.HasFlag(PackFlag.TIMESTAMP_HASH_TABLE)) {
-                doubleTable = data.ReadDictionary(() => (TimestampStat)data.ReadUInt32(), data.ReadDouble);
+                doubles = data.ReadDictionary(() => (TimestampStat)data.ReadUInt32(), data.ReadDouble);
             }
             if (packFlags.HasFlag(PackFlag.STRING_HASH_TABLE)) {
-                stringTable = data.ReadDictionary(() => (StringStat)data.ReadUInt32(), data.ReadString);
+                strings = data.ReadDictionary(() => (StringStat)data.ReadUInt32(), data.ReadString);
             }
             if (packFlags.HasFlag(PackFlag.DATA_ID_HASH_TABLE)) {
-                dataIdTable = data.ReadDictionary(() => (DataIdStat)data.ReadUInt32(), data.ReadDataId);
+                dids = data.ReadDictionary(() => (DataIdStat)data.ReadUInt32(), data.ReadDataId);
             }
             if (packFlags.HasFlag(PackFlag.INSTANCE_ID_HASH_TABLE)) {
-                instanceIdTable = data.ReadDictionary(() => (InstanceIdStat)data.ReadUInt32(), data.ReadInstanceId);
+                ids = data.ReadDictionary(() => (InstanceIdStat)data.ReadUInt32(), data.ReadInstanceId);
             }
             if (packFlags.HasFlag(PackFlag.POSITION_HASH_TABLE)) {
-                posTable = data.ReadDictionary(() => (PositionStat)data.ReadUInt32(), () => new Position(data));
+                poss = data.ReadDictionary(() => (PositionStat)data.ReadUInt32(), () => new Position(data));
             }
             if (packFlags.HasFlag(PackFlag.STRING_INFO_HASH_TABLE)) {
-                stringInfoTable = data.ReadDictionary(() => (StringInfoStat)data.ReadUInt32(), () => new StringInfo(data));
+                stringInfos = data.ReadDictionary(() => (StringInfoStat)data.ReadUInt32(), () => new StringInfo(data));
             }
             if (packFlags.HasFlag(PackFlag.PACKAGE_ID_HASH_TABLE)) {
-                packageIdTable = data.ReadDictionary(data.ReadUInt32, data.ReadPackageId);
+                packageIds = data.ReadDictionary(data.ReadUInt32, data.ReadPackageId);
             }
             if (packFlags.HasFlag(PackFlag.LONG_INT_HASH_TABLE)) {
-                longTable = data.ReadDictionary(() => (LongIntStat)data.ReadUInt32(), data.ReadInt64);
+                longs = data.ReadDictionary(() => (LongIntStat)data.ReadUInt32(), data.ReadInt64);
             }
         }
 
@@ -90,37 +90,37 @@ namespace AC2E.Def {
                 weenieDesc.write(data);
             }
             if (packFlags.HasFlag(PackFlag.INT_HASH_TABLE)) {
-                data.Write(intTable, v => data.Write((uint)v), data.Write);
+                data.Write(ints, v => data.Write((uint)v), data.Write);
             }
             if (packFlags.HasFlag(PackFlag.BOOL_HASH_TABLE)) {
-                data.Write(boolTable, v => data.Write((uint)v), data.Write);
+                data.Write(bools, v => data.Write((uint)v), data.Write);
             }
             if (packFlags.HasFlag(PackFlag.FLOAT_HASH_TABLE)) {
-                data.Write(floatTable, v => data.Write((uint)v), data.Write);
+                data.Write(floats, v => data.Write((uint)v), data.Write);
             }
             if (packFlags.HasFlag(PackFlag.TIMESTAMP_HASH_TABLE)) {
-                data.Write(doubleTable, v => data.Write((uint)v), data.Write);
+                data.Write(doubles, v => data.Write((uint)v), data.Write);
             }
             if (packFlags.HasFlag(PackFlag.STRING_HASH_TABLE)) {
-                data.Write(stringTable, v => data.Write((uint)v), data.Write);
+                data.Write(strings, v => data.Write((uint)v), data.Write);
             }
             if (packFlags.HasFlag(PackFlag.DATA_ID_HASH_TABLE)) {
-                data.Write(dataIdTable, v => data.Write((uint)v), data.Write);
+                data.Write(dids, v => data.Write((uint)v), data.Write);
             }
             if (packFlags.HasFlag(PackFlag.INSTANCE_ID_HASH_TABLE)) {
-                data.Write(instanceIdTable, v => data.Write((uint)v), data.Write);
+                data.Write(ids, v => data.Write((uint)v), data.Write);
             }
             if (packFlags.HasFlag(PackFlag.POSITION_HASH_TABLE)) {
-                data.Write(posTable, v => data.Write((uint)v), v => v.write(data));
+                data.Write(poss, v => data.Write((uint)v), v => v.write(data));
             }
             if (packFlags.HasFlag(PackFlag.STRING_INFO_HASH_TABLE)) {
-                data.Write(stringInfoTable, v => data.Write((uint)v), v => v.write(data));
+                data.Write(stringInfos, v => data.Write((uint)v), v => v.write(data));
             }
             if (packFlags.HasFlag(PackFlag.PACKAGE_ID_HASH_TABLE)) {
-                data.Write(packageIdTable, data.Write, data.Write);
+                data.Write(packageIds, data.Write, data.Write);
             }
             if (packFlags.HasFlag(PackFlag.LONG_INT_HASH_TABLE)) {
-                data.Write(longTable, v => data.Write((uint)v), data.Write);
+                data.Write(longs, v => data.Write((uint)v), data.Write);
             }
         }
     }

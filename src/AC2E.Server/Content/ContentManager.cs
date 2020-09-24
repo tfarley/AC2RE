@@ -1,15 +1,14 @@
 ﻿using AC2E.Def;
-using AC2E.Server.Database;
 using System;
 using System.Collections.Generic;
 
 namespace AC2E.Server {
 
-    internal class ContentManager {
+    internal class ContentManager : IDisposable {
 
         private readonly DatReader portalDatReader;
         private CharGenMatrix charGenMatrix;
-        private Dictionary<DataId, EntityDesc> entityDescCache = new Dictionary<DataId, EntityDesc>();
+        private Dictionary<DataId, EntityDef> entityDefCache = new Dictionary<DataId, EntityDef>();
         private Dictionary<DataId, VisualDesc> visualDescCache = new Dictionary<DataId, VisualDesc>();
 
         public ContentManager() {
@@ -20,6 +19,10 @@ namespace AC2E.Server {
                     MasterProperty.instance = new MasterProperty(data);
                 }
             }
+        }
+
+        public void Dispose() {
+            portalDatReader.Dispose();
         }
 
         public CharGenMatrix getCharGenMatrix() {
@@ -33,14 +36,15 @@ namespace AC2E.Server {
             return charGenMatrix;
         }
 
-        public EntityDesc getEntityDesc(DataId did) {
-            if (!entityDescCache.TryGetValue(did, out EntityDesc entityDesc)) {
+        public EntityDef getEntityDef(DataId did) {
+            if (!entityDefCache.TryGetValue(did, out EntityDef entityDef)) {
                 using (AC2Reader data = portalDatReader.getFileReader(did)) {
-                    entityDesc = new EntityDesc(data);
-                    entityDescCache[did] = entityDesc;
+                    EntityDesc entityDesc = new EntityDesc(data);
+                    entityDef = new EntityDef(entityDesc);
+                    entityDefCache[did] = entityDef;
                 }
             }
-            return entityDesc;
+            return entityDef;
         }
 
         public VisualDesc getVisualDesc(DataId did) {

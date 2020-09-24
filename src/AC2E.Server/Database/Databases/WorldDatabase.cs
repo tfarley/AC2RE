@@ -65,14 +65,17 @@ namespace AC2E.Server.Database {
                     c.UnmapField(r => r.instanceStamp);
                 });
 
+                BsonClassMap.RegisterClassMap<PhysicsDesc.SliderData>();
+                BsonClassMap.RegisterClassMap<FXScalarAndTarget>();
+
                 BsonClassMap.RegisterClassMap<PhysicsDesc>(c => {
                     c.AutoMap();
                     c.MapField(r => r.sliders).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<uint, PhysicsDesc.SliderData>>()
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
-                        .WithValueSerializer(new BsonClassMapSerializer<PhysicsDesc.SliderData>(new BsonClassMap<PhysicsDesc.SliderData>().Freeze())));
+                        .WithValueSerializer(BsonUtil.existingClassSerializer<PhysicsDesc.SliderData>()));
                     c.MapField(r => r.fx).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<uint, FXScalarAndTarget>>()
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
-                        .WithValueSerializer(new BsonClassMapSerializer<FXScalarAndTarget>(new BsonClassMap<FXScalarAndTarget>().Freeze())));
+                        .WithValueSerializer(BsonUtil.existingClassSerializer<FXScalarAndTarget>()));
                 });
 
                 BsonClassMap.RegisterClassMap<BehaviorParams>(c => {
@@ -103,6 +106,39 @@ namespace AC2E.Server.Database {
 
                 BsonClassMap.RegisterClassMap<IconDesc>();
                 BsonClassMap.RegisterClassMap<IconLayerDesc>();
+
+                BsonClassMap.RegisterClassMap<CBaseQualities>(c => {
+                    c.AutoMap();
+                    c.UnmapField(r => r.weenieDesc);
+                    c.MapField(r => r.ints).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<IntStat, int>>()
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String)));
+                    c.MapField(r => r.longs).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<LongIntStat, long>>()
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String)));
+                    c.MapField(r => r.bools).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<BoolStat, bool>>()
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String)));
+                    c.MapField(r => r.floats).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<FloatStat, float>>()
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
+                        .WithValueSerializer(new SingleSerializer()));
+                    c.MapField(r => r.doubles).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<TimestampStat, double>>()
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String)));
+                    c.MapField(r => r.strings).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<StringStat, string>>()
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String)));
+                    c.MapField(r => r.dids).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<DataIdStat, DataId>>()
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
+                        .WithValueSerializer(new UInt32IdSerializer<DataId>(id => new DataId(id), v => v.id)));
+                    c.MapField(r => r.ids).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<InstanceIdStat, InstanceId>>()
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
+                        .WithValueSerializer(new UInt64IdSerializer<InstanceId>(id => new InstanceId(id), v => v.id)));
+                    c.MapField(r => r.poss).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<PositionStat, Position>>()
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
+                        .WithValueSerializer(BsonUtil.existingClassSerializer<Position>()));
+                    c.MapField(r => r.stringInfos).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<StringInfoStat, StringInfo>>()
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
+                        .WithValueSerializer(new StringInfoSerializer()));
+                    c.MapField(r => r.packageIds).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<uint, PackageId>>()
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
+                        .WithValueSerializer(new UInt32IdSerializer<PackageId>(id => new PackageId(id), v => v.id)));
+                });
 
                 BsonClassMap.RegisterClassMap<WeenieDesc>();
             }

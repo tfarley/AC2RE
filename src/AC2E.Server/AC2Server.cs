@@ -1,5 +1,4 @@
-﻿using AC2E.Def;
-using AC2E.Server.Database;
+﻿using AC2E.Server.Database;
 using Serilog;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -25,8 +24,6 @@ namespace AC2E.Server {
         private ContentManager contentManager;
 
         private PacketHandler packetHandler;
-
-        private DatReader portalDatReader;
 
         private World world;
 
@@ -97,15 +94,14 @@ namespace AC2E.Server {
             logonNetInterface.close();
             gameNetInterface.close();
 
-            portalDatReader.Dispose();
-            portalDatReader = null;
-
             world = null;
 
             packetHandler = null;
 
             accountManager = null;
             clientManager = null;
+            contentManager.Dispose();
+            contentManager = null;
 
             accountDb = null;
             worldDb = null;
