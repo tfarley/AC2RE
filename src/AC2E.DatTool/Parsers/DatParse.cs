@@ -354,5 +354,16 @@ namespace AC2E.DatTool {
                 Log.Warning($"File {did.id:X8} was not fully read ({data.BaseStream.Position} / {data.BaseStream.Length}).");
             }
         }
+
+        public static DataId getDidContainingOffset(DatReader datReader, uint offset) {
+            foreach (DataId did in datReader.dids) {
+                foreach ((uint blockOffset, int blockSize) in datReader.getFileBlocks(did)) {
+                    if (offset >= blockOffset && offset < blockOffset + blockSize) {
+                        return did;
+                    }
+                }
+            }
+            return DataId.NULL;
+        }
     }
 }

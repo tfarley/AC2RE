@@ -10,6 +10,7 @@ namespace AC2E.Server {
         public static WorldObject createCharacterObject(WorldObjectManager objectManager, ContentManager contentManager, Position startPos, string name, SpeciesType species, SexType sex, Dictionary<PhysiqueType, float> physiqueTypeValues) {
             Dictionary<PhysiqueType, Dictionary<float, Tuple<AppearanceKey, DataId>>> appProfileMap = new Dictionary<PhysiqueType, Dictionary<float, Tuple<AppearanceKey, DataId>>>();
 
+            CharacterGenSystem characterGenSystem = contentManager.getCharacterGenSystem();
             CharGenMatrix charGenMatrix = contentManager.getCharGenMatrix();
 
             foreach (KeyValuePair<uint, RList<IPackage>> physiqueAndAppProfiles in charGenMatrix.physiqueTypeModifierTable[(uint)species].to<ARHash<IPackage>>()[(uint)sex].to<RList<IPackage>>()) {
@@ -29,7 +30,7 @@ namespace AC2E.Server {
             GMRaceSexInfo raceSexInfo = charGenMatrix.raceSexInfoTable[(uint)species | (uint)sex];
 
             WorldObject character = objectManager.create();
-            ObjectGen.applyWeenie(character, contentManager, new DataId(0x47000530));
+            ObjectGen.applyWeenie(character, contentManager, characterGenSystem.playerEntityDid);
             ObjectGen.applyPhysics(character, contentManager, raceSexInfo.physObjDid);
             setCharacterPhysics(character.physics, startPos);
             setCharacterVisual(character.visual, appProfileMap, physiqueTypeValues);
@@ -60,13 +61,13 @@ namespace AC2E.Server {
             Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos = new Dictionary<DataId, Dictionary<AppearanceKey, float>>();
             foreach (KeyValuePair<PhysiqueType, float> physiqueTypeValue in physiqueTypeValues) {
                 if (appProfileMap.TryGetValue(physiqueTypeValue.Key, out Dictionary<float, Tuple<AppearanceKey, DataId>> modifierToAppProfiles)) {
-                    Tuple<AppearanceKey, DataId> app = modifierToAppProfiles[physiqueTypeValue.Value];
-                    if (app.Item2 != DataId.NULL) {
-                        if (!appearanceInfos.TryGetValue(app.Item2, out Dictionary<AppearanceKey, float> appToModfier)) {
+                    (AppearanceKey appKey, DataId appDid) = modifierToAppProfiles[physiqueTypeValue.Value];
+                    if (appDid != DataId.NULL) {
+                        if (!appearanceInfos.TryGetValue(appDid, out Dictionary<AppearanceKey, float> appToModfier)) {
                             appToModfier = new Dictionary<AppearanceKey, float>();
-                            appearanceInfos[app.Item2] = appToModfier;
+                            appearanceInfos[appDid] = appToModfier;
                         }
-                        appToModfier[app.Item1] = physiqueTypeValue.Value;
+                        appToModfier[appKey] = physiqueTypeValue.Value;
                     }
                 }
             }

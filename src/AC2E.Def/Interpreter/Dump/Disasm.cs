@@ -200,10 +200,10 @@ namespace AC2E.Def {
                     }
                 }
                 if (instruction.targetFunc != null) {
-                    writeFunction(data, $"{instruction.targetPackage.args.name}::{instruction.targetFunc.name}");
+                    writeFunction(data, $"::{instruction.targetFunc.name}");
                     FunctionId funcId = instruction.targetFunc.funcId;
                     funcId.isAbs = true;
-                    data.Write($" [0x{funcId.id:X8}]");
+                    data.Write($" [pkg 0x{funcId.packageNum:X4} func 0x{funcId.funcNum:X4} full id 0x{funcId.id:X8}]");
                 }
                 if (instruction.targetString != null) {
                     data.Write($" \"{instruction.targetString}\"");

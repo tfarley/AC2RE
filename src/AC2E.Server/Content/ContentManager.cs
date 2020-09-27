@@ -7,6 +7,7 @@ namespace AC2E.Server {
     internal class ContentManager : IDisposable {
 
         private readonly DatReader portalDatReader;
+        private CharacterGenSystem characterGenSystem;
         private CharGenMatrix charGenMatrix;
         private Dictionary<DataId, EntityDef> entityDefCache = new Dictionary<DataId, EntityDef>();
         private Dictionary<DataId, VisualDesc> visualDescCache = new Dictionary<DataId, VisualDesc>();
@@ -23,6 +24,17 @@ namespace AC2E.Server {
 
         public void Dispose() {
             portalDatReader.Dispose();
+        }
+
+        public CharacterGenSystem getCharacterGenSystem() {
+            if (characterGenSystem == null) {
+                using (AC2Reader data = portalDatReader.getFileReader(new DataId(0x70000096))) {
+                    WState wState = new WState(data);
+                    characterGenSystem = (CharacterGenSystem)wState.package;
+                }
+            }
+
+            return characterGenSystem;
         }
 
         public CharGenMatrix getCharGenMatrix() {

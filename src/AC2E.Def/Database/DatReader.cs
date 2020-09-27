@@ -130,5 +130,50 @@ namespace AC2E.Def {
                 offset = nextBlockOffset;
             }
         }
+
+        public List<Tuple<uint, int>> getFileBlocks(DataId did) {
+            BTEntry entry = didToEntry[did];
+            uint offset = entry.offset;
+            int size = entry.size;
+
+            List<Tuple<uint, int>> blocks = new List<Tuple<uint, int>>();
+
+            int remainingSize = size;
+            while (remainingSize > 0) {
+                data.BaseStream.Seek(offset, SeekOrigin.Begin);
+
+                int remainingBlockSize = (int)header.fileInfo.blockSize;
+
+                uint nextBlockOffset = data.ReadUInt32();
+                remainingBlockSize -= sizeof(uint);
+
+                if ((nextBlockOffset & BLOCK_FREE_FLAG) != 0) {
+                    throw new InvalidDataException($"Encountered free block in file at offset {offset:X8}.");
+                }
+
+                int sizeToRead = Math.Min(remainingSize, remainingBlockSize);
+                blocks.Add(new Tuple<uint, int>(offset, sizeToRead));
+                remainingSize -= sizeToRead;
+
+                offset = nextBlockOffset;
+            }
+
+            return blocks;
+        }
+
+        public uint backtraceOffsetToOriginBlock(uint offset) {
+            offset -= offset % header.fileInfo.blockSize;
+            data.BaseStream.Seek(offset, SeekOrigin.Begin);
+            while (offset > 0) {
+                data.BaseStream.Seek(-header.fileInfo.blockSize, SeekOrigin.Current);
+                uint prevBlockPointer = data.ReadUInt32();
+                data.BaseStream.Seek(-4, SeekOrigin.Current);
+                if (prevBlockPointer != offset && prevBlockPointer != (offset | BLOCK_FREE_FLAG)) {
+                    break;
+                }
+                offset -= header.fileInfo.blockSize;
+            }
+            return offset;
+        }
     }
 }
