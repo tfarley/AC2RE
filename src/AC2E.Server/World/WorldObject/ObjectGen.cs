@@ -1,6 +1,5 @@
 ﻿using AC2E.Def;
 using System;
-using System.Collections.Generic;
 
 namespace AC2E.Server {
 
@@ -12,21 +11,19 @@ namespace AC2E.Server {
                 throw new ArgumentException(entityDef.type.ToString());
             }
 
-            WeenieDesc weenie = worldObject.weenie;
-            weenie.packFlags = WeenieDesc.PackFlag.PHYSICS_TYPE_LOW_DWORD | WeenieDesc.PackFlag.PHYSICS_TYPE_HIGH_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD | WeenieDesc.PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD | WeenieDesc.PackFlag.ENTITY_DID;
+            DataId qualitiesDid = new DataId(0x81000000 + entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
+            worldObject.qualities = contentManager.getQualities(qualitiesDid);
+            worldObject.qualities.packFlags |= CBaseQualities.PackFlag.WEENIE_DESC;
+
+            WeenieDesc weenie = worldObject.qualities.weenieDesc;
             weenie.packageType = entityDef.packageType;
-            weenie.entityDid = entityDid;
-            weenie.name = entityDef.strings.GetValueOrDefault(PropertyName.NAME);
-            weenie.physicsTypeLow = 75497504;
-            weenie.movementEtherealLow = 1042284560;
-            weenie.placementEtherealLow = 65011856;
             if (weenie.packageType != PackageType.UNDEF) {
                 weenie.packFlags |= WeenieDesc.PackFlag.MY_PACKAGE_ID;
             }
-            if (weenie.name != null) {
-                weenie.packFlags |= WeenieDesc.PackFlag.NAME;
-            }
-            if (entityDef.dids.TryGetValue(PropertyName.PHYSOBJ, out DataId physObjDid)) {
+            weenie.entityDid = entityDid;
+            weenie.packFlags |= WeenieDesc.PackFlag.ENTITY_DID;
+
+            if (worldObject.qualities.dids.TryGetValue(DataIdStat.PHYSOBJ, out DataId physObjDid)) {
                 applyPhysics(worldObject, contentManager, physObjDid);
             }
         }

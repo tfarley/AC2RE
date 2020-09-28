@@ -34,10 +34,10 @@ namespace AC2E.Server {
             ObjectGen.applyPhysics(character, contentManager, raceSexInfo.physObjDid);
             setCharacterPhysics(character.physics, startPos);
             setCharacterVisual(character.visual, appProfileMap, physiqueTypeValues);
-            setCharacterQualities(character.qualities);
+            setCharacterQualities(character.qualities, species, sex, raceSexInfo.physObjDid);
 
-            character.weenie.packFlags |= WeenieDesc.PackFlag.NAME;
-            character.weenie.name = new StringInfo(name);
+            character.qualities.weenieDesc.packFlags |= WeenieDesc.PackFlag.NAME;
+            character.qualities.weenieDesc.name = new StringInfo(name);
 
             createStartingInventory(objectManager, contentManager, character, charGenMatrix, species);
 
@@ -110,21 +110,20 @@ namespace AC2E.Server {
             };
         }
 
-        private static void setCharacterQualities(CBaseQualities qualities) {
-            qualities.packFlags = CBaseQualities.PackFlag.INT_HASH_TABLE | CBaseQualities.PackFlag.BOOL_HASH_TABLE | CBaseQualities.PackFlag.FLOAT_HASH_TABLE | CBaseQualities.PackFlag.TIMESTAMP_HASH_TABLE | CBaseQualities.PackFlag.DATA_ID_HASH_TABLE | CBaseQualities.PackFlag.LONG_INT_HASH_TABLE;
-            //qualities.weenieDesc = character.weenie; // TODO: Do this with CBaseQualities.PackFlag.WEENIE_DESC? Need to assign it every time after un-persisted from database though...
+        private static void setCharacterQualities(CBaseQualities qualities, SpeciesType species, SexType sex, DataId physObjDid) {
+            qualities.packFlags |= CBaseQualities.PackFlag.INT_HASH_TABLE | CBaseQualities.PackFlag.BOOL_HASH_TABLE | CBaseQualities.PackFlag.FLOAT_HASH_TABLE | CBaseQualities.PackFlag.TIMESTAMP_HASH_TABLE | CBaseQualities.PackFlag.DATA_ID_HASH_TABLE | CBaseQualities.PackFlag.LONG_INT_HASH_TABLE;
             qualities.ints = new Dictionary<IntStat, int> {
                 { IntStat.CONTAINERMAXCAPACITY, 78 },
-                { IntStat.SPECIES, 1 },
-                { IntStat.SEX, 4096 },
+                { IntStat.SPECIES, (int)species  },
+                { IntStat.SEX, (int)sex },
                 { IntStat.CLASS, 2 },
                 { IntStat.LEVEL, 7 },
                 { IntStat.GROOVELEVEL, -1 },
-                { IntStat.MONEY, 391 },
-                { IntStat.HEALTH_CURRENTLEVEL, 310 },
-                { IntStat.VIGOR_CURRENTLEVEL, 280 },
-                { IntStat.HEALTH_CACHEDMAX, 280 },
-                { IntStat.VIGOR_CACHEDMAX, 280 },
+                { IntStat.MONEY, 321 },
+                { IntStat.HEALTH_CURRENTLEVEL, 100 },
+                { IntStat.VIGOR_CURRENTLEVEL, 100 },
+                { IntStat.HEALTH_CACHEDMAX, 100 },
+                { IntStat.VIGOR_CACHEDMAX, 100 },
             };
             qualities.longs = new Dictionary<LongIntStat, long> {
                 { LongIntStat.TOTALXP, 902 },
@@ -136,16 +135,11 @@ namespace AC2E.Server {
                 { BoolStat.PLAYER_ISONMOUNT, false }
             };
             qualities.floats = new Dictionary<FloatStat, float> {
-                { FloatStat.CURRENTVITAE, 100.0f },
                 { FloatStat.HEALTH_REGENRATE, 1.0f },
                 { FloatStat.VIGOR_REGENRATE, 1.0f },
-                { FloatStat.SKILL_RESETTIMEDURATION, 30.0f },
-            };
-            qualities.doubles = new Dictionary<TimestampStat, double> {
-                { TimestampStat.SKILL_TIMELASTRESET, 121629267.45585053 }
             };
             qualities.dids = new Dictionary<DataIdStat, DataId> {
-                { DataIdStat.PHYSOBJ, new DataId(0x470000CD) }
+                { DataIdStat.PHYSOBJ, physObjDid }
             };
         }
 
@@ -154,7 +148,8 @@ namespace AC2E.Server {
             foreach (StartInvData startInvItem in startInvItems) {
                 WorldObject item = objectManager.create();
                 ObjectGen.applyWeenie(item, contentManager, startInvItem.entityDid);
-                item.weenie.containerId = character.id;
+                item.qualities.weenieDesc.containerId = character.id;
+                item.qualities.weenieDesc.packFlags |= WeenieDesc.PackFlag.CONTAINER_ID;
             }
         }
     }

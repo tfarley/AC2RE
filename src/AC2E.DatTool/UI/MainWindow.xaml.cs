@@ -17,7 +17,7 @@ namespace AC2E.DatTool.UI {
 
             Loaded += (sender, e) => {
                 /*
-                using (DatReader datReader = new DatReader("G:\\Asheron's Call 2\\portal.dat")) {
+                using (DatReader datReader = new DatReader("G:\\Asheron's Call 2\\portal.dat_server")) {
                     DatParse.parseDat(datReader, "portalparsed", DbType.WSTATE);
                 }
                 */

@@ -5,17 +5,20 @@ namespace AC2E.Def {
 
     public static class PackageManager {
 
+        private static readonly DataId CLIENT_WLIB_DID = new DataId(0x56000005);
+
         private static PackageTypes packageTypes;
 
         public static void loadPackageTypes(DatReader datReader) {
-            DataId wlibDid = new DataId(0x56000005);
-            using (AC2Reader data = datReader.getFileReader(wlibDid)) {
-                var wlib = new WLib(data);
-                packageTypes = new PackageTypes();
-                foreach (ByteStream.ExportData export in wlib.byteStream.exports) {
-                    packageTypes.add(export.args.packageType, export.args.parentIndex);
+            if (packageTypes == null) {
+                using (AC2Reader data = datReader.getFileReader(CLIENT_WLIB_DID)) {
+                    var wlib = new WLib(data);
+                    packageTypes = new PackageTypes();
+                    foreach (ByteStream.ExportData export in wlib.byteStream.exports) {
+                        packageTypes.add(export.args.packageType, export.args.parentIndex);
+                    }
+                    packageTypes.calculate();
                 }
-                packageTypes.calculate();
             }
         }
 
@@ -117,7 +120,7 @@ namespace AC2E.Def {
             IPackage package = readInternal(data, packageType);
 
             // Deserialize as the most derived "known" package type
-            if (package == null && packageTypes != null) {
+            if (package == null) {
                 List<PackageType> packageTypeHierarchy = packageTypes.getPackageTypeHierarchy(packageType);
                 foreach (PackageType inheritedPackageType in packageTypeHierarchy) {
                     package = readInternal(data, inheritedPackageType);

@@ -77,7 +77,7 @@ namespace AC2E.Server {
                             response = CharGenResponse.OK,
                             characterIdentity = new CharacterIdentity {
                                 id = characterObject.id,
-                                name = characterObject.weenie.name.literalValue,
+                                name = characterObject.qualities.weenieDesc.name.literalValue,
                                 secondsGreyedOut = 0,
                                 visualDesc = characterObject.visual,
                             },
@@ -109,8 +109,6 @@ namespace AC2E.Server {
                             throw new ArgumentException($"Account {player.account.id} attempted to log in with unowned character object {msg.characterId}.");
                         }
 
-                        objectManager.syncNewClient(player.clientId);
-
                         player.characterId = msg.characterId;
 
                         WorldObject character = objectManager.get(msg.characterId);
@@ -120,53 +118,52 @@ namespace AC2E.Server {
                             regionId = 1,
                         });
 
+                        packetHandler.send(player.clientId, new PlayerDescMsg {
+                            qualities = character.qualities,
+                        });
+
                         ARHash<InventProfile> inventoryByLocationTable = new ARHash<InventProfile>();
                         LRHash<InventProfile> inventoryByIdTable = new LRHash<InventProfile>();
                         InstanceIdList contentIds = new InstanceIdList();
 
                         List<WorldObject> playerInventory = objectManager.getAllInContainer(character.id);
                         foreach (WorldObject item in playerInventory) {
-                            EntityDef weenieDef = contentManager.getEntityDef(item.weenie.entityDid);
-                            if (weenieDef != null) {
-                                if (weenieDef.enums.TryGetValue(PropertyName.ITEM_PREFERREDINVENTORYLOCATION, out uint startSlot)) {
-                                    InventProfile profile = new InventProfile {
-                                        visualDescInfo = new VisualDescInfo {
-                                            scale = Vector3.One,
-                                            cachedVisualDesc = item.visual,
-                                        },
-                                        slotsTaken = startSlot,
-                                        location = (InvLoc)startSlot,
-                                        it = 1,
-                                        id = item.id,
-                                    };
-                                    if (item.visual.globalAppearanceModifiers != null) {
-                                        profile.visualDescInfo.appInfoHash = new AppInfoHash();
-                                        foreach (var entry in item.visual.globalAppearanceModifiers.appearanceInfos) {
-                                            profile.visualDescInfo.appInfoHash[entry.Key] = entry.Value;
-                                        }
+                            if (item.qualities.ints.TryGetValue(IntStat.PREFERREDINVENTORYLOCATION, out int startSlot)) {
+                                InventProfile profile = new InventProfile {
+                                    visualDescInfo = new VisualDescInfo {
+                                        scale = Vector3.One,
+                                        cachedVisualDesc = item.visual,
+                                    },
+                                    slotsTaken = (uint)startSlot,
+                                    location = (InvLoc)startSlot,
+                                    it = 1,
+                                    id = item.id,
+                                };
+                                if (item.visual.globalAppearanceModifiers != null) {
+                                    profile.visualDescInfo.appInfoHash = new AppInfoHash();
+                                    foreach (var entry in item.visual.globalAppearanceModifiers.appearanceInfos) {
+                                        profile.visualDescInfo.appInfoHash[entry.Key] = entry.Value;
                                     }
-                                    inventoryByLocationTable[startSlot] = profile;
-                                    inventoryByIdTable[item.id.id] = profile;
-                                } else {
-                                    contentIds.Add(item.id);
                                 }
+                                inventoryByLocationTable[(uint)startSlot] = profile;
+                                inventoryByIdTable[item.id.id] = profile;
 
-                                if (weenieDef.dids.TryGetValue(PropertyName.ITEM_WORNAPPEARANCEFILE1, out DataId wornAppearanceDid)) {
-                                    character.visual.globalAppearanceModifiers.appearanceInfos[wornAppearanceDid] = new Dictionary<AppearanceKey, float> {
-                                        { AppearanceKey.CLOTHINGCOLOR, 0.2f },
-                                        { AppearanceKey.WORN, 1.0f },
-                                    };
-                                }
+                                item.qualities.weenieDesc.wielderId = character.id;
+                                item.qualities.weenieDesc.packFlags |= WeenieDesc.PackFlag.WIELDER_ID;
+                            } else {
+                                contentIds.Add(item.id);
+                            }
+
+                            DataId weenieStateDid = new DataId(0x71000000 + item.qualities.weenieDesc.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
+                            WState clothingWeenieState = contentManager.getWeenieState(weenieStateDid);
+                            Clothing clothing = clothingWeenieState.package as Clothing;
+                            if (clothing != null) {
+                                character.visual.globalAppearanceModifiers.appearanceInfos[clothing.wornAppearanceDidHash[(uint)(character.qualities.ints[IntStat.SPECIES] | character.qualities.ints[IntStat.SEX])]] = new Dictionary<AppearanceKey, float> {
+                                    { AppearanceKey.CLOTHINGCOLOR, 0.2f },
+                                    { AppearanceKey.WORN, 1.0f },
+                                };
                             }
                         }
-
-                        objectManager.enterWorld(character);
-
-                        packetHandler.send(player.clientId, new PlayerDescMsg {
-                            qualities = character.qualities,
-                        });
-
-                        objectManager.enterWorld(playerInventory);
 
                         packetHandler.send(player.clientId, new InterpCEventPrivateMsg {
                             netEvent = new HandleCharacterSessionStartCEvt {
@@ -372,6 +369,12 @@ namespace AC2E.Server {
                                 serverFactionStatus = 0,
                             }
                         });
+
+                        objectManager.syncNewClient(player.clientId);
+
+                        objectManager.enterWorld(playerInventory);
+
+                        objectManager.enterWorld(character);
                         break;
                     }
                 case MessageOpcode.Evt_Login__CharExitGame_ID: {
@@ -447,11 +450,13 @@ namespace AC2E.Server {
                                     frame = new Frame(new Vector3(131.13126f - toggleCounter * 1.0f, 13.535009f + toggleCounter * 1.0f, 127.25996f), Quaternion.Identity),
                                 },
                             };
-                            newTestObject.weenie = new WeenieDesc {
-                                packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.ENTITY_DID,
-                                packageType = PackageType.PlayerAvatar,
-                                name = new StringInfo($"TestObj 0x{toggleCounter:X}"),
-                                entityDid = new DataId(0x47000530),
+                            newTestObject.qualities = new CBaseQualities {
+                                weenieDesc = new WeenieDesc {
+                                    packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.ENTITY_DID,
+                                    packageType = PackageType.PlayerAvatar,
+                                    name = new StringInfo($"TestObj 0x{toggleCounter:X}"),
+                                    entityDid = new DataId(0x47000530),
+                                },
                             };
 
                             objectManager.enterWorld(newTestObject);
@@ -569,7 +574,7 @@ namespace AC2E.Server {
 
                 characterIdentities.Add(new CharacterIdentity {
                     id = playerObject.id,
-                    name = playerObject.weenie.name.literalValue,
+                    name = playerObject.qualities.weenieDesc.name.literalValue,
                     secondsGreyedOut = 0,
                     visualDesc = playerObject.visual,
                 });

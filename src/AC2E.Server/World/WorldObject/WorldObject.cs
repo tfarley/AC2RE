@@ -15,7 +15,6 @@ namespace AC2E.Server {
 
         public PhysicsDesc physics;
         public VisualDesc visual;
-        public WeenieDesc weenie;
         public CBaseQualities qualities;
 
         public WorldObject(InstanceId id) {

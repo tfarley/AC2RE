@@ -10,16 +10,15 @@ namespace AC2E.Server {
         private CharacterGenSystem characterGenSystem;
         private CharGenMatrix charGenMatrix;
         private Dictionary<DataId, EntityDef> entityDefCache = new Dictionary<DataId, EntityDef>();
+        private Dictionary<DataId, CBaseQualities> qualitiesCache = new Dictionary<DataId, CBaseQualities>();
+        private Dictionary<DataId, WState> weenieStateCache = new Dictionary<DataId, WState>();
         private Dictionary<DataId, VisualDesc> visualDescCache = new Dictionary<DataId, VisualDesc>();
 
         public ContentManager() {
-            portalDatReader = new DatReader("G:\\Asheron's Call 2\\portal.dat");
+            portalDatReader = new DatReader("G:\\Asheron's Call 2\\portal.dat_server");
 
-            if (MasterProperty.instance == null) {
-                using (AC2Reader data = portalDatReader.getFileReader(DbTypeDef.TYPE_TO_DEF[DbType.MASTER_PROPERTY].baseDid)) {
-                    MasterProperty.instance = new MasterProperty(data);
-                }
-            }
+            MasterProperty.loadMasterProperties(portalDatReader);
+            PackageManager.loadPackageTypes(portalDatReader);
         }
 
         public void Dispose() {
@@ -57,6 +56,26 @@ namespace AC2E.Server {
                 }
             }
             return entityDef;
+        }
+
+        public CBaseQualities getQualities(DataId did) {
+            if (!qualitiesCache.TryGetValue(did, out CBaseQualities qualities)) {
+                using (AC2Reader data = portalDatReader.getFileReader(did)) {
+                    qualities = new CBaseQualities(data);
+                    qualitiesCache[did] = qualities;
+                }
+            }
+            return qualities;
+        }
+
+        public WState getWeenieState(DataId did) {
+            if (!weenieStateCache.TryGetValue(did, out WState weenieState)) {
+                using (AC2Reader data = portalDatReader.getFileReader(did)) {
+                    weenieState = new WState(data);
+                    weenieStateCache[did] = weenieState;
+                }
+            }
+            return weenieState;
         }
 
         public VisualDesc getVisualDesc(DataId did) {

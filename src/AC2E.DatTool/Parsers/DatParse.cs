@@ -19,8 +19,11 @@ namespace AC2E.DatTool {
 
             HashSet<DbType> allSeenTypes = new HashSet<DbType>();
 
-            int numFiles = 0;
             // Parse data in first pass that is required for second pass
+            MasterProperty.loadMasterProperties(datReader);
+            PackageManager.loadPackageTypes(datReader);
+
+            int numFiles = 0;
             foreach (DataId did in datReader.dids) {
                 DbType dbType = DbTypeDef.getType(did);
 
@@ -33,17 +36,7 @@ namespace AC2E.DatTool {
                     }
                 }
 
-                if (dbType == DbType.MASTER_PROPERTY) {
-                    using (AC2Reader data = datReader.getFileReader(did)) {
-                        MasterProperty.instance = new MasterProperty(data);
-
-                        if (typesToParseSet.Contains(dbType)) {
-                            File.WriteAllText(Path.Combine(directory, $"{did.id:X8}{dbTypeDef.extension}.txt"), Util.objectToString(MasterProperty.instance));
-                        }
-
-                        checkFullRead(data, did);
-                    }
-                } else if (dbType == DbType.FILE2ID_TABLE) {
+                if (dbType == DbType.FILE2ID_TABLE) {
                     using (AC2Reader data = datReader.getFileReader(did)) {
                         DBFile2IDTable file2IdTable = new DBFile2IDTable(data);
 
@@ -74,7 +67,7 @@ namespace AC2E.DatTool {
                     continue;
                 }
 
-                if (dbType == DbType.MASTER_PROPERTY || dbType == DbType.FILE2ID_TABLE || !typesToParseSet.Contains(dbType)) {
+                if (dbType == DbType.FILE2ID_TABLE || !typesToParseSet.Contains(dbType)) {
                     continue;
                 }
 
@@ -192,6 +185,9 @@ namespace AC2E.DatTool {
                     break;
                 case DbType.MAPNOTE_DESC:
                     readAndDump(datReader, did, outputPath, data => new CMapNoteDesc(data));
+                    break;
+                case DbType.MASTER_PROPERTY:
+                    readAndDump(datReader, did, outputPath, data => new MasterProperty(data));
                     break;
                 case DbType.MATERIALINSTANCE:
                     readAndDump(datReader, did, outputPath, data => new MaterialInstance(data));

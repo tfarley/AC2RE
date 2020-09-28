@@ -109,7 +109,6 @@ namespace AC2E.Server.Database {
 
                 BsonClassMap.RegisterClassMap<CBaseQualities>(c => {
                     c.AutoMap();
-                    c.UnmapField(r => r.weenieDesc);
                     c.MapField(r => r.ints).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<IntStat, int>>()
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String)));
                     c.MapField(r => r.longs).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<LongIntStat, long>>()
@@ -169,7 +168,7 @@ namespace AC2E.Server.Database {
         }
 
         public List<WorldObject> getWorldObjectsWithContainer(InstanceId containerId) {
-            return worldObjects.Find(r => !r.deleted && r.weenie.containerId == containerId).ToList();
+            return worldObjects.Find(r => !r.deleted && r.qualities.weenieDesc.containerId == containerId).ToList();
         }
 
         public bool save(WorldSave worldSave) {

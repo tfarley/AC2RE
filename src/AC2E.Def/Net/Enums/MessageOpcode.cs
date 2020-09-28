@@ -207,7 +207,7 @@
         Evt_Physics__CreateObject_ID = 0x00010058,
         Evt_Physics__ObjDescEvent_ID = 0x00010059,
         Evt_Physics__SoundEvent_ID = 0x0001005F,
-        Evt_EnteredWorldEvent_ID = 0x00010060,
+        //Evt_EnteredWorldEvent_ID = 0x00010060,
         Evt_Physics__CreatePlayer_ID = 0x00010060,
         Evt_Physics__DeleteObject_ID = 0x00010061,
         Evt_Physics__SetState_ID = 0x00010062,

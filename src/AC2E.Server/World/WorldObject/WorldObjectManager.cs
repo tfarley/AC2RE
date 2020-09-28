@@ -39,7 +39,7 @@ namespace AC2E.Server {
                     id = worldObject.id,
                     visualDesc = worldObject.visual,
                     physicsDesc = worldObject.physics,
-                    weenieDesc = worldObject.weenie,
+                    weenieDesc = worldObject.qualities.weenieDesc,
                 });
             }
         }
@@ -102,7 +102,7 @@ namespace AC2E.Server {
             loadWithContainer(containerId);
             List<WorldObject> contents = new List<WorldObject>();
             foreach (WorldObject worldObject in worldObjects.Values) {
-                if (worldObject.weenie.containerId == containerId) {
+                if (worldObject.qualities.weenieDesc.containerId == containerId) {
                     contents.Add(worldObject);
                 }
             }
@@ -113,8 +113,8 @@ namespace AC2E.Server {
             WorldObject newObject = new WorldObject(instanceIdGenerator.next());
             newObject.physics = new PhysicsDesc();
             newObject.visual = new VisualDesc();
-            newObject.weenie = new WeenieDesc();
             newObject.qualities = new CBaseQualities();
+            newObject.qualities.weenieDesc = new WeenieDesc();
             worldObjects[newObject.id] = newObject;
             return newObject;
         }
@@ -126,7 +126,7 @@ namespace AC2E.Server {
                         id = worldObject.id,
                         visualDesc = worldObject.visual,
                         physicsDesc = worldObject.physics,
-                        weenieDesc = worldObject.weenie,
+                        weenieDesc = worldObject.qualities.weenieDesc,
                     });
                 }
             }
