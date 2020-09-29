@@ -37,7 +37,7 @@
         public InstanceId actualFromContainerId; // actualFromContainer
         public DataId itemVisualDescDid; // itemVDescID
         public uint fromSlot; // fromSlot
-        public uint status; // status
+        public ErrorType status; // status
         public bool playedAnim; // playedAnim
         public bool quiet; // bQuiet
         public bool allowOverflowSlots; // bAllowOverflowSlots
@@ -86,7 +86,7 @@
             actualFromContainerId = data.ReadInstanceId();
             itemVisualDescDid = data.ReadDataId();
             fromSlot = data.ReadUInt32();
-            status = data.ReadUInt32();
+            status = (ErrorType)data.ReadUInt32();
             playedAnim = data.ReadBoolean();
             quiet = data.ReadBoolean();
             allowOverflowSlots = data.ReadBoolean();
@@ -132,7 +132,7 @@
             data.Write(actualFromContainerId);
             data.Write(itemVisualDescDid);
             data.Write(fromSlot);
-            data.Write(status);
+            data.Write((uint)status);
             data.Write(playedAnim);
             data.Write(quiet);
             data.Write(allowOverflowSlots);

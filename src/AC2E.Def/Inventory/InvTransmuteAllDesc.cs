@@ -4,14 +4,14 @@
 
         public PackageType packageType => PackageType.InvTransmuteAllDesc;
 
-        public uint lastError; // m_lastError
+        public ErrorType lastError; // m_lastError
         public bool ignoreAttunement; // bIgnoreAttunement
         public InstanceIdList transmutedItemIds; // m_itemsTransmuted
         public bool checkTakePerm; // checkTakePermFlag
         public uint moneyEarned; // m_moneyEarned
         public bool quiet; // m_bQuiet
         public bool noAnim; // noAnimFlag
-        public uint status; // m_status
+        public ErrorType status; // m_status
         public InstanceId fromContainerId; // m_fromContainerID
         public InstanceIdList notTransmutedItemIds; // m_itemsNotTransmuted
         public bool playedAnim; // playedAnim
@@ -23,14 +23,14 @@
         }
 
         public InvTransmuteAllDesc(AC2Reader data) {
-            lastError = data.ReadUInt32();
+            lastError = (ErrorType)data.ReadUInt32();
             ignoreAttunement = data.ReadBoolean();
             data.ReadPkg<LList>(v => transmutedItemIds = new InstanceIdList(v));
             checkTakePerm = data.ReadBoolean();
             moneyEarned = data.ReadUInt32();
             quiet = data.ReadBoolean();
             noAnim = data.ReadBoolean();
-            status = data.ReadUInt32();
+            status = (ErrorType)data.ReadUInt32();
             fromContainerId = data.ReadInstanceId();
             data.ReadPkg<LList>(v => notTransmutedItemIds = new InstanceIdList(v));
             playedAnim = data.ReadBoolean();
@@ -39,14 +39,14 @@
         }
 
         public void write(AC2Writer data) {
-            data.Write(lastError);
+            data.Write((uint)lastError);
             data.Write(ignoreAttunement);
             data.WritePkg(transmutedItemIds);
             data.Write(checkTakePerm);
             data.Write(moneyEarned);
             data.Write(quiet);
             data.Write(noAnim);
-            data.Write(status);
+            data.Write((uint)status);
             data.Write(fromContainerId);
             data.WritePkg(notTransmutedItemIds);
             data.Write(playedAnim);

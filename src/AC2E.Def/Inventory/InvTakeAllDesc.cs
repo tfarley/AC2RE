@@ -4,12 +4,12 @@
 
         public PackageType packageType => PackageType.InvTakeAllDesc;
 
-        public uint lastError; // m_lastError
+        public ErrorType lastError; // m_lastError
         public bool ignoreAttunement; // bIgnoreAttunement
         public bool checkTakePerm; // checkTakePermFlag
         public bool quiet; // m_bQuiet
         public bool noAnim; // noAnimFlag
-        public uint status; // m_status
+        public ErrorType status; // m_status
         public InstanceId fromContainerId; // m_fromContainerID
         public InstanceIdList itemsNotTakenIds; // m_itemsNotTaken
         public bool playedAnim; // playedAnim
@@ -22,12 +22,12 @@
         }
 
         public InvTakeAllDesc(AC2Reader data) {
-            lastError = data.ReadUInt32();
+            lastError = (ErrorType)data.ReadUInt32();
             ignoreAttunement = data.ReadBoolean();
             checkTakePerm = data.ReadBoolean();
             quiet = data.ReadBoolean();
             noAnim = data.ReadBoolean();
-            status = data.ReadUInt32();
+            status = (ErrorType)data.ReadUInt32();
             fromContainerId = data.ReadInstanceId();
             data.ReadPkg<LList>(v => itemsNotTakenIds = new InstanceIdList(v));
             playedAnim = data.ReadBoolean();
@@ -37,12 +37,12 @@
         }
 
         public void write(AC2Writer data) {
-            data.Write(lastError);
+            data.Write((uint)lastError);
             data.Write(ignoreAttunement);
             data.Write(checkTakePerm);
             data.Write(quiet);
             data.Write(noAnim);
-            data.Write(status);
+            data.Write((uint)status);
             data.Write(fromContainerId);
             data.WritePkg(itemsNotTakenIds);
             data.Write(playedAnim);

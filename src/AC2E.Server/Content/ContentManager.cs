@@ -78,7 +78,7 @@ namespace AC2E.Server {
             return weenieState;
         }
 
-        public VisualDesc getVisualDesc(DataId did) {
+        private VisualDesc getVisualDesc(DataId did) {
             if (!visualDescCache.TryGetValue(did, out VisualDesc visualDesc)) {
                 using (AC2Reader data = portalDatReader.getFileReader(did)) {
                     visualDesc = new VisualDesc(data);
@@ -86,6 +86,47 @@ namespace AC2E.Server {
                 }
             }
             return visualDesc;
+        }
+
+        public VisualDesc getInheritedVisualDesc(VisualDesc visualDesc) {
+            List<VisualDesc> parentDescs = new List<VisualDesc>();
+            parentDescs.Add(visualDesc);
+            DataId parentDid = visualDesc.parentDid;
+            while (parentDid != DataId.NULL) {
+                VisualDesc parentVisualDesc = getVisualDesc(parentDid);
+                parentDescs.Add(parentVisualDesc);
+                parentDid = parentVisualDesc.parentDid;
+            }
+
+            VisualDesc inheritedVisualDesc = new VisualDesc();
+
+            foreach (VisualDesc parentDesc in parentDescs) {
+                mergeVisualDescs(parentDesc, inheritedVisualDesc);
+            }
+
+            return inheritedVisualDesc;
+        }
+
+        private void mergeVisualDescs(VisualDesc parentVisualDesc, VisualDesc childVisualDesc) {
+            if (parentVisualDesc.globalAppearanceModifiers != null) {
+                if (childVisualDesc.globalAppearanceModifiers == null) {
+                    childVisualDesc.globalAppearanceModifiers = new PartGroupDataDesc {
+                        packFlags = PartGroupDataDesc.PackFlag.KEY | PartGroupDataDesc.PackFlag.APPHASH,
+                        key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
+                        appearanceInfos = new Dictionary<DataId, Dictionary<AppearanceKey, float>>(),
+                    };
+                }
+
+                foreach ((DataId appDid, Dictionary<AppearanceKey, float> parentAppearances) in parentVisualDesc.globalAppearanceModifiers.appearanceInfos) {
+                    if (childVisualDesc.globalAppearanceModifiers.appearanceInfos.TryGetValue(appDid, out Dictionary<AppearanceKey, float> childAppearances)) {
+                        foreach ((AppearanceKey appKey, float appValue) in parentAppearances) {
+                            childAppearances.TryAdd(appKey, appValue);
+                        }
+                    } else {
+                        childVisualDesc.globalAppearanceModifiers.appearanceInfos[appDid] = new Dictionary<AppearanceKey, float>(parentAppearances);
+                    }
+                }
+            }
         }
     }
 }

@@ -12,7 +12,7 @@
         public InstanceId userId; // m_userID
         public float distToUsedItem; // m_fDistanceToUsedItem
         public InstanceId targetId; // m_targetID
-        public uint status; // m_status // TODO: ErrorType
+        public ErrorType status; // m_status
         public InstanceId effectTargetId; // m_effTargetID
         public uint usageTargetTypeValid; // m_uttValid // TODO: UsageTargetType
         public RList<SingletonPkg<IPackage>> effectsToApply; // m_effsToApply
@@ -34,7 +34,7 @@
             userId = data.ReadInstanceId();
             distToUsedItem = data.ReadSingle();
             targetId = data.ReadInstanceId();
-            status = data.ReadUInt32();
+            status = (ErrorType)data.ReadUInt32();
             effectTargetId = data.ReadInstanceId();
             usageTargetTypeValid = data.ReadUInt32();
             data.ReadPkg<RList<IPackage>>(v => effectsToApply = v.to<SingletonPkg<IPackage>>());
@@ -53,7 +53,7 @@
             data.Write(userId);
             data.Write(distToUsedItem);
             data.Write(targetId);
-            data.Write(status);
+            data.Write((uint)status);
             data.Write(effectTargetId);
             data.Write(usageTargetTypeValid);
             data.WritePkg(effectsToApply);

@@ -1,6 +1,9 @@
-﻿namespace AC2E.Def {
+﻿using System;
+
+namespace AC2E.Def {
 
     // Const *_InvLoc
+    [Flags]
     public enum InvLoc : uint {
         NONE = 0,
         HEAD = 1 << 0, // 0x00000001

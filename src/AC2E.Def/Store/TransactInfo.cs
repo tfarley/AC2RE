@@ -12,7 +12,7 @@
         public uint customerMoney; // m_uiCustomerMoney
         public RList<ItemProfile> saleItemProfiles; // m_listSaleItemProfile
         public InstanceIdAHash hashToBuyErrors; // m_hashToBuyErrors
-        public uint errorType; // m_et
+        public ErrorType errorType; // m_et
         public InstanceId customerId; // m_iidCustomer
         public InstanceIdAHash hashForSaleErrors; // m_hashForSaleErrors
         public InstanceId vendorId; // m_iidVendor
@@ -26,7 +26,7 @@
             customerMoney = data.ReadUInt32();
             data.ReadPkg<RList<ItemProfile>>(v => saleItemProfiles = v.to<ItemProfile>());
             data.ReadPkg<LAHash>(v => hashToBuyErrors = new InstanceIdAHash(v));
-            errorType = data.ReadUInt32();
+            errorType = (ErrorType)data.ReadUInt32();
             customerId = data.ReadInstanceId();
             data.ReadPkg<LAHash>(v => hashForSaleErrors = new InstanceIdAHash(v));
             vendorId = data.ReadInstanceId();

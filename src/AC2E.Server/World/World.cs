@@ -32,6 +32,7 @@ namespace AC2E.Server {
         private readonly PlayerManager playerManager;
         private readonly CharacterManager characterManager;
         private readonly WorldObjectManager objectManager;
+        private readonly InventoryManager inventoryManager;
 
         private int toggleCounter = 0;
 
@@ -43,6 +44,7 @@ namespace AC2E.Server {
             playerManager = new PlayerManager(packetHandler);
             characterManager = new CharacterManager(worldDb);
             objectManager = new WorldObjectManager(worldDb, packetHandler, playerManager);
+            inventoryManager = new InventoryManager(packetHandler, playerManager, objectManager);
 
             objectManager.enterWorld(objectManager.getAllInWorld());
         }
@@ -69,7 +71,7 @@ namespace AC2E.Server {
                 case MessageOpcode.CHARACTER_CREATE_EVENT: {
                         CharacterCreateMsg msg = (CharacterCreateMsg)genericMsg;
 
-                        WorldObject characterObject = CharacterGen.createCharacterObject(objectManager, contentManager, ARWIC_START_POS, msg.characterName, msg.species, msg.sex, msg.physiqueTypeValues);
+                        WorldObject characterObject = CharacterGen.createCharacterObject(objectManager, contentManager, inventoryManager, ARWIC_START_POS, msg.characterName, msg.species, msg.sex, msg.physiqueTypeValues);
 
                         Character character = characterManager.createWithAccountAndWorldObject(player.account.id, characterObject.id);
 
@@ -124,44 +126,39 @@ namespace AC2E.Server {
 
                         ARHash<InventProfile> inventoryByLocationTable = new ARHash<InventProfile>();
                         LRHash<InventProfile> inventoryByIdTable = new LRHash<InventProfile>();
-                        InstanceIdList contentIds = new InstanceIdList();
 
                         List<WorldObject> playerInventory = objectManager.getAllInContainer(character.id);
-                        foreach (WorldObject item in playerInventory) {
-                            if (item.qualities.ints.TryGetValue(IntStat.PREFERREDINVENTORYLOCATION, out int startSlot)) {
-                                InventProfile profile = new InventProfile {
-                                    visualDescInfo = new VisualDescInfo {
-                                        scale = Vector3.One,
-                                        cachedVisualDesc = item.visual,
-                                    },
-                                    slotsTaken = (uint)startSlot,
-                                    location = (InvLoc)startSlot,
-                                    it = 1,
-                                    id = item.id,
-                                };
-                                if (item.visual.globalAppearanceModifiers != null) {
-                                    profile.visualDescInfo.appInfoHash = new AppInfoHash();
-                                    foreach (var entry in item.visual.globalAppearanceModifiers.appearanceInfos) {
-                                        profile.visualDescInfo.appInfoHash[entry.Key] = entry.Value;
-                                    }
+                        foreach ((InvLoc equipLoc, InstanceId itemId) in character.equippedItems) {
+                            WorldObject item = objectManager.get(itemId);
+                            InventProfile profile = new InventProfile {
+                                visualDescInfo = new VisualDescInfo {
+                                    scale = Vector3.One,
+                                    cachedVisualDesc = item.visual,
+                                },
+                                slotsTaken = equipLoc,
+                                location = equipLoc,
+                                it = 0,
+                                id = item.id,
+                            };
+                            if (item.visual.globalAppearanceModifiers != null) {
+                                profile.visualDescInfo.appInfoHash = new AppInfoHash();
+                                foreach (var entry in item.visual.globalAppearanceModifiers.appearanceInfos) {
+                                    profile.visualDescInfo.appInfoHash[entry.Key] = entry.Value;
                                 }
-                                inventoryByLocationTable[(uint)startSlot] = profile;
-                                inventoryByIdTable[item.id.id] = profile;
-
-                                item.qualities.weenieDesc.wielderId = character.id;
-                                item.qualities.weenieDesc.packFlags |= WeenieDesc.PackFlag.WIELDER_ID;
-                            } else {
-                                contentIds.Add(item.id);
                             }
+                            inventoryByLocationTable[(uint)equipLoc] = profile;
+                            inventoryByIdTable[item.id.id] = profile;
 
                             DataId weenieStateDid = new DataId(0x71000000 + item.qualities.weenieDesc.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
                             WState clothingWeenieState = contentManager.getWeenieState(weenieStateDid);
                             Clothing clothing = clothingWeenieState.package as Clothing;
                             if (clothing != null) {
-                                character.visual.globalAppearanceModifiers.appearanceInfos[clothing.wornAppearanceDidHash[(uint)(character.qualities.ints[IntStat.SPECIES] | character.qualities.ints[IntStat.SEX])]] = new Dictionary<AppearanceKey, float> {
-                                    { AppearanceKey.CLOTHINGCOLOR, 0.2f },
-                                    { AppearanceKey.WORN, 1.0f },
-                                };
+                                // TODO: contentManager.getInheritedVisualDesc(item.visual)? But it seems wrong, since the topmost parent of human starter pants is 0x1F00003E which is actually overriding skin color which doesn't make sense - not sure if that's a special override that just needs to be blocked or if inheritance isn't the correct thing to do...
+                                foreach ((DataId appDid, Dictionary<AppearanceKey, float> appearances) in item.visual.globalAppearanceModifiers.appearanceInfos) {
+                                    Dictionary<AppearanceKey, float> clonedAppearances = new Dictionary<AppearanceKey, float>(appearances);
+                                    clonedAppearances[AppearanceKey.WORN] = 1.0f;
+                                    character.visual.globalAppearanceModifiers.appearanceInfos[appDid] = clonedAppearances;
+                                }
                             }
                         }
 
@@ -364,7 +361,7 @@ namespace AC2E.Server {
                                 containerIds = new InstanceIdList {
 
                                 },
-                                contentIds = contentIds,
+                                contentIds = new InstanceIdList(character.containedItems),
                                 localFactionStatus = 1,
                                 serverFactionStatus = 0,
                             }
@@ -469,11 +466,7 @@ namespace AC2E.Server {
                             WorldObject character = objectManager.get(player.characterId);
                             if (character != null && character.inWorld) {
                                 packetHandler.send(player.clientId, new DoFxMsg {
-                                    senderIdWithStamp = new InstanceIdWithStamp {
-                                        id = character.id,
-                                        instanceStamp = character.instanceStamp,
-                                        otherStamp = character.physics.visualOrderStamp,
-                                    },
+                                    senderIdWithStamp = character.getInstanceIdWithStamp(character.physics.visualOrderStamp),
                                     fxId = FxId.PORTAL_USE,
                                     scalar = 1.0f,
                                 });
@@ -499,6 +492,12 @@ namespace AC2E.Server {
                                     }
                                 }
                             });
+                        } else if (msg.netEvent.funcId == ServerEventFunctionId.Inventory__DirectiveEquipItem) {
+                            DirectiveEquipItemSEvt sEvent = (DirectiveEquipItemSEvt)msg.netEvent;
+                            inventoryManager.equipItem(sEvent.equipDesc, player);
+                        } else if (msg.netEvent.funcId == ServerEventFunctionId.Inventory__DirectiveUnEquipItem) {
+                            DirectiveUnequipItemSEvt sEvent = (DirectiveUnequipItemSEvt)msg.netEvent;
+                            inventoryManager.unequipItem(sEvent.equipDesc, player);
                         }
                         break;
                     }
@@ -511,7 +510,7 @@ namespace AC2E.Server {
                             character.physics.headingZ = msg.z;
 
                             playerManager.broadcastSend(player.clientId, new LookAtDirMsg {
-                                senderIdWithStamp = new InstanceIdWithStamp { id = character.id, instanceStamp = character.instanceStamp },
+                                senderIdWithStamp = character.getInstanceIdWithStamp(),
                                 x = character.physics.headingX,
                                 z = character.physics.headingZ,
                             });
@@ -549,7 +548,7 @@ namespace AC2E.Server {
 
                             // TODO: If cell has changed, might need to send PositionCellMsg instead
                             playerManager.broadcastSend(player.clientId, new PositionMsg {
-                                senderIdWithStamp = new InstanceIdWithStamp { id = character.id, instanceStamp = character.instanceStamp },
+                                senderIdWithStamp = character.getInstanceIdWithStamp(),
                                 pos = pos,
                             });
 

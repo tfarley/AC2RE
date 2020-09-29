@@ -9,7 +9,7 @@
         public InstanceId shopperId; // m_iidShopper
         public uint quantity; // m_uiQuantity
         public InstanceId storekeeperId; // m_iidStorekeeper
-        public uint result; // m_result
+        public ErrorType result; // m_result
         public uint slot; // m_uiSlot
 
         public TransactionBlob() {
@@ -22,7 +22,7 @@
             shopperId = data.ReadInstanceId();
             quantity = data.ReadUInt32();
             storekeeperId = data.ReadInstanceId();
-            result = data.ReadUInt32();
+            result = (ErrorType)data.ReadUInt32();
             slot = data.ReadUInt32();
         }
 
@@ -32,7 +32,7 @@
             data.Write(shopperId);
             data.Write(quantity);
             data.Write(storekeeperId);
-            data.Write(result);
+            data.Write((uint)result);
             data.Write(slot);
         }
     }

@@ -55,7 +55,7 @@ namespace AC2E.Server {
                 worldObject.inWorld = false;
 
                 playerManager.broadcastSend(new DestroyObjectMsg {
-                    idWithStamp = new InstanceIdWithStamp { id = worldObject.id, instanceStamp = worldObject.instanceStamp, otherStamp = 0 },
+                    idWithStamp = worldObject.getInstanceIdWithStamp(),
                 });
 
                 worldObject.instanceStamp++;

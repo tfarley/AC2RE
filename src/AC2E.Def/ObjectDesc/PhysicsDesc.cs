@@ -81,8 +81,8 @@ namespace AC2E.Def {
         public bool missileIsMoving; // m_missile_is_moving
         public InstanceId parentId; // m_parent_id
         public ushort parentInstanceStamp; // m_parent_instance_stamp
-        public uint locationId; // m_location_id
-        public uint orientationId; // m_orientation_id
+        public HoldingLocation locationId; // m_location_id
+        public Orientation orientationId; // m_orientation_id
         public uint modeId; // m_mode_id
         public List<BehaviorParams> behaviors; // m_behaviors
         public Dictionary<uint, SliderData> sliders; // m_sliders
@@ -116,12 +116,12 @@ namespace AC2E.Def {
             }
             if (packFlags.HasFlag(PackFlag.PARENT)) {
                 parentId = data.ReadInstanceId();
-                locationId = data.ReadUInt32();
+                locationId = (HoldingLocation)data.ReadUInt32();
                 parentInstanceStamp = data.ReadUInt16();
                 data.Align(4);
             }
             if (packFlags.HasFlag(PackFlag.ORIENTATION)) {
-                orientationId = data.ReadUInt32();
+                orientationId = (Orientation)data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.VELOCITY)) {
                 vel = data.ReadVector();
@@ -192,12 +192,12 @@ namespace AC2E.Def {
             }
             if (packFlags.HasFlag(PackFlag.PARENT)) {
                 data.Write(parentId);
-                data.Write(locationId);
+                data.Write((uint)locationId);
                 data.Write(parentInstanceStamp);
                 data.Align(4);
             }
             if (packFlags.HasFlag(PackFlag.ORIENTATION)) {
-                data.Write(orientationId);
+                data.Write((uint)orientationId);
             }
             if (packFlags.HasFlag(PackFlag.VELOCITY)) {
                 data.Write(vel);

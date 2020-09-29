@@ -4,6 +4,8 @@ namespace AC2E.Def {
 
     public struct InstanceId : IEquatable<InstanceId> {
 
+        public static readonly InstanceId NULL = new InstanceId(0);
+
         // Enum IIDUtils::IDType
         public enum IdType : uint {
             UNKNOWN,

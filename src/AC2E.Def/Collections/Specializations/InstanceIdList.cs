@@ -16,6 +16,12 @@ namespace AC2E.Def {
             }
         }
 
+        public InstanceIdList(List<InstanceId> list) {
+            foreach (var element in list) {
+                Add(element);
+            }
+        }
+
         public InstanceIdList(AC2Reader data) {
             data.ReadList(this, data.ReadInstanceId);
         }

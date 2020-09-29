@@ -7,7 +7,7 @@ namespace AC2E.Server {
 
     internal static class CharacterGen {
 
-        public static WorldObject createCharacterObject(WorldObjectManager objectManager, ContentManager contentManager, Position startPos, string name, SpeciesType species, SexType sex, Dictionary<PhysiqueType, float> physiqueTypeValues) {
+        public static WorldObject createCharacterObject(WorldObjectManager objectManager, ContentManager contentManager, InventoryManager inventoryManager, Position startPos, string name, SpeciesType species, SexType sex, Dictionary<PhysiqueType, float> physiqueTypeValues) {
             Dictionary<PhysiqueType, Dictionary<float, Tuple<AppearanceKey, DataId>>> appProfileMap = new Dictionary<PhysiqueType, Dictionary<float, Tuple<AppearanceKey, DataId>>>();
 
             CharacterGenSystem characterGenSystem = contentManager.getCharacterGenSystem();
@@ -29,17 +29,31 @@ namespace AC2E.Server {
 
             GMRaceSexInfo raceSexInfo = charGenMatrix.raceSexInfoTable[(uint)species | (uint)sex];
 
+            Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos = new Dictionary<DataId, Dictionary<AppearanceKey, float>>();
+            foreach (KeyValuePair<PhysiqueType, float> physiqueTypeValue in physiqueTypeValues) {
+                if (appProfileMap.TryGetValue(physiqueTypeValue.Key, out Dictionary<float, Tuple<AppearanceKey, DataId>> modifierToAppProfiles)) {
+                    (AppearanceKey appKey, DataId appDid) = modifierToAppProfiles[physiqueTypeValue.Value];
+                    if (appDid != DataId.NULL) {
+                        if (!appearanceInfos.TryGetValue(appDid, out Dictionary<AppearanceKey, float> appToModfier)) {
+                            appToModfier = new Dictionary<AppearanceKey, float>();
+                            appearanceInfos[appDid] = appToModfier;
+                        }
+                        appToModfier[appKey] = physiqueTypeValue.Value;
+                    }
+                }
+            }
+
             WorldObject character = objectManager.create();
             ObjectGen.applyWeenie(character, contentManager, characterGenSystem.playerEntityDid);
             ObjectGen.applyPhysics(character, contentManager, raceSexInfo.physObjDid);
             setCharacterPhysics(character.physics, startPos);
-            setCharacterVisual(character.visual, appProfileMap, physiqueTypeValues);
+            setCharacterVisual(character.visual, appProfileMap, appearanceInfos);
             setCharacterQualities(character.qualities, species, sex, raceSexInfo.physObjDid);
 
             character.qualities.weenieDesc.packFlags |= WeenieDesc.PackFlag.NAME;
             character.qualities.weenieDesc.name = new StringInfo(name);
 
-            createStartingInventory(objectManager, contentManager, character, charGenMatrix, species);
+            createStartingInventory(objectManager, contentManager, inventoryManager, character, charGenMatrix, species, appearanceInfos);
 
             return character;
         }
@@ -57,56 +71,13 @@ namespace AC2E.Server {
             physics.velScale = 2.0f;
         }
 
-        private static void setCharacterVisual(VisualDesc visual, Dictionary<PhysiqueType, Dictionary<float, Tuple<AppearanceKey, DataId>>> appProfileMap, Dictionary<PhysiqueType, float> physiqueTypeValues) {
-            Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos = new Dictionary<DataId, Dictionary<AppearanceKey, float>>();
-            foreach (KeyValuePair<PhysiqueType, float> physiqueTypeValue in physiqueTypeValues) {
-                if (appProfileMap.TryGetValue(physiqueTypeValue.Key, out Dictionary<float, Tuple<AppearanceKey, DataId>> modifierToAppProfiles)) {
-                    (AppearanceKey appKey, DataId appDid) = modifierToAppProfiles[physiqueTypeValue.Value];
-                    if (appDid != DataId.NULL) {
-                        if (!appearanceInfos.TryGetValue(appDid, out Dictionary<AppearanceKey, float> appToModfier)) {
-                            appToModfier = new Dictionary<AppearanceKey, float>();
-                            appearanceInfos[appDid] = appToModfier;
-                        }
-                        appToModfier[appKey] = physiqueTypeValue.Value;
-                    }
-                }
-            }
-
+        private static void setCharacterVisual(VisualDesc visual, Dictionary<PhysiqueType, Dictionary<float, Tuple<AppearanceKey, DataId>>> appProfileMap, Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos) {
             visual.packFlags |= VisualDesc.PackFlag.SCALE | VisualDesc.PackFlag.GLOBALMOD;
             visual.scale = new Vector3(0.9107999f, 0.9107999f, 0.98999995f);
             visual.globalAppearanceModifiers = new PartGroupDataDesc {
                 packFlags = PartGroupDataDesc.PackFlag.KEY | PartGroupDataDesc.PackFlag.APPHASH,
                 key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
                 appearanceInfos = appearanceInfos,
-                /*appearanceInfos = new Dictionary<DataId, Dictionary<AppearanceKey, float>> {
-                    { new DataId(0x2000004E), new Dictionary<AppearanceKey, float> {
-                        { AppearanceKey.CLOTHINGCOLOR, 0.14f },
-                        { AppearanceKey.WORN, 1.0f },
-                    } },
-                    { new DataId(0x20000050), new Dictionary<AppearanceKey, float> {
-                        { AppearanceKey.CLOTHINGCOLOR, 0.24f },
-                        { AppearanceKey.WORN, 1.0f },
-                    } },
-                    { new DataId(0x2000000C), new Dictionary<AppearanceKey, float> {
-                        { AppearanceKey.SKINCOLOR, physiqueTypeValues[PhysiqueType.SKIN_TONE] },
-                    } },
-                    { new DataId(0x2000000D), new Dictionary<AppearanceKey, float> {
-                        { AppearanceKey.HEADMESH, physiqueTypeValues[PhysiqueType.HEAD_DETAIL] },
-                        { AppearanceKey.HEADCOLOR, physiqueTypeValues[PhysiqueType.FRILL_COLOR] },
-                        { AppearanceKey.BEARDMESH, physiqueTypeValues[PhysiqueType.HEAD_FRILL] },
-                    } },
-                    { new DataId(0x2000000E), new Dictionary<AppearanceKey, float> {
-                        { AppearanceKey.FACETEXTURE, physiqueTypeValues[PhysiqueType.FACE_DETAIL] },
-                    } },
-                    { new DataId(0x200000F9), new Dictionary<AppearanceKey, float> {
-                        { AppearanceKey.CLOTHINGCOLOR, 0.04f },
-                        { AppearanceKey.WORN, 1.0f },
-                    } },
-                    { new DataId(0x20000016), new Dictionary<AppearanceKey, float> {
-                        { AppearanceKey.CLOTHINGCOLOR, 0.2f },
-                        { AppearanceKey.WORN, 1.0f },
-                    } },
-                }*/
             };
         }
 
@@ -143,13 +114,37 @@ namespace AC2E.Server {
             };
         }
 
-        private static void createStartingInventory(WorldObjectManager objectManager, ContentManager contentManager, WorldObject character, CharGenMatrix charGenMatrix, SpeciesType species) {
+        private static void createStartingInventory(WorldObjectManager objectManager, ContentManager contentManager, InventoryManager inventoryManager, WorldObject character, CharGenMatrix charGenMatrix, SpeciesType species, Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos) {
             RList<StartInvData> startInvItems = charGenMatrix.startingInventoryTable[(uint)species].to<ARHash<IPackage>>()[0].to<RList<IPackage>>()[0].to<StartInvData>();
             foreach (StartInvData startInvItem in startInvItems) {
                 WorldObject item = objectManager.create();
                 ObjectGen.applyWeenie(item, contentManager, startInvItem.entityDid);
+
+                DataId weenieStateDid = new DataId(0x71000000 + item.qualities.weenieDesc.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
+                WState clothingWeenieState = contentManager.getWeenieState(weenieStateDid);
+                Clothing clothing = clothingWeenieState.package as Clothing;
+                if (clothing != null) {
+                    DataId appearanceDid = clothing.wornAppearanceDidHash[(uint)(character.qualities.ints[IntStat.SPECIES] | character.qualities.ints[IntStat.SEX])];
+                    Dictionary<DataId, Dictionary<AppearanceKey, float>> itemAppearanceInfos = new Dictionary<DataId, Dictionary<AppearanceKey, float>>();
+                    if (appearanceInfos.TryGetValue(appearanceDid, out Dictionary<AppearanceKey, float> appearances)) {
+                        itemAppearanceInfos[appearanceDid] = appearances;
+                    }
+                    item.visual.globalAppearanceModifiers = new PartGroupDataDesc {
+                        packFlags = PartGroupDataDesc.PackFlag.KEY | PartGroupDataDesc.PackFlag.APPHASH,
+                        key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
+                        appearanceInfos = itemAppearanceInfos,
+                    };
+                }
+
                 item.qualities.weenieDesc.containerId = character.id;
                 item.qualities.weenieDesc.packFlags |= WeenieDesc.PackFlag.CONTAINER_ID;
+
+                inventoryManager.giveItem(character, item);
+
+                if (startInvItem.equipped) {
+                    InvLoc equipLoc = (InvLoc)item.qualities.ints[IntStat.PREFERREDINVENTORYLOCATION];
+                    inventoryManager.setItemEquipped(character, item, equipLoc);
+                }
             }
         }
     }

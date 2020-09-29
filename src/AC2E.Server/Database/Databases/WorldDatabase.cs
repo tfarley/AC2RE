@@ -63,6 +63,9 @@ namespace AC2E.Server.Database {
                     c.MapIdField(r => r.id);
                     c.MapCreator(r => new WorldObject(r.id));
                     c.UnmapField(r => r.instanceStamp);
+                    c.MapField(r => r.equippedItems).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<InvLoc, InstanceId>>()
+                        .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
+                        .WithValueSerializer(new UInt64IdSerializer<InstanceId>(id => new InstanceId(id), v => v.id)));
                 });
 
                 BsonClassMap.RegisterClassMap<PhysicsDesc.SliderData>();

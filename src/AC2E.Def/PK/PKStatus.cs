@@ -12,7 +12,7 @@
         public uint pkType; // m_pkType
         public uint permAlwaysFalse; // m_permAlwaysFalse
         public InstanceId id; // m_iid
-        public uint errorTypeInvulnerability; // m_etInvulnerability
+        public ErrorType errorTypeInvulnerability; // m_etInvulnerability
 
         public PKStatus(AC2Reader data) {
             factionStatus = data.ReadUInt32();
@@ -23,7 +23,7 @@
             pkType = data.ReadUInt32();
             permAlwaysFalse = data.ReadUInt32();
             id = data.ReadInstanceId();
-            errorTypeInvulnerability = data.ReadUInt32();
+            errorTypeInvulnerability = (ErrorType)data.ReadUInt32();
         }
     }
 }
