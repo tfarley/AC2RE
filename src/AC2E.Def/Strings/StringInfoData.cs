@@ -12,6 +12,7 @@ namespace AC2E.Def {
             FORMATTED_FLOAT = 5,
             UINT = 6,
             FORMATTED_UINT = 7,
+
             STRING_INFO = 9,
             LINT = 10,
             FORMATTED_LINT = 11,

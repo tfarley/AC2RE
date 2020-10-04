@@ -17,8 +17,8 @@
         public RList<ContainerSegmentDescriptor> containerSegments; // _ContainerSegments
         public InstanceIdList containerIds; // _Containers
         public InstanceIdList contentIds; // _Contents
-        public uint localFactionStatus; // _locFactionStatus
-        public uint serverFactionStatus; // _srvFactionStatus
+        public FactionStatus localFactionStatus; // _locFactionStatus
+        public FactionStatus serverFactionStatus; // _srvFactionStatus
 
         public HandleCharacterSessionStartCEvt() {
 
@@ -37,8 +37,8 @@
             containerSegments = data.UnpackPackage<RList<IPackage>>().to<ContainerSegmentDescriptor>();
             containerIds = new InstanceIdList(data.UnpackPackage<LList>());
             contentIds = new InstanceIdList(data.UnpackPackage<LList>());
-            localFactionStatus = data.UnpackUInt32();
-            serverFactionStatus = data.UnpackUInt32();
+            localFactionStatus = (FactionStatus)data.UnpackUInt32();
+            serverFactionStatus = (FactionStatus)data.UnpackUInt32();
         }
 
         public void write(AC2Writer data) {
@@ -54,8 +54,8 @@
             data.Pack(containerSegments);
             data.Pack(containerIds);
             data.Pack(contentIds);
-            data.Pack(localFactionStatus);
-            data.Pack(serverFactionStatus);
+            data.Pack((uint)localFactionStatus);
+            data.Pack((uint)serverFactionStatus);
         }
     }
 }

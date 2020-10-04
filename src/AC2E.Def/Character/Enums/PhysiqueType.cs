@@ -21,6 +21,7 @@ namespace AC2E.Def {
         CLOTHING_MASK = SHIRT_CLOTHING_COLOR | PANTS_CLOTHING_COLOR | BOOTS_CLOTHING_COLOR, // 0x00000700
         FACE_DETAIL = 1 << 11, // 0x00000800
         EYE_COLOR = 1 << 12, // 0x00001000
+
         ALL = uint.MaxValue, // 0xFFFFFFFF
     }
 }

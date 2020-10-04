@@ -57,6 +57,13 @@ namespace AC2E.Utils {
                 return;
             }
 
+            if (target is string) {
+                stringBuilder.Append('"');
+                stringBuilder.Append(target.ToString());
+                stringBuilder.Append('"');
+                return;
+            }
+
             if (!targetType.IsValueType && !levelVisited.Add(target)) {
                 stringBuilder.Append($"Circular ref: {target}");
                 return;

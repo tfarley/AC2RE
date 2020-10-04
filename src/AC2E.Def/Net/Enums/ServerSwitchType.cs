@@ -2,7 +2,7 @@
 
     // Enum ServerSwitchType
     public enum ServerSwitchType : uint {
-        WORLD_SWITCH = 0,
-        LOGON_SWITCH = 1,
+        WORLD_SWITCH,
+        LOGON_SWITCH,
     }
 }

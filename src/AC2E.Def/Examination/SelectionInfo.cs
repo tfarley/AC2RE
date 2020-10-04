@@ -7,6 +7,7 @@
         // Const *_SelectionInfoType
         public enum InfoType : uint {
             UNDEF = 0,
+
             AGENT = 0x40000001,
         }
 

@@ -3,6 +3,7 @@
     // Const *_EntityType
     public enum EntityType : uint {
         INVALID = 0,
+
         PHYSICS = 0x40000001,
         WEENIE = 0x40000002,
         ENTITY_GROUP = 0x40000003,

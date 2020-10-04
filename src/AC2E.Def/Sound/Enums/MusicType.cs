@@ -4,6 +4,7 @@
     public enum MusicType : uint {
         ENC_WAV = 0x40000001,
         SCRIPT = 0x40000002,
+
         SEGMENT = 0x80000001,
         STYLE = 0x80000002,
         CHORD_MAP = 0x80000003,

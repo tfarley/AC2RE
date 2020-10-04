@@ -3,6 +3,7 @@
     // Const *_PositionStat
     public enum PositionStat : uint {
         UNDEF = 0,
+
         TELEPORTDESTINATION = 256,
         START = 258,
         OUBLIETTE_SAVESPOT = 499,

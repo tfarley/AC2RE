@@ -81,6 +81,7 @@ namespace AC2E.Def {
             NONE,
             STATIC,
             VOLUMETRIC,
+
             INVALID = 0x7FFFFFFF,
         }
 

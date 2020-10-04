@@ -8,6 +8,7 @@ namespace AC2E.Def {
 
         public NativeType nativeType => NativeType.GAMEPLAYOPTIONSPROFILE;
 
+        // Const - globals
         [Flags]
         public enum ContentFlag : uint {
             NONE = 0,

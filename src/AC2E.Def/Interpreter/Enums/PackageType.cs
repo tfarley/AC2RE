@@ -3,6 +3,7 @@
     // Dat file 56000005
     public enum PackageType : uint {
         UNDEF = 0,
+
         BalanceExceptionList = 0x00000015,
         IPreproc = 0x00000031,
         CharacterGenSystem = 0x00000096,

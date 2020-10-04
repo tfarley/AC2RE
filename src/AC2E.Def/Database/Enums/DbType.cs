@@ -3,6 +3,7 @@
     // Const DB_TYPE_*
     public enum DbType : uint {
         UNDEFINED = 0x00000000,
+
         CELLMESH = 0x40000004,
         SCENE = 0x40000005,
         ANIMMAP = 0x40000006,

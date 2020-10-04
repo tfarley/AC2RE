@@ -3,6 +3,7 @@
     // Const *_PropertyGroupName
     public enum PropertyGroupName : uint {
         INVALID = 0,
+
         PHYSICS = 0x40000001,
         RENDER = 0x40000002,
         ETHEREAL = 0x40000003,

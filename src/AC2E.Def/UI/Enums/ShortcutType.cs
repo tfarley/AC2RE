@@ -3,6 +3,7 @@
     // Const *_ShortcutType
     public enum ShortcutType : uint {
         UNDEF = 0,
+
         SKILL = 0x40000001,
         ITEM = 0x40000002,
         ALIAS = 0x40000003,

@@ -3,6 +3,7 @@
     // From RepositoryRepository::GetRawLongInt and RepositoryRepository::SetLongInt calls in wlib
     public enum LongIntStat : uint {
         UNDEF = 0,
+
         TOTALXP = 300,
         AVAILABLEXP = 301,
         DEATHXP = 312,

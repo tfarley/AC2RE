@@ -13,7 +13,7 @@ namespace AC2E.Def {
             HUMAN = 0x40000003,
 
             LOOK = 0x40000005,
-            AXIS_CUBE = 0x40000006,
+            AXIS = 0x40000006,
             RANDOM = 0x40000007,
             SWITCH_ME = 0x40000008,
 
@@ -422,7 +422,7 @@ namespace AC2E.Def {
                     break;
                 case AnimatorType.LOOK:
                     break;
-                case AnimatorType.AXIS_CUBE:
+                case AnimatorType.AXIS:
                     animatorData = new AxisCube(data);
                     break;
                 case AnimatorType.RANDOM:

@@ -362,8 +362,8 @@ namespace AC2E.Server {
 
                                 },
                                 contentIds = new InstanceIdList(character.containedItems),
-                                localFactionStatus = 1,
-                                serverFactionStatus = 0,
+                                localFactionStatus = FactionStatus.PEACE,
+                                serverFactionStatus = FactionStatus.UNDEF,
                             }
                         });
 

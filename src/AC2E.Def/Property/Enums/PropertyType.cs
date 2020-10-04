@@ -3,6 +3,7 @@
     // Const *_PropertyType
     public enum PropertyType : uint {
         INVALID = 0,
+
         BOOL = 0x40000001,
         INTEGER = 0x40000002,
         FLOAT = 0x40000003,

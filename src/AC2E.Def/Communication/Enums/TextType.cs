@@ -26,6 +26,7 @@ namespace AC2E.Def {
         FACTION = 1 << 22, // 0x00400000
         DEVOTED = 1 << 23, // 0x00800000
         PK = 1 << 24, // 0x01000000
+
         ALL = uint.MaxValue, // 0xFFFFFFFF
     }
 }

@@ -9,6 +9,7 @@ namespace AC2E.Def {
         // Const *_ExaminationRequestType
         public enum RequestType : uint {
             UNDEF = 0,
+
             EFFECT = 0x40000001,
             ITEM = 0x40000002,
             SKILL = 0x40000003,

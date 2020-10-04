@@ -3,6 +3,7 @@
     // Const *_StringInfoStat
     public enum StringInfoStat : uint {
         UNDEF = 0,
+
         NAME = 256,
         PLURALNAME = 257,
         DESCRIPTION = 258,

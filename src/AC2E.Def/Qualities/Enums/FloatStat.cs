@@ -3,6 +3,7 @@
     // Const *_FloatStat
     public enum FloatStat : uint {
         UNDEF = 0,
+
         TRANSLUCENCY = 2,
         FRICTION = 3,
         ELASTICITY = 4,

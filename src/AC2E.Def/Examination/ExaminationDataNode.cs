@@ -7,6 +7,7 @@ namespace AC2E.Def {
         // Const *_ExaminationDataType
         public enum DataType : uint {
             UNDEF = 0,
+
             INT = 0x40000001,
             FLOAT = 0x40000002,
             BOOL = 0x40000003,

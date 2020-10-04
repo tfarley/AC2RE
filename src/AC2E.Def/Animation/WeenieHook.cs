@@ -5,6 +5,7 @@
         // Const *_AnimHookType
         public enum AnimHookType : uint {
             UNDEF = 0,
+
             ATTACK = 0x40000002,
         }
 

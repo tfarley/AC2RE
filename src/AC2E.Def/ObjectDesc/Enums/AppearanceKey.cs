@@ -2,6 +2,7 @@
 
 namespace AC2E.Def {
 
+    // Const *_AppearanceKey
     // Dat file 2300001F
     [Flags]
     public enum AppearanceKey : uint {

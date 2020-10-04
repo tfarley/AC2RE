@@ -4,7 +4,7 @@
 
         public PackageType packageType => PackageType.PKStatus;
 
-        public uint factionStatus; // m_factionStatus
+        public FactionStatus factionStatus; // m_factionStatus
         public FactionType faction; // m_faction
         public uint permAlwaysTrue; // m_permAlwaysTrue
         public uint flags; // m_flags
@@ -15,7 +15,7 @@
         public ErrorType errorTypeInvulnerability; // m_etInvulnerability
 
         public PKStatus(AC2Reader data) {
-            factionStatus = data.ReadUInt32();
+            factionStatus = (FactionStatus)data.ReadUInt32();
             faction = (FactionType)data.ReadUInt32();
             permAlwaysTrue = data.ReadUInt32();
             flags = data.ReadUInt32();

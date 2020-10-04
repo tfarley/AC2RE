@@ -4,6 +4,7 @@
     // Dat file 23000035
     public enum Language : uint {
         INVALID = 0,
+
         CHINESE = 0x41000001,
         ENGLISH = 0x80000001,
         FRANCAIS = 0x81000001,
