@@ -154,6 +154,15 @@ namespace AC2E.Def {
             }
         }
 
+        public void WritePkgFullRef<T>(T value) where T : IPackage {
+            if (value != null) {
+                new ReferenceId(packageRegistry.getId(value)).write(this);
+                packageRegistry.references.Add(value);
+            } else {
+                new ReferenceId(PackageId.NULL).write(this);
+            }
+        }
+
         public void Write(string str, Encoding encoding) {
             int numChars = str != null ? str.Length : 0;
             Write((ushort)numChars);

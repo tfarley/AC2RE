@@ -18,7 +18,7 @@ namespace AC2E.Render {
 
         private readonly DatReader datReader;
         private readonly Dictionary<DataId, RenderMesh> meshDidToMesh = new Dictionary<DataId, RenderMesh>();
-        private readonly Dictionary<DataId, List<RenderMesh>> didToMeshes = new Dictionary<DataId, List<RenderMesh>>();
+        private readonly Dictionary<DataId, List<RenderMesh>?> didToMeshes = new Dictionary<DataId, List<RenderMesh>?>();
         private readonly Dictionary<DataId, ITexture> surfaceDidToTexture = new Dictionary<DataId, ITexture>();
 
         public void Dispose() {
@@ -32,8 +32,8 @@ namespace AC2E.Render {
             this.datReader = datReader;
         }
 
-        public List<RenderMesh> loadDatMeshes(IRenderer renderer, DataId did) {
-            if (!didToMeshes.TryGetValue(did, out List<RenderMesh> meshes)) {
+        public List<RenderMesh>? loadDatMeshes(IRenderer renderer, DataId did) {
+            if (!didToMeshes.TryGetValue(did, out List<RenderMesh>? meshes)) {
                 if (!datReader.contains(did)) {
                     return null;
                 }
@@ -67,7 +67,7 @@ namespace AC2E.Render {
 
         private RenderMesh loadMesh(IRenderer renderer, AC2Reader data) {
             DataId did = data.ReadDataId();
-            if (!meshDidToMesh.TryGetValue(did, out RenderMesh mesh)) {
+            if (!meshDidToMesh.TryGetValue(did, out RenderMesh? mesh)) {
                 CStaticMesh meshData = new CStaticMesh(data);
                 mesh = loadMesh(renderer, meshData);
                 meshDidToMesh[did] = mesh;
@@ -77,7 +77,7 @@ namespace AC2E.Render {
         }
 
         private ITexture loadSurface(IRenderer renderer, DataId did) {
-            if (!surfaceDidToTexture.TryGetValue(did, out ITexture texture)) {
+            if (!surfaceDidToTexture.TryGetValue(did, out ITexture? texture)) {
                 using (AC2Reader data = datReader.getFileReader(did)) {
                     RenderSurface surface = new RenderSurface(data);
                     texture = renderer.loadTexture(surface.sourceData, surface.width, surface.height, PIXEL_TO_TEXTURE_FORMAT[surface.pixelFormat]);
@@ -115,29 +115,29 @@ namespace AC2E.Render {
 
             List<VertexAttribute> vertexAttributes = new List<VertexAttribute>();
             if (mesh.vertexArray.vertexFormat.hasOrigin) {
-                vertexAttributes.Add(new VertexAttribute { id = UberShaderManager.POS_ATTRIB_ID, numComponents = 3, componentType = typeof(float), offset = mesh.vertexArray.vertexFormat.offsetOrigin });
+                vertexAttributes.Add(new VertexAttribute(UberShaderManager.POS_ATTRIB_ID, 3, typeof(float), mesh.vertexArray.vertexFormat.offsetOrigin));
             }
             if (mesh.vertexArray.vertexFormat.offsetNormal != 0) {
-                vertexAttributes.Add(new VertexAttribute { id = UberShaderManager.NORMAL_ATTRIB_ID, numComponents = 3, componentType = typeof(float), offset = mesh.vertexArray.vertexFormat.offsetNormal });
+                vertexAttributes.Add(new VertexAttribute(UberShaderManager.NORMAL_ATTRIB_ID, 3, typeof(float), mesh.vertexArray.vertexFormat.offsetNormal));
             }
             if (mesh.vertexArray.vertexFormat.offsetDiffuseColor != 0) {
-                vertexAttributes.Add(new VertexAttribute { id = UberShaderManager.DIFFUSE_COLOR_ATTRIB_ID, numComponents = 4, componentType = typeof(byte), normalize = true, offset = mesh.vertexArray.vertexFormat.offsetDiffuseColor });
+                vertexAttributes.Add(new VertexAttribute(UberShaderManager.DIFFUSE_COLOR_ATTRIB_ID, 4, typeof(byte), mesh.vertexArray.vertexFormat.offsetDiffuseColor, true));
             }
             if (mesh.vertexArray.vertexFormat.offsetSpecularColor != 0) {
-                vertexAttributes.Add(new VertexAttribute { id = UberShaderManager.SPECULAR_COLOR_ATTRIB_ID, numComponents = 4, componentType = typeof(byte), normalize = true, offset = mesh.vertexArray.vertexFormat.offsetSpecularColor });
+                vertexAttributes.Add(new VertexAttribute(UberShaderManager.SPECULAR_COLOR_ATTRIB_ID, 4, typeof(byte), mesh.vertexArray.vertexFormat.offsetSpecularColor, true));
             }
             if (mesh.vertexArray.vertexFormat.offsetVectorS != 0) {
-                vertexAttributes.Add(new VertexAttribute { id = UberShaderManager.TANGENT_ATTRIB_ID, numComponents = 3, componentType = typeof(float), offset = mesh.vertexArray.vertexFormat.offsetVectorS });
+                vertexAttributes.Add(new VertexAttribute( UberShaderManager.TANGENT_ATTRIB_ID, 3, typeof(float), mesh.vertexArray.vertexFormat.offsetVectorS));
             }
             if (mesh.vertexArray.vertexFormat.offsetVectorT != 0) {
-                vertexAttributes.Add(new VertexAttribute { id = UberShaderManager.BITANGENT_ATTRIB_ID, numComponents = 3, componentType = typeof(float), offset = mesh.vertexArray.vertexFormat.offsetVectorT });
+                vertexAttributes.Add(new VertexAttribute(UberShaderManager.BITANGENT_ATTRIB_ID, 3, typeof(float), mesh.vertexArray.vertexFormat.offsetVectorT));
             }
             for (uint i = 0; i < mesh.vertexArray.vertexFormat.numTexCoordPairs; i++) {
-                vertexAttributes.Add(new VertexAttribute { id = UberShaderManager.TEX_COORD_ATTRIB_ID_START + i, numComponents = 2, componentType = typeof(float), offset = mesh.vertexArray.vertexFormat.offsetTexCoordPairs[i] });
+                vertexAttributes.Add(new VertexAttribute(UberShaderManager.TEX_COORD_ATTRIB_ID_START + i, 2, typeof(float), mesh.vertexArray.vertexFormat.offsetTexCoordPairs[i]));
             }
             for (uint i = 0; i < mesh.vertexArray.vertexFormat.numMatrices; i++) {
-                vertexAttributes.Add(new VertexAttribute { id = UberShaderManager.MATRIX_INDICES_ATTRIB_ID_START + i, numComponents = 1, componentType = typeof(byte), offset = mesh.vertexArray.vertexFormat.offsetMatrices + i });
-                vertexAttributes.Add(new VertexAttribute { id = UberShaderManager.MATRIX_WEIGHTS_ATTRIB_ID_START + i, numComponents = 1, componentType = typeof(float), offset = mesh.vertexArray.vertexFormat.offsetMatrixWeights + i * 4 });
+                vertexAttributes.Add(new VertexAttribute(UberShaderManager.MATRIX_INDICES_ATTRIB_ID_START + i, 1, typeof(byte), mesh.vertexArray.vertexFormat.offsetMatrices + i));
+                vertexAttributes.Add(new VertexAttribute(UberShaderManager.MATRIX_WEIGHTS_ATTRIB_ID_START + i, 1, typeof(float), mesh.vertexArray.vertexFormat.offsetMatrixWeights + i * 4));
             }
 
             ushort[] indices = mesh.geometry.indices.ToArray();
@@ -149,11 +149,9 @@ namespace AC2E.Render {
                 textures.AddRange(loadMaterial(renderer, materialInstanceDid));
             }
 
-            return new RenderMesh {
-                mesh = renderer.loadMesh(mesh.vertexArray.vertexData, vertexAttributes, mesh.vertexArray.vertexFormat.vertexSize, indexData, typeof(ushort)),
-                vertexFormat = mesh.vertexArray.vertexFormat,
-                textures = textures,
-            };
+            IMesh loadedMesh = renderer.loadMesh(mesh.vertexArray.vertexData, vertexAttributes, mesh.vertexArray.vertexFormat.vertexSize, indexData, typeof(ushort));
+
+            return new RenderMesh(loadedMesh, mesh.vertexArray.vertexFormat, textures);
         }
 
         private List<RenderMesh> loadSetups(IRenderer renderer, List<DataId> setupDids) {

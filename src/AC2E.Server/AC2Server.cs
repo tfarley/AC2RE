@@ -16,19 +16,19 @@ namespace AC2E.Server {
 
         private bool active;
 
-        private AccountDatabase accountDb;
-        private WorldDatabase worldDb;
+        private AccountDatabase? accountDb;
+        private WorldDatabase? worldDb;
 
-        private AccountManager accountManager;
-        private ClientManager clientManager;
-        private ContentManager contentManager;
+        private AccountManager? accountManager;
+        private ClientManager? clientManager;
+        private ContentManager? contentManager;
 
-        private PacketHandler packetHandler;
+        private PacketHandler? packetHandler;
 
-        private World world;
+        private World? world;
 
-        private NetInterface logonNetInterface;
-        private NetInterface gameNetInterface;
+        private NetInterface? logonNetInterface;
+        private NetInterface? gameNetInterface;
         private List<ServerListener> serverListeners = new List<ServerListener>();
 
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -74,13 +74,13 @@ namespace AC2E.Server {
                 return;
             }
 
-            world.save();
+            world!.save();
 
-            world.disconnectAll();
+            world!.disconnectAll();
 
-            lock (clientManager) {
+            lock (clientManager!) {
                 foreach (ClientConnection client in clientManager.clients) {
-                    client.flushSend(gameNetInterface, time.time, time.elapsedTime);
+                    client.flushSend(gameNetInterface!, time.time, time.elapsedTime);
                 }
             }
 
@@ -91,8 +91,8 @@ namespace AC2E.Server {
             }
             serverListeners.Clear();
 
-            logonNetInterface.close();
-            gameNetInterface.close();
+            logonNetInterface!.close();
+            gameNetInterface!.close();
 
             world = null;
 
@@ -100,7 +100,7 @@ namespace AC2E.Server {
 
             accountManager = null;
             clientManager = null;
-            contentManager.Dispose();
+            contentManager!.Dispose();
             contentManager = null;
 
             accountDb = null;
@@ -118,11 +118,11 @@ namespace AC2E.Server {
             time.beginFrame();
 
             while (time.tryTick()) {
-                world.tick();
+                world!.tick();
 
-                lock (clientManager) {
+                lock (clientManager!) {
                     foreach (ClientConnection client in clientManager.clients) {
-                        client.flushSend(gameNetInterface, time.time, time.elapsedTime);
+                        client.flushSend(gameNetInterface!, time.time, time.elapsedTime);
                     }
                 }
             }

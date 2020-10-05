@@ -5,9 +5,7 @@ using System.IO;
 
 namespace AC2E.PacketTool {
 
-    public class PcapReader {
-
-        public PcapHeader pcapHeader { get; private set; }
+    public static class PcapReader {
 
         public static NetBlobCollection read(Stream input) {
             NetBlobCollection netBlobCollection = new NetBlobCollection();

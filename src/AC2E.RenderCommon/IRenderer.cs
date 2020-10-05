@@ -30,7 +30,7 @@ namespace AC2E.RenderCommon {
 
         ITexture loadTexture(byte[] textureData, uint width, uint height, TextureFormat format);
 
-        void draw(IMesh mesh, IShaderProgram shader = null, List<ITexture> textures = null);
+        void draw(IMesh mesh, IShaderProgram? shader = null, List<ITexture>? textures = null);
 
         void clear();
 

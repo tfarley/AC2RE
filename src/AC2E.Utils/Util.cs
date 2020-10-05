@@ -30,13 +30,13 @@ namespace AC2E.Utils {
             return (ushort)(((value & 0x00FFU) << 8) | ((value & 0xFF00U) >> 8));
         }
 
-        public static string objectToString(object target) {
+        public static string objectToString(object? target) {
             StringBuilder stringBuilder = new StringBuilder();
             objectToString(stringBuilder, new HashSet<object>(), 0, target);
             return stringBuilder.ToString();
         }
 
-        private static void objectToString(StringBuilder stringBuilder, HashSet<object> visited, int indentLevel, object target) {
+        private static void objectToString(StringBuilder stringBuilder, HashSet<object> visited, int indentLevel, object? target) {
             HashSet<object> levelVisited = new HashSet<object>(visited);
 
             if (target == null) {
@@ -46,9 +46,8 @@ namespace AC2E.Utils {
 
             Type targetType = target.GetType();
 
-            IDelegateToString delegateToString = target as IDelegateToString;
-            if (delegateToString != null) {
-                objectToString(stringBuilder, levelVisited, indentLevel, delegateToString.delegatedToStringObject);
+            if (target is IDelegateToString delegateToStringTarget) {
+                objectToString(stringBuilder, levelVisited, indentLevel, delegateToStringTarget.delegatedToStringObject);
                 return;
             }
 
@@ -57,9 +56,9 @@ namespace AC2E.Utils {
                 return;
             }
 
-            if (target is string) {
+            if (target is string targetString) {
                 stringBuilder.Append('"');
-                stringBuilder.Append(target.ToString());
+                stringBuilder.Append(targetString);
                 stringBuilder.Append('"');
                 return;
             }
@@ -69,11 +68,10 @@ namespace AC2E.Utils {
                 return;
             }
 
-            IDictionary dictionaryValue = target as IDictionary;
-            if (dictionaryValue != null) {
-                if (dictionaryValue.Count > 0) {
+            if (target is IDictionary dictionaryTarget) {
+                if (dictionaryTarget.Count > 0) {
                     stringBuilder.AppendLine("{");
-                    foreach (DictionaryEntry entry in dictionaryValue) {
+                    foreach (DictionaryEntry entry in dictionaryTarget) {
                         stringBuilder.Append(' ', indentLevel + 2);
                         objectToString(stringBuilder, levelVisited, indentLevel + 2, entry.Key);
                         stringBuilder.Append(" : ");
@@ -88,12 +86,11 @@ namespace AC2E.Utils {
                 return;
             }
 
-            IEnumerable enumerableValue = target as IEnumerable;
-            if (enumerableValue != null && !(target is string)) {
+            if (target is IEnumerable enumerableTarget) {
                 if (((IEnumerable)target).GetEnumerator().MoveNext()) {
                     stringBuilder.AppendLine("[");
                     bool first = true;
-                    foreach (object val in enumerableValue) {
+                    foreach (object? val in enumerableTarget) {
                         if (!first) {
                             stringBuilder.AppendLine(",");
                         }
@@ -112,9 +109,14 @@ namespace AC2E.Utils {
 
             foreach (MethodInfo methodInfo in targetType.GetMethods()) {
                 if (methodInfo.Name == "ToString" && methodInfo.DeclaringType == targetType) {
-                    using (StringReader toStringReader = new StringReader(target.ToString())) {
+                    string? str = target.ToString();
+                    if (str == null) {
+                        stringBuilder.Append(str);
+                        return;
+                    }
+                    using (StringReader toStringReader = new StringReader(str)) {
                         bool first = true;
-                        string line;
+                        string? line;
                         while ((line = toStringReader.ReadLine()) != null) {
                             if (!first) {
                                 stringBuilder.AppendLine();

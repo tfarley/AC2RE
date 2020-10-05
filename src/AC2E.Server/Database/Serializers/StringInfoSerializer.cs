@@ -22,7 +22,7 @@ namespace AC2E.Server.Database {
             switch (bsonType) {
                 case BsonType.Null:
                     context.Reader.ReadNull();
-                    return null;
+                    return null!;
 
                 case BsonType.String:
                     return new StringInfo(context.Reader.ReadString());

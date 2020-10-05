@@ -5,7 +5,7 @@ namespace AC2E.Server.Database {
 
     internal class SerializationProvider : IBsonSerializationProvider {
 
-        public IBsonSerializer GetSerializer(Type type) {
+        public IBsonSerializer? GetSerializer(Type type) {
             if (type == typeof(uint) || (type.IsEnum && Enum.GetUnderlyingType(type) == typeof(uint))) {
                 return new UInt32SafeSerializer();
             } else if (type == typeof(ulong) || (type.IsEnum && Enum.GetUnderlyingType(type) == typeof(ulong))) {

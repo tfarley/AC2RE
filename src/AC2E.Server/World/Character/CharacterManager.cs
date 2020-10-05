@@ -26,10 +26,12 @@ namespace AC2E.Server {
             }
         }
 
-        public Character get(CharacterId id) {
-            if (!characters.TryGetValue(id, out Character character)) {
+        public Character? get(CharacterId id) {
+            if (!characters.TryGetValue(id, out Character? character)) {
                 character = worldDb.getCharacterWithId(id);
-                characters[id] = character;
+                if (character != null) {
+                    characters[id] = character;
+                }
             }
             return (character == null || character.deleted) ? null : character;
         }
@@ -46,7 +48,7 @@ namespace AC2E.Server {
             return charactersWithAccount;
         }
 
-        public Character getWithAccountAndWorldObject(AccountId accountId, InstanceId worldObjectId) {
+        public Character? getWithAccountAndWorldObject(AccountId accountId, InstanceId worldObjectId) {
             loadWithAccount(accountId);
             foreach (Character character in characters.Values) {
                 if (!character.deleted && character.ownerAccountId == accountId && character.worldObjectId == worldObjectId) {

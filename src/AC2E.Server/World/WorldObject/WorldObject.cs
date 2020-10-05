@@ -20,8 +20,16 @@ namespace AC2E.Server {
         public VisualDesc visual;
         public CBaseQualities qualities;
 
-        public WorldObject(InstanceId id) {
+        public WorldObject(InstanceId id) : this(id, new PhysicsDesc(), new VisualDesc(), new CBaseQualities()) {
+            qualities.weenieDesc = new WeenieDesc();
+        }
+
+        public WorldObject(InstanceId id, PhysicsDesc physics, VisualDesc visual, CBaseQualities qualities) {
             this.id = id;
+
+            this.physics = physics;
+            this.visual = visual;
+            this.qualities = qualities;
         }
 
         public InstanceIdWithStamp getInstanceIdWithStamp(ushort otherStamp = 0) {

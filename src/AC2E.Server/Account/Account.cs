@@ -8,8 +8,10 @@
         public string userName;
         public string password;
 
-        public Account(AccountId id) {
+        public Account(AccountId id, string userName, string password) {
             this.id = id;
+            this.userName = userName;
+            this.password = password;
         }
     }
 }

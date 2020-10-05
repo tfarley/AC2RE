@@ -1,11 +1,13 @@
-﻿namespace AC2E.Def {
+﻿using System;
 
-    public class SingletonPkg<T> : IPackage where T : IPackage {
+namespace AC2E.Def {
+
+    public class SingletonPkg<T> : IPackage where T : class, IPackage {
 
         public DataId did;
         public T package;
 
-        public SingletonPkg<U> to<U>() where U : class, IPackage {
+        private SingletonPkg<U> to<U>() where U : class, IPackage {
             return new SingletonPkg<U> {
                 did = did,
                 package = package as U,
@@ -22,6 +24,17 @@
 
         public void write(AC2Writer data) {
             data.Write(did);
+        }
+
+        public static SingletonPkg<T> cast(IPackage package) {
+            Type packageType = package.GetType();
+            if (packageType.IsGenericType && packageType.GetGenericTypeDefinition() == typeof(SingletonPkg<>)) {
+                return ((SingletonPkg<IPackage>)package).to<T>();
+            } else {
+                return new SingletonPkg<T> {
+                    package = (T)package,
+                };
+            }
         }
     }
 }

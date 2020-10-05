@@ -40,13 +40,13 @@ namespace AC2E.Def {
         }
 
         public NRHash(AC2Reader data) {
-            foreach ((var key, var value) in data.ReadDictionary(data.ReadPackageId, data.ReadPackageId)) {
+            foreach ((var key, var value) in data.ReadDictionary(data.ReadPackageFullRef, data.ReadPackageId)) {
                 data.packageRegistry.addResolver(() => this[data.packageRegistry.get<IPackage>(key)] = data.packageRegistry.get<IPackage>(value));
             }
         }
 
         public void write(AC2Writer data) {
-            data.Write(this, data.WritePkg, data.WritePkg);
+            data.Write(this, data.WritePkgFullRef, data.WritePkg);
         }
     }
 }

@@ -39,13 +39,17 @@ namespace AC2E.Server {
                         accountManager.create(packet.logonHeader.netAuth.accountName, "");
                     }
 
-                    Account account = accountManager.authenticate(packet.logonHeader.netAuth.accountName, "");
+                    Account? account = accountManager.authenticate(packet.logonHeader.netAuth.accountName, "");
+
+                    if (account == null) {
+                        throw new ArgumentException($"Authentication failed for account {packet.logonHeader.netAuth.accountName}.");
+                    }
 
                     clientManager.addClient(netInterface, 0.0f, 0.0f, receiveEndpoint, account);
                 } else if (packet.flags.HasFlag(NetPacket.Flag.LOGOFF)) {
                     Log.Information($"Client disconnected, id {packet.recipientId}.");
                     clientManager.removeClient(new ClientId(packet.recipientId));
-                } else if (clientManager.tryGetClient(new ClientId(packet.recipientId), out ClientConnection client)) {
+                } else if (clientManager.tryGetClient(new ClientId(packet.recipientId), out ClientConnection? client)) {
                     // TODO: Need to handle client acking the re-sent (nacked) packets
                     if (packet.flags.HasFlag(NetPacket.Flag.PAK)) {
                         client.ackPacket(packet.ackHeader);
@@ -112,7 +116,7 @@ namespace AC2E.Server {
 
                     world.addPlayerIfNecessary(client.id, client.account);
 
-                    while (client.incomingCompleteBlobs.TryDequeue(out NetBlob blob)) {
+                    while (client.incomingCompleteBlobs.TryDequeue(out NetBlob? blob)) {
                         using (AC2Reader data = new AC2Reader(new MemoryStream(blob.payload))) {
 
                             MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
@@ -137,7 +141,7 @@ namespace AC2E.Server {
 
         public void send(ClientId clientId, INetMessage message) {
             lock (clientManager) {
-                if (clientManager.tryGetClient(clientId, out ClientConnection client)) {
+                if (clientManager.tryGetClient(clientId, out ClientConnection? client)) {
                     client.enqueueMessage(message);
                 }
             }

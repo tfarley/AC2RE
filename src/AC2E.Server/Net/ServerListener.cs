@@ -47,7 +47,7 @@ namespace AC2E.Server {
                     if (receivedInfo.ReceivedBytes <= 0) {
                         continue;
                     }
-                } catch (ObjectDisposedException e) {
+                } catch (ObjectDisposedException) {
                     // Socket closed (stop was called)
                     Log.Debug($"Server listener interface {netInterface} closed.");
                     continue;

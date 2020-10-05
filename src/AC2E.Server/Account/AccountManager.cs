@@ -11,15 +11,12 @@ namespace AC2E.Server {
             this.accountDb = accountDb;
         }
 
-        public Account authenticate(string userName, string password) {
+        public Account? authenticate(string userName, string password) {
             return accountDb.getAccountWithUserNameAndPassword(userName, password);
         }
 
         public Account create(string userName, string password) {
-            Account account = new Account(new AccountId(Guid.NewGuid())) {
-                userName = userName,
-                password = password,
-            };
+            Account account = new Account(new AccountId(Guid.NewGuid()), userName, password);
 
             accountDb.upsertAccount(account);
 

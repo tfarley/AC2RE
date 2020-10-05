@@ -25,7 +25,7 @@ namespace AC2E.Server {
         public readonly uint incomingSeed;
 
         public bool connected { get; private set; }
-        public ISAAC outgoingIsaac { get; private set; }
+        public ISAAC? outgoingIsaac { get; private set; }
         public uint packetSeq;
         public uint highestReceivedPacketSeq;
         public uint highestAckedPacketSeq;
@@ -75,7 +75,7 @@ namespace AC2E.Server {
             if (frag.fragCount == 1) {
                 incomingCompleteBlobs.Enqueue(new NetBlob(frag));
             } else {
-                if (!incomingBlobs.TryGetValue(frag.blobId, out NetBlob blob)) {
+                if (!incomingBlobs.TryGetValue(frag.blobId, out NetBlob? blob)) {
                     blob = new NetBlob(frag);
                     incomingBlobs[frag.blobId] = blob;
                 } else {
@@ -141,7 +141,7 @@ namespace AC2E.Server {
                 if (outgoingFragQueue.Count > 0) {
                     packet.flags |= NetPacket.Flag.FRAGMENTS;
 
-                    while (outgoingFragQueue.TryPeek(out NetBlobFrag frag) && remainingSize >= frag.fragSize) {
+                    while (outgoingFragQueue.TryPeek(out NetBlobFrag? frag) && remainingSize >= frag.fragSize) {
                         packet.frags.Add(frag);
                         outgoingFragQueue.Dequeue();
                         remainingSize -= frag.fragSize;
@@ -218,7 +218,7 @@ namespace AC2E.Server {
                 // Encrypt checksum if necessary
                 if (packet.flags.HasFlag(NetPacket.Flag.ENCRYPTED_CHECKSUM)) {
                     if (!packet.hasIsaacXor) {
-                        packet.isaacXor = outgoingIsaac.next();
+                        packet.isaacXor = outgoingIsaac!.next();
                         packet.hasIsaacXor = true;
                     }
                     contentChecksum ^= packet.isaacXor;
@@ -248,7 +248,7 @@ namespace AC2E.Server {
         }
 
         public void nackPacket(uint seq) {
-            if (sentSeqToPackets.TryGetValue(seq, out List<SendablePacket> packets)) {
+            if (sentSeqToPackets.TryGetValue(seq, out List<SendablePacket>? packets)) {
                 foreach (SendablePacket packet in packets) {
                     packet.packet.flags |= NetPacket.Flag.RETRANSMITTING;
                     nacksToResend.Enqueue(packet);

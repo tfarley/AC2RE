@@ -160,17 +160,7 @@ namespace AC2E.Def {
         public PackageId ReadSingletonPkg<T>(Action<SingletonPkg<T>> assigner) where T : class, IPackage {
             PackageId packageId = ReadPackageId();
             if (packageId != PackageId.NULL) {
-                packageRegistry.addResolver(() => {
-                    IPackage package = packageRegistry.get<IPackage>(packageId);
-                    Type packageType = package.GetType();
-                    if (packageType.IsGenericType && packageType.GetGenericTypeDefinition() == typeof(SingletonPkg<>)) {
-                        assigner.Invoke(((SingletonPkg<IPackage>)package).to<T>());
-                    } else {
-                        assigner.Invoke(new SingletonPkg<T> {
-                            package = (T)package,
-                        });
-                    }
-                });
+                packageRegistry.addResolver(() => assigner.Invoke(SingletonPkg<T>.cast(packageRegistry.get<IPackage>(packageId))));
             }
             return packageId;
         }
@@ -283,6 +273,10 @@ namespace AC2E.Def {
 
         public PackageId ReadPackageId() {
             return new PackageId(ReadUInt32());
+        }
+
+        public PackageId ReadPackageFullRef() {
+            return new ReferenceId(this).id;
         }
 
         public InstanceId ReadInstanceId() {

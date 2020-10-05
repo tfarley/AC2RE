@@ -15,8 +15,8 @@ namespace AC2E.PacketTool {
 
         private bool attemptedMessageParse;
 
-        private INetMessage _message;
-        public INetMessage message {
+        private INetMessage? _message;
+        public INetMessage? message {
             get {
                 attemptParseMessage();
                 return _message;
@@ -32,8 +32,8 @@ namespace AC2E.PacketTool {
         }
         public MessageErrorType messageErrorTypeOptional => _messageErrorType;
 
-        private Exception _messageException;
-        public Exception messageException {
+        private Exception? _messageException;
+        public Exception? messageException {
             get {
                 attemptParseMessage();
                 return _messageException;
@@ -41,6 +41,10 @@ namespace AC2E.PacketTool {
         }
 
         public long parseFailurePos { get; private set; }
+
+        public NetBlobRecord(NetBlob netBlob) {
+            this.netBlob = netBlob;
+        }
 
         private void attemptParseMessage() {
             if (attemptedMessageParse) {

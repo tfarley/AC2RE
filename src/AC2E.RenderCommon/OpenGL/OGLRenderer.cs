@@ -20,7 +20,7 @@ namespace AC2E.RenderCommon.OpenGL {
         private uint ambientLightDataUboId;
         private uint dirLightDataUboId;
         private uint pointLightDataUboId;
-        protected IShaderProgram defaultShader;
+        protected IShaderProgram? defaultShader;
 
         protected void init() {
             glGenBuffers(1, out viewDataUboId);
@@ -54,7 +54,7 @@ namespace AC2E.RenderCommon.OpenGL {
         }
 
         public virtual void Dispose() {
-            defaultShader.Dispose();
+            defaultShader?.Dispose();
         }
 
         public void resize(uint width, uint height) {
@@ -140,9 +140,13 @@ namespace AC2E.RenderCommon.OpenGL {
             return new OGLTexture(textureData, width, height, format);
         }
 
-        public void draw(IMesh mesh, IShaderProgram shader, List<ITexture> textures) {
+        public void draw(IMesh mesh, IShaderProgram? shader, List<ITexture>? textures) {
             if (shader == null) {
                 shader = defaultShader;
+            }
+
+            if (shader == null) {
+                throw new InvalidOperationException("Cannot render since no shader was specified and the default shader has not been loaded.");
             }
 
             OGLShaderProgram oglShader = (OGLShaderProgram)shader;

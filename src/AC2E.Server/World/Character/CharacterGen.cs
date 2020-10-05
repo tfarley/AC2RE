@@ -17,7 +17,7 @@ namespace AC2E.Server {
                 PhysiqueType physiqueType = physiqueAndAppProfiles.Key;
                 List<AppearanceProfile> appProfiles = physiqueAndAppProfiles.Value;
 
-                if (!appProfileMap.TryGetValue(physiqueType, out Dictionary<float, Tuple<AppearanceKey, DataId>> modifierToApp)) {
+                if (!appProfileMap.TryGetValue(physiqueType, out Dictionary<float, Tuple<AppearanceKey, DataId>>? modifierToApp)) {
                     modifierToApp = new Dictionary<float, Tuple<AppearanceKey, DataId>>();
                     appProfileMap[physiqueType] = modifierToApp;
                 }
@@ -31,10 +31,10 @@ namespace AC2E.Server {
 
             Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos = new Dictionary<DataId, Dictionary<AppearanceKey, float>>();
             foreach (KeyValuePair<PhysiqueType, float> physiqueTypeValue in physiqueTypeValues) {
-                if (appProfileMap.TryGetValue(physiqueTypeValue.Key, out Dictionary<float, Tuple<AppearanceKey, DataId>> modifierToAppProfiles)) {
+                if (appProfileMap.TryGetValue(physiqueTypeValue.Key, out Dictionary<float, Tuple<AppearanceKey, DataId>>? modifierToAppProfiles)) {
                     (AppearanceKey appKey, DataId appDid) = modifierToAppProfiles[physiqueTypeValue.Value];
                     if (appDid != DataId.NULL) {
-                        if (!appearanceInfos.TryGetValue(appDid, out Dictionary<AppearanceKey, float> appToModfier)) {
+                        if (!appearanceInfos.TryGetValue(appDid, out Dictionary<AppearanceKey, float>? appToModfier)) {
                             appToModfier = new Dictionary<AppearanceKey, float>();
                             appearanceInfos[appDid] = appToModfier;
                         }
@@ -122,11 +122,10 @@ namespace AC2E.Server {
 
                 DataId weenieStateDid = new DataId(0x71000000 + item.qualities.weenieDesc.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
                 WState clothingWeenieState = contentManager.getWeenieState(weenieStateDid);
-                Clothing clothing = clothingWeenieState.package as Clothing;
-                if (clothing != null) {
+                if (clothingWeenieState.package is Clothing clothing) {
                     DataId appearanceDid = clothing.wornAppearanceDidHash[(uint)(character.qualities.ints[IntStat.SPECIES] | character.qualities.ints[IntStat.SEX])];
                     Dictionary<DataId, Dictionary<AppearanceKey, float>> itemAppearanceInfos = new Dictionary<DataId, Dictionary<AppearanceKey, float>>();
-                    if (appearanceInfos.TryGetValue(appearanceDid, out Dictionary<AppearanceKey, float> appearances)) {
+                    if (appearanceInfos.TryGetValue(appearanceDid, out Dictionary<AppearanceKey, float>? appearances)) {
                         itemAppearanceInfos[appearanceDid] = appearances;
                     }
                     item.visual.globalAppearanceModifiers = new PartGroupDataDesc {

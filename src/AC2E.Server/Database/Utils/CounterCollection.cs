@@ -32,10 +32,12 @@ namespace AC2E.Server.Database {
             return counter.count;
         }
 
+#pragma warning disable
         private class Counter {
 
             public string type;
             public ulong count;
         }
+#pragma warning enable
     }
 }

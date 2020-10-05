@@ -16,7 +16,7 @@ namespace AC2E.PacketTool.UI {
 
         private readonly List<NetBlobRow> netBlobRows = new List<NetBlobRow>();
 
-        private GridViewColumnHeader lastRecordsListBoxColumnHeaderClicked = null;
+        private GridViewColumnHeader? lastRecordsListBoxColumnHeaderClicked;
         private ListSortDirection lastRecordsListBoxColumnHeaderSortDirection = ListSortDirection.Ascending;
 
         public MainWindow() {
@@ -24,7 +24,7 @@ namespace AC2E.PacketTool.UI {
 
             originalTitle = Title;
 
-            foreach (MessageErrorType messageErrorType in Enum.GetValues(typeof(MessageErrorType))) {
+            foreach (MessageErrorType? messageErrorType in Enum.GetValues(typeof(MessageErrorType))) {
                 if (messageErrorType != MessageErrorType.UNDETERMINED) {
                     errorsFilterComboBox.Items.Add(new ComboBoxItem { Content = messageErrorType });
                 }
@@ -131,11 +131,10 @@ namespace AC2E.PacketTool.UI {
         }
 
         private void recordsListBoxColumnHeader_Click(object sender, RoutedEventArgs e) {
-            GridViewColumnHeader headerClicked = e.OriginalSource as GridViewColumnHeader;
-            ListSortDirection direction;
-
-            if (headerClicked != null) {
+            if (e.OriginalSource is GridViewColumnHeader headerClicked) {
                 if (headerClicked.Role != GridViewColumnHeaderRole.Padding) {
+                    ListSortDirection direction;
+
                     if (headerClicked != lastRecordsListBoxColumnHeaderClicked) {
                         direction = ListSortDirection.Ascending;
                     } else {
@@ -146,8 +145,8 @@ namespace AC2E.PacketTool.UI {
                         }
                     }
 
-                    Binding columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
-                    string sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
+                    Binding? columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
+                    string? sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
 
                     recordsListBox.Items.SortDescriptions.Clear();
                     recordsListBox.Items.SortDescriptions.Add(new SortDescription(sortBy, direction));
@@ -172,7 +171,7 @@ namespace AC2E.PacketTool.UI {
                     recordHexTextBox.Text = "";
                 }
 
-                Exception messageException = netBlobRecord.messageException;
+                Exception? messageException = netBlobRecord.messageException;
                 if (messageException == null) {
                     try {
                         recordMessageTextBox.Text = Util.objectToString(netBlobRecord.message);

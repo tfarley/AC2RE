@@ -18,7 +18,7 @@ namespace AC2E.Def {
         public uint weaponFxMiss; // mWeaponFXMiss
         public SingletonPkg<Effect> requiredEffect; // m_RequiredEffect
         public float missileSourceOffset; // m_missileSourceOffset
-        public List<SingletonPkg<IPackage>> userEffects; // m_UserEffects
+        public List<SingletonPkg<Effect>> userEffects; // m_UserEffects
         public uint animHookIndex; // m_animHookIndex
         public uint targetBehaviorMiss; // mTargetBehaviorMiss
         public uint targetFxHit; // mTargetFXHit
@@ -30,7 +30,7 @@ namespace AC2E.Def {
         public MissileParameters missileParams; // m_missileParams
         public float requiredEffectWeight; // m_fRequiredEffectWeight
         public float missileInitialSpeed; // m_missileInitialSpeed
-        public List<SingletonPkg<IPackage>> targetEffects; // m_TargetEffects
+        public List<SingletonPkg<Effect>> targetEffects; // m_TargetEffects
         public uint weaponBehaviorCrit; // mWeaponBehaviorCrit
         public uint weaponBehaviorMiss; // mWeaponBehaviorMiss
         public uint weaponFxHit; // mWeaponFXHit
@@ -51,7 +51,7 @@ namespace AC2E.Def {
             weaponFxMiss = data.ReadUInt32();
             data.ReadSingletonPkg<Effect>(v => requiredEffect = v);
             missileSourceOffset = data.ReadSingle();
-            data.ReadPkg<RList>(v => userEffects = v.to<SingletonPkg<IPackage>>());
+            data.ReadPkg<RList>(v => userEffects = v.to(SingletonPkg<Effect>.cast));
             animHookIndex = data.ReadUInt32();
             targetBehaviorMiss = data.ReadUInt32();
             targetFxHit = data.ReadUInt32();
@@ -63,7 +63,7 @@ namespace AC2E.Def {
             data.ReadPkg<MissileParameters>(v => missileParams = v);
             requiredEffectWeight = data.ReadSingle();
             missileInitialSpeed = data.ReadSingle();
-            data.ReadPkg<RList>(v => targetEffects = v.to<SingletonPkg<IPackage>>());
+            data.ReadPkg<RList>(v => targetEffects = v.to(SingletonPkg<Effect>.cast));
             weaponBehaviorCrit = data.ReadUInt32();
             weaponBehaviorMiss = data.ReadUInt32();
             weaponFxHit = data.ReadUInt32();

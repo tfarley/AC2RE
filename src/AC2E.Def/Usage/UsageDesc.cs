@@ -17,7 +17,7 @@ namespace AC2E.Def {
         public ErrorType status; // m_status
         public InstanceId effectTargetId; // m_effTargetID
         public uint usageTargetTypeValid; // m_uttValid // TODO: UsageTargetType
-        public List<SingletonPkg<IPackage>> effectsToApply; // m_effsToApply
+        public List<SingletonPkg<Effect>> effectsToApply; // m_effsToApply
         public int vigorCost; // m_iVigorCost
         public uint controlFlags; // m_controlFlags
         public bool cancelsSF; // m_bCancelsSF
@@ -39,7 +39,7 @@ namespace AC2E.Def {
             status = (ErrorType)data.ReadUInt32();
             effectTargetId = data.ReadInstanceId();
             usageTargetTypeValid = data.ReadUInt32();
-            data.ReadPkg<RList>(v => effectsToApply = v.to<SingletonPkg<IPackage>>());
+            data.ReadPkg<RList>(v => effectsToApply = v.to(SingletonPkg<Effect>.cast));
             vigorCost = data.ReadInt32();
             controlFlags = data.ReadUInt32();
             cancelsSF = data.ReadBoolean();

@@ -4,6 +4,7 @@ using AC2E.Utils;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 
@@ -56,7 +57,11 @@ namespace AC2E.Server {
         }
 
         public bool processMessage(ClientId clientId, INetMessage genericMsg) {
-            Player player = playerManager.get(clientId);
+            Player? player = playerManager.get(clientId);
+
+            if (player == null) {
+                throw new InvalidDataException($"Received message from client {clientId} with no player.");
+            }
 
             bool handled = true;
             switch (genericMsg.opcode) {
@@ -91,16 +96,20 @@ namespace AC2E.Server {
                 case MessageOpcode.Evt_Login__CharacterDeletion_ID: {
                         CharacterDeletionSMsg msg = (CharacterDeletionSMsg)genericMsg;
 
-                        WorldObject characterObject = objectManager.get(msg.characterId);
-                        Character character = characterManager.getWithAccountAndWorldObject(player.account.id, characterObject.id);
+                        WorldObject? characterObject = objectManager.get(msg.characterId);
+                        if (characterObject != null) {
+                            Character? character = characterManager.getWithAccountAndWorldObject(player.account.id, characterObject.id);
 
-                        character.deleted = true;
-                        characterObject.deleted = true;
+                            if (character != null) {
+                                character.deleted = true;
+                                characterObject.deleted = true;
 
-                        packetHandler.send(player.clientId, new CharacterDeletionCMsg {
-                            characterId = characterObject.id,
-                        });
-                        sendCharacters(player);
+                                packetHandler.send(player.clientId, new CharacterDeletionCMsg {
+                                    characterId = characterObject.id,
+                                });
+                                sendCharacters(player);
+                            }
+                        }
 
                         break;
                     }
@@ -113,7 +122,11 @@ namespace AC2E.Server {
 
                         player.characterId = msg.characterId;
 
-                        WorldObject character = objectManager.get(msg.characterId);
+                        WorldObject? character = objectManager.get(msg.characterId);
+
+                        if (character == null) {
+                            throw new ArgumentException($"Account {player.account.id} attempted to log in with non-existent character object {msg.characterId}.");
+                        }
 
                         packetHandler.send(player.clientId, new CreatePlayerMsg {
                             id = msg.characterId,
@@ -129,35 +142,39 @@ namespace AC2E.Server {
 
                         List<WorldObject> playerInventory = objectManager.getAllInContainer(character.id);
                         foreach ((InvLoc equipLoc, InstanceId itemId) in character.equippedItems) {
-                            WorldObject item = objectManager.get(itemId);
-                            InventProfile profile = new InventProfile {
-                                visualDescInfo = new VisualDescInfo {
-                                    scale = Vector3.One,
-                                    cachedVisualDesc = item.visual,
-                                },
-                                slotsTaken = equipLoc,
-                                location = equipLoc,
-                                it = 0,
-                                id = item.id,
-                            };
-                            if (item.visual.globalAppearanceModifiers != null) {
-                                profile.visualDescInfo.appInfoHash = new AppInfoHash();
-                                foreach (var entry in item.visual.globalAppearanceModifiers.appearanceInfos) {
-                                    profile.visualDescInfo.appInfoHash[entry.Key] = entry.Value;
+                            WorldObject? item = objectManager.get(itemId);
+                            if (item != null) {
+                                InventProfile profile = new InventProfile {
+                                    visualDescInfo = new VisualDescInfo {
+                                        scale = Vector3.One,
+                                        cachedVisualDesc = item.visual,
+                                    },
+                                    slotsTaken = equipLoc,
+                                    location = equipLoc,
+                                    it = 0,
+                                    id = item.id,
+                                };
+                                if (item.visual.globalAppearanceModifiers != null) {
+                                    profile.visualDescInfo.appInfoHash = new AppInfoHash();
+                                    foreach (var entry in item.visual.globalAppearanceModifiers.appearanceInfos) {
+                                        profile.visualDescInfo.appInfoHash[entry.Key] = entry.Value;
+                                    }
                                 }
-                            }
-                            inventoryByLocationTable[(uint)equipLoc] = profile;
-                            inventoryByIdTable[item.id] = profile;
+                                inventoryByLocationTable[(uint)equipLoc] = profile;
+                                inventoryByIdTable[item.id] = profile;
 
-                            DataId weenieStateDid = new DataId(0x71000000 + item.qualities.weenieDesc.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
-                            WState clothingWeenieState = contentManager.getWeenieState(weenieStateDid);
-                            Clothing clothing = clothingWeenieState.package as Clothing;
-                            if (clothing != null) {
-                                // TODO: contentManager.getInheritedVisualDesc(item.visual)? But it seems wrong, since the topmost parent of human starter pants is 0x1F00003E which is actually overriding skin color which doesn't make sense - not sure if that's a special override that just needs to be blocked or if inheritance isn't the correct thing to do...
-                                foreach ((DataId appDid, Dictionary<AppearanceKey, float> appearances) in item.visual.globalAppearanceModifiers.appearanceInfos) {
-                                    Dictionary<AppearanceKey, float> clonedAppearances = new Dictionary<AppearanceKey, float>(appearances);
-                                    clonedAppearances[AppearanceKey.WORN] = 1.0f;
-                                    character.visual.globalAppearanceModifiers.appearanceInfos[appDid] = clonedAppearances;
+                                DataId weenieStateDid = new DataId(0x71000000 + item.qualities.weenieDesc.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
+                                WState clothingWeenieState = contentManager.getWeenieState(weenieStateDid);
+                                if (clothingWeenieState.package is Clothing clothing) {
+                                    // TODO: contentManager.getInheritedVisualDesc(item.visual)? But it seems wrong, since the topmost parent of human starter pants is 0x1F00003E which is actually overriding skin color which doesn't make sense - not sure if that's a special override that just needs to be blocked or if inheritance isn't the correct thing to do...
+                                    PartGroupDataDesc? globalAppearanceModifiers = item.visual.globalAppearanceModifiers;
+                                    if (globalAppearanceModifiers != null) {
+                                        foreach ((DataId appDid, Dictionary<AppearanceKey, float> appearances) in globalAppearanceModifiers.appearanceInfos) {
+                                            Dictionary<AppearanceKey, float> clonedAppearances = new Dictionary<AppearanceKey, float>(appearances);
+                                            clonedAppearances[AppearanceKey.WORN] = 1.0f;
+                                            character.visual.globalAppearanceModifiers.appearanceInfos[appDid] = clonedAppearances;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -462,7 +479,7 @@ namespace AC2E.Server {
                                 value = toggleCounter,
                             });
 
-                            WorldObject character = objectManager.get(player.characterId);
+                            WorldObject? character = objectManager.get(player.characterId);
                             if (character != null && character.inWorld) {
                                 packetHandler.send(player.clientId, new DoFxMsg {
                                     senderIdWithStamp = character.getInstanceIdWithStamp(character.physics.visualOrderStamp),
@@ -503,7 +520,7 @@ namespace AC2E.Server {
                 case MessageOpcode.Evt_Physics__CLookAtDir_ID: {
                         CLookAtDirMsg msg = (CLookAtDirMsg)genericMsg;
 
-                        WorldObject character = objectManager.get(player.characterId);
+                        WorldObject? character = objectManager.get(player.characterId);
                         if (character != null && character.inWorld) {
                             character.physics.headingX = msg.x;
                             character.physics.headingZ = msg.z;
@@ -520,7 +537,7 @@ namespace AC2E.Server {
                 case MessageOpcode.Evt_Physics__CPosition_ID: {
                         CPositionMsg msg = (CPositionMsg)genericMsg;
 
-                        WorldObject character = objectManager.get(player.characterId);
+                        WorldObject? character = objectManager.get(player.characterId);
                         if (character != null && character.inWorld) {
                             character.heading = msg.pos.heading.rotDegrees;
                             character.motion = msg.pos.doMotion;
@@ -568,14 +585,16 @@ namespace AC2E.Server {
         private void sendCharacters(Player player) {
             List<CharacterIdentity> characterIdentities = new List<CharacterIdentity>();
             foreach (Character character in characterManager.getWithAccount(player.account.id)) {
-                WorldObject playerObject = objectManager.get(character.worldObjectId);
+                WorldObject? playerObject = objectManager.get(character.worldObjectId);
 
-                characterIdentities.Add(new CharacterIdentity {
-                    id = playerObject.id,
-                    name = playerObject.qualities.weenieDesc.name.literalValue,
-                    secondsGreyedOut = 0,
-                    visualDesc = playerObject.visual,
-                });
+                if (playerObject != null) {
+                    characterIdentities.Add(new CharacterIdentity {
+                        id = playerObject.id,
+                        name = playerObject.qualities.weenieDesc.name.literalValue,
+                        secondsGreyedOut = 0,
+                        visualDesc = playerObject.visual,
+                    });
+                }
             }
 
             List<string> characterNames = new List<string>();

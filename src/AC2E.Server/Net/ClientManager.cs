@@ -1,5 +1,6 @@
 ﻿using AC2E.Def;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 
 namespace AC2E.Server {
@@ -13,13 +14,13 @@ namespace AC2E.Server {
         private readonly ClientIdGenerator clientIdGenerator = new ClientIdGenerator();
         private readonly Dictionary<ClientId, ClientConnection> _clients = new Dictionary<ClientId, ClientConnection>();
 
-        public bool tryGetClient(ClientId clientId, out ClientConnection client) {
+        public bool tryGetClient(ClientId clientId, [MaybeNullWhen(false)] out ClientConnection client) {
             lock (this) {
                 return _clients.TryGetValue(clientId, out client);
             }
         }
 
-        public ClientConnection addClient(NetInterface netInterface, double time, float elapsedTime, IPEndPoint clientEndpoint, Account account) {
+        public ClientConnection? addClient(NetInterface netInterface, double time, float elapsedTime, IPEndPoint clientEndpoint, Account account) {
             ClientConnection client;
             lock (this) {
                 if (_clients.Count > MAX_CONNECTIONS) {

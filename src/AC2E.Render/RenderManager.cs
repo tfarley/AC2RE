@@ -44,7 +44,7 @@ namespace AC2E.Render {
             cameraToClipMatrix = RenderUtil.perspective(vFov, width, height, nearClip, farClip);
         }
 
-        public List<RenderMesh> loadDatMeshes(DataId did) {
+        public List<RenderMesh>? loadDatMeshes(DataId did) {
             return resourceManager.loadDatMeshes(renderer, did);
         }
 
@@ -57,8 +57,7 @@ namespace AC2E.Render {
         }
 
         public RenderObject addRenderObject(List<RenderMesh> meshes, Vector3 pos, Quaternion rot) {
-            RenderObject renderObject = new RenderObject {
-                meshes = meshes,
+            RenderObject renderObject = new RenderObject(meshes) {
                 pos = pos,
                 rot = rot,
             };

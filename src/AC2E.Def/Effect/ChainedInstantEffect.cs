@@ -6,10 +6,10 @@ namespace AC2E.Def {
 
         public override PackageType packageType => PackageType.ChainedInstantEffect;
 
-        public List<Effect> effects; // m_listEffect
+        public List<SingletonPkg<Effect>> effects; // m_listEffect
 
         public ChainedInstantEffect(AC2Reader data) : base(data) {
-            data.ReadPkg<RList>(v => effects = v.to<Effect>());
+            data.ReadPkg<RList>(v => effects = v.to(SingletonPkg<Effect>.cast));
         }
     }
 }

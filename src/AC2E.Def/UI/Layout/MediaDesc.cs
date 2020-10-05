@@ -262,8 +262,7 @@ namespace AC2E.Def {
                     mediaData = new StateMediaData(data);
                     break;
                 case MediaType.AVI:
-                    throw new NotImplementedException();
-                    break;
+                    throw new NotImplementedException(type.ToString());
                 case MediaType.CURSOR:
                     mediaData = new CursorMediaData(data);
                     break;

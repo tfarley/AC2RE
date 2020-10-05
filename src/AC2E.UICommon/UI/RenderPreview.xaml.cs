@@ -23,7 +23,7 @@ namespace AC2E.UICommon {
         private Stopwatch renderStopwatch = new Stopwatch();
         private float lastRenderTime;
 
-        private RenderObject testObject;
+        private RenderObject? testObject;
 
         public RenderPreview(DatReader datReader, DataId initialDid) {
             InitializeComponent();
@@ -69,7 +69,7 @@ namespace AC2E.UICommon {
             }
 
             try {
-                List<RenderMesh> meshes = renderManager.loadDatMeshes(new DataId(inputDid));
+                List<RenderMesh>? meshes = renderManager.loadDatMeshes(new DataId(inputDid));
                 if (meshes != null) {
                     testObject = renderManager.addRenderObject(meshes);
                 }
@@ -78,7 +78,7 @@ namespace AC2E.UICommon {
             }
         }
 
-        private void CompositionTarget_Rendering(object sender, System.EventArgs e) {
+        private void CompositionTarget_Rendering(object? sender, EventArgs e) {
             float curElapsedTime = (float)renderStopwatch.Elapsed.TotalSeconds;
             float dt = curElapsedTime - lastRenderTime;
             if (renderManager != null && dt >= MIN_DT) {

@@ -10,12 +10,11 @@ namespace AC2E.PacketTool {
 
         public void addPacket(NetPacket packet, bool isClientToServer, int packetNum, float timestamp) {
             foreach (NetBlobFrag frag in packet.frags) {
-                if (!netBlobIdToRecord.TryGetValue(frag.blobId, out NetBlobRecord netBlobRecord)) {
-                    netBlobRecord = new NetBlobRecord {
+                if (!netBlobIdToRecord.TryGetValue(frag.blobId, out NetBlobRecord? netBlobRecord)) {
+                    netBlobRecord = new NetBlobRecord(new NetBlob(frag)) {
                         isClientToServer = isClientToServer,
                         startPacketNum = packetNum,
                         startTimestamp = timestamp,
-                        netBlob = new NetBlob(frag),
                     };
                     netBlobIdToRecord[frag.blobId] = netBlobRecord;
                     records.Add(netBlobRecord);

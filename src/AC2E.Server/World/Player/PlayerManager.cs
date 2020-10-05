@@ -12,7 +12,7 @@ namespace AC2E.Server {
             this.packetHandler = packetHandler;
         }
 
-        public Player get(ClientId clientId) {
+        public Player? get(ClientId clientId) {
             return players.GetValueOrDefault(clientId, null);
         }
 

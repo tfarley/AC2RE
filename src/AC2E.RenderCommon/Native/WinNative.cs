@@ -126,14 +126,14 @@ namespace AC2E.RenderCommon {
 
         [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate void glDeleteVertexArrays_t(uint n, ref uint buffers);
-        private static glDeleteVertexArrays_t p_glDeleteVertexArrays;
-        public static void glDeleteVertexArrays(uint n, ref uint vertexArrays) => p_glDeleteVertexArrays(n, ref vertexArrays);
+        private static glDeleteVertexArrays_t? p_glDeleteVertexArrays;
+        public static void glDeleteVertexArrays(uint n, ref uint vertexArrays) => p_glDeleteVertexArrays!(n, ref vertexArrays);
 
         public static void LoadAllFunctions(Func<string, IntPtr> getProcAddress) {
             LoadFunction("glDeleteVertexArrays", out p_glDeleteVertexArrays, getProcAddress);
         }
 
-        private static void LoadFunction<T>(string name, out T field, Func<string, IntPtr> getProcAddress) {
+        private static void LoadFunction<T>(string name, out T? field, Func<string, IntPtr> getProcAddress) where T : class {
             IntPtr funcPtr = getProcAddress(name);
             if (funcPtr != IntPtr.Zero) {
                 field = Marshal.GetDelegateForFunctionPointer<T>(funcPtr);

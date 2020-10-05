@@ -6,8 +6,14 @@ namespace AC2E.Render {
 
     public class RenderMesh {
 
-        public IMesh mesh;
-        public VertexFormatInfo vertexFormat;
-        public List<ITexture> textures;
+        public readonly IMesh mesh;
+        public readonly VertexFormatInfo vertexFormat;
+        public readonly List<ITexture> textures;
+
+        public RenderMesh(IMesh mesh, VertexFormatInfo vertexFormat, List<ITexture> textures) {
+            this.mesh = mesh;
+            this.vertexFormat = vertexFormat;
+            this.textures = textures;
+        }
     }
 }

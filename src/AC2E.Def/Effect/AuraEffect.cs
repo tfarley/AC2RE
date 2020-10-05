@@ -7,12 +7,12 @@ namespace AC2E.Def {
         public override PackageType packageType => PackageType.AuraEffect;
 
         public int maxRangeSqr; // m_fMaxRangeSqr
-        public List<Effect> effects; // m_listEffect
+        public List<SingletonPkg<Effect>> effects; // m_listEffect
         public uint auraFlags; // m_uiAuraFlags
 
         public AuraEffect(AC2Reader data) : base(data) {
             maxRangeSqr = data.ReadInt32();
-            data.ReadPkg<RList>(v => effects = v.to<Effect>());
+            data.ReadPkg<RList>(v => effects = v.to(SingletonPkg<Effect>.cast));
             auraFlags = data.ReadUInt32();
         }
     }

@@ -13,7 +13,7 @@ namespace AC2E.Server {
         public static bool operator ==(ClientId lhs, ClientId rhs) => lhs.id == rhs.id;
         public static bool operator !=(ClientId lhs, ClientId rhs) => lhs.id != rhs.id;
         public bool Equals(ClientId other) => id == other.id;
-        public override bool Equals(object obj) => obj is ClientId castObj && id == castObj.id;
+        public override bool Equals(object? obj) => obj is ClientId castObj && id == castObj.id;
         public override int GetHashCode() => id.GetHashCode();
 
         public override string ToString() => id.ToString();

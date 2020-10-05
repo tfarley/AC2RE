@@ -29,7 +29,7 @@ namespace AC2E.DatTool {
 
                 DbTypeDef dbTypeDef = DbTypeDef.TYPE_TO_DEF[dbType];
 
-                if (!directoryCache.TryGetValue(dbType, out string directory)) {
+                if (!directoryCache.TryGetValue(dbType, out string? directory)) {
                     if (typesToParseSet.Contains(dbType)) {
                         directory = getOrCreateDir(outputBaseDir, dbTypeDef.strDataDir);
                         directoryCache[dbType] = directory;
@@ -41,7 +41,7 @@ namespace AC2E.DatTool {
                         DBFile2IDTable file2IdTable = new DBFile2IDTable(data);
 
                         if (typesToParseSet.Contains(dbType)) {
-                            File.WriteAllText(Path.Combine(directory, $"{did.id:X8}{dbTypeDef.extension}.txt"), Util.objectToString(file2IdTable));
+                            File.WriteAllText(Path.Combine(directory!, $"{did.id:X8}{dbTypeDef.extension}.txt"), Util.objectToString(file2IdTable));
                         }
 
                         foreach (var element in file2IdTable.cacheByDid.Values) {
@@ -73,12 +73,12 @@ namespace AC2E.DatTool {
 
                 DbTypeDef dbTypeDef = DbTypeDef.TYPE_TO_DEF[dbType];
 
-                if (!directoryCache.TryGetValue(dbType, out string directory)) {
+                if (!directoryCache.TryGetValue(dbType, out string? directory)) {
                     directory = getOrCreateDir(outputBaseDir, dbTypeDef.strDataDir);
                     directoryCache[dbType] = directory;
                 }
 
-                if (didToFileName.TryGetValue(did, out string fileName)) {
+                if (didToFileName.TryGetValue(did, out string? fileName)) {
                     fileName = $"{did.id:X8}_{fileName}"; ;
                 } else {
                     fileName = $"{did.id:X8}{dbTypeDef.extension}";

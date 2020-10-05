@@ -49,7 +49,7 @@ namespace AC2E.Render {
         }
 
         public IShaderProgram getShader(IRenderer renderer, VertexFormatInfo vertexFormat) {
-            if (!vertexFormatToShader.TryGetValue(vertexFormat.format, out IShaderProgram shader)) {
+            if (!vertexFormatToShader.TryGetValue(vertexFormat.format, out IShaderProgram? shader)) {
                 List<string> defines = new List<string>();
                 if (vertexFormat.offsetNormal != 0) {
                     defines.Add(NORMAL_DEFINE);

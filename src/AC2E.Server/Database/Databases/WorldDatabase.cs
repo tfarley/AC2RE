@@ -61,7 +61,7 @@ namespace AC2E.Server.Database {
                 BsonClassMap.RegisterClassMap<WorldObject>(c => {
                     c.AutoMap();
                     c.MapIdField(r => r.id);
-                    c.MapCreator(r => new WorldObject(r.id));
+                    c.MapCreator(r => new WorldObject(r.id, r.physics, r.visual, r.qualities));
                     c.UnmapField(r => r.instanceStamp);
                     c.MapField(r => r.equippedItems).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<InvLoc, InstanceId>>()
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
@@ -150,7 +150,7 @@ namespace AC2E.Server.Database {
             return worldObjects;
         }
 
-        public Character getCharacterWithId(CharacterId id) {
+        public Character? getCharacterWithId(CharacterId id) {
             return characters.Find(r => !r.deleted && r.id == id).FirstOrDefault();
         }
 
@@ -158,7 +158,7 @@ namespace AC2E.Server.Database {
             return characters.Find(r => !r.deleted && r.ownerAccountId == accountId).ToList();
         }
 
-        public InstanceIdGenerator getInstanceIdGenerator(string type) {
+        public InstanceIdGenerator? getInstanceIdGenerator(string type) {
             return instanceIdGenerators.Find(r => r.type == type).FirstOrDefault();
         }
 
@@ -166,7 +166,7 @@ namespace AC2E.Server.Database {
             return worldObjects.Find(r => !r.deleted && r.inWorld).ToList();
         }
 
-        public WorldObject getWorldObjectWithId(InstanceId id) {
+        public WorldObject? getWorldObjectWithId(InstanceId id) {
             return worldObjects.Find(r => !r.deleted && r.id == id).FirstOrDefault();
         }
 
@@ -183,14 +183,17 @@ namespace AC2E.Server.Database {
                         characters.ReplaceOne(session, r => r.id == character.id, character, new ReplaceOptions() { IsUpsert = true }, ct);
                     }
 
-                    instanceIdGenerators.UpdateOne(
-                        session,
-                        r => r.type == worldSave.idGenerator.type,
-                        Builders<InstanceIdGenerator>.Update
-                            .SetOnInsert(r => r.type, worldSave.idGenerator.type)
-                            .Set(r => r.idCounter, worldSave.idGenerator.idCounter),
-                        new UpdateOptions() { IsUpsert = true },
-                        ct);
+                    InstanceIdGenerator? idGenerator = worldSave.idGenerator;
+                    if (idGenerator != null) {
+                        instanceIdGenerators.UpdateOne(
+                            session,
+                            r => r.type == idGenerator.type,
+                            Builders<InstanceIdGenerator>.Update
+                                .SetOnInsert(r => r.type, idGenerator.type)
+                                .Set(r => r.idCounter, idGenerator.idCounter),
+                            new UpdateOptions() { IsUpsert = true },
+                            ct);
+                    }
 
                     // TODO: Needed individual replace calls here because ReplaceOneModel in BulkWrite does not support Upsert, and the alternative requires specifying every field in UpdateOneModel
                     foreach (WorldObject worldObject in worldSave.worldObjects) {

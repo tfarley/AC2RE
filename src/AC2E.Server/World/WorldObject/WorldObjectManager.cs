@@ -23,10 +23,12 @@ namespace AC2E.Server {
             instanceIdGenerator = worldDb.getInstanceIdGenerator(INSTANCE_ID_GENERATOR_TYPE) ?? new InstanceIdGenerator(INSTANCE_ID_GENERATOR_TYPE);
         }
 
-        public WorldObject get(InstanceId id) {
-            if (!worldObjects.TryGetValue(id, out WorldObject worldObject)) {
+        public WorldObject? get(InstanceId id) {
+            if (!worldObjects.TryGetValue(id, out WorldObject? worldObject)) {
                 worldObject = worldDb.getWorldObjectWithId(id);
-                worldObjects[id] = worldObject;
+                if (worldObject != null) {
+                    worldObjects[id] = worldObject;
+                }
             }
             return (worldObject == null || worldObject.deleted) ? null : worldObject;
         }
@@ -111,10 +113,6 @@ namespace AC2E.Server {
 
         public WorldObject create() {
             WorldObject newObject = new WorldObject(instanceIdGenerator.next());
-            newObject.physics = new PhysicsDesc();
-            newObject.visual = new VisualDesc();
-            newObject.qualities = new CBaseQualities();
-            newObject.qualities.weenieDesc = new WeenieDesc();
             worldObjects[newObject.id] = newObject;
             return newObject;
         }

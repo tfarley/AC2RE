@@ -70,25 +70,27 @@ namespace AC2E.Server {
             if (requester != null && request.equipperId != requester.characterId) {
                 request.status = ErrorType.ITEMNOTOWNEDBYCONTAINER;
             } else {
-                WorldObject equipper = objectManager.get(request.equipperId);
-                WorldObject item = objectManager.get(request.itemId);
+                WorldObject? equipper = objectManager.get(request.equipperId);
+                WorldObject? item = objectManager.get(request.itemId);
 
-                if (equipper.equippedItems.ContainsKey(request.location)) {
-                    request.status = ErrorType.INVSLOTFULL;
-                } else if (!item.qualities.ints.TryGetValue(IntStat.VALIDINVENTORYLOCATIONS, out int validInventoryLocations) || (validInventoryLocations & (int)request.location) == 0) {
-                    request.status = ErrorType.WRONGINVSLOT;
-                } else {
-                    if (setItemEquipped(equipper, item, request.location)) {
-                        item.physics.timestamps[0]++;
-                        playerManager.broadcastSend(new ParentMsg {
-                            senderIdWithStamp = item.getInstanceIdWithStamp(),
-                            parentIdWithChildPosStamp = equipper.getInstanceIdWithStamp(item.physics.timestamps[0]),
-                            childLocation = item.physics.locationId,
-                            orientationId = item.physics.orientationId,
-                        });
+                if (equipper != null && item != null) {
+                    if (equipper.equippedItems.ContainsKey(request.location)) {
+                        request.status = ErrorType.INVSLOTFULL;
+                    } else if (!item.qualities.ints.TryGetValue(IntStat.VALIDINVENTORYLOCATIONS, out int validInventoryLocations) || (validInventoryLocations & (int)request.location) == 0) {
+                        request.status = ErrorType.WRONGINVSLOT;
+                    } else {
+                        if (setItemEquipped(equipper, item, request.location)) {
+                            item.physics.timestamps[0]++;
+                            playerManager.broadcastSend(new ParentMsg {
+                                senderIdWithStamp = item.getInstanceIdWithStamp(),
+                                parentIdWithChildPosStamp = equipper.getInstanceIdWithStamp(item.physics.timestamps[0]),
+                                childLocation = item.physics.locationId,
+                                orientationId = item.physics.orientationId,
+                            });
+                        }
+
+                        request.status = ErrorType.NONE;
                     }
-
-                    request.status = ErrorType.NONE;
                 }
             }
 
@@ -102,32 +104,36 @@ namespace AC2E.Server {
         }
 
         public void unequipItem(InvEquipDesc request, Player requester) {
-            if (requester != null && request.equipperId != requester.characterId) {
+            if (request.equipperId != requester.characterId) {
                 request.status = ErrorType.ITEMNOTOWNEDBYCONTAINER;
             } else {
-                WorldObject equipper = objectManager.get(request.equipperId);
-                WorldObject item = objectManager.get(request.itemId);
-                WorldObject container = objectManager.get(request.containerId);
+                WorldObject? equipper = objectManager.get(request.equipperId);
+                WorldObject? item = objectManager.get(request.itemId);
+                WorldObject? container = objectManager.get(request.containerId);
 
-                if (!equipper.equippedItems.TryGetValue(request.location, out InstanceId equippedItemId) || item.id != equippedItemId) {
-                    request.status = ErrorType.NOTEQUIPPED;
-                } else {
-                    equipper.equippedItems.Remove(request.location);
+                if (equipper != null && item != null) {
+                    if (!equipper.equippedItems.TryGetValue(request.location, out InstanceId equippedItemId) || item.id != equippedItemId) {
+                        request.status = ErrorType.NOTEQUIPPED;
+                    } else {
+                        equipper.equippedItems.Remove(request.location);
 
-                    // TODO: Hack to prevent weird case where icon wraps to next line when dragged to an empty slot in inventory bag
-                    request.containerSlot = (uint)Math.Min((int)request.containerSlot, container.containedItems.Count - 1);
+                        if (container != null) {
+                            // TODO: Hack to prevent weird case where icon wraps to next line when dragged to an empty slot in inventory bag
+                            request.containerSlot = (uint)Math.Min((int)request.containerSlot, container.containedItems.Count - 1);
 
-                    request.targetContainerSlot = (uint)container.containedItems.InsertSafe((int)request.containerSlot, item.id);
-                    request.containerSlot = request.targetContainerSlot;
+                            request.targetContainerSlot = (uint)container.containedItems.InsertSafe((int)request.containerSlot, item.id);
+                            request.containerSlot = request.targetContainerSlot;
+                        }
 
-                    deparent(equipper, item);
+                        deparent(equipper, item);
 
-                    item.physics.timestamps[0]++;
-                    playerManager.broadcastSend(requester.clientId, new ContainMsg {
-                        childIdWithPosStamp = item.getInstanceIdWithStamp(item.physics.timestamps[0]),
-                    });
+                        item.physics.timestamps[0]++;
+                        playerManager.broadcastSend(requester.clientId, new ContainMsg {
+                            childIdWithPosStamp = item.getInstanceIdWithStamp(item.physics.timestamps[0]),
+                        });
 
-                    request.status = ErrorType.NONE;
+                        request.status = ErrorType.NONE;
+                    }
                 }
             }
 

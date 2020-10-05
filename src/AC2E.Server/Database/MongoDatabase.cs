@@ -46,7 +46,7 @@ namespace AC2E.Server.Database {
                 mongoInited = true;
             }
 
-            if (!endpointToClient.TryGetValue(endpoint, out client)) {
+            if (!endpointToClient.TryGetValue(endpoint, out client!)) {
                 client = new MongoClient(endpoint);
                 endpointToClient[endpoint] = client;
             }

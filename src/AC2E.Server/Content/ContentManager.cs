@@ -7,8 +7,8 @@ namespace AC2E.Server {
     internal class ContentManager : IDisposable {
 
         private readonly DatReader portalDatReader;
-        private CharacterGenSystem characterGenSystem;
-        private CharGenMatrix charGenMatrix;
+        private CharacterGenSystem? characterGenSystem;
+        private CharGenMatrix? charGenMatrix;
         private Dictionary<DataId, EntityDef> entityDefCache = new Dictionary<DataId, EntityDef>();
         private Dictionary<DataId, CBaseQualities> qualitiesCache = new Dictionary<DataId, CBaseQualities>();
         private Dictionary<DataId, WState> weenieStateCache = new Dictionary<DataId, WState>();
@@ -48,7 +48,7 @@ namespace AC2E.Server {
         }
 
         public EntityDef getEntityDef(DataId did) {
-            if (!entityDefCache.TryGetValue(did, out EntityDef entityDef)) {
+            if (!entityDefCache.TryGetValue(did, out EntityDef? entityDef)) {
                 using (AC2Reader data = portalDatReader.getFileReader(did)) {
                     EntityDesc entityDesc = new EntityDesc(data);
                     entityDef = new EntityDef(entityDesc);
@@ -59,7 +59,7 @@ namespace AC2E.Server {
         }
 
         public CBaseQualities getQualities(DataId did) {
-            if (!qualitiesCache.TryGetValue(did, out CBaseQualities qualities)) {
+            if (!qualitiesCache.TryGetValue(did, out CBaseQualities? qualities)) {
                 using (AC2Reader data = portalDatReader.getFileReader(did)) {
                     qualities = new CBaseQualities(data);
                     qualitiesCache[did] = qualities;
@@ -69,7 +69,7 @@ namespace AC2E.Server {
         }
 
         public WState getWeenieState(DataId did) {
-            if (!weenieStateCache.TryGetValue(did, out WState weenieState)) {
+            if (!weenieStateCache.TryGetValue(did, out WState? weenieState)) {
                 using (AC2Reader data = portalDatReader.getFileReader(did)) {
                     weenieState = new WState(data);
                     weenieStateCache[did] = weenieState;
@@ -79,7 +79,7 @@ namespace AC2E.Server {
         }
 
         private VisualDesc getVisualDesc(DataId did) {
-            if (!visualDescCache.TryGetValue(did, out VisualDesc visualDesc)) {
+            if (!visualDescCache.TryGetValue(did, out VisualDesc? visualDesc)) {
                 using (AC2Reader data = portalDatReader.getFileReader(did)) {
                     visualDesc = new VisualDesc(data);
                     visualDescCache[did] = visualDesc;
@@ -118,7 +118,7 @@ namespace AC2E.Server {
                 }
 
                 foreach ((DataId appDid, Dictionary<AppearanceKey, float> parentAppearances) in parentVisualDesc.globalAppearanceModifiers.appearanceInfos) {
-                    if (childVisualDesc.globalAppearanceModifiers.appearanceInfos.TryGetValue(appDid, out Dictionary<AppearanceKey, float> childAppearances)) {
+                    if (childVisualDesc.globalAppearanceModifiers.appearanceInfos.TryGetValue(appDid, out Dictionary<AppearanceKey, float>? childAppearances)) {
                         foreach ((AppearanceKey appKey, float appValue) in parentAppearances) {
                             childAppearances.TryAdd(appKey, appValue);
                         }

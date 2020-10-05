@@ -10,15 +10,15 @@ namespace AC2E.Def {
         public uint behaviorOtherHit; // m_BehaviorOtherHit
         public int maxVigor; // m_MaxVigor
         public float minUseTime; // m_MinUseTime
-        public List<SingletonPkg<IPackage>> reqEffects; // m_ReqEffects
+        public List<SingletonPkg<Effect>> reqEffects; // m_ReqEffects
         public int minHealth; // m_MinHealth
         public int allowedImplementsRight; // m_AllowedImplementsRight
-        public List<SingletonPkg<IPackage>> barringEffects; // m_BarringEffects
+        public List<SingletonPkg<Effect>> barringEffects; // m_BarringEffects
         public float minRange; // m_MinRange
         public int endFocusModAdd; // m_endFocusModAdd
         public float recoveryTime; // m_RecoveryTime
         public int maxHealth; // m_MaxHealth
-        public List<SingletonPkg<IPackage>> userEffects; // m_UserEffects
+        public List<SingletonPkg<Effect>> userEffects; // m_UserEffects
         public HashSet<uint> validWeenieTypes; // m_validWeenieTypes
         public uint behaviorSelfHit; // m_BehaviorSelfHit
         public int minVigor; // m_MinVigor
@@ -40,7 +40,7 @@ namespace AC2E.Def {
         public int maxFocus; // m_MaxFocus
         public Dictionary<uint, uint> usePrereqSkills; // m_UsePrereqSkills
         public float endFocusModMult; // m_endFocusModMult
-        public List<SingletonPkg<IPackage>> targetEffects; // m_TargetEffects
+        public List<SingletonPkg<Effect>> targetEffects; // m_TargetEffects
         public int startFocusModAdd; // m_startFocusModAdd
         public int vigorModAdd; // m_VigorModAdd
         public List<uint> invalidAISuperClasses; // m_invalidAISuperClasses
@@ -59,15 +59,15 @@ namespace AC2E.Def {
             behaviorOtherHit = data.ReadUInt32();
             maxVigor = data.ReadInt32();
             minUseTime = data.ReadSingle();
-            data.ReadPkg<RList>(v => reqEffects = v.to<SingletonPkg<IPackage>>());
+            data.ReadPkg<RList>(v => reqEffects = v.to(SingletonPkg<Effect>.cast));
             minHealth = data.ReadInt32();
             allowedImplementsRight = data.ReadInt32();
-            data.ReadPkg<RList>(v => barringEffects = v.to<SingletonPkg<IPackage>>());
+            data.ReadPkg<RList>(v => barringEffects = v.to(SingletonPkg<Effect>.cast));
             minRange = data.ReadSingle();
             endFocusModAdd = data.ReadInt32();
             recoveryTime = data.ReadSingle();
             maxHealth = data.ReadInt32();
-            data.ReadPkg<RList>(v => userEffects = v.to<SingletonPkg<IPackage>>());
+            data.ReadPkg<RList>(v => userEffects = v.to(SingletonPkg<Effect>.cast));
             data.ReadPkg<AHashSet>(v => validWeenieTypes = v);
             behaviorSelfHit = data.ReadUInt32();
             minVigor = data.ReadInt32();
@@ -89,7 +89,7 @@ namespace AC2E.Def {
             maxFocus = data.ReadInt32();
             data.ReadPkg<AAHash>(v => usePrereqSkills = v);
             endFocusModMult = data.ReadSingle();
-            data.ReadPkg<RList>(v => targetEffects = v.to<SingletonPkg<IPackage>>());
+            data.ReadPkg<RList>(v => targetEffects = v.to(SingletonPkg<Effect>.cast));
             startFocusModAdd = data.ReadInt32();
             vigorModAdd = data.ReadInt32();
             data.ReadPkg<AList>(v => invalidAISuperClasses = v);
