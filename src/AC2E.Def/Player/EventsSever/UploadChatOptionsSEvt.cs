@@ -1,15 +1,17 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class UploadChatOptionsSEvt : IServerEvent {
 
         public ServerEventFunctionId funcId => ServerEventFunctionId.Player__UploadChatOptions;
 
         // WM_Player::SendSEvt_UploadChatOptions
-        public AAHash chatPopupFlags; // _chatPopupFlags
-        public AAHash devotedChatWindows; // _devotedChatWindows
-        public AAHash chatFontColors; // _chatFontColors
-        public AAHash chatFontSizes; // _chatFontSizes
-        public AAHash chatFilter; // _chatFilter
+        public Dictionary<uint, uint> chatPopupFlags; // _chatPopupFlags
+        public Dictionary<uint, uint> devotedChatWindows; // _devotedChatWindows
+        public Dictionary<uint, uint> chatFontColors; // _chatFontColors
+        public Dictionary<uint, uint> chatFontSizes; // _chatFontSizes
+        public Dictionary<uint, uint> chatFilter; // _chatFilter
 
         public UploadChatOptionsSEvt(AC2Reader data) {
             chatPopupFlags = data.UnpackPackage<AAHash>();

@@ -1,10 +1,12 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class RecipeDifficultyTable : IPackage {
 
         public PackageType packageType => PackageType.RecipeDifficultyTable;
 
-        public AArray map; // m_map
+        public List<uint> map; // m_map
         public int maxDiff; // m_maxDiff
         public int minDiff; // m_minDiff
 

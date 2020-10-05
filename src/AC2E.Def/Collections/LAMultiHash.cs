@@ -6,7 +6,41 @@ namespace AC2E.Def {
 
         public NativeType nativeType => NativeType.LAMULTIHASH;
 
-        public LAMultiHash() {
+        public Dictionary<K, List<V>> to<K, V>() {
+            Dictionary<K, List<V>> converted = new Dictionary<K, List<V>>(Count);
+            Converter<ulong> keyConverter = Converters.getULong(typeof(K));
+            Converter<uint> valueConverter = Converters.getUInt(typeof(V));
+            foreach ((var key, var value) in this) {
+                List<V> convertedValueList = new List<V>();
+                foreach (var element in value) {
+                    convertedValueList.Add(valueConverter.read<V>(element));
+                }
+
+                converted[keyConverter.read<K>(key)] = convertedValueList;
+            }
+            return converted;
+        }
+
+        public static LAMultiHash from<K, V>(Dictionary<K, List<V>> source) {
+            if (source == null) {
+                return null;
+            }
+
+            LAMultiHash converted = new LAMultiHash(source.Count);
+            Converter<ulong> keyConverter = Converters.getULong(typeof(K));
+            Converter<uint> valueConverter = Converters.getUInt(typeof(V));
+            foreach ((var key, var value) in source) {
+                List<uint> convertedValueList = new List<uint>();
+                foreach (var element in value) {
+                    convertedValueList.Add(valueConverter.write(element));
+                }
+
+                converted[keyConverter.write(key)] = convertedValueList;
+            }
+            return converted;
+        }
+
+        private LAMultiHash(int capacity) : base(capacity) {
 
         }
 

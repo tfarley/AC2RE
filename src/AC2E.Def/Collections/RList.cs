@@ -1,30 +1,47 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AC2E.Def {
 
-    public class RList<T> : List<T>, IPackage where T : IPackage {
+    public class RList : List<IPackage>, IPackage {
 
-        public virtual NativeType nativeType => NativeType.RLIST;
+        public NativeType nativeType => NativeType.RLIST;
 
-        public RList<U> to<U>() where U : class, IPackage {
-            RList<U> converted = new RList<U>(Count);
+        public List<T> to<T>() {
+            return to(v => (T)v);
+        }
+
+        public List<T> to<T>(Func<IPackage, T> elementConversion) {
+            List<T> converted = new List<T>(Count);
             foreach (var element in this) {
-                converted.Add(element as U);
+                converted.Add(elementConversion.Invoke(element));
             }
             return converted;
         }
 
-        public RList() {
-
+        public static RList from<T>(List<T> source) where T : IPackage {
+            return from(source, v => v);
         }
 
-        public RList(int capacity) : base(capacity) {
+        public static RList from<T>(List<T> source, Func<T, IPackage> elementConversion) {
+            if (source == null) {
+                return null;
+            }
+
+            RList converted = new RList(source.Count);
+            foreach (var element in source) {
+                converted.Add(elementConversion.Invoke(element));
+            }
+            return converted;
+        }
+
+        private RList(int capacity) : base(capacity) {
 
         }
 
         public RList(AC2Reader data) {
             foreach (var element in data.ReadList(data.ReadPackageId)) {
-                data.packageRegistry.addResolver(() => Add(data.packageRegistry.get<T>(element)));
+                data.packageRegistry.addResolver(() => this.Add(data.packageRegistry.get<IPackage>(element)));
             }
         }
 

@@ -6,7 +6,29 @@ namespace AC2E.Def {
 
         public NativeType nativeType => NativeType.LLIST;
 
-        public LList() {
+        public List<T> to<T>() {
+            List<T> converted = new List<T>(Count);
+            Converter<ulong> elementConverter = Converters.getULong(typeof(T));
+            foreach (var element in this) {
+                converted.Add(elementConverter.read<T>(element));
+            }
+            return converted;
+        }
+
+        public static LList from<T>(List<T> source) {
+            if (source == null) {
+                return null;
+            }
+
+            LList converted = new LList(source.Count);
+            Converter<ulong> elementConverter = Converters.getULong(typeof(T));
+            foreach (var element in source) {
+                converted.Add(elementConverter.write(element));
+            }
+            return converted;
+        }
+
+        private LList(int capacity) : base(capacity) {
 
         }
 

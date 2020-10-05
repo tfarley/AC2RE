@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class InvMoveDesc : IPackage {
 
@@ -29,7 +31,7 @@
         public uint quantity; // quantity
         public bool generatorRequest; // generatorRequestFlag
         public InstanceId splitItemId; // splitItemID
-        public AAHash itemAppearances; // m_itemAppKeyHash
+        public Dictionary<uint, uint> itemAppearances; // m_itemAppKeyHash
         public bool noAnim; // noAnimFlag
         public InstanceId mergeContainerId; // mergeContainerID
         public bool usedOverflowSlot; // bUsedOverflowSlot
@@ -124,7 +126,7 @@
             data.Write(quantity);
             data.Write(generatorRequest);
             data.Write(splitItemId);
-            data.WritePkg(itemAppearances);
+            data.WritePkg(AAHash.from(itemAppearances));
             data.Write(noAnim);
             data.Write(mergeContainerId);
             data.Write(usedOverflowSlot);

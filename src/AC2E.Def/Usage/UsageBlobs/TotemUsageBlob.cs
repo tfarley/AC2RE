@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class TotemUsageBlob : UsageBlob {
 
@@ -7,7 +9,7 @@
         public uint targetWeenieType; // m_targetWeenieType
         public StringInfo playerName; // m_siPlayerName
         public int minTargetLore; // m_minTargetLore
-        public ARHash<IPackage> effects; // m_effects
+        public Dictionary<uint, IPackage> effects; // m_effects
         public int minTargetLevel; // m_minTargetLevel
 
         public TotemUsageBlob() : base() {
@@ -18,7 +20,7 @@
             targetWeenieType = data.ReadUInt32();
             data.ReadPkg<StringInfo>(v => playerName = v);
             minTargetLore = data.ReadInt32();
-            data.ReadPkg<ARHash<IPackage>>(v => effects = v);
+            data.ReadPkg<ARHash>(v => effects = v);
             minTargetLevel = data.ReadInt32();
         }
 
@@ -27,7 +29,7 @@
             data.Write(targetWeenieType);
             data.WritePkg(playerName);
             data.Write(minTargetLore);
-            data.WritePkg(effects);
+            data.WritePkg(ARHash.from(effects));
             data.Write(minTargetLevel);
         }
     }

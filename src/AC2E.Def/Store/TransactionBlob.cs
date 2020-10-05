@@ -1,11 +1,13 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class TransactionBlob : IPackage {
 
         public PackageType packageType => PackageType.TransactionBlob;
 
         public InstanceId itemId; // m_iidItem
-        public InstanceIdList tradeItemIds; // m_tradeItems
+        public List<InstanceId> tradeItemIds; // m_tradeItems
         public InstanceId shopperId; // m_iidShopper
         public uint quantity; // m_uiQuantity
         public InstanceId storekeeperId; // m_iidStorekeeper
@@ -18,7 +20,7 @@
 
         public TransactionBlob(AC2Reader data) {
             itemId = data.ReadInstanceId();
-            data.ReadPkg<LList>(v => tradeItemIds = new InstanceIdList(v));
+            data.ReadPkg<LList>(v => tradeItemIds = v.to<InstanceId>());
             shopperId = data.ReadInstanceId();
             quantity = data.ReadUInt32();
             storekeeperId = data.ReadInstanceId();
@@ -28,7 +30,7 @@
 
         public void write(AC2Writer data) {
             data.Write(itemId);
-            data.WritePkg(tradeItemIds);
+            data.WritePkg(LList.from(tradeItemIds));
             data.Write(shopperId);
             data.Write(quantity);
             data.Write(storekeeperId);

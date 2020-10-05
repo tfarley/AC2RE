@@ -1,17 +1,19 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class Inventory : Container {
 
         public override PackageType packageType => PackageType.Inventory;
 
-        public ARHash<IPackage> inventoryByLocation; // _inventory_by_loc
+        public Dictionary<uint, IPackage> inventoryByLocation; // _inventory_by_loc
         public uint filledInventoryLocations; // _filled_invlocs
-        public InstanceIdRHash<IPackage> inventoryById; // _inventory_by_iid
+        public Dictionary<InstanceId, IPackage> inventoryById; // _inventory_by_iid
 
         public Inventory(AC2Reader data) : base(data) {
-            data.ReadPkg<ARHash<IPackage>>(v => inventoryByLocation = v);
+            data.ReadPkg<ARHash>(v => inventoryByLocation = v);
             filledInventoryLocations = data.ReadUInt32();
-            data.ReadPkg<LRHash<IPackage>>(v => inventoryById = new InstanceIdRHash<IPackage>(v));
+            data.ReadPkg<LRHash>(v => inventoryById = v.to<InstanceId, IPackage>());
         }
     }
 }

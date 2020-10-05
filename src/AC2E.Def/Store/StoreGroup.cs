@@ -1,11 +1,13 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class StoreGroup : IPackage {
 
         public PackageType packageType => PackageType.StoreGroup;
 
         public StringInfo name; // m_siName
-        public AArray storeTemplates; // m_storeTemplates
+        public List<uint> storeTemplates; // m_storeTemplates
         public int totalSales; // m_iTotalSales
         public int maxAccountSales; // m_iMaxAccountSales
 

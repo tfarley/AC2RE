@@ -1,14 +1,16 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class EmoteTable : IPackage {
 
         public PackageType packageType => PackageType.EmoteTable;
 
-        public ARHash<EmoteInfo> emoteHash; // _emoteHash
+        public Dictionary<uint, EmoteInfo> emoteHash; // _emoteHash
         public bool setupOK; // _setupOK
 
         public EmoteTable(AC2Reader data) {
-            data.ReadPkg<ARHash<IPackage>>(v => emoteHash = v.to<EmoteInfo>());
+            data.ReadPkg<ARHash>(v => emoteHash = v.to<uint, EmoteInfo>());
             setupOK = data.ReadBoolean();
         }
     }

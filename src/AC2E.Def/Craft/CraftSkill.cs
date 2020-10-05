@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class CraftSkill : MasterDIDListMember {
 
@@ -6,7 +8,7 @@
 
         public uint advancementCap; // m_uiAdvancementCap
         public StringInfo name; // m_siName
-        public AAHash titleHash; // m_titleHash
+        public Dictionary<uint, uint> titleHash; // m_titleHash
         public StringInfo description; // m_siDesc
         public DataId advancementTableDid; // m_didAdvancementTable
         public DataId iconDid; // m_didIcon

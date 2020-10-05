@@ -1,17 +1,19 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class CraftCheckEntry : IPackage {
 
         public PackageType packageType => PackageType.CraftCheckEntry;
 
-        public AList randomThresholds; // m_listRandThresh
+        public List<uint> randomThresholds; // m_listRandThresh
         public float threshold; // m_fThresh
-        public ARHash<CraftRandomEntry> randEntries; // m_hashRandEntries
+        public Dictionary<uint, CraftRandomEntry> randEntries; // m_hashRandEntries
 
         public CraftCheckEntry(AC2Reader data) {
             data.ReadPkg<AList>(v => randomThresholds = v);
             threshold = data.ReadSingle();
-            data.ReadPkg<ARHash<IPackage>>(v => randEntries = v.to<CraftRandomEntry>());
+            data.ReadPkg<ARHash>(v => randEntries = v.to<uint, CraftRandomEntry>());
         }
     }
 }

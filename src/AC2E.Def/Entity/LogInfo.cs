@@ -1,23 +1,25 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class LogInfo : IPackage {
 
         public PackageType packageType => PackageType.LogInfo;
 
-        public ARHash<IPackage> broadcastBitmaskHash; // mBroadcastBitmaskHash
+        public Dictionary<uint, IPackage> broadcastBitmaskHash; // mBroadcastBitmaskHash
         public uint fileBitmask; // mFileBitmask
         public uint broadcastBitmask; // mBroadcastBitmask
-        public InstanceIdAHash broadcastIdHash; // mBroadcastIIDHash
+        public Dictionary<InstanceId, uint> broadcastIdHash; // mBroadcastIIDHash
         public uint printBitmask; // mPrintBitmask
-        public InstanceIdList loggedEntities; // mLoggedEntities
+        public List<InstanceId> loggedEntities; // mLoggedEntities
 
         public LogInfo(AC2Reader data) {
-            data.ReadPkg<ARHash<IPackage>>(v => broadcastBitmaskHash = v);
+            data.ReadPkg<ARHash>(v => broadcastBitmaskHash = v);
             fileBitmask = data.ReadUInt32();
             broadcastBitmask = data.ReadUInt32();
-            data.ReadPkg<LAHash>(v => broadcastIdHash = new InstanceIdAHash(v));
+            data.ReadPkg<LAHash>(v => broadcastIdHash = v.to<InstanceId, uint>());
             printBitmask = data.ReadUInt32();
-            data.ReadPkg<LList>(v => loggedEntities = new InstanceIdList(v));
+            data.ReadPkg<LList>(v => loggedEntities = v.to<InstanceId>());
         }
     }
 }

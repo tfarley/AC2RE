@@ -1,11 +1,13 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class PetGenesisInfo : IPackage {
 
         public PackageType packageType => PackageType.PetGenesisInfo;
 
-        public LList pets; // m_pets
-        public ALHash relevantPerks; // m_relevantPerks
+        public List<ulong> pets; // m_pets
+        public Dictionary<uint, ulong> relevantPerks; // m_relevantPerks
         public InstanceId leaderId; // m_iidLeader
         public uint flags; // m_flags
         public PKStatus status; // m_status

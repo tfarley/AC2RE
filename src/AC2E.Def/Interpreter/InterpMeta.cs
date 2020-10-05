@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Reflection;
@@ -10,7 +11,16 @@ namespace AC2E.Def {
         private static readonly Dictionary<Type, FieldDesc[]> fieldDescCache = new Dictionary<Type, FieldDesc[]>();
 
         private static readonly Dictionary<Type, Type> TYPE_REPLACEMENTS = new Dictionary<Type, Type> {
-            { typeof(Vector3), typeof(VectorPkg) },
+            { typeof(DataId), typeof(uint) },
+            { typeof(CellId), typeof(uint) },
+
+            { typeof(InstanceId), typeof(ulong) },
+        };
+
+        private static readonly HashSet<Type> PACKAGE_TYPES = new HashSet<Type> {
+            typeof(IPackage),
+            typeof(IEnumerable),
+            typeof(Vector3),
         };
 
         private static readonly Dictionary<Type, uint> TYPE_TO_NUM_WORDS = new Dictionary<Type, uint> {
@@ -22,13 +32,10 @@ namespace AC2E.Def {
             { typeof(uint), 1 },
             { typeof(float), 1 },
             { typeof(IPackage), 1 },
-            { typeof(DataId), 1 },
-            { typeof(CellId), 1 },
 
             { typeof(long), 2 },
             { typeof(ulong), 2 },
             { typeof(double), 2 },
-            { typeof(InstanceId), 2 },
         };
 
         private static void addFieldsInOrder(Type type, List<FieldInfo> orderedFieldInfos) {
@@ -55,12 +62,24 @@ namespace AC2E.Def {
                 for (int i = 0; i < orderedFieldInfos.Count; i++) {
                     FieldInfo fieldInfo = orderedFieldInfos[i];
                     Type fieldType = fieldInfo.FieldType;
-                    fieldType = TYPE_REPLACEMENTS.GetValueOrDefault(fieldType, fieldType);
-                    StackType stackType;
-                    if (typeof(IPackage).IsAssignableFrom(fieldType)) {
-                        fieldType = typeof(IPackage);
-                        stackType = StackType.REFERENCE;
-                    } else {
+                    foreach ((Type originalType, Type replacementType) in TYPE_REPLACEMENTS) {
+                        if (originalType.IsAssignableFrom(fieldType)) {
+                            fieldType = replacementType;
+                            break;
+                        }
+                    }
+
+                    StackType stackType = StackType.UNDEF;
+                    bool isPackageType = false;
+                    foreach (Type packageType in PACKAGE_TYPES) {
+                        if (packageType.IsAssignableFrom(fieldType)) {
+                            fieldType = typeof(IPackage);
+                            stackType = StackType.REFERENCE;
+                            isPackageType = true;
+                            break;
+                        }
+                    }
+                    if (!isPackageType) {
                         if (typeof(Enum).IsAssignableFrom(fieldType)) {
                             fieldType = Enum.GetUnderlyingType(fieldType);
                         }

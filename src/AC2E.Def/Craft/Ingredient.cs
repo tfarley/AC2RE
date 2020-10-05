@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class Ingredient : IPackage {
 
@@ -10,14 +12,14 @@
         public bool autoSpinner; // m_bAutoSpinner
         public uint minSpinnerVal; // m_minSpinnerVal
         public uint requiredFlags; // m_requiredFlags
-        public AAHash items; // m_hashItems
+        public Dictionary<uint, uint> items; // m_hashItems
         public uint flags; // m_flags
         public StringInfo pluralDescription; // m_siPluralDesc
         public bool autoPopulate; // m_bAutoPopulate
         public uint maxSpinnerVal; // m_maxSpinnerVal
         public SingletonPkg<LevelMappingTable> levelMappingTable; // m_levelMappingTable
         public uint quantity; // m_uiQuantity
-        public AAHash itemClasses; // m_hashItemClasses
+        public Dictionary<uint, uint> itemClasses; // m_hashItemClasses
         public uint restrictedFlags; // m_restrictedFlags
         public StringInfo forcedDescription; // m_siForcedDesc
         public int level; // m_iLevel

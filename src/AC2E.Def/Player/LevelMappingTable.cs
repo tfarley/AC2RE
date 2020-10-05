@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class LevelMappingTable : IPackage {
 
@@ -6,7 +8,7 @@
 
         public bool nonContiguous; // m_bNonContiguous
         public uint maxLevel; // m_maxLevel
-        public LArray map; // m_map
+        public List<ulong> map; // m_map
         public WPString name; // m_Name
         public uint minLevel; // m_minLevel
 

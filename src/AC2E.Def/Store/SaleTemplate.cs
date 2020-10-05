@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class SaleTemplate : IPackage {
 
@@ -6,7 +8,7 @@
 
         public uint ordinal; // m_uiOrdinal
         public DataId productDid; // m_didProduct
-        public AAHash requiredQuests; // m_requiredQuests
+        public Dictionary<uint, uint> requiredQuests; // m_requiredQuests
         public float cost; // m_fCost
         public SpeciesType race; // m_race
         public DataId tradeDid; // m_didTrade

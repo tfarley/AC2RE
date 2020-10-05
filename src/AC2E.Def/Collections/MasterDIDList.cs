@@ -1,11 +1,13 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class MasterDIDList : IPackage {
 
         public PackageType packageType => PackageType.MasterDIDList;
 
         public uint emapperID; // mEmapperID
-        public AAHash map; // mMap
+        public Dictionary<uint, uint> map; // mMap
 
         public MasterDIDList(AC2Reader data) {
             emapperID = data.ReadUInt32();

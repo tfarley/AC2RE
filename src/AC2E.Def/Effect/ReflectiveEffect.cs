@@ -1,20 +1,22 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class ReflectiveEffect : Effect {
 
         public override PackageType packageType => PackageType.ReflectiveEffect;
 
         public float reflectProbEnd; // m_fReflectProbEnd
-        public AList reflectClasses; // m_clsReflectList
+        public List<uint> reflectClasses; // m_clsReflectList
         public float reflectSpellcraftBegin; // m_fReflectSpellcraftBegin
         public float absorbProbEnd; // m_fAbsorbProbEnd
         public float absorbSpellcraftEnd; // m_fAbsorbSpellcraftEnd
-        public AList absorbClasses; // m_clsAbsorbList
+        public List<uint> absorbClasses; // m_clsAbsorbList
         public float generateVar; // m_fGenerateVar
         public float absorbProbBegin; // m_fAbsorbProbBegin
         public float reflectSpellcraftEnd; // m_fReflectSpellcraftEnd
         public float reflectVar; // m_fReflectVar
-        public AList generateClasses; // m_clsGenerateList
+        public List<uint> generateClasses; // m_clsGenerateList
         public float generateSpellcraftEnd; // m_fGenerateSpellcraftEnd
         public SingletonPkg<Effect> generateEffect; // m_effGenerate
         public float absorbVar; // m_fAbsorbVar

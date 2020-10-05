@@ -1,15 +1,17 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class Entity : IPackage {
 
         public virtual PackageType packageType => PackageType.Entity;
 
-        public LAMultiHash hashLockTakenOnOther; // m_hashLockTakenOnOther
+        public Dictionary<ulong, List<uint>> hashLockTakenOnOther; // m_hashLockTakenOnOther
         public int movementFrozenCounter; // m_movementFrozenCounter
         public LogInfo logInfo; // m_logInfo
         public int undetectableCounter; // m_undetectableCounter
         public int animationFrozenCounter; // m_animationFrozenCounter
-        public AAHash hashLock; // m_hashLock
+        public Dictionary<uint, uint> hashLock; // m_hashLock
 
         public Entity(AC2Reader data) {
             data.ReadPkg<LAMultiHash>(v => hashLockTakenOnOther = v);

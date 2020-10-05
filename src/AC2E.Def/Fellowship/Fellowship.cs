@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class Fellowship : IPackage {
 
@@ -7,7 +9,7 @@
         public InstanceId lastClaimantId; // m_lastClaimant
         public uint flags; // m_flags
         public uint chatRoomId; // m_chatRoomID
-        public InstanceIdRHash<Fellow> fellowTable; // m_table
+        public Dictionary<InstanceId, Fellow> fellowTable; // m_table
         public InstanceId leaderId; // m_leader
         public WPString name; // m_name
 
@@ -19,7 +21,7 @@
             lastClaimantId = data.ReadInstanceId();
             flags = data.ReadUInt32();
             chatRoomId = data.ReadUInt32();
-            data.ReadPkg<LRHash<IPackage>>(v => fellowTable = new InstanceIdRHash<Fellow>(v.to<Fellow>()));
+            data.ReadPkg<LRHash>(v => fellowTable = v.to<InstanceId, Fellow>());
             leaderId = data.ReadInstanceId();
             data.ReadPkg<WPString>(v => name = v);
         }
@@ -28,7 +30,7 @@
             data.Write(lastClaimantId);
             data.Write(flags);
             data.Write(chatRoomId);
-            data.WritePkg(fellowTable);
+            data.WritePkg(LRHash.from(fellowTable));
             data.Write(leaderId);
             data.WritePkg(name);
         }

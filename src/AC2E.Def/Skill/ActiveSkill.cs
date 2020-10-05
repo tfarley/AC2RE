@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class ActiveSkill : Skill {
 
@@ -8,20 +10,20 @@
         public uint behaviorOtherHit; // m_BehaviorOtherHit
         public int maxVigor; // m_MaxVigor
         public float minUseTime; // m_MinUseTime
-        public RList<SingletonPkg<IPackage>> reqEffects; // m_ReqEffects
+        public List<SingletonPkg<IPackage>> reqEffects; // m_ReqEffects
         public int minHealth; // m_MinHealth
         public int allowedImplementsRight; // m_AllowedImplementsRight
-        public RList<SingletonPkg<IPackage>> barringEffects; // m_BarringEffects
+        public List<SingletonPkg<IPackage>> barringEffects; // m_BarringEffects
         public float minRange; // m_MinRange
         public int endFocusModAdd; // m_endFocusModAdd
         public float recoveryTime; // m_RecoveryTime
         public int maxHealth; // m_MaxHealth
-        public RList<SingletonPkg<IPackage>> userEffects; // m_UserEffects
-        public AHashSet validWeenieTypes; // m_validWeenieTypes
+        public List<SingletonPkg<IPackage>> userEffects; // m_UserEffects
+        public HashSet<uint> validWeenieTypes; // m_validWeenieTypes
         public uint behaviorSelfHit; // m_BehaviorSelfHit
         public int minVigor; // m_MinVigor
         public uint behaviorSelfMiss; // m_BehaviorSelfMiss
-        public AAHash weightHash; // m_WeightHash
+        public Dictionary<uint, uint> weightHash; // m_WeightHash
         public uint minRank; // m_nMinRank
         public uint behaviorOtherMiss; // m_BehaviorOtherMiss
         public uint validTargets; // m_validTargets
@@ -34,18 +36,18 @@
         public uint behaviorOtherCrit; // m_BehaviorOtherCrit
         public uint minLevel; // m_nMinLevel
         public uint maxLevel; // m_nMaxLevel
-        public AAHash useBarringSkills; // m_UseBarringSkills
+        public Dictionary<uint, uint> useBarringSkills; // m_UseBarringSkills
         public int maxFocus; // m_MaxFocus
-        public AAHash usePrereqSkills; // m_UsePrereqSkills
+        public Dictionary<uint, uint> usePrereqSkills; // m_UsePrereqSkills
         public float endFocusModMult; // m_endFocusModMult
-        public RList<SingletonPkg<IPackage>> targetEffects; // m_TargetEffects
+        public List<SingletonPkg<IPackage>> targetEffects; // m_TargetEffects
         public int startFocusModAdd; // m_startFocusModAdd
         public int vigorModAdd; // m_VigorModAdd
-        public AList invalidAISuperClasses; // m_invalidAISuperClasses
+        public List<uint> invalidAISuperClasses; // m_invalidAISuperClasses
         public uint validFactionOnly; // m_validFactionOnly
         public float powerupTime; // m_PowerupTime
         public float vigorModMult; // m_VigorModMult
-        public RArray<AttackHook> hooks; // m_Hooks
+        public List<AttackHook> hooks; // m_Hooks
         public float resetTime; // m_ResetTime
         public int minFocus; // m_MinFocus
         public float dmgAttributeChance; // m_fDmgAttributeChance
@@ -57,15 +59,15 @@
             behaviorOtherHit = data.ReadUInt32();
             maxVigor = data.ReadInt32();
             minUseTime = data.ReadSingle();
-            data.ReadPkg<RList<IPackage>>(v => reqEffects = v.to<SingletonPkg<IPackage>>());
+            data.ReadPkg<RList>(v => reqEffects = v.to<SingletonPkg<IPackage>>());
             minHealth = data.ReadInt32();
             allowedImplementsRight = data.ReadInt32();
-            data.ReadPkg<RList<IPackage>>(v => barringEffects = v.to<SingletonPkg<IPackage>>());
+            data.ReadPkg<RList>(v => barringEffects = v.to<SingletonPkg<IPackage>>());
             minRange = data.ReadSingle();
             endFocusModAdd = data.ReadInt32();
             recoveryTime = data.ReadSingle();
             maxHealth = data.ReadInt32();
-            data.ReadPkg<RList<IPackage>>(v => userEffects = v.to<SingletonPkg<IPackage>>());
+            data.ReadPkg<RList>(v => userEffects = v.to<SingletonPkg<IPackage>>());
             data.ReadPkg<AHashSet>(v => validWeenieTypes = v);
             behaviorSelfHit = data.ReadUInt32();
             minVigor = data.ReadInt32();
@@ -87,14 +89,14 @@
             maxFocus = data.ReadInt32();
             data.ReadPkg<AAHash>(v => usePrereqSkills = v);
             endFocusModMult = data.ReadSingle();
-            data.ReadPkg<RList<IPackage>>(v => targetEffects = v.to<SingletonPkg<IPackage>>());
+            data.ReadPkg<RList>(v => targetEffects = v.to<SingletonPkg<IPackage>>());
             startFocusModAdd = data.ReadInt32();
             vigorModAdd = data.ReadInt32();
             data.ReadPkg<AList>(v => invalidAISuperClasses = v);
             validFactionOnly = data.ReadUInt32();
             powerupTime = data.ReadSingle();
             vigorModMult = data.ReadSingle();
-            data.ReadPkg<RArray<IPackage>>(v => hooks = v.to<AttackHook>());
+            data.ReadPkg<RArray>(v => hooks = v.to<AttackHook>());
             resetTime = data.ReadSingle();
             minFocus = data.ReadInt32();
             dmgAttributeChance = data.ReadSingle();

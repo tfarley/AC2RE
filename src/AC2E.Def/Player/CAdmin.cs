@@ -1,13 +1,15 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class CAdmin : CPlayer {
 
         public override PackageType packageType => PackageType.CAdmin;
 
-        public ARHash<IPackage> logHash; // m_hashLog
+        public Dictionary<uint, IPackage> logHash; // m_hashLog
 
         public CAdmin(AC2Reader data) : base(data) {
-            data.ReadPkg<ARHash<IPackage>>(v => logHash = v);
+            data.ReadPkg<ARHash>(v => logHash = v);
         }
     }
 }

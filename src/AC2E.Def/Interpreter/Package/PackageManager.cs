@@ -48,7 +48,7 @@ namespace AC2E.Def {
                 case NativeType.APPINFOHASH:
                     return new AppInfoHash(data);
                 case NativeType.ARHASH:
-                    return new ARHash<IPackage>(data);
+                    return new ARHash(data);
                 case NativeType.BEHAVIORPARAMS:
                     return new BehaviorParams(data);
                 case NativeType.EXAMINATIONPROFILE:
@@ -82,19 +82,19 @@ namespace AC2E.Def {
                 case NativeType.LLIST:
                     return new LList(data);
                 case NativeType.LRHASH:
-                    return new LRHash<IPackage>(data);
+                    return new LRHash(data);
                 case NativeType.MISSILEPARAMETERS:
                     return new MissileParameters(data);
                 case NativeType.NRHASH:
-                    return new NRHash<IPackage, IPackage>(data);
+                    return new NRHash(data);
                 case NativeType.POSITION:
                     return new Position(data);
                 case NativeType.RANDOMSELECTIONTABLE_INT:
                     return new RandomSelectionTable(data);
                 case NativeType.RARRAY:
-                    return new RArray<IPackage>(data);
+                    return new RArray(data);
                 case NativeType.RLIST:
-                    return new RList<IPackage>(data);
+                    return new RList(data);
                 case NativeType.SELECTIONINFO:
                     return new SelectionInfo(data);
                 case NativeType.SHORTCUTINFO:

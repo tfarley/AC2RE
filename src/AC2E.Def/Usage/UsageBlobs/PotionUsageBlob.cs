@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class PotionUsageBlob : UsageBlob {
 
@@ -6,7 +8,7 @@
 
         public DataId itemAprDid; // m_itemAprID
         public DataId itemVisualDescDid; // m_didItemVDescDID
-        public AAHash itemAppKeyHash; // m_itemAppKeyHash
+        public Dictionary<uint, uint> itemAppKeyHash; // m_itemAppKeyHash
 
         public PotionUsageBlob() : base() {
 
@@ -22,7 +24,7 @@
             base.write(data);
             data.Write(itemAprDid);
             data.Write(itemVisualDescDid);
-            data.WritePkg(itemAppKeyHash);
+            data.WritePkg(AAHash.from(itemAppKeyHash));
         }
     }
 }

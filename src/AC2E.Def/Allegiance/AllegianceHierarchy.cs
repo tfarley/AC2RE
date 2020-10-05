@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class AllegianceHierarchy : IPackage {
 
@@ -8,7 +10,7 @@
 
             public PackageType packageType => PackageType.AllegianceNode;
 
-            public RList<AllegianceNode> vassals; // m_vassalNodes
+            public List<AllegianceNode> vassals; // m_vassalNodes
             public AllegianceNode patron; // m_patron
             public AllegianceData allegianceData; // m_data
             public AllegianceNode vassal; // m_vassal
@@ -19,7 +21,7 @@
             }
 
             public AllegianceNode(AC2Reader data) {
-                data.ReadPkg<RList<IPackage>>(v => vassals = v.to<AllegianceNode>());
+                data.ReadPkg<RList>(v => vassals = v.to<AllegianceNode>());
                 data.ReadPkg<AllegianceNode>(v => patron = v);
                 data.ReadPkg<AllegianceData>(v => allegianceData = v);
                 data.ReadPkg<AllegianceNode>(v => vassal = v);
@@ -27,7 +29,7 @@
             }
 
             public void write(AC2Writer data) {
-                data.WritePkg(vassals);
+                data.WritePkg(RList.from(vassals));
                 data.WritePkg(patron);
                 data.WritePkg(allegianceData);
                 data.WritePkg(vassal);
@@ -43,14 +45,14 @@
         public WPString roomName; // m_roomName
         public bool chatRoomCreationInProgress; // m_fChatRoomCreationInProgress
         public bool factionKingdomRestrictionsOn; // m_fFactionKingdomRestrictionsOn
-        public NRHash<WPString, AllegianceNode> nameToNode; // m_NameToNodeHash
-        public InstanceIdRHash<AllegianceNode> idToNode; // m_IIDToNodeHash
+        public Dictionary<WPString, AllegianceNode> nameToNode; // m_NameToNodeHash
+        public Dictionary<InstanceId, AllegianceNode> idToNode; // m_IIDToNodeHash
         public StringInfo motd; // m_motd
         public bool chatActive; // m_chatActive
         public bool allowNeutralsToBypassKingdomRestrictions; // m_fAllowNeutralsToBypassKingdomRestrictions
         public FactionType factionType; // m_factionType
         public uint total; // m_total
-        public LAHashSet officerIds; // m_officerIDs
+        public HashSet<ulong> officerIds; // m_officerIDs
 
         public AllegianceHierarchy() {
 
@@ -65,8 +67,8 @@
             data.ReadPkg<WPString>(v => roomName = v);
             chatRoomCreationInProgress = data.ReadBoolean();
             factionKingdomRestrictionsOn = data.ReadBoolean();
-            data.ReadPkg<NRHash<IPackage, IPackage>>(v => nameToNode = v.to<WPString, AllegianceNode>());
-            data.ReadPkg<LRHash<IPackage>>(v => idToNode = new InstanceIdRHash<AllegianceNode>(v.to<AllegianceNode>()));
+            data.ReadPkg<NRHash>(v => nameToNode = v.to<WPString, AllegianceNode>());
+            data.ReadPkg<LRHash>(v => idToNode = v.to<InstanceId, AllegianceNode>());
             data.ReadPkg<StringInfo>(v => motd = v);
             chatActive = data.ReadBoolean();
             allowNeutralsToBypassKingdomRestrictions = data.ReadBoolean();
@@ -84,14 +86,14 @@
             data.WritePkg(roomName);
             data.Write(chatRoomCreationInProgress);
             data.Write(factionKingdomRestrictionsOn);
-            data.WritePkg(nameToNode);
-            data.WritePkg(idToNode);
+            data.WritePkg(NRHash.from(nameToNode));
+            data.WritePkg(LRHash.from(idToNode));
             data.WritePkg(motd);
             data.Write(chatActive);
             data.Write(allowNeutralsToBypassKingdomRestrictions);
             data.Write((uint)factionType);
             data.Write(total);
-            data.WritePkg(officerIds);
+            data.WritePkg(LAHashSet.from(officerIds));
         }
     }
 }

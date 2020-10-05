@@ -1,30 +1,47 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AC2E.Def {
 
-    public class NRHash<K, V> : Dictionary<K, V>, IPackage where K : IPackage where V : IPackage {
+    public class NRHash : Dictionary<IPackage, IPackage>, IPackage {
 
         public NativeType nativeType => NativeType.NRHASH;
 
-        public NRHash<T, U> to<T, U>() where T : class, IPackage where U : class, IPackage {
-            NRHash<T, U> converted = new NRHash<T, U>(Count);
-            foreach (var element in this) {
-                converted[element.Key as T] = element.Value as U;
+        public Dictionary<K, V> to<K, V>() {
+            return to(k => (K)k, v => (V)v);
+        }
+
+        public Dictionary<K, V> to<K, V>(Func<IPackage, K> keyConversion, Func<IPackage, V> valueConversion) {
+            Dictionary<K, V> converted = new Dictionary<K, V>(Count);
+            foreach ((var key, var value) in this) {
+                converted[keyConversion.Invoke(key)] = valueConversion.Invoke(value);
             }
             return converted;
         }
 
-        public NRHash() {
-
+        public static NRHash from<K, V>(Dictionary<K, V> source) where K : IPackage where V : IPackage {
+            return from(source, k => k, v => v);
         }
 
-        public NRHash(int capacity) : base(capacity) {
+        public static NRHash from<K, V>(Dictionary<K, V> source, Func<K, IPackage> keyConversion, Func<V, IPackage> valueConversion) {
+            if (source == null) {
+                return null;
+            }
+
+            NRHash converted = new NRHash(source.Count);
+            foreach ((var key, var value) in source) {
+                converted[keyConversion.Invoke(key)] = valueConversion.Invoke(value);
+            }
+            return converted;
+        }
+
+        private NRHash(int capacity) : base(capacity) {
 
         }
 
         public NRHash(AC2Reader data) {
-            foreach (var element in data.ReadDictionary(() => new ReferenceId(data).id, data.ReadPackageId)) {
-                data.packageRegistry.addResolver(() => this[data.packageRegistry.get<K>(element.Key)] = data.packageRegistry.get<V>(element.Value));
+            foreach ((var key, var value) in data.ReadDictionary(data.ReadPackageId, data.ReadPackageId)) {
+                data.packageRegistry.addResolver(() => this[data.packageRegistry.get<IPackage>(key)] = data.packageRegistry.get<IPackage>(value));
             }
         }
 

@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class Skill : MasterListMember {
 
@@ -7,13 +9,13 @@
         public StringInfo lore; // mLore
         public int allowedSpecies; // mAllowedSpecies
         public uint minCharLevel; // mMinCharLevel
-        public AAHash barringSkills; // mBarringSkills
+        public Dictionary<uint, uint> barringSkills; // mBarringSkills
         public int levelWhenTrained; // mLevelWhenTrained
-        public AAHash parents; // mParents
+        public Dictionary<uint, uint> parents; // mParents
         public float combatSpeedModifier; // m_fCombatSpeedModifier
         public uint reqQuestId; // m_reqQuestID
         public int allowedClasses; // mAllowedClasses
-        public AAHash prereqs; // mPrereqs
+        public Dictionary<uint, uint> prereqs; // mPrereqs
         public float advMod; // mAdvMod
         public int minPkRating; // m_iMinPKRating
         public bool shouldStartTimerOnEffectFailure; // mShouldStartTimerOnEffectFailure

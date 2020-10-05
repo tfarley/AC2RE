@@ -1,11 +1,13 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class ActRegistry : IPackage {
 
         public PackageType packageType => PackageType.ActRegistry;
 
         public int viewingProtectionEffectId; // m_viewingProtectionEID
-        public ARHash<AList> actSceneTable; // m_actSceneTable
+        public Dictionary<uint, List<uint>> actSceneTable; // m_actSceneTable
 
         public ActRegistry() {
 
@@ -13,12 +15,12 @@
 
         public ActRegistry(AC2Reader data) {
             viewingProtectionEffectId = data.ReadInt32();
-            data.ReadPkg<ARHash<IPackage>>(v => actSceneTable = v.to<AList>());
+            data.ReadPkg<ARHash>(v => actSceneTable = v.to<uint, List<uint>>());
         }
 
         public void write(AC2Writer data) {
             data.Write(viewingProtectionEffectId);
-            data.WritePkg(actSceneTable);
+            data.WritePkg(ARHash.from(actSceneTable, AList.from));
         }
     }
 }

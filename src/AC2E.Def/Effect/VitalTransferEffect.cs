@@ -1,18 +1,20 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class VitalTransferEffect : Effect {
 
         public override PackageType packageType => PackageType.VitalTransferEffect;
 
-        public RArray<FloatScaleDuple> casterChangeData; // m_casterChangeData
+        public List<FloatScaleDuple> casterChangeData; // m_casterChangeData
         public float casterChangeVar; // m_fCasterChangeVar
-        public RArray<FloatScaleDuple> targetChangeData; // m_targetChangeData
+        public List<FloatScaleDuple> targetChangeData; // m_targetChangeData
         public float targetChangeVar; // m_fTargetChangeVar
 
         public VitalTransferEffect(AC2Reader data) : base(data) {
-            data.ReadPkg<RArray<IPackage>>(v => casterChangeData = v.to<FloatScaleDuple>());
+            data.ReadPkg<RArray>(v => casterChangeData = v.to<FloatScaleDuple>());
             casterChangeVar = data.ReadSingle();
-            data.ReadPkg<RArray<IPackage>>(v => targetChangeData = v.to<FloatScaleDuple>());
+            data.ReadPkg<RArray>(v => targetChangeData = v.to<FloatScaleDuple>());
             targetChangeVar = data.ReadSingle();
         }
     }

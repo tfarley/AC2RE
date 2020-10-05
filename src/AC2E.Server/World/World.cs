@@ -124,8 +124,8 @@ namespace AC2E.Server {
                             qualities = character.qualities,
                         });
 
-                        ARHash<InventProfile> inventoryByLocationTable = new ARHash<InventProfile>();
-                        LRHash<InventProfile> inventoryByIdTable = new LRHash<InventProfile>();
+                        Dictionary<uint, InventProfile> inventoryByLocationTable = new Dictionary<uint, InventProfile>();
+                        Dictionary<InstanceId, InventProfile> inventoryByIdTable = new Dictionary<InstanceId, InventProfile>();
 
                         List<WorldObject> playerInventory = objectManager.getAllInContainer(character.id);
                         foreach ((InvLoc equipLoc, InstanceId itemId) in character.equippedItems) {
@@ -147,7 +147,7 @@ namespace AC2E.Server {
                                 }
                             }
                             inventoryByLocationTable[(uint)equipLoc] = profile;
-                            inventoryByIdTable[item.id.id] = profile;
+                            inventoryByIdTable[item.id] = profile;
 
                             DataId weenieStateDid = new DataId(0x71000000 + item.qualities.weenieDesc.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
                             WState clothingWeenieState = contentManager.getWeenieState(weenieStateDid);
@@ -167,13 +167,13 @@ namespace AC2E.Server {
                                 money = 12345,
                                 actRegistry = new ActRegistry {
                                     viewingProtectionEffectId = 0,
-                                    actSceneTable = new ARHash<AList> {
-                                        { 0x40000005, new AList() },
-                                        { 0x40000006, new AList() },
-                                        { 0x40000007, new AList() },
-                                        { 0x40000008, new AList() },
-                                        { 0x40000009, new AList() },
-                                        { 0x4000000A, new AList() },
+                                    actSceneTable = new Dictionary<uint, List<uint>> {
+                                        { 0x40000005, new List<uint>() },
+                                        { 0x40000006, new List<uint>() },
+                                        { 0x40000007, new List<uint>() },
+                                        { 0x40000008, new List<uint>() },
+                                        { 0x40000009, new List<uint>() },
+                                        { 0x4000000A, new List<uint>() },
                                     }
                                 },
                                 quests = new GMQuestInfoList {
@@ -294,26 +294,25 @@ namespace AC2E.Server {
                                 skills = new SkillRepository {
                                     skillCredits = 0,
                                     untrainXp = 0,
-                                    perkTypes = new AAHash(),
+                                    perkTypes = new Dictionary<uint, uint>(),
                                     typeUntrained = 0,
-                                    categories = new AAHash(),
-                                    skills = new ARHash<SkillInfo> {
-                                        // Skill ids from enum mapper 0x2300000F
-                                        { (uint)SkillId.HUM_ME_RIPOSTE, new SkillInfo {
+                                    categories = new Dictionary<uint, uint>(),
+                                    skills = new Dictionary<SkillId, SkillInfo> {
+                                        { SkillId.HUM_ME_RIPOSTE, new SkillInfo {
                                             lastUsedTime = -1,
                                             mask = 33,
                                             grantedTime = -1,
                                             skillOverride = 1,
                                             typeSkill = SkillId.HUM_ME_RIPOSTE,
                                         } },
-                                        { (uint)SkillId.HUM_ME_UNPREDICTABLEBLOW, new SkillInfo {
+                                        { SkillId.HUM_ME_UNPREDICTABLEBLOW, new SkillInfo {
                                             lastUsedTime = -1,
                                             mask = 33,
                                             grantedTime = -1,
                                             skillOverride = 1,
                                             typeSkill = SkillId.HUM_ME_UNPREDICTABLEBLOW,
                                         } },
-                                        { (uint)SkillId.COM_LIFESTONERECALL, new SkillInfo {
+                                        { SkillId.COM_LIFESTONERECALL, new SkillInfo {
                                             lastUsedTime = -1,
                                             mask = 33,
                                             grantedTime = -1,
@@ -324,7 +323,7 @@ namespace AC2E.Server {
                                 },
                                 effectRegistry = new EffectRegistry {
                                     qualitiesModifiedCount = null,
-                                    appliedFx = new AAHash(),
+                                    appliedFx = new Dictionary<uint, uint>(),
                                     baseEffectRegistry = null,
                                     effectIdCounter = 3,
                                     effectInfo = null,
@@ -335,12 +334,12 @@ namespace AC2E.Server {
                                     trackedEffects = null,
                                     topEffects = null,
                                     effectCategorizationTable = null,
-                                    appliedAppearances = new AAHash(),
+                                    appliedAppearances = new Dictionary<uint, uint>(),
                                 },
                                 filledInventoryLocations = (InvLoc)1531,
                                 inventoryByLocationTable = inventoryByLocationTable,
                                 inventoryByIdTable = inventoryByIdTable,
-                                containerSegments = new RList<ContainerSegmentDescriptor> {
+                                containerSegments = new List<ContainerSegmentDescriptor> {
                                     new ContainerSegmentDescriptor {
                                         segmentMaxSize = 12,
                                         segmentSize = 8,
@@ -358,10 +357,10 @@ namespace AC2E.Server {
                                         segmentSize = 30,
                                     },
                                 },
-                                containerIds = new InstanceIdList {
+                                containerIds = new List<InstanceId> {
 
                                 },
-                                contentIds = new InstanceIdList(character.containedItems),
+                                contentIds = character.containedItems,
                                 localFactionStatus = FactionStatus.PEACE,
                                 serverFactionStatus = FactionStatus.UNDEF,
                             }

@@ -1,30 +1,38 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class CharGenMatrix : IPackage {
 
         public PackageType packageType => PackageType.CharGenMatrix;
 
-        public ARHash<ARHash<IPackage>> physiqueTypeModifierTable; // m_PhysiqueTypeModifierTable
-        public ARHash<WPString> physiqueTypeLabelTable; // m_PhysiqueTypeLabelTable
-        public ARHash<AList> raceSexTable; // m_RaceSexTable
-        public ARHash<ARHash<IPackage>> startingInventoryTable; // m_StartingInventoryTable
-        public ARHash<GMRaceSexInfo> raceSexInfoTable; // m_RaceSexInfoTable
-        public ARHash<ARHash<IPackage>> startingAttributesTable; // m_StartingAttributesTable
-        public ARHash<StartArea> startAreaHash; // m_StartAreaHash
-        public ARHash<RList<IPackage>> startingSkillsTable; // m_StartingSkillsTable
-        public ARHash<ARHash<IPackage>> startingLocationTable; // m_StartingLocationTable
-        public AAHash physiqueTypeAppearanceKeyMap; // m_PhysiqueTypeAppearanceKeyMap
+        public Dictionary<SpeciesType, Dictionary<SexType, Dictionary<PhysiqueType, List<AppearanceProfile>>>> physiqueTypeModifierTable; // m_PhysiqueTypeModifierTable
+        public Dictionary<uint, WPString> physiqueTypeLabelTable; // m_PhysiqueTypeLabelTable
+        public Dictionary<uint, List<uint>> raceSexTable; // m_RaceSexTable
+        public Dictionary<SpeciesType, Dictionary<uint, Dictionary<uint, List<StartInvData>>>> startingInventoryTable; // m_StartingInventoryTable
+        public Dictionary<uint, GMRaceSexInfo> raceSexInfoTable; // m_RaceSexInfoTable
+        public Dictionary<uint, Dictionary<uint, IPackage>> startingAttributesTable; // m_StartingAttributesTable
+        public Dictionary<uint, StartArea> startAreaHash; // m_StartAreaHash
+        public Dictionary<uint, List<IPackage>> startingSkillsTable; // m_StartingSkillsTable
+        public Dictionary<uint, Dictionary<uint, IPackage>> startingLocationTable; // m_StartingLocationTable
+        public Dictionary<uint, uint> physiqueTypeAppearanceKeyMap; // m_PhysiqueTypeAppearanceKeyMap
 
         public CharGenMatrix(AC2Reader data) {
-            data.ReadPkg<ARHash<IPackage>>(v => physiqueTypeModifierTable = v.to<ARHash<IPackage>>());
-            data.ReadPkg<ARHash<IPackage>>(v => physiqueTypeLabelTable = v.to<WPString>());
-            data.ReadPkg<ARHash<IPackage>>(v => raceSexTable = v.to<AList>());
-            data.ReadPkg<ARHash<IPackage>>(v => startingInventoryTable = v.to<ARHash<IPackage>>());
-            data.ReadPkg<ARHash<IPackage>>(v => raceSexInfoTable = v.to<GMRaceSexInfo>());
-            data.ReadPkg<ARHash<IPackage>>(v => startingAttributesTable = v.to<ARHash<IPackage>>());
-            data.ReadPkg<ARHash<IPackage>>(v => startAreaHash = v.to<StartArea>());
-            data.ReadPkg<ARHash<IPackage>>(v => startingSkillsTable = v.to<RList<IPackage>>());
-            data.ReadPkg<ARHash<IPackage>>(v => startingLocationTable = v.to<ARHash<IPackage>>());
+            data.ReadPkg<ARHash>(v => physiqueTypeModifierTable = v.to<SpeciesType, Dictionary<SexType, Dictionary<PhysiqueType, List<AppearanceProfile>>>>(
+                v => (v as ARHash).to<SexType, Dictionary<PhysiqueType, List<AppearanceProfile>>>(
+                    v => (v as ARHash).to<PhysiqueType, List<AppearanceProfile>>(
+                        v => (v as RList).to<AppearanceProfile>()))));
+            data.ReadPkg<ARHash>(v => physiqueTypeLabelTable = v.to<uint, WPString>());
+            data.ReadPkg<ARHash>(v => raceSexTable = v.to<uint, List<uint>>(v => (v as AList).to<uint>()));
+            data.ReadPkg<ARHash>(v => startingInventoryTable = v.to<SpeciesType, Dictionary<uint, Dictionary<uint, List<StartInvData>>>>(
+                v => (v as ARHash).to<uint, Dictionary<uint, List<StartInvData>>>(
+                    v => (v as ARHash).to<uint, List<StartInvData>>(
+                        v => (v as RList).to<StartInvData>()))));
+            data.ReadPkg<ARHash>(v => raceSexInfoTable = v.to<uint, GMRaceSexInfo>());
+            data.ReadPkg<ARHash>(v => startingAttributesTable = v.to<uint, Dictionary<uint, IPackage>>());
+            data.ReadPkg<ARHash>(v => startAreaHash = v.to<uint, StartArea>());
+            data.ReadPkg<ARHash>(v => startingSkillsTable = v.to<uint, List<IPackage>>());
+            data.ReadPkg<ARHash>(v => startingLocationTable = v.to<uint, Dictionary<uint, IPackage>>());
             data.ReadPkg<AAHash>(v => physiqueTypeAppearanceKeyMap = v);
         }
     }

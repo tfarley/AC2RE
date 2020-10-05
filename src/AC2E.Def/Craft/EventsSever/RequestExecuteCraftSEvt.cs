@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class RequestExecuteCraftSEvt : IServerEvent {
 
@@ -6,7 +8,7 @@
 
         // WM_Craft::SendSEvt_RequestExecuteCraft
         public InstanceId targetId; // _iidTarget
-        public ALHash ingredients; // _ingredients
+        public Dictionary<uint, ulong> ingredients; // _ingredients
         public int spinnerVal; // _spinnerVal
         public DataId recipeDid; // _didRecipe
 

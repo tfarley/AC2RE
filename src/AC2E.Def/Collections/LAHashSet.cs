@@ -6,7 +6,29 @@ namespace AC2E.Def {
 
         public NativeType nativeType => NativeType.LAHASHSET;
 
-        public LAHashSet() {
+        public HashSet<T> to<T>() {
+            HashSet<T> converted = new HashSet<T>(Count);
+            Converter<ulong> elementConverter = Converters.getULong(typeof(T));
+            foreach (var element in this) {
+                converted.Add(elementConverter.read<T>(element));
+            }
+            return converted;
+        }
+
+        public static LAHashSet from<T>(HashSet<T> source) {
+            if (source == null) {
+                return null;
+            }
+
+            LAHashSet converted = new LAHashSet(source.Count);
+            Converter<ulong> elementConverter = Converters.getULong(typeof(T));
+            foreach (var element in source) {
+                converted.Add(elementConverter.write(element));
+            }
+            return converted;
+        }
+
+        private LAHashSet(int capacity) : base(capacity) {
 
         }
 

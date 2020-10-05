@@ -6,7 +6,31 @@ namespace AC2E.Def {
 
         public NativeType nativeType => NativeType.ALHASH;
 
-        public ALHash() {
+        public Dictionary<K, V> to<K, V>() {
+            Dictionary<K, V> converted = new Dictionary<K, V>(Count);
+            Converter<uint> keyConverter = Converters.getUInt(typeof(K));
+            Converter<ulong> valueConverter = Converters.getULong(typeof(V));
+            foreach ((var key, var value) in this) {
+                converted[keyConverter.read<K>(key)] = valueConverter.read<V>(value);
+            }
+            return converted;
+        }
+
+        public static ALHash from<K, V>(Dictionary<K, V> source) {
+            if (source == null) {
+                return null;
+            }
+
+            ALHash converted = new ALHash(source.Count);
+            Converter<uint> keyConverter = Converters.getUInt(typeof(K));
+            Converter<ulong> valueConverter = Converters.getULong(typeof(V));
+            foreach ((var key, var value) in source) {
+                converted[keyConverter.write(key)] = valueConverter.write(value);
+            }
+            return converted;
+        }
+
+        private ALHash(int capacity) : base(capacity) {
 
         }
 

@@ -1,28 +1,30 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class ResetContentsCEvt : IClientEvent {
 
         public ClientEventFunctionId funcId => ClientEventFunctionId.Inventory__Inventory_ResetContents;
 
         // WM_Inventory::PostCEvt_Inventory_ResetContents
-        public RList<ContainerSegmentDescriptor> containerSegments; // _containerSegments
-        public InstanceIdList containerIds; // _containers
-        public InstanceIdList contentIds; // _contents
+        public List<ContainerSegmentDescriptor> containerSegments; // _containerSegments
+        public List<InstanceId> containerIds; // _containers
+        public List<InstanceId> contentIds; // _contents
 
         public ResetContentsCEvt() {
 
         }
 
         public ResetContentsCEvt(AC2Reader data) {
-            containerSegments = data.UnpackPackage<RList<IPackage>>().to<ContainerSegmentDescriptor>();
-            containerIds = new InstanceIdList(data.UnpackPackage<LList>());
-            contentIds = new InstanceIdList(data.UnpackPackage<LList>());
+            containerSegments = data.UnpackPackage<RList>().to<ContainerSegmentDescriptor>();
+            containerIds = data.UnpackPackage<LList>().to<InstanceId>();
+            contentIds = data.UnpackPackage<LList>().to<InstanceId>();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(containerSegments);
-            data.Pack(containerIds);
-            data.Pack(contentIds);
+            data.Pack(RList.from(containerSegments));
+            data.Pack(LList.from(containerIds));
+            data.Pack(LList.from(contentIds));
         }
     }
 }

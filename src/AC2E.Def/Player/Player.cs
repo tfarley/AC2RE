@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class Player : Agent {
 
@@ -8,8 +10,8 @@
         public InstanceId selectionId; // m_selectionID
         public Fellowship fellowship; // m_fellowship
         public ExaminationRequest examinationRequest; // m_examinationRequest
-        public LRHash<IPackage> saleReminders; // m_saleReminders
-        public ARHash<IPackage> channels; // m_channels
+        public Dictionary<ulong, IPackage> saleReminders; // m_saleReminders
+        public Dictionary<uint, IPackage> channels; // m_channels
         public bool isAttacking; // m_isAttacking
         public CraftRegistry craftRegistry; // m_craftRegistry
         public GameplayOptionsProfile currentOptionsProfile; // m_currentOptionsProfile
@@ -23,8 +25,8 @@
             selectionId = data.ReadInstanceId();
             data.ReadPkg<Fellowship>(v => fellowship = v);
             data.ReadPkg<ExaminationRequest>(v => examinationRequest = v);
-            data.ReadPkg<LRHash<IPackage>>(v => saleReminders = v);
-            data.ReadPkg<ARHash<IPackage>>(v => channels = v);
+            data.ReadPkg<LRHash>(v => saleReminders = v);
+            data.ReadPkg<ARHash>(v => channels = v);
             isAttacking = data.ReadBoolean();
             data.ReadPkg<CraftRegistry>(v => craftRegistry = v);
             data.ReadPkg<GameplayOptionsProfile>(v => currentOptionsProfile = v);

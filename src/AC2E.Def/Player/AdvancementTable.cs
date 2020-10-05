@@ -1,10 +1,12 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class AdvancementTable : IPackage {
 
         public PackageType packageType => PackageType.AdvancementTable;
 
-        public LArray map; // m_map
+        public List<ulong> map; // m_map
         public int maxLevel; // mMaxLevel
         public WPString name; // mName
 

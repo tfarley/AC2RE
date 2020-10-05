@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class InvTakeAllDesc : IPackage {
 
@@ -11,10 +13,10 @@
         public bool noAnim; // noAnimFlag
         public ErrorType status; // m_status
         public InstanceId fromContainerId; // m_fromContainerID
-        public InstanceIdList itemsNotTakenIds; // m_itemsNotTaken
+        public List<InstanceId> itemsNotTakenIds; // m_itemsNotTaken
         public bool playedAnim; // playedAnim
         public bool noMove; // noMoveFlag
-        public InstanceIdList itemsTakenIds; // m_itemsTaken
+        public List<InstanceId> itemsTakenIds; // m_itemsTaken
         public InstanceId targetPlayerId; // m_targetPlayerID
 
         public InvTakeAllDesc() {
@@ -29,10 +31,10 @@
             noAnim = data.ReadBoolean();
             status = (ErrorType)data.ReadUInt32();
             fromContainerId = data.ReadInstanceId();
-            data.ReadPkg<LList>(v => itemsNotTakenIds = new InstanceIdList(v));
+            data.ReadPkg<LList>(v => itemsNotTakenIds = v.to<InstanceId>());
             playedAnim = data.ReadBoolean();
             noMove = data.ReadBoolean();
-            data.ReadPkg<LList>(v => itemsTakenIds = new InstanceIdList(v));
+            data.ReadPkg<LList>(v => itemsTakenIds = v.to<InstanceId>());
             targetPlayerId = data.ReadInstanceId();
         }
 
@@ -44,10 +46,10 @@
             data.Write(noAnim);
             data.Write((uint)status);
             data.Write(fromContainerId);
-            data.WritePkg(itemsNotTakenIds);
+            data.WritePkg(LList.from(itemsNotTakenIds));
             data.Write(playedAnim);
             data.Write(noMove);
-            data.WritePkg(itemsTakenIds);
+            data.WritePkg(LList.from(itemsTakenIds));
             data.Write(targetPlayerId);
         }
     }

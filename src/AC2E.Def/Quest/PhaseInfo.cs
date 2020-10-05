@@ -1,10 +1,12 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class PhaseInfo : IPackage {
 
         public PackageType packageType => PackageType.PhaseInfo;
 
-        public AList subquests; // m_listSubquests
+        public List<uint> subquests; // m_listSubquests
         public uint phaseRange; // m_uiPhaseRange
         public bool subquestAny; // m_bSubquestAny
         public StringInfo journalEntry; // m_siJournalEntry

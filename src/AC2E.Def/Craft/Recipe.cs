@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class Recipe : IPackage {
 
@@ -6,12 +8,12 @@
 
         public int difficultyMinusSkillCutoff; // m_difficultyMinusSkillCutoff
         public SingletonPkg<LevelMappingTable> costMappingTable; // m_costMappingTable
-        public ARHash<StringInfo> craftMessageOverrides; // m_craftMessageOverrides
+        public Dictionary<uint, StringInfo> craftMessageOverrides; // m_craftMessageOverrides
         public SingletonPkg<LevelMappingTable> m_difficultyMappingTable; // m_difficultyMappingTable
         public DataId iconDid; // m_iconDID
-        public ARHash<CraftCheckEntry> craftCheckEntries; // m_craftCheckEntries
+        public Dictionary<uint, CraftCheckEntry> craftCheckEntries; // m_craftCheckEntries
         public uint craftSkillCategory; // m_craftSkillCategory
-        public RList<Ingredient> ingredients; // m_ingredients
+        public List<Ingredient> ingredients; // m_ingredients
         public StringInfo name; // m_siName
         public StringInfo description; // m_siDesc
         public uint maxLevel; // m_maxLevel
@@ -23,14 +25,14 @@
         public SingletonPkg<RecipeNameColoringTable> nameColoringTable; // m_nameColoringTable
         public int chargeRefreshPeriod; // m_chargeRefreshPeriod
         public uint numAnimCycles; // m_uiNumAnimCycles
-        public AList craftThresholds; // m_craftThreshs
+        public List<uint> craftThresholds; // m_craftThreshs
         public uint flags; // m_flags
         public uint maxSpinnerVal; // m_maxSpinnerVal
         public uint minLevel; // m_minLevel
         public uint lastProductOrdinal; // m_uiLastProductOrdinal
         public SingletonPkg<LevelMappingTable> craftXpMappingTable; // m_craftXPMappingTable
         public CraftRandomEntry curRandEntry; // m_curRandEntry
-        public AAHash targetsHash; // m_hashTargets
+        public Dictionary<uint, uint> targetsHash; // m_hashTargets
         public uint craftXp; // m_uiCraftXP
         public bool requiresTarget; // m_bRequiresTarget
         public uint difficulty; // m_uiDifficulty
@@ -45,12 +47,12 @@
         public Recipe(AC2Reader data) {
             difficultyMinusSkillCutoff = data.ReadInt32();
             data.ReadSingletonPkg<LevelMappingTable>(v => costMappingTable = v);
-            data.ReadPkg<ARHash<IPackage>>(v => craftMessageOverrides = v.to<StringInfo>());
+            data.ReadPkg<ARHash>(v => craftMessageOverrides = v.to<uint, StringInfo>());
             data.ReadSingletonPkg<LevelMappingTable>(v => m_difficultyMappingTable = v);
             iconDid = data.ReadDataId();
-            data.ReadPkg<ARHash<IPackage>>(v => craftCheckEntries = v.to<CraftCheckEntry>());
+            data.ReadPkg<ARHash>(v => craftCheckEntries = v.to<uint, CraftCheckEntry>());
             craftSkillCategory = data.ReadUInt32();
-            data.ReadPkg<RList<IPackage>>(v => ingredients = v.to<Ingredient>());
+            data.ReadPkg<RList>(v => ingredients = v.to<Ingredient>());
             data.ReadPkg<StringInfo>(v => name = v);
             data.ReadPkg<StringInfo>(v => description = v);
             maxLevel = data.ReadUInt32();

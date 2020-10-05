@@ -13,9 +13,9 @@ namespace AC2E.Server {
             CharacterGenSystem characterGenSystem = contentManager.getCharacterGenSystem();
             CharGenMatrix charGenMatrix = contentManager.getCharGenMatrix();
 
-            foreach (KeyValuePair<uint, RList<IPackage>> physiqueAndAppProfiles in charGenMatrix.physiqueTypeModifierTable[(uint)species].to<ARHash<IPackage>>()[(uint)sex].to<RList<IPackage>>()) {
-                PhysiqueType physiqueType = (PhysiqueType)physiqueAndAppProfiles.Key;
-                RList<AppearanceProfile> appProfiles = physiqueAndAppProfiles.Value.to<AppearanceProfile>();
+            foreach (KeyValuePair<PhysiqueType, List<AppearanceProfile>> physiqueAndAppProfiles in charGenMatrix.physiqueTypeModifierTable[species][sex]) {
+                PhysiqueType physiqueType = physiqueAndAppProfiles.Key;
+                List<AppearanceProfile> appProfiles = physiqueAndAppProfiles.Value;
 
                 if (!appProfileMap.TryGetValue(physiqueType, out Dictionary<float, Tuple<AppearanceKey, DataId>> modifierToApp)) {
                     modifierToApp = new Dictionary<float, Tuple<AppearanceKey, DataId>>();
@@ -115,7 +115,7 @@ namespace AC2E.Server {
         }
 
         private static void createStartingInventory(WorldObjectManager objectManager, ContentManager contentManager, InventoryManager inventoryManager, WorldObject character, CharGenMatrix charGenMatrix, SpeciesType species, Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos) {
-            RList<StartInvData> startInvItems = charGenMatrix.startingInventoryTable[(uint)species].to<ARHash<IPackage>>()[0].to<RList<IPackage>>()[0].to<StartInvData>();
+            List<StartInvData> startInvItems = charGenMatrix.startingInventoryTable[species][0][0];
             foreach (StartInvData startInvItem in startInvItems) {
                 WorldObject item = objectManager.create();
                 ObjectGen.applyWeenie(item, contentManager, startInvItem.entityDid);

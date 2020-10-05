@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class ComboEffect : Effect {
 
@@ -7,8 +9,8 @@
         public SingletonPkg<Effect> effectToGiveBackIfNotPresent; // m_effToGiveBackIfNotPresent
         public SingletonPkg<Effect> effectToGiveBackIfPresent; // m_effToGiveBackIfPresent
         public SingletonPkg<Effect> effectToAddIfPresent; // m_effToAddIfPresent
-        public AList effectPresentByClass; // m_listEffectPresentByClass
-        public AList effectPresentByType; // m_listEffectPresentByType
+        public List<uint> effectPresentByClass; // m_listEffectPresentByClass
+        public List<uint> effectPresentByType; // m_listEffectPresentByType
         public int spellcraftAdjustmentIfNotPresent; // m_iSpellcraftAdjustmentIfNotPresent
         public int spellcraftAdjustmentIfPresent; // m_iSpellcraftAdjustmentIfPresent
         public SingletonPkg<Effect> effectToAddIfNotPresent; // m_effToAddIfNotPresent

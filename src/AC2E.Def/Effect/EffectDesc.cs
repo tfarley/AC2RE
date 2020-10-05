@@ -1,10 +1,12 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class EffectDesc : IPackage {
 
         public PackageType packageType => PackageType.EffectDesc;
 
-        public ARHash<IPackage> considerationHash; // m_hashConsideration
+        public Dictionary<uint, IPackage> considerationHash; // m_hashConsideration
         public uint eid; // m_eid
         public int projectedTargetHealthChange; // m_iProjectedTargetHealthChange
         public int sourceVigorChange; // m_iSourceVigorChange
@@ -22,7 +24,7 @@
         public int targetVigor; // m_iTargetVigor
         public uint flags; // m_flags
         public uint durabilityLevel; // m_uiDurabilityLevel
-        public RList<IPackage> sourceEffects; // m_listSourceEffect
+        public List<IPackage> sourceEffects; // m_listSourceEffect
         public int targetFocus; // m_iTargetFocus
         public InstanceId targetId; // m_iidTarget
         public uint result; // m_result
@@ -33,7 +35,7 @@
         public DataId skillFromDid; // m_didSkillFrom
 
         public EffectDesc(AC2Reader data) {
-            data.ReadPkg<ARHash<IPackage>>(v => considerationHash = v);
+            data.ReadPkg<ARHash>(v => considerationHash = v);
             eid = data.ReadUInt32();
             projectedTargetHealthChange = data.ReadInt32();
             sourceVigorChange = data.ReadInt32();
@@ -51,7 +53,7 @@
             targetVigor = data.ReadInt32();
             flags = data.ReadUInt32();
             durabilityLevel = data.ReadUInt32();
-            data.ReadPkg<RList<IPackage>>(v => sourceEffects = v);
+            data.ReadPkg<RList>(v => sourceEffects = v);
             targetFocus = data.ReadInt32();
             targetId = data.ReadInstanceId();
             result = data.ReadUInt32();

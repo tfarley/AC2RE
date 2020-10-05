@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class RecipeContext : IPackage {
 
@@ -10,13 +12,13 @@
         public bool notifyUI; // m_bNotifyUI
         public DataId recipeDid; // m_didRecipe
         public Player crafter; // m_crafter
-        public ALHash productIds; // m_productIIDs
+        public Dictionary<uint, ulong> productIds; // m_productIIDs
         public float randVal; // m_fRandVal
         public long craftXp; // m_craftXP
         public InstanceId targetId; // m_iidTarget
         public CraftBlob blob; // m_blob
         public int cost; // m_cost
-        public ALHash ingredientIds; // m_ingredientIIDs
+        public Dictionary<uint, ulong> ingredientIds; // m_ingredientIIDs
 
         public RecipeContext(AC2Reader data) {
             craftCheck = data.ReadSingle();

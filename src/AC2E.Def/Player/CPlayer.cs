@@ -1,4 +1,6 @@
-﻿namespace AC2E.Def {
+﻿using System.Collections.Generic;
+
+namespace AC2E.Def {
 
     public class CPlayer : Player {
 
@@ -8,7 +10,7 @@
         public WPString logFile; // m_logFile
         public uint curSpecialAttackId; // m_curr_special_attack_id
         public CShopperContext shopperContext; // m_shopperContext
-        public RList<IPackage> friendList; // m_friendList
+        public List<IPackage> friendList; // m_friendList
         public SelectionInfo selectionInfo; // m_selectionInfo
         public uint curWarmupBehavior; // m_currentWarmupBehavior
         public HistoryList replyHistoryList; // m_replyHistoryList
@@ -18,7 +20,7 @@
         public CPetState clientPetState; // m_clientPetState
         public StringInfo motd; // m_motd
         public GMQuestInfoList quests; // m_Quests
-        public RList<IPackage> squelchList; // m_squelchList
+        public List<IPackage> squelchList; // m_squelchList
         public HistoryList retellHistoryList; // m_retellHistoryList
         public bool isExamining; // m_isExamining
         public PublicVendorProfile curVendor; // m_pvpCurrentVendor
@@ -29,7 +31,7 @@
             data.ReadPkg<WPString>(v => logFile = v);
             curSpecialAttackId = data.ReadUInt32();
             data.ReadPkg<CShopperContext>(v => shopperContext = v);
-            data.ReadPkg<RList<IPackage>>(v => friendList = v);
+            data.ReadPkg<RList>(v => friendList = v);
             data.ReadPkg<SelectionInfo>(v => selectionInfo = v);
             curWarmupBehavior = data.ReadUInt32();
             data.ReadPkg<HistoryList>(v => replyHistoryList = v);
@@ -39,7 +41,7 @@
             data.ReadPkg<CPetState>(v => clientPetState = v);
             data.ReadPkg<StringInfo>(v => motd = v);
             data.ReadPkg<GMQuestInfoList>(v => quests = v);
-            data.ReadPkg<RList<IPackage>>(v => squelchList = v);
+            data.ReadPkg<RList>(v => squelchList = v);
             data.ReadPkg<HistoryList>(v => retellHistoryList = v);
             isExamining = data.ReadBoolean();
             data.ReadPkg<PublicVendorProfile>(v => curVendor = v);

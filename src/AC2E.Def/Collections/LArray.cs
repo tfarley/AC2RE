@@ -6,7 +6,29 @@ namespace AC2E.Def {
 
         public NativeType nativeType => NativeType.LARRAY;
 
-        public LArray() {
+        public List<T> to<T>() {
+            List<T> converted = new List<T>(Count);
+            Converter<ulong> elementConverter = Converters.getULong(typeof(T));
+            foreach (var element in this) {
+                converted.Add(elementConverter.read<T>(element));
+            }
+            return converted;
+        }
+
+        public static LArray from<T>(List<T> source) {
+            if (source == null) {
+                return null;
+            }
+
+            LArray converted = new LArray(source.Count);
+            Converter<ulong> elementConverter = Converters.getULong(typeof(T));
+            foreach (var element in source) {
+                converted.Add(elementConverter.write(element));
+            }
+            return converted;
+        }
+
+        private LArray(int capacity) : base(capacity) {
 
         }
 
