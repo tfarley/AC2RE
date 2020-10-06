@@ -7,7 +7,7 @@ namespace AC2E.Def {
         public virtual PackageType packageType => PackageType.Effect;
 
         public List<FloatScaleDuple> durationData; // m_durationData
-        public uint fxId; // m_fxID
+        public FxId fxId; // m_fxID
         public float appValue; // m_fAprValue
         public uint externalFlags; // m_uiExternalFlags
         public bool tracked; // m_tracked
@@ -43,7 +43,7 @@ namespace AC2E.Def {
 
         public Effect(AC2Reader data) {
             data.ReadPkg<RArray>(v => durationData = v.to<FloatScaleDuple>());
-            fxId = data.ReadUInt32();
+            fxId = (FxId)data.ReadUInt32();
             appValue = data.ReadSingle();
             externalFlags = data.ReadUInt32();
             tracked = data.ReadBoolean();

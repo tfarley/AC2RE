@@ -35,8 +35,8 @@ namespace AC2E.Def {
         public DataId animMapDid; // m_animMapDID
         public Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos; // m_app_hash
         public DataId fxTableDid; // m_fxtable_did
-        public Dictionary<uint, float> startupFx; // m_startup_fx
-        public Dictionary<uint, List<FXData>> fxOverrides; // m_fx_overrides
+        public Dictionary<FxId, float> startupFx; // m_startup_fx
+        public Dictionary<FxId, List<FXData>> fxOverrides; // m_fx_overrides
 
         public PartGroupDataDesc() {
 
@@ -67,10 +67,10 @@ namespace AC2E.Def {
                 fxTableDid = data.ReadDataId();
             }
             if (packFlags.HasFlag(PackFlag.STARTUPFX)) {
-                startupFx = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
+                startupFx = data.ReadDictionary(() => (FxId)data.ReadUInt32(), data.ReadSingle);
             }
             if (packFlags.HasFlag(PackFlag.FXOVERRIDES)) {
-                fxOverrides = data.ReadDictionary(data.ReadUInt32, () => data.ReadList(() => new FXData(data)));
+                fxOverrides = data.ReadDictionary(() => (FxId)data.ReadUInt32(), () => data.ReadList(() => new FXData(data)));
             }
         }
 
@@ -98,10 +98,10 @@ namespace AC2E.Def {
                 data.Write(fxTableDid);
             }
             if (packFlags.HasFlag(PackFlag.STARTUPFX)) {
-                data.Write(startupFx, data.Write, data.Write);
+                data.Write(startupFx, v => data.Write((uint)v), data.Write);
             }
             if (packFlags.HasFlag(PackFlag.FXOVERRIDES)) {
-                data.Write(fxOverrides, data.Write, v => data.Write(v, v => v.write(data)));
+                data.Write(fxOverrides, v => data.Write((uint)v), v => data.Write(v, v => v.write(data)));
             }
         }
     }

@@ -12,7 +12,7 @@
         public int meleeAttack; // m_meleeAttack
         public int meleeDefense; // m_meleeDefense
         public int vigor; // m_vigor
-        public uint fx; // m_fx
+        public FxId fx; // m_fx
         public int armor; // m_armor
         public int magicAttack; // m_magicAttack
         public int missileDefense; // m_missileDefense
@@ -28,7 +28,7 @@
             meleeAttack = data.ReadInt32();
             meleeDefense = data.ReadInt32();
             vigor = data.ReadInt32();
-            fx = data.ReadUInt32();
+            fx = (FxId)data.ReadUInt32();
             armor = data.ReadInt32();
             magicAttack = data.ReadInt32();
             missileDefense = data.ReadInt32();

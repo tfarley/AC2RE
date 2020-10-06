@@ -4,10 +4,10 @@
 
         public override PackageType packageType => PackageType.ResurrectEffect;
 
-        public uint rezFx; // m_rezFX
+        public FxId rezFx; // m_rezFX
 
         public ResurrectEffect(AC2Reader data) : base(data) {
-            rezFx = data.ReadUInt32();
+            rezFx = (FxId)data.ReadUInt32();
         }
     }
 }

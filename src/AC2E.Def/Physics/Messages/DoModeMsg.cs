@@ -10,9 +10,18 @@
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public uint modeId; // mode_id
 
+        public DoModeMsg() {
+
+        }
+
         public DoModeMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             modeId = data.ReadUInt32();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            data.Write(modeId);
         }
     }
 }

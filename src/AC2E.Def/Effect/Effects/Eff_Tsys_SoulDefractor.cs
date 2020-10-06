@@ -15,7 +15,7 @@
         public DataId petIconDid; // m_petIcon
         public int meleeDefense; // m_meleeDefense
         public int vigor; // m_vigor
-        public uint fx; // m_fx
+        public FxId fx; // m_fx
         public IPackage loveTable; // m_loveTable
         public int armor; // m_armor
         public int magicAttack; // m_magicAttack
@@ -37,7 +37,7 @@
             petIconDid = data.ReadDataId();
             meleeDefense = data.ReadInt32();
             vigor = data.ReadInt32();
-            fx = data.ReadUInt32();
+            fx = (FxId)data.ReadUInt32();
             data.ReadPkg<IPackage>(v => loveTable = v); // TODO: AILoveTable, possibly singleton too
             armor = data.ReadInt32();
             magicAttack = data.ReadInt32();

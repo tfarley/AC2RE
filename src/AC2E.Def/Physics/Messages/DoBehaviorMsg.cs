@@ -10,9 +10,18 @@
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public BehaviorParams behaviorParams; // _params
 
+        public DoBehaviorMsg() {
+
+        }
+
         public DoBehaviorMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             behaviorParams = new BehaviorParams(data);
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            behaviorParams.write(data);
         }
     }
 }

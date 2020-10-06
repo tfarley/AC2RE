@@ -8,11 +8,11 @@
 
         // ECM_Physics::RecvEvt_StopBehavior
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public uint behaviorId; // bvrID
+        public BehaviorId behaviorId; // bvrID
 
         public StopBehaviorMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            behaviorId = data.ReadUInt32();
+            behaviorId = (BehaviorId)data.ReadUInt32();
         }
     }
 }

@@ -5,6 +5,14 @@ namespace AC2E.Def {
     public class StoryHookData {
 
         // Const - globals
+        public enum HookType : uint {
+            UNDEF,
+            DAMAGE,
+            CREATE_MISSILES,
+            FIRE_MISSILE,
+        }
+
+        // Const - globals
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
@@ -22,7 +30,7 @@ namespace AC2E.Def {
         }
 
         public PackFlag packFlags;
-        public uint type; // m_type
+        public HookType type; // m_type
         public InstanceId targetId; // m_target_id
         public InstanceId weaponId; // m_weaponID
         public uint attackResult; // m_attack_result
@@ -35,7 +43,7 @@ namespace AC2E.Def {
 
         public StoryHookData(AC2Reader data) {
             packFlags = (PackFlag)data.ReadUInt32();
-            type = (uint)packFlags & 0xF;
+            type = (HookType)((uint)packFlags & 0xF);
             packFlags = (PackFlag)((uint)packFlags & ~0xF);
             if (packFlags.HasFlag(PackFlag.TARGET_ID)) {
                 targetId = data.ReadInstanceId();

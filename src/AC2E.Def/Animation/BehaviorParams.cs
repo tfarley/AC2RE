@@ -39,12 +39,12 @@ namespace AC2E.Def {
         }
 
         public PackFlag packFlags;
-        public uint behaviorId; // mBehaviorID
+        public BehaviorId behaviorId; // mBehaviorID
         public float timeScale; // mTimeScale
         public uint modeId; // mModeID
         public uint holdCycles; // mHoldCycles
-        public uint fxScriptId; // mFXScriptID
-        public uint fxId; // mFxID
+        public DataId fxScriptId; // mFXScriptID
+        public FxId fxId; // mFxID
         public InstanceId targetId; // mTargetID
         public InstanceId cameraTargetId; // mCameraTargetID
         public uint cameraBehavior; // mCameraBehavior
@@ -67,10 +67,14 @@ namespace AC2E.Def {
         public bool destroyOnCompletion; // mDestroyOnCompletion
         public uint contextId; // mContextID
 
+        public BehaviorParams() {
+
+        }
+
         public BehaviorParams(AC2Reader data) {
             packFlags = (PackFlag)data.ReadUInt32();
             if (packFlags.HasFlag(PackFlag.BEHAVIOR_ID)) {
-                behaviorId = data.ReadUInt32();
+                behaviorId = (BehaviorId)data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.TIME_SCALE)) {
                 timeScale = data.ReadSingle();
@@ -82,10 +86,10 @@ namespace AC2E.Def {
                 holdCycles = data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.FXSCRIPT)) {
-                fxScriptId = data.ReadUInt32();
+                fxScriptId = data.ReadDataId();
             }
             if (packFlags.HasFlag(PackFlag.FXTODO)) {
-                fxId = data.ReadUInt32();
+                fxId = (FxId)data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.TARGET)) {
                 targetId = data.ReadInstanceId();
@@ -149,7 +153,7 @@ namespace AC2E.Def {
         public void write(AC2Writer data) {
             data.Write((uint)packFlags);
             if (packFlags.HasFlag(PackFlag.BEHAVIOR_ID)) {
-                data.Write(behaviorId);
+                data.Write((uint)behaviorId);
             }
             if (packFlags.HasFlag(PackFlag.TIME_SCALE)) {
                 data.Write(timeScale);
@@ -164,7 +168,7 @@ namespace AC2E.Def {
                 data.Write(fxScriptId);
             }
             if (packFlags.HasFlag(PackFlag.FXTODO)) {
-                data.Write(fxId);
+                data.Write((uint)fxId);
             }
             if (packFlags.HasFlag(PackFlag.TARGET)) {
                 data.Write(targetId);

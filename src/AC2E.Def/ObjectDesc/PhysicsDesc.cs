@@ -86,7 +86,7 @@ namespace AC2E.Def {
         public uint modeId; // m_mode_id
         public List<BehaviorParams> behaviors; // m_behaviors
         public Dictionary<uint, SliderData> sliders; // m_sliders
-        public Dictionary<uint, FXScalarAndTarget> fx; // m_fx
+        public Dictionary<FxId, FXScalarAndTarget> fx; // m_fx
         public ushort[] timestamps = new ushort[4]; // timestamps
         public ushort instanceStamp; // m_instance_stamp
         public ushort visualOrderStamp; // m_visual_ordering_stamp
@@ -160,7 +160,7 @@ namespace AC2E.Def {
                 targetOffset = data.ReadVector();
             }
             if (packFlags.HasFlag(PackFlag.FX)) {
-                fx = data.ReadStlMap(data.ReadUInt32, () => new FXScalarAndTarget(data));
+                fx = data.ReadStlMap(() => (FxId)data.ReadUInt32(), () => new FXScalarAndTarget(data));
             }
             missileIsActivated = packFlags.HasFlag(PackFlag.MISSILE_ACTIVATED);
             missileIsMoving = packFlags.HasFlag(PackFlag.MISSILE_MOVING);
@@ -236,7 +236,7 @@ namespace AC2E.Def {
                 data.Write(targetOffset);
             }
             if (packFlags.HasFlag(PackFlag.FX)) {
-                data.WriteStlMap(fx, data.Write, v => v.write(data));
+                data.WriteStlMap(fx, v => data.Write((uint)v), v => v.write(data));
             }
             for (int i = 0; i < timestamps.Length; i++) {
                 data.Write(timestamps[i]);

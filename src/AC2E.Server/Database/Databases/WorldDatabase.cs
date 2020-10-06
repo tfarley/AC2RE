@@ -76,7 +76,7 @@ namespace AC2E.Server.Database {
                     c.MapField(r => r.sliders).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<uint, PhysicsDesc.SliderData>>()
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
                         .WithValueSerializer(BsonUtil.existingClassSerializer<PhysicsDesc.SliderData>()));
-                    c.MapField(r => r.fx).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<uint, FXScalarAndTarget>>()
+                    c.MapField(r => r.fx).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<FxId, FXScalarAndTarget>>()
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
                         .WithValueSerializer(BsonUtil.existingClassSerializer<FXScalarAndTarget>()));
                 });
@@ -102,7 +102,7 @@ namespace AC2E.Server.Database {
                         .WithValueSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<AppearanceKey, float>>()
                             .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
                             .WithValueSerializer(new SingleSerializer())));
-                    c.MapField(r => r.startupFx).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<uint, float>>()
+                    c.MapField(r => r.startupFx).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<FxId, float>>()
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
                         .WithValueSerializer(new SingleSerializer()));
                 });

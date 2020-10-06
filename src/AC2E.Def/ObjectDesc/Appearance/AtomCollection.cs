@@ -56,11 +56,11 @@ namespace AC2E.Def {
 
     public class FXAtom {
 
-        public List<uint> fxIds; // m_fx_ids
+        public List<FxId> fxIds; // m_fx_ids
         public List<FXData> fxDatas; // m_fx_data
 
         public FXAtom(AC2Reader data) {
-            fxIds = data.ReadList(data.ReadUInt32);
+            fxIds = data.ReadList(() => (FxId)data.ReadUInt32());
             fxDatas = data.ReadList(() => new FXData(data));
         }
     }

@@ -8,12 +8,12 @@
 
         // ECM_Physics::RecvEvt_ReleaseBehavior
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public uint behaviorId; // _behavior_id
+        public BehaviorId behaviorId; // _behavior_id
         public BehaviorParams behaviorParams; // _params
 
         public ReleaseBehaviorMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            behaviorId = data.ReadUInt32();
+            behaviorId = (BehaviorId)data.ReadUInt32();
             behaviorParams = new BehaviorParams(data);
         }
     }
