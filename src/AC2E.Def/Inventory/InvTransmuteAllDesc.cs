@@ -13,7 +13,7 @@ namespace AC2E.Def {
         public uint moneyEarned; // m_moneyEarned
         public bool quiet; // m_bQuiet
         public bool noAnim; // noAnimFlag
-        public ErrorType status; // m_status
+        public ErrorType error; // m_status
         public InstanceId fromContainerId; // m_fromContainerID
         public List<InstanceId> notTransmutedItemIds; // m_itemsNotTransmuted
         public bool playedAnim; // playedAnim
@@ -32,7 +32,7 @@ namespace AC2E.Def {
             moneyEarned = data.ReadUInt32();
             quiet = data.ReadBoolean();
             noAnim = data.ReadBoolean();
-            status = (ErrorType)data.ReadUInt32();
+            error = (ErrorType)data.ReadUInt32();
             fromContainerId = data.ReadInstanceId();
             data.ReadPkg<LList>(v => notTransmutedItemIds = v.to<InstanceId>());
             playedAnim = data.ReadBoolean();
@@ -48,7 +48,7 @@ namespace AC2E.Def {
             data.Write(moneyEarned);
             data.Write(quiet);
             data.Write(noAnim);
-            data.Write((uint)status);
+            data.Write((uint)error);
             data.Write(fromContainerId);
             data.WritePkg(LList.from(notTransmutedItemIds));
             data.Write(playedAnim);

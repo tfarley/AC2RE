@@ -4,12 +4,12 @@
 
         public PackageType packageType => PackageType.DefaultTakePermissionBlob;
 
-        public uint requiredQuestStatus; // m_requiredQuestStatus
-        public uint requiredQuest; // m_requiredQuest
+        public QuestStatus requiredQuestStatus; // m_requiredQuestStatus
+        public QuestId requiredQuest; // m_requiredQuest
 
         public DefaultTakePermissionBlob(AC2Reader data) {
-            requiredQuestStatus = data.ReadUInt32();
-            requiredQuest = data.ReadUInt32();
+            requiredQuestStatus = (QuestStatus)data.ReadUInt32();
+            requiredQuest = (QuestId)data.ReadUInt32();
         }
     }
 }

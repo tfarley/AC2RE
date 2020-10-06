@@ -11,7 +11,7 @@ namespace AC2E.Def {
         public bool checkTakePerm; // checkTakePermFlag
         public bool quiet; // m_bQuiet
         public bool noAnim; // noAnimFlag
-        public ErrorType status; // m_status
+        public ErrorType error; // m_status
         public InstanceId fromContainerId; // m_fromContainerID
         public List<InstanceId> itemsNotTakenIds; // m_itemsNotTaken
         public bool playedAnim; // playedAnim
@@ -29,7 +29,7 @@ namespace AC2E.Def {
             checkTakePerm = data.ReadBoolean();
             quiet = data.ReadBoolean();
             noAnim = data.ReadBoolean();
-            status = (ErrorType)data.ReadUInt32();
+            error = (ErrorType)data.ReadUInt32();
             fromContainerId = data.ReadInstanceId();
             data.ReadPkg<LList>(v => itemsNotTakenIds = v.to<InstanceId>());
             playedAnim = data.ReadBoolean();
@@ -44,7 +44,7 @@ namespace AC2E.Def {
             data.Write(checkTakePerm);
             data.Write(quiet);
             data.Write(noAnim);
-            data.Write((uint)status);
+            data.Write((uint)error);
             data.Write(fromContainerId);
             data.WritePkg(LList.from(itemsNotTakenIds));
             data.Write(playedAnim);

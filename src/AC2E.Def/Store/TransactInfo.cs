@@ -14,7 +14,7 @@ namespace AC2E.Def {
         public uint customerMoney; // m_uiCustomerMoney
         public List<ItemProfile> saleItemProfiles; // m_listSaleItemProfile
         public Dictionary<InstanceId, uint> hashToBuyErrors; // m_hashToBuyErrors
-        public ErrorType errorType; // m_et
+        public ErrorType error; // m_et
         public InstanceId customerId; // m_iidCustomer
         public Dictionary<InstanceId, uint> hashForSaleErrors; // m_hashForSaleErrors
         public InstanceId vendorId; // m_iidVendor
@@ -28,7 +28,7 @@ namespace AC2E.Def {
             customerMoney = data.ReadUInt32();
             data.ReadPkg<RList>(v => saleItemProfiles = v.to<ItemProfile>());
             data.ReadPkg<LAHash>(v => hashToBuyErrors = v.to<InstanceId, uint>());
-            errorType = (ErrorType)data.ReadUInt32();
+            error = (ErrorType)data.ReadUInt32();
             customerId = data.ReadInstanceId();
             data.ReadPkg<LAHash>(v => hashForSaleErrors = v.to<InstanceId, uint>());
             vendorId = data.ReadInstanceId();

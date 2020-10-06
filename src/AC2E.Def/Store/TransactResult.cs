@@ -10,14 +10,14 @@ namespace AC2E.Def {
         public Dictionary<InstanceId, uint> saleErrors; // m_hashSaleErrors
         public Dictionary<InstanceId, uint> buyErrors; // m_hashBuyErrors
         public uint playerMoneySubtract; // m_uiPlayerMoneySubtract
-        public ErrorType errorType; // m_et
+        public ErrorType error; // m_et
 
         public TransactResult(AC2Reader data) {
             playerMoneyAdd = data.ReadUInt32();
             data.ReadPkg<LAHash>(v => saleErrors = v.to<InstanceId, uint>());
             data.ReadPkg<LAHash>(v => buyErrors = v.to<InstanceId, uint>());
             playerMoneySubtract = data.ReadUInt32();
-            errorType = (ErrorType)data.ReadUInt32();
+            error = (ErrorType)data.ReadUInt32();
         }
     }
 }

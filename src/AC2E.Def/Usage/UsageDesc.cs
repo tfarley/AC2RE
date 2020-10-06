@@ -14,7 +14,7 @@ namespace AC2E.Def {
         public InstanceId userId; // m_userID
         public float distToUsedItem; // m_fDistanceToUsedItem
         public InstanceId targetId; // m_targetID
-        public ErrorType status; // m_status
+        public ErrorType error; // m_status
         public InstanceId effectTargetId; // m_effTargetID
         public uint usageTargetTypeValid; // m_uttValid // TODO: UsageTargetType
         public List<SingletonPkg<Effect>> effectsToApply; // m_effsToApply
@@ -36,7 +36,7 @@ namespace AC2E.Def {
             userId = data.ReadInstanceId();
             distToUsedItem = data.ReadSingle();
             targetId = data.ReadInstanceId();
-            status = (ErrorType)data.ReadUInt32();
+            error = (ErrorType)data.ReadUInt32();
             effectTargetId = data.ReadInstanceId();
             usageTargetTypeValid = data.ReadUInt32();
             data.ReadPkg<RList>(v => effectsToApply = v.to(SingletonPkg<Effect>.cast));
@@ -55,7 +55,7 @@ namespace AC2E.Def {
             data.Write(userId);
             data.Write(distToUsedItem);
             data.Write(targetId);
-            data.Write((uint)status);
+            data.Write((uint)error);
             data.Write(effectTargetId);
             data.Write(usageTargetTypeValid);
             data.WritePkg(RList.from(effectsToApply));

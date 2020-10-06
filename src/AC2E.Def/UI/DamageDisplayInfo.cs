@@ -14,7 +14,7 @@
         public bool attackerIsPlayersPet; // m_attackerIsPlayersPet
         public bool nonDamaging; // m_nonDamaging
         public gmCEntity target; // m_target
-        public uint nonBasicSkillId; // m_nonBasicSkillID
+        public SkillId nonBasicSkillId; // m_nonBasicSkillID
         public CPlayer player; // m_player
         public gmCEntity attacker; // m_attacker
 
@@ -29,7 +29,7 @@
             attackerIsPlayersPet = data.ReadBoolean();
             nonDamaging = data.ReadBoolean();
             data.ReadPkg<gmCEntity>(v => target = v);
-            nonBasicSkillId = data.ReadUInt32();
+            nonBasicSkillId = (SkillId)data.ReadUInt32();
             data.ReadPkg<CPlayer>(v => player = v);
             data.ReadPkg<gmCEntity>(v => attacker = v);
         }

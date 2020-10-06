@@ -5,18 +5,18 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Store__Request_Done;
 
         // WM_Store::PostCEvt_Store_Request_Done
-        public uint error; // _err
+        public ErrorType error; // _err
 
         public StoreRequestDoneCEvt() {
 
         }
 
         public StoreRequestDoneCEvt(AC2Reader data) {
-            error = data.UnpackUInt32();
+            error = (ErrorType)data.UnpackUInt32();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(error);
+            data.Pack((uint)error);
         }
     }
 }

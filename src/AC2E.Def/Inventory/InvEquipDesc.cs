@@ -14,7 +14,7 @@
         public InstanceId equipperId; // m_equipperID
         public InstanceId containerId; // m_containerID
         public uint controlFlags; // m_controlFlags
-        public ErrorType status; // status
+        public ErrorType error; // status
         public InvLoc takenSlots; // m_takenSlots
         public InvLoc actualLocation; // m_actualLocation
         public InstanceId blockingItemId; // m_blockingItemID
@@ -35,7 +35,7 @@
             equipperId = data.ReadInstanceId();
             containerId = data.ReadInstanceId();
             controlFlags = data.ReadUInt32();
-            status = (ErrorType)data.ReadUInt32();
+            error = (ErrorType)data.ReadUInt32();
             takenSlots = (InvLoc)data.ReadUInt32();
             actualLocation = (InvLoc)data.ReadUInt32();
             blockingItemId = data.ReadInstanceId();
@@ -53,7 +53,7 @@
             data.Write(equipperId);
             data.Write(containerId);
             data.Write(controlFlags);
-            data.Write((uint)status);
+            data.Write((uint)error);
             data.Write((uint)takenSlots);
             data.Write((uint)actualLocation);
             data.Write(blockingItemId);

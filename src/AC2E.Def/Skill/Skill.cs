@@ -13,7 +13,7 @@ namespace AC2E.Def {
         public int levelWhenTrained; // mLevelWhenTrained
         public Dictionary<uint, uint> parents; // mParents
         public float combatSpeedModifier; // m_fCombatSpeedModifier
-        public uint reqQuestId; // m_reqQuestID
+        public QuestId reqQuestId; // m_reqQuestID
         public int allowedClasses; // mAllowedClasses
         public Dictionary<uint, uint> prereqs; // mPrereqs
         public float advMod; // mAdvMod
@@ -38,7 +38,7 @@ namespace AC2E.Def {
             levelWhenTrained = data.ReadInt32();
             data.ReadPkg<AAHash>(v => parents = v);
             combatSpeedModifier = data.ReadSingle();
-            reqQuestId = data.ReadUInt32();
+            reqQuestId = (QuestId)data.ReadUInt32();
             allowedClasses = data.ReadInt32();
             data.ReadPkg<AAHash>(v => prereqs = v);
             advMod = data.ReadSingle();

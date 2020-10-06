@@ -68,16 +68,16 @@ namespace AC2E.Server {
 
         public void equipItem(InvEquipDesc request, Player requester) {
             if (requester != null && request.equipperId != requester.characterId) {
-                request.status = ErrorType.ITEMNOTOWNEDBYCONTAINER;
+                request.error = ErrorType.ITEMNOTOWNEDBYCONTAINER;
             } else {
                 WorldObject? equipper = objectManager.get(request.equipperId);
                 WorldObject? item = objectManager.get(request.itemId);
 
                 if (equipper != null && item != null) {
                     if (equipper.equippedItems.ContainsKey(request.location)) {
-                        request.status = ErrorType.INVSLOTFULL;
+                        request.error = ErrorType.INVSLOTFULL;
                     } else if (!item.qualities.ints.TryGetValue(IntStat.VALIDINVENTORYLOCATIONS, out int validInventoryLocations) || (validInventoryLocations & (int)request.location) == 0) {
-                        request.status = ErrorType.WRONGINVSLOT;
+                        request.error = ErrorType.WRONGINVSLOT;
                     } else {
                         if (setItemEquipped(equipper, item, request.location)) {
                             item.physics.timestamps[0]++;
@@ -89,7 +89,7 @@ namespace AC2E.Server {
                             });
                         }
 
-                        request.status = ErrorType.NONE;
+                        request.error = ErrorType.NONE;
                     }
                 }
             }
@@ -105,7 +105,7 @@ namespace AC2E.Server {
 
         public void unequipItem(InvEquipDesc request, Player requester) {
             if (request.equipperId != requester.characterId) {
-                request.status = ErrorType.ITEMNOTOWNEDBYCONTAINER;
+                request.error = ErrorType.ITEMNOTOWNEDBYCONTAINER;
             } else {
                 WorldObject? equipper = objectManager.get(request.equipperId);
                 WorldObject? item = objectManager.get(request.itemId);
@@ -113,7 +113,7 @@ namespace AC2E.Server {
 
                 if (equipper != null && item != null) {
                     if (!equipper.equippedItems.TryGetValue(request.location, out InstanceId equippedItemId) || item.id != equippedItemId) {
-                        request.status = ErrorType.NOTEQUIPPED;
+                        request.error = ErrorType.NOTEQUIPPED;
                     } else {
                         equipper.equippedItems.Remove(request.location);
 
@@ -132,7 +132,7 @@ namespace AC2E.Server {
                             childIdWithPosStamp = item.getInstanceIdWithStamp(item.physics.timestamps[0]),
                         });
 
-                        request.status = ErrorType.NONE;
+                        request.error = ErrorType.NONE;
                     }
                 }
             }

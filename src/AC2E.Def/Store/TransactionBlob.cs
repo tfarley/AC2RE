@@ -11,7 +11,7 @@ namespace AC2E.Def {
         public InstanceId shopperId; // m_iidShopper
         public uint quantity; // m_uiQuantity
         public InstanceId storekeeperId; // m_iidStorekeeper
-        public ErrorType result; // m_result
+        public ErrorType error; // m_result
         public uint slot; // m_uiSlot
 
         public TransactionBlob() {
@@ -24,7 +24,7 @@ namespace AC2E.Def {
             shopperId = data.ReadInstanceId();
             quantity = data.ReadUInt32();
             storekeeperId = data.ReadInstanceId();
-            result = (ErrorType)data.ReadUInt32();
+            error = (ErrorType)data.ReadUInt32();
             slot = data.ReadUInt32();
         }
 
@@ -34,7 +34,7 @@ namespace AC2E.Def {
             data.Write(shopperId);
             data.Write(quantity);
             data.Write(storekeeperId);
-            data.Write((uint)result);
+            data.Write((uint)error);
             data.Write(slot);
         }
     }

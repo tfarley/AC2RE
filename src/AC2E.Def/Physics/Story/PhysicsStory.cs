@@ -21,7 +21,7 @@ namespace AC2E.Def {
         public InstanceId attackerId; // m_attacker_id
         public BehaviorParams attackerBehavior; // m_attacker_behavior
         public uint clientAttackContextId; // m_client_attack_context_id
-        public uint skillId; // m_skillID
+        public SkillId skillId; // m_skillID
         public bool basicAttack; // m_basicAttack
         public List<StoryHookData> hooks; // m_hooks
 
@@ -37,7 +37,7 @@ namespace AC2E.Def {
                 clientAttackContextId = data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.SKILL_ID)) {
-                skillId = data.ReadUInt32();
+                skillId = (SkillId)data.ReadUInt32();
             }
             basicAttack = packFlags.HasFlag(PackFlag.BASIC_ATTACK);
             hooks = data.ReadList(() => new StoryHookData(data));

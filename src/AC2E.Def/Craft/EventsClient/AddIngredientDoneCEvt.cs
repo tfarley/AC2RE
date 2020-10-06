@@ -5,7 +5,7 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Craft__AddIngredient_Done;
 
         // WM_Craft::PostCEvt_AddIngredient_Done
-        public uint error; // _err
+        public ErrorType error; // _err
         public uint spinnerVal; // _uiSpinnerVal
         public InstanceId ingredientId; // _iidIngredient
         public uint ordinal; // _uiOrdinal
@@ -16,7 +16,7 @@
         }
 
         public AddIngredientDoneCEvt(AC2Reader data) {
-            error = data.UnpackUInt32();
+            error = (ErrorType)data.UnpackUInt32();
             spinnerVal = data.UnpackUInt32();
             ingredientId = data.UnpackInstanceId();
             ordinal = data.UnpackUInt32();
@@ -24,7 +24,7 @@
         }
 
         public void write(AC2Writer data) {
-            data.Pack(error);
+            data.Pack((uint)error);
             data.Pack(spinnerVal);
             data.Pack(ingredientId);
             data.Pack(ordinal);

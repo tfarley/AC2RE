@@ -5,24 +5,24 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Quest__UpdateQuest_Done;
 
         // WM_Quest::PostCEvt_UpdateQuest_Done
-        public uint status; // _status
+        public ErrorType error; // _status
         public GMQuestInfo questInfo; // _qInfo
-        public uint questUpdateType; // _qut // TODO: QuestUpdateType
+        public QuestUpdateType questUpdateType; // _qut
 
         public UpdateQuestCEvt() {
 
         }
 
         public UpdateQuestCEvt(AC2Reader data) {
-            status = data.UnpackUInt32();
+            error = (ErrorType)data.UnpackUInt32();
             questInfo = data.UnpackPackage<GMQuestInfo>();
-            questUpdateType = data.UnpackUInt32();
+            questUpdateType = new QuestUpdateType(data.UnpackUInt32());
         }
 
         public void write(AC2Writer data) {
-            data.Pack(status);
+            data.Pack((uint)error);
             data.Pack(questInfo);
-            data.Pack(questUpdateType);
+            data.Pack(questUpdateType.value);
         }
     }
 }

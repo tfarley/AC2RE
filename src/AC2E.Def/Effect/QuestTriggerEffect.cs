@@ -4,12 +4,12 @@
 
         public override PackageType packageType => PackageType.QuestTriggerEffect;
 
-        public uint questUpdateType; // m_questUpdateType
-        public uint questId; // m_questID
+        public QuestUpdateType questUpdateType; // m_questUpdateType
+        public QuestId questId; // m_questID
 
         public QuestTriggerEffect(AC2Reader data) : base(data) {
-            questUpdateType = data.ReadUInt32();
-            questId = data.ReadUInt32();
+            questUpdateType = new QuestUpdateType(data.ReadUInt32());
+            questId = (QuestId)data.ReadUInt32();
         }
     }
 }

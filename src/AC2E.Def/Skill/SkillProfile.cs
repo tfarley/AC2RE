@@ -5,11 +5,11 @@
         public PackageType packageType => PackageType.SkillProfile;
 
         public int level; // level
-        public uint skill; // skill
+        public SkillId skill; // skill
 
         public SkillProfile(AC2Reader data) {
             level = data.ReadInt32();
-            skill = data.ReadUInt32();
+            skill = (SkillId)data.ReadUInt32();
         }
     }
 }
