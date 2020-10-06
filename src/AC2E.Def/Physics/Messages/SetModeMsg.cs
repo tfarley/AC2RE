@@ -8,11 +8,11 @@
 
         // ECM_Physics::RecvEvt_SetMode
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public uint modeId; // modeID
+        public ModeId modeId; // modeID
 
         public SetModeMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            modeId = data.ReadUInt32();
+            modeId = (ModeId)data.ReadUInt32();
         }
     }
 }

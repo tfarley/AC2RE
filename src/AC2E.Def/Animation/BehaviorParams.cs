@@ -41,7 +41,7 @@ namespace AC2E.Def {
         public PackFlag packFlags;
         public BehaviorId behaviorId; // mBehaviorID
         public float timeScale; // mTimeScale
-        public uint modeId; // mModeID
+        public ModeId modeId; // mModeID
         public uint holdCycles; // mHoldCycles
         public DataId fxScriptId; // mFXScriptID
         public FxId fxId; // mFxID
@@ -80,7 +80,7 @@ namespace AC2E.Def {
                 timeScale = data.ReadSingle();
             }
             if (packFlags.HasFlag(PackFlag.MODE_ID)) {
-                modeId = data.ReadUInt32();
+                modeId = (ModeId)data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.HOLDCYLE)) {
                 holdCycles = data.ReadUInt32();
@@ -159,7 +159,7 @@ namespace AC2E.Def {
                 data.Write(timeScale);
             }
             if (packFlags.HasFlag(PackFlag.MODE_ID)) {
-                data.Write(modeId);
+                data.Write((uint)modeId);
             }
             if (packFlags.HasFlag(PackFlag.HOLDCYLE)) {
                 data.Write(holdCycles);

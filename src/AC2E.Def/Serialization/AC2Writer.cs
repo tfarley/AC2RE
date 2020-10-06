@@ -324,6 +324,10 @@ namespace AC2E.Def {
             Write(value.did);
         }
 
+        public void Write(EnumId value) {
+            Write(value.id);
+        }
+
         public void Align(uint bytes) {
             long alignDelta = BaseStream.Position % bytes;
             if (alignDelta != 0) {

@@ -66,7 +66,7 @@ namespace AC2E.Server {
                     velocity = 0.0f,
                 } }
             };
-            physics.modeId = 1073741825;
+            physics.modeId = ModeId.PEACE;
             physics.pos = startPos;
             physics.velScale = 2.0f;
         }

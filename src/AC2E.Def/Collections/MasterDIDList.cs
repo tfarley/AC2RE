@@ -6,12 +6,12 @@ namespace AC2E.Def {
 
         public PackageType packageType => PackageType.MasterDIDList;
 
-        public uint emapperID; // mEmapperID
-        public Dictionary<uint, uint> map; // mMap
+        public EnumId emapperId; // mEmapperID
+        public Dictionary<uint, DataId> map; // mMap
 
         public MasterDIDList(AC2Reader data) {
-            emapperID = data.ReadUInt32();
-            data.ReadPkg<AAHash>(v => map = v);
+            emapperId = data.ReadEnumId();
+            data.ReadPkg<AAHash>(v => map = v.to<uint, DataId>());
         }
     }
 }

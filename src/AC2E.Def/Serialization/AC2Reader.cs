@@ -367,6 +367,10 @@ namespace AC2E.Def {
             return new QualifiedDataId((DbType)ReadUInt32(), ReadDataId());
         }
 
+        public EnumId ReadEnumId() {
+            return new EnumId(ReadUInt32());
+        }
+
         public void Align(uint bytes) {
             long alignDelta = BaseStream.Position % bytes;
             if (alignDelta != 0) {

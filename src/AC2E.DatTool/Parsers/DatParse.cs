@@ -274,7 +274,7 @@ namespace AC2E.DatTool {
                     readAndDump(datReader, did, outputPath, data => new UIScene(data));
                     break;
                 case DbType.VALIDMODES:
-                    readAndDump(datReader, did, outputPath, data => data.ReadList(data.ReadUInt32));
+                    readAndDump(datReader, did, outputPath, data => data.ReadList(() => (ModeId)data.ReadUInt32()));
                     break;
                 case DbType.VISUAL_DESC:
                     readAndDump(datReader, did, outputPath, data => new VisualDesc(data));

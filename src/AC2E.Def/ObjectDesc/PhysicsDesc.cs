@@ -83,7 +83,7 @@ namespace AC2E.Def {
         public ushort parentInstanceStamp; // m_parent_instance_stamp
         public HoldingLocation locationId; // m_location_id
         public Orientation orientationId; // m_orientation_id
-        public uint modeId; // m_mode_id
+        public ModeId modeId; // m_mode_id
         public List<BehaviorParams> behaviors; // m_behaviors
         public Dictionary<uint, SliderData> sliders; // m_sliders
         public Dictionary<FxId, FXScalarAndTarget> fx; // m_fx
@@ -100,7 +100,7 @@ namespace AC2E.Def {
             instanceStamp = data.ReadUInt16();
             visualOrderStamp = data.ReadUInt16();
             if (packFlags.HasFlag(PackFlag.MODE)) {
-                modeId = data.ReadUInt32();
+                modeId = (ModeId)data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.BEHAVIORS)) {
                 behaviors = data.ReadList(() => new BehaviorParams(data));
@@ -176,7 +176,7 @@ namespace AC2E.Def {
             data.Write(instanceStamp);
             data.Write(visualOrderStamp);
             if (packFlags.HasFlag(PackFlag.MODE)) {
-                data.Write(modeId);
+                data.Write((uint)modeId);
             }
             if (packFlags.HasFlag(PackFlag.BEHAVIORS)) {
                 data.Write(behaviors, v => v.write(data));
