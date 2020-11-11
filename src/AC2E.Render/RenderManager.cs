@@ -20,11 +20,11 @@ namespace AC2E.Render {
 
         private Matrix4x4 cameraToClipMatrix = Matrix4x4.Identity;
 
-        private readonly List<RenderObject> renderObjects = new List<RenderObject>();
+        private readonly List<RenderObject> renderObjects = new();
 
-        private DirLight dirLight = new DirLight {
-            dir = new Vector3(-1.0f, 0.0f, -1.0f),
-            color = new Vector3(0.75f, 0.75f, 0.75f),
+        private DirLight dirLight = new() {
+            dir = new(-1.0f, 0.0f, -1.0f),
+            color = new(0.75f, 0.75f, 0.75f),
         };
 
         public void Dispose() {
@@ -33,7 +33,7 @@ namespace AC2E.Render {
 
         public RenderManager(IRenderer renderer, DatReader datReader) {
             this.renderer = renderer;
-            resourceManager = new RenderResourceManager(datReader);
+            resourceManager = new(datReader);
 
             renderer.setClearColor(0.0f, 0.25f, 0.25f);
             renderer.setAmbientLight(0.25f, 0.25f, 0.25f);
@@ -57,7 +57,7 @@ namespace AC2E.Render {
         }
 
         public RenderObject addRenderObject(List<RenderMesh> meshes, Vector3 pos, Quaternion rot) {
-            RenderObject renderObject = new RenderObject(meshes) {
+            RenderObject renderObject = new(meshes) {
                 pos = pos,
                 rot = rot,
             };
@@ -75,7 +75,7 @@ namespace AC2E.Render {
 
             Matrix4x4 worldToClipMatrix = worldToCameraMatrix * cameraToClipMatrix;
 
-            DirLight dirLightCameraSpace = new DirLight(dirLight);
+            DirLight dirLightCameraSpace = new(dirLight);
             dirLightCameraSpace.dir = Vector3.TransformNormal(dirLightCameraSpace.dir, worldToCameraMatrix);
             renderer.setDirLight(dirLightCameraSpace);
 

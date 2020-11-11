@@ -11,12 +11,12 @@ namespace AC2E.Server.Database {
             this.type = type;
             counters = setupCounters(database);
 
-            counters.FindOneAndUpdate<Counter>(
+            counters.FindOneAndUpdate(
                 r => r.type == type,
                 Builders<Counter>.Update
                     .SetOnInsert(r => r.type, type)
                     .SetOnInsert(r => r.count, initialCount),
-                new FindOneAndUpdateOptions<Counter>() { IsUpsert = true });
+                new() { IsUpsert = true });
         }
 
         private IMongoCollection<Counter> setupCounters(IMongoDatabase database) {

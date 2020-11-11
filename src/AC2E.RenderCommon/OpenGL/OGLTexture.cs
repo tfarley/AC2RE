@@ -8,11 +8,11 @@ namespace AC2E.RenderCommon.OpenGL {
 
     internal class OGLTexture : ITexture {
 
-        private static readonly Dictionary<TextureFormat, Tuple<GLPixelFormat, PixelInternalFormat>> TEXTURE_TO_OPENGL_FORMATS = new Dictionary<TextureFormat, Tuple<GLPixelFormat, PixelInternalFormat>> {
-            { TextureFormat.R8G8B8A8, new Tuple<GLPixelFormat, PixelInternalFormat>(GLPixelFormat.Rgba, PixelInternalFormat.Rgba) },
-            { TextureFormat.DXT1, new Tuple<GLPixelFormat, PixelInternalFormat>(GLPixelFormat.Rgba, PixelInternalFormat.CompressedRgbaS3tcDxt1Ext) },
-            { TextureFormat.DXT3, new Tuple<GLPixelFormat, PixelInternalFormat>(GLPixelFormat.Rgba, PixelInternalFormat.CompressedRgbaS3tcDxt3Ext) },
-            { TextureFormat.DXT5, new Tuple<GLPixelFormat, PixelInternalFormat>(GLPixelFormat.Rgba, PixelInternalFormat.CompressedRgbaS3tcDxt5Ext) },
+        private static readonly Dictionary<TextureFormat, Tuple<GLPixelFormat, PixelInternalFormat>> TEXTURE_TO_OPENGL_FORMATS = new() {
+            { TextureFormat.R8G8B8A8, new(GLPixelFormat.Rgba, PixelInternalFormat.Rgba) },
+            { TextureFormat.DXT1, new(GLPixelFormat.Rgba, PixelInternalFormat.CompressedRgbaS3tcDxt1Ext) },
+            { TextureFormat.DXT3, new(GLPixelFormat.Rgba, PixelInternalFormat.CompressedRgbaS3tcDxt3Ext) },
+            { TextureFormat.DXT5, new(GLPixelFormat.Rgba, PixelInternalFormat.CompressedRgbaS3tcDxt5Ext) },
         };
 
         public readonly uint id;

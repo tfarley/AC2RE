@@ -17,7 +17,7 @@
 
         public CharGenVerificationMsg(AC2Reader data) {
             response = (CharGenResponse)data.ReadUInt32();
-            characterIdentity = new CharacterIdentity(data);
+            characterIdentity = new(data);
             weenieCharGenResult = data.ReadUInt32();
         }
 

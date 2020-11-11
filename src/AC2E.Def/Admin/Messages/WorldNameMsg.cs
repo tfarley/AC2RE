@@ -14,7 +14,7 @@
         }
 
         public WorldNameMsg(AC2Reader data) {
-            worldName = new StringInfo(data);
+            worldName = new(data);
         }
 
         public void write(AC2Writer data) {

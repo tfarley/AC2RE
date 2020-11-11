@@ -17,7 +17,7 @@ namespace AC2E.Def {
             id = data.ReadInstanceId();
             name = data.ReadString(Encoding.Unicode);
             secondsGreyedOut = data.ReadUInt32();
-            visualDesc = new VisualDesc(data);
+            visualDesc = new(data);
         }
 
         public void write(AC2Writer data) {

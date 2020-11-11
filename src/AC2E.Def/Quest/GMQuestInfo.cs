@@ -27,12 +27,12 @@
         public GMQuestInfo(AC2Reader data) {
             // TODO: This format does not match known stuff, so the names/order here may be slightly incorrect
             questId = (QuestId)data.ReadUInt32();
-            questName = new StringInfo(data);
-            questDescription = new StringInfo(data);
+            questName = new(data);
+            questDescription = new(data);
             iconDid = data.ReadDataId();
             questStatus = (QuestStatus)data.ReadUInt32();
             curPhase = data.ReadUInt32();
-            curJournalEntry = new StringInfo(data);
+            curJournalEntry = new(data);
             challengeLevel = data.ReadInt32();
             bestowalTime = data.ReadDouble();
             doneTime = data.ReadDouble();

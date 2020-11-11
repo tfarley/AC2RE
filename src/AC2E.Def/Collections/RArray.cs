@@ -12,7 +12,7 @@ namespace AC2E.Def {
         }
 
         public List<T> to<T>(Func<IPackage, T> elementConversion) {
-            List<T> converted = new List<T>(Count);
+            List<T> converted = new(Count);
             foreach (var element in this) {
                 converted.Add(elementConversion.Invoke(element));
             }
@@ -28,7 +28,7 @@ namespace AC2E.Def {
                 return null;
             }
 
-            RArray converted = new RArray(source.Count);
+            RArray converted = new(source.Count);
             foreach (var element in source) {
                 converted.Add(elementConversion.Invoke(element));
             }

@@ -10,17 +10,17 @@ namespace AC2E.Server {
         public readonly EntityType type;
         public readonly DataId dataId;
         public readonly PackageType packageType;
-        public readonly Dictionary<PropertyName, bool> bools = new Dictionary<PropertyName, bool>();
-        public readonly Dictionary<PropertyName, int> ints = new Dictionary<PropertyName, int>();
-        public readonly Dictionary<PropertyName, float> floats = new Dictionary<PropertyName, float>();
-        public readonly Dictionary<PropertyName, Vector3> vectors = new Dictionary<PropertyName, Vector3>();
-        public readonly Dictionary<PropertyName, RGBAColor> colors = new Dictionary<PropertyName, RGBAColor>();
-        public readonly Dictionary<PropertyName, StringInfo> strings = new Dictionary<PropertyName, StringInfo>();
-        public readonly Dictionary<PropertyName, uint> enums = new Dictionary<PropertyName, uint>();
-        public readonly Dictionary<PropertyName, DataId> dids = new Dictionary<PropertyName, DataId>();
-        public readonly Dictionary<PropertyName, Waveform> waveforms = new Dictionary<PropertyName, Waveform>();
-        public readonly Dictionary<PropertyName, long> longs = new Dictionary<PropertyName, long>();
-        public readonly Dictionary<PropertyName, Position> poss = new Dictionary<PropertyName, Position>();
+        public readonly Dictionary<PropertyName, bool> bools = new();
+        public readonly Dictionary<PropertyName, int> ints = new();
+        public readonly Dictionary<PropertyName, float> floats = new();
+        public readonly Dictionary<PropertyName, Vector3> vectors = new();
+        public readonly Dictionary<PropertyName, RGBAColor> colors = new();
+        public readonly Dictionary<PropertyName, StringInfo> strings = new();
+        public readonly Dictionary<PropertyName, uint> enums = new();
+        public readonly Dictionary<PropertyName, DataId> dids = new();
+        public readonly Dictionary<PropertyName, Waveform> waveforms = new();
+        public readonly Dictionary<PropertyName, long> longs = new();
+        public readonly Dictionary<PropertyName, Position> poss = new();
 
         public EntityDef(EntityDesc entityDesc) {
             type = entityDesc.type;
@@ -46,7 +46,7 @@ namespace AC2E.Server {
                                 colors[property.name] = (RGBAColor)property.value;
                                 break;
                             case PropertyType.STRING:
-                                strings[property.name] = new StringInfo((string)property.value);
+                                strings[property.name] = new((string)property.value);
                                 break;
                             case PropertyType.ENUM:
                                 enums[property.name] = (uint)property.value;

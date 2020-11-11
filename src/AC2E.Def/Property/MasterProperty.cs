@@ -9,7 +9,7 @@ namespace AC2E.Def {
         public static void loadMasterProperties(DatReader datReader) {
             if (instance == null) {
                 using (AC2Reader data = datReader.getFileReader(DbTypeDef.TYPE_TO_DEF[DbType.MASTER_PROPERTY].baseDid)) {
-                    instance = new MasterProperty(data);
+                    instance = new(data);
                 }
             }
         }
@@ -20,7 +20,7 @@ namespace AC2E.Def {
 
         public MasterProperty(AC2Reader data) {
             did = data.ReadDataId();
-            enumMapper = new EnumMapper(data);
+            enumMapper = new(data);
             properties = data.ReadDictionary(data.ReadUInt32, () => new BasePropertyDesc(data));
         }
     }

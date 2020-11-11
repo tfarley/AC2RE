@@ -8,22 +8,22 @@ namespace AC2E.Def {
 
     public static class InterpMeta {
 
-        private static readonly Dictionary<Type, FieldDesc[]> fieldDescCache = new Dictionary<Type, FieldDesc[]>();
+        private static readonly Dictionary<Type, FieldDesc[]> fieldDescCache = new();
 
-        private static readonly Dictionary<Type, Type> TYPE_REPLACEMENTS = new Dictionary<Type, Type> {
+        private static readonly Dictionary<Type, Type> TYPE_REPLACEMENTS = new() {
             { typeof(DataId), typeof(uint) },
             { typeof(CellId), typeof(uint) },
 
             { typeof(InstanceId), typeof(ulong) },
         };
 
-        private static readonly HashSet<Type> PACKAGE_TYPES = new HashSet<Type> {
+        private static readonly HashSet<Type> PACKAGE_TYPES = new() {
             typeof(IPackage),
             typeof(IEnumerable),
             typeof(Vector3),
         };
 
-        private static readonly Dictionary<Type, uint> TYPE_TO_NUM_WORDS = new Dictionary<Type, uint> {
+        private static readonly Dictionary<Type, uint> TYPE_TO_NUM_WORDS = new() {
             { typeof(bool), 1 },
             { typeof(byte), 1 },
             { typeof(short), 1 },
@@ -56,7 +56,7 @@ namespace AC2E.Def {
 
         public static FieldDesc[] getFieldDescs(Type type) {
             if (!fieldDescCache.TryGetValue(type, out FieldDesc[] fieldDescs)) {
-                List<FieldInfo> orderedFieldInfos = new List<FieldInfo>();
+                List<FieldInfo> orderedFieldInfos = new();
                 addFieldsInOrder(type, orderedFieldInfos);
                 fieldDescs = new FieldDesc[orderedFieldInfos.Count];
                 for (int i = 0; i < orderedFieldInfos.Count; i++) {
@@ -85,7 +85,7 @@ namespace AC2E.Def {
                         }
                         stackType = StackType.UNDEF;
                     }
-                    fieldDescs[i] = new FieldDesc(stackType, TYPE_TO_NUM_WORDS[fieldType]);
+                    fieldDescs[i] = new(stackType, TYPE_TO_NUM_WORDS[fieldType]);
                 }
                 fieldDescCache[type] = fieldDescs;
             }

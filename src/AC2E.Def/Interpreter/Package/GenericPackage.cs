@@ -2,8 +2,8 @@
 
     public class GenericPackage : IPackage {
 
-        public NativeType nativeType { get; private set; }
-        public PackageType packageType { get; private set; }
+        public NativeType nativeType { get; init; }
+        public PackageType packageType { get; init; }
 
         public GenericPackage(NativeType nativeType) {
             this.nativeType = nativeType;

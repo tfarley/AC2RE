@@ -16,13 +16,13 @@ namespace AC2E.Server.Database {
         public UInt64IdSerializer(Func<ulong, T> converter, Func<T, ulong> extractor) {
             this.converter = converter;
             this.extractor = extractor;
-            uInt64Serializer = new UInt64SafeSerializer();
+            uInt64Serializer = new();
         }
 
         public UInt64IdSerializer(Func<ulong, T> converter, Func<T, ulong> extractor, BsonType representation) {
             this.converter = converter;
             this.extractor = extractor;
-            uInt64Serializer = new UInt64SafeSerializer(representation);
+            uInt64Serializer = new(representation);
         }
 
         public override T Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args) {
@@ -34,7 +34,7 @@ namespace AC2E.Server.Database {
         }
 
         public UInt64IdSerializer<T> WithRepresentation(BsonType representation) {
-            return representation == Representation ? this : new UInt64IdSerializer<T>(converter, extractor, representation);
+            return representation == Representation ? this : new(converter, extractor, representation);
         }
 
         IBsonSerializer IRepresentationConfigurable.WithRepresentation(BsonType representation) {

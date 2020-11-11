@@ -25,7 +25,7 @@ namespace AC2E.Def {
             mass = data.ReadSingle();
             pcType = data.ReadUInt32();
             keyframeFlags = data.ReadUInt32();
-            pos = new WaveformVector3(data);
+            pos = new(data);
             points = data.ReadList(data.ReadVector);
         }
     }

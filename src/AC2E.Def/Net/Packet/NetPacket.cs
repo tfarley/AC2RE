@@ -129,7 +129,7 @@ namespace AC2E.Def {
             }
         }
 
-        public readonly List<NetBlobFrag> frags = new List<NetBlobFrag>();
+        public readonly List<NetBlobFrag> frags = new();
 
         public uint isaacXor;
         public bool hasIsaacXor;
@@ -169,13 +169,13 @@ namespace AC2E.Def {
                 _ackHeader = data.ReadUInt32();
             }
             if (flags.HasFlag(Flag.LOGON)) {
-                _logonHeader = new LogonHeader(data);
+                _logonHeader = new(data);
             }
             if (flags.HasFlag(Flag.WORLD_LOGON)) {
                 throw new NotImplementedException();
             }
             if (flags.HasFlag(Flag.CONNECT)) {
-                _connectHeader = new ConnectHeader(data);
+                _connectHeader = new(data);
             }
             if (flags.HasFlag(Flag.CONNECT_ACK)) {
                 _connectAckHeader = data.ReadUInt64();
@@ -193,19 +193,19 @@ namespace AC2E.Def {
                 _timeSyncHeader = data.ReadDouble();
             }
             if (flags.HasFlag(Flag.ECHO_REQUEST)) {
-                _echoRequestHeader = new EchoRequestHeader(data);
+                _echoRequestHeader = new(data);
             }
             if (flags.HasFlag(Flag.ECHO_RESPONSE)) {
-                _echoResponseHeader = new EchoResponseHeader(data);
+                _echoResponseHeader = new(data);
             }
             if (flags.HasFlag(Flag.FLOW)) {
-                _flowHeader = new FlowHeader(data);
+                _flowHeader = new(data);
             }
 
             if (flags.HasFlag(Flag.FRAGMENTS)) {
                 while (data.BaseStream.Position < data.BaseStream.Length) {
                     long fragStart = data.BaseStream.Position;
-                    NetBlobFrag frag = new NetBlobFrag(data);
+                    NetBlobFrag frag = new(data);
                     if (data.BaseStream.Position != fragStart + frag.fragSize) {
                         throw new InvalidDataException("Did not read full fragment!");
                     }

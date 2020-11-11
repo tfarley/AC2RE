@@ -13,14 +13,14 @@ namespace AC2E.Server {
         private readonly PlayerManager playerManager;
         private readonly InstanceIdGenerator instanceIdGenerator;
         private bool loadedWorld;
-        private readonly HashSet<InstanceId> loadedContainers = new HashSet<InstanceId>();
-        private readonly Dictionary<InstanceId, WorldObject> worldObjects = new Dictionary<InstanceId, WorldObject>();
+        private readonly HashSet<InstanceId> loadedContainers = new();
+        private readonly Dictionary<InstanceId, WorldObject> worldObjects = new();
 
         public WorldObjectManager(WorldDatabase worldDb, PacketHandler packetHandler, PlayerManager playerManager) {
             this.worldDb = worldDb;
             this.packetHandler = packetHandler;
             this.playerManager = playerManager;
-            instanceIdGenerator = worldDb.getInstanceIdGenerator(INSTANCE_ID_GENERATOR_TYPE) ?? new InstanceIdGenerator(INSTANCE_ID_GENERATOR_TYPE);
+            instanceIdGenerator = worldDb.getInstanceIdGenerator(INSTANCE_ID_GENERATOR_TYPE) ?? new(INSTANCE_ID_GENERATOR_TYPE);
         }
 
         public WorldObject? get(InstanceId id) {
@@ -82,7 +82,7 @@ namespace AC2E.Server {
 
         public List<WorldObject> getAllInWorld() {
             loadAllInWorld();
-            List<WorldObject> worldObjects = new List<WorldObject>();
+            List<WorldObject> worldObjects = new();
             foreach (WorldObject worldObject in worldObjects) {
                 if (worldObject.inWorld) {
                     worldObjects.Add(worldObject);
@@ -102,7 +102,7 @@ namespace AC2E.Server {
 
         public List<WorldObject> getAllInContainer(InstanceId containerId) {
             loadWithContainer(containerId);
-            List<WorldObject> contents = new List<WorldObject>();
+            List<WorldObject> contents = new();
             foreach (WorldObject worldObject in worldObjects.Values) {
                 if (worldObject.qualities.weenieDesc.containerId == containerId) {
                     contents.Add(worldObject);
@@ -112,7 +112,7 @@ namespace AC2E.Server {
         }
 
         public WorldObject create() {
-            WorldObject newObject = new WorldObject(instanceIdGenerator.next());
+            WorldObject newObject = new(instanceIdGenerator.next());
             worldObjects[newObject.id] = newObject;
             return newObject;
         }

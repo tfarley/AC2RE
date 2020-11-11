@@ -8,7 +8,7 @@ namespace AC2E.Utils {
             TValue val;
 
             if (!dict.TryGetValue(key, out val)) {
-                val = new TValue();
+                val = new();
                 dict.Add(key, val);
             }
 

@@ -16,7 +16,7 @@
 
         public DoBehaviorMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            behaviorParams = new BehaviorParams(data);
+            behaviorParams = new(data);
         }
 
         public void write(AC2Writer data) {

@@ -8,9 +8,9 @@ namespace AC2E.PacketTool {
     public static class PcapReader {
 
         public static NetBlobCollection read(Stream input) {
-            NetBlobCollection netBlobCollection = new NetBlobCollection();
+            NetBlobCollection netBlobCollection = new();
 
-            using (AC2Reader data = new AC2Reader(input)) {
+            using (AC2Reader data = new(input)) {
                 uint magicNumber = data.ReadUInt32();
                 data.BaseStream.Seek(-4, SeekOrigin.Current);
 
@@ -33,12 +33,12 @@ namespace AC2E.PacketTool {
         }
 
         private static void readPcap(AC2Reader data, NetBlobCollection netBlobCollection) {
-            PcapHeader pcapHeader = new PcapHeader(data);
+            PcapHeader pcapHeader = new(data);
 
             ulong epoch = 0;
             int packetNum = 1;
             while (data.BaseStream.Position < data.BaseStream.Length) {
-                PcapRecordHeader recordHeader = new PcapRecordHeader(data);
+                PcapRecordHeader recordHeader = new(data);
                 float timestamp = makeTimestamp(ref epoch, recordHeader.tsSec, recordHeader.tsUsec);
                 byte[] payload = data.ReadBytes((int)recordHeader.inclLen);
 
@@ -52,7 +52,7 @@ namespace AC2E.PacketTool {
             ulong epoch = 0;
             int packetNum = 1;
             while (data.BaseStream.Position < data.BaseStream.Length) {
-                PcapngBlockHeader blockHeader = new PcapngBlockHeader(data);
+                PcapngBlockHeader blockHeader = new(data);
                 float timestamp = makeTimestamp(ref epoch, blockHeader.tsHigh, blockHeader.tsLow);
                 byte[] payload = data.ReadBytes((int)blockHeader.capturedLen);
 
@@ -64,12 +64,12 @@ namespace AC2E.PacketTool {
 
         private static void readPacket(byte[] payload, int packetNum, float timestamp, NetBlobCollection netBlobCollection) {
             try {
-                using (AC2Reader data = new AC2Reader(new MemoryStream(payload))) {
-                    EthernetHeader ethernetHeader = new EthernetHeader(data);
-                    IpHeader ipHeader = new IpHeader(data);
-                    UdpHeader udpHeader = new UdpHeader(data);
+                using (AC2Reader data = new(new MemoryStream(payload))) {
+                    EthernetHeader ethernetHeader = new(data);
+                    IpHeader ipHeader = new(data);
+                    UdpHeader udpHeader = new(data);
 
-                    NetPacket packet = new NetPacket(data);
+                    NetPacket packet = new(data);
                     bool isClientToServer = (udpHeader.dPort >= 9000 && udpHeader.dPort <= 10013);
 
                     netBlobCollection.addPacket(packet, isClientToServer, packetNum, timestamp);

@@ -46,7 +46,7 @@ namespace AC2E.Def {
             packFlags = (PackFlag)data.ReadUInt32();
             did = data.ReadDataId();
             if (packFlags.HasFlag(PackFlag.WEENIE_DESC)) {
-                weenieDesc = new WeenieDesc(data);
+                weenieDesc = new(data);
             }
             if (packFlags.HasFlag(PackFlag.INT_HASH_TABLE)) {
                 ints = data.ReadDictionary(() => (IntStat)data.ReadUInt32(), data.ReadInt32);

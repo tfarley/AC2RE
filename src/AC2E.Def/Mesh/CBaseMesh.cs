@@ -13,9 +13,9 @@ namespace AC2E.Def {
         public CBaseMesh(AC2Reader data) {
             uint geometryMeshType = data.ReadUInt32();
             materialInstanceDids = data.ReadList(data.ReadDataId);
-            vertexArray = new CVertexArray(data);
-            boundingSphere = new Sphere(data);
-            geometry = new MeshGeometry(geometryMeshType, data);
+            vertexArray = new(data);
+            boundingSphere = new(data);
+            geometry = new(geometryMeshType, data);
             // TODO: Check to see if there is more to parse here
         }
     }

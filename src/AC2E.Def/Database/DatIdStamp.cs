@@ -6,7 +6,7 @@
         public uint minorVersion; // _min_vnum
 
         public DatIdStamp(AC2Reader data) {
-            majorVersion = new GUID(data);
+            majorVersion = new(data);
             minorVersion = data.ReadUInt32();
         }
     }

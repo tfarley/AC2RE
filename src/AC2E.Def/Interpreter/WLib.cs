@@ -7,7 +7,7 @@
 
         public WLib(AC2Reader data) {
             did = data.ReadDataId();
-            byteStream = new ByteStream(data);
+            byteStream = new(data);
         }
     }
 }

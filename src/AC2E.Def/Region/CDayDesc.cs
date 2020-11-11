@@ -67,7 +67,7 @@ namespace AC2E.Def {
                 fixedX = data.ReadSingle();
                 fixedY = data.ReadSingle();
                 westToEast = data.ReadBoolean();
-                lensFlareEffect = new LensFlareEffect(data);
+                lensFlareEffect = new(data);
             }
         }
 

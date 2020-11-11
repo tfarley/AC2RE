@@ -11,7 +11,7 @@ namespace AC2E.Def {
 
             public TerrainList(AC2Reader data) {
                 modifierHash = data.ReadDictionary(data.ReadUInt32, () => new MotionValues(data));
-                defaultValues = new MotionValues(data);
+                defaultValues = new(data);
             }
         }
 
@@ -24,7 +24,7 @@ namespace AC2E.Def {
             public MSList(AC2Reader data) {
                 terrainHash = data.ReadDictionary(data.ReadUInt32, () => new TerrainList(data));
                 modifierHash = data.ReadDictionary(data.ReadUInt32, () => new MotionValues(data));
-                defaultValues = new MotionValues(data);
+                defaultValues = new(data);
             }
         }
 

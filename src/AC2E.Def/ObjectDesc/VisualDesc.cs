@@ -7,7 +7,7 @@ namespace AC2E.Def {
     public class VisualDesc : IPackage {
 
         // Dat file 70000390
-        public static readonly Dictionary<PhysiqueType, AppearanceKey> PHYSIQUE_TO_APPEARANCE = new Dictionary<PhysiqueType, AppearanceKey> {
+        public static readonly Dictionary<PhysiqueType, AppearanceKey> PHYSIQUE_TO_APPEARANCE = new() {
             { PhysiqueType.SKIN_TONE, AppearanceKey.SKINCOLOR },
             { PhysiqueType.SKIN_DETAIL, AppearanceKey.SKINTEXTURE },
             { PhysiqueType.HEAD_DETAIL, AppearanceKey.HEADMESH },
@@ -86,10 +86,10 @@ namespace AC2E.Def {
                 particleScale = data.ReadSingle();
             }
             if (packFlags.HasFlag(PackFlag.ICONDESC)) {
-                iconDesc = new IconDesc(data);
+                iconDesc = new(data);
             }
             if (packFlags.HasFlag(PackFlag.GLOBALMOD)) {
-                globalAppearanceModifiers = new PartGroupDataDesc(data);
+                globalAppearanceModifiers = new(data);
             }
             if (packFlags.HasFlag(PackFlag.PGDTABLE)) {
                 pgdDescTable = data.ReadDictionary(data.ReadUInt32, () => new PartGroupDataDesc(data));

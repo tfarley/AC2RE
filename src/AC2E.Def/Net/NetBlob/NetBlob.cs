@@ -10,7 +10,7 @@ namespace AC2E.Def {
         public NetQueue queueId; // queueID_
         public byte[] payload; // buf_
 
-        public SortedDictionary<ushort, NetBlobFrag> frags = new SortedDictionary<ushort, NetBlobFrag>();
+        public SortedDictionary<ushort, NetBlobFrag> frags = new();
 
         public NetBlob() {
 
@@ -45,7 +45,7 @@ namespace AC2E.Def {
         public void fragmentize() {
             if (payload.Length < NetBlobFrag.MAX_SIZE) {
                 fragCount = 1;
-                frags.Add(0, new NetBlobFrag {
+                frags.Add(0, new() {
                     blobId = blobId,
                     fragCount = 1,
                     fragIndex = 0,
@@ -57,7 +57,7 @@ namespace AC2E.Def {
                 fragCount = (ushort)((payload.Length + NetBlobFrag.MAX_SIZE - 1) / NetBlobFrag.MAX_SIZE);
                 ushort fragIndex = 0;
                 while (remainingLength > 0) {
-                    NetBlobFrag frag = new NetBlobFrag {
+                    NetBlobFrag frag = new() {
                         blobId = blobId,
                         fragCount = fragCount,
                         fragIndex = (ushort)frags.Count,

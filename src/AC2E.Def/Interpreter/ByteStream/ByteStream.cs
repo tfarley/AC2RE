@@ -58,7 +58,7 @@ namespace AC2E.Def {
             public List<ExportFunctionData> funcs; // m_funcs
 
             public ExportData(AC2Reader data) {
-                args = new ExportPackageArgs(data);
+                args = new(data);
                 funcs = data.ReadList(() => new ExportFunctionData(data));
             }
         }
@@ -98,13 +98,13 @@ namespace AC2E.Def {
                 uint sectionSize = data.ReadUInt32();
                 switch (sectionType) {
                     case SectionType.VERSION_INFO:
-                        versionInfo = new VersionTable(data);
+                        versionInfo = new(data);
                         break;
                     case SectionType.OPCODE:
-                        opcodeStream = new OpcodeStream(data);
+                        opcodeStream = new(data);
                         break;
                     case SectionType.STRING_LIT_TABLE:
-                        stringLitTable = new StringLitTable(data);
+                        stringLitTable = new(data);
                         break;
                     case SectionType.IMPORT_TABLE:
                         imports = data.ReadList(() => new ImportData(data));
@@ -113,16 +113,16 @@ namespace AC2E.Def {
                         exports = data.ReadList(() => new ExportData(data));
                         break;
                     case SectionType.VTABLE_INFO:
-                        vTable = new VTableSection(data);
+                        vTable = new(data);
                         break;
                     case SectionType.VALID_EVENT_TABLE:
                         validEvents = data.ReadDictionary(() => new FunctionId(data.ReadUInt32()), data.ReadUInt32);
                         break;
                     case SectionType.FUNCTION_LOC_DEBUG:
-                        funcLocs = new List<FunctionLocationInfo>();
+                        funcLocs = new();
                         long startPos = data.BaseStream.Position;
                         while ((data.BaseStream.Position - startPos) < sectionSize) {
-                            funcLocs.Add(new FunctionLocationInfo(data));
+                            funcLocs.Add(new(data));
                         }
                         break;
                     case SectionType.SOURCE_FILE_DEBUG:

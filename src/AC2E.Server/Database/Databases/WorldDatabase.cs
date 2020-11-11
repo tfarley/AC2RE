@@ -27,7 +27,7 @@ namespace AC2E.Server.Database {
             if (!inited) {
                 BsonClassMap.RegisterClassMap<Character>(c => {
                     c.AutoMap();
-                    c.MapCreator(r => new Character(r.id));
+                    c.MapCreator(r => new(r.id));
                 });
             }
 
@@ -36,7 +36,7 @@ namespace AC2E.Server.Database {
             if (!inited) {
                 characters.Indexes.CreateOne(new CreateIndexModel<Character>(
                     Builders<Character>.IndexKeys.Ascending(r => r.worldObjectId),
-                    new CreateIndexOptions<Character>() { Unique = true }));
+                    new() { Unique = true }));
             }
 
             return characters;
@@ -46,7 +46,7 @@ namespace AC2E.Server.Database {
             if (!inited) {
                 BsonClassMap.RegisterClassMap<InstanceIdGenerator>(c => {
                     c.MapIdField(r => r.type);
-                    c.MapCreator(r => new InstanceIdGenerator(r.type, r.idCounter));
+                    c.MapCreator(r => new(r.type, r.idCounter));
                     c.MapField(r => r.idCounter);
                 });
             }
@@ -61,11 +61,11 @@ namespace AC2E.Server.Database {
                 BsonClassMap.RegisterClassMap<WorldObject>(c => {
                     c.AutoMap();
                     c.MapIdField(r => r.id);
-                    c.MapCreator(r => new WorldObject(r.id, r.physics, r.visual, r.qualities));
+                    c.MapCreator(r => new(r.id, r.physics, r.visual, r.qualities));
                     c.UnmapField(r => r.instanceStamp);
                     c.MapField(r => r.equippedItems).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<InvLoc, InstanceId>>()
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
-                        .WithValueSerializer(new UInt64IdSerializer<InstanceId>(id => new InstanceId(id), v => v.id)));
+                        .WithValueSerializer(new UInt64IdSerializer<InstanceId>(id => new(id), v => v.id)));
                 });
 
                 BsonClassMap.RegisterClassMap<PhysicsDesc.SliderData>();
@@ -98,7 +98,7 @@ namespace AC2E.Server.Database {
                     c.AutoMap();
                     c.UnmapField(r => r.fxOverrides); // TODO: Serialize this
                     c.MapField(r => r.appearanceInfos).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<DataId, Dictionary<AppearanceKey, float>>>()
-                        .WithKeySerializer(new UInt32IdSerializer<DataId>(id => new DataId(id), v => v.id, BsonType.String))
+                        .WithKeySerializer(new UInt32IdSerializer<DataId>(id => new(id), v => v.id, BsonType.String))
                         .WithValueSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<AppearanceKey, float>>()
                             .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
                             .WithValueSerializer(new SingleSerializer())));
@@ -127,10 +127,10 @@ namespace AC2E.Server.Database {
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String)));
                     c.MapField(r => r.dids).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<DataIdStat, DataId>>()
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
-                        .WithValueSerializer(new UInt32IdSerializer<DataId>(id => new DataId(id), v => v.id)));
+                        .WithValueSerializer(new UInt32IdSerializer<DataId>(id => new(id), v => v.id)));
                     c.MapField(r => r.ids).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<InstanceIdStat, InstanceId>>()
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
-                        .WithValueSerializer(new UInt64IdSerializer<InstanceId>(id => new InstanceId(id), v => v.id)));
+                        .WithValueSerializer(new UInt64IdSerializer<InstanceId>(id => new(id), v => v.id)));
                     c.MapField(r => r.poss).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<PositionStat, Position>>()
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
                         .WithValueSerializer(BsonUtil.existingClassSerializer<Position>()));
@@ -139,7 +139,7 @@ namespace AC2E.Server.Database {
                         .WithValueSerializer(new StringInfoSerializer()));
                     c.MapField(r => r.packageIds).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<uint, PackageId>>()
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
-                        .WithValueSerializer(new UInt32IdSerializer<PackageId>(id => new PackageId(id), v => v.id)));
+                        .WithValueSerializer(new UInt32IdSerializer<PackageId>(id => new(id), v => v.id)));
                 });
 
                 BsonClassMap.RegisterClassMap<WeenieDesc>();
@@ -191,7 +191,7 @@ namespace AC2E.Server.Database {
                             Builders<InstanceIdGenerator>.Update
                                 .SetOnInsert(r => r.type, idGenerator.type)
                                 .Set(r => r.idCounter, idGenerator.idCounter),
-                            new UpdateOptions() { IsUpsert = true },
+                            new() { IsUpsert = true },
                             ct);
                     }
 

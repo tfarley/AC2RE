@@ -12,7 +12,7 @@ namespace AC2E.Def {
         }
 
         public Dictionary<K, V> to<K, V>(Func<IPackage, V> valueConversion) {
-            Dictionary<K, V> converted = new Dictionary<K, V>(Count);
+            Dictionary<K, V> converted = new(Count);
             Converter<uint> keyConverter = Converters.getUInt(typeof(K));
             foreach ((var key, var value) in this) {
                 converted[keyConverter.read<K>(key)] = valueConversion.Invoke(value);
@@ -29,7 +29,7 @@ namespace AC2E.Def {
                 return null;
             }
 
-            ARHash converted = new ARHash(source.Count);
+            ARHash converted = new(source.Count);
             Converter<uint> keyConverter = Converters.getUInt(typeof(K));
             foreach ((var key, var value) in source) {
                 converted[keyConverter.write(key)] = valueConversion.Invoke(value);

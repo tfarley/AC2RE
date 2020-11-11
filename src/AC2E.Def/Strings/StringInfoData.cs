@@ -47,7 +47,7 @@ namespace AC2E.Def {
                     valUInt = data.ReadUInt32();
                     break;
                 case DataType.STRING_INFO:
-                    valString = new StringInfo(data);
+                    valString = new(data);
                     break;
                 case DataType.LINT:
                     valLong = data.ReadInt64();

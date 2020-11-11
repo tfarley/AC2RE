@@ -24,7 +24,7 @@ namespace AC2E.RenderCommon.OpenGL {
             this.hwnd = hwnd;
             hdc = GetDC(hwnd);
 
-            var pixelFormatDescriptor = new PIXELFORMATDESCRIPTOR {
+            PIXELFORMATDESCRIPTOR pixelFormatDescriptor = new() {
                 nSize = (ushort)Marshal.SizeOf(typeof(PIXELFORMATDESCRIPTOR)),
                 nVersion = 1,
                 dwFlags = PFD_FLAGS.PFD_DRAW_TO_WINDOW | PFD_FLAGS.PFD_SUPPORT_OPENGL | PFD_FLAGS.PFD_DOUBLEBUFFER | PFD_FLAGS.PFD_SUPPORT_COMPOSITION,
@@ -34,7 +34,7 @@ namespace AC2E.RenderCommon.OpenGL {
                 iLayerType = PFD_LAYER_TYPES.PFD_MAIN_PLANE,
             };
 
-            var pixelFormat = ChoosePixelFormat(hdc, ref pixelFormatDescriptor);
+            int pixelFormat = ChoosePixelFormat(hdc, ref pixelFormatDescriptor);
             if (!SetPixelFormat(hdc, pixelFormat, ref pixelFormatDescriptor)) {
                 throw new Win32Exception(Marshal.GetLastWin32Error());
             }

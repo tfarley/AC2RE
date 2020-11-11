@@ -173,7 +173,7 @@ namespace AC2E.Def {
                 boneInfos = data.ReadList(() => new BoneInfo(data));
                 bool hasAnimInfo = data.ReadBoolean();
                 if (hasAnimInfo) {
-                    animInfo = new AnimInfo(data);
+                    animInfo = new(data);
                 }
             }
 
@@ -301,7 +301,7 @@ namespace AC2E.Def {
             }
 
             public AMRandom(AC2Reader data) {
-                interpolator = new AnimInterpolator(data);
+                interpolator = new(data);
                 variation = data.ReadSingle();
                 frequency = data.ReadSingle();
                 rampTime = data.ReadSingle();

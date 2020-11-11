@@ -14,7 +14,7 @@
         public ReleaseBehaviorMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             behaviorId = (BehaviorId)data.ReadUInt32();
-            behaviorParams = new BehaviorParams(data);
+            behaviorParams = new(data);
         }
     }
 }

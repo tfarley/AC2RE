@@ -11,7 +11,7 @@ namespace AC2E.Def {
 
         public RenderMaterial(AC2Reader data) {
             did = data.ReadDataId();
-            properties = new MaterialModifier(data);
+            properties = new(data);
             layers = data.ReadList(() => new MaterialLayer(data));
             sortMode = (SortMode)data.ReadUInt32();
         }

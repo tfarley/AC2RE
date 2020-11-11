@@ -7,16 +7,16 @@ namespace AC2E.Server {
 
     internal class NetInterface {
 
-        private static readonly IPEndPoint ANY_ENDPOINT = new IPEndPoint(IPAddress.Any, 0);
+        private static readonly IPEndPoint ANY_ENDPOINT = new(IPAddress.Any, 0);
 
         public readonly int port;
 
         private bool closed;
-        private readonly Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        private readonly Socket socket = new(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
         public NetInterface(int port = 0) {
             socket.Bind(new IPEndPoint(IPAddress.Any, port));
-            this.port = ((IPEndPoint)socket.LocalEndPoint).Port;
+            this.port = ((IPEndPoint?)socket.LocalEndPoint)?.Port ?? 0;
         }
 
         ~NetInterface() {

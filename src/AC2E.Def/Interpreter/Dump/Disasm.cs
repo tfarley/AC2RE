@@ -24,12 +24,12 @@ namespace AC2E.Def {
         }
 
         public readonly ByteStream byteStream;
-        public readonly Dictionary<uint, string> funcLocToName = new Dictionary<uint, string>();
-        public readonly Dictionary<string, FrameDebugInfo> nameToFrame = new Dictionary<string, FrameDebugInfo>();
-        public readonly Dictionary<FunctionId, KeyValuePair<ExportData, ExportFunctionData>> addrToTarget = new Dictionary<FunctionId, KeyValuePair<ExportData, ExportFunctionData>>();
-        public readonly Dictionary<PackageType, ExportData> packageTypeToExport = new Dictionary<PackageType, ExportData>();
+        public readonly Dictionary<uint, string> funcLocToName = new();
+        public readonly Dictionary<string, FrameDebugInfo> nameToFrame = new();
+        public readonly Dictionary<FunctionId, KeyValuePair<ExportData, ExportFunctionData>> addrToTarget = new();
+        public readonly Dictionary<PackageType, ExportData> packageTypeToExport = new();
 
-        public readonly List<Instruction> instructions = new List<Instruction>();
+        public readonly List<Instruction> instructions = new();
 
         public Disasm(ByteStream byteStream) {
             this.byteStream = byteStream;
@@ -45,13 +45,13 @@ namespace AC2E.Def {
             foreach (ExportData export in byteStream.exports) {
                 packageTypeToExport[export.args.packageType] = export;
                 foreach (ExportFunctionData func in export.funcs) {
-                    addrToTarget[func.funcId] = new KeyValuePair<ExportData, ExportFunctionData>(export, func);
+                    addrToTarget[func.funcId] = new(export, func);
                 }
             }
 
             for (uint i = 0; i < byteStream.opcodeStream.opcodeBytes.Length; i += 4) {
                 uint rawInstruction = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
-                Instruction instruction = new Instruction {
+                Instruction instruction = new() {
                     offset = i,
                     raw = rawInstruction,
                     dwordFlag = (rawInstruction & (uint)Opcode.DWORD_FLAG) != 0,
@@ -85,9 +85,9 @@ namespace AC2E.Def {
                     case Opcode.CALL:
                     case Opcode.CALL_EFUN:
                         i += 4;
-                        FunctionId targetFuncId = new FunctionId(BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i));
+                        FunctionId targetFuncId = new(BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i));
                         // TODO: There is still a lurking case where the key isn't found in the dictionary (6990)
-                        KeyValuePair<ExportData, ExportFunctionData> target = addrToTarget.GetValueOrDefault(new FunctionId(targetFuncId.funcAddr), new KeyValuePair<ExportData, ExportFunctionData>());
+                        KeyValuePair<ExportData, ExportFunctionData> target = addrToTarget.GetValueOrDefault(new(targetFuncId.funcAddr), new());
                         instruction.targetPackage = target.Key;
                         instruction.targetFunc = target.Value;
                         break;

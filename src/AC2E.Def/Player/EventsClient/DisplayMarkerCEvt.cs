@@ -18,7 +18,7 @@
         public DisplayMarkerCEvt(AC2Reader data) {
             text = data.UnpackPackage<StringInfo>();
             markerDid = data.UnpackDataId();
-            cell = new CellId(data.UnpackUInt32());
+            cell = new(data.UnpackUInt32());
             id = data.UnpackInstanceId();
             type = data.UnpackUInt32();
         }

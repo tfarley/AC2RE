@@ -1,5 +1,4 @@
-﻿using AC2E.Def;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 
@@ -11,8 +10,8 @@ namespace AC2E.Server {
 
         public IEnumerable<ClientConnection> clients => _clients.Values;
 
-        private readonly ClientIdGenerator clientIdGenerator = new ClientIdGenerator();
-        private readonly Dictionary<ClientId, ClientConnection> _clients = new Dictionary<ClientId, ClientConnection>();
+        private readonly ClientIdGenerator clientIdGenerator = new();
+        private readonly Dictionary<ClientId, ClientConnection> _clients = new();
 
         public bool tryGetClient(ClientId clientId, [MaybeNullWhen(false)] out ClientConnection client) {
             lock (this) {
@@ -27,12 +26,12 @@ namespace AC2E.Server {
                     return null;
                 }
                 ClientId clientId = clientIdGenerator.next();
-                client = new ClientConnection(clientId, clientEndpoint, account);
+                client = new(clientId, clientEndpoint, account);
                 _clients[clientId] = client;
             }
 
-            client.sendPacket(netInterface, time, elapsedTime, new NetPacket {
-                connectHeader = new ConnectHeader {
+            client.sendPacket(netInterface, time, elapsedTime, new() {
+                connectHeader = new() {
                     connectionAckCookie = client.connectionAckCookie,
                     netId = client.id.id,
                     outgoingSeed = client.outgoingSeed,

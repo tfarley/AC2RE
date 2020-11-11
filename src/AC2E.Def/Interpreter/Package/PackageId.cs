@@ -4,7 +4,7 @@ namespace AC2E.Def {
 
     public struct PackageId : IEquatable<PackageId> {
 
-        public static readonly PackageId NULL = new PackageId(0xFFFFFFFF);
+        public static readonly PackageId NULL = new(0xFFFFFFFF);
 
         public uint id;
 

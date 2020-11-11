@@ -7,7 +7,7 @@ namespace AC2E.Def {
     public static class Dump {
 
         public static void dumpPackages(StreamWriter data, ByteStream byteStream) {
-            Dictionary<string, ExportData> packageNameToExport = new Dictionary<string, ExportData>();
+            Dictionary<string, ExportData> packageNameToExport = new();
             foreach (ExportData export in byteStream.exports) {
                 packageNameToExport.Add(export.args.name, export);
             }

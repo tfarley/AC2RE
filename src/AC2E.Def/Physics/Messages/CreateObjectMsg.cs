@@ -18,9 +18,9 @@
 
         public CreateObjectMsg(AC2Reader data) {
             id = data.ReadInstanceId();
-            visualDesc = new VisualDesc(data);
-            physicsDesc = new PhysicsDesc(data);
-            weenieDesc = new WeenieDesc(data);
+            visualDesc = new(data);
+            physicsDesc = new(data);
+            weenieDesc = new(data);
         }
 
         public void write(AC2Writer data) {

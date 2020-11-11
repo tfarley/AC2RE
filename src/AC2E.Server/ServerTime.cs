@@ -13,7 +13,7 @@ namespace AC2E.Server {
         public double time { get; private set; }
         public float elapsedTime { get; private set; }
 
-        private readonly Stopwatch stopwatch = new Stopwatch();
+        private readonly Stopwatch stopwatch = new();
 
         private uint tick;
         private double frameAccum;

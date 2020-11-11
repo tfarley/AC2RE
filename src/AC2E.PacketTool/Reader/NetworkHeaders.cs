@@ -51,8 +51,8 @@ namespace AC2E.PacketTool {
             ttl = data.ReadByte();
             proto = data.ReadByte();
             crc = data.ReadUInt16();
-            sAddr = new IpAddress(data);
-            dAddr = new IpAddress(data);
+            sAddr = new(data);
+            dAddr = new(data);
         }
     }
 

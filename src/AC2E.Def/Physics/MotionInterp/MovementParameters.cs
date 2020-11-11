@@ -58,7 +58,7 @@ namespace AC2E.Def {
             if (packFlags.HasFlag(PackFlag.OBJECT)) {
                 targetId = data.ReadInstanceId();
             } else {
-                targetPos = new Position(data);
+                targetPos = new(data);
             }
             if (packFlags.HasFlag(PackFlag.NONZERO_OFFSET_VECTOR)) {
                 offset = data.ReadVector();

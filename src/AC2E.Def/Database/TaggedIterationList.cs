@@ -10,7 +10,7 @@
         public TaggedIterationList(AC2Reader data) {
             datName = data.ReadUInt32();
             datType = (DatFileType)data.ReadUInt32();
-            iterationList = new CMostlyConsecutiveIntSet(data);
+            iterationList = new(data);
         }
     }
 }

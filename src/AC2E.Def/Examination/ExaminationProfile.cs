@@ -15,7 +15,7 @@ namespace AC2E.Def {
         }
 
         public ExaminationProfile(AC2Reader data) {
-            request = new ExaminationRequest(data);
+            request = new(data);
             nodes = data.ReadList(() => new ExaminationDataNode(data));
             unk1 = data.ReadUInt32();
         }

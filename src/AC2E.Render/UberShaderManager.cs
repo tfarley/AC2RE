@@ -28,7 +28,7 @@ namespace AC2E.Render {
         public static readonly uint MATRIX_INDICES_ATTRIB_ID_START = 8;
         public static readonly uint MATRIX_WEIGHTS_ATTRIB_ID_START = 12;
 
-        private readonly Dictionary<uint, IShaderProgram> vertexFormatToShader = new Dictionary<uint, IShaderProgram>();
+        private readonly Dictionary<uint, IShaderProgram> vertexFormatToShader = new();
 
         public void Dispose() {
             foreach (IShaderProgram shader in vertexFormatToShader.Values) {
@@ -37,8 +37,8 @@ namespace AC2E.Render {
         }
 
         private byte[] buildUberShaderSource(byte[] shaderSource, List<string> defines) {
-            MemoryStream vertexShaderSourceBuffer = new MemoryStream();
-            using (StreamWriter data = new StreamWriter(vertexShaderSourceBuffer, Encoding.UTF8)) {
+            MemoryStream vertexShaderSourceBuffer = new();
+            using (StreamWriter data = new(vertexShaderSourceBuffer, Encoding.UTF8)) {
                 data.WriteLine(GLSL_VERSION);
                 foreach (string define in defines) {
                     data.WriteLine($"#define {define}");
@@ -50,7 +50,7 @@ namespace AC2E.Render {
 
         public IShaderProgram getShader(IRenderer renderer, VertexFormatInfo vertexFormat) {
             if (!vertexFormatToShader.TryGetValue(vertexFormat.format, out IShaderProgram? shader)) {
-                List<string> defines = new List<string>();
+                List<string> defines = new();
                 if (vertexFormat.offsetNormal != 0) {
                     defines.Add(NORMAL_DEFINE);
                 }

@@ -13,7 +13,7 @@
 
             long authDataStart = data.BaseStream.Position;
 
-            netAuth = new NetAuthenticator(data);
+            netAuth = new(data);
 
             // TODO: Skip the rest - unknown data
             netAuth.extraData = data.ReadBytes((int)length - (int)(data.BaseStream.Position - authDataStart));

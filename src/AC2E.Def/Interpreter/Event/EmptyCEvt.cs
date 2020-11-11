@@ -2,7 +2,7 @@
 
     public class EmptyCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId { get; private set; }
+        public ClientEventFunctionId funcId { get; init; }
 
         public EmptyCEvt(ClientEventFunctionId funcId) {
             this.funcId = funcId;

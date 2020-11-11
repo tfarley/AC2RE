@@ -54,7 +54,7 @@ namespace AC2E.PacketTool {
             attemptedMessageParse = true;
 
             if (netBlob.payload != null) {
-                using (AC2Reader data = new AC2Reader(new MemoryStream(netBlob.payload))) {
+                using (AC2Reader data = new(new MemoryStream(netBlob.payload))) {
                     try {
                         MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
                         try {

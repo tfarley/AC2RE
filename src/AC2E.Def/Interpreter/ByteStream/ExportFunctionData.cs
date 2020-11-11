@@ -13,7 +13,7 @@ namespace AC2E.Def {
 
         public ExportFunctionData(AC2Reader data) {
             name = data.ReadString();
-            funcId = new FunctionId(data.ReadUInt32());
+            funcId = new(data.ReadUInt32());
             offset = data.ReadUInt32();
             size = data.ReadUInt32();
             flags = (FuncFlag)data.ReadUInt32();

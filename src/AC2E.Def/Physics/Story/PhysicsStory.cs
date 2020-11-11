@@ -31,7 +31,7 @@ namespace AC2E.Def {
                 attackerId = data.ReadInstanceId();
             }
             if (packFlags.HasFlag(PackFlag.ATTACKER_BVR)) {
-                attackerBehavior = new BehaviorParams(data);
+                attackerBehavior = new(data);
             }
             if (packFlags.HasFlag(PackFlag.CLIENT_CONTEXT)) {
                 clientAttackContextId = data.ReadUInt32();

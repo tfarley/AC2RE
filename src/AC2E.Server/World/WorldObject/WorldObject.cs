@@ -13,15 +13,15 @@ namespace AC2E.Server {
         public bool inWorld;
         public float heading;
         public Vector3 motion;
-        public Dictionary<InvLoc, InstanceId> equippedItems = new Dictionary<InvLoc, InstanceId>();
-        public List<InstanceId> containedItems = new List<InstanceId>();
+        public Dictionary<InvLoc, InstanceId> equippedItems = new();
+        public List<InstanceId> containedItems = new();
 
         public PhysicsDesc physics;
         public VisualDesc visual;
         public CBaseQualities qualities;
 
-        public WorldObject(InstanceId id) : this(id, new PhysicsDesc(), new VisualDesc(), new CBaseQualities()) {
-            qualities.weenieDesc = new WeenieDesc();
+        public WorldObject(InstanceId id) : this(id, new(), new(), new()) {
+            qualities.weenieDesc = new();
         }
 
         public WorldObject(InstanceId id, PhysicsDesc physics, VisualDesc visual, CBaseQualities qualities) {
@@ -33,7 +33,7 @@ namespace AC2E.Server {
         }
 
         public InstanceIdWithStamp getInstanceIdWithStamp(ushort otherStamp = 0) {
-            return new InstanceIdWithStamp {
+            return new() {
                 id = id,
                 instanceStamp = instanceStamp,
                 otherStamp = otherStamp,

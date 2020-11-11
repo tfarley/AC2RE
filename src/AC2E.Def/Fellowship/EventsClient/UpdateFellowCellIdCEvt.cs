@@ -13,7 +13,7 @@
         }
 
         public UpdateFellowCellIdCEvt(AC2Reader data) {
-            cell = new CellId(data.UnpackUInt32());
+            cell = new(data.UnpackUInt32());
             fellowId = data.UnpackInstanceId();
         }
 

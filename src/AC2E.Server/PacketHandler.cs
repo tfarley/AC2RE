@@ -10,7 +10,7 @@ namespace AC2E.Server {
 
     internal class PacketHandler {
 
-        private readonly List<Language> SUPPORTED_LANGUAGES = new List<Language> {
+        private readonly List<Language> SUPPORTED_LANGUAGES = new() {
             Language.ENGLISH,
         };
 
@@ -26,8 +26,8 @@ namespace AC2E.Server {
 
         public void processReceive(NetInterface netInterface, byte[] rawData, int dataLen, IPEndPoint receiveEndpoint) {
             // NOTE: This method should complete as quickly as possible so that the executing thread can be returned to the pool used by IOCP
-            using (AC2Reader data = new AC2Reader(new MemoryStream(rawData, 0, dataLen))) {
-                NetPacket packet = new NetPacket(data);
+            using (AC2Reader data = new(new MemoryStream(rawData, 0, dataLen))) {
+                NetPacket packet = new(data);
 
                 Log.Debug($"RCVD [{dataLen}] on {receiveEndpoint} | {packet}\n{BitConverter.ToString(rawData, 0, dataLen)}.");
 
@@ -48,8 +48,8 @@ namespace AC2E.Server {
                     clientManager.addClient(netInterface, 0.0f, 0.0f, receiveEndpoint, account);
                 } else if (packet.flags.HasFlag(NetPacket.Flag.LOGOFF)) {
                     Log.Information($"Client disconnected, id {packet.recipientId}.");
-                    clientManager.removeClient(new ClientId(packet.recipientId));
-                } else if (clientManager.tryGetClient(new ClientId(packet.recipientId), out ClientConnection? client)) {
+                    clientManager.removeClient(new(packet.recipientId));
+                } else if (clientManager.tryGetClient(new(packet.recipientId), out ClientConnection? client)) {
                     // TODO: Need to handle client acking the re-sent (nacked) packets
                     if (packet.flags.HasFlag(NetPacket.Flag.PAK)) {
                         client.ackPacket(packet.ackHeader);
@@ -79,7 +79,7 @@ namespace AC2E.Server {
                             Log.Debug($"Got good connect ack cookie from client id: {packet.recipientId}.");
                             client.connect();
                             client.enqueueMessage(new WorldNameMsg {
-                                worldName = new StringInfo { literalValue = "MyWorld" },
+                                worldName = new("MyWorld"),
                             });
                             client.enqueueMessage(new CliDatInterrogationMsg {
                                 regionId = (RegionID)1,
@@ -117,12 +117,12 @@ namespace AC2E.Server {
                     world.addPlayerIfNecessary(client.id, client.account);
 
                     while (client.incomingCompleteBlobs.TryDequeue(out NetBlob? blob)) {
-                        using (AC2Reader data = new AC2Reader(new MemoryStream(blob.payload))) {
+                        using (AC2Reader data = new(new MemoryStream(blob.payload))) {
 
                             MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
                             INetMessage genericMsg = INetMessage.read(opcode, data, true);
 
-                            StringBuilder msgString = new StringBuilder(genericMsg.ToString());
+                            StringBuilder msgString = new(genericMsg.ToString());
                             if (opcode == MessageOpcode.Evt_Interp__InterpSEvent_ID) {
                                 InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
                                 msgString.Append($" {msg.netEvent.funcId}");

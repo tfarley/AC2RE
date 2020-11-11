@@ -2,7 +2,7 @@
 
     public class GenericSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId { get; private set; }
+        public ServerEventFunctionId funcId { get; init; }
 
         public byte[] payload;
 

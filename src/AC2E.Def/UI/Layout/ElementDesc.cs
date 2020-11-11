@@ -37,9 +37,9 @@ namespace AC2E.Def {
             bottomEdge = data.ReadByte() != 0;
             ushort numStates = data.ReadUInt16();
             data.Align(4);
-            states = new List<StateDesc>();
+            states = new();
             for (int i = 0; i < numStates; i++) {
-                states.Add(new StateDesc(data));
+                states.Add(new(data));
             }
         }
 

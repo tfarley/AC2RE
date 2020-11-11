@@ -7,7 +7,7 @@ namespace AC2E.Def {
         public NativeType nativeType => NativeType.LAHASHSET;
 
         public HashSet<T> to<T>() {
-            HashSet<T> converted = new HashSet<T>(Count);
+            HashSet<T> converted = new(Count);
             Converter<ulong> elementConverter = Converters.getULong(typeof(T));
             foreach (var element in this) {
                 converted.Add(elementConverter.read<T>(element));
@@ -20,7 +20,7 @@ namespace AC2E.Def {
                 return null;
             }
 
-            LAHashSet converted = new LAHashSet(source.Count);
+            LAHashSet converted = new(source.Count);
             Converter<ulong> elementConverter = Converters.getULong(typeof(T));
             foreach (var element in source) {
                 converted.Add(elementConverter.write(element));

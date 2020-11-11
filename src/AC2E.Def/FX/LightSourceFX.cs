@@ -11,7 +11,7 @@
         }
 
         public LightSourceFX(AC2Reader data) {
-            lightEntityDesc = new EntityDesc(data);
+            lightEntityDesc = new(data);
             lifetime = data.ReadSingle();
             fadeTime = data.ReadSingle();
         }

@@ -12,7 +12,7 @@ namespace AC2E.RenderCommon.OpenGL {
         public static readonly uint GL_INVALID_INDEX = 0xFFFFFFFF;
         public static readonly int NUM_TEXTURE_UNITS = 16;
 
-        public static readonly Dictionary<Type, VertexAttribPointerType> TYPE_TO_VERT_ATTRIB_TYPE = new Dictionary<Type, VertexAttribPointerType> {
+        public static readonly Dictionary<Type, VertexAttribPointerType> TYPE_TO_VERT_ATTRIB_TYPE = new() {
             { typeof(sbyte), VertexAttribPointerType.Byte },
             { typeof(byte), VertexAttribPointerType.UnsignedByte },
             { typeof(short), VertexAttribPointerType.Short },
@@ -23,7 +23,7 @@ namespace AC2E.RenderCommon.OpenGL {
             { typeof(double), VertexAttribPointerType.Double },
         };
 
-        public static readonly Dictionary<Type, DrawElementsType> TYPE_TO_ELEMENT_TYPE = new Dictionary<Type, DrawElementsType> {
+        public static readonly Dictionary<Type, DrawElementsType> TYPE_TO_ELEMENT_TYPE = new() {
             { typeof(byte), DrawElementsType.UnsignedByte },
             { typeof(short), DrawElementsType.UnsignedShort },
             { typeof(ushort), DrawElementsType.UnsignedShort },

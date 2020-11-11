@@ -12,7 +12,7 @@ namespace AC2E.Server {
         private static readonly double TICK_DELTA_TIME = 1.0 / 20.0;
         private static readonly double MAX_DELTA_TIME = TICK_DELTA_TIME * 3.0;
 
-        private ServerTime time = new ServerTime(TICK_DELTA_TIME, MAX_DELTA_TIME);
+        private ServerTime time = new(TICK_DELTA_TIME, MAX_DELTA_TIME);
 
         private bool active;
 
@@ -29,7 +29,7 @@ namespace AC2E.Server {
 
         private NetInterface? logonNetInterface;
         private NetInterface? gameNetInterface;
-        private List<ServerListener> serverListeners = new List<ServerListener>();
+        private List<ServerListener> serverListeners = new();
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         ~AC2Server() {
@@ -47,21 +47,21 @@ namespace AC2E.Server {
 
             time.restart();
 
-            accountDb = new AccountDatabase(MONGODB_CONNECTION_ENDPOINT);
-            worldDb = new WorldDatabase(MONGODB_CONNECTION_ENDPOINT);
+            accountDb = new(MONGODB_CONNECTION_ENDPOINT);
+            worldDb = new(MONGODB_CONNECTION_ENDPOINT);
 
-            accountManager = new AccountManager(accountDb);
-            clientManager = new ClientManager();
-            contentManager = new ContentManager();
+            accountManager = new(accountDb);
+            clientManager = new();
+            contentManager = new();
 
-            packetHandler = new PacketHandler(accountManager, clientManager, time);
+            packetHandler = new(accountManager, clientManager, time);
 
-            world = new World(worldDb, time, packetHandler, contentManager);
+            world = new(worldDb, time, packetHandler, contentManager);
 
-            logonNetInterface = new NetInterface(port);
-            gameNetInterface = new NetInterface(logonNetInterface.port + 1);
-            serverListeners.Add(new ServerListener(logonNetInterface, packetHandler.processReceive));
-            serverListeners.Add(new ServerListener(gameNetInterface, packetHandler.processReceive));
+            logonNetInterface = new(port);
+            gameNetInterface = new(logonNetInterface.port + 1);
+            serverListeners.Add(new(logonNetInterface, packetHandler.processReceive));
+            serverListeners.Add(new(gameNetInterface, packetHandler.processReceive));
 
             Log.Debug($"Initialized AC2Server.");
 

@@ -35,7 +35,7 @@
             masterMapId = data.ReadUInt32();
             engPackVersion = data.ReadUInt32();
             gamePackVersion = data.ReadUInt32();
-            idVersion = new DatIdStamp(data);
+            idVersion = new(data);
         }
     }
 }

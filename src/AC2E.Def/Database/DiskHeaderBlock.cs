@@ -8,8 +8,8 @@
 
         public DiskHeaderBlock(AC2Reader data) {
             acVersionString = data.ReadBytes(256);
-            transactInfo = new DiskTransactInfo(data);
-            fileInfo = new DiskFileInfo(data);
+            transactInfo = new(data);
+            fileInfo = new(data);
         }
     }
 }

@@ -10,7 +10,7 @@
         public CPositionPack pos; // _position_pack
 
         public CPositionMsg(AC2Reader data) {
-            pos = new CPositionPack(data);
+            pos = new(data);
         }
     }
 }

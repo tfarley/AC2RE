@@ -101,7 +101,7 @@ namespace AC2E.Def {
                 damageTextRangeOther = data.ReadSingle();
             }
             if (contentFlags.HasFlag(ContentFlag.SAVED_UI_LOCATIONS)) {
-                savedUILocations = new UISaveLocations(data);
+                savedUILocations = new(data);
             }
             if (contentFlags.HasFlag(ContentFlag.RADAR_MASK)) {
                 radarMask = data.ReadUInt32();

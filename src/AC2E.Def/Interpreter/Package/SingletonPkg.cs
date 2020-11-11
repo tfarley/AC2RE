@@ -8,7 +8,7 @@ namespace AC2E.Def {
         public T package;
 
         private SingletonPkg<U> to<U>() where U : class, IPackage {
-            return new SingletonPkg<U> {
+            return new() {
                 did = did,
                 package = package as U,
             };
@@ -31,7 +31,7 @@ namespace AC2E.Def {
             if (packageType.IsGenericType && packageType.GetGenericTypeDefinition() == typeof(SingletonPkg<>)) {
                 return ((SingletonPkg<IPackage>)package).to<T>();
             } else {
-                return new SingletonPkg<T> {
+                return new() {
                     package = (T)package,
                 };
             }

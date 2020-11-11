@@ -14,7 +14,7 @@
             otherCellId = data.ReadUInt32();
             otherPortalId = data.ReadUInt32();
             nodeId = data.ReadUInt32();
-            linkPortal = new Ray(data);
+            linkPortal = new(data);
             linkHeight = data.ReadSingle();
         }
     }

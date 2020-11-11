@@ -76,8 +76,8 @@ namespace AC2E.RenderCommon.OpenGL {
         }
 
         public void setAmbientLight(float r, float g, float b) {
-            MemoryStream buffer = new MemoryStream();
-            using (BinaryWriter data = new BinaryWriter(buffer)) {
+            MemoryStream buffer = new();
+            using (BinaryWriter data = new(buffer)) {
                 data.Write(r);
                 data.Write(g);
                 data.Write(b);
@@ -89,8 +89,8 @@ namespace AC2E.RenderCommon.OpenGL {
 
         public void setDirLight(DirLight dirLight) {
             Vector3 dirNormalized = Vector3.Normalize(dirLight.dir);
-            MemoryStream buffer = new MemoryStream();
-            using (BinaryWriter data = new BinaryWriter(buffer)) {
+            MemoryStream buffer = new();
+            using (BinaryWriter data = new(buffer)) {
                 data.Write(dirNormalized.X);
                 data.Write(dirNormalized.Y);
                 data.Write(dirNormalized.Z);

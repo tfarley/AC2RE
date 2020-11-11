@@ -28,13 +28,13 @@ namespace AC2E.Def {
         public StringInfo(AC2Reader data) {
             stringId = data.ReadUInt32();
             tableDid = data.ReadDataId();
-            variables = new Dictionary<uint, StringInfoData>();
+            variables = new();
             ushort numVariables = data.ReadUInt16();
             if (data.ReadUInt16() != 0) {
                 literalValue = data.ReadString(Encoding.Unicode);
             }
             for (int i = 0; i < numVariables; i++) {
-                variables.Add(data.ReadUInt32(), new StringInfoData(data));
+                variables.Add(data.ReadUInt32(), new(data));
             }
         }
 

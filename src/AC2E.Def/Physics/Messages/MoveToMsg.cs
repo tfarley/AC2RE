@@ -13,7 +13,7 @@
 
         public MoveToMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            movementParams = new MovementParameters(data);
+            movementParams = new(data);
             movetoStamp = data.ReadUInt16();
             data.Align(4);
         }

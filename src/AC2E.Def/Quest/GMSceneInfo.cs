@@ -20,7 +20,7 @@ namespace AC2E.Def {
 
         public GMSceneInfo(AC2Reader data) {
             id = data.ReadUInt32();
-            name = new StringInfo(data);
+            name = new(data);
             actId = data.ReadUInt32();
             sceneNum = data.ReadUInt32();
             hidden = data.ReadBoolean();

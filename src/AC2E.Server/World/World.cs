@@ -15,14 +15,14 @@ namespace AC2E.Server {
         public const float DEG_TO_RAG = MathF.PI / 180.0f;
         public const float RAD_TO_DEG = 180.0f / MathF.PI;
 
-        private static readonly Position TUTORIAL_START_POS = new Position {
-            cell = new CellId(0x02, 0x98, 0x01, 0x09),
-            frame = new Frame(new Vector3(59.060577f, 240.199f, -44.894524f), new Quaternion(0.70710677f, 0.0f, 0.0f, 0.70710677f)),
+        private static readonly Position TUTORIAL_START_POS = new() {
+            cell = new(0x02, 0x98, 0x01, 0x09),
+            frame = new(new(59.060577f, 240.199f, -44.894524f), new(0.70710677f, 0.0f, 0.0f, 0.70710677f)),
         };
 
-        private static readonly Position ARWIC_START_POS = new Position {
-            cell = new CellId(0x75, 0xB9, 0x00, 0x31),
-            frame = new Frame(new Vector3(131.13126f, 13.535009f, 127.25996f), Quaternion.Identity),
+        private static readonly Position ARWIC_START_POS = new() {
+            cell = new(0x75, 0xB9, 0x00, 0x31),
+            frame = new(new(131.13126f, 13.535009f, 127.25996f), Quaternion.Identity),
         };
 
         private readonly WorldDatabase worldDb;
@@ -42,10 +42,10 @@ namespace AC2E.Server {
             this.serverTime = serverTime;
             this.packetHandler = packetHandler;
             this.contentManager = contentManager;
-            playerManager = new PlayerManager(packetHandler);
-            characterManager = new CharacterManager(worldDb);
-            objectManager = new WorldObjectManager(worldDb, packetHandler, playerManager);
-            inventoryManager = new InventoryManager(packetHandler, playerManager, objectManager);
+            playerManager = new(packetHandler);
+            characterManager = new(worldDb);
+            objectManager = new(worldDb, packetHandler, playerManager);
+            inventoryManager = new(packetHandler, playerManager, objectManager);
 
             objectManager.enterWorld(objectManager.getAllInWorld());
         }
@@ -82,7 +82,7 @@ namespace AC2E.Server {
 
                         packetHandler.send(player.clientId, new CharGenVerificationMsg {
                             response = CharGenResponse.OK,
-                            characterIdentity = new CharacterIdentity {
+                            characterIdentity = new() {
                                 id = characterObject.id,
                                 name = characterObject.qualities.weenieDesc.name.literalValue,
                                 secondsGreyedOut = 0,
@@ -137,15 +137,15 @@ namespace AC2E.Server {
                             qualities = character.qualities,
                         });
 
-                        Dictionary<uint, InventProfile> inventoryByLocationTable = new Dictionary<uint, InventProfile>();
-                        Dictionary<InstanceId, InventProfile> inventoryByIdTable = new Dictionary<InstanceId, InventProfile>();
+                        Dictionary<uint, InventProfile> inventoryByLocationTable = new();
+                        Dictionary<InstanceId, InventProfile> inventoryByIdTable = new();
 
                         List<WorldObject> playerInventory = objectManager.getAllInContainer(character.id);
                         foreach ((InvLoc equipLoc, InstanceId itemId) in character.equippedItems) {
                             WorldObject? item = objectManager.get(itemId);
                             if (item != null) {
-                                InventProfile profile = new InventProfile {
-                                    visualDescInfo = new VisualDescInfo {
+                                InventProfile profile = new() {
+                                    visualDescInfo = new() {
                                         scale = Vector3.One,
                                         cachedVisualDesc = item.visual,
                                     },
@@ -155,7 +155,7 @@ namespace AC2E.Server {
                                     id = item.id,
                                 };
                                 if (item.visual.globalAppearanceModifiers != null) {
-                                    profile.visualDescInfo.appInfoHash = new AppInfoHash();
+                                    profile.visualDescInfo.appInfoHash = new();
                                     foreach (var entry in item.visual.globalAppearanceModifiers.appearanceInfos) {
                                         profile.visualDescInfo.appInfoHash[entry.Key] = entry.Value;
                                     }
@@ -163,14 +163,14 @@ namespace AC2E.Server {
                                 inventoryByLocationTable[(uint)equipLoc] = profile;
                                 inventoryByIdTable[item.id] = profile;
 
-                                DataId weenieStateDid = new DataId(0x71000000 + item.qualities.weenieDesc.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
+                                DataId weenieStateDid = new(0x71000000 + item.qualities.weenieDesc.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
                                 WState clothingWeenieState = contentManager.getWeenieState(weenieStateDid);
                                 if (clothingWeenieState.package is Clothing clothing) {
                                     // TODO: contentManager.getInheritedVisualDesc(item.visual)? But it seems wrong, since the topmost parent of human starter pants is 0x1F00003E which is actually overriding skin color which doesn't make sense - not sure if that's a special override that just needs to be blocked or if inheritance isn't the correct thing to do...
                                     PartGroupDataDesc? globalAppearanceModifiers = item.visual.globalAppearanceModifiers;
                                     if (globalAppearanceModifiers != null) {
                                         foreach ((DataId appDid, Dictionary<AppearanceKey, float> appearances) in globalAppearanceModifiers.appearanceInfos) {
-                                            Dictionary<AppearanceKey, float> clonedAppearances = new Dictionary<AppearanceKey, float>(appearances);
+                                            Dictionary<AppearanceKey, float> clonedAppearances = new(appearances);
                                             clonedAppearances[AppearanceKey.WORN] = 1.0f;
                                             character.visual.globalAppearanceModifiers.appearanceInfos[appDid] = clonedAppearances;
                                         }
@@ -182,27 +182,27 @@ namespace AC2E.Server {
                         packetHandler.send(player.clientId, new InterpCEventPrivateMsg {
                             netEvent = new HandleCharacterSessionStartCEvt {
                                 money = 12345,
-                                actRegistry = new ActRegistry {
+                                actRegistry = new() {
                                     viewingProtectionEffectId = 0,
-                                    actSceneTable = new Dictionary<uint, List<uint>> {
-                                        { 0x40000005, new List<uint>() },
-                                        { 0x40000006, new List<uint>() },
-                                        { 0x40000007, new List<uint>() },
-                                        { 0x40000008, new List<uint>() },
-                                        { 0x40000009, new List<uint>() },
-                                        { 0x4000000A, new List<uint>() },
+                                    actSceneTable = new() {
+                                        { 0x40000005, new() },
+                                        { 0x40000006, new() },
+                                        { 0x40000007, new() },
+                                        { 0x40000008, new() },
+                                        { 0x40000009, new() },
+                                        { 0x4000000A, new() },
                                     }
                                 },
-                                quests = new GMQuestInfoList {
-                                    new GMQuestInfo {
+                                quests = new() {
+                                    new() {
                                         questId = QuestId.QUESTFINDEXPLORERARWIC,
-                                        questName = new StringInfo(new DataId(0x250017EB), 2824895724),
-                                        questDescription = new StringInfo(new DataId(0x250017EB), 1816499044),
-                                        iconDid = new DataId(0x4100034B),
+                                        questName = new(new(0x250017EB), 2824895724),
+                                        questDescription = new(new(0x250017EB), 1816499044),
+                                        iconDid = new(0x4100034B),
                                         challengeLevel = -999,
                                         questStatus = QuestStatus.UNDERWAY,
                                         curPhase = 1,
-                                        curJournalEntry = new StringInfo(new DataId(0x250017EB), 777789010),
+                                        curJournalEntry = new(new(0x250017EB), 777789010),
                                         bestowalTime = 129500898.25912432,
                                         doneTime = -1355582621.7408757,
                                         expired = true,
@@ -212,7 +212,7 @@ namespace AC2E.Server {
                                         playFxOnUpdate = false,
                                     },
                                 },
-                                options = new GameplayOptionsProfile {
+                                options = new() {
                                     contentFlags =
                                         GameplayOptionsProfile.ContentFlag.SHORTCUT_ARRAY
                                         | GameplayOptionsProfile.ContentFlag.SHOW_RANGE_DAMAGE_OTHER
@@ -227,22 +227,22 @@ namespace AC2E.Server {
                                     shortcutArray = Enumerable.Repeat(new ShortcutInfo { type = ShortcutType.UNDEF }, 100).ToList(),
                                     whichShortcutSet = 1,
                                     damageTextRangeOther = 1.0f,
-                                    savedUILocations = new UISaveLocations(),
-                                    /*m_savedUILocations = new UISaveLocationsPkg {
-                                        contents = new Dictionary<uint, Dictionary<uint, UISaveLocationsPkg.UILocationData>> {
-                                        { 0, new Dictionary<uint, UISaveLocationsPkg.UILocationData> {
-                                            { 0xA05C6B95, new UISaveLocationsPkg.UILocationData { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
-                                            { 0xA0446B95, new UISaveLocationsPkg.UILocationData { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
-                                            { 0xA04C6B95, new UISaveLocationsPkg.UILocationData { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
-                                            { 0xA0746B95, new UISaveLocationsPkg.UILocationData { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
-                                            { 0x6433C3C7, new UISaveLocationsPkg.UILocationData { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
-                                            { 0x9A25490C, new UISaveLocationsPkg.UILocationData { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
-                                            { 0xA0F792C9, new UISaveLocationsPkg.UILocationData { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                    savedUILocations = new(),
+                                    /*m_savedUILocations = new() {
+                                        contents = new() {
+                                        { 0, new() {
+                                            { 0xA05C6B95, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                            { 0xA0446B95, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                            { 0xA04C6B95, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                            { 0xA0746B95, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                            { 0x6433C3C7, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                            { 0x9A25490C, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                            { 0xA0F792C9, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
                                         } }
                                     }
                                     },*/
                                     radarMask = 0xFFFFFFFF,
-                                    filters = new Dictionary<uint, TextType> {
+                                    filters = new() {
                                         { 1, TextType.ALL },
                                         { 2, TextType.GENERAL },
                                         { 3, TextType.FELLOWSHIP },
@@ -250,7 +250,7 @@ namespace AC2E.Server {
                                     },
                                     bitfield = (GameplayOptionsProfile.Flag)0x80024FF5,
                                     version = GameplayOptionsProfile.Version.LATEST_VERSION,
-                                    chatFontColors = new Dictionary<TextType, uint> {
+                                    chatFontColors = new() {
                                         { TextType.ERROR, 0 },
                                         { TextType.COMBAT, 1 },
                                         { TextType.ADMIN, 2 },
@@ -270,7 +270,7 @@ namespace AC2E.Server {
                                         { TextType.DEVOTED, 4 },
                                         { TextType.PK, 4 },
                                     },
-                                    chatFontSizes = new Dictionary<TextType, uint> {
+                                    chatFontSizes = new() {
                                         { TextType.ERROR, 0 },
                                         { TextType.COMBAT, 0 },
                                         { TextType.ADMIN, 0 },
@@ -290,57 +290,66 @@ namespace AC2E.Server {
                                         { TextType.DEVOTED, 0 },
                                         { TextType.PK, 0 },
                                     },
-                                    windowToChannel = new Dictionary<uint, TextType> {
+                                    windowToChannel = new() {
                                         { 1, TextType.SAY },
                                         { 2, TextType.GENERAL },
                                         { 3, TextType.FELLOWSHIP },
                                         { 4, TextType.ALLEGIANCE },
                                     },
-                                    chatPopupFlags = new Dictionary<TextType, bool> {
+                                    chatPopupFlags = new() {
                                         { TextType.BROADCAST, true },
                                         { TextType.FELLOWSHIP, true },
                                         { TextType.ALLEGIANCE, true },
                                     },
-                                    windowOpacities = new Dictionary<uint, float> {
+                                    windowOpacities = new() {
                                         { 0xA05C6B95, 0.65f },
                                         { 0xA0446B95, 0.65f },
                                         { 0xA04C6B95, 0.65f },
                                         { 0xA0746B95, 0.65f },
                                     },
                                 },
-                                skills = new SkillRepository {
+                                skills = new() {
                                     skillCredits = 0,
                                     untrainXp = 0,
-                                    perkTypes = new Dictionary<uint, uint>(),
+                                    perkTypes = new(),
                                     typeUntrained = 0,
-                                    categories = new Dictionary<uint, uint>(),
-                                    skills = new Dictionary<SkillId, SkillInfo> {
-                                        { SkillId.HUM_ME_RIPOSTE, new SkillInfo {
-                                            lastUsedTime = -1,
-                                            mask = 33,
-                                            grantedTime = -1,
-                                            skillOverride = 1,
-                                            typeSkill = SkillId.HUM_ME_RIPOSTE,
-                                        } },
-                                        { SkillId.HUM_ME_UNPREDICTABLEBLOW, new SkillInfo {
-                                            lastUsedTime = -1,
-                                            mask = 33,
-                                            grantedTime = -1,
-                                            skillOverride = 1,
-                                            typeSkill = SkillId.HUM_ME_UNPREDICTABLEBLOW,
-                                        } },
-                                        { SkillId.COM_LIFESTONERECALL, new SkillInfo {
-                                            lastUsedTime = -1,
-                                            mask = 33,
-                                            grantedTime = -1,
-                                            skillOverride = 1,
-                                            typeSkill = SkillId.COM_LIFESTONERECALL,
-                                        } },
+                                    categories = new(),
+                                    skills = new() {
+                                        {
+                                            SkillId.HUM_ME_RIPOSTE,
+                                            new() {
+                                                lastUsedTime = -1,
+                                                mask = 33,
+                                                grantedTime = -1,
+                                                skillOverride = 1,
+                                                typeSkill = SkillId.HUM_ME_RIPOSTE,
+                                            }
+                                        },
+                                        {
+                                            SkillId.HUM_ME_UNPREDICTABLEBLOW,
+                                            new() {
+                                                lastUsedTime = -1,
+                                                mask = 33,
+                                                grantedTime = -1,
+                                                skillOverride = 1,
+                                                typeSkill = SkillId.HUM_ME_UNPREDICTABLEBLOW,
+                                            }
+                                        },
+                                        {
+                                            SkillId.COM_LIFESTONERECALL,
+                                            new() {
+                                                lastUsedTime = -1,
+                                                mask = 33,
+                                                grantedTime = -1,
+                                                skillOverride = 1,
+                                                typeSkill = SkillId.COM_LIFESTONERECALL,
+                                            }
+                                        },
                                     },
                                 },
-                                effectRegistry = new EffectRegistry {
+                                effectRegistry = new() {
                                     qualitiesModifiedCount = null,
-                                    appliedFx = new Dictionary<uint, uint>(),
+                                    appliedFx = new(),
                                     baseEffectRegistry = null,
                                     effectIdCounter = 3,
                                     effectInfo = null,
@@ -351,30 +360,30 @@ namespace AC2E.Server {
                                     trackedEffects = null,
                                     topEffects = null,
                                     effectCategorizationTable = null,
-                                    appliedAppearances = new Dictionary<uint, uint>(),
+                                    appliedAppearances = new(),
                                 },
                                 filledInventoryLocations = (InvLoc)1531,
                                 inventoryByLocationTable = inventoryByLocationTable,
                                 inventoryByIdTable = inventoryByIdTable,
-                                containerSegments = new List<ContainerSegmentDescriptor> {
-                                    new ContainerSegmentDescriptor {
+                                containerSegments = new() {
+                                    new() {
                                         segmentMaxSize = 12,
                                         segmentSize = 8,
                                     },
-                                    new ContainerSegmentDescriptor {
+                                    new() {
                                         segmentMaxSize = 12,
                                         segmentSize = 12,
                                     },
-                                    new ContainerSegmentDescriptor {
+                                    new() {
                                         segmentMaxSize = 12,
                                         segmentSize = 11,
                                     },
-                                    new ContainerSegmentDescriptor {
+                                    new() {
                                         segmentMaxSize = 42,
                                         segmentSize = 30,
                                     },
                                 },
-                                containerIds = new List<InstanceId> {
+                                containerIds = new() {
 
                                 },
                                 contentIds = character.containedItems,
@@ -413,12 +422,12 @@ namespace AC2E.Server {
                         // TODO: Just for testing - when pressing the attack mode button, toggle Refining effect UI image
                         if (msg.netEvent.funcId == ServerEventFunctionId.Combat__StartAttack) {
                             if (toggleCounter % 2 == 0) {
-                                SingletonPkg<Effect> refiningEffect = new SingletonPkg<Effect> {
-                                    did = new DataId(0x6F0011ED),
+                                SingletonPkg<Effect> refiningEffect = new() {
+                                    did = new(0x6F0011ED),
                                 };
                                 packetHandler.send(player.clientId, new InterpCEventPrivateMsg {
                                     netEvent = new ClientAddEffectCEvt {
-                                        effectRecord = new EffectRecord {
+                                        effectRecord = new() {
                                             timeDemotedFromTopLevel = -1.0,
                                             timeCast = 129996502.8136027,
                                             casterId = player.characterId,
@@ -452,23 +461,23 @@ namespace AC2E.Server {
                             }
 
                             WorldObject newTestObject = objectManager.create();
-                            newTestObject.visual = new VisualDesc {
+                            newTestObject.visual = new() {
                                 packFlags = VisualDesc.PackFlag.PARENT,
-                                parentDid = new DataId(0x1F000000 + (uint)toggleCounter),
+                                parentDid = new(0x1F000000 + (uint)toggleCounter),
                             };
-                            newTestObject.physics = new PhysicsDesc {
+                            newTestObject.physics = new() {
                                 packFlags = PhysicsDesc.PackFlag.POSITION,
-                                pos = new Position {
-                                    cell = new CellId(0x75, 0xB9, 0x00, 0x31),
-                                    frame = new Frame(new Vector3(131.13126f - toggleCounter * 1.0f, 13.535009f + toggleCounter * 1.0f, 127.25996f), Quaternion.Identity),
+                                pos = new() {
+                                    cell = new(0x75, 0xB9, 0x00, 0x31),
+                                    frame = new(new(131.13126f - toggleCounter * 1.0f, 13.535009f + toggleCounter * 1.0f, 127.25996f), Quaternion.Identity),
                                 },
                             };
-                            newTestObject.qualities = new CBaseQualities {
-                                weenieDesc = new WeenieDesc {
+                            newTestObject.qualities = new() {
+                                weenieDesc = new() {
                                     packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.ENTITY_DID,
                                     packageType = PackageType.PlayerAvatar,
-                                    name = new StringInfo($"TestObj 0x{toggleCounter:X}"),
-                                    entityDid = new DataId(0x47000530),
+                                    name = new($"TestObj 0x{toggleCounter:X}"),
+                                    entityDid = new(0x47000530),
                                 },
                             };
 
@@ -495,10 +504,10 @@ namespace AC2E.Server {
                             QueryExaminationProfileSEvt sEvent = (QueryExaminationProfileSEvt)msg.netEvent;
                             packetHandler.send(player.clientId, new InterpCEventPrivateMsg {
                                 netEvent = new UpdateExaminationProfileCEvt {
-                                    profile = new ExaminationProfile {
+                                    profile = new() {
                                         request = sEvent.request,
-                                        nodes = new List<ExaminationDataNode> {
-                                            new ExaminationDataNode {
+                                        nodes = new() {
+                                            new() {
                                                 order = 2,
                                                 type = ExaminationDataNode.DataType.INT,
                                                 valInt = 12345,
@@ -541,19 +550,19 @@ namespace AC2E.Server {
                         if (character != null && character.inWorld) {
                             character.heading = msg.pos.heading.rotDegrees;
                             character.motion = msg.pos.doMotion;
-                            character.physics.pos = new Position {
+                            character.physics.pos = new() {
                                 cell = msg.pos.offset.cell,
-                                frame = new Frame(msg.pos.offset.offset, Util.quaternionFromAxisAngleLeftHanded(new Vector3(0.0f, 0.0f, 1.0f), msg.pos.heading.rotDegrees * DEG_TO_RAG)),
+                                frame = new(msg.pos.offset.offset, Util.quaternionFromAxisAngleLeftHanded(new(0.0f, 0.0f, 1.0f), msg.pos.heading.rotDegrees * DEG_TO_RAG)),
                             };
 
-                            PositionPack pos = new PositionPack {
+                            PositionPack pos = new() {
                                 time = serverTime.time,
-                                offset = new PositionOffset {
+                                offset = new() {
                                     cell = character.physics.pos.cell,
                                     offset = character.physics.pos.frame.pos,
                                 },
                                 doMotion = character.motion,
-                                heading = new Heading(character.heading),
+                                heading = new(character.heading),
                                 packFlags = PositionPack.PackFlag.CONTACT,
                                 posStamp = (ushort)(character.physics.timestamps[0] + 1),
                             };
@@ -583,12 +592,12 @@ namespace AC2E.Server {
         }
 
         private void sendCharacters(Player player) {
-            List<CharacterIdentity> characterIdentities = new List<CharacterIdentity>();
+            List<CharacterIdentity> characterIdentities = new();
             foreach (Character character in characterManager.getWithAccount(player.account.id)) {
                 WorldObject? playerObject = objectManager.get(character.worldObjectId);
 
                 if (playerObject != null) {
-                    characterIdentities.Add(new CharacterIdentity {
+                    characterIdentities.Add(new() {
                         id = playerObject.id,
                         name = playerObject.qualities.weenieDesc.name.literalValue,
                         secondsGreyedOut = 0,
@@ -597,8 +606,8 @@ namespace AC2E.Server {
                 }
             }
 
-            List<string> characterNames = new List<string>();
-            List<InstanceId> characterIds = new List<InstanceId>();
+            List<string> characterNames = new();
+            List<InstanceId> characterIds = new();
             foreach (CharacterIdentity characterIdentity in characterIdentities) {
                 characterNames.Add(characterIdentity.name);
                 characterIds.Add(characterIdentity.id);
@@ -628,7 +637,7 @@ namespace AC2E.Server {
         }
 
         public void save() {
-            WorldSave worldSave = new WorldSave();
+            WorldSave worldSave = new();
             characterManager.contributeToSave(worldSave);
             objectManager.contributeToSave(worldSave);
             worldDb.save(worldSave);

@@ -4,7 +4,7 @@ namespace AC2E.Def {
 
     public class VertexFormatInfo {
 
-        private static readonly Dictionary<uint, uint> ENCODED_NUM_WEIGHTS = new Dictionary<uint, uint> {
+        private static readonly Dictionary<uint, uint> ENCODED_NUM_WEIGHTS = new() {
             { 6, 1 },
             { 8, 2 },
             { 10, 3 },
@@ -12,7 +12,7 @@ namespace AC2E.Def {
             { 14, 5 },
         };
 
-        private static readonly Dictionary<uint, uint> ENCODED_NUM_TEXCOORD_PAIRS = new Dictionary<uint, uint> {
+        private static readonly Dictionary<uint, uint> ENCODED_NUM_TEXCOORD_PAIRS = new() {
             { 256, 1 },
             { 512, 2 },
             { 768, 3 },

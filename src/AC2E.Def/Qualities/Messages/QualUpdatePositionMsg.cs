@@ -12,7 +12,7 @@
 
         public QualUpdatePositionPrivateMsg(AC2Reader data) {
             type = (PositionStat)data.ReadUInt32();
-            value = new Position(data);
+            value = new(data);
         }
     }
 
@@ -30,7 +30,7 @@
         public QualUpdatePositionVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             type = (PositionStat)data.ReadUInt32();
-            value = new Position(data);
+            value = new(data);
         }
     }
 }

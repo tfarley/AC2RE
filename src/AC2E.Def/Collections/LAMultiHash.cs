@@ -7,11 +7,11 @@ namespace AC2E.Def {
         public NativeType nativeType => NativeType.LAMULTIHASH;
 
         public Dictionary<K, List<V>> to<K, V>() {
-            Dictionary<K, List<V>> converted = new Dictionary<K, List<V>>(Count);
+            Dictionary<K, List<V>> converted = new(Count);
             Converter<ulong> keyConverter = Converters.getULong(typeof(K));
             Converter<uint> valueConverter = Converters.getUInt(typeof(V));
             foreach ((var key, var value) in this) {
-                List<V> convertedValueList = new List<V>();
+                List<V> convertedValueList = new();
                 foreach (var element in value) {
                     convertedValueList.Add(valueConverter.read<V>(element));
                 }
@@ -26,11 +26,11 @@ namespace AC2E.Def {
                 return null;
             }
 
-            LAMultiHash converted = new LAMultiHash(source.Count);
+            LAMultiHash converted = new(source.Count);
             Converter<ulong> keyConverter = Converters.getULong(typeof(K));
             Converter<uint> valueConverter = Converters.getUInt(typeof(V));
             foreach ((var key, var value) in source) {
-                List<uint> convertedValueList = new List<uint>();
+                List<uint> convertedValueList = new();
                 foreach (var element in value) {
                     convertedValueList.Add(valueConverter.write(element));
                 }

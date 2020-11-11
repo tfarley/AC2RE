@@ -14,7 +14,7 @@
         }
 
         public PlayerDescMsg(AC2Reader data) {
-            qualities = new CBaseQualities(data);
+            qualities = new(data);
         }
 
         public void write(AC2Writer data) {

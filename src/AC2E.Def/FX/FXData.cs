@@ -12,7 +12,7 @@ namespace AC2E.Def {
         }
 
         public FXData(AC2Reader data) {
-            defaultNode = new FXNode(data);
+            defaultNode = new(data);
             terrainData = data.ReadDictionary(data.ReadUInt32, () => new FXNode(data));
         }
 

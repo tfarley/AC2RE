@@ -11,7 +11,7 @@ namespace AC2E.Server {
                 throw new ArgumentException(entityDef.type.ToString());
             }
 
-            DataId qualitiesDid = new DataId(0x81000000 + entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
+            DataId qualitiesDid = new(0x81000000 + entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
             worldObject.qualities = contentManager.getQualities(qualitiesDid);
             worldObject.qualities.packFlags |= CBaseQualities.PackFlag.WEENIE_DESC;
 

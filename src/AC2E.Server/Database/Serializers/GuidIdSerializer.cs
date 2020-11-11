@@ -16,13 +16,13 @@ namespace AC2E.Server.Database {
         public GuidIdSerializer(Func<Guid, T> converter, Func<T, Guid> extractor) {
             this.converter = converter;
             this.extractor = extractor;
-            guidSerializer = new GuidSerializer();
+            guidSerializer = new();
         }
 
         public GuidIdSerializer(Func<Guid, T> converter, Func<T, Guid> extractor, BsonType representation) {
             this.converter = converter;
             this.extractor = extractor;
-            guidSerializer = new GuidSerializer(representation);
+            guidSerializer = new(representation);
         }
 
         public override T Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args) {
@@ -34,7 +34,7 @@ namespace AC2E.Server.Database {
         }
 
         public GuidIdSerializer<T> WithRepresentation(BsonType representation) {
-            return representation == Representation ? this : new GuidIdSerializer<T>(converter, extractor, representation);
+            return representation == Representation ? this : new(converter, extractor, representation);
         }
 
         IBsonSerializer IRepresentationConfigurable.WithRepresentation(BsonType representation) {

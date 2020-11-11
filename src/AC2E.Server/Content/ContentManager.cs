@@ -9,13 +9,13 @@ namespace AC2E.Server {
         private readonly DatReader portalDatReader;
         private CharacterGenSystem? characterGenSystem;
         private CharGenMatrix? charGenMatrix;
-        private Dictionary<DataId, EntityDef> entityDefCache = new Dictionary<DataId, EntityDef>();
-        private Dictionary<DataId, CBaseQualities> qualitiesCache = new Dictionary<DataId, CBaseQualities>();
-        private Dictionary<DataId, WState> weenieStateCache = new Dictionary<DataId, WState>();
-        private Dictionary<DataId, VisualDesc> visualDescCache = new Dictionary<DataId, VisualDesc>();
+        private Dictionary<DataId, EntityDef> entityDefCache = new();
+        private Dictionary<DataId, CBaseQualities> qualitiesCache = new();
+        private Dictionary<DataId, WState> weenieStateCache = new();
+        private Dictionary<DataId, VisualDesc> visualDescCache = new();
 
         public ContentManager() {
-            portalDatReader = new DatReader("G:\\Asheron's Call 2\\portal.dat_server");
+            portalDatReader = new("G:\\Asheron's Call 2\\portal.dat_server");
 
             MasterProperty.loadMasterProperties(portalDatReader);
             PackageManager.loadPackageTypes(portalDatReader);
@@ -27,8 +27,8 @@ namespace AC2E.Server {
 
         public CharacterGenSystem getCharacterGenSystem() {
             if (characterGenSystem == null) {
-                using (AC2Reader data = portalDatReader.getFileReader(new DataId(0x70000096))) {
-                    WState wState = new WState(data);
+                using (AC2Reader data = portalDatReader.getFileReader(new(0x70000096))) {
+                    WState wState = new(data);
                     characterGenSystem = (CharacterGenSystem)wState.package;
                 }
             }
@@ -38,8 +38,8 @@ namespace AC2E.Server {
 
         public CharGenMatrix getCharGenMatrix() {
             if (charGenMatrix == null) {
-                using (AC2Reader data = portalDatReader.getFileReader(new DataId(0x70000390))) {
-                    WState wState = new WState(data);
+                using (AC2Reader data = portalDatReader.getFileReader(new(0x70000390))) {
+                    WState wState = new(data);
                     charGenMatrix = (CharGenMatrix)wState.package;
                 }
             }
@@ -50,8 +50,8 @@ namespace AC2E.Server {
         public EntityDef getEntityDef(DataId did) {
             if (!entityDefCache.TryGetValue(did, out EntityDef? entityDef)) {
                 using (AC2Reader data = portalDatReader.getFileReader(did)) {
-                    EntityDesc entityDesc = new EntityDesc(data);
-                    entityDef = new EntityDef(entityDesc);
+                    EntityDesc entityDesc = new(data);
+                    entityDef = new(entityDesc);
                     entityDefCache[did] = entityDef;
                 }
             }
@@ -61,7 +61,7 @@ namespace AC2E.Server {
         public CBaseQualities getQualities(DataId did) {
             if (!qualitiesCache.TryGetValue(did, out CBaseQualities? qualities)) {
                 using (AC2Reader data = portalDatReader.getFileReader(did)) {
-                    qualities = new CBaseQualities(data);
+                    qualities = new(data);
                     qualitiesCache[did] = qualities;
                 }
             }
@@ -71,7 +71,7 @@ namespace AC2E.Server {
         public WState getWeenieState(DataId did) {
             if (!weenieStateCache.TryGetValue(did, out WState? weenieState)) {
                 using (AC2Reader data = portalDatReader.getFileReader(did)) {
-                    weenieState = new WState(data);
+                    weenieState = new(data);
                     weenieStateCache[did] = weenieState;
                 }
             }
@@ -81,7 +81,7 @@ namespace AC2E.Server {
         private VisualDesc getVisualDesc(DataId did) {
             if (!visualDescCache.TryGetValue(did, out VisualDesc? visualDesc)) {
                 using (AC2Reader data = portalDatReader.getFileReader(did)) {
-                    visualDesc = new VisualDesc(data);
+                    visualDesc = new(data);
                     visualDescCache[did] = visualDesc;
                 }
             }
@@ -89,7 +89,7 @@ namespace AC2E.Server {
         }
 
         public VisualDesc getInheritedVisualDesc(VisualDesc visualDesc) {
-            List<VisualDesc> parentDescs = new List<VisualDesc>();
+            List<VisualDesc> parentDescs = new();
             parentDescs.Add(visualDesc);
             DataId parentDid = visualDesc.parentDid;
             while (parentDid != DataId.NULL) {
@@ -98,7 +98,7 @@ namespace AC2E.Server {
                 parentDid = parentVisualDesc.parentDid;
             }
 
-            VisualDesc inheritedVisualDesc = new VisualDesc();
+            VisualDesc inheritedVisualDesc = new();
 
             foreach (VisualDesc parentDesc in parentDescs) {
                 mergeVisualDescs(parentDesc, inheritedVisualDesc);
@@ -110,10 +110,10 @@ namespace AC2E.Server {
         private void mergeVisualDescs(VisualDesc parentVisualDesc, VisualDesc childVisualDesc) {
             if (parentVisualDesc.globalAppearanceModifiers != null) {
                 if (childVisualDesc.globalAppearanceModifiers == null) {
-                    childVisualDesc.globalAppearanceModifiers = new PartGroupDataDesc {
+                    childVisualDesc.globalAppearanceModifiers = new() {
                         packFlags = PartGroupDataDesc.PackFlag.KEY | PartGroupDataDesc.PackFlag.APPHASH,
                         key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
-                        appearanceInfos = new Dictionary<DataId, Dictionary<AppearanceKey, float>>(),
+                        appearanceInfos = new(),
                     };
                 }
 
@@ -123,7 +123,7 @@ namespace AC2E.Server {
                             childAppearances.TryAdd(appKey, appValue);
                         }
                     } else {
-                        childVisualDesc.globalAppearanceModifiers.appearanceInfos[appDid] = new Dictionary<AppearanceKey, float>(parentAppearances);
+                        childVisualDesc.globalAppearanceModifiers.appearanceInfos[appDid] = new(parentAppearances);
                     }
                 }
             }

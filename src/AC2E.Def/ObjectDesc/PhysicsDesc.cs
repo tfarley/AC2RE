@@ -112,7 +112,7 @@ namespace AC2E.Def {
                 animFrameId = data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.POSITION)) {
-                pos = new Position(data);
+                pos = new(data);
             }
             if (packFlags.HasFlag(PackFlag.PARENT)) {
                 parentId = data.ReadInstanceId();
@@ -154,7 +154,7 @@ namespace AC2E.Def {
                 targetId = data.ReadInstanceId();
             }
             if (packFlags.HasFlag(PackFlag.TARGET_POS)) {
-                targetPos = new Position(data);
+                targetPos = new(data);
             }
             if (packFlags.HasFlag(PackFlag.TARGET_OFFSET)) {
                 targetOffset = data.ReadVector();

@@ -13,7 +13,7 @@ namespace AC2E.Def {
         public readonly PackageRegistry packageRegistry;
 
         public AC2Writer(Stream output) : base(output) {
-            packageRegistry = new PackageRegistry();
+            packageRegistry = new();
         }
 
         public AC2Writer(Stream output, PackageRegistry packageRegistry) : base(output) {
@@ -78,8 +78,8 @@ namespace AC2E.Def {
         public void Pack(IPackage value) {
             packageRegistry.references.Add(value);
 
-            MemoryStream buffer = new MemoryStream();
-            using (AC2Writer data = new AC2Writer(buffer, packageRegistry)) {
+            MemoryStream buffer = new();
+            using (AC2Writer data = new(buffer, packageRegistry)) {
                 for (int i = 0; i < packageRegistry.references.Count; i++) {
                     IPackage referencedPackage = packageRegistry.references[i];
                     if (referencedPackage != null) {

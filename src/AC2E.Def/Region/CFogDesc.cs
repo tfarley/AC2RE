@@ -77,22 +77,22 @@ namespace AC2E.Def {
             public LightInfo lightInfo; // m_lightInfo
 
             public LightFogInfo(AC2Reader data) {
-                fogInfo = new FogInfo(data);
-                lightInfo = new LightInfo(data);
+                fogInfo = new(data);
+                lightInfo = new(data);
                 uint packedCombineTypes = data.ReadUInt32();
-                combineAmbientBrightness = new FogCombine((FogCombineType)(packedCombineTypes & 0b111), data);
+                combineAmbientBrightness = new((FogCombineType)(packedCombineTypes & 0b111), data);
                 packedCombineTypes >>= 3;
-                combineAmbientColor = new FogCombine((FogCombineType)(packedCombineTypes & 0b111), data);
+                combineAmbientColor = new((FogCombineType)(packedCombineTypes & 0b111), data);
                 packedCombineTypes >>= 3;
-                combineDirectBrightness = new FogCombine((FogCombineType)(packedCombineTypes & 0b111), data);
+                combineDirectBrightness = new((FogCombineType)(packedCombineTypes & 0b111), data);
                 packedCombineTypes >>= 3;
-                combineDirectColor = new FogCombine((FogCombineType)(packedCombineTypes & 0b111), data);
+                combineDirectColor = new((FogCombineType)(packedCombineTypes & 0b111), data);
                 packedCombineTypes >>= 3;
-                combineDayLight = new FogCombine((FogCombineType)(packedCombineTypes & 0b111), data);
+                combineDayLight = new((FogCombineType)(packedCombineTypes & 0b111), data);
                 packedCombineTypes >>= 3;
-                combineDayFog = new FogCombine((FogCombineType)(packedCombineTypes & 0b111), data);
+                combineDayFog = new((FogCombineType)(packedCombineTypes & 0b111), data);
                 packedCombineTypes >>= 3;
-                combineDistanceFog = new FogCombine((FogCombineType)(packedCombineTypes & 0b111), data);
+                combineDistanceFog = new((FogCombineType)(packedCombineTypes & 0b111), data);
             }
         }
 
@@ -103,7 +103,7 @@ namespace AC2E.Def {
 
             public FogType(AC2Reader data) {
                 index = data.ReadUInt32();
-                fogLighting = new LightFogInfo(data);
+                fogLighting = new(data);
             }
         }
 
@@ -125,7 +125,7 @@ namespace AC2E.Def {
             topFogMapDid = data.ReadDataId();
             bool hasDefaultFog = data.ReadBoolean();
             if (hasDefaultFog) {
-                defaultFog = new FogType(data);
+                defaultFog = new(data);
             }
             fogTypes = data.ReadList(() => new FogType(data));
         }

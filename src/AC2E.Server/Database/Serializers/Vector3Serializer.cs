@@ -8,7 +8,7 @@ namespace AC2E.Server.Database {
 
         public override Vector3 Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args) {
             context.Reader.ReadStartArray();
-            Vector3 value = new Vector3((float)context.Reader.ReadDouble(), (float)context.Reader.ReadDouble(), (float)context.Reader.ReadDouble());
+            Vector3 value = new((float)context.Reader.ReadDouble(), (float)context.Reader.ReadDouble(), (float)context.Reader.ReadDouble());
             context.Reader.ReadEndArray();
             return value;
         }

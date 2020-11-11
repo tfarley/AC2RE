@@ -16,7 +16,7 @@
 
         public PositionCellMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            pos = new PositionPack(data);
+            pos = new(data);
         }
 
         public void write(AC2Writer data) {

@@ -21,9 +21,9 @@ namespace AC2E.Def {
             origin = data.ReadVector();
             lifetime = data.ReadSingle();
             color = data.ReadRGBAColor();
-            size = new Waveform(data);
-            rot = new Waveform(data);
-            posRadius = new Waveform(data);
+            size = new(data);
+            rot = new(data);
+            posRadius = new(data);
         }
 
         public void write(AC2Writer data) {

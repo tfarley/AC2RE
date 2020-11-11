@@ -12,7 +12,7 @@ namespace AC2E.Def {
         }
 
         public Dictionary<K, V> to<K, V>(Func<IPackage, K> keyConversion, Func<IPackage, V> valueConversion) {
-            Dictionary<K, V> converted = new Dictionary<K, V>(Count);
+            Dictionary<K, V> converted = new(Count);
             foreach ((var key, var value) in this) {
                 converted[keyConversion.Invoke(key)] = valueConversion.Invoke(value);
             }
@@ -28,7 +28,7 @@ namespace AC2E.Def {
                 return null;
             }
 
-            NRHash converted = new NRHash(source.Count);
+            NRHash converted = new(source.Count);
             foreach ((var key, var value) in source) {
                 converted[keyConversion.Invoke(key)] = valueConversion.Invoke(value);
             }

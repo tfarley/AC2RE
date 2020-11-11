@@ -4,7 +4,7 @@ namespace AC2E.Def {
 
     public struct DataId : IEquatable<DataId> {
 
-        public static readonly DataId NULL = new DataId(0);
+        public static readonly DataId NULL = new(0);
 
         public uint id;
 

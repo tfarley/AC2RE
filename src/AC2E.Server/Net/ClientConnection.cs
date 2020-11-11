@@ -29,11 +29,11 @@ namespace AC2E.Server {
         public uint packetSeq;
         public uint highestReceivedPacketSeq;
         public uint highestAckedPacketSeq;
-        public readonly List<uint> nackedSeqs = new List<uint>();
+        public readonly List<uint> nackedSeqs = new();
         public uint blobSeq;
-        public readonly Queue<NetBlobFrag> outgoingFragQueue = new Queue<NetBlobFrag>();
-        public readonly Dictionary<NetBlobId, NetBlob> incomingBlobs = new Dictionary<NetBlobId, NetBlob>();
-        public readonly Queue<NetBlob> incomingCompleteBlobs = new Queue<NetBlob>();
+        public readonly Queue<NetBlobFrag> outgoingFragQueue = new();
+        public readonly Dictionary<NetBlobId, NetBlob> incomingBlobs = new();
+        public readonly Queue<NetBlob> incomingCompleteBlobs = new();
         public float nextAckTime;
         public float nextTimeSyncTime;
         public float echoRequestedLocalTime = -1.0f;
@@ -41,8 +41,8 @@ namespace AC2E.Server {
 
         private readonly byte[] sendBuffer = new byte[NetPacket.MAX_SIZE];
 
-        private readonly Dictionary<uint, List<SendablePacket>> sentSeqToPackets = new Dictionary<uint, List<SendablePacket>>();
-        private readonly Queue<SendablePacket> nacksToResend = new Queue<SendablePacket>();
+        private readonly Dictionary<uint, List<SendablePacket>> sentSeqToPackets = new();
+        private readonly Queue<SendablePacket> nacksToResend = new();
 
         private struct SendablePacket {
 
@@ -55,7 +55,7 @@ namespace AC2E.Server {
             this.endpoint = endpoint;
             this.account = account;
 
-            Random rand = new Random();
+            Random rand = new();
             connectionAckCookie = rand.NextULong();
             outgoingSeed = rand.NextUInt();
             incomingSeed = rand.NextUInt();
@@ -64,7 +64,7 @@ namespace AC2E.Server {
         public void connect() {
             connected = true;
 
-            outgoingIsaac = new ISAAC(outgoingSeed);
+            outgoingIsaac = new(outgoingSeed);
             packetSeq = 1;
             highestReceivedPacketSeq = 1;
         }
@@ -73,10 +73,10 @@ namespace AC2E.Server {
             // TODO: Need to track processed blob ids and discard if duplicate
             // TODO: Need to handle blob ordering instead of just adding at end of queue
             if (frag.fragCount == 1) {
-                incomingCompleteBlobs.Enqueue(new NetBlob(frag));
+                incomingCompleteBlobs.Enqueue(new(frag));
             } else {
                 if (!incomingBlobs.TryGetValue(frag.blobId, out NetBlob? blob)) {
-                    blob = new NetBlob(frag);
+                    blob = new(frag);
                     incomingBlobs[frag.blobId] = blob;
                 } else {
                     blob.addFragment(frag);
@@ -90,8 +90,8 @@ namespace AC2E.Server {
         }
 
         public void enqueueMessage(INetMessage msg) {
-            MemoryStream buffer = new MemoryStream();
-            using (AC2Writer data = new AC2Writer(buffer)) {
+            MemoryStream buffer = new();
+            using (AC2Writer data = new(buffer)) {
                 data.Write((uint)msg.opcode);
                 msg.write(data);
             }
@@ -103,8 +103,8 @@ namespace AC2E.Server {
         private void enqueueBlob(NetBlobId.Flag blobFlags, NetQueue queueId, byte[] payload) {
             // TODO: Determining order this way doesn't seem correct, see packet with 66:00:01:00 having EVENT queue but WEENIE ordering
             byte orderingType = (queueId == NetQueue.WEENIE || queueId == NetQueue.SECUREWEENIE) ? ORDERING_TYPE_WEENIE : ORDERING_TYPE_NORMAL;
-            NetBlob blob = new NetBlob {
-                blobId = new NetBlobId(blobFlags, orderingType, 0, blobSeq),
+            NetBlob blob = new() {
+                blobId = new(blobFlags, orderingType, 0, blobSeq),
                 queueId = queueId,
                 payload = payload,
             };
@@ -121,7 +121,7 @@ namespace AC2E.Server {
                     rawSendPacket(packet);
                     nacksToResend.Dequeue();
                 } else {
-                    sendPacket(netInterface, time, elapsedTime, new NetPacket());
+                    sendPacket(netInterface, time, elapsedTime, new());
                 }
             }
         }
@@ -162,7 +162,7 @@ namespace AC2E.Server {
                 }
 
                 if (remainingSize > 8 && echoRequestedLocalTime != -1.0f) {
-                    packet.echoResponseHeader = new EchoResponseHeader {
+                    packet.echoResponseHeader = new() {
                         localTime = echoRequestedLocalTime,
                         holdingTime = echoRequestedServerTime - elapsedTime,
                     };
@@ -180,7 +180,7 @@ namespace AC2E.Server {
 
             packet.seq = packetSeq;
 
-            SendablePacket sendablePacket = new SendablePacket {
+            SendablePacket sendablePacket = new() {
                 packet = packet,
                 netInterface = netInterface,
             };
@@ -192,7 +192,7 @@ namespace AC2E.Server {
 
         private bool rawSendPacket(SendablePacket sendablePacket) {
             NetPacket packet = sendablePacket.packet;
-            using (AC2Writer data = new AC2Writer(new MemoryStream(sendBuffer))) {
+            using (AC2Writer data = new(new MemoryStream(sendBuffer))) {
                 // Write header
                 packet.writeHeader(data);
                 uint headerChecksum = AC2Crypto.calcChecksum(sendBuffer, 0, data.BaseStream.Position, true);

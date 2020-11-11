@@ -12,7 +12,7 @@ namespace AC2E.Def {
         public CKeyMap(AC2Reader data) {
             did = data.ReadDataId();
             name = data.ReadString();
-            guid = new GUID(data);
+            guid = new(data);
             mappings = data.ReadList(() => new ActionMapping(data));
         }
     }

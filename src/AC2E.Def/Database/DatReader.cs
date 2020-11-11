@@ -13,7 +13,7 @@ namespace AC2E.Def {
         public readonly DiskHeaderBlock header;
         public IEnumerable<DataId> dids => didToEntry.Keys;
         private readonly BTree filesystemTree;
-        private readonly Dictionary<DataId, BTEntry> didToEntry = new Dictionary<DataId, BTEntry>();
+        private readonly Dictionary<DataId, BTEntry> didToEntry = new();
 
         public void Dispose() {
             data.Dispose();
@@ -25,7 +25,7 @@ namespace AC2E.Def {
             }
 
             this.datFileName = datFileName;
-            data = new AC2Reader(File.OpenRead(datFileName));
+            data = new(File.OpenRead(datFileName));
             init(ref header, ref filesystemTree);
         }
 
@@ -36,8 +36,8 @@ namespace AC2E.Def {
         }
 
         private void init(ref DiskHeaderBlock header, ref BTree filesystemTree) {
-            header = new DiskHeaderBlock(data);
-            filesystemTree = new BTree(this);
+            header = new(data);
+            filesystemTree = new(this);
             foreach (BTNode node in filesystemTree.offsetToNode.Values) {
                 foreach (BTEntry entry in node.entries) {
                     didToEntry.Add(entry.did, entry);
@@ -54,11 +54,11 @@ namespace AC2E.Def {
         }
 
         public AC2Reader getFileReader(DataId did) {
-            return new AC2Reader(new MemoryStream(readFileBytes(did)));
+            return new(new MemoryStream(readFileBytes(did)));
         }
 
         public AC2Reader getFileReaderRaw(uint offset, int size) {
-            return new AC2Reader(new MemoryStream(readFileBytesRaw(offset, size)));
+            return new(new MemoryStream(readFileBytesRaw(offset, size)));
         }
 
         public byte[] readFileBytes(DataId did) {
@@ -136,7 +136,7 @@ namespace AC2E.Def {
             uint offset = entry.offset;
             int size = entry.size;
 
-            List<Tuple<uint, int>> blocks = new List<Tuple<uint, int>>();
+            List<Tuple<uint, int>> blocks = new();
 
             int remainingSize = size;
             while (remainingSize > 0) {
@@ -152,7 +152,7 @@ namespace AC2E.Def {
                 }
 
                 int sizeToRead = Math.Min(remainingSize, remainingBlockSize);
-                blocks.Add(new Tuple<uint, int>(offset, sizeToRead));
+                blocks.Add(new(offset, sizeToRead));
                 remainingSize -= sizeToRead;
 
                 offset = nextBlockOffset;

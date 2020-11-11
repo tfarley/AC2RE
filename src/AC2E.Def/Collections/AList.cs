@@ -7,7 +7,7 @@ namespace AC2E.Def {
         public NativeType nativeType => NativeType.ALIST;
 
         public List<T> to<T>() {
-            List<T> converted = new List<T>(Count);
+            List<T> converted = new(Count);
             Converter<uint> elementConverter = Converters.getUInt(typeof(T));
             foreach (var element in this) {
                 converted.Add(elementConverter.read<T>(element));
@@ -20,7 +20,7 @@ namespace AC2E.Def {
                 return null;
             }
 
-            AList converted = new AList(source.Count);
+            AList converted = new(source.Count);
             Converter<uint> elementConverter = Converters.getUInt(typeof(T));
             foreach (var element in source) {
                 converted.Add(elementConverter.write(element));

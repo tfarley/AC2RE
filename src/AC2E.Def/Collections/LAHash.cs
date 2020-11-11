@@ -7,7 +7,7 @@ namespace AC2E.Def {
         public NativeType nativeType => NativeType.LAHASH;
 
         public Dictionary<K, V> to<K, V>() {
-            Dictionary<K, V> converted = new Dictionary<K, V>(Count);
+            Dictionary<K, V> converted = new(Count);
             Converter<ulong> keyConverter = Converters.getULong(typeof(K));
             Converter<uint> valueConverter = Converters.getUInt(typeof(V));
             foreach ((var key, var value) in this) {
@@ -21,7 +21,7 @@ namespace AC2E.Def {
                 return null;
             }
 
-            LAHash converted = new LAHash(source.Count);
+            LAHash converted = new(source.Count);
             Converter<ulong> keyConverter = Converters.getULong(typeof(K));
             Converter<uint> valueConverter = Converters.getUInt(typeof(V));
             foreach ((var key, var value) in source) {

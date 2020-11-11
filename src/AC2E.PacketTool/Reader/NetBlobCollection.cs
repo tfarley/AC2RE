@@ -5,13 +5,13 @@ namespace AC2E.PacketTool {
 
     public class NetBlobCollection {
 
-        public readonly List<NetBlobRecord> records = new List<NetBlobRecord>();
-        private readonly Dictionary<NetBlobId, NetBlobRecord> netBlobIdToRecord = new Dictionary<NetBlobId, NetBlobRecord>();
+        public readonly List<NetBlobRecord> records = new();
+        private readonly Dictionary<NetBlobId, NetBlobRecord> netBlobIdToRecord = new();
 
         public void addPacket(NetPacket packet, bool isClientToServer, int packetNum, float timestamp) {
             foreach (NetBlobFrag frag in packet.frags) {
                 if (!netBlobIdToRecord.TryGetValue(frag.blobId, out NetBlobRecord? netBlobRecord)) {
-                    netBlobRecord = new NetBlobRecord(new NetBlob(frag)) {
+                    netBlobRecord = new(new(frag)) {
                         isClientToServer = isClientToServer,
                         startPacketNum = packetNum,
                         startTimestamp = timestamp,

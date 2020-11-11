@@ -11,9 +11,9 @@
         }
 
         public WaveformVector3(AC2Reader data) {
-            x = new Waveform(data);
-            y = new Waveform(data);
-            z = new Waveform(data);
+            x = new(data);
+            y = new(data);
+            z = new(data);
         }
 
         public void write(AC2Writer data) {

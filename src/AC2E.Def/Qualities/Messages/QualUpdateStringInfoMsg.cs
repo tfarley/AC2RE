@@ -12,7 +12,7 @@
 
         public QualUpdateStringInfoPrivateMsg(AC2Reader data) {
             type = (StringInfoStat)data.ReadUInt32();
-            value = new StringInfo(data);
+            value = new(data);
         }
     }
 
@@ -30,7 +30,7 @@
         public QualUpdateStringInfoVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             type = (StringInfoStat)data.ReadUInt32();
-            value = new StringInfo(data);
+            value = new(data);
         }
     }
 }

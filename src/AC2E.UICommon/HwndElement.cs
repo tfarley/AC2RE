@@ -17,10 +17,10 @@ namespace AC2E.UICommon {
         private const int WS_CHILD = 0x40000000;
 
         Window window;
-        public IntPtr hwnd { get; private set; }
+        public IntPtr hwnd { get; init; }
 
         public HwndElement() {
-            window = new Window();
+            window = new();
             window.Show();
 
             hwnd = new WindowInteropHelper(window).Handle;
@@ -30,7 +30,7 @@ namespace AC2E.UICommon {
 
         protected override HandleRef BuildWindowCore(HandleRef hwndParent) {
             SetParent(hwnd, hwndParent.Handle);
-            return new HandleRef(this, hwnd);
+            return new(this, hwnd);
         }
 
         protected override void DestroyWindowCore(HandleRef hwnd) {

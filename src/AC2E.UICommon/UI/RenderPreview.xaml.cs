@@ -15,12 +15,12 @@ namespace AC2E.UICommon {
 
         private static readonly float MIN_DT = 1.0f / 120.0f;
 
-        public Vector3 cameraOffset = new Vector3(0.0f, -5.0f, 0.0f);
+        public Vector3 cameraOffset = new(0.0f, -5.0f, 0.0f);
         public Quaternion cameraRot = Quaternion.Identity;
 
         private IRenderer renderer;
         private RenderManager renderManager;
-        private Stopwatch renderStopwatch = new Stopwatch();
+        private Stopwatch renderStopwatch = new();
         private float lastRenderTime;
 
         private RenderObject? testObject;
@@ -28,20 +28,20 @@ namespace AC2E.UICommon {
         public RenderPreview(DatReader datReader, DataId initialDid) {
             InitializeComponent();
 
-            HwndElement renderElement = new HwndElement();
+            HwndElement renderElement = new();
 
             renderContainer.Child = renderElement;
 
             renderer = IRenderer.createWinOGL(renderElement.hwnd);
-            renderManager = new RenderManager(renderer, datReader);
+            renderManager = new(renderer, datReader);
 
             CompositionTarget.Rendering += CompositionTarget_Rendering;
 
-            renderElement.SizeChanged += (sender, e) => {
+            renderElement.SizeChanged += (_, e) => {
                 renderManager.resize((uint)e.NewSize.Width, (uint)e.NewSize.Height);
             };
 
-            Closed += (sender, e) => {
+            Closed += (_, _) => {
                 CompositionTarget.Rendering -= CompositionTarget_Rendering;
                 renderElement.Dispose();
                 renderManager.Dispose();
@@ -50,7 +50,7 @@ namespace AC2E.UICommon {
 
             renderStopwatch.Start();
 
-            renderDidTextBox.TextChanged += (sender, e) => updateRenderObject();
+            renderDidTextBox.TextChanged += (_, _) => updateRenderObject();
 
             renderDidTextBox.Text = initialDid.ToString();
         }
@@ -69,7 +69,7 @@ namespace AC2E.UICommon {
             }
 
             try {
-                List<RenderMesh>? meshes = renderManager.loadDatMeshes(new DataId(inputDid));
+                List<RenderMesh>? meshes = renderManager.loadDatMeshes(new(inputDid));
                 if (meshes != null) {
                     testObject = renderManager.addRenderObject(meshes);
                 }
@@ -91,7 +91,7 @@ namespace AC2E.UICommon {
                 renderManager.draw();
                 lastRenderTime = curElapsedTime;
 
-                cameraRot = cameraRot * Util.quaternionFromAxisAngleLeftHanded(new Vector3(0.0f, 0.0f, 1.0f), 1.0f * dt);
+                cameraRot = cameraRot * Util.quaternionFromAxisAngleLeftHanded(new(0.0f, 0.0f, 1.0f), 1.0f * dt);
             }
         }
     }

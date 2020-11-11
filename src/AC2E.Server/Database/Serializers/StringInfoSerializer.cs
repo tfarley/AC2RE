@@ -1,31 +1,29 @@
 ﻿using AC2E.Def;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Options;
 using MongoDB.Bson.Serialization.Serializers;
 
 namespace AC2E.Server.Database {
 
     internal class StringInfoSerializer : ClassSerializerBase<StringInfo> {
 
-        private BsonClassMapSerializer<StringInfo> classMapSerializer;
+        private readonly BsonClassMapSerializer<StringInfo> classMapSerializer;
 
         public StringInfoSerializer() {
-            classMapSerializer = new BsonClassMapSerializer<StringInfo>(new BsonClassMap<StringInfo>(c => {
+            classMapSerializer = new(new BsonClassMap<StringInfo>(c => {
                 c.MapField(r => r.tableDid);
-                c.MapField(r => r.stringId).SetSerializer(new UInt32Serializer(BsonType.Int32, new RepresentationConverter(true, false)));
+                c.MapField(r => r.stringId).SetSerializer(new UInt32Serializer(BsonType.Int32, new(true, false)));
             }).Freeze());
         }
 
         public override StringInfo Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args) {
-            var bsonType = context.Reader.GetCurrentBsonType();
-            switch (bsonType) {
+            switch (context.Reader.GetCurrentBsonType()) {
                 case BsonType.Null:
                     context.Reader.ReadNull();
                     return null!;
 
                 case BsonType.String:
-                    return new StringInfo(context.Reader.ReadString());
+                    return new(context.Reader.ReadString());
 
                 default:
                     return classMapSerializer.Deserialize(context, args);

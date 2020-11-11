@@ -19,7 +19,7 @@ namespace AC2E.Def {
             ushort hasVarNamesAndNumStrings = data.ReadUInt16();
             bool hasVarNames = (hasVarNamesAndNumStrings & 0x8000) != 0;
             ushort numStrings = (ushort)(hasVarNamesAndNumStrings & ~0x8000);
-            strings = new List<string>();
+            strings = new();
             for (int i = 0; i < numStrings; i++) {
                 bool stringNotEmpty = data.ReadUInt16() != 0;
                 data.Align(4);

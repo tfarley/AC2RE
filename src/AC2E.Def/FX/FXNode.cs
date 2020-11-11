@@ -121,7 +121,7 @@ namespace AC2E.Def {
                 aprDid = data.ReadDataId();
             }
             if (packFlags.HasFlag(PackFlag.APEAR_KEY)) {
-                appKey = new AppliedAppearanceKey(data);
+                appKey = new(data);
             }
             if (packFlags.HasFlag(PackFlag.RAMP_TIME)) {
                 rampTime = data.ReadSingle();
@@ -140,7 +140,7 @@ namespace AC2E.Def {
             }
             if (packFlags.HasFlag(PackFlag.HAS_STREAK)) {
                 hasStreak = data.ReadBoolean();
-                streak = new StreakFX(data);
+                streak = new(data);
             }
             if (packFlags.HasFlag(PackFlag.START_STREAK)) {
                 startStreak = data.ReadBoolean();
@@ -211,15 +211,15 @@ namespace AC2E.Def {
             }
             if (packFlags.HasFlag(PackFlag.HAS_DECAL)) {
                 hasDecal = data.ReadBoolean();
-                decal = new DecalFX(data);
+                decal = new(data);
             }
             if (packFlags.HasFlag(PackFlag.HAS_REPULSOR)) {
                 hasRepulsor = data.ReadBoolean();
-                repulsor = new RepulsorFX(data);
+                repulsor = new(data);
             }
             if (packFlags.HasFlag(PackFlag.HAS_LIGHT)) {
                 hasLight = data.ReadBoolean();
-                light = new LightSourceFX(data);
+                light = new(data);
             }
             if (packFlags.HasFlag(PackFlag.PLAYER_ONLY)) {
                 playerOnly = data.ReadBoolean();

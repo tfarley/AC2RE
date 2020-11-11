@@ -12,7 +12,7 @@ namespace AC2E.Def {
         public readonly PackageRegistry packageRegistry;
 
         public AC2Reader(Stream input) : base(input) {
-            packageRegistry = new PackageRegistry();
+            packageRegistry = new();
         }
 
         public AC2Reader(Stream input, PackageRegistry packageRegistry) : base(input) {
@@ -73,11 +73,11 @@ namespace AC2E.Def {
         }
 
         public InstanceId UnpackInstanceId() {
-            return new InstanceId(UnpackUInt64());
+            return new(UnpackUInt64());
         }
 
         public DataId UnpackDataId() {
-            return new DataId(UnpackUInt32());
+            return new(UnpackUInt32());
         }
 
         public T UnpackPackage<T>(bool skipPackTag = false) where T : IPackage {
@@ -99,7 +99,7 @@ namespace AC2E.Def {
         }
 
         private T readPackage<T>(PackageId packageId) {
-            InterpReferenceMeta referenceMeta = new InterpReferenceMeta(ReadUInt32());
+            InterpReferenceMeta referenceMeta = new(ReadUInt32());
 
             IPackage package;
 
@@ -169,8 +169,8 @@ namespace AC2E.Def {
             if (encoding == null) {
                 encoding = Encoding.ASCII;
             }
-            MemoryStream buffer = new MemoryStream();
-            using (AC2Writer data = new AC2Writer(buffer, packageRegistry)) {
+            MemoryStream buffer = new();
+            using (AC2Writer data = new(buffer, packageRegistry)) {
                 byte val;
                 do {
                     val = ReadByte();
@@ -195,7 +195,7 @@ namespace AC2E.Def {
         }
 
         public List<T> ReadList<T>(Func<T> elementReader, uint sizeOfSize = 4) {
-            List<T> list = new List<T>();
+            List<T> list = new();
             ReadList(list, elementReader, sizeOfSize);
             return list;
         }
@@ -217,7 +217,7 @@ namespace AC2E.Def {
         }
 
         public HashSet<T> ReadSet<T>(Func<T> elementReader) {
-            HashSet<T> set = new HashSet<T>();
+            HashSet<T> set = new();
             ReadSet(set, elementReader);
             return set;
         }
@@ -231,7 +231,7 @@ namespace AC2E.Def {
         }
 
         public Dictionary<K, List<V>> ReadMultiDictionary<K, V>(Func<K> keyReader, Func<V> valueReader) {
-            Dictionary<K, List<V>> dict = new Dictionary<K, List<V>>();
+            Dictionary<K, List<V>> dict = new();
             ReadMultiDictionary(dict, keyReader, valueReader);
             return dict;
         }
@@ -244,7 +244,7 @@ namespace AC2E.Def {
         }
 
         public Dictionary<K, V> ReadDictionary<K, V>(Func<K> keyReader, Func<V> valueReader) {
-            Dictionary<K, V> dict = new Dictionary<K, V>();
+            Dictionary<K, V> dict = new();
             ReadDictionary(dict, keyReader, valueReader);
             return dict;
         }
@@ -258,7 +258,7 @@ namespace AC2E.Def {
         }
 
         public Dictionary<K, V> ReadStlMap<K, V>(Func<K> keyReader, Func<V> valueReader) {
-            Dictionary<K, V> dict = new Dictionary<K, V>();
+            Dictionary<K, V> dict = new();
             ReadStlMap(dict, keyReader, valueReader);
             return dict;
         }
@@ -272,7 +272,7 @@ namespace AC2E.Def {
         }
 
         public PackageId ReadPackageId() {
-            return new PackageId(ReadUInt32());
+            return new(ReadUInt32());
         }
 
         public PackageId ReadPackageFullRef() {
@@ -280,11 +280,11 @@ namespace AC2E.Def {
         }
 
         public InstanceId ReadInstanceId() {
-            return new InstanceId(ReadUInt64());
+            return new(ReadUInt64());
         }
 
         public InstanceIdWithStamp ReadInstanceIdWithStamp() {
-            return new InstanceIdWithStamp {
+            return new() {
                 id = ReadInstanceId(),
                 instanceStamp = ReadUInt16(),
                 otherStamp = ReadUInt16(),
@@ -292,7 +292,7 @@ namespace AC2E.Def {
         }
 
         public Vector3 ReadVector() {
-            return new Vector3(
+            return new(
                 ReadSingle(),
                 ReadSingle(),
                 ReadSingle()
@@ -301,7 +301,7 @@ namespace AC2E.Def {
 
         public Quaternion ReadQuaternion() {
             float w = ReadSingle();
-            return new Quaternion(
+            return new(
                 ReadSingle(),
                 ReadSingle(),
                 ReadSingle(),
@@ -310,7 +310,7 @@ namespace AC2E.Def {
         }
 
         public Matrix4x4 ReadMatrix4x4() {
-            return new Matrix4x4(
+            return new(
                 ReadSingle(),
                 ReadSingle(),
                 ReadSingle(),
@@ -331,7 +331,7 @@ namespace AC2E.Def {
         }
 
         public RGBAColor ReadRGBAColor() {
-            return new RGBAColor {
+            return new() {
                 r = ReadByte() / 255.0f,
                 g = ReadByte() / 255.0f,
                 b = ReadByte() / 255.0f,
@@ -340,7 +340,7 @@ namespace AC2E.Def {
         }
 
         public RGBAColor ReadRGBAColorFull() {
-            return new RGBAColor {
+            return new() {
                 r = ReadSingle(),
                 g = ReadSingle(),
                 b = ReadSingle(),
@@ -352,23 +352,23 @@ namespace AC2E.Def {
             float z = ReadByte() / 255.0f * 2.0f - 1.0f;
             float y = ReadByte() / 255.0f * 2.0f - 1.0f;
             float x = ReadByte() / 255.0f * 2.0f - 1.0f;
-            return new Tuple<Vector3, Heading>(new Vector3(x, y, z), new Heading(ReadByte() / 255.0f * 360.0f));
+            return new(new(x, y, z), new(ReadByte() / 255.0f * 360.0f));
         }
 
         public CellId ReadCellId() {
-            return new CellId(ReadUInt32());
+            return new(ReadUInt32());
         }
 
         public DataId ReadDataId() {
-            return new DataId(ReadUInt32());
+            return new(ReadUInt32());
         }
 
         public QualifiedDataId ReadQualifiedDataId() {
-            return new QualifiedDataId((DbType)ReadUInt32(), ReadDataId());
+            return new((DbType)ReadUInt32(), ReadDataId());
         }
 
         public EnumId ReadEnumId() {
-            return new EnumId(ReadUInt32());
+            return new(ReadUInt32());
         }
 
         public void Align(uint bytes) {

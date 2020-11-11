@@ -59,7 +59,7 @@ namespace AC2E.Def {
                     break;
                 case DataType.STRING:
                     appearanceId = data.ReadUInt32();
-                    valString = new StringInfo(data);
+                    valString = new(data);
                     break;
                 case DataType.IMAGE:
                     valDataID = data.ReadDataId();
@@ -75,7 +75,7 @@ namespace AC2E.Def {
                     valTime = data.ReadDouble();
                     break;
                 case DataType.ICON_DESC:
-                    valIconDesc = new IconDesc(data);
+                    valIconDesc = new(data);
                     break;
                 case DataType.LONG_INT:
                     appearanceId = data.ReadUInt32();

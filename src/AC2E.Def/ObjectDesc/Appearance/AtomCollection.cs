@@ -50,7 +50,7 @@ namespace AC2E.Def {
 
         public PGDReplacementAtom(AC2Reader data) {
             priority = data.ReadSingle();
-            newPgd = new PartGroupDataDesc(data);
+            newPgd = new(data);
         }
     }
 

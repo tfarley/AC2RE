@@ -12,7 +12,7 @@
 
         public UpdateVisualDescMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            visualDesc = new VisualDesc(data);
+            visualDesc = new(data);
         }
     }
 }

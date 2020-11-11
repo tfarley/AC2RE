@@ -8,8 +8,8 @@ namespace AC2E.Server {
     internal class CharacterManager {
 
         private readonly WorldDatabase worldDb;
-        private readonly HashSet<AccountId> loadedAccounts = new HashSet<AccountId>();
-        private readonly Dictionary<CharacterId, Character> characters = new Dictionary<CharacterId, Character>();
+        private readonly HashSet<AccountId> loadedAccounts = new();
+        private readonly Dictionary<CharacterId, Character> characters = new();
 
         public CharacterManager(WorldDatabase worldDb) {
             this.worldDb = worldDb;
@@ -38,7 +38,7 @@ namespace AC2E.Server {
 
         public List<Character> getWithAccount(AccountId accountId) {
             loadWithAccount(accountId);
-            List<Character> charactersWithAccount = new List<Character>();
+            List<Character> charactersWithAccount = new();
             foreach (Character character in characters.Values) {
                 if (!character.deleted && character.ownerAccountId == accountId) {
                     charactersWithAccount.Add(character);
@@ -75,7 +75,7 @@ namespace AC2E.Server {
                 highestOrder = existingCharacters[existingCharacters.Count - 1].order;
             }
 
-            Character character = new Character(new CharacterId(Guid.NewGuid())) {
+            Character character = new(new(Guid.NewGuid())) {
                 order = highestOrder + 1,
                 ownerAccountId = accountId,
                 worldObjectId = worldObjectId,

@@ -7,7 +7,7 @@ namespace AC2E.Server {
     internal class Program {
 
         private static readonly int SERVER_LOGON_PORT = 7777;
-        private static readonly AC2Server SERVER = new AC2Server();
+        private static readonly AC2Server SERVER = new();
 
         static void Main(string[] args) {
             Log.Logger = new LoggerConfiguration()
@@ -21,7 +21,7 @@ namespace AC2E.Server {
         }
 
         private static void runServer() {
-            AppDomain.CurrentDomain.ProcessExit += (sender, e) => SERVER.stop();
+            AppDomain.CurrentDomain.ProcessExit += (_, _) => SERVER.stop();
 
             SERVER.start(SERVER_LOGON_PORT);
 

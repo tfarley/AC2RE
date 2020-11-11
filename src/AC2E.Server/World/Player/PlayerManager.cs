@@ -6,14 +6,14 @@ namespace AC2E.Server {
     internal class PlayerManager {
 
         private readonly PacketHandler packetHandler;
-        private readonly Dictionary<ClientId, Player> players = new Dictionary<ClientId, Player>();
+        private readonly Dictionary<ClientId, Player> players = new();
 
         public PlayerManager(PacketHandler packetHandler) {
             this.packetHandler = packetHandler;
         }
 
         public Player? get(ClientId clientId) {
-            return players.GetValueOrDefault(clientId, null);
+            return players.GetValueOrDefault(clientId);
         }
 
         public bool exists(ClientId clientId) {
@@ -21,7 +21,7 @@ namespace AC2E.Server {
         }
 
         public void add(ClientId clientId, Account account) {
-            players[clientId] = new Player(clientId, account);
+            players[clientId] = new(clientId, account);
         }
 
         public void broadcastSend(INetMessage message) {
@@ -36,7 +36,7 @@ namespace AC2E.Server {
             foreach (Player player in players.Values) {
                 packetHandler.send(player.clientId, new DisplayStringInfoMsg {
                     type = TextType.ADMIN,
-                    text = new StringInfo(new DataId(0x25000626), 165844726),
+                    text = new(new(0x25000626), 165844726),
                 });
                 disconnect(player);
             }
@@ -44,7 +44,7 @@ namespace AC2E.Server {
 
         public void disconnect(Player player) {
             packetHandler.send(player.clientId, new DoFxMsg {
-                senderIdWithStamp = new InstanceIdWithStamp {
+                senderIdWithStamp = new() {
                     id = player.characterId,
                     instanceStamp = 5,
                     otherStamp = 9,

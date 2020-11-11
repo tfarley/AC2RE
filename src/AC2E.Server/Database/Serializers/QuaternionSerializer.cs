@@ -8,7 +8,7 @@ namespace AC2E.Server.Database {
 
         public override Quaternion Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args) {
             context.Reader.ReadStartArray();
-            Quaternion value = new Quaternion((float)context.Reader.ReadDouble(), (float)context.Reader.ReadDouble(), (float)context.Reader.ReadDouble(), (float)context.Reader.ReadDouble());
+            Quaternion value = new((float)context.Reader.ReadDouble(), (float)context.Reader.ReadDouble(), (float)context.Reader.ReadDouble(), (float)context.Reader.ReadDouble());
             context.Reader.ReadEndArray();
             return value;
         }

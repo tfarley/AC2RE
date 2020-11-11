@@ -13,7 +13,7 @@
 
         public Position(AC2Reader data) {
             cell = data.ReadCellId();
-            frame = new Frame(data);
+            frame = new(data);
         }
 
         public void write(AC2Writer data) {

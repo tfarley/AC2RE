@@ -5,15 +5,15 @@ namespace AC2E.Def {
 
     public static class PackageManager {
 
-        private static readonly DataId CLIENT_WLIB_DID = new DataId(0x56000005);
+        private static readonly DataId CLIENT_WLIB_DID = new(0x56000005);
 
         private static PackageTypes packageTypes;
 
         public static void loadPackageTypes(DatReader datReader) {
             if (packageTypes == null) {
                 using (AC2Reader data = datReader.getFileReader(CLIENT_WLIB_DID)) {
-                    var wlib = new WLib(data);
-                    packageTypes = new PackageTypes();
+                    WLib wlib = new(data);
+                    packageTypes = new();
                     foreach (ByteStream.ExportData export in wlib.byteStream.exports) {
                         packageTypes.add(export.args.packageType, export.args.parentIndex);
                     }
@@ -28,7 +28,7 @@ namespace AC2E.Def {
                 flags |= InterpReferenceMeta.Flag.SINGLETON;
             }
 
-            return new InterpReferenceMeta(flags, ReferenceType.HEAPOBJECT);
+            return new(flags, ReferenceType.HEAPOBJECT);
         }
 
         public static IPackage read(AC2Reader data, NativeType nativeType) {

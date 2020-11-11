@@ -12,7 +12,7 @@
 
         public DoStoryMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            story = new PhysicsStory(data);
+            story = new(data);
         }
     }
 }

@@ -5,7 +5,7 @@
         private ushort idCounter = 1;
 
         public ClientId next() {
-            ClientId id = new ClientId(idCounter);
+            ClientId id = new(idCounter);
             idCounter++;
             return id;
         }

@@ -12,12 +12,12 @@ namespace AC2E.DatTool {
         public static void parseDat(DatReader datReader, string outputBaseDir, params DbType[] typesToParse) {
             Log.Information($"Parsing dat {datReader.datFileName}...");
 
-            HashSet<DbType> typesToParseSet = new HashSet<DbType>(typesToParse);
+            HashSet<DbType> typesToParseSet = new(typesToParse);
 
-            Dictionary<DbType, string> directoryCache = new Dictionary<DbType, string>();
-            Dictionary<DataId, string> didToFileName = new Dictionary<DataId, string>();
+            Dictionary<DbType, string> directoryCache = new();
+            Dictionary<DataId, string> didToFileName = new();
 
-            HashSet<DbType> allSeenTypes = new HashSet<DbType>();
+            HashSet<DbType> allSeenTypes = new();
 
             // Parse data in first pass that is required for second pass
             MasterProperty.loadMasterProperties(datReader);
@@ -38,7 +38,7 @@ namespace AC2E.DatTool {
 
                 if (dbType == DbType.FILE2ID_TABLE) {
                     using (AC2Reader data = datReader.getFileReader(did)) {
-                        DBFile2IDTable file2IdTable = new DBFile2IDTable(data);
+                        DBFile2IDTable file2IdTable = new(data);
 
                         if (typesToParseSet.Contains(dbType)) {
                             File.WriteAllText(Path.Combine(directory!, $"{did.id:X8}{dbTypeDef.extension}.txt"), Util.objectToString(file2IdTable));
@@ -147,9 +147,9 @@ namespace AC2E.DatTool {
                     readAndDump(datReader, did, outputPath, data => new CEncounterDesc(data));
                     break;
                 case DbType.ENUM_MAPPER: {
-                        using (StreamWriter output = new StreamWriter(File.OpenWrite(outputPath + ".txt")))
+                        using (StreamWriter output = new(File.OpenWrite(outputPath + ".txt")))
                         using (AC2Reader data = datReader.getFileReader(did)) {
-                            var emp = new EnumMapper(data);
+                            EnumMapper emp = new(data);
 
                             foreach (var mapping in emp.idToString) {
                                 output.WriteLine($"{mapping.Key}\t{mapping.Value}");
@@ -234,7 +234,7 @@ namespace AC2E.DatTool {
                 case DbType.RENDERSURFACE:
                 case DbType.RENDERSURFACE_LOCAL: {
                         using (AC2Reader data = datReader.getFileReader(did)) {
-                            var surface = new RenderSurface(data);
+                            RenderSurface surface = new(data);
 
                             File.WriteAllBytes(outputPath, surface.sourceData);
 
@@ -281,7 +281,7 @@ namespace AC2E.DatTool {
                     break;
                 case DbType.WAVE: {
                         using (Stream output = File.OpenWrite(outputPath))
-                        using (BinaryWriter outputWriter = new BinaryWriter(output)) {
+                        using (BinaryWriter outputWriter = new(output)) {
                             BTEntry entry = datReader.getEntry(did);
                             // 4 DID + 4 unk + 4 file size
                             int ac2HeaderSize = sizeof(uint) + sizeof(uint) + sizeof(uint);
@@ -309,13 +309,13 @@ namespace AC2E.DatTool {
                     break;
                 case DbType.WLIB: {
                         using (AC2Reader data = datReader.getFileReader(did)) {
-                            var wlib = new WLib(data);
-                            using (StreamWriter output = new StreamWriter(File.OpenWrite(outputPath + ".packages.txt"))) {
+                            WLib wlib = new(data);
+                            using (StreamWriter output = new(File.OpenWrite(outputPath + ".packages.txt"))) {
                                 Dump.dumpPackages(output, wlib.byteStream);
                             }
 
-                            var disasm = new Disasm(wlib.byteStream);
-                            using (StreamWriter output = new StreamWriter(File.OpenWrite(outputPath + ".disasm.txt"))) {
+                            Disasm disasm = new(wlib.byteStream);
+                            using (StreamWriter output = new(File.OpenWrite(outputPath + ".disasm.txt"))) {
                                 disasm.write(output);
                             }
 

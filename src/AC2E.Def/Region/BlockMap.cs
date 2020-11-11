@@ -17,7 +17,7 @@ namespace AC2E.Def {
             }
 
             public override string ToString() {
-                StringBuilder stringBuilder = new StringBuilder();
+                StringBuilder stringBuilder = new();
                 for (int i = 0; i < height; i++) {
                     stringBuilder.AppendLine();
                     for (int j = 0; j < width; j++) {
@@ -37,7 +37,7 @@ namespace AC2E.Def {
             did = data.ReadDataId();
             height = data.ReadUInt32();
             width = data.ReadUInt32();
-            map = new BlockMapData(height, width, data.ReadBytes((int)(height * width)));
+            map = new(height, width, data.ReadBytes((int)(height * width)));
         }
     }
 }

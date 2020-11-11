@@ -15,13 +15,13 @@ namespace AC2E.Def {
             public IPackage package;
         }
 
-        private readonly Dictionary<IPackage, PackageMeta> registryByPackage = new Dictionary<IPackage, PackageMeta>();
-        private readonly Dictionary<PackageId, PackageMeta> registryById = new Dictionary<PackageId, PackageMeta>();
+        private readonly Dictionary<IPackage, PackageMeta> registryByPackage = new();
+        private readonly Dictionary<PackageId, PackageMeta> registryById = new();
         private uint packageIdCounter;
 
-        private readonly List<Action> resolvers = new List<Action>();
-        private readonly List<StackTrace> resolverDebugs = new List<StackTrace>();
-        public readonly List<IPackage> references = new List<IPackage>();
+        private readonly List<Action> resolvers = new();
+        private readonly List<StackTrace> resolverDebugs = new();
+        public readonly List<IPackage> references = new();
 
         public bool contains(IPackage package) {
             return registryByPackage.ContainsKey(package);
@@ -32,7 +32,7 @@ namespace AC2E.Def {
         }
 
         public PackageMeta register(IPackage package) {
-            PackageId packageId = new PackageId(packageIdCounter);
+            PackageId packageId = new(packageIdCounter);
             packageIdCounter++;
 
             return register(packageId, package);
@@ -43,7 +43,7 @@ namespace AC2E.Def {
         }
 
         public PackageMeta register(PackageId packageId, IPackage package, InterpReferenceMeta referenceMeta) {
-            PackageMeta meta = new PackageMeta {
+            PackageMeta meta = new() {
                 id = packageId,
                 referenceMeta = referenceMeta,
                 package = package,
@@ -94,7 +94,7 @@ namespace AC2E.Def {
         public void addResolver(Action resolver) {
             resolvers.Add(resolver);
 #if DEEPTRACE
-            resolverDebugs.Add(new StackTrace(true));
+            resolverDebugs.Add(new(true));
 #endif
         }
 

@@ -16,7 +16,7 @@
         public UpdateQuestCEvt(AC2Reader data) {
             error = (ErrorType)data.UnpackUInt32();
             questInfo = data.UnpackPackage<GMQuestInfo>();
-            questUpdateType = new QuestUpdateType(data.UnpackUInt32());
+            questUpdateType = new(data.UnpackUInt32());
         }
 
         public void write(AC2Writer data) {

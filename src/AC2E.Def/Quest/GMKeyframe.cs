@@ -27,7 +27,7 @@ namespace AC2E.Def {
             videoFragmentDid = data.ReadDataId();
             audioFragmentDid = data.ReadDataId();
             voiceFragmentDid = data.ReadDataId();
-            textFragment = new StringInfo(data);
+            textFragment = new(data);
             movieFragmentFileName = data.ReadString(Encoding.Unicode);
             definedTracks = data.ReadUInt32();
         }

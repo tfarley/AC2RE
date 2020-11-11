@@ -54,7 +54,7 @@ namespace AC2E.Def {
             }
             if (packFlags.HasFlag(PackFlag.DATAID)) {
                 uint dataIdOrPackageType = data.ReadUInt32();
-                dataId = new DataId(dataIdOrPackageType);
+                dataId = new(dataIdOrPackageType);
                 packageType = (PackageType)dataIdOrPackageType;
             }
             if (packFlags.HasFlag(PackFlag.OFFSET)) {
@@ -64,7 +64,7 @@ namespace AC2E.Def {
                 scale = data.ReadVector();
             }
             if (packFlags.HasFlag(PackFlag.PROPERTIES)) {
-                properties = new PropertyCollection(data);
+                properties = new(data);
             }
             if (packFlags.HasFlag(PackFlag.VERSION)) {
                 version = data.ReadUInt32();

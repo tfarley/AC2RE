@@ -31,13 +31,13 @@ namespace AC2E.Utils {
         }
 
         public static string objectToString(object? target) {
-            StringBuilder stringBuilder = new StringBuilder();
-            objectToString(stringBuilder, new HashSet<object>(), 0, target);
+            StringBuilder stringBuilder = new();
+            objectToString(stringBuilder, new(), 0, target);
             return stringBuilder.ToString();
         }
 
         private static void objectToString(StringBuilder stringBuilder, HashSet<object> visited, int indentLevel, object? target) {
-            HashSet<object> levelVisited = new HashSet<object>(visited);
+            HashSet<object> levelVisited = new(visited);
 
             if (target == null) {
                 stringBuilder.Append("null");
@@ -114,7 +114,7 @@ namespace AC2E.Utils {
                         stringBuilder.Append(str);
                         return;
                     }
-                    using (StringReader toStringReader = new StringReader(str)) {
+                    using (StringReader toStringReader = new(str)) {
                         bool first = true;
                         string? line;
                         while ((line = toStringReader.ReadLine()) != null) {
@@ -133,7 +133,7 @@ namespace AC2E.Utils {
             FieldInfo[] fieldInfos = targetType.GetFields();
             if (fieldInfos.Length > 0) {
                 stringBuilder.AppendLine("{");
-                string fieldIndent = new string(' ', indentLevel + 2);
+                string fieldIndent = new(' ', indentLevel + 2);
                 foreach (FieldInfo fieldInfo in fieldInfos) {
                     if (!fieldInfo.IsStatic) {
                         stringBuilder.Append($"{fieldIndent}{fieldInfo.Name} = ");

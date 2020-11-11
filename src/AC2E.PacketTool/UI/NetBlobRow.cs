@@ -5,20 +5,20 @@ namespace AC2E.PacketTool {
 
     public class NetBlobRow {
 
-        public int lineNum { get; set; }
-        public string sr { get; private set; }
-        public int seq { get; private set; }
-        public int packetNum { get; private set; }
-        public string time { get; private set; }
-        public string opcodeName { get; private set; }
-        public string eventName { get; private set; }
-        public int size { get; private set; }
-        public string queue { get; private set; }
+        public int lineNum { get; init; }
+        public string sr { get; init; }
+        public int seq { get; init; }
+        public int packetNum { get; init; }
+        public string time { get; init; }
+        public string opcodeName { get; init; }
+        public string eventName { get; init; }
+        public int size { get; init; }
+        public string queue { get; init; }
         public string error => netBlobRecord.messageErrorTypeOptional.ToString();
-        public byte orderingType { get; private set; }
-        public char isEphemeral { get; private set; }
-        public char isCell { get; private set; }
-        public char isOutOfWorld { get; private set; }
+        public byte orderingType { get; init; }
+        public char isEphemeral { get; init; }
+        public char isCell { get; init; }
+        public char isOutOfWorld { get; init; }
 
         public NetBlobRecord netBlobRecord;
 

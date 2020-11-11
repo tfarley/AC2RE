@@ -14,7 +14,7 @@ namespace AC2E.PacketTool.UI {
 
         private string originalTitle;
 
-        private readonly List<NetBlobRow> netBlobRows = new List<NetBlobRow>();
+        private readonly List<NetBlobRow> netBlobRows = new();
 
         private GridViewColumnHeader? lastRecordsListBoxColumnHeaderClicked;
         private ListSortDirection lastRecordsListBoxColumnHeaderSortDirection = ListSortDirection.Ascending;
@@ -79,7 +79,7 @@ namespace AC2E.PacketTool.UI {
         }
 
         private void openMenuItem_Click(object sender, RoutedEventArgs e) {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            OpenFileDialog openFileDialog = new();
             openFileDialog.Filter = "Packet Captures (*.pcap;*.pcapng)|*.pcap;*.pcapng|All files (*.*)|*.*";
             openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog() == true) {
@@ -94,7 +94,7 @@ namespace AC2E.PacketTool.UI {
 
                     int lineNum = 1;
                     foreach (NetBlobRecord netBlobRecord in netBlobCollection.records) {
-                        NetBlobRow netBlobRow = new NetBlobRow(lineNum, netBlobRecord);
+                        NetBlobRow netBlobRow = new(lineNum, netBlobRecord);
                         netBlobRows.Add(netBlobRow);
                         recordsListBox.Items.Add(netBlobRow);
                         lineNum++;
@@ -149,8 +149,8 @@ namespace AC2E.PacketTool.UI {
                     string? sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
 
                     recordsListBox.Items.SortDescriptions.Clear();
-                    recordsListBox.Items.SortDescriptions.Add(new SortDescription(sortBy, direction));
-                    recordsListBox.Items.SortDescriptions.Add(new SortDescription("seq", direction));
+                    recordsListBox.Items.SortDescriptions.Add(new(sortBy, direction));
+                    recordsListBox.Items.SortDescriptions.Add(new("seq", direction));
                     recordsListBox.Items.Refresh();
 
                     lastRecordsListBoxColumnHeaderClicked = headerClicked;

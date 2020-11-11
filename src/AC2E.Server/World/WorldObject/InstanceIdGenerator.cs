@@ -13,7 +13,7 @@ namespace AC2E.Server {
         }
 
         public InstanceId next() {
-            InstanceId id = new InstanceId(idCounter);
+            InstanceId id = new(idCounter);
             idCounter++;
             return id;
         }

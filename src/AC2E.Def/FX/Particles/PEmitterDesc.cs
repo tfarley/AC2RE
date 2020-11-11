@@ -36,24 +36,24 @@ namespace AC2E.Def {
 
         public PEmitterDesc(AC2Reader data) {
             maxParticles = data.ReadUInt32();
-            origin = new WaveformVector3(data);
+            origin = new(data);
             shape = data.ReadUInt32();
             particleShape = data.ReadUInt32();
-            scale = new Waveform(data);
-            particleScale = new Waveform(data);
+            scale = new(data);
+            particleScale = new(data);
             explodingDir = data.ReadBoolean();
             inclusiveShape = data.ReadBoolean();
             active = data.ReadBoolean();
             birthRate = data.ReadSingle();
-            lifetime = new Waveform(data);
-            vel = new Waveform(data);
-            streak = new Waveform(data);
-            rot = new WaveformVector3(data);
-            worldRot = new WaveformVector3(data);
-            rotateVel = new WaveformVector3(data);
-            direction = new WaveformVector3(data);
-            minSpread = new Waveform(data);
-            maxSpread = new Waveform(data);
+            lifetime = new(data);
+            vel = new(data);
+            streak = new(data);
+            rot = new(data);
+            worldRot = new(data);
+            rotateVel = new(data);
+            direction = new(data);
+            minSpread = new(data);
+            maxSpread = new(data);
             emissionLimit = data.ReadUInt32();
             blastCount = data.ReadUInt32();
             startTime = data.ReadSingle();
@@ -61,7 +61,7 @@ namespace AC2E.Def {
             emissionDist = data.ReadSingle();
             fadeIn = data.ReadSingle();
             fadeOut = data.ReadSingle();
-            particleSnap = new Waveform(data);
+            particleSnap = new(data);
             for (int i = 0; i < constrainAxes.Length; i++) {
                 constrainAxes[i] = data.ReadByte() != 0;
             }

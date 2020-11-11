@@ -96,10 +96,10 @@ namespace AC2E.Def {
                 bitfield = (Bitfield)data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.NAME)) {
-                name = new StringInfo(data);
+                name = new(data);
             }
             if (packFlags.HasFlag(PackFlag.PLURAL_NAME)) {
-                pluralName = new StringInfo(data);
+                pluralName = new(data);
             }
             if (packFlags.HasFlag(PackFlag.ICON_ID)) {
                 iconDid = data.ReadDataId();

@@ -19,7 +19,7 @@ namespace AC2E.Server.Database {
             if (!inited) {
                 BsonClassMap.RegisterClassMap<Account>(c => {
                     c.AutoMap();
-                    c.MapCreator(r => new Account(r.id, r.userName, r.password));
+                    c.MapCreator(r => new(r.id, r.userName, r.password));
                 });
             }
 

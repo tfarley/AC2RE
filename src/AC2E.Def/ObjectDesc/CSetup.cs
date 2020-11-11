@@ -35,7 +35,7 @@ namespace AC2E.Def {
             public LocationType(AC2Reader data) {
                 id = data.ReadUInt32();
                 boneIndex = data.ReadUInt32();
-                transform = new TransformBase(data);
+                transform = new(data);
             }
         }
 
@@ -65,7 +65,7 @@ namespace AC2E.Def {
             public DegradeInfo(AC2Reader data) {
                 degradeInfos = new DLDegradeInfo[3];
                 for (int i = 0; i < degradeInfos.Length; i++) {
-                    degradeInfos[i] = new DLDegradeInfo(data);
+                    degradeInfos[i] = new(data);
                 }
             }
         }
@@ -119,12 +119,12 @@ namespace AC2E.Def {
             radius = data.ReadSingle();
             stepUpHeight = data.ReadSingle();
             stepDownHeight = data.ReadSingle();
-            boundingSphere = new Sphere(data);
-            selectionSphere = new Sphere(data);
-            degradeInfo = new DegradeInfo(data);
+            boundingSphere = new(data);
+            selectionSphere = new(data);
+            degradeInfo = new(data);
             shadowType = (ShadowType)data.ReadUInt32();
             physicsContainmentRadius = data.ReadSingle();
-            physicsBoundingBox = new BBox(data);
+            physicsBoundingBox = new(data);
         }
     }
 }

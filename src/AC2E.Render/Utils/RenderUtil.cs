@@ -13,7 +13,7 @@ namespace AC2E.Render {
             float horizontal = vertical * aspect;
             float frustDist = farClip - nearClip;
             // X right, Y forward, Z up input -> X right, Y up, Z backward output (OpenGL)
-            return new Matrix4x4(
+            return new(
                 horizontal, 0.0f, 0.0f, 0.0f,
                 0.0f, 0.0f, farClip / frustDist, 1.0f,
                 0.0f, vertical, 0.0f, 0.0f,

@@ -22,8 +22,8 @@ namespace AC2E.Def {
         public SkillUINode(AC2Reader data) {
             enumVal = data.ReadBoolean();
             type = data.ReadUInt32();
-            name = new StringInfo(data);
-            description = new StringInfo(data);
+            name = new(data);
+            description = new(data);
             iconDid = data.ReadDataId();
             x = data.ReadUInt32();
             y = data.ReadUInt32();

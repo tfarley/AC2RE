@@ -18,7 +18,7 @@ namespace AC2E.Def {
             minY = data.ReadInt32();
             maxX = data.ReadInt32();
             maxY = data.ReadInt32();
-            box = new BBox(data);
+            box = new(data);
             pos = data.ReadVector();
             undersideProbes = data.ReadList(data.ReadSingle);
         }

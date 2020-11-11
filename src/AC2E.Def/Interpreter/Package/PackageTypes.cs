@@ -4,9 +4,9 @@ namespace AC2E.Def {
 
     public class PackageTypes {
 
-        private readonly List<PackageType> packageTypes = new List<PackageType>();
-        private readonly Dictionary<PackageType, int> packageTypeToParentIndex = new Dictionary<PackageType, int>();
-        private readonly Dictionary<PackageType, List<PackageType>> packageTypeToHierarchyCache = new Dictionary<PackageType, List<PackageType>>();
+        private readonly List<PackageType> packageTypes = new();
+        private readonly Dictionary<PackageType, int> packageTypeToParentIndex = new();
+        private readonly Dictionary<PackageType, List<PackageType>> packageTypeToHierarchyCache = new();
 
         public void add(PackageType packageType, int parentIndex) {
             packageTypes.Add(packageType);
@@ -20,7 +20,7 @@ namespace AC2E.Def {
         }
 
         private List<PackageType> calculatePackageTypeHierarchy(PackageType packageType) {
-            List<PackageType> typeHierarchy = new List<PackageType>();
+            List<PackageType> typeHierarchy = new();
             while (packageTypeToParentIndex.TryGetValue(packageType, out int parentIndex) && parentIndex != -1) {
                 PackageType parentType = packageTypes[parentIndex];
 

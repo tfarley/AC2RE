@@ -9,8 +9,8 @@ namespace AC2E.Def {
         private static readonly int MAX_NUM_ENTRIES = 61;
         public static readonly int FILE_SIZE = sizeof(uint) * MAX_NUM_CHILDREN + sizeof(uint) + BTEntry.FILE_SIZE * MAX_NUM_ENTRIES;
 
-        public List<uint> childOffsets = new List<uint>(); // NextNode_
-        public List<BTEntry> entries = new List<BTEntry>(); // NumEntries_ + Entry_
+        public List<uint> childOffsets = new(); // NextNode_
+        public List<BTEntry> entries = new(); // NumEntries_ + Entry_
 
         public BTNode(AC2Reader data) {
             for (int i = 0; i < MAX_NUM_CHILDREN; i++) {
@@ -25,7 +25,7 @@ namespace AC2E.Def {
             uint numEntries = data.ReadUInt32();
 
             for (int i = 0; i < numEntries; i++) {
-                entries.Add(new BTEntry(data));
+                entries.Add(new(data));
             }
         }
     }

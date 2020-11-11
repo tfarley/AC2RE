@@ -16,7 +16,7 @@
 
         public DisplayStringInfoMsg(AC2Reader data) {
             type = (TextType)data.ReadUInt32();
-            text = new StringInfo(data);
+            text = new(data);
         }
 
         public void write(AC2Writer data) {

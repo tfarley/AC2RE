@@ -27,7 +27,7 @@ namespace AC2E.Def {
 
         public CPositionPack(AC2Reader data) {
             time = data.ReadDouble();
-            offset = new PositionOffset(data);
+            offset = new(data);
             (doMotion, heading) = data.ReadVectorHeadingPack();
             packFlags = (PackFlag)data.ReadUInt32();
             instanceStamp = data.ReadUInt16();

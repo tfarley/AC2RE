@@ -14,7 +14,7 @@
 
         public PortalStormWarningCEvt(AC2Reader data) {
             intensity = data.UnpackSingle();
-            cell = new CellId(data.UnpackUInt32());
+            cell = new(data.UnpackUInt32());
         }
 
         public void write(AC2Writer data) {

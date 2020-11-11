@@ -21,7 +21,7 @@ namespace AC2E.Def {
             long startPos = data.BaseStream.Position;
             switch (dataType) {
                 case RMDataType.WAVEFORM:
-                    valWaveform = new Waveform(data);
+                    valWaveform = new(data);
                     break;
                 case RMDataType.COLOR:
                     valColor = data.ReadRGBAColorFull();
