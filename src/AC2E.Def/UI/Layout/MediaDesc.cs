@@ -236,39 +236,19 @@ namespace AC2E.Def {
             // Duplicate line is intentional to match how actual code works
             type = (MediaType)data.ReadUInt32();
             type = (MediaType)data.ReadUInt32();
-            switch (type) {
-                case MediaType.ANIMATION:
-                    mediaData = new AnimationMediaData(data);
-                    break;
-                case MediaType.PAUSE:
-                    mediaData = new PauseMediaData(data);
-                    break;
-                case MediaType.IMAGE:
-                    mediaData = new ImageMediaData(data);
-                    break;
-                case MediaType.ALPHA:
-                    mediaData = new AlphaMediaData(data);
-                    break;
-                case MediaType.SOUND:
-                    mediaData = new SoundMediaData(data);
-                    break;
-                case MediaType.JUMP:
-                    mediaData = new JumpMediaData(data);
-                    break;
-                case MediaType.MESSAGE:
-                    mediaData = new MessageMediaData(data);
-                    break;
-                case MediaType.STATE:
-                    mediaData = new StateMediaData(data);
-                    break;
-                case MediaType.AVI:
-                    throw new NotImplementedException(type.ToString());
-                case MediaType.CURSOR:
-                    mediaData = new CursorMediaData(data);
-                    break;
-                default:
-                    throw new InvalidDataException(type.ToString());
-            }
+            mediaData = type switch {
+                MediaType.ANIMATION => new AnimationMediaData(data),
+                MediaType.PAUSE => new PauseMediaData(data),
+                MediaType.IMAGE => new ImageMediaData(data),
+                MediaType.ALPHA => new AlphaMediaData(data),
+                MediaType.SOUND => new SoundMediaData(data),
+                MediaType.JUMP => new JumpMediaData(data),
+                MediaType.MESSAGE => new MessageMediaData(data),
+                MediaType.STATE => new StateMediaData(data),
+                MediaType.AVI => throw new NotImplementedException(type.ToString()),
+                MediaType.CURSOR => new CursorMediaData(data),
+                _ => throw new InvalidDataException(type.ToString()),
+            };
         }
 
         public void write(AC2Writer data) {

@@ -23,7 +23,7 @@ namespace AC2E.Def {
             MISSILE_REACTION = 1 << 10, // 0x00000400
             TURN_METHOD = 1 << 11, // 0x00000800
             // NOTE: Duplicate - not a typo; probably a mistake in client code
-            CONSERVE_FUEL = 1 << 12, // 0x00000100
+            CONSERVE_FUEL = 1 << 12, // 0x00001000
             ENV_MAX_VELOCITY = 1 << 12, // 0x00001000
             ALIGN_TYPE = 1 << 13, // 0x00002000
             STICKY = 1 << 14, // 0x00004000

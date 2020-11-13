@@ -116,20 +116,12 @@ namespace AC2E.Def {
             type = (TransitionType)data.ReadUInt32();
             when = data.ReadUInt32();
             state = data.ReadUInt32();
-            switch (type) {
-                case TransitionType.MOVE:
-                case TransitionType.RESIZE:
-                    transitionData = new MoveResizeTransitionData(data);
-                    break;
-                case TransitionType.FADE:
-                    transitionData = new FadeTransitionData(data);
-                    break;
-                case TransitionType.ROTATE:
-                    transitionData = new RotateTransitionData(data);
-                    break;
-                default:
-                    throw new InvalidDataException(type.ToString());
-            }
+            transitionData = type switch {
+                TransitionType.MOVE or TransitionType.RESIZE => new MoveResizeTransitionData(data),
+                TransitionType.FADE => new FadeTransitionData(data),
+                TransitionType.ROTATE => new RotateTransitionData(data),
+                _ => throw new InvalidDataException(type.ToString()),
+            };
         }
 
         public void write(AC2Writer data) {

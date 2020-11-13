@@ -4,9 +4,9 @@
 
         private static readonly uint GOLDEN_RATIO = 0x9e3779b9;
 
-        private uint[] randrsl = new uint[256];
+        private readonly uint[] randrsl = new uint[256];
         private int randcnt = 255;
-        private uint[] mm = new uint[256];
+        private readonly uint[] mm = new uint[256];
         private uint aa, bb, cc;
 
         public ISAAC(uint seed) {

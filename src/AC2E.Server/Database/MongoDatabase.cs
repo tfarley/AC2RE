@@ -9,7 +9,7 @@ namespace AC2E.Server.Database {
     internal abstract class MongoDatabase {
 
         private static bool mongoInited;
-        private static Dictionary<string, MongoClient> endpointToClient = new();
+        private static readonly Dictionary<string, MongoClient> endpointToClient = new();
 
         protected abstract string databaseName { get; }
 

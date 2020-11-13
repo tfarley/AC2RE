@@ -209,7 +209,7 @@ namespace AC2E.Def {
             } else if (sizeOfSize == 4) {
                 numElements = ReadUInt32();
             } else {
-                throw new ArgumentException();
+                throw new ArgumentException(sizeOfSize.ToString());
             }
             for (int i = 0; i < numElements; i++) {
                 list.Add(elementReader.Invoke());

@@ -72,7 +72,7 @@ namespace AC2E.Server {
             uint highestOrder = 0;
             List<Character> existingCharacters = getWithAccount(accountId);
             if (existingCharacters.Count > 0) {
-                highestOrder = existingCharacters[existingCharacters.Count - 1].order;
+                highestOrder = existingCharacters[^1].order;
             }
 
             Character character = new(new(Guid.NewGuid())) {

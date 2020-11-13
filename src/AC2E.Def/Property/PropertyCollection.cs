@@ -4,7 +4,7 @@ namespace AC2E.Def {
 
     public class PropertyCollection : IPackage {
 
-        NativeType nativeType => NativeType.PROPERTYCOLLECTION;
+        public NativeType nativeType => NativeType.PROPERTYCOLLECTION;
 
         public List<PropertyGroup> groups; // m_propertyGroup
 

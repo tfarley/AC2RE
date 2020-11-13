@@ -185,7 +185,7 @@ namespace AC2E.Def {
             } else if (sizeOfSize == 4) {
                 Write((uint)count);
             } else {
-                throw new ArgumentException();
+                throw new ArgumentException(sizeOfSize.ToString());
             }
             if (count > 0) {
                 foreach (var element in list) {

@@ -12,7 +12,7 @@ namespace AC2E.PacketTool.UI {
 
     public partial class MainWindow : Window {
 
-        private string originalTitle;
+        private readonly string originalTitle;
 
         private readonly List<NetBlobRow> netBlobRows = new();
 

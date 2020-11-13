@@ -12,7 +12,7 @@ namespace AC2E.Server {
         private static readonly double TICK_DELTA_TIME = 1.0 / 20.0;
         private static readonly double MAX_DELTA_TIME = TICK_DELTA_TIME * 3.0;
 
-        private ServerTime time = new(TICK_DELTA_TIME, MAX_DELTA_TIME);
+        private readonly ServerTime time = new(TICK_DELTA_TIME, MAX_DELTA_TIME);
 
         private bool active;
 
@@ -29,7 +29,7 @@ namespace AC2E.Server {
 
         private NetInterface? logonNetInterface;
         private NetInterface? gameNetInterface;
-        private List<ServerListener> serverListeners = new();
+        private readonly List<ServerListener> serverListeners = new();
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         ~AC2Server() {

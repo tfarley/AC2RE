@@ -4,7 +4,7 @@ namespace AC2E.Def {
 
     public class MasterProperty {
 
-        public static MasterProperty instance;
+        public static MasterProperty instance { get; private set; }
 
         public static void loadMasterProperties(DatReader datReader) {
             if (instance == null) {

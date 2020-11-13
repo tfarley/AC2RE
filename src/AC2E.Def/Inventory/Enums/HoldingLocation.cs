@@ -21,7 +21,7 @@
 
         ORIGIN = 0x40000003,
         CAMERA_ORIGIN = 0x40000004,
-        CAMERA_TARGET = 0x40000004,
+        CAMERA_TARGET = 0x40000005,
         L_HAND4 = 0x40000006,
         CLOAK = 0x40000007,
     }

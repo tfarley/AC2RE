@@ -4,7 +4,7 @@ namespace AC2E.Def {
 
     public class PropertyGroup : IPackage {
 
-        NativeType nativeType => NativeType.PROPERTYGROUP;
+        public NativeType nativeType => NativeType.PROPERTYGROUP;
 
         public PropertyGroupName name; // m_groupName
         public List<BaseProperty> properties; // m_properties

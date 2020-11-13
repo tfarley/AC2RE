@@ -32,88 +32,48 @@ namespace AC2E.Def {
         }
 
         public static IPackage read(AC2Reader data, NativeType nativeType) {
-            switch (nativeType) {
-                case NativeType.AAHASH:
-                    return new AAHash(data);
-                case NativeType.AAMULTIHASH:
-                    return new AAMultiHash(data);
-                case NativeType.AARRAY:
-                    return new AArray(data);
-                case NativeType.AHASHSET:
-                    return new AHashSet(data);
-                case NativeType.ALHASH:
-                    return new ALHash(data);
-                case NativeType.ALIST:
-                    return new AList(data);
-                case NativeType.APPINFOHASH:
-                    return new AppInfoHash(data);
-                case NativeType.ARHASH:
-                    return new ARHash(data);
-                case NativeType.BEHAVIORPARAMS:
-                    return new BehaviorParams(data);
-                case NativeType.EXAMINATIONPROFILE:
-                    return new ExaminationProfile(data);
-                case NativeType.EXAMINATIONREQUEST:
-                    return new ExaminationRequest(data);
-                case NativeType.GAMEPLAYOPTIONSPROFILE:
-                    return new GameplayOptionsProfile(data);
-                case NativeType.GMKEYFRAME:
-                    return new GMKeyframe(data);
-                case NativeType.GMQUESTINFOLIST:
-                    return new GMQuestInfoList(data);
-                case NativeType.GMQUESTINFO:
-                    return new GMQuestInfo(data);
-                case NativeType.GMRACESEXINFO:
-                    return new GMRaceSexInfo(data);
-                case NativeType.GMSCENEINFO:
-                    return new GMSceneInfo(data);
-                case NativeType.GMSCENEINFOLIST:
-                    return new GMSceneInfoList(data);
-                case NativeType.ICONDESC:
-                    return new IconDesc(data);
-                case NativeType.LAHASH:
-                    return new LAHash(data);
-                case NativeType.LAHASHSET:
-                    return new LAHashSet(data);
-                case NativeType.LAMULTIHASH:
-                    return new LAMultiHash(data);
-                case NativeType.LARRAY:
-                    return new LArray(data);
-                case NativeType.LLIST:
-                    return new LList(data);
-                case NativeType.LRHASH:
-                    return new LRHash(data);
-                case NativeType.MISSILEPARAMETERS:
-                    return new MissileParameters(data);
-                case NativeType.NRHASH:
-                    return new NRHash(data);
-                case NativeType.POSITION:
-                    return new Position(data);
-                case NativeType.RANDOMSELECTIONTABLE_INT:
-                    return new RandomSelectionTable(data);
-                case NativeType.RARRAY:
-                    return new RArray(data);
-                case NativeType.RLIST:
-                    return new RList(data);
-                case NativeType.SELECTIONINFO:
-                    return new SelectionInfo(data);
-                case NativeType.SHORTCUTINFO:
-                    return new ShortcutInfo(data);
-                case NativeType.SKILLUINODE:
-                    return new SkillUINode(data);
-                case NativeType.STRINGINFO:
-                    return new StringInfo(data);
-                case NativeType.WPSTRING:
-                    return new WPString(data);
-                case NativeType.UISAVELOCATIONS:
-                    return new UISaveLocations(data);
-                case NativeType.VECTOR:
-                    return new VectorPkg(data.ReadVector());
-                case NativeType.VISUALDESC:
-                    return new VisualDesc(data);
-                default:
-                    throw new NotImplementedException($"Unhandled read for native package type {nativeType}.");
-            }
+            return nativeType switch {
+                NativeType.AAHASH => new AAHash(data),
+                NativeType.AAMULTIHASH => new AAMultiHash(data),
+                NativeType.AARRAY => new AArray(data),
+                NativeType.AHASHSET => new AHashSet(data),
+                NativeType.ALHASH => new ALHash(data),
+                NativeType.ALIST => new AList(data),
+                NativeType.APPINFOHASH => new AppInfoHash(data),
+                NativeType.ARHASH => new ARHash(data),
+                NativeType.BEHAVIORPARAMS => new BehaviorParams(data),
+                NativeType.EXAMINATIONPROFILE => new ExaminationProfile(data),
+                NativeType.EXAMINATIONREQUEST => new ExaminationRequest(data),
+                NativeType.GAMEPLAYOPTIONSPROFILE => new GameplayOptionsProfile(data),
+                NativeType.GMKEYFRAME => new GMKeyframe(data),
+                NativeType.GMQUESTINFOLIST => new GMQuestInfoList(data),
+                NativeType.GMQUESTINFO => new GMQuestInfo(data),
+                NativeType.GMRACESEXINFO => new GMRaceSexInfo(data),
+                NativeType.GMSCENEINFO => new GMSceneInfo(data),
+                NativeType.GMSCENEINFOLIST => new GMSceneInfoList(data),
+                NativeType.ICONDESC => new IconDesc(data),
+                NativeType.LAHASH => new LAHash(data),
+                NativeType.LAHASHSET => new LAHashSet(data),
+                NativeType.LAMULTIHASH => new LAMultiHash(data),
+                NativeType.LARRAY => new LArray(data),
+                NativeType.LLIST => new LList(data),
+                NativeType.LRHASH => new LRHash(data),
+                NativeType.MISSILEPARAMETERS => new MissileParameters(data),
+                NativeType.NRHASH => new NRHash(data),
+                NativeType.POSITION => new Position(data),
+                NativeType.RANDOMSELECTIONTABLE_INT => new RandomSelectionTable(data),
+                NativeType.RARRAY => new RArray(data),
+                NativeType.RLIST => new RList(data),
+                NativeType.SELECTIONINFO => new SelectionInfo(data),
+                NativeType.SHORTCUTINFO => new ShortcutInfo(data),
+                NativeType.SKILLUINODE => new SkillUINode(data),
+                NativeType.STRINGINFO => new StringInfo(data),
+                NativeType.WPSTRING => new WPString(data),
+                NativeType.UISAVELOCATIONS => new UISaveLocations(data),
+                NativeType.VECTOR => new VectorPkg(data.ReadVector()),
+                NativeType.VISUALDESC => new VisualDesc(data),
+                _ => throw new NotImplementedException($"Unhandled read for native package type {nativeType}."),
+            };
         }
 
         public static IPackage read(AC2Reader data, PackageType packageType) {
@@ -138,533 +98,270 @@ namespace AC2E.Def {
         }
 
         private static IPackage readInternal(AC2Reader data, PackageType packageType) {
-            switch (packageType) {
-                case PackageType.ACFraction:
-                    return new ACFraction(data);
-                case PackageType.Act:
-                    return new Act(data);
-                case PackageType.ActiveSkill:
-                    return new ActiveSkill(data);
-                case PackageType.ActRegistry:
-                    return new ActRegistry(data);
-                case PackageType.ActTemplate:
-                    return new ActTemplate(data);
-                case PackageType.AdvancementTable:
-                    return new AdvancementTable(data);
-                case PackageType.Agent:
-                    return new Agent(data);
-                case PackageType.AIAngerEffect:
-                    return new AIAngerEffect(data);
-                case PackageType.AIPetEffect:
-                    return new AIPetEffect(data);
-                case PackageType.AITauntDetauntEffect:
-                    return new AITauntDetauntEffect(data);
-                case PackageType.AllegianceControl:
-                    return new AllegianceControl(data);
-                case PackageType.AllegianceData:
-                    return new AllegianceData(data);
-                case PackageType.AllegianceHallBindingStoneUsageBlob:
-                    return new AllegianceHallBindingStoneUsageBlob(data);
-                case PackageType.AllegianceHierarchy:
-                    return new AllegianceHierarchy(data);
-                case PackageType.AllegianceNode:
-                    return new AllegianceHierarchy.AllegianceNode(data);
-                case PackageType.AllegianceProfile:
-                    return new AllegianceProfile(data);
-                case PackageType.AllegianceRankTable:
-                    return new AllegianceRankTable(data);
-                case PackageType.AnimationRecipeAction:
-                    return new AnimationRecipeAction(data);
-                case PackageType.AppearanceModRecipeAction:
-                    return new AppearanceModRecipeAction(data);
-                case PackageType.AppearanceProfile:
-                    return new AppearanceProfile(data);
-                case PackageType.ApplyEffect:
-                    return new ApplyEffect(data);
-                case PackageType.AttackHook:
-                    return new AttackHook(data);
-                case PackageType.AttackHookData:
-                    return new AttackHookData(data);
-                case PackageType.AttributeProfile:
-                    return new AttributeProfile(data);
-                case PackageType.AttributeSkill:
-                    return new AttributeSkill(data);
-                case PackageType.AttuneRecipeAction:
-                    return new AttuneRecipeAction(data);
-                case PackageType.AuraEffect:
-                    return new AuraEffect(data);
-                case PackageType.BallUsageBlob:
-                    return new BallUsageBlob(data);
-                case PackageType.BiasProfile:
-                    return new BiasProfile(data);
-                case PackageType.BindRecipeAction:
-                    return new BindRecipeAction(data);
-                case PackageType.BookEffect:
-                    return new BookEffect(data);
-                case PackageType.BookUsageBlob:
-                    return new BookUsageBlob(data);
-                case PackageType.ButcheryToolUsageBlob:
-                    return new ButcheryToolUsageBlob(data);
-                case PackageType.CAdmin:
-                    return new CAdmin(data);
-                case PackageType.CAExcavationPoint:
-                    return new CAExcavationPoint(data);
-                case PackageType.ChainedInstantEffect:
-                    return new ChainedInstantEffect(data);
-                case PackageType.ChainedNumericEffect:
-                    return new ChainedNumericEffect(data);
-                case PackageType.ChannelData:
-                    return new ChannelData(data);
-                case PackageType.CharacterGenSystem:
-                    return new CharacterGenSystem(data);
-                case PackageType.CharGenMatrix:
-                case PackageType.CharGenMatrixData:
-                    return new CharGenMatrix(data);
-                case PackageType.ChatChannelControl:
-                    return new ChatChannelControl(data);
-                case PackageType.ClassFilter:
-                    return new ClassFilter(data);
-                case PackageType.Clothing:
-                    return new Clothing(data);
-                case PackageType.ComboEffect:
-                    return new ComboEffect(data);
-                case PackageType.CommunicationControl:
-                    return new CommunicationControl(data);
-                case PackageType.ConsignerDesc:
-                    return new ConsignerDesc(data);
-                case PackageType.Consignment:
-                    return new Consignment(data);
-                case PackageType.ConsignmentDesc:
-                    return new ConsignmentDesc(data);
-                case PackageType.Container:
-                    return new Container(data);
-                case PackageType.ContainerSegmentDescriptor:
-                    return new ContainerSegmentDescriptor(data);
-                case PackageType.ContentProfile:
-                    return new ContentProfile(data);
-                case PackageType.CorpsePermissionBlob:
-                    return new CorpsePermissionBlob(data);
-                case PackageType.CountdownEffect:
-                    return new CountdownEffect(data);
-                case PackageType.CPetState:
-                    return new CPetState(data);
-                case PackageType.CPlayer:
-                    return new CPlayer(data);
-                case PackageType.CraftBlob:
-                    return new CraftBlob(data);
-                case PackageType.CraftCheckEntry:
-                    return new CraftCheckEntry(data);
-                case PackageType.CraftRandomEntry:
-                    return new CraftRandomEntry(data);
-                case PackageType.CraftRegistry:
-                    return new CraftRegistry(data);
-                case PackageType.CraftSkill:
-                    return new CraftSkill(data);
-                case PackageType.CraftSkillRecord:
-                    return new CraftSkillRecord(data);
-                case PackageType.CraftSkillTitleScore:
-                    return new CraftSkillTitleScore(data);
-                case PackageType.CShopperContext:
-                    return new CShopperContext(data);
-                case PackageType.CUsageSystem:
-                    return new CUsageSystem(data);
-                case PackageType.CustomFailureRecipeAction:
-                    return new CustomFailureRecipeAction(data);
-                case PackageType.CustomSuccessRecipeAction:
-                    return new CustomSuccessRecipeAction(data);
-                case PackageType.DamageDisplayInfo:
-                    return new DamageDisplayInfo(data);
-                case PackageType.DestroyRecipeAction:
-                    return new DestroyRecipeAction(data);
-                case PackageType.DefaultPermissionBlob:
-                    return new DefaultPermissionBlob(data);
-                case PackageType.DefaultTakePermissionBlob:
-                    return new DefaultTakePermissionBlob(data);
-                case PackageType.Door:
-                    return new Door(data);
-                case PackageType.DoorUsageBlob:
-                    return new DoorUsageBlob(data);
-                case PackageType.DurabilityFilter:
-                    return new DurabilityFilter(data);
-                case PackageType.Eff_Com_Hero_FickleFate_HealthHealDecrease:
-                    return new Eff_Com_Hero_FickleFate_HealthHealDecrease(data);
-                case PackageType.Eff_Com_Hero_FickleFate_HealthHealIncrease:
-                    return new Eff_Com_Hero_FickleFate_HealthHealIncrease(data);
-                case PackageType.Eff_Com_Hero_FickleFate_VigorHealDecrease:
-                    return new Eff_Com_Hero_FickleFate_VigorHealDecrease(data);
-                case PackageType.Eff_Com_Hero_FickleFate_VigorHealIncrease:
-                    return new Eff_Com_Hero_FickleFate_VigorHealIncrease(data);
-                case PackageType.Eff_Com_Hero_Perk_WildMagic1:
-                    return new Eff_Com_Hero_Perk_WildMagic1(data);
-                case PackageType.Eff_DayCounterLostArtifacts:
-                    return new Eff_DayCounterLostArtifacts(data);
-                case PackageType.Eff_Emp_Me_Templar_SigilOfValor:
-                    return new Eff_Emp_Me_Templar_SigilOfValor(data);
-                case PackageType.Eff_FlagAccountCanCreateDrudges:
-                    return new Eff_FlagAccountCanCreateDrudges(data);
-                case PackageType.Eff_HealthArchon2:
-                    return new Eff_HealthArchon2(data);
-                case PackageType.Eff_Hum_Ma_Sorcerer_Hero_BlightingGaze:
-                    return new Eff_Hum_Ma_Sorcerer_Hero_BlightingGaze(data);
-                case PackageType.Eff_Mn_Doppelganger:
-                    return new Eff_Mn_Doppelganger(data);
-                case PackageType.Eff_Mn_Golem_Clone:
-                    return new Eff_Mn_Golem_Clone(data);
-                case PackageType.Eff_Mn_Ma_CorruptorsTouch:
-                    return new Eff_Mn_Ma_CorruptorsTouch(data);
-                case PackageType.Eff_Popup_FirstCharacterSession:
-                    return new Eff_Popup_FirstCharacterSession(data);
-                case PackageType.Eff_PortalBeacon_PortalDeflectionGem:
-                    return new Eff_PortalBeacon_PortalDeflectionGem(data);
-                case PackageType.Eff_RashanDrudgeBane:
-                    return new Eff_RashanDrudgeBane(data);
-                case PackageType.Eff_RemoveMonsterWeaponsFromPlayersMay05:
-                    return new Eff_RemoveMonsterWeaponsFromPlayersMay05(data);
-                case PackageType.Eff_ResetLinvakResetTimers:
-                    return new Eff_ResetLinvakResetTimers(data);
-                case PackageType.Eff_ResetOmishanResetTimers:
-                    return new Eff_ResetOmishanResetTimers(data);
-                case PackageType.Eff_ResetOstethResetTimers:
-                    return new Eff_ResetOstethResetTimers(data);
-                case PackageType.Eff_SetLinvakResetTimers:
-                    return new Eff_SetLinvakResetTimers(data);
-                case PackageType.Eff_SetOmishanResetTimers:
-                    return new Eff_SetOmishanResetTimers(data);
-                case PackageType.Eff_SetOstethResetTimers:
-                    return new Eff_SetOstethResetTimers(data);
-                case PackageType.Eff_Tsys_SoulDefractor:
-                    return new Eff_Tsys_SoulDefractor(data);
-                case PackageType.Eff_UseXPStone:
-                    return new Eff_UseXPStone(data);
-                case PackageType.Eff_WildMagic4_EepEars:
-                    return new Eff_WildMagic4_EepEars(data);
-                case PackageType.Effect:
-                    return new Effect(data);
-                case PackageType.EffectDesc:
-                    return new EffectDesc(data);
-                case PackageType.EffectRecord:
-                    return new EffectRecord(data);
-                case PackageType.EffectRegistry:
-                    return new EffectRegistry(data);
-                case PackageType.EffectTypeFilter:
-                    return new EffectTypeFilter(data);
-                case PackageType.EquipItemProfile:
-                    return new EquipItemProfile(data);
-                case PackageType.EmoteInfo:
-                    return new EmoteInfo(data);
-                case PackageType.EmoteTable:
-                    return new EmoteTable(data);
-                case PackageType.Entity:
-                    return new Entity(data);
-                case PackageType.EntityFilter:
-                    return new EntityFilter(data);
-                case PackageType.ExperienceEffect:
-                    return new ExperienceEffect(data);
-                case PackageType.ExportToXMLOp:
-                    return new ExportToXMLOp(data);
-                case PackageType.ExportToXMLCleanupOp:
-                    return new ExportToXMLCleanupOp(data);
-                case PackageType.FactionChangeEffect:
-                    return new FactionChangeEffect(data);
-                case PackageType.FactionEffectEntry:
-                    return new FactionEffectEntry(data);
-                case PackageType.FactionGlobals:
-                    return new FactionGlobals(data);
-                case PackageType.Fellow:
-                    return new Fellow(data);
-                case PackageType.Fellowship:
-                    return new Fellowship(data);
-                case PackageType.FellowshipControl:
-                    return new FellowshipControl(data);
-                case PackageType.FellowVitals:
-                    return new FellowVitals(data);
-                case PackageType.FineItemClassFilter:
-                    return new FineItemClassFilter(data);
-                case PackageType.FlagRecipeAction:
-                    return new FlagRecipeAction(data);
-                case PackageType.FloatScaleDuple:
-                    return new FloatScaleDuple(data);
-                case PackageType.GameEventEffect:
-                    return new GameEventEffect(data);
-                case PackageType.GameSaleProfile:
-                    return new GameSaleProfile(data);
-                case PackageType.gmCEntity:
-                    return new gmCEntity(data);
-                case PackageType.gmEntity:
-                    return new gmEntity(data);
-                case PackageType.GrantRecipeEffect:
-                    return new GrantRecipeEffect(data);
-                case PackageType.HarmonizeRecipeAction:
-                    return new HarmonizeRecipeAction(data);
-                case PackageType.HeroControl:
-                    return new HeroControl(data);
-                case PackageType.HistoryList:
-                    return new HistoryList(data);
-                case PackageType.HookData:
-                    return new HookData(data);
-                case PackageType.HotspotEffect:
-                    return new HotspotEffect(data);
-                case PackageType.Ingredient:
-                    return new Ingredient(data);
-                case PackageType.InstantBehaviorEffect:
-                    return new InstantBehaviorEffect(data);
-                case PackageType.InstantVitalEffect:
-                    return new InstantVitalEffect(data);
-                case PackageType.InteractionSystem:
-                    return new InteractionSystem(data);
-                case PackageType.InteractionTable:
-                    return new InteractionTable(data);
-                case PackageType.Inventory:
-                    return new Inventory(data);
-                case PackageType.InventoryGlobals:
-                    return new InventoryGlobals(data);
-                case PackageType.InventProfile:
-                    return new InventProfile(data);
-                case PackageType.InvEquipDesc:
-                    return new InvEquipDesc(data);
-                case PackageType.InvLocCategory:
-                    return new InvLocCategory(data);
-                case PackageType.InvMoveDesc:
-                    return new InvMoveDesc(data);
-                case PackageType.InvTakeAllDesc:
-                    return new InvTakeAllDesc(data);
-                case PackageType.InvTransmuteAllDesc:
-                    return new InvTransmuteAllDesc(data);
-                case PackageType.ItemEffectRecipeAction:
-                    return new ItemEffectRecipeAction(data);
-                case PackageType.ItemInteractionOutcome:
-                    return new ItemInteractionOutcome(data);
-                case PackageType.ItemInteractionUsageBlob:
-                    return new ItemInteractionUsageBlob(data);
-                case PackageType.ItemProfile:
-                    return new ItemProfile(data);
-                case PackageType.KeyUsageBlob:
-                    return new KeyUsageBlob(data);
-                case PackageType.LevelData:
-                    return new LevelData(data);
-                case PackageType.LevelFilter:
-                    return new LevelFilter(data);
-                case PackageType.LevelMappingTable:
-                    return new LevelMappingTable(data);
-                case PackageType.LevelTable:
-                    return new LevelTable(data);
-                case PackageType.LinearAttackHook:
-                    return new LinearAttackHook(data);
-                case PackageType.LogInfo:
-                    return new LogInfo(data);
-                case PackageType.LogSystem:
-                    return new LogSystem(data);
-                case PackageType.LoreFilter:
-                    return new LoreFilter(data);
-                case PackageType.MasterDIDList:
-                    return new MasterDIDList(data);
-                case PackageType.MasterDIDListMember:
-                    return new MasterDIDListMember(data);
-                case PackageType.MasterList:
-                    return new MasterList(data);
-                case PackageType.MasterListMember:
-                    return new MasterListMember(data);
-                case PackageType.MineCraftBlob:
-                    return new MineCraftBlob(data);
-                case PackageType.MineGenesisEffect:
-                    return new MineGenesisEffect(data);
-                case PackageType.MineUsageAction:
-                    return new MineUsageAction(data);
-                case PackageType.MineUsageBlob:
-                    return new MineUsageBlob(data);
-                case PackageType.ModifyHierarchyHashesOp:
-                    return new ModifyHierarchyHashesOp(data);
-                case PackageType.MountEffect:
-                    return new MountEffect(data);
-                case PackageType.MountTable:
-                    return new MountTable(data);
-                case PackageType.MutateRecipeAction:
-                    return new MutateRecipeAction(data);
-                case PackageType.Operation:
-                    return new Operation(data);
-                case PackageType.OperationQueue:
-                    return new OperationQueue(data);
-                case PackageType.OrderedDIDEntryTable:
-                    return new OrderedDIDEntryTable(data);
-                case PackageType.PackageIDTable:
-                    return new PackageIDTable(data);
-                case PackageType.ParameterizedNumericEffect:
-                    return new ParameterizedNumericEffect(data);
-                case PackageType.PetData:
-                    return new PetData(data);
-                case PackageType.PetGenesisInfo:
-                    return new PetGenesisInfo(data);
-                case PackageType.PerkSkill:
-                    return new PerkSkill(data);
-                case PackageType.PhaseInfo:
-                    return new PhaseInfo(data);
-                case PackageType.PKStatus:
-                    return new PKStatus(data);
-                case PackageType.Player:
-                    return new Player(data);
-                case PackageType.PlayerEffectRecipeAction:
-                    return new PlayerEffectRecipeAction(data);
-                case PackageType.PlayerSaleProfile:
-                    return new PlayerSaleProfile(data);
-                case PackageType.PortalSummonEffect:
-                    return new PortalSummonEffect(data);
-                case PackageType.PotionUsageBlob:
-                    return new PotionUsageBlob(data);
-                case PackageType.ProduceRecipeAction:
-                    return new ProduceRecipeAction(data);
-                case PackageType.PropertyMapper:
-                    return new PropertyMapper(data);
-                case PackageType.PublicVendorProfile:
-                    return new PublicVendorProfile(data);
-                case PackageType.QualitiesEffect:
-                    return new QualitiesEffect(data);
-                case PackageType.Quest:
-                    return new Quest(data);
-                case PackageType.QuestGGWDreamT:
-                    return new QuestTemplate(data);
-                case PackageType.QuestGlobals:
-                    return new QuestGlobals(data);
-                case PackageType.QuestTemplate:
-                    return new QuestTemplate(data);
-                case PackageType.QuestTriggerEffect:
-                    return new QuestTriggerEffect(data);
-                case PackageType.QuestVaultTemplate:
-                    return new QuestVaultTemplate(data);
-                case PackageType.RaceFilter:
-                    return new RaceFilter(data);
-                case PackageType.RandomAttackHook:
-                    return new RandomAttackHook(data);
-                case PackageType.RandomRecallEffect:
-                    return new RandomRecallEffect(data);
-                case PackageType.RankBoard:
-                    return new RankBoard(data);
-                case PackageType.Recipe:
-                    return new Recipe(data);
-                case PackageType.RecipeContext:
-                    return new RecipeContext(data);
-                case PackageType.RecipeCostData:
-                    return new RecipeCostData(data);
-                case PackageType.RecipeCostTable:
-                    return new RecipeCostTable(data);
-                case PackageType.RecipeDifficultyTable:
-                    return new RecipeDifficultyTable(data);
-                case PackageType.RecipeNameColoringTable:
-                    return new RecipeNameColoringTable(data);
-                case PackageType.RecipeRecord:
-                    return new RecipeRecord(data);
-                case PackageType.RecipeTrainingTable:
-                    return new GenericPackage(packageType);
-                case PackageType.ReflectiveEffect:
-                    return new ReflectiveEffect(data);
-                case PackageType.ReflectiveVitalEffect:
-                    return new ReflectiveVitalEffect(data);
-                case PackageType.RemoveRecipeEffect:
-                    return new RemoveRecipeEffect(data);
-                case PackageType.ResurrectEffect:
-                    return new ResurrectEffect(data);
-                case PackageType.ResurrectionRequest:
-                    return new ResurrectionRequest(data);
-                case PackageType.SaleProfile:
-                    return new SaleProfile(data);
-                case PackageType.SaleTemplate:
-                    return new SaleTemplate(data);
-                case PackageType.SecretProduct:
-                    return new SecretProduct(data);
-                case PackageType.SecretRecipe:
-                    return new SecretRecipe(data);
-                case PackageType.ShardUsageBlob:
-                    return new ShardUsageBlob(data);
-                case PackageType.SimpleMasterList:
-                    return new SimpleMasterList(data);
-                case PackageType.Skill:
-                    return new Skill(data);
-                case PackageType.SkillCheck:
-                    return new SkillCheck(data);
-                case PackageType.SkillInfo:
-                    return new SkillInfo(data);
-                case PackageType.SkillPanel:
-                    return new SkillPanel(data);
-                case PackageType.SkillProfile:
-                    return new SkillProfile(data);
-                case PackageType.SkillRepository:
-                    return new SkillRepository(data);
-                case PackageType.SlayerEffect:
-                    return new SlayerEffect(data);
-                case PackageType.StampRecipeAction:
-                    return new StampRecipeAction(data);
-                case PackageType.StartArea:
-                    return new StartArea(data);
-                case PackageType.StartInvData:
-                    return new StartInvData(data);
-                case PackageType.StaticAttackHook:
-                    return new StaticAttackHook(data);
-                case PackageType.SRFormula:
-                    return new SRFormula(data);
-                case PackageType.StoreGlobals:
-                    return new StoreGlobals(data);
-                case PackageType.StoreGroup:
-                    return new StoreGroup(data);
-                case PackageType.StoreSorter:
-                    return new StoreSorter(data);
-                case PackageType.StoreTemplate:
-                    return new StoreTemplate(data);
-                case PackageType.StoreView:
-                    return new StoreView(data);
-                case PackageType.StoryQuestTriggerEffect:
-                    return new StoryQuestTriggerEffect(data);
-                case PackageType.StrictAliasControl:
-                    return new StrictAliasControl(data);
-                case PackageType.TargetInteraction:
-                    return new TargetInteraction(data);
-                case PackageType.TargetLevelFilter:
-                    return new TargetLevelFilter(data);
-                case PackageType.TargetLoreFilter:
-                    return new TargetLoreFilter(data);
-                case PackageType.TeleportEffect:
-                    return new TeleportEffect(data);
-                case PackageType.TextEffect:
-                    return new TextEffect(data);
-                case PackageType.TextRecipeAction:
-                    return new TextRecipeAction(data);
-                case PackageType.ToolPermissionBlob:
-                    return new ToolPermissionBlob(data);
-                case PackageType.TotemUsageBlob:
-                    return new TotemUsageBlob(data);
-                case PackageType.Trade:
-                    return new Trade(data);
-                case PackageType.TradeSystem:
-                    return new TradeSystem(data);
-                case PackageType.TransactInfo:
-                    return new TransactInfo(data);
-                case PackageType.TransactionBlob:
-                    return new TransactionBlob(data);
-                case PackageType.TransactResult:
-                    return new TransactResult(data);
-                case PackageType.TravelRecallEffect:
-                    return new TravelRecallEffect(data);
-                case PackageType.TravelTieEffect:
-                    return new TravelTieEffect(data);
-                case PackageType.TravelUsageBlob:
-                    return new TravelUsageBlob(data);
-                case PackageType.UIDamageControl:
-                    return new UIDamageControl(data);
-                case PackageType.UsageBlob:
-                    return new UsageBlob(data);
-                case PackageType.UsageDesc:
-                    return new UsageDesc(data);
-                case PackageType.VisualDescEffect:
-                    return new VisualDescEffect(data);
-                case PackageType.VisualDescInfo:
-                    return new VisualDescInfo(data);
-                case PackageType.VitalOverTimeEffect:
-                    return new VitalOverTimeEffect(data);
-                case PackageType.VitalTransferEffect:
-                    return new VitalTransferEffect(data);
-                case PackageType.WeaponTemplate:
-                    return new WeaponTemplate(data);
-                default:
-                    return null;
-            }
+            return packageType switch {
+                PackageType.ACFraction => new ACFraction(data),
+                PackageType.Act => new Act(data),
+                PackageType.ActiveSkill => new ActiveSkill(data),
+                PackageType.ActRegistry => new ActRegistry(data),
+                PackageType.ActTemplate => new ActTemplate(data),
+                PackageType.AdvancementTable => new AdvancementTable(data),
+                PackageType.Agent => new Agent(data),
+                PackageType.AIAngerEffect => new AIAngerEffect(data),
+                PackageType.AIPetEffect => new AIPetEffect(data),
+                PackageType.AITauntDetauntEffect => new AITauntDetauntEffect(data),
+                PackageType.AllegianceControl => new AllegianceControl(data),
+                PackageType.AllegianceData => new AllegianceData(data),
+                PackageType.AllegianceHallBindingStoneUsageBlob => new AllegianceHallBindingStoneUsageBlob(data),
+                PackageType.AllegianceHierarchy => new AllegianceHierarchy(data),
+                PackageType.AllegianceNode => new AllegianceHierarchy.AllegianceNode(data),
+                PackageType.AllegianceProfile => new AllegianceProfile(data),
+                PackageType.AllegianceRankTable => new AllegianceRankTable(data),
+                PackageType.AnimationRecipeAction => new AnimationRecipeAction(data),
+                PackageType.AppearanceModRecipeAction => new AppearanceModRecipeAction(data),
+                PackageType.AppearanceProfile => new AppearanceProfile(data),
+                PackageType.ApplyEffect => new ApplyEffect(data),
+                PackageType.AttackHook => new AttackHook(data),
+                PackageType.AttackHookData => new AttackHookData(data),
+                PackageType.AttributeProfile => new AttributeProfile(data),
+                PackageType.AttributeSkill => new AttributeSkill(data),
+                PackageType.AttuneRecipeAction => new AttuneRecipeAction(data),
+                PackageType.AuraEffect => new AuraEffect(data),
+                PackageType.BallUsageBlob => new BallUsageBlob(data),
+                PackageType.BiasProfile => new BiasProfile(data),
+                PackageType.BindRecipeAction => new BindRecipeAction(data),
+                PackageType.BookEffect => new BookEffect(data),
+                PackageType.BookUsageBlob => new BookUsageBlob(data),
+                PackageType.ButcheryToolUsageBlob => new ButcheryToolUsageBlob(data),
+                PackageType.CAdmin => new CAdmin(data),
+                PackageType.CAExcavationPoint => new CAExcavationPoint(data),
+                PackageType.ChainedInstantEffect => new ChainedInstantEffect(data),
+                PackageType.ChainedNumericEffect => new ChainedNumericEffect(data),
+                PackageType.ChannelData => new ChannelData(data),
+                PackageType.CharacterGenSystem => new CharacterGenSystem(data),
+                PackageType.CharGenMatrix or PackageType.CharGenMatrixData => new CharGenMatrix(data),
+                PackageType.ChatChannelControl => new ChatChannelControl(data),
+                PackageType.ClassFilter => new ClassFilter(data),
+                PackageType.Clothing => new Clothing(data),
+                PackageType.ComboEffect => new ComboEffect(data),
+                PackageType.CommunicationControl => new CommunicationControl(data),
+                PackageType.ConsignerDesc => new ConsignerDesc(data),
+                PackageType.Consignment => new Consignment(data),
+                PackageType.ConsignmentDesc => new ConsignmentDesc(data),
+                PackageType.Container => new Container(data),
+                PackageType.ContainerSegmentDescriptor => new ContainerSegmentDescriptor(data),
+                PackageType.ContentProfile => new ContentProfile(data),
+                PackageType.CorpsePermissionBlob => new CorpsePermissionBlob(data),
+                PackageType.CountdownEffect => new CountdownEffect(data),
+                PackageType.CPetState => new CPetState(data),
+                PackageType.CPlayer => new CPlayer(data),
+                PackageType.CraftBlob => new CraftBlob(data),
+                PackageType.CraftCheckEntry => new CraftCheckEntry(data),
+                PackageType.CraftRandomEntry => new CraftRandomEntry(data),
+                PackageType.CraftRegistry => new CraftRegistry(data),
+                PackageType.CraftSkill => new CraftSkill(data),
+                PackageType.CraftSkillRecord => new CraftSkillRecord(data),
+                PackageType.CraftSkillTitleScore => new CraftSkillTitleScore(data),
+                PackageType.CShopperContext => new CShopperContext(data),
+                PackageType.CUsageSystem => new CUsageSystem(data),
+                PackageType.CustomFailureRecipeAction => new CustomFailureRecipeAction(data),
+                PackageType.CustomSuccessRecipeAction => new CustomSuccessRecipeAction(data),
+                PackageType.DamageDisplayInfo => new DamageDisplayInfo(data),
+                PackageType.DestroyRecipeAction => new DestroyRecipeAction(data),
+                PackageType.DefaultPermissionBlob => new DefaultPermissionBlob(data),
+                PackageType.DefaultTakePermissionBlob => new DefaultTakePermissionBlob(data),
+                PackageType.Door => new Door(data),
+                PackageType.DoorUsageBlob => new DoorUsageBlob(data),
+                PackageType.DurabilityFilter => new DurabilityFilter(data),
+                PackageType.Eff_Com_Hero_FickleFate_HealthHealDecrease => new Eff_Com_Hero_FickleFate_HealthHealDecrease(data),
+                PackageType.Eff_Com_Hero_FickleFate_HealthHealIncrease => new Eff_Com_Hero_FickleFate_HealthHealIncrease(data),
+                PackageType.Eff_Com_Hero_FickleFate_VigorHealDecrease => new Eff_Com_Hero_FickleFate_VigorHealDecrease(data),
+                PackageType.Eff_Com_Hero_FickleFate_VigorHealIncrease => new Eff_Com_Hero_FickleFate_VigorHealIncrease(data),
+                PackageType.Eff_Com_Hero_Perk_WildMagic1 => new Eff_Com_Hero_Perk_WildMagic1(data),
+                PackageType.Eff_DayCounterLostArtifacts => new Eff_DayCounterLostArtifacts(data),
+                PackageType.Eff_Emp_Me_Templar_SigilOfValor => new Eff_Emp_Me_Templar_SigilOfValor(data),
+                PackageType.Eff_FlagAccountCanCreateDrudges => new Eff_FlagAccountCanCreateDrudges(data),
+                PackageType.Eff_HealthArchon2 => new Eff_HealthArchon2(data),
+                PackageType.Eff_Hum_Ma_Sorcerer_Hero_BlightingGaze => new Eff_Hum_Ma_Sorcerer_Hero_BlightingGaze(data),
+                PackageType.Eff_Mn_Doppelganger => new Eff_Mn_Doppelganger(data),
+                PackageType.Eff_Mn_Golem_Clone => new Eff_Mn_Golem_Clone(data),
+                PackageType.Eff_Mn_Ma_CorruptorsTouch => new Eff_Mn_Ma_CorruptorsTouch(data),
+                PackageType.Eff_Popup_FirstCharacterSession => new Eff_Popup_FirstCharacterSession(data),
+                PackageType.Eff_PortalBeacon_PortalDeflectionGem => new Eff_PortalBeacon_PortalDeflectionGem(data),
+                PackageType.Eff_RashanDrudgeBane => new Eff_RashanDrudgeBane(data),
+                PackageType.Eff_RemoveMonsterWeaponsFromPlayersMay05 => new Eff_RemoveMonsterWeaponsFromPlayersMay05(data),
+                PackageType.Eff_ResetLinvakResetTimers => new Eff_ResetLinvakResetTimers(data),
+                PackageType.Eff_ResetOmishanResetTimers => new Eff_ResetOmishanResetTimers(data),
+                PackageType.Eff_ResetOstethResetTimers => new Eff_ResetOstethResetTimers(data),
+                PackageType.Eff_SetLinvakResetTimers => new Eff_SetLinvakResetTimers(data),
+                PackageType.Eff_SetOmishanResetTimers => new Eff_SetOmishanResetTimers(data),
+                PackageType.Eff_SetOstethResetTimers => new Eff_SetOstethResetTimers(data),
+                PackageType.Eff_Tsys_SoulDefractor => new Eff_Tsys_SoulDefractor(data),
+                PackageType.Eff_UseXPStone => new Eff_UseXPStone(data),
+                PackageType.Eff_WildMagic4_EepEars => new Eff_WildMagic4_EepEars(data),
+                PackageType.Effect => new Effect(data),
+                PackageType.EffectDesc => new EffectDesc(data),
+                PackageType.EffectRecord => new EffectRecord(data),
+                PackageType.EffectRegistry => new EffectRegistry(data),
+                PackageType.EffectTypeFilter => new EffectTypeFilter(data),
+                PackageType.EquipItemProfile => new EquipItemProfile(data),
+                PackageType.EmoteInfo => new EmoteInfo(data),
+                PackageType.EmoteTable => new EmoteTable(data),
+                PackageType.Entity => new Entity(data),
+                PackageType.EntityFilter => new EntityFilter(data),
+                PackageType.ExperienceEffect => new ExperienceEffect(data),
+                PackageType.ExportToXMLOp => new ExportToXMLOp(data),
+                PackageType.ExportToXMLCleanupOp => new ExportToXMLCleanupOp(data),
+                PackageType.FactionChangeEffect => new FactionChangeEffect(data),
+                PackageType.FactionEffectEntry => new FactionEffectEntry(data),
+                PackageType.FactionGlobals => new FactionGlobals(data),
+                PackageType.Fellow => new Fellow(data),
+                PackageType.Fellowship => new Fellowship(data),
+                PackageType.FellowshipControl => new FellowshipControl(data),
+                PackageType.FellowVitals => new FellowVitals(data),
+                PackageType.FineItemClassFilter => new FineItemClassFilter(data),
+                PackageType.FlagRecipeAction => new FlagRecipeAction(data),
+                PackageType.FloatScaleDuple => new FloatScaleDuple(data),
+                PackageType.GameEventEffect => new GameEventEffect(data),
+                PackageType.GameSaleProfile => new GameSaleProfile(data),
+                PackageType.gmCEntity => new gmCEntity(data),
+                PackageType.gmEntity => new gmEntity(data),
+                PackageType.GrantRecipeEffect => new GrantRecipeEffect(data),
+                PackageType.HarmonizeRecipeAction => new HarmonizeRecipeAction(data),
+                PackageType.HeroControl => new HeroControl(data),
+                PackageType.HistoryList => new HistoryList(data),
+                PackageType.HookData => new HookData(data),
+                PackageType.HotspotEffect => new HotspotEffect(data),
+                PackageType.Ingredient => new Ingredient(data),
+                PackageType.InstantBehaviorEffect => new InstantBehaviorEffect(data),
+                PackageType.InstantVitalEffect => new InstantVitalEffect(data),
+                PackageType.InteractionSystem => new InteractionSystem(data),
+                PackageType.InteractionTable => new InteractionTable(data),
+                PackageType.Inventory => new Inventory(data),
+                PackageType.InventoryGlobals => new InventoryGlobals(data),
+                PackageType.InventProfile => new InventProfile(data),
+                PackageType.InvEquipDesc => new InvEquipDesc(data),
+                PackageType.InvLocCategory => new InvLocCategory(data),
+                PackageType.InvMoveDesc => new InvMoveDesc(data),
+                PackageType.InvTakeAllDesc => new InvTakeAllDesc(data),
+                PackageType.InvTransmuteAllDesc => new InvTransmuteAllDesc(data),
+                PackageType.ItemEffectRecipeAction => new ItemEffectRecipeAction(data),
+                PackageType.ItemInteractionOutcome => new ItemInteractionOutcome(data),
+                PackageType.ItemInteractionUsageBlob => new ItemInteractionUsageBlob(data),
+                PackageType.ItemProfile => new ItemProfile(data),
+                PackageType.KeyUsageBlob => new KeyUsageBlob(data),
+                PackageType.LevelData => new LevelData(data),
+                PackageType.LevelFilter => new LevelFilter(data),
+                PackageType.LevelMappingTable => new LevelMappingTable(data),
+                PackageType.LevelTable => new LevelTable(data),
+                PackageType.LinearAttackHook => new LinearAttackHook(data),
+                PackageType.LogInfo => new LogInfo(data),
+                PackageType.LogSystem => new LogSystem(data),
+                PackageType.LoreFilter => new LoreFilter(data),
+                PackageType.MasterDIDList => new MasterDIDList(data),
+                PackageType.MasterDIDListMember => new MasterDIDListMember(data),
+                PackageType.MasterList => new MasterList(data),
+                PackageType.MasterListMember => new MasterListMember(data),
+                PackageType.MineCraftBlob => new MineCraftBlob(data),
+                PackageType.MineGenesisEffect => new MineGenesisEffect(data),
+                PackageType.MineUsageAction => new MineUsageAction(data),
+                PackageType.MineUsageBlob => new MineUsageBlob(data),
+                PackageType.ModifyHierarchyHashesOp => new ModifyHierarchyHashesOp(data),
+                PackageType.MountEffect => new MountEffect(data),
+                PackageType.MountTable => new MountTable(data),
+                PackageType.MutateRecipeAction => new MutateRecipeAction(data),
+                PackageType.Operation => new Operation(data),
+                PackageType.OperationQueue => new OperationQueue(data),
+                PackageType.OrderedDIDEntryTable => new OrderedDIDEntryTable(data),
+                PackageType.PackageIDTable => new PackageIDTable(data),
+                PackageType.ParameterizedNumericEffect => new ParameterizedNumericEffect(data),
+                PackageType.PetData => new PetData(data),
+                PackageType.PetGenesisInfo => new PetGenesisInfo(data),
+                PackageType.PerkSkill => new PerkSkill(data),
+                PackageType.PhaseInfo => new PhaseInfo(data),
+                PackageType.PKStatus => new PKStatus(data),
+                PackageType.Player => new Player(data),
+                PackageType.PlayerEffectRecipeAction => new PlayerEffectRecipeAction(data),
+                PackageType.PlayerSaleProfile => new PlayerSaleProfile(data),
+                PackageType.PortalSummonEffect => new PortalSummonEffect(data),
+                PackageType.PotionUsageBlob => new PotionUsageBlob(data),
+                PackageType.ProduceRecipeAction => new ProduceRecipeAction(data),
+                PackageType.PropertyMapper => new PropertyMapper(data),
+                PackageType.PublicVendorProfile => new PublicVendorProfile(data),
+                PackageType.QualitiesEffect => new QualitiesEffect(data),
+                PackageType.Quest => new Quest(data),
+                PackageType.QuestGGWDreamT => new QuestTemplate(data),
+                PackageType.QuestGlobals => new QuestGlobals(data),
+                PackageType.QuestTemplate => new QuestTemplate(data),
+                PackageType.QuestTriggerEffect => new QuestTriggerEffect(data),
+                PackageType.QuestVaultTemplate => new QuestVaultTemplate(data),
+                PackageType.RaceFilter => new RaceFilter(data),
+                PackageType.RandomAttackHook => new RandomAttackHook(data),
+                PackageType.RandomRecallEffect => new RandomRecallEffect(data),
+                PackageType.RankBoard => new RankBoard(data),
+                PackageType.Recipe => new Recipe(data),
+                PackageType.RecipeContext => new RecipeContext(data),
+                PackageType.RecipeCostData => new RecipeCostData(data),
+                PackageType.RecipeCostTable => new RecipeCostTable(data),
+                PackageType.RecipeDifficultyTable => new RecipeDifficultyTable(data),
+                PackageType.RecipeNameColoringTable => new RecipeNameColoringTable(data),
+                PackageType.RecipeRecord => new RecipeRecord(data),
+                PackageType.RecipeTrainingTable => new GenericPackage(packageType),
+                PackageType.ReflectiveEffect => new ReflectiveEffect(data),
+                PackageType.ReflectiveVitalEffect => new ReflectiveVitalEffect(data),
+                PackageType.RemoveRecipeEffect => new RemoveRecipeEffect(data),
+                PackageType.ResurrectEffect => new ResurrectEffect(data),
+                PackageType.ResurrectionRequest => new ResurrectionRequest(data),
+                PackageType.SaleProfile => new SaleProfile(data),
+                PackageType.SaleTemplate => new SaleTemplate(data),
+                PackageType.SecretProduct => new SecretProduct(data),
+                PackageType.SecretRecipe => new SecretRecipe(data),
+                PackageType.ShardUsageBlob => new ShardUsageBlob(data),
+                PackageType.SimpleMasterList => new SimpleMasterList(data),
+                PackageType.Skill => new Skill(data),
+                PackageType.SkillCheck => new SkillCheck(data),
+                PackageType.SkillInfo => new SkillInfo(data),
+                PackageType.SkillPanel => new SkillPanel(data),
+                PackageType.SkillProfile => new SkillProfile(data),
+                PackageType.SkillRepository => new SkillRepository(data),
+                PackageType.SlayerEffect => new SlayerEffect(data),
+                PackageType.StampRecipeAction => new StampRecipeAction(data),
+                PackageType.StartArea => new StartArea(data),
+                PackageType.StartInvData => new StartInvData(data),
+                PackageType.StaticAttackHook => new StaticAttackHook(data),
+                PackageType.SRFormula => new SRFormula(data),
+                PackageType.StoreGlobals => new StoreGlobals(data),
+                PackageType.StoreGroup => new StoreGroup(data),
+                PackageType.StoreSorter => new StoreSorter(data),
+                PackageType.StoreTemplate => new StoreTemplate(data),
+                PackageType.StoreView => new StoreView(data),
+                PackageType.StoryQuestTriggerEffect => new StoryQuestTriggerEffect(data),
+                PackageType.StrictAliasControl => new StrictAliasControl(data),
+                PackageType.TargetInteraction => new TargetInteraction(data),
+                PackageType.TargetLevelFilter => new TargetLevelFilter(data),
+                PackageType.TargetLoreFilter => new TargetLoreFilter(data),
+                PackageType.TeleportEffect => new TeleportEffect(data),
+                PackageType.TextEffect => new TextEffect(data),
+                PackageType.TextRecipeAction => new TextRecipeAction(data),
+                PackageType.ToolPermissionBlob => new ToolPermissionBlob(data),
+                PackageType.TotemUsageBlob => new TotemUsageBlob(data),
+                PackageType.Trade => new Trade(data),
+                PackageType.TradeSystem => new TradeSystem(data),
+                PackageType.TransactInfo => new TransactInfo(data),
+                PackageType.TransactionBlob => new TransactionBlob(data),
+                PackageType.TransactResult => new TransactResult(data),
+                PackageType.TravelRecallEffect => new TravelRecallEffect(data),
+                PackageType.TravelTieEffect => new TravelTieEffect(data),
+                PackageType.TravelUsageBlob => new TravelUsageBlob(data),
+                PackageType.UIDamageControl => new UIDamageControl(data),
+                PackageType.UsageBlob => new UsageBlob(data),
+                PackageType.UsageDesc => new UsageDesc(data),
+                PackageType.VisualDescEffect => new VisualDescEffect(data),
+                PackageType.VisualDescInfo => new VisualDescInfo(data),
+                PackageType.VitalOverTimeEffect => new VitalOverTimeEffect(data),
+                PackageType.VitalTransferEffect => new VitalTransferEffect(data),
+                PackageType.WeaponTemplate => new WeaponTemplate(data),
+                _ => null,
+            };
         }
     }
 }

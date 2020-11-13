@@ -18,9 +18,9 @@ namespace AC2E.UICommon {
         public Vector3 cameraOffset = new(0.0f, -5.0f, 0.0f);
         public Quaternion cameraRot = Quaternion.Identity;
 
-        private IRenderer renderer;
-        private RenderManager renderManager;
-        private Stopwatch renderStopwatch = new();
+        private readonly IRenderer renderer;
+        private readonly RenderManager renderManager;
+        private readonly Stopwatch renderStopwatch = new();
         private float lastRenderTime;
 
         private RenderObject? testObject;
@@ -91,7 +91,7 @@ namespace AC2E.UICommon {
                 renderManager.draw();
                 lastRenderTime = curElapsedTime;
 
-                cameraRot = cameraRot * Util.quaternionFromAxisAngleLeftHanded(new(0.0f, 0.0f, 1.0f), 1.0f * dt);
+                cameraRot *= Util.quaternionFromAxisAngleLeftHanded(new(0.0f, 0.0f, 1.0f), 1.0f * dt);
             }
         }
     }

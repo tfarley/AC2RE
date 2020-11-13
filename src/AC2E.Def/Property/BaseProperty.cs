@@ -5,7 +5,7 @@ namespace AC2E.Def {
 
     public class BaseProperty : IPackage {
 
-        NativeType nativeType => NativeType.BASEPROPERTY;
+        public NativeType nativeType => NativeType.BASEPROPERTY;
 
         public PropertyName name; // m_propertyName
         public PropertyType type; // m_propertyType
@@ -21,49 +21,22 @@ namespace AC2E.Def {
             BasePropertyDesc propertyDesc = MasterProperty.instance.properties[(uint)name];
             type = propertyDesc.type;
             group = propertyDesc.group;
-            switch (type) {
-                case PropertyType.BOOL:
-                    value = data.ReadBoolean();
-                    break;
-                case PropertyType.INTEGER:
-                    value = data.ReadInt32();
-                    break;
-                case PropertyType.FLOAT:
-                    value = data.ReadSingle();
-                    break;
-                case PropertyType.VECTOR:
-                    value = data.ReadVector();
-                    break;
-                case PropertyType.COLOR:
-                    value = data.ReadRGBAColor();
-                    break;
-                case PropertyType.STRING:
-                    value = data.ReadString();
-                    break;
-                case PropertyType.ENUM:
-                    value = data.ReadUInt32();
-                    break;
-                case PropertyType.DATA_FILE:
-                    value = data.ReadDataId();
-                    break;
-                case PropertyType.WAVEFORM:
-                    value = new Waveform(data);
-                    break;
-                case PropertyType.STRING_INFO:
-                    value = new StringInfo(data);
-                    break;
-                case PropertyType.PACKAGE_ID:
-                    value = (PackageType)data.ReadUInt32();
-                    break;
-                case PropertyType.LONG_INTEGER:
-                    value = data.ReadInt64();
-                    break;
-                case PropertyType.POSITION:
-                    value = new Position(data);
-                    break;
-                default:
-                    throw new InvalidDataException(type.ToString());
-            }
+            value = type switch {
+                PropertyType.BOOL => data.ReadBoolean(),
+                PropertyType.INTEGER => data.ReadInt32(),
+                PropertyType.FLOAT => data.ReadSingle(),
+                PropertyType.VECTOR => data.ReadVector(),
+                PropertyType.COLOR => data.ReadRGBAColor(),
+                PropertyType.STRING => data.ReadString(),
+                PropertyType.ENUM => data.ReadUInt32(),
+                PropertyType.DATA_FILE => data.ReadDataId(),
+                PropertyType.WAVEFORM => new Waveform(data),
+                PropertyType.STRING_INFO => new StringInfo(data),
+                PropertyType.PACKAGE_ID => (PackageType)data.ReadUInt32(),
+                PropertyType.LONG_INTEGER => data.ReadInt64(),
+                PropertyType.POSITION => new Position(data),
+                _ => throw new InvalidDataException(type.ToString()),
+            };
         }
 
         public void write(AC2Writer data) {

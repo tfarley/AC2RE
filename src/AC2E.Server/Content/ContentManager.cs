@@ -9,10 +9,10 @@ namespace AC2E.Server {
         private readonly DatReader portalDatReader;
         private CharacterGenSystem? characterGenSystem;
         private CharGenMatrix? charGenMatrix;
-        private Dictionary<DataId, EntityDef> entityDefCache = new();
-        private Dictionary<DataId, CBaseQualities> qualitiesCache = new();
-        private Dictionary<DataId, WState> weenieStateCache = new();
-        private Dictionary<DataId, VisualDesc> visualDescCache = new();
+        private readonly Dictionary<DataId, EntityDef> entityDefCache = new();
+        private readonly Dictionary<DataId, CBaseQualities> qualitiesCache = new();
+        private readonly Dictionary<DataId, WState> weenieStateCache = new();
+        private readonly Dictionary<DataId, VisualDesc> visualDescCache = new();
 
         public ContentManager() {
             portalDatReader = new("G:\\Asheron's Call 2\\portal.dat_server");

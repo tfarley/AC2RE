@@ -11,10 +11,10 @@ namespace AC2E.RenderCommon.OpenGL {
 
     internal class WinOGLRenderer : OGLRenderer {
 
-        private IntPtr openglModule;
-        private IntPtr hwnd;
-        private IntPtr hdc;
-        private IntPtr hglrc;
+        private readonly IntPtr openglModule;
+        private readonly IntPtr hwnd;
+        private readonly IntPtr hdc;
+        private readonly IntPtr hglrc;
 
         public WinOGLRenderer(IntPtr hwnd) {
             if ((openglModule = LoadLibraryEx("opengl32.dll", IntPtr.Zero, LoadLibraryFlags.LOAD_LIBRARY_SEARCH_SYSTEM32)) == IntPtr.Zero) {

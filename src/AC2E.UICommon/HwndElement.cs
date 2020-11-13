@@ -8,16 +8,16 @@ namespace AC2E.UICommon {
     public class HwndElement : HwndHost {
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
-        public static extern IntPtr SetParent(IntPtr hWnd, IntPtr hWndParent);
+        private static extern IntPtr SetParent(IntPtr hWnd, IntPtr hWndParent);
 
         private const int GWL_STYLE = -16;
         private const int WS_CHILD = 0x40000000;
 
-        Window window;
-        public IntPtr hwnd { get; init; }
+        private readonly Window window;
+        public readonly IntPtr hwnd;
 
         public HwndElement() {
             window = new();
