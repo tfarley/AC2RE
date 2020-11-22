@@ -43,11 +43,11 @@ namespace AC2E.PacketTool.UI {
 
             bool reselect = false;
             foreach (NetBlobRow netBlobRow in netBlobRows) {
-                if (opcodeFilter != null && !netBlobRow.opcodeName.Contains(opcodeFilter, StringComparison.InvariantCultureIgnoreCase)) {
+                if (opcodeFilter != null && !netBlobRow.opcodeName.Contains(opcodeFilter, StringComparison.OrdinalIgnoreCase)) {
                     continue;
                 }
 
-                if (eventFilter != null && !netBlobRow.eventName.Contains(eventFilter, StringComparison.InvariantCultureIgnoreCase)) {
+                if (eventFilter != null && !netBlobRow.eventName.Contains(eventFilter, StringComparison.OrdinalIgnoreCase)) {
                     continue;
                 }
 
