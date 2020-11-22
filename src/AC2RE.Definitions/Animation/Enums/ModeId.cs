@@ -1,0 +1,37 @@
+﻿namespace AC2RE.Definitions {
+
+    // Const - globals
+    // Dat file 23000048 + 23000026
+    public enum ModeId : uint {
+        PEACE = 0x40000001,
+        DIVE = 0x40000002,
+        RIDING = 0x40000003,
+
+        SIT = 0x41000001,
+        OPEN = 0x41000002,
+        CLOSED = 0x41000003,
+        LOOTED = 0x41000004,
+        DEAD = 0x41000005,
+        CHARGEN = 0x41000006,
+        CHARGENMO = 0x41000007,
+        AVGEN = 0x41000008,
+        COMBAT = 0x41000009,
+        COMBAT_1H = 0x4100000A,
+        COMBAT_1H_SHIELD = 0x4100000B,
+        COMBAT_2H = 0x4100000C,
+        COMBAT_POLEARM = 0x4100000D,
+        COMBAT_DUALWIELD = 0x4100000E,
+        COMBAT_MARTIALARTS = 0x4100000F,
+        COMBAT_MISSILE = 0x41000010,
+        COMBAT_MAGIC = 0x41000011,
+        COMBAT_MONSTER = 0x41000012,
+        COMBAT_FLAIL = 0x41000013,
+        COMBAT_TURRET = 0x41000014,
+        COMBAT_BOULDER = 0x41000015,
+        MUSIC_LUTE = 0x41000016,
+        MUSIC_WIND = 0x41000017,
+        MUSIC_DRUM = 0x41000018,
+        MUSIC_STRING = 0x41000019,
+        MOUNTED_DEAD = 0x4100001A,
+    }
+}

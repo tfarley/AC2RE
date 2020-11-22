@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AC2RE.Definitions\AC2RE.Definitions.csproj" />
+    <ProjectReference Include="..\AC2RE.Renderer\AC2RE.Renderer.csproj" />
+    <ProjectReference Include="..\AC2RE.RenderLib\AC2RE.RenderLib.csproj" />
+    <ProjectReference Include="..\AC2RE.Utils\AC2RE.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="UI\RenderPreview.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="UI\RenderPreview.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+</Project>

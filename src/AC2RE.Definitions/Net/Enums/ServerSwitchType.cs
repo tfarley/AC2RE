@@ -1,0 +1,8 @@
+﻿namespace AC2RE.Definitions {
+
+    // Enum ServerSwitchType
+    public enum ServerSwitchType : uint {
+        WORLD_SWITCH,
+        LOGON_SWITCH,
+    }
+}
