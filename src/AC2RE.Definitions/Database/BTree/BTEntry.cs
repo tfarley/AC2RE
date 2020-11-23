@@ -2,7 +2,7 @@
 
     public class BTEntry {
 
-        public static readonly int FILE_SIZE = sizeof(uint) * 4;
+        public static readonly int SIZE = sizeof(uint) * 4;
 
         public DataId did; // GID_
         public uint offset; // Offset_

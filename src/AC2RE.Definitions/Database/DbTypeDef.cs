@@ -5,6 +5,17 @@ namespace AC2RE.Definitions {
     public class DbTypeDef {
 
         public static readonly Dictionary<DbType, DbTypeDef> TYPE_TO_DEF = new() {
+            // NOTE: Not an official entry
+            {
+                DbType.ENVCELL,
+                new() {
+                    extension = ".envcell",
+                    isPortalType = false,
+                    isCellType = true,
+                    isLocalType = false,
+                    strDataDir = "envcell",
+                }
+            },
             {
                 DbType.LANDBLOCKINFO,
                 new() {

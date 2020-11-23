@@ -9,7 +9,15 @@ namespace AC2RE.DatTool {
 
     public class DatParse {
 
-        public static void parseDat(DatReader datReader, string outputBaseDir, params DbType[] typesToParse) {
+        public enum DatType {
+            PORTAL,
+            CELL1,
+            CELL2,
+            LOCAL,
+            HIGHRES,
+        }
+
+        public static void parseDat(DatType datType, DatReader datReader, string outputBaseDir, params DbType[] typesToParse) {
             Log.Information($"Parsing dat {datReader.datFileName}...");
 
             HashSet<DbType> typesToParseSet = new(typesToParse);
@@ -19,13 +27,15 @@ namespace AC2RE.DatTool {
 
             HashSet<DbType> allSeenTypes = new();
 
-            // Parse data in first pass that is required for second pass
-            MasterProperty.loadMasterProperties(datReader);
-            PackageManager.loadPackageTypes(datReader);
+            if (datType == DatType.PORTAL) {
+                // Parse data in first pass that is required for second pass
+                MasterProperty.loadMasterProperties(datReader);
+                PackageManager.loadPackageTypes(datReader);
+            }
 
             int numFiles = 0;
             foreach (DataId did in datReader.dids) {
-                DbType dbType = DbTypeDef.getType(did);
+                DbType dbType = datType == DatType.CELL1 ? DbType.ENVCELL : DbTypeDef.getType(did);
 
                 DbTypeDef dbTypeDef = DbTypeDef.TYPE_TO_DEF[dbType];
 
@@ -58,7 +68,7 @@ namespace AC2RE.DatTool {
             foreach (DataId did in datReader.dids) {
                 numFiles++;
 
-                DbType dbType = DbTypeDef.getType(did);
+                DbType dbType = datType == DatType.CELL1 ? DbType.ENVCELL : DbTypeDef.getType(did);
 
                 allSeenTypes.Add(dbType);
 
@@ -86,15 +96,13 @@ namespace AC2RE.DatTool {
 
                 string outputPath = Path.Combine(directory, fileName);
 
-                parseFile(datReader, did, outputPath);
+                parseFile(datReader, did, dbType, outputPath);
             }
 
             Log.Information($"Parsed dat {datReader.datFileName}, num files: {numFiles}, all seen types: {Util.objectToString(allSeenTypes)}.");
         }
 
-        private static void parseFile(DatReader datReader, DataId did, string outputPath) {
-            DbType dbType = DbTypeDef.getType(did);
-
+        private static void parseFile(DatReader datReader, DataId did, DbType dbType, string outputPath) {
             switch (dbType) {
                 case DbType.APPEARANCE:
                     readAndDump(datReader, did, outputPath, data => new AppearanceTable(data));
@@ -162,6 +170,14 @@ namespace AC2RE.DatTool {
                 case DbType.ENTITYDESC:
                     readAndDump(datReader, did, outputPath, data => new EntityDesc(data));
                     break;
+                case DbType.ENVCELL: {
+                        using (AC2Reader data = datReader.getFileReader(did)) {
+                            // TODO: Ensure CEnvCell is actually the correct type, and parse
+
+                            checkFullRead(data, did);
+                        }
+                        break;
+                    }
                 case DbType.FILE2ID_TABLE:
                     readAndDump(datReader, did, outputPath, data => new DBFile2IDTable(data));
                     break;

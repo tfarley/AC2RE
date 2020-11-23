@@ -18,38 +18,32 @@ namespace AC2RE.DatTool.UI {
             Loaded += (_, _) => {
                 /*
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\portal.dat_server")) {
-                    DatParse.parseDat(datReader, "portalparsed", DbType.WSTATE);
+                    DatParse.parseDat(DatParse.DatType.PORTAL, datReader, "portalparsed", DbType.WSTATE);
                 }
                 */
 
                 /*
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\cell_1.dat")) {
-                    //DatParse.parseDat(datReader, "cell1parsed", DbType.ENVCELL);
-                    CellParse.getMissingCells(datReader);
+                    DatParse.parseDat(DatParse.DatType.CELL1, datReader, "cell1parsed", DbType.ENVCELL);
+                    //CellParse.getMissingCells(datReader);
                 }
                 */
 
                 /*
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\cell_2.dat")) {
-                    DatParse.parseDat(datReader, "cell2parsed", DbType.DATFILEDATA);
+                    DatParse.parseDat(DatParse.DatType.CELL2, datReader, "cell2parsed", DbType.DATFILEDATA);
                 }
                 */
 
                 /*
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\highres.dat")) {
-                    DatParse.parseDat(datReader, "highresparsed", DbType.DATFILEDATA);
+                    DatParse.parseDat(DatParse.DatType.HIGHRES, datReader, "highresparsed", DbType.DATFILEDATA);
                 }
                 */
 
                 /*
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\local_English.dat")) {
-                    DatParse.parseDat(datReader, "localenglishparsed", DbType.ENCODED_WAV);
-                }
-                */
-
-                /*
-                using (DatReader datReader = new("G:\\Asheron's Call 2\\local_English.dat")) {
-                    DatParse.parseDat(datReader, "localenglishparsed", DbType.ENCODED_WAV);
+                    DatParse.parseDat(DatParse.DatType.LOCAL, datReader, "localenglishparsed", DbType.ENCODED_WAV);
                 }
                 */
             };
