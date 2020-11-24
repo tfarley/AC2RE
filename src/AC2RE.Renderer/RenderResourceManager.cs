@@ -38,7 +38,7 @@ namespace AC2RE.Renderer {
                     return null;
                 }
 
-                DbType dbType = DbTypeDef.getType(did);
+                DbType dbType = DbTypeDef.getType(DbTypeDef.DatType.PORTAL, did);
                 using (AC2Reader data = datReader.getFileReader(did)) {
                     if (dbType == DbType.MESH) {
                         meshes = new() { loadMesh(renderer, data) };

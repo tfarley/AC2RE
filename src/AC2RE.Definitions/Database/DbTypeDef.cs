@@ -4,18 +4,15 @@ namespace AC2RE.Definitions {
 
     public class DbTypeDef {
 
+        public enum DatType {
+            PORTAL,
+            CELL1,
+            CELL2,
+            LOCAL,
+            HIGHRES,
+        }
+
         public static readonly Dictionary<DbType, DbTypeDef> TYPE_TO_DEF = new() {
-            // NOTE: Not an official entry
-            {
-                DbType.ENVCELL,
-                new() {
-                    extension = ".envcell",
-                    isPortalType = false,
-                    isCellType = true,
-                    isLocalType = false,
-                    strDataDir = "envcell",
-                }
-            },
             {
                 DbType.LANDBLOCKINFO,
                 new() {
@@ -40,9 +37,7 @@ namespace AC2RE.Definitions {
                     freelistIdealSize = 32,
                     freelistMaxSize = 64,
                 }
-            },
-
-            {
+            },            {
                 DbType.LIGHTINFO,
                 new() {
                     baseDid = new(0),
@@ -67,7 +62,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 16,
                 }
             },
-
             {
                 DbType.LBO,
                 new() {
@@ -93,7 +87,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.SHELL,
                 new() {
@@ -119,7 +112,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.LIGHTCACHE,
                 new() {
@@ -145,7 +137,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.PATHMAP,
                 new() {
@@ -171,7 +162,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.CELLMESH,
                 new() {
@@ -197,7 +187,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.SCENE,
                 new() {
@@ -223,7 +212,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 128,
                 }
             },
-
             {
                 DbType.ANIMMAP,
                 new() {
@@ -249,7 +237,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.SETUP,
                 new() {
@@ -275,7 +262,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 128,
                 }
             },
-
             {
                 DbType.DBANIMATOR,
                 new() {
@@ -301,7 +287,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 256,
                 }
             },
-
             {
                 DbType.MESH,
                 new() {
@@ -327,7 +312,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 128,
                 }
             },
-
             {
                 DbType.QUALITY_FILTER,
                 new() {
@@ -353,7 +337,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.WAVE,
                 new() {
@@ -379,7 +362,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 256,
                 }
             },
-
             {
                 DbType.FILE2ID_TABLE,
                 new() {
@@ -405,7 +387,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.PLACES_TABLE,
                 new() {
@@ -431,7 +412,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.TABOO_TABLE,
                 new() {
@@ -457,7 +437,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.REGION,
                 new() {
@@ -483,7 +462,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.SOUND_DESC,
                 new() {
@@ -509,7 +487,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.SCENE_DESC,
                 new() {
@@ -535,7 +512,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.TERRAIN_DESC,
                 new() {
@@ -561,7 +537,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.SURFACE_DESC,
                 new() {
@@ -587,7 +562,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.ENCOUNTER_DESC,
                 new() {
@@ -613,7 +587,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.SKY_DESC,
                 new() {
@@ -639,7 +612,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.WATER_DESC,
                 new() {
@@ -665,7 +637,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.FOG_DESC,
                 new() {
@@ -691,7 +662,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.PROPERTY_DESC,
                 new() {
@@ -717,7 +687,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.BLOCK_MAP,
                 new() {
@@ -743,7 +712,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.DAY_DESC,
                 new() {
@@ -769,7 +737,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.KEYMAP,
                 new() {
@@ -795,7 +762,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.FX_TABLE,
                 new() {
@@ -821,7 +787,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.VISUAL_DESC,
                 new() {
@@ -847,7 +812,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 128,
                 }
             },
-
             {
                 DbType.APPEARANCE,
                 new() {
@@ -873,7 +837,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 128,
                 }
             },
-
             {
                 DbType.UI_SCENE,
                 new() {
@@ -899,7 +862,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.UI_LAYOUT,
                 new() {
@@ -925,7 +887,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.ENUM_MAPPER,
                 new() {
@@ -951,7 +912,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 128,
                 }
             },
-
             {
                 DbType.MUSICDESC,
                 new() {
@@ -977,7 +937,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.STRING_TABLE,
                 new() {
@@ -1003,7 +962,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.FILEFORMAT,
                 new() {
@@ -1029,7 +987,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.INPUTMAPPER,
                 new() {
@@ -1055,7 +1012,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.ENVINFO,
                 new() {
@@ -1081,7 +1037,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.SOUNDINFO,
                 new() {
@@ -1107,7 +1062,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 256,
                 }
             },
-
             {
                 DbType.RENDERMATERIAL,
                 new() {
@@ -1133,7 +1087,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 128,
                 }
             },
-
             {
                 DbType.MUSICINFO,
                 new() {
@@ -1159,7 +1112,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 256,
                 }
             },
-
             {
                 DbType.CHARTEMPLATE,
                 new() {
@@ -1185,7 +1137,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.MATERIALMODIFIER,
                 new() {
@@ -1211,7 +1162,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 128,
                 }
             },
-
             {
                 DbType.MATERIALINSTANCE,
                 new() {
@@ -1237,7 +1187,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 128,
                 }
             },
-
             {
                 DbType.MOTIONINTERPDESC,
                 new() {
@@ -1263,7 +1212,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.MASTER_PROPERTY,
                 new() {
@@ -1289,7 +1237,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.GAME_TIME,
                 new() {
@@ -1315,7 +1262,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.LANDSCAPE_DEFS,
                 new() {
@@ -1341,7 +1287,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.PHYSICS_MATERIAL,
                 new() {
@@ -1367,7 +1312,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.OBSTACLE_DESC,
                 new() {
@@ -1393,7 +1337,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.PSDESC,
                 new() {
@@ -1419,7 +1362,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 128,
                 }
             },
-
             {
                 DbType.RENDERTEXTURE,
                 new() {
@@ -1445,7 +1387,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 256,
                 }
             },
-
             {
                 DbType.RENDERTEXTURE_LOCAL,
                 new() {
@@ -1471,7 +1412,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 256,
                 }
             },
-
             {
                 DbType.RENDERSURFACE,
                 new() {
@@ -1497,7 +1437,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 512,
                 }
             },
-
             {
                 DbType.RENDERSURFACE_LOCAL,
                 new() {
@@ -1523,7 +1462,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 512,
                 }
             },
-
             {
                 DbType.FONT,
                 new() {
@@ -1549,7 +1487,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.FONT_LOCAL,
                 new() {
@@ -1575,7 +1512,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.BEHAVIORTABLE,
                 new() {
@@ -1601,7 +1537,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.ENTITYGROUP,
                 new() {
@@ -1627,7 +1562,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.ENTITYDESC,
                 new() {
@@ -1653,7 +1587,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 128,
                 }
             },
-
             {
                 DbType.ACTIONMAP,
                 new() {
@@ -1679,7 +1612,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.CDB_TABLE,
                 new() {
@@ -1705,7 +1637,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.PERFORMANCE,
                 new() {
@@ -1731,7 +1662,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.VALIDMODES,
                 new() {
@@ -1757,7 +1687,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.CAMERA_FX,
                 new() {
@@ -1783,7 +1712,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.WLIB,
                 new() {
@@ -1809,7 +1737,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.FXSCRIPT,
                 new() {
@@ -1835,7 +1762,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.STRING_STATE,
                 new() {
@@ -1861,7 +1787,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.DETAILMAP_DESC,
                 new() {
@@ -1887,7 +1812,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.MAPNOTE_DESC,
                 new() {
@@ -1913,7 +1837,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.CONVERSATION_TREE,
                 new() {
@@ -1939,7 +1862,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.ENCODED_WAV,
                 new() {
@@ -1965,7 +1887,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 32,
                 }
             },
-
             {
                 DbType.DBCATEGORIES,
                 new() {
@@ -1991,7 +1912,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 64,
                 }
             },
-
             {
                 DbType.WSTATE,
                 new() {
@@ -2017,7 +1937,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 256,
                 }
             },
-
             {
                 DbType.QUALITIES,
                 new() {
@@ -2043,7 +1962,6 @@ namespace AC2RE.Definitions {
                     freelistMaxSize = 256,
                 }
             },
-
             {
                 DbType.DATFILEDATA,
                 new() {
@@ -2067,6 +1985,27 @@ namespace AC2RE.Definitions {
                     freelistShrink = true,
                     freelistIdealSize = 32,
                     freelistMaxSize = 64,
+                }
+            },
+            // NOTE: Unofficial entries
+            {
+                DbType.LANDBLOCKDATA,
+                new() {
+                    extension = ".lbd",
+                    isPortalType = false,
+                    isCellType = true,
+                    isLocalType = false,
+                    strDataDir = "lbd",
+                }
+            },
+            {
+                DbType.ENVCELL,
+                new() {
+                    extension = ".envcell",
+                    isPortalType = false,
+                    isCellType = true,
+                    isLocalType = false,
+                    strDataDir = "envcell",
                 }
             },
         };
@@ -2100,18 +2039,32 @@ namespace AC2RE.Definitions {
             return did >= baseDid.id && did <= topDid.id;
         }
 
-        public static DbType getType(DataId did) {
-            return getType(did.id);
+        public static DbType getType(DatType datType, DataId did) {
+            return getType(datType, did.id);
         }
 
-        public static DbType getType(uint did) {
+        public static DbType getType(DatType datType, uint did) {
+            DbType dbType = DbType.UNDEFINED;
+
             foreach (var entry in TYPE_TO_DEF) {
                 if (entry.Value.contains(did)) {
-                    return entry.Key;
+                    dbType = entry.Key;
                 }
             }
 
-            return DbType.UNDEFINED;
+            if (dbType != DbType.DATFILEDATA) {
+                if (datType == DatType.CELL1) {
+                    dbType = (did & 0xFFFF) switch {
+                        0xFFFC => DbType.LIGHTINFO,
+                        0xFFFD => DbType.PATHMAP,
+                        0xFFFE => DbType.LANDBLOCKINFO,
+                        0xFFFF => DbType.LANDBLOCKDATA,
+                        _ => DbType.ENVCELL,
+                    };
+                }
+            }
+
+            return dbType;
         }
     }
 }

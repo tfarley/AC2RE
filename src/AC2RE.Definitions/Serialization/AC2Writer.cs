@@ -315,6 +315,10 @@ namespace AC2RE.Definitions {
             Write(value.id);
         }
 
+        public void Write(LocalCellId value) {
+            Write(value.id);
+        }
+
         public void Write(DataId value) {
             Write(value.id);
         }

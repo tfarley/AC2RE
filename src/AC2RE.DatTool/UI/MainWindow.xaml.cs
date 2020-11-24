@@ -23,8 +23,11 @@ namespace AC2RE.DatTool.UI {
                 */
 
                 /*
+                using (DatReader datReader = new("G:\\Asheron's Call 2\\portal.dat_server")) {
+                    MasterProperty.loadMasterProperties(datReader);
+                }
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\cell_1.dat")) {
-                    DatParse.parseDat(DatParse.DatType.CELL1, datReader, "cell1parsed", DbType.ENVCELL);
+                    DatParse.parseDat(DbTypeDef.DatType.CELL1, datReader, "cell1parsed", DbType.ENVCELL);
                     //CellParse.getMissingCells(datReader);
                 }
                 */

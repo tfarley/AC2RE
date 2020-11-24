@@ -9,15 +9,7 @@ namespace AC2RE.DatTool {
 
     public class DatParse {
 
-        public enum DatType {
-            PORTAL,
-            CELL1,
-            CELL2,
-            LOCAL,
-            HIGHRES,
-        }
-
-        public static void parseDat(DatType datType, DatReader datReader, string outputBaseDir, params DbType[] typesToParse) {
+        public static void parseDat(DbTypeDef.DatType datType, DatReader datReader, string outputBaseDir, params DbType[] typesToParse) {
             Log.Information($"Parsing dat {datReader.datFileName}...");
 
             HashSet<DbType> typesToParseSet = new(typesToParse);
@@ -27,7 +19,7 @@ namespace AC2RE.DatTool {
 
             HashSet<DbType> allSeenTypes = new();
 
-            if (datType == DatType.PORTAL) {
+            if (datType == DbTypeDef.DatType.PORTAL) {
                 // Parse data in first pass that is required for second pass
                 MasterProperty.loadMasterProperties(datReader);
                 PackageManager.loadPackageTypes(datReader);
@@ -35,7 +27,7 @@ namespace AC2RE.DatTool {
 
             int numFiles = 0;
             foreach (DataId did in datReader.dids) {
-                DbType dbType = datType == DatType.CELL1 ? DbType.ENVCELL : DbTypeDef.getType(did);
+                DbType dbType = DbTypeDef.getType(datType, did);
 
                 DbTypeDef dbTypeDef = DbTypeDef.TYPE_TO_DEF[dbType];
 
@@ -68,7 +60,7 @@ namespace AC2RE.DatTool {
             foreach (DataId did in datReader.dids) {
                 numFiles++;
 
-                DbType dbType = datType == DatType.CELL1 ? DbType.ENVCELL : DbTypeDef.getType(did);
+                DbType dbType = DbTypeDef.getType(datType, did);
 
                 allSeenTypes.Add(dbType);
 
@@ -170,14 +162,9 @@ namespace AC2RE.DatTool {
                 case DbType.ENTITYDESC:
                     readAndDump(datReader, did, outputPath, data => new EntityDesc(data));
                     break;
-                case DbType.ENVCELL: {
-                        using (AC2Reader data = datReader.getFileReader(did)) {
-                            // TODO: Ensure CEnvCell is actually the correct type, and parse
-
-                            checkFullRead(data, did);
-                        }
-                        break;
-                    }
+                case DbType.ENVCELL:
+                    readAndDump(datReader, did, outputPath, data => new CEnvCell(data));
+                    break;
                 case DbType.FILE2ID_TABLE:
                     readAndDump(datReader, did, outputPath, data => new DBFile2IDTable(data));
                     break;

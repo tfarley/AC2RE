@@ -42,6 +42,8 @@ namespace AC2RE.Definitions {
                 NativeType.APPINFOHASH => new AppInfoHash(data),
                 NativeType.ARHASH => new ARHash(data),
                 NativeType.BEHAVIORPARAMS => new BehaviorParams(data),
+                NativeType.ENTITYDESC => new EntityDesc(data),
+                NativeType.ENTITYLINKDESC => new EntityLinkDesc(data),
                 NativeType.EXAMINATIONPROFILE => new ExaminationProfile(data),
                 NativeType.EXAMINATIONREQUEST => new ExaminationRequest(data),
                 NativeType.GAMEPLAYOPTIONSPROFILE => new GameplayOptionsProfile(data),

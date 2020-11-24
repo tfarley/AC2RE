@@ -6,17 +6,22 @@ namespace AC2RE.Definitions {
 
         public uint id;
 
-        public uint x => ((id >> 24) & 0xFF);
-        public uint y => ((id >> 16) & 0xFF);
-        public uint indoorCellId => ((id >> 8) & 0xFF);
-        public uint outdoorCellId => (id & 0xFF);
+        public byte x => (byte)((id >> 24) & 0xFF);
+        public byte y => (byte)((id >> 16) & 0xFF);
+        public byte indoorCellId => (byte)((id >> 8) & 0xFF);
+        public byte outdoorCellId => (byte)(id & 0xFF);
+        public LocalCellId localCellId => new LocalCellId((ushort)(id & 0xFFFF));
 
         public CellId(uint id) {
             this.id = id;
         }
 
-        public CellId(uint x, uint y, uint indoorCellId, uint outdoorCellId) {
-            id = ((x & 0xFF) << 24) | ((y & 0xFF) << 16) | ((indoorCellId & 0xFF) << 8) | (outdoorCellId & 0xFF);
+        public CellId(byte x, byte y, byte indoorCellId, byte outdoorCellId) {
+            id = ((uint)x << 24) | ((uint)y << 16) | ((uint)indoorCellId << 8) | outdoorCellId;
+        }
+
+        public CellId(byte x, byte y, LocalCellId localCellId) {
+            id = ((uint)x << 24) | ((uint)y << 16) | localCellId.id;
         }
 
         public static bool operator ==(CellId lhs, CellId rhs) => lhs.id == rhs.id;

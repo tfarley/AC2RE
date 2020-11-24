@@ -359,6 +359,10 @@ namespace AC2RE.Definitions {
             return new(ReadUInt32());
         }
 
+        public LocalCellId ReadLocalCellId() {
+            return new(ReadUInt16());
+        }
+
         public DataId ReadDataId() {
             return new(ReadUInt32());
         }
