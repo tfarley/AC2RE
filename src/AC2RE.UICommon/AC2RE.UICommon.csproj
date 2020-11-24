@@ -13,16 +13,4 @@
     <ProjectReference Include="..\AC2RE.Utils\AC2RE.Utils.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="UI\RenderPreview.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="UI\RenderPreview.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-
 </Project>

@@ -186,6 +186,9 @@ namespace AC2RE.DatTool {
                 case DbType.KEYMAP:
                     readAndDump(datReader, did, outputPath, data => new CKeyMap(data));
                     break;
+                case DbType.LANDBLOCKDATA:
+                    readAndDump(datReader, did, outputPath, data => new CLandBlockData(data));
+                    break;
                 case DbType.MAPNOTE_DESC:
                     readAndDump(datReader, did, outputPath, data => new CMapNoteDesc(data));
                     break;

@@ -9,9 +9,9 @@ using System.Numerics;
 using System.Windows;
 using System.Windows.Media;
 
-namespace AC2RE.UICommon {
+namespace AC2RE.UICommon.UI {
 
-    public partial class RenderPreview : Window {
+    public partial class RenderPreviewWindow : Window {
 
         private static readonly float MIN_DT = 1.0f / 120.0f;
 
@@ -25,7 +25,7 @@ namespace AC2RE.UICommon {
 
         private RenderObject? testObject;
 
-        public RenderPreview(DatReader datReader, DataId initialDid) {
+        public RenderPreviewWindow(DatReader datReader, DataId initialDid) {
             InitializeComponent();
 
             HwndElement renderElement = new();

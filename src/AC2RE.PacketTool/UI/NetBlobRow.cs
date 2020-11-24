@@ -1,7 +1,7 @@
 ﻿using AC2RE.Definitions;
 using System;
 
-namespace AC2RE.PacketTool {
+namespace AC2RE.PacketTool.UI {
 
     public class NetBlobRow {
 

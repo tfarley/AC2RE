@@ -1,5 +1,5 @@
 ﻿using AC2RE.Definitions;
-using AC2RE.UICommon;
+using AC2RE.UICommon.UI;
 using Microsoft.Win32;
 using System.IO;
 using System.Windows;
@@ -27,7 +27,8 @@ namespace AC2RE.DatTool.UI {
                     MasterProperty.loadMasterProperties(datReader);
                 }
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\cell_1.dat")) {
-                    DatParse.parseDat(DbTypeDef.DatType.CELL1, datReader, "cell1parsed", DbType.ENVCELL);
+                    DatParse.parseDat(DbTypeDef.DatType.CELL1, datReader, "cell1parsed", DbType.LANDBLOCKDATA);
+                    //new MapWindow(datReader).Show();
                     //CellParse.getMissingCells(datReader);
                 }
                 */
@@ -61,7 +62,7 @@ namespace AC2RE.DatTool.UI {
 
                 DatReader datReader = new(new AC2Reader(File.OpenRead(openFileDialog.FileName)));
                 // 0x1F000023 = human male, 0x1F001110 = rabbit
-                new RenderPreview(datReader, new(0x1F000023)).Show();
+                new RenderPreviewWindow(datReader, new(0x1F000023)).Show();
             }
         }
     }
