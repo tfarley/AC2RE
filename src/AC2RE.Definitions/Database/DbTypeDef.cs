@@ -37,7 +37,8 @@ namespace AC2RE.Definitions {
                     freelistIdealSize = 32,
                     freelistMaxSize = 64,
                 }
-            },            {
+            },
+            {
                 DbType.LIGHTINFO,
                 new() {
                     baseDid = new(0),

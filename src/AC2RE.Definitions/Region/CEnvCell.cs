@@ -16,14 +16,14 @@ namespace AC2RE.Definitions {
             DRAW_SKY = 1 << 4, // 0x00000010
         }
 
-        public Position pos; // m_position
         public PackFlag packFlags;
+        public Position pos; // m_position
+        public List<LocalCellId> stabList; // m_stabList
         public DataId environmentDid; // m_environmentDID
         public List<CCellPortal> portals; // m_portals
-        public List<LocalCellId> stabList; // m_stabList
-        public List<LocalCellId> sharedCells; // m_sharedCells
         public EntityGroupDesc entities; // m_entities
         public PropertyCollection properties; // m_properties
+        public List<LocalCellId> sharedCells; // m_sharedCells
 
         public CEnvCell(AC2Reader data) {
             pos = new(data);

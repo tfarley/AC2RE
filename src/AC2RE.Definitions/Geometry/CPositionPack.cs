@@ -18,7 +18,7 @@ namespace AC2RE.Definitions {
         public PositionOffset offset; // m_offset
         public Vector3 doMotion; // m_doMotion
         public Heading heading; // m_heading
-        public PackFlag packFlags;// m_cancel_moveto, m_jump
+        public PackFlag packFlags; // m_cancel_moveto, m_jump
         public ushort instanceStamp; // m_instance_stamp
         public ushort teleportStamp; // m_teleport_stamp
         public ushort forcePosStamp; // m_force_position_stamp
