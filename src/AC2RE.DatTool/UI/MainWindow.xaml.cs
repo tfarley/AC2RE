@@ -27,7 +27,7 @@ namespace AC2RE.DatTool.UI {
                     MasterProperty.loadMasterProperties(datReader);
                 }
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\cell_1.dat")) {
-                    DatParse.parseDat(DbTypeDef.DatType.CELL1, datReader, "cell1parsed", DbType.LANDBLOCKDATA);
+                    DatParse.parseDat(DbTypeDef.DatType.CELL, datReader, "cell1parsed", DbType.LANDBLOCKDATA);
                     //new MapWindow(datReader).Show();
                     //CellParse.getMissingCells(datReader);
                 }
@@ -35,13 +35,13 @@ namespace AC2RE.DatTool.UI {
 
                 /*
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\cell_2.dat")) {
-                    DatParse.parseDat(DatParse.DatType.CELL2, datReader, "cell2parsed", DbType.DATFILEDATA);
+                    DatParse.parseDat(DatParse.DatType.CELL, datReader, "cell2parsed", DbType.DATFILEDATA);
                 }
                 */
 
                 /*
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\highres.dat")) {
-                    DatParse.parseDat(DatParse.DatType.HIGHRES, datReader, "highresparsed", DbType.DATFILEDATA);
+                    DatParse.parseDat(DatParse.DatType.PORTAL, datReader, "highresparsed", DbType.DATFILEDATA);
                 }
                 */
 

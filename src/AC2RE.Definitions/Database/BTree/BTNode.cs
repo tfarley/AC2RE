@@ -27,6 +27,7 @@ namespace AC2RE.Definitions {
             // Skip num entries
             data.BaseStream.Seek(4, SeekOrigin.Current);
 
+            entries.Capacity += (int)numEntries;
             for (int i = 0; i < numEntries; i++) {
                 entries.Add(new(data));
             }

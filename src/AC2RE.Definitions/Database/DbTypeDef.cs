@@ -6,10 +6,8 @@ namespace AC2RE.Definitions {
 
         public enum DatType {
             PORTAL,
-            CELL1,
-            CELL2,
+            CELL,
             LOCAL,
-            HIGHRES,
         }
 
         public static readonly Dictionary<DbType, DbTypeDef> TYPE_TO_DEF = new() {
@@ -2054,7 +2052,7 @@ namespace AC2RE.Definitions {
             }
 
             if (dbType != DbType.DATFILEDATA) {
-                if (datType == DatType.CELL1) {
+                if (datType == DatType.CELL) {
                     dbType = (did & 0xFFFF) switch {
                         0xFFFC => DbType.LIGHTINFO,
                         0xFFFD => DbType.PATHMAP,

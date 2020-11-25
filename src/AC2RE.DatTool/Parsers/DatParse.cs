@@ -192,6 +192,9 @@ namespace AC2RE.DatTool {
                 case DbType.LANDBLOCKINFO:
                     readAndDump(datReader, did, outputPath, data => new CLandBlockInfo(data));
                     break;
+                case DbType.LIGHTINFO:
+                    readAndDump(datReader, did, outputPath, data => new CLightInfo(data));
+                    break;
                 case DbType.MAPNOTE_DESC:
                     readAndDump(datReader, did, outputPath, data => new CMapNoteDesc(data));
                     break;

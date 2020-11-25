@@ -211,6 +211,7 @@ namespace AC2RE.Definitions {
             } else {
                 throw new ArgumentException(sizeOfSize.ToString());
             }
+            list.Capacity += (int)numElements;
             for (int i = 0; i < numElements; i++) {
                 list.Add(elementReader.Invoke());
             }
@@ -225,6 +226,7 @@ namespace AC2RE.Definitions {
         public void ReadSet<T>(HashSet<T> set, Func<T> elementReader) {
             ushort numElements = ReadUInt16();
             ushort setSize = ReadUInt16();
+            set.EnsureCapacity(set.Count + numElements);
             for (int i = 0; i < numElements; i++) {
                 set.Add(elementReader.Invoke());
             }
@@ -238,6 +240,7 @@ namespace AC2RE.Definitions {
 
         public void ReadMultiDictionary<K, V>(Dictionary<K, List<V>> dict, Func<K> keyReader, Func<V> valueReader) {
             uint numElements = ReadUInt32();
+            dict.EnsureCapacity(dict.Count + (int)numElements);
             for (int i = 0; i < numElements; i++) {
                 dict.GetOrCreate(keyReader.Invoke()).Add(valueReader.Invoke());
             }
@@ -252,6 +255,7 @@ namespace AC2RE.Definitions {
         public void ReadDictionary<K, V>(Dictionary<K, V> dict, Func<K> keyReader, Func<V> valueReader) {
             ushort numElements = ReadUInt16();
             ushort tableSize = ReadUInt16();
+            dict.EnsureCapacity(dict.Count + numElements);
             for (int i = 0; i < numElements; i++) {
                 dict.Add(keyReader.Invoke(), valueReader.Invoke());
             }
@@ -266,6 +270,7 @@ namespace AC2RE.Definitions {
         public void ReadStlMap<K, V>(Dictionary<K, V> dict, Func<K> keyReader, Func<V> valueReader) {
             // Variation of dictionary where the count is a full 32 bits without any table size (used for std::map specifically, see STREAMPACK_STL)
             uint numElements = ReadUInt32();
+            dict.EnsureCapacity(dict.Count + (int)numElements);
             for (int i = 0; i < numElements; i++) {
                 dict.Add(keyReader.Invoke(), valueReader.Invoke());
             }
