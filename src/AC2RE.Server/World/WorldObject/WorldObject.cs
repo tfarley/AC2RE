@@ -1,4 +1,5 @@
 ﻿using AC2RE.Definitions;
+using AC2RE.Server.Database;
 using System.Collections.Generic;
 using System.Numerics;
 
@@ -10,9 +11,14 @@ namespace AC2RE.Server {
         public bool deleted;
         public ushort instanceStamp;
 
+        [DatabaseIgnore]
         public bool inWorld;
+
         public float heading;
+
+        [DatabaseIgnore]
         public Vector3 motion;
+
         public Dictionary<InvLoc, InstanceId> equippedItemIds = new();
         public List<InstanceId> containedItemIds = new();
 
@@ -20,6 +26,7 @@ namespace AC2RE.Server {
         public VisualDesc visual;
         public CBaseQualities qualities;
 
+        [DatabaseIgnore]
         public StringInfo? name {
             get => getQ(StringInfoStat.NAME);
             set {
@@ -28,6 +35,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public StringInfo? pluralName {
             get => getQ(StringInfoStat.PLURALNAME);
             set {
@@ -36,6 +44,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public DataId iconDid {
             get => getQ(DataIdStat.PHYSOBJ);
             set {
@@ -44,6 +53,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public InstanceId containerId {
             get => getQ(InstanceIdStat.CONTAINER);
             set {
@@ -52,6 +62,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public InstanceId wielderId {
             get => getQ(InstanceIdStat.EQUIPPER);
             set {
@@ -60,6 +71,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public InstanceId monarchId {
             get => getQ(InstanceIdStat.ALLEGIANCE_MONARCH);
             set {
@@ -68,6 +80,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public InstanceId originatorId {
             get => getQ(InstanceIdStat.ORIGINATOR);
             set {
@@ -76,6 +89,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public InstanceId claimantId {
             get => getQ(InstanceIdStat.CLAIMANT);
             set {
@@ -84,6 +98,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public InstanceId killerId {
             get => getQ(InstanceIdStat.PLUNDERER);
             set {
@@ -92,6 +107,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public InstanceId summonerId {
             get => getQ(InstanceIdStat.AI_PETSUMMONER);
             set {
@@ -100,6 +116,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public int quantity {
             get => getQ(IntStat.QUANTITY);
             set {
@@ -108,6 +125,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public int value {
             get => getQ(IntStat.VALUE);
             set {
@@ -116,6 +134,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public FactionType faction {
             get => (FactionType)getQ(IntStat.FACTION_MEMBERSHIP);
             set {
@@ -124,6 +143,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public int pkAlwaysTruePermissions {
             get => getQ(IntStat.PK_ALWAYSTRUEPERMISSIONS);
             set {
@@ -132,6 +152,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public int pkAlwaysFalsePermissions {
             get => getQ(IntStat.PK_ALWAYSFALSEPERMISSIONS);
             set {
@@ -140,6 +161,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public int physicsTypeLow {
             get => getQ(IntStat.ETHEREALPHYSICSTYPELOW);
             set {
@@ -148,6 +170,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public int physicsTypeHigh {
             get => getQ(IntStat.ETHEREALPHYSICSTYPEHIGH);
             set {
@@ -156,6 +179,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public int movementEtherealLow {
             get => getQ(IntStat.ETHEREALMOVEMENTTYPELOW);
             set {
@@ -164,6 +188,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public int movementEtherealHigh {
             get => getQ(IntStat.ETHEREALMOVEMENTTYPEHIGH);
             set {
@@ -172,6 +197,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public int placementEtherealLow {
             get => getQ(IntStat.ETHEREALPLACEMENTTYPELOW);
             set {
@@ -180,6 +206,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public int placementEtherealHigh {
             get => getQ(IntStat.ETHEREALPLACEMENTTYPEHIGH);
             set {
@@ -188,6 +215,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public int durability {
             get => getQ(IntStat.DURABILITY_CURRENTLEVEL);
             set {
@@ -196,6 +224,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public int durabilityMax {
             get => getQ(IntStat.DURABILITY_MAXLEVEL);
             set {
@@ -204,6 +233,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public float scale {
             get => getQ(FloatStat.PHYSICS_SCALE);
             set {
@@ -212,6 +242,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public bool open {
             get => getQ(BoolStat.OPEN);
             set {
@@ -224,6 +255,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public bool dead {
             get => getQ(BoolStat.DEAD);
             set {
@@ -236,6 +268,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public bool selectable {
             get => getQ(BoolStat.ISSELECTABLE);
             set {
@@ -248,6 +281,7 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public bool noDraw {
             get => getQ(BoolStat.NODRAW);
             set {
@@ -260,116 +294,139 @@ namespace AC2RE.Server {
             }
         }
 
+        [DatabaseIgnore]
         public SpeciesType species {
             get => (SpeciesType)getQ(IntStat.SPECIES);
             set => setQ(IntStat.SPECIES, (int)value);
         }
 
+        [DatabaseIgnore]
         public SexType sex {
             get => (SexType)getQ(IntStat.SEX);
             set => setQ(IntStat.SEX, (int)value);
         }
 
+        [DatabaseIgnore]
         public InvLoc preferredInvLoc {
             get => (InvLoc)getQ(IntStat.PREFERREDINVENTORYLOCATION);
             set => setQ(IntStat.PREFERREDINVENTORYLOCATION, (int)value);
         }
 
+        [DatabaseIgnore]
         public InvLoc validInvLocs {
             get => (InvLoc)getQ(IntStat.VALIDINVENTORYLOCATIONS);
             set => qualities.ints[IntStat.VALIDINVENTORYLOCATIONS] = (int)value;
         }
 
+        [DatabaseIgnore]
         public HoldingLocation primaryHoldLoc {
             get => (HoldingLocation)getQ(IntStat.INV_PRIMARYPARENTINGLOCATION);
             set => qualities.ints[IntStat.INV_PRIMARYPARENTINGLOCATION] = (int)value;
         }
 
+        [DatabaseIgnore]
         public Orientation holdOrientation {
             get => (Orientation)getQ(IntStat.INV_PRIMARYPARENTINGLOCATION);
             set => setQ(IntStat.INV_PRIMARYPARENTINGLOCATION, (int)value);
         }
 
+        [DatabaseIgnore]
         public DataId entityDid {
             get => qualities.weenieDesc.entityDid;
             set => qualities.weenieDesc.entityDid = value;
         }
 
+        [DatabaseIgnore]
         public DataId physObjDid {
             get => getQ(DataIdStat.PHYSOBJ);
             set => setQ(DataIdStat.PHYSOBJ, value);
         }
 
+        [DatabaseIgnore]
         public int health {
             get => getQ(IntStat.HEALTH_CURRENTLEVEL);
             set => setQ(IntStat.HEALTH_CURRENTLEVEL, value);
         }
 
+        [DatabaseIgnore]
         public int healthMax {
             get => getQ(IntStat.HEALTH_CACHEDMAX);
             set => setQ(IntStat.HEALTH_CACHEDMAX, value);
         }
 
+        [DatabaseIgnore]
         public float healthRegen {
             get => getQ(FloatStat.HEALTH_REGENRATE);
             set => setQ(FloatStat.HEALTH_REGENRATE, value);
         }
 
+        [DatabaseIgnore]
         public int vigor {
             get => getQ(IntStat.VIGOR_CURRENTLEVEL);
             set => setQ(IntStat.VIGOR_CURRENTLEVEL, value);
         }
 
+        [DatabaseIgnore]
         public int vigorMax {
             get => getQ(IntStat.VIGOR_CACHEDMAX);
             set => setQ(IntStat.VIGOR_CACHEDMAX, value);
         }
 
+        [DatabaseIgnore]
         public float vigorRegen {
             get => getQ(FloatStat.VIGOR_REGENRATE);
             set => setQ(FloatStat.VIGOR_REGENRATE, value);
         }
 
+        [DatabaseIgnore]
         public int capacity {
             get => getQ(IntStat.CONTAINERMAXCAPACITY);
             set => setQ(IntStat.CONTAINERMAXCAPACITY, value);
         }
 
+        [DatabaseIgnore]
         public int playerClass {
             get => getQ(IntStat.CLASS);
             set => setQ(IntStat.CLASS, value);
         }
 
+        [DatabaseIgnore]
         public int level {
             get => getQ(IntStat.LEVEL);
             set => setQ(IntStat.LEVEL, value);
         }
 
+        [DatabaseIgnore]
         public long xp {
             get => getQ(LongIntStat.TOTALXP);
             set => setQ(LongIntStat.TOTALXP, value);
         }
 
+        [DatabaseIgnore]
         public long xpAvailable {
             get => getQ(LongIntStat.AVAILABLEXP);
             set => setQ(LongIntStat.AVAILABLEXP, value);
         }
 
+        [DatabaseIgnore]
         public long craftXp {
             get => getQ(LongIntStat.TOTALCRAFTXP);
             set => setQ(LongIntStat.TOTALCRAFTXP, value);
         }
 
+        [DatabaseIgnore]
         public long craftXpAvailable {
             get => getQ(LongIntStat.AVAILABLECRAFTXP);
             set => setQ(LongIntStat.AVAILABLECRAFTXP, value);
         }
 
+        [DatabaseIgnore]
         public int money {
             get => getQ(IntStat.MONEY);
             set => setQ(IntStat.MONEY, value);
         }
 
+        [DatabaseIgnore]
         public bool mounted {
             get => getQ(BoolStat.PLAYER_ISONMOUNT);
             set => setQ(BoolStat.PLAYER_ISONMOUNT, value);
@@ -394,6 +451,8 @@ namespace AC2RE.Server {
                 otherStamp = otherStamp,
             };
         }
+
+        // TODO: When any quality is set, broadcast update message to players
 
         private int getQ(IntStat stat) => qualities.ints?.GetValueOrDefault(stat) ?? default;
         private void setQ(IntStat stat, int value) {

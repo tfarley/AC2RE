@@ -33,6 +33,53 @@ namespace AC2RE.Server {
             return (worldObject == null || worldObject.deleted) ? null : worldObject;
         }
 
+        private void loadAll() {
+            if (!loadedWorld) {
+                loadedWorld = true;
+                List<WorldObject> dbWorldObjects = worldDb.getAllWorldObjects();
+                foreach (WorldObject worldObject in dbWorldObjects) {
+                    worldObjects.TryAdd(worldObject.id, worldObject);
+                }
+            }
+        }
+
+        public List<WorldObject> getAll() {
+            loadAll();
+            List<WorldObject> resultWorldObjects = new();
+            foreach (WorldObject worldObject in worldObjects.Values) {
+                if (!worldObject.deleted) {
+                    resultWorldObjects.Add(worldObject);
+                }
+            }
+            return resultWorldObjects;
+        }
+
+        private void loadWithContainer(InstanceId containerId) {
+            if (loadedContainers.Add(containerId)) {
+                List<WorldObject> dbWorldObjects = worldDb.getWorldObjectsWithContainer(containerId);
+                foreach (WorldObject worldObject in dbWorldObjects) {
+                    worldObjects.TryAdd(worldObject.id, worldObject);
+                }
+            }
+        }
+
+        public List<WorldObject> getWithContainer(InstanceId containerId) {
+            loadWithContainer(containerId);
+            List<WorldObject> resultWorldObjects = new();
+            foreach (WorldObject worldObject in worldObjects.Values) {
+                if (!worldObject.deleted && worldObject.containerId == containerId) {
+                    resultWorldObjects.Add(worldObject);
+                }
+            }
+            return resultWorldObjects;
+        }
+
+        public WorldObject create() {
+            WorldObject newObject = new(instanceIdGenerator.next());
+            worldObjects[newObject.id] = newObject;
+            return newObject;
+        }
+
         public void enterWorld(WorldObject worldObject) {
             if (!worldObject.inWorld) {
                 worldObject.inWorld = true;
@@ -68,53 +115,6 @@ namespace AC2RE.Server {
             foreach (WorldObject worldObject in worldObjects) {
                 leaveWorld(worldObject);
             }
-        }
-
-        private void loadAllInWorld() {
-            if (!loadedWorld) {
-                loadedWorld = true;
-                List<WorldObject> dbWorldObjects = worldDb.getWorldObjectsInWorld();
-                foreach (WorldObject worldObject in dbWorldObjects) {
-                    worldObjects.TryAdd(worldObject.id, worldObject);
-                }
-            }
-        }
-
-        public List<WorldObject> getAllInWorld() {
-            loadAllInWorld();
-            List<WorldObject> worldObjects = new();
-            foreach (WorldObject worldObject in worldObjects) {
-                if (worldObject.inWorld) {
-                    worldObjects.Add(worldObject);
-                }
-            }
-            return worldObjects;
-        }
-
-        private void loadWithContainer(InstanceId containerId) {
-            if (loadedContainers.Add(containerId)) {
-                List<WorldObject> dbWorldObjects = worldDb.getWorldObjectsWithContainer(containerId);
-                foreach (WorldObject worldObject in dbWorldObjects) {
-                    worldObjects.TryAdd(worldObject.id, worldObject);
-                }
-            }
-        }
-
-        public List<WorldObject> getAllInContainer(InstanceId containerId) {
-            loadWithContainer(containerId);
-            List<WorldObject> contents = new();
-            foreach (WorldObject worldObject in worldObjects.Values) {
-                if (worldObject.containerId == containerId) {
-                    contents.Add(worldObject);
-                }
-            }
-            return contents;
-        }
-
-        public WorldObject create() {
-            WorldObject newObject = new(instanceIdGenerator.next());
-            worldObjects[newObject.id] = newObject;
-            return newObject;
         }
 
         public void syncNewClient(ClientId clientId) {

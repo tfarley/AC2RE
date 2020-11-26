@@ -47,7 +47,7 @@ namespace AC2RE.Server {
             objectManager = new(worldDb, packetHandler, playerManager);
             inventoryManager = new(packetHandler, playerManager, objectManager);
 
-            objectManager.enterWorld(objectManager.getAllInWorld());
+            objectManager.enterWorld(objectManager.getAll());
         }
 
         public void addPlayerIfNecessary(ClientId clientId, Account account) {
@@ -140,7 +140,7 @@ namespace AC2RE.Server {
                         Dictionary<uint, InventProfile> inventoryByLocationTable = new();
                         Dictionary<InstanceId, InventProfile> inventoryByIdTable = new();
 
-                        List<WorldObject> playerInventory = objectManager.getAllInContainer(character.id);
+                        List<WorldObject> playerInventory = objectManager.getWithContainer(character.id);
                         foreach ((InvLoc equipLoc, InstanceId itemId) in character.equippedItemIds) {
                             WorldObject? item = objectManager.get(itemId);
                             if (item != null) {

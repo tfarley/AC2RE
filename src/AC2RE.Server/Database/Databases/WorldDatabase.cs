@@ -162,8 +162,8 @@ namespace AC2RE.Server.Database {
             return instanceIdGenerators.Find(r => r.type == type).FirstOrDefault();
         }
 
-        public List<WorldObject> getWorldObjectsInWorld() {
-            return worldObjects.Find(r => !r.deleted && r.inWorld).ToList();
+        public List<WorldObject> getAllWorldObjects() {
+            return worldObjects.Find(r => !r.deleted).ToList();
         }
 
         public WorldObject? getWorldObjectWithId(InstanceId id) {
@@ -171,7 +171,7 @@ namespace AC2RE.Server.Database {
         }
 
         public List<WorldObject> getWorldObjectsWithContainer(InstanceId containerId) {
-            return worldObjects.Find(r => !r.deleted && r.containerId == containerId).ToList();
+            return worldObjects.Find(r => !r.deleted && r.qualities.weenieDesc.containerId == containerId).ToList();
         }
 
         public bool save(WorldSave worldSave) {
