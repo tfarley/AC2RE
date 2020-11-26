@@ -84,6 +84,20 @@ namespace AC2RE.Definitions {
         }
 
         public void write(AC2Writer data) {
+            packFlags = 0;
+            if (weenieDesc != default) packFlags |= PackFlag.WEENIE_DESC;
+            if (ints != default) packFlags |= PackFlag.INT_HASH_TABLE;
+            if (bools != default) packFlags |= PackFlag.BOOL_HASH_TABLE;
+            if (floats != default) packFlags |= PackFlag.FLOAT_HASH_TABLE;
+            if (doubles != default) packFlags |= PackFlag.TIMESTAMP_HASH_TABLE;
+            if (strings != default) packFlags |= PackFlag.STRING_HASH_TABLE;
+            if (dids != default) packFlags |= PackFlag.DATA_ID_HASH_TABLE;
+            if (ids != default) packFlags |= PackFlag.INSTANCE_ID_HASH_TABLE;
+            if (poss != default) packFlags |= PackFlag.POSITION_HASH_TABLE;
+            if (stringInfos != default) packFlags |= PackFlag.STRING_INFO_HASH_TABLE;
+            if (packageIds != default) packFlags |= PackFlag.PACKAGE_ID_HASH_TABLE;
+            if (longs != default) packFlags |= PackFlag.LONG_INT_HASH_TABLE;
+
             data.Write((uint)packFlags);
             data.Write(did);
             if (packFlags.HasFlag(PackFlag.WEENIE_DESC)) {

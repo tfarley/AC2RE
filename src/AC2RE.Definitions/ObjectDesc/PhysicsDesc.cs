@@ -172,6 +172,28 @@ namespace AC2RE.Definitions {
         }
 
         public void write(AC2Writer data) {
+            packFlags = 0;
+            if (modeId != default) packFlags |= PackFlag.MODE;
+            if (behaviors != default) packFlags |= PackFlag.BEHAVIORS;
+            if (sliders != default) packFlags |= PackFlag.SLIDERS;
+            if (animFrameId != default) packFlags |= PackFlag.ANIMFRAME_ID;
+            if (pos != default) packFlags |= PackFlag.POSITION;
+            if (parentId != default) packFlags |= PackFlag.PARENT;
+            if (orientationId != default) packFlags |= PackFlag.ORIENTATION;
+            if (vel != default) packFlags |= PackFlag.VELOCITY;
+            if (externalAccel != default) packFlags |= PackFlag.EXTERNAL_ACL;
+            if (velScale != default) packFlags |= PackFlag.VELOCITY_SCALE;
+            if (jumpScale != default) packFlags |= PackFlag.JUMP_SCALE;
+            if (accel != default) packFlags |= PackFlag.ACCELERATION;
+            if (omega != default) packFlags |= PackFlag.OMEGA;
+            if (lookAtId != default) packFlags |= PackFlag.LOOKAT_ID;
+            if (headingX != default) packFlags |= PackFlag.HEAD_X;
+            if (headingZ != default) packFlags |= PackFlag.HEAD_Z;
+            if (targetId != default) packFlags |= PackFlag.TARGET_ID;
+            if (targetPos != default) packFlags |= PackFlag.TARGET_POS;
+            if (targetOffset != default) packFlags |= PackFlag.TARGET_OFFSET;
+            if (fx != default) packFlags |= PackFlag.FX;
+
             data.Write((uint)packFlags);
             data.Write(instanceStamp);
             data.Write(visualOrderStamp);

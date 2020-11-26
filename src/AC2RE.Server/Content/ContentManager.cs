@@ -111,7 +111,6 @@ namespace AC2RE.Server {
             if (parentVisualDesc.globalAppearanceModifiers != null) {
                 if (childVisualDesc.globalAppearanceModifiers == null) {
                     childVisualDesc.globalAppearanceModifiers = new() {
-                        packFlags = PartGroupDataDesc.PackFlag.KEY | PartGroupDataDesc.PackFlag.APPHASH,
                         key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
                         appearanceInfos = new(),
                     };

@@ -104,7 +104,7 @@ namespace AC2RE.Server {
             loadWithContainer(containerId);
             List<WorldObject> contents = new();
             foreach (WorldObject worldObject in worldObjects.Values) {
-                if (worldObject.qualities.weenieDesc.containerId == containerId) {
+                if (worldObject.containerId == containerId) {
                     contents.Add(worldObject);
                 }
             }

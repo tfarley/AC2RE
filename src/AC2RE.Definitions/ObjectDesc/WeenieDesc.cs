@@ -57,7 +57,7 @@ namespace AC2RE.Definitions {
         public PackFlag packFlags; // _data_mask
         public StringInfo name; // _name
         public StringInfo pluralName; // _plural_name
-        public DataId iconDid; // _icon // TODO: Guessed this is a DID
+        public DataId iconDid; // _icon
         public InstanceId containerId; // _container
         public InstanceId wielderId; // _wielder
         public InstanceId monarchId; // _monarch
@@ -65,19 +65,19 @@ namespace AC2RE.Definitions {
         public InstanceId claimantId; // _claimant
         public InstanceId killerId; // _killer
         public InstanceId petSummonerId; // _petSummoner
-        public uint quantity; // _quantity // TODO: Many of these are signed?
-        public uint value; // _value
+        public int quantity; // _quantity
+        public int value; // _value
         public FactionType factionType; // _factionType
-        public bool pkAlwaysTrue; // _pkAlwaysTrue // TODO: Really a bool?
-        public bool pkAlwaysFalse; // _pkAlwaysFalse // TODO: Really a bool?
-        public uint physicsTypeLow; // _physicsTypeLowDWord // TODO: How to combine?
-        public uint physicsTypeHigh; // _physicsTypeHighDWord // TODO: How to combine?
-        public uint movementEtherealLow; // _movementEtherealLowDWord // TODO: How to combine?
-        public uint movementEtherealHigh; // _movementEtherealHighDWord // TODO: How to combine?
-        public uint placementEtherealLow; // _placementEtherealLowDWord // TODO: How to combine?
-        public uint placementEtherealHigh; // _placementEtherealHighDWord // TODO: How to combine?
-        public uint durabilityCurrentLevel; // _durability_CurrentLevel
-        public uint durabilityMaxLevel; // _durability_MaxLevel
+        public int pkAlwaysTruePermissions; // _pkAlwaysTrue
+        public int pkAlwaysFalsePermissions; // _pkAlwaysFalse
+        public int physicsTypeLow; // _physicsTypeLowDWord // TODO: How to combine?
+        public int physicsTypeHigh; // _physicsTypeHighDWord // TODO: How to combine?
+        public int movementEtherealLow; // _movementEtherealLowDWord // TODO: How to combine?
+        public int movementEtherealHigh; // _movementEtherealHighDWord // TODO: How to combine?
+        public int placementEtherealLow; // _placementEtherealLowDWord // TODO: How to combine?
+        public int placementEtherealHigh; // _placementEtherealHighDWord // TODO: How to combine?
+        public int durabilityCurrentLevel; // _durability_CurrentLevel
+        public int durabilityMaxLevel; // _durability_MaxLevel
         public float scale; // _scale
 
         public WeenieDesc() {
@@ -129,47 +129,76 @@ namespace AC2RE.Definitions {
                 scale = data.ReadSingle();
             }
             if (packFlags.HasFlag(PackFlag.QUANTITY)) {
-                quantity = data.ReadUInt32();
+                quantity = data.ReadInt32();
             }
             if (packFlags.HasFlag(PackFlag.VALUE)) {
-                value = data.ReadUInt32();
+                value = data.ReadInt32();
             }
             if (packFlags.HasFlag(PackFlag.FACTION_TYPE)) {
-                factionType = (FactionType)data.ReadUInt32();
+                factionType = (FactionType)data.ReadInt32();
             }
             if (packFlags.HasFlag(PackFlag.PK_ALWAYS_TRUE_PERMISSIONS)) {
-                pkAlwaysTrue = data.ReadBoolean();
+                pkAlwaysTruePermissions = data.ReadInt32();
             }
             if (packFlags.HasFlag(PackFlag.PK_ALWAYS_FALSE_PERMISSIONS)) {
-                pkAlwaysFalse = data.ReadBoolean();
+                pkAlwaysFalsePermissions = data.ReadInt32();
             }
             if (packFlags.HasFlag(PackFlag.PHYSICS_TYPE_LOW_DWORD)) {
-                physicsTypeLow = data.ReadUInt32();
+                physicsTypeLow = data.ReadInt32();
             }
             if (packFlags.HasFlag(PackFlag.PHYSICS_TYPE_HIGH_DWORD)) {
-                physicsTypeHigh = data.ReadUInt32();
+                physicsTypeHigh = data.ReadInt32();
             }
             if (packFlags.HasFlag(PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD)) {
-                movementEtherealLow = data.ReadUInt32();
+                movementEtherealLow = data.ReadInt32();
             }
             if (packFlags.HasFlag(PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD)) {
-                movementEtherealHigh = data.ReadUInt32();
+                movementEtherealHigh = data.ReadInt32();
             }
             if (packFlags.HasFlag(PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD)) {
-                placementEtherealLow = data.ReadUInt32();
+                placementEtherealLow = data.ReadInt32();
             }
             if (packFlags.HasFlag(PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD)) {
-                placementEtherealHigh = data.ReadUInt32();
+                placementEtherealHigh = data.ReadInt32();
             }
             if (packFlags.HasFlag(PackFlag.DURABILITY_CURRENT_LEVEL)) {
-                durabilityCurrentLevel = data.ReadUInt32();
+                durabilityCurrentLevel = data.ReadInt32();
             }
             if (packFlags.HasFlag(PackFlag.DURABILITY_MAX_LEVEL)) {
-                durabilityMaxLevel = data.ReadUInt32();
+                durabilityMaxLevel = data.ReadInt32();
             }
         }
 
         public void write(AC2Writer data) {
+            packFlags = 0;
+            if (packageType != default) packFlags |= PackFlag.MY_PACKAGE_ID;
+            if (entityDid != default) packFlags |= PackFlag.ENTITY_DID;
+            if (bitfield != default) packFlags |= PackFlag.BITFIELD;
+            if (name != default) packFlags |= PackFlag.NAME;
+            if (pluralName != default) packFlags |= PackFlag.PLURAL_NAME;
+            if (iconDid != default) packFlags |= PackFlag.ICON_ID;
+            if (containerId != default) packFlags |= PackFlag.CONTAINER_ID;
+            if (wielderId != default) packFlags |= PackFlag.WIELDER_ID;
+            if (monarchId != default) packFlags |= PackFlag.MONARCH_ID;
+            if (originatorId != default) packFlags |= PackFlag.ORIGINATOR_ID;
+            if (claimantId != default) packFlags |= PackFlag.CLAIMANT_ID;
+            if (killerId != default) packFlags |= PackFlag.KILLER_ID;
+            if (petSummonerId != default) packFlags |= PackFlag.PET_SUMMONER_ID;
+            if (scale != default) packFlags |= PackFlag.PHYSICS_SCALE;
+            if (quantity != default) packFlags |= PackFlag.QUANTITY;
+            if (value != default) packFlags |= PackFlag.VALUE;
+            if (factionType != default) packFlags |= PackFlag.FACTION_TYPE;
+            if (pkAlwaysTruePermissions != default) packFlags |= PackFlag.PK_ALWAYS_TRUE_PERMISSIONS;
+            if (pkAlwaysFalsePermissions != default) packFlags |= PackFlag.PK_ALWAYS_FALSE_PERMISSIONS;
+            if (physicsTypeLow != default) packFlags |= PackFlag.PHYSICS_TYPE_LOW_DWORD;
+            if (physicsTypeHigh != default) packFlags |= PackFlag.PHYSICS_TYPE_HIGH_DWORD;
+            if (movementEtherealLow != default) packFlags |= PackFlag.MOVEMENT_ETHEREAL_LOW_DWORD;
+            if (movementEtherealHigh != default) packFlags |= PackFlag.MOVEMENT_ETHEREAL_HIGH_DWORD;
+            if (placementEtherealLow != default) packFlags |= PackFlag.PLACEMENT_ETHEREAL_LOW_DWORD;
+            if (placementEtherealHigh != default) packFlags |= PackFlag.PLACEMENT_ETHEREAL_HIGH_DWORD;
+            if (durabilityCurrentLevel != default) packFlags |= PackFlag.DURABILITY_CURRENT_LEVEL;
+            if (durabilityMaxLevel != default) packFlags |= PackFlag.DURABILITY_MAX_LEVEL;
+
             data.Write((uint)packFlags);
             if (packFlags.HasFlag(PackFlag.MY_PACKAGE_ID)) {
                 data.Write((uint)packageType);
@@ -220,13 +249,13 @@ namespace AC2RE.Definitions {
                 data.Write(value);
             }
             if (packFlags.HasFlag(PackFlag.FACTION_TYPE)) {
-                data.Write((uint)factionType);
+                data.Write((int)factionType);
             }
             if (packFlags.HasFlag(PackFlag.PK_ALWAYS_TRUE_PERMISSIONS)) {
-                data.Write(pkAlwaysTrue);
+                data.Write(pkAlwaysTruePermissions);
             }
             if (packFlags.HasFlag(PackFlag.PK_ALWAYS_FALSE_PERMISSIONS)) {
-                data.Write(pkAlwaysFalse);
+                data.Write(pkAlwaysFalsePermissions);
             }
             if (packFlags.HasFlag(PackFlag.PHYSICS_TYPE_LOW_DWORD)) {
                 data.Write(physicsTypeLow);

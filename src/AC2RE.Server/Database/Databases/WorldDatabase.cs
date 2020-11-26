@@ -63,7 +63,7 @@ namespace AC2RE.Server.Database {
                     c.MapIdField(r => r.id);
                     c.MapCreator(r => new(r.id, r.physics, r.visual, r.qualities));
                     c.UnmapField(r => r.instanceStamp);
-                    c.MapField(r => r.equippedItems).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<InvLoc, InstanceId>>()
+                    c.MapField(r => r.equippedItemIds).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<InvLoc, InstanceId>>()
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
                         .WithValueSerializer(new UInt64IdSerializer<InstanceId>(id => new(id), v => v.id)));
                 });
@@ -171,7 +171,7 @@ namespace AC2RE.Server.Database {
         }
 
         public List<WorldObject> getWorldObjectsWithContainer(InstanceId containerId) {
-            return worldObjects.Find(r => !r.deleted && r.qualities.weenieDesc.containerId == containerId).ToList();
+            return worldObjects.Find(r => !r.deleted && r.containerId == containerId).ToList();
         }
 
         public bool save(WorldSave worldSave) {

@@ -13,18 +13,38 @@ namespace AC2RE.Server {
 
             DataId qualitiesDid = new(0x81000000 + entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
             worldObject.qualities = contentManager.getQualities(qualitiesDid);
-            worldObject.qualities.packFlags |= CBaseQualities.PackFlag.WEENIE_DESC;
 
             WeenieDesc weenie = worldObject.qualities.weenieDesc;
             weenie.packageType = entityDef.packageType;
-            if (weenie.packageType != PackageType.UNDEF) {
-                weenie.packFlags |= WeenieDesc.PackFlag.MY_PACKAGE_ID;
-            }
             weenie.entityDid = entityDid;
-            weenie.packFlags |= WeenieDesc.PackFlag.ENTITY_DID;
+            weenie.name = worldObject.name;
+            weenie.pluralName = worldObject.pluralName;
+            weenie.iconDid = worldObject.iconDid;
+            weenie.containerId = worldObject.containerId;
+            weenie.wielderId = worldObject.wielderId;
+            weenie.monarchId = worldObject.monarchId;
+            weenie.originatorId = worldObject.originatorId;
+            weenie.claimantId = worldObject.claimantId;
+            weenie.killerId = worldObject.killerId;
+            weenie.petSummonerId = worldObject.summonerId;
+            weenie.quantity = worldObject.quantity;
+            weenie.value = worldObject.value;
+            weenie.factionType = worldObject.faction;
+            weenie.pkAlwaysTruePermissions = worldObject.pkAlwaysTruePermissions;
+            weenie.pkAlwaysFalsePermissions = worldObject.pkAlwaysFalsePermissions;
+            weenie.physicsTypeLow = worldObject.physicsTypeLow;
+            weenie.physicsTypeHigh = worldObject.physicsTypeHigh;
+            weenie.movementEtherealLow = worldObject.movementEtherealLow;
+            weenie.movementEtherealHigh = worldObject.movementEtherealHigh;
+            weenie.placementEtherealLow = worldObject.placementEtherealLow;
+            weenie.placementEtherealHigh = worldObject.placementEtherealHigh;
+            weenie.durabilityCurrentLevel = worldObject.durability;
+            weenie.durabilityMaxLevel = worldObject.durabilityMax;
+            weenie.scale = worldObject.scale;
 
-            if (worldObject.qualities.dids.TryGetValue(DataIdStat.PHYSOBJ, out DataId physObjDid)) {
-                applyPhysics(worldObject, contentManager, physObjDid);
+            DataId? physObjDid = worldObject.physObjDid;
+            if (physObjDid != null) {
+                applyPhysics(worldObject, contentManager, physObjDid.Value);
             }
         }
 
@@ -34,7 +54,6 @@ namespace AC2RE.Server {
                 throw new ArgumentException(entityDef.type.ToString());
             }
 
-            worldObject.visual.packFlags |= VisualDesc.PackFlag.PARENT;
             worldObject.visual.parentDid = entityDef.dataId;
         }
     }

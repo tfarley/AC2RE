@@ -97,6 +97,19 @@ namespace AC2RE.Definitions {
         }
 
         public void write(AC2Writer data) {
+            packFlags = 0;
+            if (did != default) packFlags |= PackFlag.DATABASE;
+            if (parentDid != default) packFlags |= PackFlag.PARENT;
+            if (motionInterpDescDid != default) packFlags |= PackFlag.MIDESC;
+            if (behaviorTableDid != default) packFlags |= PackFlag.BEHAVIOR;
+            if (modesDid != default) packFlags |= PackFlag.MODES;
+            if (scale != default) packFlags |= PackFlag.SCALE;
+            if (childScale != default) packFlags |= PackFlag.CHILDSCALE;
+            if (particleScale != default) packFlags |= PackFlag.PARTICLESCALE;
+            if (iconDesc != default) packFlags |= PackFlag.ICONDESC;
+            if (globalAppearanceModifiers != default) packFlags |= PackFlag.GLOBALMOD;
+            if (pgdDescTable != default) packFlags |= PackFlag.PGDTABLE;
+
             data.Write((uint)packFlags);
             if (packFlags.HasFlag(PackFlag.DATABASE)) {
                 data.Write(did);

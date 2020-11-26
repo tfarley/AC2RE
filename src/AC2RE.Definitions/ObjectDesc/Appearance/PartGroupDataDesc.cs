@@ -30,7 +30,7 @@ namespace AC2RE.Definitions {
         public PackFlag packFlags;
         public PartGroupKey key; // m_key
         public PartGroupKey parentKey; // m_parent_key
-        public uint connectionPoint; // m_conn_pt
+        public uint connectionPoint; // m_conn_pt // TODO: HoldingLocation?
         public DataId setupDid; // m_setupDID
         public DataId animMapDid; // m_animMapDID
         public Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos; // m_app_hash
@@ -75,6 +75,17 @@ namespace AC2RE.Definitions {
         }
 
         public void write(AC2Writer data) {
+            packFlags = 0;
+            if (key != default) packFlags |= PackFlag.KEY;
+            if (parentKey != default) packFlags |= PackFlag.PARENTKEY;
+            if (connectionPoint != default) packFlags |= PackFlag.CONNECTIONPOINT;
+            if (setupDid != default) packFlags |= PackFlag.SETUP;
+            if (animMapDid != default) packFlags |= PackFlag.ANIMMAP;
+            if (appearanceInfos != default) packFlags |= PackFlag.APPHASH;
+            if (fxTableDid != default) packFlags |= PackFlag.FXTABLE;
+            if (startupFx != default) packFlags |= PackFlag.STARTUPFX;
+            if (fxOverrides != default) packFlags |= PackFlag.FXOVERRIDES;
+
             data.Write((uint)packFlags);
             if (packFlags.HasFlag(PackFlag.KEY)) {
                 data.Write((uint)key);

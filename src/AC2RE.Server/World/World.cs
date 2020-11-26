@@ -84,7 +84,7 @@ namespace AC2RE.Server {
                             response = CharGenResponse.OK,
                             characterIdentity = new() {
                                 id = characterObject.id,
-                                name = characterObject.qualities.weenieDesc.name.literalValue,
+                                name = characterObject.name!.literalValue,
                                 secondsGreyedOut = 0,
                                 visualDesc = characterObject.visual,
                             },
@@ -141,7 +141,7 @@ namespace AC2RE.Server {
                         Dictionary<InstanceId, InventProfile> inventoryByIdTable = new();
 
                         List<WorldObject> playerInventory = objectManager.getAllInContainer(character.id);
-                        foreach ((InvLoc equipLoc, InstanceId itemId) in character.equippedItems) {
+                        foreach ((InvLoc equipLoc, InstanceId itemId) in character.equippedItemIds) {
                             WorldObject? item = objectManager.get(itemId);
                             if (item != null) {
                                 InventProfile profile = new() {
@@ -163,7 +163,7 @@ namespace AC2RE.Server {
                                 inventoryByLocationTable[(uint)equipLoc] = profile;
                                 inventoryByIdTable[item.id] = profile;
 
-                                DataId weenieStateDid = new(0x71000000 + item.qualities.weenieDesc.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
+                                DataId weenieStateDid = new(0x71000000 + item.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
                                 WState clothingWeenieState = contentManager.getWeenieState(weenieStateDid);
                                 if (clothingWeenieState.package is Clothing clothing) {
                                     // TODO: contentManager.getInheritedVisualDesc(item.visual)? But it seems wrong, since the topmost parent of human starter pants is 0x1F00003E which is actually overriding skin color which doesn't make sense - not sure if that's a special override that just needs to be blocked or if inheritance isn't the correct thing to do...
@@ -386,7 +386,7 @@ namespace AC2RE.Server {
                                 containerIds = new() {
 
                                 },
-                                contentIds = character.containedItems,
+                                contentIds = character.containedItemIds,
                                 localFactionStatus = FactionStatus.PEACE,
                                 serverFactionStatus = FactionStatus.UNDEF,
                             }
@@ -462,11 +462,9 @@ namespace AC2RE.Server {
 
                             WorldObject newTestObject = objectManager.create();
                             newTestObject.visual = new() {
-                                packFlags = VisualDesc.PackFlag.PARENT,
                                 parentDid = new(0x1F000000 + (uint)toggleCounter),
                             };
                             newTestObject.physics = new() {
-                                packFlags = PhysicsDesc.PackFlag.POSITION,
                                 pos = new() {
                                     cell = new(0x75, 0xB9, 0x00, 0x31),
                                     frame = new(new(131.13126f - toggleCounter * 1.0f, 13.535009f + toggleCounter * 1.0f, 127.25996f), Quaternion.Identity),
@@ -474,7 +472,6 @@ namespace AC2RE.Server {
                             };
                             newTestObject.qualities = new() {
                                 weenieDesc = new() {
-                                    packFlags = WeenieDesc.PackFlag.MY_PACKAGE_ID | WeenieDesc.PackFlag.NAME | WeenieDesc.PackFlag.ENTITY_DID,
                                     packageType = PackageType.PlayerAvatar,
                                     name = new($"TestObj 0x{toggleCounter:X}"),
                                     entityDid = new(0x47000530),
@@ -599,7 +596,7 @@ namespace AC2RE.Server {
                 if (playerObject != null) {
                     characterIdentities.Add(new() {
                         id = playerObject.id,
-                        name = playerObject.qualities.weenieDesc.name.literalValue,
+                        name = playerObject.name!.literalValue,
                         secondsGreyedOut = 0,
                         visualDesc = playerObject.visual,
                     });
