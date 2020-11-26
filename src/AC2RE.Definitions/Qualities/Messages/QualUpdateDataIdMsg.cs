@@ -10,9 +10,19 @@
         public DataIdStat type; // _stype
         public DataId value; // _data
 
+        public QualUpdateDataIdPrivateMsg(DataIdStat type, DataId value) {
+            this.type = type;
+            this.value = value;
+        }
+
         public QualUpdateDataIdPrivateMsg(AC2Reader data) {
             type = (DataIdStat)data.ReadUInt32();
             value = data.ReadDataId();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write((uint)type);
+            data.Write(value);
         }
     }
 
@@ -27,10 +37,22 @@
         public DataIdStat type; // _stype
         public DataId value; // _data
 
+        public QualUpdateDataIdVisualMsg(InstanceIdWithStamp senderIdWithStamp, DataIdStat type, DataId value) {
+            this.senderIdWithStamp = senderIdWithStamp;
+            this.type = type;
+            this.value = value;
+        }
+
         public QualUpdateDataIdVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             type = (DataIdStat)data.ReadUInt32();
             value = data.ReadDataId();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            data.Write((uint)type);
+            data.Write(value);
         }
     }
 }

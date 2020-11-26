@@ -152,13 +152,5 @@ namespace AC2RE.Server {
                 send(clientId, message);
             }
         }
-
-        public void send(IEnumerable<ClientId> clientIds, ClientId excludeClientId, INetMessage message) {
-            foreach (ClientId clientId in clientIds) {
-                if (clientId != excludeClientId) {
-                    send(clientId, message);
-                }
-            }
-        }
     }
 }

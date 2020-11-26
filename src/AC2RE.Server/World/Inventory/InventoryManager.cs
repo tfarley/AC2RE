@@ -6,12 +6,10 @@ namespace AC2RE.Server {
 
     internal class InventoryManager {
 
-        private readonly PacketHandler packetHandler;
         private readonly PlayerManager playerManager;
         private readonly WorldObjectManager objectManager;
 
-        public InventoryManager(PacketHandler packetHandler, PlayerManager playerManager, WorldObjectManager objectManager) {
-            this.packetHandler = packetHandler;
+        public InventoryManager(PlayerManager playerManager, WorldObjectManager objectManager) {
             this.playerManager = playerManager;
             this.objectManager = objectManager;
         }
@@ -46,7 +44,7 @@ namespace AC2RE.Server {
         private void deparent(WorldObject parent, WorldObject item) {
             if (item.physics.parentId != InstanceId.NULL) {
                 item.physics.timestamps[0]++;
-                playerManager.broadcastSend(new DeParentMsg {
+                playerManager.sendAll(new DeParentMsg {
                     senderIdWithStamp = parent.getInstanceIdWithStamp(),
                     childIdWithPosStamp = item.getInstanceIdWithStamp(item.physics.timestamps[0]),
                 });
@@ -73,7 +71,7 @@ namespace AC2RE.Server {
                     } else {
                         if (setItemEquipped(equipper, item, request.location)) {
                             item.physics.timestamps[0]++;
-                            playerManager.broadcastSend(new ParentMsg {
+                            playerManager.sendAll(new ParentMsg {
                                 senderIdWithStamp = item.getInstanceIdWithStamp(),
                                 parentIdWithChildPosStamp = equipper.getInstanceIdWithStamp(item.physics.timestamps[0]),
                                 childLocation = item.physics.locationId,
@@ -87,7 +85,7 @@ namespace AC2RE.Server {
             }
 
             if (requester != null) {
-                packetHandler.send(requester.clientId, new InterpCEventPrivateMsg {
+                playerManager.send(requester, new InterpCEventPrivateMsg {
                     netEvent = new EquipItemDoneCEvt {
                         equipDesc = request,
                     }
@@ -120,7 +118,7 @@ namespace AC2RE.Server {
                         deparent(equipper, item);
 
                         item.physics.timestamps[0]++;
-                        playerManager.broadcastSend(requester.clientId, new ContainMsg {
+                        playerManager.sendAllExcept(requester, new ContainMsg {
                             childIdWithPosStamp = item.getInstanceIdWithStamp(item.physics.timestamps[0]),
                         });
 
@@ -130,7 +128,7 @@ namespace AC2RE.Server {
             }
 
             if (requester != null) {
-                packetHandler.send(requester.clientId, new InterpCEventPrivateMsg {
+                playerManager.send(requester, new InterpCEventPrivateMsg {
                     netEvent = new UnequipItemDoneCEvt {
                         equipDesc = request,
                     }

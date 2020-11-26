@@ -10,8 +10,9 @@
         public IntStat type; // _stype
         public int value; // _data
 
-        public QualUpdateIntPrivateMsg() {
-
+        public QualUpdateIntPrivateMsg(IntStat type, int value) {
+            this.type = type;
+            this.value = value;
         }
 
         public QualUpdateIntPrivateMsg(AC2Reader data) {
@@ -36,10 +37,22 @@
         public IntStat type; // _stype
         public int value; // _data
 
+        public QualUpdateIntVisualMsg(InstanceIdWithStamp senderIdWithStamp, IntStat type, int value) {
+            this.senderIdWithStamp = senderIdWithStamp;
+            this.type = type;
+            this.value = value;
+        }
+
         public QualUpdateIntVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             type = (IntStat)data.ReadUInt32();
             value = data.ReadInt32();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            data.Write((uint)type);
+            data.Write(value);
         }
     }
 }

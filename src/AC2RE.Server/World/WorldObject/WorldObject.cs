@@ -7,6 +7,62 @@ namespace AC2RE.Server {
 
     internal class WorldObject {
 
+        // TODO: Confirm these via packet logs, some are additional based on guesses
+        private static readonly HashSet<IntStat> INT_VISUAL_STATS = new() {
+            IntStat.ETHEREALPHYSICSTYPELOW,
+            IntStat.ETHEREALPHYSICSTYPEHIGH,
+            IntStat.ETHEREALPLACEMENTTYPELOW,
+            IntStat.ETHEREALPLACEMENTTYPEHIGH,
+            IntStat.ETHEREALMOVEMENTTYPELOW,
+            IntStat.ETHEREALMOVEMENTTYPEHIGH,
+            IntStat.QUANTITY,
+            IntStat.DURABILITY_CURRENTLEVEL,
+        };
+
+        private static readonly HashSet<BoolStat> BOOL_VISUAL_STATS = new() {
+            BoolStat.NODRAW,
+            BoolStat.DEAD,
+            BoolStat.ISSELECTABLE,
+            BoolStat.OPEN,
+        };
+
+        private static readonly HashSet<FloatStat> FLOAT_VISUAL_STATS = new() {
+            FloatStat.PHYSICS_SCALE,
+        };
+
+        private static readonly HashSet<TimestampStat> TIMESTAMP_VISUAL_STATS = new() {
+
+        };
+
+        private static readonly HashSet<DataIdStat> DATA_ID_VISUAL_STATS = new() {
+
+        };
+
+        private static readonly HashSet<InstanceIdStat> INSTANCE_ID_VISUAL_STATS = new() {
+            InstanceIdStat.CONTAINER,
+            InstanceIdStat.EQUIPPER,
+            InstanceIdStat.PLUNDERER,
+            InstanceIdStat.ORIGINATOR,
+            InstanceIdStat.CLAIMANT,
+            InstanceIdStat.ALLEGIANCE_MONARCH,
+        };
+
+        private static readonly HashSet<PositionStat> POSITION_VISUAL_STATS = new() {
+
+        };
+
+        private static readonly HashSet<StringInfoStat> STRING_INFO_VISUAL_STATS = new() {
+            StringInfoStat.NAME,
+            StringInfoStat.PLURALNAME,
+        };
+
+        private static readonly HashSet<LongIntStat> LONG_INT_VISUAL_STATS = new() {
+
+        };
+
+        [DatabaseIgnore]
+        public PlayerManager playerManager;
+
         public readonly InstanceId id;
         public bool deleted;
         public ushort instanceStamp;
@@ -452,14 +508,21 @@ namespace AC2RE.Server {
             };
         }
 
-        // TODO: When any quality is set, broadcast update message to players
-
         private int getQ(IntStat stat) => qualities.ints?.GetValueOrDefault(stat) ?? default;
         private void setQ(IntStat stat, int value) {
             if (qualities.ints == null) {
                 qualities.ints = new() { { stat, value } };
             } else {
                 qualities.ints[stat] = value;
+            }
+
+            Player? owningPlayer = playerManager.get(id);
+            if (owningPlayer != null) {
+                playerManager.send(owningPlayer, new QualUpdateIntPrivateMsg(stat, value));
+            }
+
+            if (INT_VISUAL_STATS.Contains(stat)) {
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateIntVisualMsg(getInstanceIdWithStamp(), stat, value));
             }
         }
 
@@ -470,6 +533,15 @@ namespace AC2RE.Server {
             } else {
                 qualities.bools[stat] = value;
             }
+
+            Player? owningPlayer = playerManager.get(id);
+            if (owningPlayer != null) {
+                playerManager.send(owningPlayer, new QualUpdateBoolPrivateMsg(stat, value));
+            }
+
+            if (BOOL_VISUAL_STATS.Contains(stat)) {
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateBoolVisualMsg(getInstanceIdWithStamp(), stat, value));
+            }
         }
 
         private float getQ(FloatStat stat) => qualities.floats?.GetValueOrDefault(stat) ?? default;
@@ -479,6 +551,15 @@ namespace AC2RE.Server {
             } else {
                 qualities.floats[stat] = value;
             }
+
+            Player? owningPlayer = playerManager.get(id);
+            if (owningPlayer != null) {
+                playerManager.send(owningPlayer, new QualUpdateFloatPrivateMsg(stat, value));
+            }
+
+            if (FLOAT_VISUAL_STATS.Contains(stat)) {
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateFloatVisualMsg(getInstanceIdWithStamp(), stat, value));
+            }
         }
 
         private double getQ(TimestampStat stat) => qualities.doubles?.GetValueOrDefault(stat) ?? default;
@@ -487,6 +568,15 @@ namespace AC2RE.Server {
                 qualities.doubles = new() { { stat, value } };
             } else {
                 qualities.doubles[stat] = value;
+            }
+
+            Player? owningPlayer = playerManager.get(id);
+            if (owningPlayer != null) {
+                playerManager.send(owningPlayer, new QualUpdateTimestampPrivateMsg(stat, value));
+            }
+
+            if (TIMESTAMP_VISUAL_STATS.Contains(stat)) {
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateTimestampVisualMsg(getInstanceIdWithStamp(), stat, value));
             }
         }
 
@@ -506,6 +596,15 @@ namespace AC2RE.Server {
             } else {
                 qualities.dids[stat] = value;
             }
+
+            Player? owningPlayer = playerManager.get(id);
+            if (owningPlayer != null) {
+                playerManager.send(owningPlayer, new QualUpdateDataIdPrivateMsg(stat, value));
+            }
+
+            if (DATA_ID_VISUAL_STATS.Contains(stat)) {
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateDataIdVisualMsg(getInstanceIdWithStamp(), stat, value));
+            }
         }
 
         private InstanceId getQ(InstanceIdStat stat) => qualities.ids?.GetValueOrDefault(stat) ?? default;
@@ -514,6 +613,15 @@ namespace AC2RE.Server {
                 qualities.ids = new() { { stat, value } };
             } else {
                 qualities.ids[stat] = value;
+            }
+
+            Player? owningPlayer = playerManager.get(id);
+            if (owningPlayer != null) {
+                playerManager.send(owningPlayer, new QualUpdateInstanceIdPrivateMsg(stat, value));
+            }
+
+            if (INSTANCE_ID_VISUAL_STATS.Contains(stat)) {
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateInstanceIdVisualMsg(getInstanceIdWithStamp(), stat, value));
             }
         }
 
@@ -524,6 +632,15 @@ namespace AC2RE.Server {
             } else {
                 qualities.poss[stat] = value;
             }
+
+            Player? owningPlayer = playerManager.get(id);
+            if (owningPlayer != null) {
+                playerManager.send(owningPlayer, new QualUpdatePositionPrivateMsg(stat, value));
+            }
+
+            if (POSITION_VISUAL_STATS.Contains(stat)) {
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdatePositionVisualMsg(getInstanceIdWithStamp(), stat, value));
+            }
         }
 
         private StringInfo? getQ(StringInfoStat stat) => qualities.stringInfos?.GetValueOrDefault(stat) ?? default;
@@ -532,6 +649,15 @@ namespace AC2RE.Server {
                 qualities.stringInfos = new() { { stat, value } };
             } else {
                 qualities.stringInfos[stat] = value;
+            }
+
+            Player? owningPlayer = playerManager.get(id);
+            if (owningPlayer != null) {
+                playerManager.send(owningPlayer, new QualUpdateStringInfoPrivateMsg(stat, value));
+            }
+
+            if (STRING_INFO_VISUAL_STATS.Contains(stat)) {
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateStringInfoVisualMsg(getInstanceIdWithStamp(), stat, value));
             }
         }
 
@@ -550,6 +676,15 @@ namespace AC2RE.Server {
                 qualities.longs = new() { { stat, value } };
             } else {
                 qualities.longs[stat] = value;
+            }
+
+            Player? owningPlayer = playerManager.get(id);
+            if (owningPlayer != null) {
+                playerManager.send(owningPlayer, new QualUpdateLongIntPrivateMsg(stat, value));
+            }
+
+            if (LONG_INT_VISUAL_STATS.Contains(stat)) {
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateLongIntVisualMsg(getInstanceIdWithStamp(), stat, value));
             }
         }
     }

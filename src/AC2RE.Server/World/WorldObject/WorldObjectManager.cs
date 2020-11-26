@@ -9,16 +9,14 @@ namespace AC2RE.Server {
         private static readonly string INSTANCE_ID_GENERATOR_TYPE = "worldObject";
 
         private readonly WorldDatabase worldDb;
-        private readonly PacketHandler packetHandler;
         private readonly PlayerManager playerManager;
         private readonly InstanceIdGenerator instanceIdGenerator;
         private bool loadedWorld;
         private readonly HashSet<InstanceId> loadedContainers = new();
         private readonly Dictionary<InstanceId, WorldObject> worldObjects = new();
 
-        public WorldObjectManager(WorldDatabase worldDb, PacketHandler packetHandler, PlayerManager playerManager) {
+        public WorldObjectManager(WorldDatabase worldDb, PlayerManager playerManager) {
             this.worldDb = worldDb;
-            this.packetHandler = packetHandler;
             this.playerManager = playerManager;
             instanceIdGenerator = worldDb.getInstanceIdGenerator(INSTANCE_ID_GENERATOR_TYPE) ?? new(INSTANCE_ID_GENERATOR_TYPE);
         }
@@ -27,6 +25,7 @@ namespace AC2RE.Server {
             if (!worldObjects.TryGetValue(id, out WorldObject? worldObject)) {
                 worldObject = worldDb.getWorldObjectWithId(id);
                 if (worldObject != null) {
+                    worldObject.playerManager = playerManager;
                     worldObjects[id] = worldObject;
                 }
             }
@@ -38,7 +37,9 @@ namespace AC2RE.Server {
                 loadedWorld = true;
                 List<WorldObject> dbWorldObjects = worldDb.getAllWorldObjects();
                 foreach (WorldObject worldObject in dbWorldObjects) {
-                    worldObjects.TryAdd(worldObject.id, worldObject);
+                    if (worldObjects.TryAdd(worldObject.id, worldObject)) {
+                        worldObject.playerManager = playerManager;
+                    }
                 }
             }
         }
@@ -58,7 +59,9 @@ namespace AC2RE.Server {
             if (loadedContainers.Add(containerId)) {
                 List<WorldObject> dbWorldObjects = worldDb.getWorldObjectsWithContainer(containerId);
                 foreach (WorldObject worldObject in dbWorldObjects) {
-                    worldObjects.TryAdd(worldObject.id, worldObject);
+                    if (worldObjects.TryAdd(worldObject.id, worldObject)) {
+                        worldObject.playerManager = playerManager;
+                    }
                 }
             }
         }
@@ -75,7 +78,9 @@ namespace AC2RE.Server {
         }
 
         public WorldObject create() {
-            WorldObject newObject = new(instanceIdGenerator.next());
+            WorldObject newObject = new(instanceIdGenerator.next()) {
+                playerManager = playerManager
+            };
             worldObjects[newObject.id] = newObject;
             return newObject;
         }
@@ -83,13 +88,7 @@ namespace AC2RE.Server {
         public void enterWorld(WorldObject worldObject) {
             if (!worldObject.inWorld) {
                 worldObject.inWorld = true;
-
-                playerManager.broadcastSend(new CreateObjectMsg {
-                    id = worldObject.id,
-                    visualDesc = worldObject.visual,
-                    physicsDesc = worldObject.physics,
-                    weenieDesc = worldObject.qualities.weenieDesc,
-                });
+                playerManager.enterWorld(worldObject);
             }
         }
 
@@ -102,12 +101,7 @@ namespace AC2RE.Server {
         public void leaveWorld(WorldObject worldObject) {
             if (worldObject.inWorld) {
                 worldObject.inWorld = false;
-
-                playerManager.broadcastSend(new DestroyObjectMsg {
-                    idWithStamp = worldObject.getInstanceIdWithStamp(),
-                });
-
-                worldObject.instanceStamp++;
+                playerManager.leaveWorld(worldObject);
             }
         }
 
@@ -117,15 +111,10 @@ namespace AC2RE.Server {
             }
         }
 
-        public void syncNewClient(ClientId clientId) {
+        public void syncNewPlayer(Player player) {
             foreach (WorldObject worldObject in worldObjects.Values) {
                 if (worldObject.inWorld) {
-                    packetHandler.send(clientId, new CreateObjectMsg {
-                        id = worldObject.id,
-                        visualDesc = worldObject.visual,
-                        physicsDesc = worldObject.physics,
-                        weenieDesc = worldObject.qualities.weenieDesc,
-                    });
+                    playerManager.addVisibleObject(player, worldObject);
                 }
             }
         }

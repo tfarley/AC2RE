@@ -10,9 +10,19 @@
         public StringInfoStat type; // _stype
         public StringInfo value; // _data
 
+        public QualUpdateStringInfoPrivateMsg(StringInfoStat type, StringInfo value) {
+            this.type = type;
+            this.value = value;
+        }
+
         public QualUpdateStringInfoPrivateMsg(AC2Reader data) {
             type = (StringInfoStat)data.ReadUInt32();
             value = new(data);
+        }
+
+        public void write(AC2Writer data) {
+            data.Write((uint)type);
+            value.write(data);
         }
     }
 
@@ -27,10 +37,22 @@
         public StringInfoStat type; // _stype
         public StringInfo value; // _data
 
+        public QualUpdateStringInfoVisualMsg(InstanceIdWithStamp senderIdWithStamp, StringInfoStat type, StringInfo value) {
+            this.senderIdWithStamp = senderIdWithStamp;
+            this.type = type;
+            this.value = value;
+        }
+
         public QualUpdateStringInfoVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             type = (StringInfoStat)data.ReadUInt32();
             value = new(data);
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            data.Write((uint)type);
+            value.write(data);
         }
     }
 }

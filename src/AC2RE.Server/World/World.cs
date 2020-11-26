@@ -44,8 +44,8 @@ namespace AC2RE.Server {
             this.contentManager = contentManager;
             playerManager = new(packetHandler);
             characterManager = new(worldDb);
-            objectManager = new(worldDb, packetHandler, playerManager);
-            inventoryManager = new(packetHandler, playerManager, objectManager);
+            objectManager = new(worldDb, playerManager);
+            inventoryManager = new(playerManager, objectManager);
 
             objectManager.enterWorld(objectManager.getAll());
         }
@@ -68,7 +68,7 @@ namespace AC2RE.Server {
                 case MessageOpcode.CLIDAT_INTERROGATION_RESPONSE_EVENT: {
                         CliDatInterrogationResponseMsg msg = (CliDatInterrogationResponseMsg)genericMsg;
 
-                        packetHandler.send(player.clientId, new CliDatEndDDDMsg());
+                        playerManager.send(player, new CliDatEndDDDMsg());
                         sendCharacters(player);
 
                         break;
@@ -80,7 +80,7 @@ namespace AC2RE.Server {
 
                         Character character = characterManager.createWithAccountAndWorldObject(player.account.id, characterObject.id);
 
-                        packetHandler.send(player.clientId, new CharGenVerificationMsg {
+                        playerManager.send(player, new CharGenVerificationMsg {
                             response = CharGenResponse.OK,
                             characterIdentity = new() {
                                 id = characterObject.id,
@@ -104,7 +104,7 @@ namespace AC2RE.Server {
                                 character.deleted = true;
                                 characterObject.deleted = true;
 
-                                packetHandler.send(player.clientId, new CharacterDeletionCMsg {
+                                playerManager.send(player, new CharacterDeletionCMsg {
                                     characterId = characterObject.id,
                                 });
                                 sendCharacters(player);
@@ -128,12 +128,12 @@ namespace AC2RE.Server {
                             throw new ArgumentException($"Account {player.account.id} attempted to log in with non-existent character object {msg.characterId}.");
                         }
 
-                        packetHandler.send(player.clientId, new CreatePlayerMsg {
+                        playerManager.send(player, new CreatePlayerMsg {
                             id = msg.characterId,
                             regionId = 1,
                         });
 
-                        packetHandler.send(player.clientId, new PlayerDescMsg {
+                        playerManager.send(player, new PlayerDescMsg {
                             qualities = character.qualities,
                         });
 
@@ -179,7 +179,7 @@ namespace AC2RE.Server {
                             }
                         }
 
-                        packetHandler.send(player.clientId, new InterpCEventPrivateMsg {
+                        playerManager.send(player, new InterpCEventPrivateMsg {
                             netEvent = new HandleCharacterSessionStartCEvt {
                                 money = 12345,
                                 actRegistry = new() {
@@ -392,7 +392,7 @@ namespace AC2RE.Server {
                             }
                         });
 
-                        objectManager.syncNewClient(player.clientId);
+                        objectManager.syncNewPlayer(player);
 
                         objectManager.enterWorld(playerInventory);
 
@@ -403,7 +403,7 @@ namespace AC2RE.Server {
                         CharacterExitGameSMsg msg = (CharacterExitGameSMsg)genericMsg;
 
                         if (player.characterId == msg.characterId) {
-                            packetHandler.send(player.clientId, new CharacterExitGameCMsg());
+                            playerManager.send(player, new CharacterExitGameCMsg());
                             sendCharacters(player);
                         }
 
@@ -411,7 +411,7 @@ namespace AC2RE.Server {
                     }
                 case MessageOpcode.CLIDAT_REQUEST_DATA_EVENT: {
                         CliDatRequestDataMsg msg = (CliDatRequestDataMsg)genericMsg;
-                        packetHandler.send(player.clientId, new CliDatErrorMsg {
+                        playerManager.send(player, new CliDatErrorMsg {
                             qdid = msg.qdid,
                             error = 1,
                         });
@@ -425,7 +425,7 @@ namespace AC2RE.Server {
                                 SingletonPkg<Effect> refiningEffect = new() {
                                     did = new(0x6F0011ED),
                                 };
-                                packetHandler.send(player.clientId, new InterpCEventPrivateMsg {
+                                playerManager.send(player, new InterpCEventPrivateMsg {
                                     netEvent = new ClientAddEffectCEvt {
                                         effectRecord = new() {
                                             timeDemotedFromTopLevel = -1.0,
@@ -453,7 +453,7 @@ namespace AC2RE.Server {
                                     }
                                 });
                             } else {
-                                packetHandler.send(player.clientId, new InterpCEventPrivateMsg {
+                                playerManager.send(player, new InterpCEventPrivateMsg {
                                     netEvent = new ClientRemoveEffectCEvt {
                                         effectId = 0x00000BD9,
                                     }
@@ -480,14 +480,11 @@ namespace AC2RE.Server {
 
                             objectManager.enterWorld(newTestObject);
 
-                            packetHandler.send(player.clientId, new QualUpdateIntPrivateMsg {
-                                type = IntStat.HEALTH_CURRENTLEVEL, // TODO: Health_CurrentLevel_IntStat
-                                value = toggleCounter,
-                            });
-
                             WorldObject? character = objectManager.get(player.characterId);
                             if (character != null && character.inWorld) {
-                                packetHandler.send(player.clientId, new DoFxMsg {
+                                character.health = toggleCounter;
+
+                                playerManager.send(player, new DoFxMsg {
                                     senderIdWithStamp = character.getInstanceIdWithStamp(character.physics.visualOrderStamp),
                                     fxId = FxId.PORTAL_USE,
                                     scalar = 1.0f,
@@ -499,7 +496,7 @@ namespace AC2RE.Server {
                             toggleCounter++;
                         } else if (msg.netEvent.funcId == ServerEventFunctionId.Examination__QueryExaminationProfile) {
                             QueryExaminationProfileSEvt sEvent = (QueryExaminationProfileSEvt)msg.netEvent;
-                            packetHandler.send(player.clientId, new InterpCEventPrivateMsg {
+                            playerManager.send(player, new InterpCEventPrivateMsg {
                                 netEvent = new UpdateExaminationProfileCEvt {
                                     profile = new() {
                                         request = sEvent.request,
@@ -531,7 +528,7 @@ namespace AC2RE.Server {
                             character.physics.headingX = msg.x;
                             character.physics.headingZ = msg.z;
 
-                            playerManager.broadcastSend(player.clientId, new LookAtDirMsg {
+                            playerManager.sendAllExcept(player, new LookAtDirMsg {
                                 senderIdWithStamp = character.getInstanceIdWithStamp(),
                                 x = character.physics.headingX,
                                 z = character.physics.headingZ,
@@ -569,7 +566,7 @@ namespace AC2RE.Server {
                             }
 
                             // TODO: If cell has changed, might need to send PositionCellMsg instead
-                            playerManager.broadcastSend(player.clientId, new PositionMsg {
+                            playerManager.sendAllExcept(player, new PositionMsg {
                                 senderIdWithStamp = character.getInstanceIdWithStamp(),
                                 pos = pos,
                             });
@@ -610,14 +607,14 @@ namespace AC2RE.Server {
                 characterIds.Add(characterIdentity.id);
             }
 
-            packetHandler.send(player.clientId, new MinCharSetMsg {
+            playerManager.send(player, new MinCharSetMsg {
                 numAllowedCharacters = 0,
                 accountName = player.account.userName,
                 characterNames = characterNames,
                 characterIds = characterIds,
             });
 
-            packetHandler.send(player.clientId, new CharacterSetMsg {
+            playerManager.send(player, new CharacterSetMsg {
                 characters = characterIdentities,
                 deletedCharacters = null,
                 status = 0,

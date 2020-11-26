@@ -10,9 +10,19 @@
         public BoolStat type; // _stype
         public bool value; // _data
 
+        public QualUpdateBoolPrivateMsg(BoolStat type, bool value) {
+            this.type = type;
+            this.value = value;
+        }
+
         public QualUpdateBoolPrivateMsg(AC2Reader data) {
             type = (BoolStat)data.ReadUInt32();
             value = data.ReadBoolean();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write((uint)type);
+            data.Write(value);
         }
     }
 
@@ -27,10 +37,22 @@
         public BoolStat type; // _stype
         public bool value; // _data
 
+        public QualUpdateBoolVisualMsg(InstanceIdWithStamp senderIdWithStamp, BoolStat type, bool value) {
+            this.senderIdWithStamp = senderIdWithStamp;
+            this.type = type;
+            this.value = value;
+        }
+
         public QualUpdateBoolVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             type = (BoolStat)data.ReadUInt32();
             value = data.ReadBoolean();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            data.Write((uint)type);
+            data.Write(value);
         }
     }
 }

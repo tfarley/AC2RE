@@ -10,9 +10,19 @@
         public LongIntStat type; // _stype
         public long value; // _data
 
+        public QualUpdateLongIntPrivateMsg(LongIntStat type, long value) {
+            this.type = type;
+            this.value = value;
+        }
+
         public QualUpdateLongIntPrivateMsg(AC2Reader data) {
             type = (LongIntStat)data.ReadUInt32();
             value = data.ReadInt64();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write((uint)type);
+            data.Write(value);
         }
     }
 
@@ -27,10 +37,22 @@
         public LongIntStat type; // _stype
         public long value; // _data
 
+        public QualUpdateLongIntVisualMsg(InstanceIdWithStamp senderIdWithStamp, LongIntStat type, long value) {
+            this.senderIdWithStamp = senderIdWithStamp;
+            this.type = type;
+            this.value = value;
+        }
+
         public QualUpdateLongIntVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             type = (LongIntStat)data.ReadUInt32();
             value = data.ReadInt64();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            data.Write((uint)type);
+            data.Write(value);
         }
     }
 }

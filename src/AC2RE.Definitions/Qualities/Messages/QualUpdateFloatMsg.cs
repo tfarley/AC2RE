@@ -10,9 +10,19 @@
         public FloatStat type; // _stype
         public float value; // _data
 
+        public QualUpdateFloatPrivateMsg(FloatStat type, float value) {
+            this.type = type;
+            this.value = value;
+        }
+
         public QualUpdateFloatPrivateMsg(AC2Reader data) {
             type = (FloatStat)data.ReadUInt32();
             value = data.ReadSingle();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write((uint)type);
+            data.Write(value);
         }
     }
 
@@ -27,10 +37,22 @@
         public FloatStat type; // _stype
         public float value; // _data
 
+        public QualUpdateFloatVisualMsg(InstanceIdWithStamp senderIdWithStamp, FloatStat type, float value) {
+            this.senderIdWithStamp = senderIdWithStamp;
+            this.type = type;
+            this.value = value;
+        }
+
         public QualUpdateFloatVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             type = (FloatStat)data.ReadUInt32();
             value = data.ReadSingle();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            data.Write((uint)type);
+            data.Write(value);
         }
     }
 }
