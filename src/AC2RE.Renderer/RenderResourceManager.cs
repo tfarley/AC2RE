@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace AC2RE.Renderer {
 
-    public class RenderResourceManager : IDisposable {
+    internal class RenderResourceManager : IDisposable {
 
         private static readonly Dictionary<PixelFormat, TextureFormat> PIXEL_TO_TEXTURE_FORMAT = new() {
             { PixelFormat.CUSTOM_R8G8B8A8, TextureFormat.R8G8B8A8 },

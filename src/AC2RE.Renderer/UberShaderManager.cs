@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AC2RE.Renderer {
 
-    public class UberShaderManager : IDisposable {
+    internal class UberShaderManager : IDisposable {
 
         private static readonly string GLSL_VERSION = "#version 420 core";
 

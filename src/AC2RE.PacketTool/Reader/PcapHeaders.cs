@@ -2,7 +2,7 @@
 
 namespace AC2RE.PacketTool {
 
-    public class PcapHeader {
+    internal class PcapHeader {
 
         public static readonly uint MAGIC_NUMBER_1 = 0xA1B2C3D4;
         public static readonly uint MAGIC_NUMBER_2 = 0xD4C3B2A1;
@@ -26,7 +26,7 @@ namespace AC2RE.PacketTool {
         }
     }
 
-    public class PcapRecordHeader {
+    internal class PcapRecordHeader {
 
         public uint tsSec;
         public uint tsUsec;
@@ -41,7 +41,7 @@ namespace AC2RE.PacketTool {
         }
     }
 
-    public class PcapngBlockHeader {
+    internal class PcapngBlockHeader {
 
         public uint blockType;
         public uint blockTotalLength;

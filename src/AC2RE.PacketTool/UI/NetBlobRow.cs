@@ -3,7 +3,7 @@ using System;
 
 namespace AC2RE.PacketTool.UI {
 
-    public class NetBlobRow {
+    internal class NetBlobRow {
 
         public int lineNum { get; init; }
         public string sr { get; init; }

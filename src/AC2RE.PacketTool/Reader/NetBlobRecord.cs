@@ -4,7 +4,7 @@ using System.IO;
 
 namespace AC2RE.PacketTool {
 
-    public class NetBlobRecord {
+    internal class NetBlobRecord {
 
         public bool isClientToServer;
         public int startPacketNum;

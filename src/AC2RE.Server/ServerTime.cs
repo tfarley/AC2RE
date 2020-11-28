@@ -1,5 +1,4 @@
-﻿using Serilog;
-using System;
+﻿using System;
 using System.Diagnostics;
 
 namespace AC2RE.Server {
@@ -27,7 +26,7 @@ namespace AC2RE.Server {
 
         public void restart() {
             if (!Stopwatch.IsHighResolution) {
-                Log.Warning($"High resolution stopwatch is not available.");
+                Logs.GENERAL.warn("High resolution stopwatch is not available");
             }
 
             startTime = (double)(DateTime.UtcNow - new DateTime(2020, 1, 1)).Ticks / TimeSpan.TicksPerSecond;

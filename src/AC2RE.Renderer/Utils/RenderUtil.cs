@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace AC2RE.Renderer {
 
-    public static class RenderUtil {
+    internal static class RenderUtil {
 
         public const float DEG_TO_RAG = MathF.PI / 180.0f;
 

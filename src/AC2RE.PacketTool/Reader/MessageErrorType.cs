@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.PacketTool {
 
-    public enum MessageErrorType : uint {
+    internal enum MessageErrorType : uint {
         UNDETERMINED,
         NONE,
         PARTIAL_READ,

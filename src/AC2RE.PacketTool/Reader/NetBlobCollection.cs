@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AC2RE.PacketTool {
 
-    public class NetBlobCollection {
+    internal class NetBlobCollection {
 
         public readonly List<NetBlobRecord> records = new();
         private readonly Dictionary<NetBlobId, NetBlobRecord> netBlobIdToRecord = new();

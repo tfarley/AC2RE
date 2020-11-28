@@ -1,5 +1,4 @@
 ﻿using AC2RE.Server.Database;
-using Serilog;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -34,7 +33,7 @@ namespace AC2RE.Server {
         [MethodImpl(MethodImplOptions.Synchronized)]
         ~AC2Server() {
             if (active) {
-                Log.Warning($"Didn't stop AC2Server before destruction!");
+                Logs.STATUS.warn("Didn't stop AC2Server before destruction!");
                 stop();
             }
         }
@@ -47,23 +46,27 @@ namespace AC2RE.Server {
 
             time.restart();
 
+            Logs.STATUS.info("Initializing databases...");
             accountDb = new(MONGODB_CONNECTION_ENDPOINT);
             worldDb = new(MONGODB_CONNECTION_ENDPOINT);
 
+            Logs.STATUS.info("Initializing handlers...");
             accountManager = new(accountDb);
             clientManager = new();
             contentManager = new();
 
             packetHandler = new(accountManager, clientManager, time);
 
+            Logs.STATUS.info("Initializing world...");
             world = new(worldDb, time, packetHandler, contentManager);
 
+            Logs.STATUS.info("Initializing network...");
             logonNetInterface = new(port);
             gameNetInterface = new(logonNetInterface.port + 1);
             serverListeners.Add(new(logonNetInterface, packetHandler.processReceive));
             serverListeners.Add(new(gameNetInterface, packetHandler.processReceive));
 
-            Log.Debug($"Initialized AC2Server.");
+            Logs.STATUS.info("Server initialization complete.");
 
             active = true;
         }
@@ -78,11 +81,7 @@ namespace AC2RE.Server {
 
             world!.disconnectAll();
 
-            lock (clientManager!) {
-                foreach (ClientConnection client in clientManager.clients) {
-                    client.flushSend(gameNetInterface!, time.time, time.elapsedTime);
-                }
-            }
+            clientManager!.processClients(client => client.flushSend(gameNetInterface!, time.time, time.elapsedTime));
 
             // TODO: Disconnect and clear all connections
 
@@ -120,11 +119,7 @@ namespace AC2RE.Server {
             while (time.tryTick()) {
                 world!.tick();
 
-                lock (clientManager!) {
-                    foreach (ClientConnection client in clientManager.clients) {
-                        client.flushSend(gameNetInterface!, time.time, time.elapsedTime);
-                    }
-                }
+                clientManager!.processClients(client => client.flushSend(gameNetInterface!, time.time, time.elapsedTime));
             }
         }
     }

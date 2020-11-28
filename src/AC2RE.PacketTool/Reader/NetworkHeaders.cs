@@ -3,7 +3,7 @@ using AC2RE.Utils;
 
 namespace AC2RE.PacketTool {
 
-    public class EthernetHeader {
+    internal class EthernetHeader {
 
         public byte[] dest;
         public byte[] source;
@@ -16,7 +16,7 @@ namespace AC2RE.PacketTool {
         }
     }
 
-    public class IpAddress {
+    internal class IpAddress {
 
         public byte[] bytes;
 
@@ -29,7 +29,7 @@ namespace AC2RE.PacketTool {
         }
     }
 
-    public class IpHeader {
+    internal class IpHeader {
 
         public byte verIhl;
         public byte tos;
@@ -56,7 +56,7 @@ namespace AC2RE.PacketTool {
         }
     }
 
-    public class UdpHeader {
+    internal class UdpHeader {
 
         public ushort sPort;
         public ushort dPort;

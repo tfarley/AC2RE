@@ -1,10 +1,9 @@
 ﻿using AC2RE.Definitions;
-using Serilog;
 using System.Collections.Generic;
 
 namespace AC2RE.DatTool {
 
-    public class CellParse {
+    internal class CellParse {
 
         public static void getMissingCells(DatReader datReader) {
             HashSet<ushort> seenLandblocks = new();
@@ -13,7 +12,9 @@ namespace AC2RE.DatTool {
                 seenLandblocks.Add((ushort)((did.id >> 16) & 0xFFFF));
             }
 
-            Log.Information($"Parsed dat {datReader.datFileName}, num landblocks: {seenLandblocks.Count}.");
+            Logs.GENERAL.info("Parsed dat",
+                "fileName", datReader.datFileName,
+                "numLandblocks", seenLandblocks.Count);
         }
     }
 }

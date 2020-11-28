@@ -1,7 +1,6 @@
 ﻿using AC2RE.Definitions;
 using AC2RE.Server.Database;
 using AC2RE.Utils;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -50,17 +49,17 @@ namespace AC2RE.Server {
             objectManager.enterWorld(objectManager.getAll());
         }
 
-        public void addPlayerIfNecessary(ClientId clientId, Account account) {
-            if (!playerManager.exists(clientId)) {
-                playerManager.add(clientId, account);
+        public void addPlayerIfNecessary(ClientConnection client, Account account) {
+            if (!playerManager.exists(client.id)) {
+                playerManager.add(client.id, account);
             }
         }
 
-        public bool processMessage(ClientId clientId, INetMessage genericMsg) {
-            Player? player = playerManager.get(clientId);
+        public bool processMessage(ClientConnection client, INetMessage genericMsg) {
+            Player? player = playerManager.get(client.id);
 
             if (player == null) {
-                throw new InvalidDataException($"Received message from client {clientId} with no player.");
+                throw new InvalidDataException($"Received message from client {client} with no player.");
             }
 
             bool handled = true;
@@ -577,7 +576,8 @@ namespace AC2RE.Server {
                         break;
                     }
                 default: {
-                        Log.Error($"Unhandled opcode: {genericMsg.opcode} - message not processed!");
+                        Logs.NET.error("Unhandled opcode - message not processed!",
+                            "op", genericMsg.opcode);
                         handled = false;
                         break;
                     }

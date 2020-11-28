@@ -1,5 +1,4 @@
-﻿using Serilog;
-using System;
+﻿using System;
 using System.Threading;
 
 namespace AC2RE.Server {
@@ -10,12 +9,7 @@ namespace AC2RE.Server {
         private static readonly AC2Server SERVER = new();
 
         static void Main(string[] args) {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.Console()
-                .CreateLogger();
-
-            Log.Information("Hello World!");
+            Logs.STATUS.info("Hello World!");
 
             runServer();
         }

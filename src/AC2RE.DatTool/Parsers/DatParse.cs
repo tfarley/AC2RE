@@ -1,16 +1,16 @@
 ﻿using AC2RE.Definitions;
 using AC2RE.Utils;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
 namespace AC2RE.DatTool {
 
-    public class DatParse {
+    internal class DatParse {
 
         public static void parseDat(DbTypeDef.DatType datType, DatReader datReader, string outputBaseDir, params DbType[] typesToParse) {
-            Log.Information($"Parsing dat {datReader.datFileName}...");
+            Logs.GENERAL.info("Parsing dat...",
+                "fileName", datReader.datFileName);
 
             HashSet<DbType> typesToParseSet = new(typesToParse);
 
@@ -65,7 +65,8 @@ namespace AC2RE.DatTool {
                 allSeenTypes.Add(dbType);
 
                 if (dbType == DbType.UNDEFINED) {
-                    Log.Warning($"Unhandled dat gid {did}.");
+                    Logs.GENERAL.warn("Unhandled dat gid",
+                        "gid", did);
                     continue;
                 }
 
@@ -91,7 +92,10 @@ namespace AC2RE.DatTool {
                 parseFile(datReader, did, dbType, outputPath);
             }
 
-            Log.Information($"Parsed dat {datReader.datFileName}, num files: {numFiles}, all seen types: {Util.objectToString(allSeenTypes)}.");
+            Logs.GENERAL.info("Parsed dat",
+                "fileName", datReader.datFileName,
+                "numFiles", numFiles,
+                "allSeenTypes", Util.objectToString(allSeenTypes));
         }
 
         private static void parseFile(DatReader datReader, DataId did, DbType dbType, string outputPath) {
@@ -338,7 +342,8 @@ namespace AC2RE.DatTool {
                         break;
                     }
                 default:
-                    Log.Warning($"Unhandled DbType {dbType}.");
+                    Logs.GENERAL.warn("Unhandled DbType",
+                        "dbType", dbType);
                     break;
             }
         }
@@ -359,7 +364,10 @@ namespace AC2RE.DatTool {
 
         private static void checkFullRead(AC2Reader data, DataId did) {
             if (data.BaseStream.Position < data.BaseStream.Length) {
-                Log.Warning($"File {did.id:X8} was not fully read ({data.BaseStream.Position} / {data.BaseStream.Length}).");
+                Logs.GENERAL.warn("File was not fully read",
+                    "did", $"{did.id:X8}",
+                    "pos", data.BaseStream.Position,
+                    "len", data.BaseStream.Length);
             }
         }
 

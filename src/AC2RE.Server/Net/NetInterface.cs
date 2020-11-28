@@ -1,5 +1,4 @@
-﻿using Serilog;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
@@ -21,7 +20,8 @@ namespace AC2RE.Server {
 
         ~NetInterface() {
             if (!closed) {
-                Log.Warning($"Didn't close NetInterface with port {port} before destruction!");
+                Logs.NET.warn("Didn't close NetInterface before destruction!",
+                    "interface", this);
                 close();
             }
         }

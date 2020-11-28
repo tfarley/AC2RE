@@ -1,6 +1,5 @@
 ﻿using AC2RE.Definitions;
 using AC2RE.Utils;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +17,7 @@ namespace AC2RE.Server {
         private static readonly byte ORDERING_TYPE_NORMAL = 0x03;
 
         public readonly ClientId id;
-        public readonly IPEndPoint endpoint;
+        public IPEndPoint endpoint { get; private set; }
         public readonly Account account;
         public readonly ulong connectionAckCookie;
         public readonly uint outgoingSeed;
@@ -61,6 +60,10 @@ namespace AC2RE.Server {
             incomingSeed = rand.NextUInt();
         }
 
+        public void updatePort(int port) {
+            endpoint = new IPEndPoint(endpoint.Address, port);
+        }
+
         public void connect() {
             connected = true;
 
@@ -97,7 +100,9 @@ namespace AC2RE.Server {
             }
             byte[] payload = buffer.ToArray();
             enqueueBlob(msg.blobFlags, msg.queueId, payload);
-            Log.Information($"Enqueued msg: {msg} {BitConverter.ToString(payload)}");
+            Logs.NET.debug("Enqueued msg",
+                "msg", msg,
+                "data", BitConverter.ToString(payload));
         }
 
         private void enqueueBlob(NetBlobId.Flag blobFlags, NetQueue queueId, byte[] payload) {
@@ -234,7 +239,11 @@ namespace AC2RE.Server {
                 // Replace the checksum
                 BitConverter.GetBytes(headerChecksum + contentChecksum).CopyTo(sendBuffer, 8);
 
-                Log.Debug($"SENT [{packetLength}] to {endpoint} | {packet}\n{BitConverter.ToString(sendBuffer, 0, packetLength)}.");
+                Logs.NET.debug("SENT",
+                    "len", packetLength,
+                    "to", endpoint,
+                    "pkt", packet,
+                    "data", BitConverter.ToString(sendBuffer, 0, packetLength));
 
                 return sendablePacket.netInterface.sendTo(sendBuffer, packetLength, endpoint); ;
             }
@@ -254,6 +263,10 @@ namespace AC2RE.Server {
                     nacksToResend.Enqueue(packet);
                 }
             }
+        }
+
+        public override string ToString() {
+            return $"{account.userName} ({id})";
         }
     }
 }

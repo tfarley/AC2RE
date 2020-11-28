@@ -1,5 +1,4 @@
 ﻿using AC2RE.Definitions;
-using Serilog;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -22,12 +21,14 @@ namespace AC2RE.Server {
 #pragma warning disable CS4014
             runAsync(processReceive);
 #pragma warning restore CS4014
-            Log.Debug($"Initialized server listener with interface {netInterface}.");
+            Logs.NET.debug("Initialized server listener",
+                "interface", netInterface);
         }
 
         ~ServerListener() {
             if (!stopped) {
-                Log.Warning($"Didn't stop server listener with interface {netInterface} before destruction!");
+                Logs.NET.warn("Didn't stop server listener before destruction!",
+                    "interface", netInterface);
                 stop();
             }
         }
@@ -49,17 +50,20 @@ namespace AC2RE.Server {
                     }
                 } catch (ObjectDisposedException) {
                     // Socket closed (stop was called)
-                    Log.Debug($"Server listener interface {netInterface} closed.");
+                    Logs.NET.debug("Server listener closed",
+                        "interface", netInterface);
                     continue;
                 } catch (Exception e) {
-                    Log.Error(e, "Bad receive.");
+                    Logs.NET.error(e, "Bad receive",
+                        "interface", netInterface);
                     continue;
                 }
 
                 try {
                     processReceive(netInterface, receiveBuffer, receivedInfo.ReceivedBytes, (IPEndPoint)receivedInfo.RemoteEndPoint);
                 } catch (Exception e) {
-                    Log.Error(e, $"Exception when reading packet on interface {netInterface}, discarded.");
+                    Logs.NET.error(e, "Exception when reading packet, discarded",
+                        "interface", netInterface);
                     continue;
                 }
             }

@@ -1,11 +1,10 @@
 ﻿using AC2RE.Definitions;
-using Serilog;
 using System;
 using System.IO;
 
 namespace AC2RE.PacketTool {
 
-    public static class PcapReader {
+    internal static class PcapReader {
 
         public static NetBlobCollection read(Stream input) {
             NetBlobCollection netBlobCollection = new();
@@ -75,7 +74,8 @@ namespace AC2RE.PacketTool {
                     netBlobCollection.addPacket(packet, isClientToServer, packetNum, timestamp);
                 }
             } catch (Exception e) {
-                Log.Warning(e, $"Failed to read pcap record #{packetNum}");
+                Logs.GENERAL.warn(e, "Failed to read pcap record",
+                    "num", packetNum);
             }
         }
     }
