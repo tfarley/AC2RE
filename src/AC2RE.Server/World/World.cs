@@ -402,6 +402,9 @@ namespace AC2RE.Server {
                         CharacterExitGameSMsg msg = (CharacterExitGameSMsg)genericMsg;
 
                         if (player.characterId == msg.characterId) {
+                            player.visibleObjectIds.Clear();
+                            player.characterId = InstanceId.NULL;
+
                             playerManager.send(player, new CharacterExitGameCMsg());
                             sendCharacters(player);
                         }

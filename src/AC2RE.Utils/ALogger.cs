@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace AC2RE.Utils {
 
-    public class CLogger {
+    public class ALogger {
 
         public static string getConsoleTemplate(string prefix) => "[{Timestamp:HH:mm:ss} {Level:u3}] " + prefix + " {Message:lj} {Properties}{NewLine}{Exception}";
 
@@ -18,7 +18,7 @@ namespace AC2RE.Utils {
         private readonly ILogger logger;
         private readonly LoggingLevelSwitch levelSwitch;
 
-        public CLogger(LoggerConfiguration loggerConfig) {
+        public ALogger(LoggerConfiguration loggerConfig) {
 #if DEBUG
             levelSwitch = new(LogEventLevel.Debug);
 #else
@@ -30,7 +30,7 @@ namespace AC2RE.Utils {
                 .CreateLogger();
         }
 
-        public CLogger(LoggerConfiguration loggerConfig, LogEventLevel initialMinimumLevel) {
+        public ALogger(LoggerConfiguration loggerConfig, LogEventLevel initialMinimumLevel) {
             levelSwitch = new(initialMinimumLevel);
 
             logger = loggerConfig

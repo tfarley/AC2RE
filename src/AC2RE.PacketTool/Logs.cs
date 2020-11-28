@@ -6,8 +6,8 @@ namespace AC2RE.PacketTool {
     internal static class Logs {
 
         private static LoggerConfiguration getBaseLoggerConfig(string prefix) => new LoggerConfiguration()
-            .WriteTo.Console(outputTemplate: CLogger.getConsoleTemplate(prefix));
+            .WriteTo.Console(outputTemplate: ALogger.getConsoleTemplate(prefix));
 
-        public static readonly CLogger GENERAL = new CLogger(getBaseLoggerConfig("GEN"));
+        public static readonly ALogger GENERAL = new ALogger(getBaseLoggerConfig("GEN"));
     }
 }
