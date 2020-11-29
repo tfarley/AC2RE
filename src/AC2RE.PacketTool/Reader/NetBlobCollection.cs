@@ -8,7 +8,7 @@ namespace AC2RE.PacketTool {
         public readonly List<NetBlobRecord> records = new();
         private readonly Dictionary<NetBlobId, NetBlobRecord> netBlobIdToRecord = new();
 
-        public void addPacket(NetPacket packet, bool isClientToServer, int packetNum, float timestamp) {
+        public void addPacket(NetPacket packet, bool isClientToServer, int packetNum, double timestamp) {
             foreach (NetBlobFrag frag in packet.frags) {
                 if (!netBlobIdToRecord.TryGetValue(frag.blobId, out NetBlobRecord? netBlobRecord)) {
                     netBlobRecord = new(new(frag)) {

@@ -75,11 +75,6 @@ namespace AC2RE.Server {
         [DatabaseIgnore]
         public bool inWorld;
 
-        public float heading;
-
-        [DatabaseIgnore]
-        public Vector3 motion;
-
         public Dictionary<InvLoc, InstanceId> equippedItemIds = new();
         public List<InstanceId> containedItemIds = new();
 
@@ -519,13 +514,12 @@ namespace AC2RE.Server {
             };
         }
 
-        public void setPosition(double time, float heading, Vector3 motion, PositionOffset offset, bool jump, Vector3 jumpVel) {
-            this.heading = heading;
-            this.motion = motion;
+        public void setPosition(double time, PositionOffset offset, float heading, Vector3 vel, bool jump, Vector3 jumpVel) {
             physics.pos = new() {
                 cell = offset.cell,
                 frame = new(offset.offset, Util.quaternionFromAxisAngleLeftHanded(new(0.0f, 0.0f, 1.0f), heading * MathUtil.DEG_TO_RAG)),
             };
+            physics.vel = vel;
 
             PositionPack pos = new() {
                 time = time,
@@ -533,7 +527,7 @@ namespace AC2RE.Server {
                     cell = physics.pos.cell,
                     offset = physics.pos.frame.pos,
                 },
-                doMotion = motion,
+                doMotion = physics.vel,
                 heading = new(heading),
                 packFlags = PositionPack.PackFlag.CONTACT,
                 posStamp = ++physics.timestamps[(int)PhysicsTimeStamp.POSITION],

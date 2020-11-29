@@ -23,22 +23,22 @@ namespace AC2RE.PacketTool {
             return netBlobCollection;
         }
 
-        private static float makeTimestamp(ref ulong epoch, uint high, uint low) {
-            ulong time = (((ulong)high << 32) | low);
-            if (epoch == 0) {
+        private static double makeTimestampPcap(ref double epoch, uint seconds, uint microseconds) {
+            double time = seconds + (microseconds * 0.000001);
+            if (epoch == 0.0) {
                 epoch = time;
             }
-            return (time - epoch) / 10000000000.0f;
+            return time - epoch;
         }
 
         private static void readPcap(AC2Reader data, NetBlobCollection netBlobCollection) {
             PcapHeader pcapHeader = new(data);
 
-            ulong epoch = 0;
+            double epoch = 0.0;
             int packetNum = 1;
             while (data.BaseStream.Position < data.BaseStream.Length) {
                 PcapRecordHeader recordHeader = new(data);
-                float timestamp = makeTimestamp(ref epoch, recordHeader.tsSec, recordHeader.tsUsec);
+                double timestamp = makeTimestampPcap(ref epoch, recordHeader.tsSec, recordHeader.tsUsec);
                 byte[] payload = data.ReadBytes((int)recordHeader.inclLen);
 
                 readPacket(payload, packetNum, timestamp, netBlobCollection);
@@ -47,12 +47,20 @@ namespace AC2RE.PacketTool {
             }
         }
 
+        private static double makeTimestampPcapng(ref ulong epoch, uint high, uint low) {
+            ulong time = (((ulong)high << 32) | low);
+            if (epoch == 0) {
+                epoch = time;
+            }
+            return (time - epoch) / 1000000.0;
+        }
+
         private static void readPcapng(AC2Reader data, NetBlobCollection netBlobCollection) {
             ulong epoch = 0;
             int packetNum = 1;
             while (data.BaseStream.Position < data.BaseStream.Length) {
                 PcapngBlockHeader blockHeader = new(data);
-                float timestamp = makeTimestamp(ref epoch, blockHeader.tsHigh, blockHeader.tsLow);
+                double timestamp = makeTimestampPcapng(ref epoch, blockHeader.tsHigh, blockHeader.tsLow);
                 byte[] payload = data.ReadBytes((int)blockHeader.capturedLen);
 
                 readPacket(payload, packetNum, timestamp, netBlobCollection);
@@ -61,7 +69,7 @@ namespace AC2RE.PacketTool {
             }
         }
 
-        private static void readPacket(byte[] payload, int packetNum, float timestamp, NetBlobCollection netBlobCollection) {
+        private static void readPacket(byte[] payload, int packetNum, double timestamp, NetBlobCollection netBlobCollection) {
             try {
                 using (AC2Reader data = new(new MemoryStream(payload))) {
                     EthernetHeader ethernetHeader = new(data);

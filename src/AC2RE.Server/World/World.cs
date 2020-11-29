@@ -538,7 +538,7 @@ namespace AC2RE.Server {
 
                         WorldObject? character = objectManager.get(player.characterId);
                         if (character != null && character.inWorld) {
-                            character.setPosition(serverTime.time, msg.pos.heading.rotDegrees, msg.pos.doMotion, msg.pos.offset, msg.pos.packFlags.HasFlag(CPositionPack.PackFlag.JUMP), msg.pos.jumpVel);
+                            character.setPosition(serverTime.time, msg.pos.offset, msg.pos.heading.rotDegrees, msg.pos.doMotion, msg.pos.packFlags.HasFlag(CPositionPack.PackFlag.JUMP), msg.pos.jumpVel);
                         }
 
                         break;

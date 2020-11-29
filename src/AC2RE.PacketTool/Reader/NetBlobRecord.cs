@@ -8,9 +8,9 @@ namespace AC2RE.PacketTool {
 
         public bool isClientToServer;
         public int startPacketNum;
-        public float startTimestamp;
+        public double startTimestamp;
         public int endPacketNum;
-        public float endTimestamp;
+        public double endTimestamp;
         public NetBlob netBlob;
 
         private bool attemptedMessageParse;
