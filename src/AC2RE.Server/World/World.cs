@@ -1,6 +1,5 @@
 ﻿using AC2RE.Definitions;
 using AC2RE.Server.Database;
-using AC2RE.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,9 +9,6 @@ using System.Numerics;
 namespace AC2RE.Server {
 
     internal class World {
-
-        public const float DEG_TO_RAG = MathF.PI / 180.0f;
-        public const float RAD_TO_DEG = 180.0f / MathF.PI;
 
         private static readonly Position TUTORIAL_START_POS = new() {
             cell = new(0x02, 0x98, 0x01, 0x09),
@@ -175,6 +171,13 @@ namespace AC2RE.Server {
                                         }
                                     }
                                 }
+                            }
+                        }
+
+                        List<InstanceId> contentIds = new(character.containedItemIds.Count);
+                        foreach (InstanceId contentId in character.containedItemIds) {
+                            if (!character.equippedItemIds.ContainsValue(contentId)) {
+                                contentIds.Add(contentId);
                             }
                         }
 
@@ -385,7 +388,7 @@ namespace AC2RE.Server {
                                 containerIds = new() {
 
                                 },
-                                contentIds = character.containedItemIds,
+                                contentIds = contentIds,
                                 localFactionStatus = FactionStatus.PEACE,
                                 serverFactionStatus = FactionStatus.UNDEF,
                             }
@@ -487,12 +490,10 @@ namespace AC2RE.Server {
                                 character.health = toggleCounter;
 
                                 playerManager.send(player, new DoFxMsg {
-                                    senderIdWithStamp = character.getInstanceIdWithStamp(character.physics.visualOrderStamp),
+                                    senderIdWithStamp = character.getInstanceIdWithStamp(++character.physics.visualOrderStamp),
                                     fxId = FxId.PORTAL_USE,
                                     scalar = 1.0f,
                                 });
-
-                                character.physics.visualOrderStamp++;
                             }
 
                             toggleCounter++;
@@ -527,14 +528,7 @@ namespace AC2RE.Server {
 
                         WorldObject? character = objectManager.get(player.characterId);
                         if (character != null && character.inWorld) {
-                            character.physics.headingX = msg.x;
-                            character.physics.headingZ = msg.z;
-
-                            playerManager.sendAllExcept(player, new LookAtDirMsg {
-                                senderIdWithStamp = character.getInstanceIdWithStamp(),
-                                x = character.physics.headingX,
-                                z = character.physics.headingZ,
-                            });
+                            character.lookAt(msg.x, msg.z);
                         }
 
                         break;
@@ -544,36 +538,7 @@ namespace AC2RE.Server {
 
                         WorldObject? character = objectManager.get(player.characterId);
                         if (character != null && character.inWorld) {
-                            character.heading = msg.pos.heading.rotDegrees;
-                            character.motion = msg.pos.doMotion;
-                            character.physics.pos = new() {
-                                cell = msg.pos.offset.cell,
-                                frame = new(msg.pos.offset.offset, Util.quaternionFromAxisAngleLeftHanded(new(0.0f, 0.0f, 1.0f), msg.pos.heading.rotDegrees * DEG_TO_RAG)),
-                            };
-
-                            PositionPack pos = new() {
-                                time = serverTime.time,
-                                offset = new() {
-                                    cell = character.physics.pos.cell,
-                                    offset = character.physics.pos.frame.pos,
-                                },
-                                doMotion = character.motion,
-                                heading = new(character.heading),
-                                packFlags = PositionPack.PackFlag.CONTACT,
-                                posStamp = (ushort)(character.physics.timestamps[0] + 1),
-                            };
-                            if (msg.pos.packFlags.HasFlag(CPositionPack.PackFlag.JUMP)) {
-                                pos.packFlags |= PositionPack.PackFlag.JUMP;
-                                pos.impulseVel = msg.pos.jumpVel;
-                            }
-
-                            // TODO: If cell has changed, might need to send PositionCellMsg instead
-                            playerManager.sendAllExcept(player, new PositionMsg {
-                                senderIdWithStamp = character.getInstanceIdWithStamp(),
-                                pos = pos,
-                            });
-
-                            character.physics.timestamps[0]++;
+                            character.setPosition(serverTime.time, msg.pos.heading.rotDegrees, msg.pos.doMotion, msg.pos.offset, msg.pos.packFlags.HasFlag(CPositionPack.PackFlag.JUMP), msg.pos.jumpVel);
                         }
 
                         break;

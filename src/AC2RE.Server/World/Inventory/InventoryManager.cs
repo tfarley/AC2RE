@@ -1,6 +1,4 @@
 ﻿using AC2RE.Definitions;
-using AC2RE.Utils;
-using System;
 
 namespace AC2RE.Server {
 
@@ -14,83 +12,59 @@ namespace AC2RE.Server {
             this.objectManager = objectManager;
         }
 
-        public void giveItem(WorldObject equipper, WorldObject item) {
-            equipper.containedItemIds.Add(item.id);
-        }
+        public ErrorType setItemEquipped(WorldObject equipper, InvLoc equipLoc, WorldObject? item) {
+            if (item != null) {
+                if (equipper.equippedItemIds.ContainsKey(equipLoc)) {
+                    return ErrorType.INVSLOTFULL;
+                } else if (!item.validInvLocs.HasFlag(equipLoc)) {
+                    return ErrorType.WRONGINVSLOT;
+                } else if (!equipper.containedItemIds.Contains(item.id)) {
+                    return ErrorType.CONTAINERDOESNOTCONTAINITEM;
+                }
 
-        public bool setItemEquipped(WorldObject equipper, WorldObject item, InvLoc equipLoc) {
-            equipper.containedItemIds.Remove(item.id);
-            equipper.equippedItemIds[equipLoc] = item.id;
+                equipper.equippedItemIds[equipLoc] = item.id;
 
-            item.wielderId = equipper.id;
+                item.wielderId = equipper.id;
 
-            return parentIfNeeded(equipper, item);
-        }
+                HoldingLocation holdLoc = item.primaryHoldLoc;
+                if (holdLoc != HoldingLocation.INVALID) {
+                    item.setParent(equipper, holdLoc, item.holdOrientation);
+                }
+            } else {
+                WorldObject? curItem = objectManager.get(equipper.equippedItemIds[equipLoc]);
+                if (curItem != null) {
+                    if (!equipper.equippedItemIds.TryGetValue(equipLoc, out InstanceId equippedItemId) || curItem.id != equippedItemId) {
+                        return ErrorType.NOTEQUIPPED;
+                    } else if (!equipper.containedItemIds.Contains(curItem.id)) {
+                        return ErrorType.CONTAINERDOESNOTCONTAINITEM;
+                    }
 
-        private bool parentIfNeeded(WorldObject parent, WorldObject item) {
-            HoldingLocation holdLoc = item.primaryHoldLoc;
-            if (holdLoc == HoldingLocation.INVALID) {
-                return false;
+                    equipper.equippedItemIds.Remove(equipLoc);
+
+                    curItem.setParent(null);
+                }
             }
 
-            item.physics.parentId = parent.id;
-            item.physics.locationId = holdLoc;
-            item.physics.parentInstanceStamp = parent.instanceStamp;
-            item.physics.orientationId = item.holdOrientation;
-
-            return true;
-        }
-
-        private void deparent(WorldObject parent, WorldObject item) {
-            if (item.physics.parentId != InstanceId.NULL) {
-                item.physics.timestamps[0]++;
-                playerManager.sendAll(new DeParentMsg {
-                    senderIdWithStamp = parent.getInstanceIdWithStamp(),
-                    childIdWithPosStamp = item.getInstanceIdWithStamp(item.physics.timestamps[0]),
-                });
-
-                item.physics.parentId = InstanceId.NULL;
-                item.physics.locationId = HoldingLocation.INVALID;
-                item.physics.parentInstanceStamp = 0;
-                item.physics.orientationId = Orientation.DEFAULT;
-            }
+            return ErrorType.NONE;
         }
 
         public void equipItem(InvEquipDesc request, Player requester) {
-            if (requester != null && request.equipperId != requester.characterId) {
+            if (request.equipperId != requester.characterId) {
                 request.error = ErrorType.ITEMNOTOWNEDBYCONTAINER;
             } else {
                 WorldObject? equipper = objectManager.get(request.equipperId);
                 WorldObject? item = objectManager.get(request.itemId);
 
                 if (equipper != null && item != null) {
-                    if (equipper.equippedItemIds.ContainsKey(request.location)) {
-                        request.error = ErrorType.INVSLOTFULL;
-                    } else if (!item.validInvLocs.HasFlag(request.location)) {
-                        request.error = ErrorType.WRONGINVSLOT;
-                    } else {
-                        if (setItemEquipped(equipper, item, request.location)) {
-                            item.physics.timestamps[0]++;
-                            playerManager.sendAll(new ParentMsg {
-                                senderIdWithStamp = item.getInstanceIdWithStamp(),
-                                parentIdWithChildPosStamp = equipper.getInstanceIdWithStamp(item.physics.timestamps[0]),
-                                childLocation = item.physics.locationId,
-                                orientationId = item.physics.orientationId,
-                            });
-                        }
-
-                        request.error = ErrorType.NONE;
-                    }
+                    request.error = setItemEquipped(equipper, request.location, item);
                 }
             }
 
-            if (requester != null) {
-                playerManager.send(requester, new InterpCEventPrivateMsg {
-                    netEvent = new EquipItemDoneCEvt {
-                        equipDesc = request,
-                    }
-                });
-            }
+            playerManager.send(requester, new InterpCEventPrivateMsg {
+                netEvent = new EquipItemDoneCEvt {
+                    equipDesc = request,
+                }
+            });
         }
 
         public void unequipItem(InvEquipDesc request, Player requester) {
@@ -102,38 +76,19 @@ namespace AC2RE.Server {
                 WorldObject? container = objectManager.get(request.containerId);
 
                 if (equipper != null && item != null) {
-                    if (!equipper.equippedItemIds.TryGetValue(request.location, out InstanceId equippedItemId) || item.id != equippedItemId) {
-                        request.error = ErrorType.NOTEQUIPPED;
-                    } else {
-                        equipper.equippedItemIds.Remove(request.location);
-
-                        if (container != null) {
-                            // TODO: Hack to prevent weird case where icon wraps to next line when dragged to an empty slot in inventory bag
-                            request.containerSlot = (uint)Math.Min((int)request.containerSlot, container.containedItemIds.Count - 1);
-
-                            request.targetContainerSlot = (uint)container.containedItemIds.InsertSafe((int)request.containerSlot, item.id);
-                            request.containerSlot = request.targetContainerSlot;
-                        }
-
-                        deparent(equipper, item);
-
-                        item.physics.timestamps[0]++;
-                        playerManager.sendAllExcept(requester, new ContainMsg {
-                            childIdWithPosStamp = item.getInstanceIdWithStamp(item.physics.timestamps[0]),
-                        });
-
-                        request.error = ErrorType.NONE;
+                    request.error = setItemEquipped(equipper, request.location, null);
+                    if (request.error == ErrorType.NONE) {
+                        request.targetContainerSlot = (uint)item.setContainer(container, (int)request.containerSlot);
+                        request.containerSlot = request.targetContainerSlot;
                     }
                 }
             }
 
-            if (requester != null) {
-                playerManager.send(requester, new InterpCEventPrivateMsg {
-                    netEvent = new UnequipItemDoneCEvt {
-                        equipDesc = request,
-                    }
-                });
-            }
+            playerManager.send(requester, new InterpCEventPrivateMsg {
+                netEvent = new UnequipItemDoneCEvt {
+                    equipDesc = request,
+                }
+            });
         }
     }
 }

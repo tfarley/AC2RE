@@ -25,7 +25,7 @@ namespace AC2RE.Server {
             if (!worldObjects.TryGetValue(id, out WorldObject? worldObject)) {
                 worldObject = worldDb.getWorldObjectWithId(id);
                 if (worldObject != null) {
-                    worldObject.playerManager = playerManager;
+                    worldObject.init(this, playerManager);
                     worldObjects[id] = worldObject;
                 }
             }
@@ -38,7 +38,7 @@ namespace AC2RE.Server {
                 List<WorldObject> dbWorldObjects = worldDb.getAllWorldObjects();
                 foreach (WorldObject worldObject in dbWorldObjects) {
                     if (worldObjects.TryAdd(worldObject.id, worldObject)) {
-                        worldObject.playerManager = playerManager;
+                        worldObject.init(this, playerManager);
                     }
                 }
             }
@@ -60,7 +60,7 @@ namespace AC2RE.Server {
                 List<WorldObject> dbWorldObjects = worldDb.getWorldObjectsWithContainer(containerId);
                 foreach (WorldObject worldObject in dbWorldObjects) {
                     if (worldObjects.TryAdd(worldObject.id, worldObject)) {
-                        worldObject.playerManager = playerManager;
+                        worldObject.init(this, playerManager);
                     }
                 }
             }
@@ -78,9 +78,7 @@ namespace AC2RE.Server {
         }
 
         public WorldObject create() {
-            WorldObject newObject = new(instanceIdGenerator.next()) {
-                playerManager = playerManager
-            };
+            WorldObject newObject = new(instanceIdGenerator.next(), this, playerManager);
             worldObjects[newObject.id] = newObject;
             return newObject;
         }

@@ -1,5 +1,7 @@
 ﻿using AC2RE.Definitions;
 using AC2RE.Server.Database;
+using AC2RE.Utils;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 
@@ -59,6 +61,9 @@ namespace AC2RE.Server {
         private static readonly HashSet<LongIntStat> LONG_INT_VISUAL_STATS = new() {
 
         };
+
+        [DatabaseIgnore]
+        public WorldObjectManager objectManager;
 
         [DatabaseIgnore]
         public PlayerManager playerManager;
@@ -488,8 +493,9 @@ namespace AC2RE.Server {
             set => setQ(BoolStat.PLAYER_ISONMOUNT, value);
         }
 
-        public WorldObject(InstanceId id) : this(id, new(), new(), new()) {
+        public WorldObject(InstanceId id, WorldObjectManager objectManager, PlayerManager playerManager) : this(id, new(), new(), new()) {
             qualities.weenieDesc = new();
+            init(objectManager, playerManager);
         }
 
         public WorldObject(InstanceId id, PhysicsDesc physics, VisualDesc visual, CBaseQualities qualities) {
@@ -500,12 +506,125 @@ namespace AC2RE.Server {
             this.qualities = qualities;
         }
 
+        public void init(WorldObjectManager objectManager, PlayerManager playerManager) {
+            this.objectManager = objectManager;
+            this.playerManager = playerManager;
+        }
+
         public InstanceIdWithStamp getInstanceIdWithStamp(ushort otherStamp = 0) {
             return new() {
                 id = id,
                 instanceStamp = instanceStamp,
                 otherStamp = otherStamp,
             };
+        }
+
+        public void setPosition(double time, float heading, Vector3 motion, PositionOffset offset, bool jump, Vector3 jumpVel) {
+            this.heading = heading;
+            this.motion = motion;
+            physics.pos = new() {
+                cell = offset.cell,
+                frame = new(offset.offset, Util.quaternionFromAxisAngleLeftHanded(new(0.0f, 0.0f, 1.0f), heading * MathUtil.DEG_TO_RAG)),
+            };
+
+            PositionPack pos = new() {
+                time = time,
+                offset = new() {
+                    cell = physics.pos.cell,
+                    offset = physics.pos.frame.pos,
+                },
+                doMotion = motion,
+                heading = new(heading),
+                packFlags = PositionPack.PackFlag.CONTACT,
+                posStamp = ++physics.timestamps[(int)PhysicsTimeStamp.POSITION],
+                forcePosStamp = physics.timestamps[(int)PhysicsTimeStamp.FORCE_POSITION],
+                teleportStamp = physics.timestamps[(int)PhysicsTimeStamp.TELEPORT],
+            };
+            if (jump) {
+                pos.packFlags |= PositionPack.PackFlag.JUMP;
+                pos.impulseVel = jumpVel;
+            }
+
+            playerManager.sendAllVisibleExcept(id, playerManager.get(id), new PositionMsg {
+                senderIdWithStamp = getInstanceIdWithStamp(),
+                pos = pos,
+            });
+        }
+
+        public void lookAt(float x, float z) {
+            physics.headingX = x;
+            physics.headingZ = z;
+
+            playerManager.sendAllVisibleExcept(id, playerManager.get(id), new LookAtDirMsg {
+                senderIdWithStamp = getInstanceIdWithStamp(),
+                x = physics.headingX,
+                z = physics.headingZ,
+            });
+        }
+
+        public void setParent(WorldObject? parent, HoldingLocation holdLoc = HoldingLocation.INVALID, Orientation holdOrientation = Orientation.DEFAULT) {
+            if (parent != null) {
+                if (physics.parentId != parent.id) {
+                    physics.parentId = parent.id;
+                    physics.locationId = holdLoc;
+                    physics.parentInstanceStamp = parent.instanceStamp;
+                    physics.orientationId = holdOrientation;
+
+                    playerManager.sendAllVisible(id, new ParentMsg {
+                        senderIdWithStamp = getInstanceIdWithStamp(),
+                        parentIdWithChildPosStamp = parent.getInstanceIdWithStamp(++physics.timestamps[(int)PhysicsTimeStamp.POSITION]),
+                        childLocation = physics.locationId,
+                        orientationId = physics.orientationId,
+                    });
+                }
+            } else if (physics.parentId != InstanceId.NULL) {
+                WorldObject? curParent = objectManager.get(physics.parentId);
+                if (curParent != null) {
+                    playerManager.sendAllVisible(id, new DeParentMsg {
+                        senderIdWithStamp = curParent.getInstanceIdWithStamp(),
+                        childIdWithPosStamp = getInstanceIdWithStamp(++physics.timestamps[(int)PhysicsTimeStamp.POSITION]),
+                    });
+                }
+
+                physics.parentId = InstanceId.NULL;
+                physics.locationId = HoldingLocation.INVALID;
+                physics.parentInstanceStamp = 0;
+                physics.orientationId = Orientation.DEFAULT;
+            }
+        }
+
+        public int setContainer(WorldObject? container, int slot = 0, Player? requester = null) {
+            if (container != null) {
+                // TODO: Hack to prevent weird case where icon wraps to next line when dragged to an empty slot
+                slot = Math.Clamp(slot, 0, Math.Max(container.containedItemIds.Count - container.equippedItemIds.Count - 2, 0));
+
+                if (containerId != container.id) {
+                    containerId = container.id;
+
+                    return container.containedItemIds.InsertSafe(slot, id);
+                } else {
+                    int curSlot = container.containedItemIds.IndexOf(id);
+                    if (slot != curSlot) {
+                        // TODO: Reshuffle to correct index?
+                        container.containedItemIds.RemoveAt(curSlot);
+                        return container.containedItemIds.InsertSafe(slot, id);
+                    }
+                    return curSlot;
+                }
+            } else if (containerId != InstanceId.NULL) {
+                WorldObject? curContainer = objectManager.get(containerId);
+                if (curContainer != null) {
+                    curContainer.containedItemIds.Remove(id);
+
+                    playerManager.sendAllVisibleExcept(id, requester, new ContainMsg {
+                        childIdWithPosStamp = getInstanceIdWithStamp(++physics.timestamps[(int)PhysicsTimeStamp.POSITION]),
+                    });
+                }
+
+                containerId = InstanceId.NULL;
+            }
+
+            return -1;
         }
 
         private int getQ(IntStat stat) => qualities.ints?.GetValueOrDefault(stat) ?? default;
@@ -522,7 +641,7 @@ namespace AC2RE.Server {
             }
 
             if (INT_VISUAL_STATS.Contains(stat)) {
-                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateIntVisualMsg(getInstanceIdWithStamp(), stat, value));
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateIntVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, value));
             }
         }
 
@@ -540,7 +659,7 @@ namespace AC2RE.Server {
             }
 
             if (BOOL_VISUAL_STATS.Contains(stat)) {
-                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateBoolVisualMsg(getInstanceIdWithStamp(), stat, value));
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateBoolVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, value));
             }
         }
 
@@ -558,7 +677,7 @@ namespace AC2RE.Server {
             }
 
             if (FLOAT_VISUAL_STATS.Contains(stat)) {
-                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateFloatVisualMsg(getInstanceIdWithStamp(), stat, value));
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateFloatVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, value));
             }
         }
 
@@ -576,7 +695,7 @@ namespace AC2RE.Server {
             }
 
             if (TIMESTAMP_VISUAL_STATS.Contains(stat)) {
-                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateTimestampVisualMsg(getInstanceIdWithStamp(), stat, value));
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateTimestampVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, value));
             }
         }
 
@@ -603,7 +722,7 @@ namespace AC2RE.Server {
             }
 
             if (DATA_ID_VISUAL_STATS.Contains(stat)) {
-                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateDataIdVisualMsg(getInstanceIdWithStamp(), stat, value));
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateDataIdVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, value));
             }
         }
 
@@ -621,7 +740,7 @@ namespace AC2RE.Server {
             }
 
             if (INSTANCE_ID_VISUAL_STATS.Contains(stat)) {
-                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateInstanceIdVisualMsg(getInstanceIdWithStamp(), stat, value));
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateInstanceIdVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, value));
             }
         }
 
@@ -639,7 +758,7 @@ namespace AC2RE.Server {
             }
 
             if (POSITION_VISUAL_STATS.Contains(stat)) {
-                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdatePositionVisualMsg(getInstanceIdWithStamp(), stat, value));
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdatePositionVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, value));
             }
         }
 
@@ -657,7 +776,7 @@ namespace AC2RE.Server {
             }
 
             if (STRING_INFO_VISUAL_STATS.Contains(stat)) {
-                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateStringInfoVisualMsg(getInstanceIdWithStamp(), stat, value));
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateStringInfoVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, value));
             }
         }
 
@@ -684,7 +803,7 @@ namespace AC2RE.Server {
             }
 
             if (LONG_INT_VISUAL_STATS.Contains(stat)) {
-                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateLongIntVisualMsg(getInstanceIdWithStamp(), stat, value));
+                playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateLongIntVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, value));
             }
         }
     }

@@ -83,8 +83,6 @@ namespace AC2RE.Server {
 
             clientManager!.processClients(client => client.flushSend(gameNetInterface!, time.time, time.elapsedTime));
 
-            // TODO: Disconnect and clear all connections
-
             foreach (ServerListener serverListener in serverListeners) {
                 serverListener.stop();
             }

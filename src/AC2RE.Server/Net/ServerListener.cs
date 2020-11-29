@@ -1,4 +1,5 @@
 ﻿using AC2RE.Definitions;
+using AC2RE.Utils;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -15,20 +16,21 @@ namespace AC2RE.Server {
 
         private readonly byte[] receiveBuffer = new byte[NetPacket.MAX_SIZE];
 
+        private readonly ALogger log;
+
         public ServerListener(NetInterface netInterface, ProcessReceiveDelegate processReceive) {
             this.netInterface = netInterface;
+            log = Logs.NET.forContext("interface", netInterface);
             // Async call without await is intentional, so that IOCP thread pool handles the incoming requests
 #pragma warning disable CS4014
             runAsync(processReceive);
 #pragma warning restore CS4014
-            Logs.NET.debug("Initialized server listener",
-                "interface", netInterface);
+            log.debug("Initialized server listener");
         }
 
         ~ServerListener() {
             if (!stopped) {
-                Logs.NET.warn("Didn't stop server listener before destruction!",
-                    "interface", netInterface);
+                log.warn("Didn't stop server listener before destruction!");
                 stop();
             }
         }
@@ -50,20 +52,17 @@ namespace AC2RE.Server {
                     }
                 } catch (ObjectDisposedException) {
                     // Socket closed (stop was called)
-                    Logs.NET.debug("Server listener closed",
-                        "interface", netInterface);
+                    log.debug("Server listener closed");
                     continue;
                 } catch (Exception e) {
-                    Logs.NET.error(e, "Bad receive",
-                        "interface", netInterface);
+                    log.error(e, "Bad receive");
                     continue;
                 }
 
                 try {
                     processReceive(netInterface, receiveBuffer, receivedInfo.ReceivedBytes, (IPEndPoint)receivedInfo.RemoteEndPoint);
                 } catch (Exception e) {
-                    Logs.NET.error(e, "Exception when reading packet, discarded",
-                        "interface", netInterface);
+                    log.error(e, "Exception when reading packet, discarded");
                     continue;
                 }
             }

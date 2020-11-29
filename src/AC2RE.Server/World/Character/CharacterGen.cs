@@ -119,12 +119,10 @@ namespace AC2RE.Server {
                     };
                 }
 
-                item.containerId = character.id;
-
-                inventoryManager.giveItem(character, item);
+                item.setContainer(character);
 
                 if (startInvItem.equipped) {
-                    inventoryManager.setItemEquipped(character, item, item.preferredInvLoc);
+                    inventoryManager.setItemEquipped(character, item.preferredInvLoc, item);
                 }
             }
         }

@@ -19,66 +19,62 @@ namespace AC2RE.Utils {
         private readonly LoggingLevelSwitch levelSwitch;
 
         public ALogger(LoggerConfiguration loggerConfig) {
-#if DEBUG
             levelSwitch = new(LogEventLevel.Debug);
-#else
-            levelSwitch = new();
-#endif
-
             logger = loggerConfig
                 .MinimumLevel.ControlledBy(levelSwitch)
                 .CreateLogger();
         }
 
-        public ALogger(LoggerConfiguration loggerConfig, LogEventLevel initialMinimumLevel) {
-            levelSwitch = new(initialMinimumLevel);
+        private ALogger(ILogger logger, LoggingLevelSwitch levelSwitch) {
+            this.logger = logger;
+            this.levelSwitch = levelSwitch;
+        }
 
-            logger = loggerConfig
-                .MinimumLevel.ControlledBy(levelSwitch)
-                .CreateLogger();
+        public ALogger forContext(params object[] contextKeyValues) {
+            return new ALogger(addContext(logger, contextKeyValues), levelSwitch);
         }
 
         [Conditional("DEBUG")]
-        public void trace(string message, params object[] ctxValues) {
-            addCtx(logger, ctxValues).Verbose(message);
+        public void trace(string message, params object[] contextKeyValues) {
+            addContext(logger, contextKeyValues).Verbose(message);
         }
 
         [Conditional("DEBUG")]
-        public void debug(string message, params object[] ctxValues) {
-            addCtx(logger, ctxValues).Debug(message);
+        public void debug(string message, params object[] contextKeyValues) {
+            addContext(logger, contextKeyValues).Debug(message);
         }
 
-        public void info(string message, params object[] ctxValues) {
-            addCtx(logger, ctxValues).Information(message);
+        public void info(string message, params object[] contextKeyValues) {
+            addContext(logger, contextKeyValues).Information(message);
         }
 
-        public void warn(string message, params object[] ctxValues) {
-            addCtx(logger, ctxValues).Warning(message);
+        public void warn(string message, params object[] contextKeyValues) {
+            addContext(logger, contextKeyValues).Warning(message);
         }
 
-        public void warn(Exception e, string message, params object[] ctxValues) {
-            addCtx(logger, ctxValues).Warning(e, message);
+        public void warn(Exception e, string message, params object[] contextKeyValues) {
+            addContext(logger, contextKeyValues).Warning(e, message);
         }
 
-        public void error(string message, params object[] ctxValues) {
-            addCtx(logger, ctxValues).Error(message);
+        public void error(string message, params object[] contextKeyValues) {
+            addContext(logger, contextKeyValues).Error(message);
         }
 
-        public void error(Exception e, string message, params object[] ctxValues) {
-            addCtx(logger, ctxValues).Error(e, message);
+        public void error(Exception e, string message, params object[] contextKeyValues) {
+            addContext(logger, contextKeyValues).Error(e, message);
         }
 
-        public void fatal(string message, params object[] ctxValues) {
-            addCtx(logger, ctxValues).Fatal(message);
+        public void fatal(string message, params object[] contextKeyValues) {
+            addContext(logger, contextKeyValues).Fatal(message);
         }
 
-        public void fatal(Exception e, string message, params object[] ctxValues) {
-            addCtx(logger, ctxValues).Fatal(e, message);
+        public void fatal(Exception e, string message, params object[] contextKeyValues) {
+            addContext(logger, contextKeyValues).Fatal(e, message);
         }
 
-        private static ILogger addCtx(ILogger logger, params object[] ctxValues) {
-            for (int i = 0; i < ctxValues.Length; i += 2) {
-                logger = logger.ForContext(ctxValues[i].ToString(), ctxValues[i + 1]);
+        private static ILogger addContext(ILogger logger, params object[] contextKeyValues) {
+            for (int i = 0; i < contextKeyValues.Length; i += 2) {
+                logger = logger.ForContext(contextKeyValues[i].ToString(), contextKeyValues[i + 1]);
             }
 
             return logger;
