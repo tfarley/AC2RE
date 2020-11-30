@@ -37,9 +37,15 @@
                     <Label Content="Event:" Margin="10,10,5,10"/>
                     <TextBox x:Name="eventFilterTextBox" MinWidth="100" Margin="0,10,0,10"/>
                     <Label Content="String:" Margin="10,10,5,10"/>
-                    <TextBox x:Name="stringFilterTextBox" MinWidth="100" Margin="0,10,10,10"/>
+                    <TextBox x:Name="stringFilterTextBox" MinWidth="100" Margin="0,10,0,10"/>
+                    <Label Content="Hex:" Margin="10,10,5,10"/>
+                    <CheckBox x:Name="stringFilterHexCheckBox" VerticalAlignment="Center" Margin="0,10,10,10"/>
+                    <Label Content="Custom:" Margin="10,10,5,10"/>
+                    <ComboBox x:Name="customFilterComboBox" MinWidth="200" Margin="0,10,0,10">
+                        <ComboBoxItem Content=""/>
+                    </ComboBox>
                     <Label Content="Errors:" Margin="10,10,5,10"/>
-                    <ComboBox x:Name="errorsFilterComboBox" MinWidth="100" Margin="0,10,10,10">
+                    <ComboBox x:Name="errorsFilterComboBox" MinWidth="100" Margin="0,10,0,10">
                         <ComboBoxItem Content=""/>
                         <ComboBoxItem Content="All"/>
                     </ComboBox>
@@ -51,7 +57,7 @@
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
 
-            <ListView x:Name="recordsListBox" Grid.Row="1" Margin="10,10,10,10" SelectionChanged="recordsListBox_SelectionChanged" GridViewColumnHeader.Click="recordsListBoxColumnHeader_Click">
+            <ListView x:Name="recordsListView" Grid.Row="1" Margin="10,10,10,10" SelectionChanged="recordsListView_SelectionChanged" GridViewColumnHeader.Click="recordsListViewColumnHeader_Click">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Line" Width="60" DisplayMemberBinding="{Binding lineNum}"/>

@@ -1,194 +1,194 @@
-﻿using AC2RE.Utils;
+﻿using AC2RE.UICommon;
+using AC2RE.Utils;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace AC2RE.PacketTool.UI {
 
     public partial class MainWindow : Window {
 
         private readonly string originalTitle;
+        private readonly ListViewSortManager recordsListViewSortManager;
+        private readonly ListViewExtraColumnManager recordsListViewExtraColumnManager;
 
+        private string? curFileName;
         private readonly List<NetBlobRow> netBlobRows = new();
-
-        private GridViewColumnHeader? lastRecordsListBoxColumnHeaderClicked;
-        private ListSortDirection lastRecordsListBoxColumnHeaderSortDirection = ListSortDirection.Ascending;
 
         public MainWindow() {
             InitializeComponent();
 
             originalTitle = Title;
 
+            recordsListViewSortManager = new(recordsListView, "lineNum");
+            recordsListViewExtraColumnManager = new(recordsListView);
+
             foreach (MessageErrorType? messageErrorType in Enum.GetValues(typeof(MessageErrorType))) {
                 if (messageErrorType != MessageErrorType.UNDETERMINED) {
                     errorsFilterComboBox.Items.Add(new ComboBoxItem { Content = messageErrorType });
                 }
             }
+
+            foreach (string customFilterName in CustomFilter.FILTERS.Keys) {
+                customFilterComboBox.Items.Add(new ComboBoxItem { Content = customFilterName });
+            }
         }
 
         private void refreshItems() {
-            object prevSelectedItem = recordsListBox.SelectedItem;
+            object prevSelectedItem = recordsListView.SelectedItem;
 
-            recordsListBox.Items.Clear();
+            recordsListView.Items.Clear();
 
             string opcodeFilter = opcodeFilterTextBox.Text;
             string eventFilter = eventFilterTextBox.Text;
-            ComboBoxItem errorsFilter = (ComboBoxItem)errorsFilterComboBox.SelectedItem;
+            string? stringFilter = stringFilterHexCheckBox.IsChecked != true ? stringFilterTextBox.Text : null;
+            byte[]? bytePatternFilter = stringFilterHexCheckBox.IsChecked == true ? Util.hexStringToBytes(stringFilterTextBox.Text) : null;
+            object? errorsFilter = ((ComboBoxItem?)errorsFilterComboBox.SelectedItem)?.Content;
             bool showIncomplete = showIncompleteCheckBox.IsChecked ?? false;
+            string? customFilterName = (string?)((ComboBoxItem?)customFilterComboBox.SelectedItem)?.Content;
+            CustomFilter? customFilter = customFilterName != null && !"".Equals(customFilterName) ? CustomFilter.FILTERS[customFilterName].Invoke() : null;
+
+            recordsListViewExtraColumnManager.setExtraColumns(customFilter?.resultColumns);
 
             bool reselect = false;
             foreach (NetBlobRow netBlobRow in netBlobRows) {
-                if (opcodeFilter != null && !netBlobRow.opcodeName.Contains(opcodeFilter, StringComparison.OrdinalIgnoreCase)) {
-                    continue;
-                }
-
-                if (eventFilter != null && !netBlobRow.eventName.Contains(eventFilter, StringComparison.OrdinalIgnoreCase)) {
-                    continue;
-                }
-
-                if (!showIncomplete && netBlobRow.netBlobRecord.netBlob.payload == null) {
-                    continue;
-                }
-
-                if (errorsFilter != null && errorsFilter.Content != null && !"".Equals(errorsFilter.Content)) {
-                    if ("All".Equals(errorsFilter.Content)) {
-                        if (netBlobRow.netBlobRecord.messageException == null) {
-                            continue;
-                        }
-                    } else if (!netBlobRow.netBlobRecord.messageErrorType.Equals(errorsFilter.Content)) {
-                        continue;
+                if (netBlobRow.matches(opcodeFilter, eventFilter, errorsFilter, stringFilter, bytePatternFilter, showIncomplete, customFilter)) {
+                    if (netBlobRow == prevSelectedItem) {
+                        reselect = true;
                     }
-                }
 
-                if (netBlobRow == prevSelectedItem) {
-                    reselect = true;
+                    recordsListView.Items.Add(netBlobRow);
                 }
-
-                recordsListBox.Items.Add(netBlobRow);
             }
 
             if (reselect) {
-                recordsListBox.SelectedItem = prevSelectedItem;
-                recordsListBox.ScrollIntoView(recordsListBox.SelectedItem);
+                recordsListView.SelectedItem = prevSelectedItem;
+                recordsListView.ScrollIntoView(recordsListView.SelectedItem);
             }
         }
 
         private void openMenuItem_Click(object sender, RoutedEventArgs e) {
-            OpenFileDialog openFileDialog = new();
-            openFileDialog.Filter = "Packet Captures (*.pcap;*.pcapng)|*.pcap;*.pcapng|All files (*.*)|*.*";
-            openFileDialog.RestoreDirectory = true;
-            if (openFileDialog.ShowDialog() == true) {
-                Title = $"{originalTitle} - {openFileDialog.SafeFileName}";
-
-                lastRecordsListBoxColumnHeaderClicked = null;
-
-                using (FileStream fileStream = File.OpenRead(openFileDialog.FileName)) {
-                    NetBlobCollection netBlobCollection = PcapReader.read(fileStream);
-
-                    netBlobRows.Clear();
-
-                    int lineNum = 1;
-                    foreach (NetBlobRecord netBlobRecord in netBlobCollection.records) {
-                        NetBlobRow netBlobRow = new(lineNum, netBlobRecord);
-                        netBlobRows.Add(netBlobRow);
-                        recordsListBox.Items.Add(netBlobRow);
-                        lineNum++;
-                    }
-
-                    refreshItems();
+            UIUtil.swallowException(() => {
+                OpenFileDialog openFileDialog = new();
+                openFileDialog.Filter = "Packet Captures (*.pcap;*.pcapng)|*.pcap;*.pcapng|All files (*.*)|*.*";
+                openFileDialog.RestoreDirectory = true;
+                if (openFileDialog.ShowDialog() == true) {
+                    openFile(openFileDialog.FileName);
                 }
+            });
+        }
+
+        public void openFile(string fileName) {
+            if (fileName == curFileName) {
+                return;
             }
+
+            Title = $"{originalTitle} - {Path.GetFileName(fileName)}";
+
+            using (FileStream fileStream = File.OpenRead(fileName)) {
+                NetBlobCollection netBlobCollection = PcapReader.read(fileStream);
+
+                netBlobRows.Clear();
+
+                int lineNum = 1;
+                foreach (NetBlobRecord netBlobRecord in netBlobCollection.records) {
+                    NetBlobRow netBlobRow = new(lineNum, netBlobRecord);
+                    netBlobRows.Add(netBlobRow);
+                    recordsListView.Items.Add(netBlobRow);
+                    lineNum++;
+                }
+
+                refreshItems();
+            }
+
+            curFileName = fileName;
         }
 
         private void searchMenuItem_Click(object sender, RoutedEventArgs e) {
-            new SearchDialog().Show();
+            UIUtil.swallowException(() => {
+                new SearchDialog(this).Show();
+            });
         }
 
         private void exportJsonMenuItem_Click(object sender, RoutedEventArgs e) {
+            UIUtil.swallowException(() => {
 
+            });
         }
 
         private void goToSelectedButton_Click(object sender, RoutedEventArgs e) {
-            if (recordsListBox.SelectedItem != null) {
-                recordsListBox.ScrollIntoView(recordsListBox.SelectedItem);
-            }
+            UIUtil.swallowException(() => {
+                if (recordsListView.SelectedItem != null) {
+                    recordsListView.ScrollIntoView(recordsListView.SelectedItem);
+                }
+            });
         }
 
         private void goToLineButton_Click(object sender, RoutedEventArgs e) {
-            if (int.TryParse(goToLineTextBox.Text, out int targetLine)) {
-                targetLine = Math.Clamp(targetLine, 1, recordsListBox.Items.Count) - 1;
-                recordsListBox.ScrollIntoView(recordsListBox.Items[targetLine]);
+            UIUtil.swallowException(() => {
+                if (int.TryParse(goToLineTextBox.Text, out int targetLine)) {
+                    goToLine(targetLine);
+                }
+            });
+        }
+
+        public void goToLine(int targetLine, bool select = false) {
+            NetBlobRow netBlobRow = netBlobRows[Math.Clamp(targetLine, 1, netBlobRows.Count) - 1];
+
+            if (select) {
+                recordsListView.SelectedItem = netBlobRow;
             }
+
+            recordsListView.ScrollIntoView(netBlobRow);
         }
 
         private void applyFiltersButton_Click(object sender, RoutedEventArgs e) {
-            refreshItems();
+            UIUtil.swallowException(() => {
+                refreshItems();
+            });
         }
 
-        private void recordsListBoxColumnHeader_Click(object sender, RoutedEventArgs e) {
-            if (e.OriginalSource is GridViewColumnHeader headerClicked) {
-                if (headerClicked.Role != GridViewColumnHeaderRole.Padding) {
-                    ListSortDirection direction;
+        private void recordsListViewColumnHeader_Click(object sender, RoutedEventArgs e) {
+            UIUtil.swallowException(() => {
+                recordsListViewSortManager.columnHeaderClicked(sender, e);
+            });
+        }
 
-                    if (headerClicked != lastRecordsListBoxColumnHeaderClicked) {
-                        direction = ListSortDirection.Ascending;
+        private void recordsListView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            UIUtil.swallowException(() => {
+                if (recordsListView.SelectedItems.Count == 1) {
+                    NetBlobRecord netBlobRecord = ((NetBlobRow)recordsListView.SelectedItem).netBlobRecord;
+
+                    bool wasUndetermined = netBlobRecord.messageErrorTypeOptional == MessageErrorType.UNDETERMINED;
+
+                    if (netBlobRecord.netBlob.payload != null) {
+                        recordHexTextBox.Text = BitConverter.ToString(netBlobRecord.netBlob.payload);
                     } else {
-                        if (lastRecordsListBoxColumnHeaderSortDirection == ListSortDirection.Ascending) {
-                            direction = ListSortDirection.Descending;
-                        } else {
-                            direction = ListSortDirection.Ascending;
-                        }
+                        recordHexTextBox.Text = "";
                     }
 
-                    Binding? columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
-                    string? sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
+                    Exception? messageException = netBlobRecord.messageException;
+                    if (messageException == null) {
+                        try {
+                            recordMessageTextBox.Text = Util.objectToString(netBlobRecord.message);
+                        } catch (Exception ex) {
+                            recordMessageTextBox.Text = ex.ToString();
+                        }
+                    } else {
+                        recordMessageTextBox.Text = $"{messageException}\n\nAt position: {netBlobRecord.parseFailurePos}";
+                    }
 
-                    recordsListBox.Items.SortDescriptions.Clear();
-                    recordsListBox.Items.SortDescriptions.Add(new(sortBy, direction));
-                    recordsListBox.Items.SortDescriptions.Add(new("seq", direction));
-                    recordsListBox.Items.Refresh();
-
-                    lastRecordsListBoxColumnHeaderClicked = headerClicked;
-                    lastRecordsListBoxColumnHeaderSortDirection = direction;
-                }
-            }
-        }
-
-        private void recordsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (recordsListBox.SelectedItems.Count == 1) {
-                NetBlobRecord netBlobRecord = ((NetBlobRow)recordsListBox.SelectedItem).netBlobRecord;
-
-                bool wasUndetermined = netBlobRecord.messageErrorTypeOptional == MessageErrorType.UNDETERMINED;
-
-                if (netBlobRecord.netBlob.payload != null) {
-                    recordHexTextBox.Text = BitConverter.ToString(netBlobRecord.netBlob.payload);
+                    if (wasUndetermined) {
+                        recordsListView.Items.Refresh();
+                    }
                 } else {
                     recordHexTextBox.Text = "";
+                    recordMessageTextBox.Text = "";
                 }
-
-                Exception? messageException = netBlobRecord.messageException;
-                if (messageException == null) {
-                    try {
-                        recordMessageTextBox.Text = Util.objectToString(netBlobRecord.message);
-                    } catch (Exception ex) {
-                        recordMessageTextBox.Text = ex.ToString();
-                    }
-                } else {
-                    recordMessageTextBox.Text = $"{messageException}\n\nAt position: {netBlobRecord.parseFailurePos}";
-                }
-
-                if (wasUndetermined) {
-                    recordsListBox.Items.Refresh();
-                }
-            } else {
-                recordHexTextBox.Text = "";
-                recordMessageTextBox.Text = "";
-            }
+            });
         }
     }
 }

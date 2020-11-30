@@ -25,7 +25,7 @@ namespace AC2RE.UICommon.UI {
 
             for (int y = 0; y < numBlocksY; y++) {
                 for (int x = 0; x < numBlocksX; x++) {
-                    DataId blockDid = new DataId(new CellId((byte)x, (byte)y, 0xFF, 0xFF).id);
+                    DataId blockDid = new(new CellId((byte)x, (byte)y, 0xFF, 0xFF).id);
                     if (cellDatReader.contains(blockDid)) {
                         using (AC2Reader data = cellDatReader.getFileReader(blockDid)) {
                             CLandBlockData landBlockData = new(data);

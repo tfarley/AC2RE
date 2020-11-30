@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AC2RE.PacketTool.UI"
         mc:Ignorable="d"
-        Title="Search" Height="450" Width="800" ContentRendered="searchDialog_ContentRendered">
+        Title="Search" Height="450" Width="1200" ContentRendered="searchDialog_ContentRendered">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -17,9 +17,11 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="Path" Margin="10,10,0,10"/>
                 <TextBox x:Name="pathTextBox" Grid.Column="1" Margin="10,10,10,10"/>
+                <Button Grid.Column="2" Content="Browse" Padding="10,5,10,5" Margin="10,10,10,10" Click="browseButton_Click"/>
             </Grid>
 
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
@@ -30,7 +32,13 @@
                 <Label Content="Event:" Margin="10,10,5,10"/>
                 <TextBox x:Name="eventFilterTextBox" MinWidth="100" Margin="0,10,0,10"/>
                 <Label Content="String:" Margin="10,10,5,10"/>
-                <TextBox x:Name="stringFilterTextBox" MinWidth="100" Margin="0,10,10,10"/>
+                <TextBox x:Name="stringFilterTextBox" MinWidth="100" Margin="0,10,0,10"/>
+                <Label Content="Hex:" Margin="10,10,5,10"/>
+                <CheckBox x:Name="stringFilterHexCheckBox" VerticalAlignment="Center" Margin="0,10,10,10"/>
+                <Label Content="Custom:" Margin="10,10,5,10"/>
+                <ComboBox x:Name="customFilterComboBox" MinWidth="200" Margin="0,10,0,10">
+                    <ComboBoxItem Content=""/>
+                </ComboBox>
                 <Label Content="Errors:" Margin="10,10,5,10"/>
                 <ComboBox x:Name="errorsFilterComboBox" MinWidth="100" Margin="0,10,10,10">
                     <ComboBoxItem Content=""/>
@@ -42,12 +50,11 @@
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
         </StackPanel>
 
-        <ListView x:Name="searchResultFilesListBox" Grid.Row="1" Margin="10,10,10,10">
+        <ListView x:Name="resultsListView" Grid.Row="1" Margin="10,10,10,10" MouseDoubleClick="resultsListView_MouseDoubleClick" GridViewColumnHeader.Click="resultsListViewColumnHeader_Click">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="# Match" Width="70"/>
-                    <GridViewColumn Header="# Error" Width="70"/>
-                    <GridViewColumn Header="File" Width="600"/>
+                    <GridViewColumn Header="File" Width="600" DisplayMemberBinding="{Binding fileName}"/>
+                    <GridViewColumn Header="Line" Width="70" DisplayMemberBinding="{Binding lineNum}"/>
                 </GridView>
             </ListView.View>
         </ListView>

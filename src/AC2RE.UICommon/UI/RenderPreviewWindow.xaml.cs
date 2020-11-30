@@ -91,7 +91,7 @@ namespace AC2RE.UICommon.UI {
                 renderManager.draw();
                 lastRenderTime = curElapsedTime;
 
-                cameraRot *= Util.quaternionFromAxisAngleLeftHanded(new(0.0f, 0.0f, 1.0f), 1.0f * dt);
+                cameraRot *= MathUtil.quaternionFromAxisAngleLeftHanded(new(0.0f, 0.0f, 1.0f), 1.0f * dt);
             }
         }
     }

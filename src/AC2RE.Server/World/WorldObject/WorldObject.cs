@@ -517,7 +517,7 @@ namespace AC2RE.Server {
         public void setPosition(double time, PositionOffset offset, float heading, Vector3 vel, bool jump, Vector3 jumpVel) {
             physics.pos = new() {
                 cell = offset.cell,
-                frame = new(offset.offset, Util.quaternionFromAxisAngleLeftHanded(new(0.0f, 0.0f, 1.0f), heading * MathUtil.DEG_TO_RAG)),
+                frame = new(offset.offset, MathUtil.quaternionFromAxisAngleLeftHanded(new(0.0f, 0.0f, 1.0f), heading * MathUtil.DEG_TO_RAG)),
             };
             physics.vel = vel;
 

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,6 +9,25 @@ using System.Text.RegularExpressions;
 namespace AC2RE.Utils {
 
     public static class Util {
+
+        public static int indexOfPattern(byte[] array, int start, byte[] pattern) {
+            int maxStart = array.Length - pattern.Length;
+            byte patternFirstValue = pattern[0];
+
+            for (; start <= maxStart; start++) {
+                if (array[start] == patternFirstValue) {
+                    for (int matchLen = 1; ; matchLen++) {
+                        if (matchLen == pattern.Length) {
+                            return start;
+                        } else if (array[start + matchLen] != pattern[matchLen]) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return -1;
+        }
 
         public static byte[] hexStringToBytes(string hexStr) {
             hexStr = new Regex(@"[^0-9a-fA-F]|0x").Replace(hexStr, "");
@@ -146,10 +164,6 @@ namespace AC2RE.Utils {
             } else {
                 stringBuilder.Append("{ }");
             }
-        }
-
-        public static Quaternion quaternionFromAxisAngleLeftHanded(Vector3 axis, float angle) {
-            return Quaternion.CreateFromAxisAngle(-axis, angle);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace AC2RE.Utils {
         }
 
         public ALogger forContext(params object[] contextKeyValues) {
-            return new ALogger(addContext(logger, contextKeyValues), levelSwitch);
+            return new(addContext(logger, contextKeyValues), levelSwitch);
         }
 
         [Conditional("DEBUG")]

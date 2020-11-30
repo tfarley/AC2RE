@@ -61,7 +61,7 @@ namespace AC2RE.Server {
         }
 
         public void updatePort(int port) {
-            endpoint = new IPEndPoint(endpoint.Address, port);
+            endpoint = new(endpoint.Address, port);
         }
 
         public void connect() {
