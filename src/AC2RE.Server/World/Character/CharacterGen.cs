@@ -45,8 +45,8 @@ namespace AC2RE.Server {
             WorldObject character = objectManager.create();
             ObjectGen.applyWeenie(character, contentManager, characterGenSystem.playerEntityDid);
             ObjectGen.applyPhysics(character, contentManager, raceSexInfo.physObjDid);
-            setCharacterPhysics(character.physics, startPos);
-            setCharacterVisual(character.visual, appProfileMap, appearanceInfos);
+            setCharacterPhysics(character, startPos);
+            setCharacterVisual(character, appProfileMap, appearanceInfos);
             setCharacterQualities(character, raceSexInfo.physObjDid, species, sex);
 
             character.name = new(name);
@@ -56,24 +56,16 @@ namespace AC2RE.Server {
             return character;
         }
 
-        private static void setCharacterPhysics(PhysicsDesc physics, Position startPos) {
-            physics.sliders = new() {
-                {
-                    1073741834,
-                    new() {
-                        value = 1.0f,
-                        velocity = 0.0f,
-                    }
-                }
-            };
-            physics.modeId = ModeId.PEACE;
-            physics.pos = startPos;
-            physics.velScale = 2.0f;
+        private static void setCharacterPhysics(WorldObject character, Position startPos) {
+            character.setSliderValue(1073741834, 1.0f, 0.0f);
+            character.mode = ModeId.PEACE;
+            character.pos = startPos;
+            character.velScale = 2.0f;
         }
 
-        private static void setCharacterVisual(VisualDesc visual, Dictionary<PhysiqueType, Dictionary<float, Tuple<AppearanceKey, DataId>>> appProfileMap, Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos) {
-            visual.scale = new(0.9107999f, 0.9107999f, 0.98999995f);
-            visual.globalAppearanceModifiers = new() {
+        private static void setCharacterVisual(WorldObject character, Dictionary<PhysiqueType, Dictionary<float, Tuple<AppearanceKey, DataId>>> appProfileMap, Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos) {
+            character.visualScale = new(0.9107999f, 0.9107999f, 0.98999995f);
+            character.globalAppearanceModifiers = new() {
                 key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
                 appearanceInfos = appearanceInfos,
             };
@@ -113,7 +105,7 @@ namespace AC2RE.Server {
                     if (appearanceInfos.TryGetValue(appearanceDid, out Dictionary<AppearanceKey, float>? appearances)) {
                         itemAppearanceInfos[appearanceDid] = appearances;
                     }
-                    item.visual.globalAppearanceModifiers = new() {
+                    item.globalAppearanceModifiers = new() {
                         key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
                         appearanceInfos = itemAppearanceInfos,
                     };
@@ -122,7 +114,7 @@ namespace AC2RE.Server {
                 item.setContainer(character);
 
                 if (startInvItem.equipped) {
-                    inventoryManager.setItemEquipped(character, item.preferredInvLoc, item);
+                    character.equip(item.preferredInvLoc, item);
                 }
             }
         }

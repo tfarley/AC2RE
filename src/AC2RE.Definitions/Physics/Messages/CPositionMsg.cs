@@ -7,10 +7,10 @@
         public MessageOpcode opcode => MessageOpcode.Evt_Physics__CPosition_ID;
 
         // ECM_Physics::SendEvt_CPosition
-        public CPositionPack pos; // _position_pack
+        public CPositionPack posPack; // _position_pack
 
         public CPositionMsg(AC2Reader data) {
-            pos = new(data);
+            posPack = new(data);
         }
     }
 }

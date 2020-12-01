@@ -8,8 +8,12 @@
         public string userName;
         public string password;
 
-        public Account(AccountId id, string userName, string password) {
+        // For deserialization
+        private Account(AccountId id) {
             this.id = id;
+        }
+
+        public Account(AccountId id, string userName, string password) : this(id) {
             this.userName = userName;
             this.password = password;
         }

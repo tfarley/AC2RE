@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace AC2RE.Server.Database {
 
@@ -21,9 +22,11 @@ namespace AC2RE.Server.Database {
                 ConventionRegistry.Register(
                     "GlobalConventions",
                     new ConventionPack {
-                        new DatabaseIgnoreConvention(),
+                        // Serialize private fields and properties by default
+                        new ReadWriteMemberFinderConvention(MemberTypes.All, (BindingFlags)(-1)),
                         new IgnoreIfDefaultConvention(true),
                         new IgnoreExtraElementsConvention(true),
+                        new DatabaseIgnoreConvention(),
                     },
                     type => true);
 

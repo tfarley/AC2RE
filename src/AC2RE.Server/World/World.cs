@@ -42,7 +42,9 @@ namespace AC2RE.Server {
             objectManager = new(worldDb, playerManager);
             inventoryManager = new(playerManager, objectManager);
 
-            objectManager.enterWorld(objectManager.getAll());
+            foreach (WorldObject worldObject in objectManager.getAll()) {
+                worldObject.enterWorld();
+            }
         }
 
         public void addPlayerIfNecessary(ClientConnection client, Account account) {
@@ -136,7 +138,7 @@ namespace AC2RE.Server {
                         Dictionary<InstanceId, InventProfile> inventoryByIdTable = new();
 
                         List<WorldObject> playerInventory = objectManager.getWithContainer(character.id);
-                        foreach ((InvLoc equipLoc, InstanceId itemId) in character.equippedItemIds) {
+                        foreach ((InvLoc equipLoc, InstanceId itemId) in character.equippedItemIdsEnumerable) {
                             WorldObject? item = objectManager.get(itemId);
                             if (item != null) {
                                 InventProfile profile = new() {
@@ -149,9 +151,9 @@ namespace AC2RE.Server {
                                     it = 0,
                                     id = item.id,
                                 };
-                                if (item.visual.globalAppearanceModifiers != null) {
+                                if (item.globalAppearanceModifiers != null) {
                                     profile.visualDescInfo.appInfoHash = new();
-                                    foreach (var entry in item.visual.globalAppearanceModifiers.appearanceInfos) {
+                                    foreach (var entry in item.globalAppearanceModifiers.appearanceInfos) {
                                         profile.visualDescInfo.appInfoHash[entry.Key] = entry.Value;
                                     }
                                 }
@@ -162,21 +164,21 @@ namespace AC2RE.Server {
                                 WState clothingWeenieState = contentManager.getWeenieState(weenieStateDid);
                                 if (clothingWeenieState.package is Clothing clothing) {
                                     // TODO: contentManager.getInheritedVisualDesc(item.visual)? But it seems wrong, since the topmost parent of human starter pants is 0x1F00003E which is actually overriding skin color which doesn't make sense - not sure if that's a special override that just needs to be blocked or if inheritance isn't the correct thing to do...
-                                    PartGroupDataDesc? globalAppearanceModifiers = item.visual.globalAppearanceModifiers;
+                                    PartGroupDataDesc? globalAppearanceModifiers = item.globalAppearanceModifiers;
                                     if (globalAppearanceModifiers != null) {
                                         foreach ((DataId appDid, Dictionary<AppearanceKey, float> appearances) in globalAppearanceModifiers.appearanceInfos) {
                                             Dictionary<AppearanceKey, float> clonedAppearances = new(appearances);
                                             clonedAppearances[AppearanceKey.WORN] = 1.0f;
-                                            character.visual.globalAppearanceModifiers.appearanceInfos[appDid] = clonedAppearances;
+                                            character.globalAppearanceModifiers.appearanceInfos[appDid] = clonedAppearances;
                                         }
                                     }
                                 }
                             }
                         }
 
-                        List<InstanceId> contentIds = new(character.containedItemIds.Count);
-                        foreach (InstanceId contentId in character.containedItemIds) {
-                            if (!character.equippedItemIds.ContainsValue(contentId)) {
+                        List<InstanceId> contentIds = new();
+                        foreach (InstanceId contentId in character.containedItemIdsEnumerable) {
+                            if (!character.isEquipped(contentId)) {
                                 contentIds.Add(contentId);
                             }
                         }
@@ -396,9 +398,11 @@ namespace AC2RE.Server {
 
                         objectManager.syncNewPlayer(player);
 
-                        objectManager.enterWorld(playerInventory);
+                        foreach (WorldObject item in playerInventory) {
+                            item.enterWorld();
+                        }
 
-                        objectManager.enterWorld(character);
+                        character.enterWorld();
                         break;
                     }
                 case MessageOpcode.Evt_Login__CharExitGame_ID: {
@@ -483,17 +487,13 @@ namespace AC2RE.Server {
                                 },
                             };
 
-                            objectManager.enterWorld(newTestObject);
+                            newTestObject.enterWorld();
 
                             WorldObject? character = objectManager.get(player.characterId);
                             if (character != null && character.inWorld) {
                                 character.health = toggleCounter;
 
-                                playerManager.send(player, new DoFxMsg {
-                                    senderIdWithStamp = character.getInstanceIdWithStamp(++character.physics.visualOrderStamp),
-                                    fxId = FxId.PORTAL_USE,
-                                    scalar = 1.0f,
-                                });
+                                character.doFx(FxId.PORTAL_USE, 1.0f);
                             }
 
                             toggleCounter++;
@@ -528,7 +528,7 @@ namespace AC2RE.Server {
 
                         WorldObject? character = objectManager.get(player.characterId);
                         if (character != null && character.inWorld) {
-                            character.lookAt(msg.x, msg.z);
+                            character.lookAtDir = new Vector2(msg.x, msg.z);
                         }
 
                         break;
@@ -538,7 +538,11 @@ namespace AC2RE.Server {
 
                         WorldObject? character = objectManager.get(player.characterId);
                         if (character != null && character.inWorld) {
-                            character.setPosition(serverTime.time, msg.pos.offset, msg.pos.heading.rotDegrees, msg.pos.doMotion, msg.pos.packFlags.HasFlag(CPositionPack.PackFlag.JUMP), msg.pos.jumpVel);
+                            character.offset = msg.posPack.offset;
+                            character.heading = msg.posPack.heading.rotDegrees;
+                            character.motion = msg.posPack.doMotion;
+                            character.jumped = msg.posPack.packFlags.HasFlag(CPositionPack.PackFlag.JUMP);
+                            character.impulseVel = msg.posPack.jumpVel;
                         }
 
                         break;
@@ -596,6 +600,8 @@ namespace AC2RE.Server {
 
         public void tick() {
             packetHandler.processNetBlobs(this);
+
+            objectManager.broadcastUpdates(serverTime.time);
         }
 
         public void save() {

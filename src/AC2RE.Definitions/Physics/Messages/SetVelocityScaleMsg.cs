@@ -10,9 +10,18 @@
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public float velScale; // _value
 
+        public SetVelocityScaleMsg() {
+
+        }
+
         public SetVelocityScaleMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             velScale = data.ReadSingle();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            data.Write(velScale);
         }
     }
 }

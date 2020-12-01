@@ -6,8 +6,8 @@ namespace AC2RE.Definitions {
 
         public uint id;
 
-        public byte x => (byte)((id >> 24) & 0xFF);
-        public byte y => (byte)((id >> 16) & 0xFF);
+        public byte landblockX => (byte)((id >> 24) & 0xFF);
+        public byte landblockY => (byte)((id >> 16) & 0xFF);
         public byte indoorCellId => (byte)((id >> 8) & 0xFF);
         public byte outdoorCellId => (byte)(id & 0xFF);
         public LocalCellId localCellId => new LocalCellId((ushort)(id & 0xFFFF));
@@ -16,12 +16,12 @@ namespace AC2RE.Definitions {
             this.id = id;
         }
 
-        public CellId(byte x, byte y, byte indoorCellId, byte outdoorCellId) {
-            id = ((uint)x << 24) | ((uint)y << 16) | ((uint)indoorCellId << 8) | outdoorCellId;
+        public CellId(byte landblockX, byte landblockY, byte indoorCellId, byte outdoorCellId) {
+            id = ((uint)landblockX << 24) | ((uint)landblockY << 16) | ((uint)indoorCellId << 8) | outdoorCellId;
         }
 
-        public CellId(byte x, byte y, LocalCellId localCellId) {
-            id = ((uint)x << 24) | ((uint)y << 16) | localCellId.id;
+        public CellId(byte landblockX, byte landblockY, LocalCellId localCellId) {
+            id = ((uint)landblockX << 24) | ((uint)landblockY << 16) | localCellId.id;
         }
 
         public static bool operator ==(CellId lhs, CellId rhs) => lhs.id == rhs.id;
@@ -31,7 +31,7 @@ namespace AC2RE.Definitions {
         public override int GetHashCode() => id.GetHashCode();
 
         public override string ToString() {
-            return $"<{x:X2}, {y:X2}> [{indoorCellId:X2} {outdoorCellId:X2}]";
+            return $"<{landblockX:X2}, {landblockY:X2}> [{indoorCellId:X2} {outdoorCellId:X2}]";
         }
     }
 }

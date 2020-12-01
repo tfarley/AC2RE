@@ -11,8 +11,16 @@ namespace AC2RE.Server {
         public AccountId ownerAccountId;
         public InstanceId worldObjectId;
 
-        public Character(CharacterId id) {
+        // For deserialization
+        private Character(CharacterId id) {
             this.id = id;
+        }
+
+        public Character(CharacterId id, uint order, AccountId ownerAccountId, InstanceId worldObjectId) : this(id) {
+            this.id = id;
+            this.order = order;
+            this.ownerAccountId = ownerAccountId;
+            this.worldObjectId = worldObjectId;
         }
     }
 }

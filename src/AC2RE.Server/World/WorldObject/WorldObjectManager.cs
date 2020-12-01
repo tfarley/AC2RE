@@ -83,37 +83,19 @@ namespace AC2RE.Server {
             return newObject;
         }
 
-        public void enterWorld(WorldObject worldObject) {
-            if (!worldObject.inWorld) {
-                worldObject.inWorld = true;
-                playerManager.enterWorld(worldObject);
-            }
-        }
-
-        public void enterWorld(IEnumerable<WorldObject> worldObjects) {
-            foreach (WorldObject worldObject in worldObjects) {
-                enterWorld(worldObject);
-            }
-        }
-
-        public void leaveWorld(WorldObject worldObject) {
-            if (worldObject.inWorld) {
-                worldObject.inWorld = false;
-                playerManager.leaveWorld(worldObject);
-            }
-        }
-
-        public void leaveWorld(IEnumerable<WorldObject> worldObjects) {
-            foreach (WorldObject worldObject in worldObjects) {
-                leaveWorld(worldObject);
-            }
-        }
-
         public void syncNewPlayer(Player player) {
             foreach (WorldObject worldObject in worldObjects.Values) {
                 if (worldObject.inWorld) {
-                    playerManager.addVisibleObject(player, worldObject);
+                    worldObject.addVisible(player);
                 }
+            }
+        }
+
+        public void broadcastUpdates(double time) {
+            foreach (WorldObject worldObject in worldObjects.Values) {
+                worldObject.broadcastPhysics(time);
+                worldObject.broadcastQualities();
+                worldObject.broadcastVisualUpdate();
             }
         }
 

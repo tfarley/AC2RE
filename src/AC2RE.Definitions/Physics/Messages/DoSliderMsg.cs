@@ -12,11 +12,22 @@
         public float newValue; // _new_value
         public float time; // _time
 
+        public DoSliderMsg() {
+
+        }
+
         public DoSliderMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             sliderId = data.ReadUInt32();
             newValue = data.ReadSingle();
             time = data.ReadSingle();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            data.Write(sliderId);
+            data.Write(newValue);
+            data.Write(time);
         }
     }
 }

@@ -3,7 +3,9 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace AC2RE.Server.Database {
 
@@ -27,7 +29,7 @@ namespace AC2RE.Server.Database {
             if (!inited) {
                 BsonClassMap.RegisterClassMap<Character>(c => {
                     c.AutoMap();
-                    c.MapCreator(r => new(r.id));
+                    c.MapConstructor(typeof(Character).GetConstructor((BindingFlags)(-1), null, new Type[] { typeof(CharacterId) }, null), "id");
                 });
             }
 
@@ -45,9 +47,9 @@ namespace AC2RE.Server.Database {
         private IMongoCollection<InstanceIdGenerator> setupInstanceIdGenerators() {
             if (!inited) {
                 BsonClassMap.RegisterClassMap<InstanceIdGenerator>(c => {
+                    c.AutoMap();
                     c.MapIdField(r => r.type);
                     c.MapCreator(r => new(r.type, r.idCounter));
-                    c.MapField(r => r.idCounter);
                 });
             }
 
@@ -60,10 +62,8 @@ namespace AC2RE.Server.Database {
             if (!inited) {
                 BsonClassMap.RegisterClassMap<WorldObject>(c => {
                     c.AutoMap();
-                    c.MapIdField(r => r.id);
-                    c.MapCreator(r => new(r.id, r.physics, r.visual, r.qualities));
-                    c.UnmapField(r => r.instanceStamp);
-                    c.MapField(r => r.equippedItemIds).SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<InvLoc, InstanceId>>()
+                    c.MapConstructor(typeof(WorldObject).GetConstructor((BindingFlags)(-1), null, new Type[] { typeof(InstanceId) }, null), "id");
+                    c.MapField("equippedItemIds").SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<InvLoc, InstanceId>>()
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
                         .WithValueSerializer(new UInt64IdSerializer<InstanceId>(id => new(id), v => v.id)));
                 });
@@ -151,27 +151,43 @@ namespace AC2RE.Server.Database {
         }
 
         public Character? getCharacterWithId(CharacterId id) {
-            return characters.Find(r => !r.deleted && r.id == id).FirstOrDefault();
+            return characters.Find(
+                r => !r.deleted
+                && r.id == id
+                ).FirstOrDefault();
         }
 
         public List<Character> getCharactersWithAccount(AccountId accountId) {
-            return characters.Find(r => !r.deleted && r.ownerAccountId == accountId).ToList();
+            return characters.Find(
+                r => !r.deleted
+                && r.ownerAccountId == accountId
+                ).ToList();
         }
 
         public InstanceIdGenerator? getInstanceIdGenerator(string type) {
-            return instanceIdGenerators.Find(r => r.type == type).FirstOrDefault();
+            return instanceIdGenerators.Find(
+                r => r.type == type
+                ).FirstOrDefault();
         }
 
         public List<WorldObject> getAllWorldObjects() {
-            return worldObjects.Find(r => !r.deleted).ToList();
+            return worldObjects.Find(
+                r => !r.deleted
+                ).ToList();
         }
 
         public WorldObject? getWorldObjectWithId(InstanceId id) {
-            return worldObjects.Find(r => !r.deleted && r.id == id).FirstOrDefault();
+            return worldObjects.Find(
+                r => !r.deleted
+                && r.id == id
+                ).FirstOrDefault();
         }
 
         public List<WorldObject> getWorldObjectsWithContainer(InstanceId containerId) {
-            return worldObjects.Find(r => !r.deleted && r.qualities.weenieDesc.containerId == containerId).ToList();
+            return worldObjects.Find(
+                r => !r.deleted
+                && r.qualities.weenieDesc.containerId == containerId
+                ).ToList();
         }
 
         public bool save(WorldSave worldSave) {

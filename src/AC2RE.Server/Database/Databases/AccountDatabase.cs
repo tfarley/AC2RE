@@ -1,5 +1,7 @@
 ﻿using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using System;
+using System.Reflection;
 
 namespace AC2RE.Server.Database {
 
@@ -19,7 +21,7 @@ namespace AC2RE.Server.Database {
             if (!inited) {
                 BsonClassMap.RegisterClassMap<Account>(c => {
                     c.AutoMap();
-                    c.MapCreator(r => new(r.id, r.userName, r.password));
+                    c.MapConstructor(typeof(Account).GetConstructor((BindingFlags)(-1), null, new Type[] { typeof(AccountId) }, null), "id");
                 });
             }
 
@@ -40,15 +42,25 @@ namespace AC2RE.Server.Database {
         }
 
         public Account? getAccountWithUserNameAndPassword(string userName, string password) {
-            return accounts.Find(r => !r.deleted && r.userName == userName && r.password == password).FirstOrDefault();
+            return accounts.Find(
+                r => !r.deleted
+                && r.userName == userName
+                && r.password == password
+                ).FirstOrDefault();
         }
 
         public bool accountExistsWithUserName(string userName) {
-            return accounts.Find(r => !r.deleted && r.userName == userName).Any();
+            return accounts.Find(
+                r => !r.deleted
+                && r.userName == userName
+                ).Any();
         }
 
         public void upsertAccount(Account account) {
-            accounts.ReplaceOne(r => r.id == account.id, account, new ReplaceOptions() { IsUpsert = true });
+            accounts.ReplaceOne(
+                r => r.id == account.id,
+                account,
+                new ReplaceOptions() { IsUpsert = true });
         }
     }
 }

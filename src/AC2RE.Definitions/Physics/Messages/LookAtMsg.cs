@@ -10,9 +10,18 @@
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public InstanceId targetId; // _target_id
 
+        public LookAtMsg() {
+
+        }
+
         public LookAtMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             targetId = data.ReadInstanceId();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            data.Write(targetId);
         }
     }
 }

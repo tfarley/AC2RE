@@ -75,11 +75,7 @@ namespace AC2RE.Server {
                 highestOrder = existingCharacters[^1].order;
             }
 
-            Character character = new(new(Guid.NewGuid())) {
-                order = highestOrder + 1,
-                ownerAccountId = accountId,
-                worldObjectId = worldObjectId,
-            };
+            Character character = new(new(Guid.NewGuid()), highestOrder + 1, accountId, worldObjectId);
             characters[character.id] = character;
             return character;
         }

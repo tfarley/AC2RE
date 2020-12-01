@@ -6,14 +6,15 @@ namespace AC2RE.Server {
     internal class PlayerManager {
 
         private readonly PacketHandler packetHandler;
-        private readonly Dictionary<ClientId, Player> players = new();
+        private readonly Dictionary<ClientId, Player> _players = new();
+        public IEnumerable<Player> players => _players.Values;
 
         public PlayerManager(PacketHandler packetHandler) {
             this.packetHandler = packetHandler;
         }
 
         public Player? get(InstanceId characterId) {
-            foreach (Player player in players.Values) {
+            foreach (Player player in _players.Values) {
                 if (player.characterId == characterId) {
                     return player;
                 }
@@ -22,15 +23,15 @@ namespace AC2RE.Server {
         }
 
         public Player? get(ClientId clientId) {
-            return players.GetValueOrDefault(clientId);
+            return _players.GetValueOrDefault(clientId);
         }
 
         public bool exists(ClientId clientId) {
-            return players.ContainsKey(clientId);
+            return _players.ContainsKey(clientId);
         }
 
         public void add(ClientId clientId, Account account) {
-            players[clientId] = new(clientId, account);
+            _players[clientId] = new(clientId, account);
         }
 
         public void send(Player toPlayer, INetMessage message) {
@@ -56,11 +57,11 @@ namespace AC2RE.Server {
         }
 
         public void sendAll(INetMessage message) {
-            packetHandler.send(players.Keys, message);
+            packetHandler.send(_players.Keys, message);
         }
 
         public void sendAllVisible(InstanceId objectId, INetMessage message) {
-            foreach (Player player in players.Values) {
+            foreach (Player player in _players.Values) {
                 if (player.visibleObjectIds.Contains(objectId)) {
                     send(player, message);
                 }
@@ -68,7 +69,7 @@ namespace AC2RE.Server {
         }
 
         public void sendAllExcept(Player? excludePlayer, INetMessage message) {
-            foreach (Player player in players.Values) {
+            foreach (Player player in _players.Values) {
                 if (player != excludePlayer) {
                     send(player, message);
                 }
@@ -76,7 +77,7 @@ namespace AC2RE.Server {
         }
 
         public void sendAllVisibleExcept(InstanceId objectId, Player? excludePlayer, INetMessage message) {
-            foreach (Player player in players.Values) {
+            foreach (Player player in _players.Values) {
                 if (player != excludePlayer && player.visibleObjectIds.Contains(objectId)) {
                     send(player, message);
                 }
@@ -84,7 +85,7 @@ namespace AC2RE.Server {
         }
 
         public void disconnectAll() {
-            foreach (Player player in players.Values) {
+            foreach (Player player in _players.Values) {
                 send(player, new DisplayStringInfoMsg {
                     type = TextType.ADMIN,
                     text = new(new(0x25000626), 165844726),
@@ -106,54 +107,6 @@ namespace AC2RE.Server {
             send(player, new InterpCEventPrivateMsg {
                 netEvent = new EnterPortalSpaceCEvt()
             });
-        }
-
-        public void enterWorld(WorldObject worldObject) {
-            CreateObjectMsg msg = new() {
-                id = worldObject.id,
-                visualDesc = worldObject.visual,
-                physicsDesc = worldObject.physics,
-                weenieDesc = worldObject.qualities.weenieDesc,
-            };
-
-            foreach (Player player in players.Values) {
-                player.visibleObjectIds.Add(worldObject.id);
-                send(player, msg);
-            }
-        }
-
-        public void leaveWorld(WorldObject worldObject) {
-            DestroyObjectMsg msg = new() {
-                idWithStamp = worldObject.getInstanceIdWithStamp(),
-            };
-
-            foreach (Player player in players.Values) {
-                player.visibleObjectIds.Remove(worldObject.id);
-                send(player, msg);
-            }
-
-            worldObject.instanceStamp++;
-        }
-
-        public void addVisibleObject(Player player, WorldObject worldObject) {
-            if (!player.visibleObjectIds.Contains(worldObject.id)) {
-                player.visibleObjectIds.Add(worldObject.id);
-                send(player, new CreateObjectMsg {
-                    id = worldObject.id,
-                    visualDesc = worldObject.visual,
-                    physicsDesc = worldObject.physics,
-                    weenieDesc = worldObject.qualities.weenieDesc,
-                });
-            }
-        }
-
-        public void removeVisibleObject(Player player, WorldObject worldObject) {
-            if (player.visibleObjectIds.Contains(worldObject.id)) {
-                player.visibleObjectIds.Remove(worldObject.id);
-                send(player, new DestroyObjectMsg {
-                    idWithStamp = worldObject.getInstanceIdWithStamp(),
-                });
-            }
         }
     }
 }

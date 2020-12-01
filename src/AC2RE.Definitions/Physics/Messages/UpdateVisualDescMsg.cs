@@ -10,9 +10,19 @@
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public VisualDesc visualDesc; // _vdesc
 
+        public UpdateVisualDescMsg(InstanceIdWithStamp senderIdWithStamp, VisualDesc visualDesc) {
+            this.senderIdWithStamp = senderIdWithStamp;
+            this.visualDesc = visualDesc;
+        }
+
         public UpdateVisualDescMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             visualDesc = new(data);
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            visualDesc.write(data);
         }
     }
 }
