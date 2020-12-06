@@ -9,7 +9,7 @@ namespace AC2RE.Definitions {
         public EntityGroupDesc entities; // m_entities
         public PropertyCollection properties; // m_properties
         public DataId lightInfoDid; // m_lightInfoDID
-        public List<uint> outsideStabList; // m_aOutsideStabList
+        public List<CellId> outsideStabList; // m_aOutsideStabList
         public uint numCells; // m_numCells
 
         public CLandBlockInfo(AC2Reader data) {
@@ -22,7 +22,7 @@ namespace AC2RE.Definitions {
             lightInfoDid = data.ReadDataId();
             entities = new(data);
             properties = new(data);
-            outsideStabList = data.ReadList(data.ReadUInt32);
+            outsideStabList = data.ReadList(data.ReadCellId);
         }
     }
 }

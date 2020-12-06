@@ -7,21 +7,22 @@ namespace AC2RE.Server {
 
     internal partial class WorldObject {
 
-        private Dictionary<InvLoc, InstanceId>? equippedItemIds;
+        [DbPersist]
+        private Dictionary<InvLoc, InstanceId>? invLocToEquippedItemId;
 
-        [DatabaseIgnore]
-        public IEnumerable<KeyValuePair<InvLoc, InstanceId>> equippedItemIdsEnumerable => equippedItemIds ?? Enumerable.Empty<KeyValuePair<InvLoc, InstanceId>>();
+        public IEnumerable<KeyValuePair<InvLoc, InstanceId>> invLocToEquippedItemIdEnumerable => invLocToEquippedItemId ?? Enumerable.Empty<KeyValuePair<InvLoc, InstanceId>>();
+        public IEnumerable<InstanceId> equippedItemIdsEnumerable => invLocToEquippedItemId?.Values ?? Enumerable.Empty<InstanceId>();
 
         private void initEquip() {
 
         }
 
         public bool isEquipped(InvLoc invLoc) {
-            return equippedItemIds != null && equippedItemIds.ContainsKey(invLoc);
+            return invLocToEquippedItemId != null && invLocToEquippedItemId.ContainsKey(invLoc);
         }
 
         public bool isEquipped(InstanceId itemId) {
-            return equippedItemIds != null && equippedItemIds.ContainsValue(itemId);
+            return invLocToEquippedItemId != null && invLocToEquippedItemId.ContainsValue(itemId);
         }
 
         public ErrorType equip(InvLoc equipLoc, WorldObject? item) {
@@ -34,11 +35,11 @@ namespace AC2RE.Server {
                     return ErrorType.CONTAINERDOESNOTCONTAINITEM;
                 }
 
-                if (equippedItemIds == null) {
-                    equippedItemIds = new();
+                if (invLocToEquippedItemId == null) {
+                    invLocToEquippedItemId = new();
                 }
 
-                equippedItemIds[equipLoc] = item.id;
+                invLocToEquippedItemId[equipLoc] = item.id;
 
                 item.wielderId = id;
 
@@ -47,15 +48,14 @@ namespace AC2RE.Server {
                     item.setParent(this, holdLoc, item.holdOrientation);
                 }
             } else {
-                WorldObject? curItem = objectManager.get(equippedItemIds[equipLoc]);
-                if (curItem != null) {
-                    if (!equippedItemIds.TryGetValue(equipLoc, out InstanceId equippedItemId) || curItem.id != equippedItemId) {
+                if (invLocToEquippedItemId != null && world.objectManager.tryGet(invLocToEquippedItemId[equipLoc], out WorldObject? curItem)) {
+                    if (!invLocToEquippedItemId.TryGetValue(equipLoc, out InstanceId equippedItemId) || curItem.id != equippedItemId) {
                         return ErrorType.NOTEQUIPPED;
-                    } else if (!containedItemIds.Contains(curItem.id)) {
+                    } else if (containedItemIds == null || !containedItemIds.Contains(curItem.id)) {
                         return ErrorType.CONTAINERDOESNOTCONTAINITEM;
                     }
 
-                    equippedItemIds.Remove(equipLoc);
+                    invLocToEquippedItemId.Remove(equipLoc);
 
                     curItem.setParent(null);
                 }

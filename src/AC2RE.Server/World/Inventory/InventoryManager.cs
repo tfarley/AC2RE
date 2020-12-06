@@ -4,27 +4,20 @@ namespace AC2RE.Server {
 
     internal class InventoryManager {
 
-        private readonly PlayerManager playerManager;
-        private readonly WorldObjectManager objectManager;
+        private readonly World world;
 
-        public InventoryManager(PlayerManager playerManager, WorldObjectManager objectManager) {
-            this.playerManager = playerManager;
-            this.objectManager = objectManager;
+        public InventoryManager(World world) {
+            this.world = world;
         }
 
         public void equipItem(InvEquipDesc request, Player requester) {
             if (request.equipperId != requester.characterId) {
                 request.error = ErrorType.ITEMNOTOWNEDBYCONTAINER;
-            } else {
-                WorldObject? equipper = objectManager.get(request.equipperId);
-                WorldObject? item = objectManager.get(request.itemId);
-
-                if (equipper != null && item != null) {
-                    request.error = equipper.equip(request.location, item);
-                }
+            } else if (world.objectManager.tryGet(request.equipperId, out WorldObject? equipper) && world.objectManager.tryGet(request.itemId, out WorldObject? item)) {
+                request.error = equipper.equip(request.location, item);
             }
 
-            playerManager.send(requester, new InterpCEventPrivateMsg {
+            world.playerManager.send(requester, new InterpCEventPrivateMsg {
                 netEvent = new EquipItemDoneCEvt {
                     equipDesc = request,
                 }
@@ -35,20 +28,16 @@ namespace AC2RE.Server {
             if (request.equipperId != requester.characterId) {
                 request.error = ErrorType.ITEMNOTOWNEDBYCONTAINER;
             } else {
-                WorldObject? equipper = objectManager.get(request.equipperId);
-                WorldObject? item = objectManager.get(request.itemId);
-                WorldObject? container = objectManager.get(request.containerId);
-
-                if (equipper != null && item != null) {
+                if (world.objectManager.tryGet(request.equipperId, out WorldObject? equipper) && world.objectManager.tryGet(request.itemId, out WorldObject? item)) {
                     request.error = equipper.equip(request.location, null);
                     if (request.error == ErrorType.NONE) {
-                        request.targetContainerSlot = (uint)item.setContainer(container, (int)request.containerSlot);
+                        request.targetContainerSlot = (uint)item.setContainer(world.objectManager.get(request.containerId), (int)request.containerSlot);
                         request.containerSlot = request.targetContainerSlot;
                     }
                 }
             }
 
-            playerManager.send(requester, new InterpCEventPrivateMsg {
+            world.playerManager.send(requester, new InterpCEventPrivateMsg {
                 netEvent = new UnequipItemDoneCEvt {
                     equipDesc = request,
                 }

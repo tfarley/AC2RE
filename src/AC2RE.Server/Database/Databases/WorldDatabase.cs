@@ -3,9 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
-using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace AC2RE.Server.Database {
 
@@ -27,17 +25,14 @@ namespace AC2RE.Server.Database {
 
         private IMongoCollection<Character> setupCharacters() {
             if (!inited) {
-                BsonClassMap.RegisterClassMap<Character>(c => {
-                    c.AutoMap();
-                    c.MapConstructor(typeof(Character).GetConstructor((BindingFlags)(-1), null, new Type[] { typeof(CharacterId) }, null), "id");
-                });
+                BsonClassMap.RegisterClassMap<Character>(BsonUtil.applyGlobalConventions);
             }
 
             IMongoCollection<Character> characters = database.GetCollection<Character>("character");
 
             if (!inited) {
                 characters.Indexes.CreateOne(new CreateIndexModel<Character>(
-                    Builders<Character>.IndexKeys.Ascending(r => r.worldObjectId),
+                    Builders<Character>.IndexKeys.Ascending(r => r.objectId),
                     new() { Unique = true }));
             }
 
@@ -46,11 +41,7 @@ namespace AC2RE.Server.Database {
 
         private IMongoCollection<InstanceIdGenerator> setupInstanceIdGenerators() {
             if (!inited) {
-                BsonClassMap.RegisterClassMap<InstanceIdGenerator>(c => {
-                    c.AutoMap();
-                    c.MapIdField(r => r.type);
-                    c.MapCreator(r => new(r.type, r.idCounter));
-                });
+                BsonClassMap.RegisterClassMap<InstanceIdGenerator>(BsonUtil.applyGlobalConventions);
             }
 
             IMongoCollection<InstanceIdGenerator> instanceIdGenerators = database.GetCollection<InstanceIdGenerator>("id_gen");
@@ -61,9 +52,8 @@ namespace AC2RE.Server.Database {
         private IMongoCollection<WorldObject> setupWorldObjects() {
             if (!inited) {
                 BsonClassMap.RegisterClassMap<WorldObject>(c => {
-                    c.AutoMap();
-                    c.MapConstructor(typeof(WorldObject).GetConstructor((BindingFlags)(-1), null, new Type[] { typeof(InstanceId) }, null), "id");
-                    c.MapField("equippedItemIds").SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<InvLoc, InstanceId>>()
+                    BsonUtil.applyGlobalConventions(c);
+                    c.MapField("invLocToEquippedItemId").SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<InvLoc, InstanceId>>()
                         .WithKeySerializer(new UInt32SafeSerializer(BsonType.String))
                         .WithValueSerializer(new UInt64IdSerializer<InstanceId>(id => new(id), v => v.id)));
                 });
@@ -145,7 +135,12 @@ namespace AC2RE.Server.Database {
                 BsonClassMap.RegisterClassMap<WeenieDesc>();
             }
 
-            IMongoCollection<WorldObject> worldObjects = database.GetCollection<WorldObject>("worldobj");
+            IMongoCollection<WorldObject> worldObjects = database.GetCollection<WorldObject>("world_obj");
+
+            if (!inited) {
+                worldObjects.Indexes.CreateOne(new CreateIndexModel<WorldObject>(
+                    Builders<WorldObject>.IndexKeys.Ascending(r => r.landblockId)));
+            }
 
             return worldObjects;
         }
@@ -160,7 +155,7 @@ namespace AC2RE.Server.Database {
         public List<Character> getCharactersWithAccount(AccountId accountId) {
             return characters.Find(
                 r => !r.deleted
-                && r.ownerAccountId == accountId
+                && r.accountId == accountId
                 ).ToList();
         }
 
@@ -172,21 +167,21 @@ namespace AC2RE.Server.Database {
 
         public List<WorldObject> getAllWorldObjects() {
             return worldObjects.Find(
-                r => !r.deleted
+                r => !r.destroyed
                 ).ToList();
         }
 
         public WorldObject? getWorldObjectWithId(InstanceId id) {
             return worldObjects.Find(
-                r => !r.deleted
+                r => !r.destroyed
                 && r.id == id
                 ).FirstOrDefault();
         }
 
-        public List<WorldObject> getWorldObjectsWithContainer(InstanceId containerId) {
+        public List<WorldObject> getWorldObjectsWithLandblockId(LandblockId landblockId) {
             return worldObjects.Find(
-                r => !r.deleted
-                && r.qualities.weenieDesc.containerId == containerId
+                r => !r.destroyed
+                && r.landblockId == landblockId
                 ).ToList();
         }
 
@@ -196,7 +191,7 @@ namespace AC2RE.Server.Database {
                 return session.WithTransaction((s, ct) => {
                     // TODO: Needed individual replace calls here because ReplaceOneModel in BulkWrite does not support Upsert, and the alternative requires specifying every field in UpdateOneModel
                     foreach (Character character in worldSave.characters) {
-                        characters.ReplaceOne(session, r => r.id == character.id, character, new ReplaceOptions() { IsUpsert = true }, ct);
+                        characters.ReplaceOne(session, r => r.id == character.id, character, new ReplaceOptions { IsUpsert = true }, ct);
                     }
 
                     InstanceIdGenerator? idGenerator = worldSave.idGenerator;
@@ -213,7 +208,7 @@ namespace AC2RE.Server.Database {
 
                     // TODO: Needed individual replace calls here because ReplaceOneModel in BulkWrite does not support Upsert, and the alternative requires specifying every field in UpdateOneModel
                     foreach (WorldObject worldObject in worldSave.worldObjects) {
-                        worldObjects.ReplaceOne(session, r => r.id == worldObject.id, worldObject, new ReplaceOptions() { IsUpsert = true }, ct);
+                        worldObjects.ReplaceOne(session, r => r.id == worldObject.id, worldObject, new ReplaceOptions { IsUpsert = true }, ct);
                     }
 
                     return true;

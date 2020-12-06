@@ -1,11 +1,13 @@
 ﻿using AC2RE.Definitions;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AC2RE.Server {
 
     internal class PlayerManager {
 
         private readonly PacketHandler packetHandler;
+
         private readonly Dictionary<ClientId, Player> _players = new();
         public IEnumerable<Player> players => _players.Values;
 
@@ -13,13 +15,25 @@ namespace AC2RE.Server {
             this.packetHandler = packetHandler;
         }
 
+        public bool tryGet(InstanceId characterId, [MaybeNullWhen(false)] out Player player) {
+            player = get(characterId);
+            return player != null;
+        }
+
         public Player? get(InstanceId characterId) {
-            foreach (Player player in _players.Values) {
-                if (player.characterId == characterId) {
-                    return player;
+            if (characterId != InstanceId.NULL) {
+                foreach (Player player in _players.Values) {
+                    if (player.characterId == characterId) {
+                        return player;
+                    }
                 }
             }
             return null;
+        }
+
+        public bool tryGet(ClientId clientId, [MaybeNullWhen(false)] out Player player) {
+            player = get(clientId);
+            return player != null;
         }
 
         public Player? get(ClientId clientId) {
@@ -42,16 +56,6 @@ namespace AC2RE.Server {
             List<ClientId> clientIds = new();
             foreach (Player player in toPlayers) {
                 clientIds.Add(player.clientId);
-            }
-            packetHandler.send(clientIds, message);
-        }
-
-        public void sendVisible(InstanceId objectId, IEnumerable<Player> toPlayers, INetMessage message) {
-            List<ClientId> clientIds = new();
-            foreach (Player player in toPlayers) {
-                if (player.visibleObjectIds.Contains(objectId)) {
-                    clientIds.Add(player.clientId);
-                }
             }
             packetHandler.send(clientIds, message);
         }

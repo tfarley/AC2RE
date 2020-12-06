@@ -20,15 +20,16 @@ namespace AC2RE.Server {
             frame = new(new(131.13126f, 13.535009f, 127.25996f), Quaternion.Identity),
         };
 
-        private readonly WorldDatabase worldDb;
-        private readonly ServerTime serverTime;
+        public readonly WorldDatabase worldDb;
+        public readonly ServerTime serverTime;
         private readonly PacketHandler packetHandler;
-        private readonly ContentManager contentManager;
+        public readonly ContentManager contentManager;
 
-        private readonly PlayerManager playerManager;
-        private readonly CharacterManager characterManager;
-        private readonly WorldObjectManager objectManager;
-        private readonly InventoryManager inventoryManager;
+        public readonly PlayerManager playerManager;
+        public readonly CharacterManager characterManager;
+        public readonly WorldObjectManager objectManager;
+        public readonly LandblockManager landblockManager;
+        public readonly InventoryManager inventoryManager;
 
         private int toggleCounter = 0;
 
@@ -38,13 +39,10 @@ namespace AC2RE.Server {
             this.packetHandler = packetHandler;
             this.contentManager = contentManager;
             playerManager = new(packetHandler);
-            characterManager = new(worldDb);
-            objectManager = new(worldDb, playerManager);
-            inventoryManager = new(playerManager, objectManager);
-
-            foreach (WorldObject worldObject in objectManager.getAll()) {
-                worldObject.enterWorld();
-            }
+            characterManager = new(this);
+            objectManager = new(this);
+            landblockManager = new(this);
+            inventoryManager = new(this);
         }
 
         public void addPlayerIfNecessary(ClientConnection client, Account account) {
@@ -54,9 +52,7 @@ namespace AC2RE.Server {
         }
 
         public bool processMessage(ClientConnection client, INetMessage genericMsg) {
-            Player? player = playerManager.get(client.id);
-
-            if (player == null) {
+            if (!playerManager.tryGet(client.id, out Player? player)) {
                 throw new InvalidDataException($"Received message from client {client} with no player.");
             }
 
@@ -75,7 +71,7 @@ namespace AC2RE.Server {
 
                         WorldObject characterObject = CharacterGen.createCharacterObject(objectManager, contentManager, inventoryManager, ARWIC_START_POS, msg.characterName, msg.species, msg.sex, msg.physiqueTypeValues);
 
-                        Character character = characterManager.createWithAccountAndWorldObject(player.account.id, characterObject.id);
+                        Character character = characterManager.createWithAccountAndObject(player.account.id, characterObject.id);
 
                         playerManager.send(player, new CharGenVerificationMsg {
                             response = CharGenResponse.OK,
@@ -93,16 +89,13 @@ namespace AC2RE.Server {
                 case MessageOpcode.Evt_Login__CharacterDeletion_ID: {
                         CharacterDeletionSMsg msg = (CharacterDeletionSMsg)genericMsg;
 
-                        WorldObject? characterObject = objectManager.get(msg.characterId);
-                        if (characterObject != null) {
-                            Character? character = characterManager.getWithAccountAndWorldObject(player.account.id, characterObject.id);
-
-                            if (character != null) {
-                                character.deleted = true;
-                                characterObject.deleted = true;
+                        if (objectManager.tryGet(msg.characterId, out WorldObject? character)) {
+                            if (characterManager.tryGetWithAccountAndObject(player.account.id, character.id, out Character? characterInfo)) {
+                                characterInfo.deleted = true;
+                                character.destroy();
 
                                 playerManager.send(player, new CharacterDeletionCMsg {
-                                    characterId = characterObject.id,
+                                    characterId = character.id,
                                 });
                                 sendCharacters(player);
                             }
@@ -119,9 +112,7 @@ namespace AC2RE.Server {
 
                         player.characterId = msg.characterId;
 
-                        WorldObject? character = objectManager.get(msg.characterId);
-
-                        if (character == null) {
+                        if (!objectManager.tryGet(msg.characterId, out WorldObject? character)) {
                             throw new ArgumentException($"Account {player.account.id} attempted to log in with non-existent character object {msg.characterId}.");
                         }
 
@@ -137,10 +128,8 @@ namespace AC2RE.Server {
                         Dictionary<uint, InventProfile> inventoryByLocationTable = new();
                         Dictionary<InstanceId, InventProfile> inventoryByIdTable = new();
 
-                        List<WorldObject> playerInventory = objectManager.getWithContainer(character.id);
-                        foreach ((InvLoc equipLoc, InstanceId itemId) in character.equippedItemIdsEnumerable) {
-                            WorldObject? item = objectManager.get(itemId);
-                            if (item != null) {
+                        foreach ((InvLoc equipLoc, InstanceId itemId) in character.invLocToEquippedItemIdEnumerable) {
+                            if (objectManager.tryGet(itemId, out WorldObject? item)) {
                                 InventProfile profile = new() {
                                     visualDescInfo = new() {
                                         scale = Vector3.One,
@@ -396,13 +385,15 @@ namespace AC2RE.Server {
                             }
                         });
 
-                        objectManager.syncNewPlayer(player);
-
-                        foreach (WorldObject item in playerInventory) {
-                            item.enterWorld();
+                        foreach (InstanceId itemId in character.containedItemIdsEnumerable) {
+                            if (objectManager.tryGet(itemId, out WorldObject? item)) {
+                                item.enterWorld();
+                            }
                         }
 
                         character.enterWorld();
+
+                        landblockManager.syncPlayerVisibility(player);
                         break;
                     }
                 case MessageOpcode.Evt_Login__CharExitGame_ID: {
@@ -489,8 +480,7 @@ namespace AC2RE.Server {
 
                             newTestObject.enterWorld();
 
-                            WorldObject? character = objectManager.get(player.characterId);
-                            if (character != null && character.inWorld) {
+                            if (objectManager.tryGet(player.characterId, out WorldObject? character) && character.inWorld) {
                                 character.health = toggleCounter;
 
                                 character.doFx(FxId.PORTAL_USE, 1.0f);
@@ -526,8 +516,7 @@ namespace AC2RE.Server {
                 case MessageOpcode.Evt_Physics__CLookAtDir_ID: {
                         CLookAtDirMsg msg = (CLookAtDirMsg)genericMsg;
 
-                        WorldObject? character = objectManager.get(player.characterId);
-                        if (character != null && character.inWorld) {
+                        if (objectManager.tryGet(player.characterId, out WorldObject? character) && character.inWorld) {
                             character.lookAtDir = new Vector2(msg.x, msg.z);
                         }
 
@@ -536,8 +525,7 @@ namespace AC2RE.Server {
                 case MessageOpcode.Evt_Physics__CPosition_ID: {
                         CPositionMsg msg = (CPositionMsg)genericMsg;
 
-                        WorldObject? character = objectManager.get(player.characterId);
-                        if (character != null && character.inWorld) {
+                        if (objectManager.tryGet(player.characterId, out WorldObject? character) && character.inWorld) {
                             character.offset = msg.posPack.offset;
                             character.heading = msg.posPack.heading.rotDegrees;
                             character.motion = msg.posPack.doMotion;
@@ -559,15 +547,13 @@ namespace AC2RE.Server {
 
         private void sendCharacters(Player player) {
             List<CharacterIdentity> characterIdentities = new();
-            foreach (Character character in characterManager.getWithAccount(player.account.id)) {
-                WorldObject? playerObject = objectManager.get(character.worldObjectId);
-
-                if (playerObject != null) {
+            foreach (Character characterInfo in characterManager.getWithAccount(player.account.id)) {
+                if (objectManager.tryGet(characterInfo.objectId, out WorldObject? character)) {
                     characterIdentities.Add(new() {
-                        id = playerObject.id,
-                        name = playerObject.name!.literalValue,
+                        id = character.id,
+                        name = character.name!.literalValue,
                         secondsGreyedOut = 0,
-                        visualDesc = playerObject.visual,
+                        visualDesc = character.visual,
                     });
                 }
             }
@@ -601,7 +587,9 @@ namespace AC2RE.Server {
         public void tick() {
             packetHandler.processNetBlobs(this);
 
-            objectManager.broadcastUpdates(serverTime.time);
+            landblockManager.update();
+
+            objectManager.broadcastUpdates();
         }
 
         public void save() {

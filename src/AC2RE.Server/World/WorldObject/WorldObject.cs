@@ -5,28 +5,26 @@ namespace AC2RE.Server {
 
     internal partial class WorldObject {
 
-        [DatabaseIgnore]
-        public WorldObjectManager objectManager;
+        private World world;
 
-        [DatabaseIgnore]
-        public PlayerManager playerManager;
-
+        [DbId]
         public readonly InstanceId id;
-        public bool deleted;
 
-        [DatabaseIgnore]
-        public ushort instanceStamp;
+        [property: DbPersist]
+        public bool destroyed { get; private set; }
 
-        [DatabaseIgnore]
-        public bool inWorld;
+        [property: DbPersist]
+        public ushort instanceStamp { get; private set; }
 
-        // For deserialization
+        public bool inWorld { get; private set; }
+
+        [DbConstructor]
         private WorldObject(InstanceId id) {
             this.id = id;
         }
 
-        public WorldObject(InstanceId id, WorldObjectManager objectManager, PlayerManager playerManager) : this(id) {
-            init(objectManager, playerManager);
+        public WorldObject(InstanceId id, World world) : this(id) {
+            init(world);
 
             initContain();
             initEquip();
@@ -35,9 +33,13 @@ namespace AC2RE.Server {
             initVisual();
         }
 
-        public void init(WorldObjectManager objectManager, PlayerManager playerManager) {
-            this.objectManager = objectManager;
-            this.playerManager = playerManager;
+        public void init(World world) {
+            this.world = world;
+        }
+
+        public void destroy() {
+            leaveWorld();
+            destroyed = true;
         }
 
         public InstanceIdWithStamp getInstanceIdWithStamp(ushort otherStamp = 0) {
@@ -53,24 +55,16 @@ namespace AC2RE.Server {
                 return;
             }
 
+            inWorld = true;
+
             // Clear out all dirty values
             broadcastPhysics(0.0);
             broadcastQualities();
             broadcastVisualUpdate();
 
-            CreateObjectMsg msg = new() {
-                id = id,
-                visualDesc = visual,
-                physicsDesc = physics,
-                weenieDesc = qualities.weenieDesc,
-            };
+            world.landblockManager.enterWorld(this);
 
-            foreach (Player player in playerManager.players) {
-                player.visibleObjectIds.Add(id);
-                playerManager.send(player, msg);
-            }
-
-            inWorld = true;
+            lastSentCell = pos.cell;
         }
 
         public void leaveWorld() {
@@ -78,39 +72,11 @@ namespace AC2RE.Server {
                 return;
             }
 
-            DestroyObjectMsg msg = new() {
-                idWithStamp = getInstanceIdWithStamp(),
-            };
-
-            foreach (Player player in playerManager.players) {
-                player.visibleObjectIds.Remove(id);
-                playerManager.send(player, msg);
-            }
-
             inWorld = false;
 
+            world.landblockManager.leaveWorld(this);
+
             instanceStamp++;
-        }
-
-        public void addVisible(Player player) {
-            if (!player.visibleObjectIds.Contains(id)) {
-                player.visibleObjectIds.Add(id);
-                playerManager.send(player, new CreateObjectMsg {
-                    id = id,
-                    visualDesc = visual,
-                    physicsDesc = physics,
-                    weenieDesc = qualities.weenieDesc,
-                });
-            }
-        }
-
-        public void removeVisible(Player player) {
-            if (player.visibleObjectIds.Contains(id)) {
-                player.visibleObjectIds.Remove(id);
-                playerManager.send(player, new DestroyObjectMsg {
-                    idWithStamp = getInstanceIdWithStamp(),
-                });
-            }
         }
     }
 }

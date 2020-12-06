@@ -9,6 +9,12 @@ namespace AC2RE.Server.Database {
 
     internal abstract class MongoDatabase {
 
+        public static readonly ConventionPack GLOBAL_CONVENTIONS = new ConventionPack {
+            new DatabaseAttributesConvention(),
+            new IgnoreIfDefaultConvention(true),
+            new IgnoreExtraElementsConvention(true),
+        };
+
         private static bool mongoInited;
         private static readonly Dictionary<string, MongoClient> endpointToClient = new();
 
@@ -21,22 +27,26 @@ namespace AC2RE.Server.Database {
             if (!mongoInited) {
                 ConventionRegistry.Register(
                     "GlobalConventions",
+                    GLOBAL_CONVENTIONS,
+                    type => true);
+
+                ConventionRegistry.Register(
+                    "ExternalConventions",
                     new ConventionPack {
                         // Serialize private fields and properties by default
                         new ReadWriteMemberFinderConvention(MemberTypes.All, (BindingFlags)(-1)),
-                        new IgnoreIfDefaultConvention(true),
-                        new IgnoreExtraElementsConvention(true),
-                        new DatabaseIgnoreConvention(),
                     },
                     type => true);
 
                 BsonSerializer.RegisterSerializationProvider(new SerializationProvider());
 
+                BsonSerializer.RegisterSerializer(new FrameSerializer());
                 BsonSerializer.RegisterSerializer(new GuidIdSerializer<AccountId>(id => new(id), v => v.id));
                 BsonSerializer.RegisterSerializer(new GuidIdSerializer<CharacterId>(id => new(id), v => v.id));
                 BsonSerializer.RegisterSerializer(new QuaternionSerializer());
                 BsonSerializer.RegisterSerializer(new RGBAColorSerializer());
                 BsonSerializer.RegisterSerializer(new StringInfoSerializer());
+                BsonSerializer.RegisterSerializer(new UInt32IdSerializer<LandblockId>(id => new((ushort)id), v => v.id));
                 BsonSerializer.RegisterSerializer(new UInt32IdSerializer<CellId>(id => new(id), v => v.id));
                 BsonSerializer.RegisterSerializer(new UInt32IdSerializer<DataId>(id => new(id), v => v.id));
                 BsonSerializer.RegisterSerializer(new UInt32IdSerializer<PackageId>(id => new(id), v => v.id));
@@ -44,7 +54,6 @@ namespace AC2RE.Server.Database {
                 BsonSerializer.RegisterSerializer(new Vector3Serializer());
 
                 BsonClassMap.RegisterClassMap<Position>();
-                BsonClassMap.RegisterClassMap<Frame>();
 
                 mongoInited = true;
             }

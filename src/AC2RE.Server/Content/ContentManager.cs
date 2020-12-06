@@ -7,15 +7,18 @@ namespace AC2RE.Server {
     internal class ContentManager : IDisposable {
 
         private readonly DatReader portalDatReader;
+        private readonly DatReader cell1DatReader;
         private CharacterGenSystem? characterGenSystem;
         private CharGenMatrix? charGenMatrix;
         private readonly Dictionary<DataId, EntityDef> entityDefCache = new();
         private readonly Dictionary<DataId, CBaseQualities> qualitiesCache = new();
         private readonly Dictionary<DataId, WState> weenieStateCache = new();
         private readonly Dictionary<DataId, VisualDesc> visualDescCache = new();
+        private readonly Dictionary<DataId, CEnvCell> envCellCache = new();
 
         public ContentManager() {
             portalDatReader = new("G:\\Asheron's Call 2\\portal.dat_server");
+            cell1DatReader = new("G:\\Asheron's Call 2\\cell_1.dat_server");
 
             MasterProperty.loadMasterProperties(portalDatReader);
             PackageManager.loadPackageTypes(portalDatReader);
@@ -126,6 +129,16 @@ namespace AC2RE.Server {
                     }
                 }
             }
+        }
+
+        public CEnvCell getEnvCell(DataId did) {
+            if (!envCellCache.TryGetValue(did, out CEnvCell? envCell)) {
+                using (AC2Reader data = cell1DatReader.getFileReader(did)) {
+                    envCell = new(data);
+                    envCellCache[did] = envCell;
+                }
+            }
+            return envCell;
         }
     }
 }

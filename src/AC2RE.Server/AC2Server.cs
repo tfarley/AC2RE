@@ -50,11 +50,16 @@ namespace AC2RE.Server {
             accountDb = new(MONGODB_CONNECTION_ENDPOINT);
             worldDb = new(MONGODB_CONNECTION_ENDPOINT);
 
-            Logs.STATUS.info("Initializing handlers...");
+            Logs.STATUS.info("Initializing account manager...");
             accountManager = new(accountDb);
+
+            Logs.STATUS.info("Initializing client manager...");
             clientManager = new();
+
+            Logs.STATUS.info("Initializing content manager...");
             contentManager = new();
 
+            Logs.STATUS.info("Initializing packet handler...");
             packetHandler = new(accountManager, clientManager, time);
 
             Logs.STATUS.info("Initializing world...");

@@ -1,7 +1,5 @@
 ﻿using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using System;
-using System.Reflection;
 
 namespace AC2RE.Server.Database {
 
@@ -19,10 +17,7 @@ namespace AC2RE.Server.Database {
 
         private IMongoCollection<Account> setupAccounts() {
             if (!inited) {
-                BsonClassMap.RegisterClassMap<Account>(c => {
-                    c.AutoMap();
-                    c.MapConstructor(typeof(Account).GetConstructor((BindingFlags)(-1), null, new Type[] { typeof(AccountId) }, null), "id");
-                });
+                BsonClassMap.RegisterClassMap<Account>(BsonUtil.applyGlobalConventions);
             }
 
             IMongoCollection<Account> accounts = database.GetCollection<Account>("account");
@@ -30,7 +25,7 @@ namespace AC2RE.Server.Database {
             if (!inited) {
                 accounts.Indexes.CreateOne(new CreateIndexModel<Account>(
                     Builders<Account>.IndexKeys.Ascending(r => r.userName),
-                    new CreateIndexOptions<Account>() { Unique = true }));
+                    new CreateIndexOptions<Account> { Unique = true }));
 
                 accounts.Indexes.CreateOne(new CreateIndexModel<Account>(
                     Builders<Account>.IndexKeys
@@ -60,7 +55,7 @@ namespace AC2RE.Server.Database {
             accounts.ReplaceOne(
                 r => r.id == account.id,
                 account,
-                new ReplaceOptions() { IsUpsert = true });
+                new ReplaceOptions { IsUpsert = true });
         }
     }
 }

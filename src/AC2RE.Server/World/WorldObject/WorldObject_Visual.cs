@@ -6,16 +6,15 @@ namespace AC2RE.Server {
 
     internal partial class WorldObject {
 
+        [DbPersist]
         public VisualDesc visual;
 
-        [DatabaseIgnore]
         private bool visualDirty;
 
         private void initVisual() {
             visual = new();
         }
 
-        [DatabaseIgnore]
         public Vector3 visualScale {
             get => visual.scale;
             set {
@@ -24,7 +23,6 @@ namespace AC2RE.Server {
             }
         }
 
-        [DatabaseIgnore]
         public PartGroupDataDesc globalAppearanceModifiers {
             get => visual.globalAppearanceModifiers;
             set {
@@ -36,7 +34,7 @@ namespace AC2RE.Server {
         public void broadcastVisualUpdate() {
             if (visualDirty) {
                 if (inWorld) {
-                    playerManager.sendAllVisible(id, new UpdateVisualDescMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), visual));
+                    world.playerManager.sendAllVisible(id, new UpdateVisualDescMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), visual));
                 }
 
                 visualDirty = false;
@@ -44,7 +42,7 @@ namespace AC2RE.Server {
         }
 
         public void doFx(FxId fxId, float scalar) {
-            playerManager.sendAllVisible(id, new DoFxMsg {
+            world.playerManager.sendAllVisible(id, new DoFxMsg {
                 senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
                 fxId = fxId,
                 scalar = scalar,
@@ -52,7 +50,7 @@ namespace AC2RE.Server {
         }
 
         public void stopFx(FxId fxId) {
-            playerManager.sendAllVisible(id, new StopFxMsg {
+            world.playerManager.sendAllVisible(id, new StopFxMsg {
                 senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
                 fxId = fxId,
             });

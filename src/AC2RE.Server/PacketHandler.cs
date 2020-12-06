@@ -29,7 +29,7 @@ namespace AC2RE.Server {
             using (AC2Reader data = new(new MemoryStream(rawData, 0, dataLen))) {
                 NetPacket packet = new(data);
 
-                Logs.NET.debug("RCVD",
+                Logs.NET.trace("RCVD",
                     "len", dataLen,
                     "endpoint", receiveEndpoint,
                     "pkt", packet,
@@ -47,6 +47,18 @@ namespace AC2RE.Server {
         public bool processLogonPacket(NetInterface netInterface, IPEndPoint receiveEndpoint, NetPacket packet) {
             if (packet.logonHeader == null) {
                 return false;
+            }
+
+            bool clientExists = false;
+            clientManager.processClients(client => {
+                // TODO: Should be based on account name, not sequence
+                if (client.connectionSeq == packet.logonHeader.netAuth.connectionSeq) {
+                    clientExists = true;
+                }
+            });
+
+            if (clientExists) {
+                return true;
             }
 
             Logs.NET.debug("Logon request",
@@ -67,9 +79,9 @@ namespace AC2RE.Server {
                 throw new ArgumentException($"Authentication failed for account {packet.logonHeader.netAuth.accountName}.");
             }
 
-            ClientId clientId = clientManager.addClient(receiveEndpoint, account);
+            ClientId clientId = clientManager.addClient(packet.logonHeader.netAuth.connectionSeq, receiveEndpoint, account);
 
-            clientManager.tryProcessClient(clientId, client => {
+            clientManager.processClient(clientId, client => {
                 client.sendPacket(netInterface, 0.0f, 0.0f, new() {
                     connectHeader = new() {
                         connectionAckCookie = client.connectionAckCookie,
@@ -141,10 +153,10 @@ namespace AC2RE.Server {
                     Logs.NET.info("Client connected",
                         "client", client);
                     client.connect();
-                    client.enqueueMessage(new WorldNameMsg {
+                    send(client.id, new WorldNameMsg {
                         worldName = new("MyWorld"),
                     });
-                    client.enqueueMessage(new CliDatInterrogationMsg {
+                    send(client.id, new CliDatInterrogationMsg {
                         regionId = (RegionID)1,
                         nameRuleLanguage = Language.ENGLISH,
                         supportedLanguages = SUPPORTED_LANGUAGES,
@@ -204,13 +216,33 @@ namespace AC2RE.Server {
             });
         }
 
-        public void send(ClientId clientId, INetMessage message) {
-            clientManager.tryProcessClient(clientId, client => client.enqueueMessage(message));
+        private byte[] serializeMessage(INetMessage msg) {
+            MemoryStream buffer = new();
+            using (AC2Writer data = new(buffer)) {
+                data.Write((uint)msg.opcode);
+                msg.write(data);
+            }
+            return buffer.ToArray();
         }
 
-        public void send(IEnumerable<ClientId> clientIds, INetMessage message) {
+        private void send(ClientId clientId, INetMessage msg, byte[] payload) {
+            clientManager.processClient(clientId, client => {
+                client.enqueueBlob(msg.blobFlags, msg.queueId, payload);
+                Logs.NET.debug("Enqueued msg",
+                    "client", client,
+                    "msg", msg,
+                    "payload", BitConverter.ToString(payload));
+            });
+        }
+
+        public void send(ClientId clientId, INetMessage msg) {
+            send(clientId, msg, serializeMessage(msg));
+        }
+
+        public void send(IEnumerable<ClientId> clientIds, INetMessage msg) {
+            byte[] payload = serializeMessage(msg);
             foreach (ClientId clientId in clientIds) {
-                send(clientId, message);
+                send(clientId, msg, payload);
             }
         }
     }

@@ -9,7 +9,8 @@ namespace AC2RE.PacketTool.UI {
     internal abstract class CustomFilter {
 
         public static readonly Dictionary<string, Func<CustomFilter>> FILTERS = new() {
-            { "CreatePlayer", () => new CreatePlayerFilter() }
+            { "CreatePlayer", () => new CreatePlayerFilter() },
+            { "NonzeroInstanceStamp", () => new NonzeroInstanceStampFilter() },
         };
 
         public virtual GridViewColumn createColumn(string name, double width) {
@@ -51,6 +52,41 @@ namespace AC2RE.PacketTool.UI {
 
                 matchResultValues[NAME_COLUMN] = msg.weenieDesc.name.literalValue;
                 matchResultValues[SCALE_COLUMN] = msg.visualDesc.scale;
+
+                return true;
+            }
+        }
+
+        private class NonzeroInstanceStampFilter : CustomFilter {
+
+            private static readonly string PACKAGE_TYPE_COLUMN = "Package Type";
+            private static readonly string INSTANCE_ID_COLUMN = "Instance Id";
+            private static readonly string STAMP_COLUMN = "Stamp";
+
+            public override List<GridViewColumn>? resultColumns => new() {
+                createColumn(PACKAGE_TYPE_COLUMN, 150),
+                createColumn(INSTANCE_ID_COLUMN, 150),
+                createColumn(STAMP_COLUMN, 150),
+            };
+
+            public override bool matches(NetBlobRow netBlobRow, Dictionary<string, object> matchResultValues) {
+                if (netBlobRow.opcode != MessageOpcode.Evt_Physics__CreateObject_ID) {
+                    return false;
+                }
+
+                var msg = (CreateObjectMsg?)netBlobRow.netBlobRecord.message;
+
+                if (msg == null) {
+                    return false;
+                }
+
+                if (msg.physicsDesc.instanceStamp == 0) {
+                    return false;
+                }
+
+                matchResultValues[PACKAGE_TYPE_COLUMN] = msg.weenieDesc.packageType;
+                matchResultValues[INSTANCE_ID_COLUMN] = msg.id.id;
+                matchResultValues[STAMP_COLUMN] = msg.physicsDesc.instanceStamp;
 
                 return true;
             }

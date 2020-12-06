@@ -17,6 +17,7 @@ namespace AC2RE.Server {
         private static readonly byte ORDERING_TYPE_NORMAL = 0x03;
 
         public readonly ClientId id;
+        public readonly uint connectionSeq;
         public IPEndPoint endpoint { get; private set; }
         public readonly Account account;
         public readonly ulong connectionAckCookie;
@@ -49,8 +50,9 @@ namespace AC2RE.Server {
             public NetInterface netInterface;
         }
 
-        public ClientConnection(ClientId id, IPEndPoint endpoint, Account account) {
+        public ClientConnection(ClientId id, uint connectionSeq, IPEndPoint endpoint, Account account) {
             this.id = id;
+            this.connectionSeq = connectionSeq;
             this.endpoint = endpoint;
             this.account = account;
 
@@ -92,20 +94,7 @@ namespace AC2RE.Server {
             }
         }
 
-        public void enqueueMessage(INetMessage msg) {
-            MemoryStream buffer = new();
-            using (AC2Writer data = new(buffer)) {
-                data.Write((uint)msg.opcode);
-                msg.write(data);
-            }
-            byte[] payload = buffer.ToArray();
-            enqueueBlob(msg.blobFlags, msg.queueId, payload);
-            Logs.NET.debug("Enqueued msg",
-                "msg", msg,
-                "data", BitConverter.ToString(payload));
-        }
-
-        private void enqueueBlob(NetBlobId.Flag blobFlags, NetQueue queueId, byte[] payload) {
+        public void enqueueBlob(NetBlobId.Flag blobFlags, NetQueue queueId, byte[] payload) {
             // TODO: Determining order this way doesn't seem correct, see packet with 66:00:01:00 having EVENT queue but WEENIE ordering
             byte orderingType = (queueId == NetQueue.WEENIE || queueId == NetQueue.SECUREWEENIE) ? ORDERING_TYPE_WEENIE : ORDERING_TYPE_NORMAL;
             NetBlob blob = new() {
@@ -239,7 +228,7 @@ namespace AC2RE.Server {
                 // Replace the checksum
                 BitConverter.GetBytes(headerChecksum + contentChecksum).CopyTo(sendBuffer, 8);
 
-                Logs.NET.debug("SENT",
+                Logs.NET.trace("SENT",
                     "len", packetLength,
                     "to", endpoint,
                     "pkt", packet,

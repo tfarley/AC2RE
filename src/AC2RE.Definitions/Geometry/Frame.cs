@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions {
 
-    public class Frame : IPackage {
+    public struct Frame : IPackage {
 
         public NativeType nativeType => NativeType.FRAME;
 

@@ -3,39 +3,43 @@ using AC2RE.Server.Database;
 using AC2RE.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace AC2RE.Server {
 
     internal partial class WorldObject {
 
+        [DbPersist]
         public PhysicsDesc physics;
+
+        [DbPersist]
+        public LandblockId landblockId => physics.pos.cell.landblockId;
+
+        [DbPersist]
+        private HashSet<InstanceId>? childIds;
+
+        public IEnumerable<InstanceId> childIdsEnumerable => childIds ?? Enumerable.Empty<InstanceId>();
+
+        public InstanceId parentId => physics.parentId;
 
         public Vector3 motion;
         public bool jumped;
         public bool impulsed;
         public Vector3 impulseVel;
 
-        [DatabaseIgnore]
-        public bool modeDirty;
-
-        [DatabaseIgnore]
-        public bool velScaleDirty;
-
-        [DatabaseIgnore]
-        public bool positionDirty;
-
-        [DatabaseIgnore]
-        public bool lookAtDirty;
-
-        [DatabaseIgnore]
+        private CellId lastSentCell;
+        private bool modeDirty;
+        private bool velScaleDirty;
+        private bool positionDirty;
+        private bool lookAtDirty;
         private HashSet<uint> dirtySliders = new();
 
         private void initPhysics() {
             physics = new();
+            physics.pos = new();
         }
 
-        [DatabaseIgnore]
         public float heading {
             get {
                 Vector3 forwardDir = Vector3.Transform(new Vector3(0.0f, 1.0f, 0.0f), physics.pos.frame.rot);
@@ -47,7 +51,6 @@ namespace AC2RE.Server {
             }
         }
 
-        [DatabaseIgnore]
         public ModeId mode {
             get => physics.modeId;
             set {
@@ -56,7 +59,6 @@ namespace AC2RE.Server {
             }
         }
 
-        [DatabaseIgnore]
         public float velScale {
             get => physics.velScale;
             set {
@@ -65,16 +67,15 @@ namespace AC2RE.Server {
             }
         }
 
-        [DatabaseIgnore]
         public Position pos {
             get => physics.pos;
             set {
-                physics.pos = value;
+                physics.pos.cell = value.cell;
+                physics.pos.frame = value.frame;
                 positionDirty = true;
             }
         }
 
-        [DatabaseIgnore]
         public PositionOffset offset {
             get => new PositionOffset(physics.pos.cell, physics.pos.frame.pos);
             set {
@@ -84,7 +85,9 @@ namespace AC2RE.Server {
             }
         }
 
-        [DatabaseIgnore]
+        public HoldingLocation locationId => physics.locationId;
+        public Orientation orientationId => physics.orientationId;
+
         public InstanceId lookAtId {
             get => physics.lookAtId;
             set {
@@ -93,7 +96,6 @@ namespace AC2RE.Server {
             }
         }
 
-        [DatabaseIgnore]
         public Vector2 lookAtDir {
             get => new Vector2(physics.headingX, physics.headingZ);
             set {
@@ -124,7 +126,7 @@ namespace AC2RE.Server {
             if (modeDirty) {
                 if (inWorld) {
                     // TODO: Should this be SetModeMsg?
-                    playerManager.sendAllVisible(id, new DoModeMsg {
+                    world.playerManager.sendAllVisible(id, new DoModeMsg {
                         senderIdWithStamp = getInstanceIdWithStamp(),
                         modeId = physics.modeId,
                     });
@@ -136,7 +138,7 @@ namespace AC2RE.Server {
             if (velScaleDirty) {
                 if (inWorld) {
                     // TODO: Should this be SetModeMsg?
-                    playerManager.sendAllVisible(id, new SetVelocityScaleMsg {
+                    world.playerManager.sendAllVisible(id, new SetVelocityScaleMsg {
                         senderIdWithStamp = getInstanceIdWithStamp(),
                         velScale = physics.velScale,
                     });
@@ -169,10 +171,19 @@ namespace AC2RE.Server {
                         posPack.impulseVel = impulseVel;
                     }
 
-                    playerManager.sendAllVisibleExcept(id, playerManager.get(id), new PositionMsg {
-                        senderIdWithStamp = getInstanceIdWithStamp(),
-                        posPack = posPack,
-                    });
+                    if (pos.cell != lastSentCell) {
+                        world.playerManager.sendAllVisibleExcept(id, world.playerManager.get(id), new PositionCellMsg {
+                            senderIdWithStamp = getInstanceIdWithStamp(),
+                            posPack = posPack,
+                        });
+                    } else {
+                        world.playerManager.sendAllVisibleExcept(id, world.playerManager.get(id), new PositionMsg {
+                            senderIdWithStamp = getInstanceIdWithStamp(),
+                            posPack = posPack,
+                        });
+                    }
+
+                    lastSentCell = pos.cell;
                 }
 
                 positionDirty = false;
@@ -181,12 +192,12 @@ namespace AC2RE.Server {
             if (lookAtDirty) {
                 if (inWorld) {
                     if (physics.lookAtId != InstanceId.NULL) {
-                        playerManager.sendAllVisibleExcept(id, playerManager.get(id), new LookAtMsg {
+                        world.playerManager.sendAllVisibleExcept(id, world.playerManager.get(id), new LookAtMsg {
                             senderIdWithStamp = getInstanceIdWithStamp(),
                             targetId = physics.lookAtId,
                         });
                     } else {
-                        playerManager.sendAllVisibleExcept(id, playerManager.get(id), new LookAtDirMsg {
+                        world.playerManager.sendAllVisibleExcept(id, world.playerManager.get(id), new LookAtDirMsg {
                             senderIdWithStamp = getInstanceIdWithStamp(),
                             x = physics.headingX,
                             z = physics.headingZ,
@@ -201,7 +212,7 @@ namespace AC2RE.Server {
                 foreach (uint dirtySlider in dirtySliders) {
                     PhysicsDesc.SliderData sliderValue = physics.sliders[dirtySlider];
 
-                    playerManager.sendAllVisible(id, new DoSliderMsg {
+                    world.playerManager.sendAllVisible(id, new DoSliderMsg {
                         senderIdWithStamp = getInstanceIdWithStamp(),
                         sliderId = dirtySlider,
                         newValue = sliderValue.value,
@@ -216,12 +227,28 @@ namespace AC2RE.Server {
         public void setParent(WorldObject? parent, HoldingLocation holdLoc = HoldingLocation.INVALID, Orientation holdOrientation = Orientation.DEFAULT) {
             if (parent != null) {
                 if (physics.parentId != parent.id) {
+                    if (world.objectManager.tryGet(physics.parentId, out WorldObject? curParent)) {
+                        if (curParent.childIds != null) {
+                            curParent.childIds.Remove(id);
+                        }
+
+                        // TODO: Need to send DeParent too?
+                    }
+
+                    if (parent.childIds == null) {
+                        parent.childIds = new();
+                    }
+
+                    parent.childIds.Add(id);
+
                     physics.parentId = parent.id;
                     physics.locationId = holdLoc;
                     physics.parentInstanceStamp = parent.instanceStamp;
                     physics.orientationId = holdOrientation;
 
-                    playerManager.sendAllVisible(id, new ParentMsg {
+                    world.landblockManager.syncObjectVisibility(this);
+
+                    world.playerManager.sendAllVisible(id, new ParentMsg {
                         senderIdWithStamp = getInstanceIdWithStamp(),
                         parentIdWithChildPosStamp = parent.getInstanceIdWithStamp(++physics.timestamps[(int)PhysicsTimeStamp.POSITION]),
                         childLocation = physics.locationId,
@@ -229,9 +256,12 @@ namespace AC2RE.Server {
                     });
                 }
             } else if (physics.parentId != InstanceId.NULL) {
-                WorldObject? curParent = objectManager.get(physics.parentId);
-                if (curParent != null) {
-                    playerManager.sendAllVisible(id, new DeParentMsg {
+                if (world.objectManager.tryGet(physics.parentId, out WorldObject? curParent)) {
+                    if (curParent.childIds != null) {
+                        curParent.childIds.Remove(id);
+                    }
+
+                    world.playerManager.sendAllVisible(id, new DeParentMsg {
                         senderIdWithStamp = curParent.getInstanceIdWithStamp(),
                         childIdWithPosStamp = getInstanceIdWithStamp(++physics.timestamps[(int)PhysicsTimeStamp.POSITION]),
                     });
@@ -241,6 +271,8 @@ namespace AC2RE.Server {
                 physics.locationId = HoldingLocation.INVALID;
                 physics.parentInstanceStamp = 0;
                 physics.orientationId = Orientation.DEFAULT;
+
+                world.landblockManager.syncObjectVisibility(this);
             }
         }
     }

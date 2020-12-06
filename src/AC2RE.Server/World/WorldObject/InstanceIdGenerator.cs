@@ -1,15 +1,20 @@
 ﻿using AC2RE.Definitions;
+using AC2RE.Server.Database;
 
 namespace AC2RE.Server {
 
     internal class InstanceIdGenerator : IIdGenerator<InstanceId> {
 
+        [DbId]
         public readonly string type;
+
+        [DbPersist]
         public ulong idCounter { get; private set; }
 
-        public InstanceIdGenerator(string type, ulong initialId = 1) {
+        [DbConstructor]
+        public InstanceIdGenerator(string type, ulong idCounter = 1) {
             this.type = type;
-            idCounter = initialId;
+            this.idCounter = idCounter;
         }
 
         public InstanceId next() {

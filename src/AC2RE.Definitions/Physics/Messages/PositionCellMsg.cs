@@ -8,7 +8,7 @@
 
         // ECM_Physics::RecvEvt_PositionCell
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public PositionPack pos; // __pp
+        public PositionPack posPack; // __pp
 
         public PositionCellMsg() {
 
@@ -16,12 +16,12 @@
 
         public PositionCellMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            pos = new(data);
+            posPack = new(data);
         }
 
         public void write(AC2Writer data) {
             data.Write(senderIdWithStamp);
-            pos.write(data);
+            posPack.write(data);
         }
     }
 }

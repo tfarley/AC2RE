@@ -177,7 +177,7 @@ namespace AC2RE.Definitions {
             if (behaviors != default) packFlags |= PackFlag.BEHAVIORS;
             if (sliders != default) packFlags |= PackFlag.SLIDERS;
             if (animFrameId != default) packFlags |= PackFlag.ANIMFRAME_ID;
-            if (pos != default) packFlags |= PackFlag.POSITION;
+            if (pos != default && pos.cell != default) packFlags |= PackFlag.POSITION;
             if (parentId != default) packFlags |= PackFlag.PARENT;
             if (orientationId != default) packFlags |= PackFlag.ORIENTATION;
             if (vel != default) packFlags |= PackFlag.VELOCITY;

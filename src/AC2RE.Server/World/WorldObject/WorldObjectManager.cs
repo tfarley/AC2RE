@@ -1,6 +1,7 @@
 ﻿using AC2RE.Definitions;
 using AC2RE.Server.Database;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AC2RE.Server {
 
@@ -8,37 +9,52 @@ namespace AC2RE.Server {
 
         private static readonly string INSTANCE_ID_GENERATOR_TYPE = "worldObject";
 
-        private readonly WorldDatabase worldDb;
-        private readonly PlayerManager playerManager;
+        private readonly World world;
         private readonly InstanceIdGenerator instanceIdGenerator;
         private bool loadedWorld;
-        private readonly HashSet<InstanceId> loadedContainers = new();
         private readonly Dictionary<InstanceId, WorldObject> worldObjects = new();
 
-        public WorldObjectManager(WorldDatabase worldDb, PlayerManager playerManager) {
-            this.worldDb = worldDb;
-            this.playerManager = playerManager;
-            instanceIdGenerator = worldDb.getInstanceIdGenerator(INSTANCE_ID_GENERATOR_TYPE) ?? new(INSTANCE_ID_GENERATOR_TYPE);
+        public WorldObjectManager(World world) {
+            this.world = world;
+            instanceIdGenerator = world.worldDb.getInstanceIdGenerator(INSTANCE_ID_GENERATOR_TYPE) ?? new(INSTANCE_ID_GENERATOR_TYPE);
+        }
+
+        public InstanceIdWithStamp getStamp(InstanceId id, ushort otherStamp = 0) {
+            // Includes destroyed objects
+            if (worldObjects.TryGetValue(id, out WorldObject? worldObject)) {
+                return worldObject.getInstanceIdWithStamp(otherStamp);
+            }
+
+            return new InstanceIdWithStamp {
+                id = id,
+                instanceStamp = 0,
+                otherStamp = otherStamp,
+            };
+        }
+
+        public bool tryGet(InstanceId id, [MaybeNullWhen(false)] out WorldObject worldObject) {
+            worldObject = get(id);
+            return worldObject != null;
         }
 
         public WorldObject? get(InstanceId id) {
             if (!worldObjects.TryGetValue(id, out WorldObject? worldObject)) {
-                worldObject = worldDb.getWorldObjectWithId(id);
+                worldObject = world.worldDb.getWorldObjectWithId(id);
                 if (worldObject != null) {
-                    worldObject.init(this, playerManager);
+                    worldObject.init(world);
                     worldObjects[id] = worldObject;
                 }
             }
-            return (worldObject == null || worldObject.deleted) ? null : worldObject;
+            return (worldObject != null && !worldObject.destroyed) ? worldObject : null;
         }
 
         private void loadAll() {
             if (!loadedWorld) {
                 loadedWorld = true;
-                List<WorldObject> dbWorldObjects = worldDb.getAllWorldObjects();
+                List<WorldObject> dbWorldObjects = world.worldDb.getAllWorldObjects();
                 foreach (WorldObject worldObject in dbWorldObjects) {
                     if (worldObjects.TryAdd(worldObject.id, worldObject)) {
-                        worldObject.init(this, playerManager);
+                        worldObject.init(world);
                     }
                 }
             }
@@ -48,52 +64,37 @@ namespace AC2RE.Server {
             loadAll();
             List<WorldObject> resultWorldObjects = new();
             foreach (WorldObject worldObject in worldObjects.Values) {
-                if (!worldObject.deleted) {
+                if (!worldObject.destroyed) {
                     resultWorldObjects.Add(worldObject);
                 }
             }
             return resultWorldObjects;
         }
 
-        private void loadWithContainer(InstanceId containerId) {
-            if (loadedContainers.Add(containerId)) {
-                List<WorldObject> dbWorldObjects = worldDb.getWorldObjectsWithContainer(containerId);
-                foreach (WorldObject worldObject in dbWorldObjects) {
-                    if (worldObjects.TryAdd(worldObject.id, worldObject)) {
-                        worldObject.init(this, playerManager);
-                    }
+        public List<WorldObject> loadWithLandblockId(LandblockId landblockId) {
+            List<WorldObject> newWorldObjects = new();
+            List<WorldObject> dbWorldObjects = world.worldDb.getWorldObjectsWithLandblockId(landblockId);
+            foreach (WorldObject worldObject in dbWorldObjects) {
+                if (worldObjects.TryGetValue(worldObject.id, out WorldObject? loadedObject)) {
+                    newWorldObjects.Add(loadedObject);
+                } else {
+                    worldObjects[worldObject.id] = worldObject;
+                    worldObject.init(world);
+                    newWorldObjects.Add(worldObject);
                 }
             }
-        }
-
-        public List<WorldObject> getWithContainer(InstanceId containerId) {
-            loadWithContainer(containerId);
-            List<WorldObject> resultWorldObjects = new();
-            foreach (WorldObject worldObject in worldObjects.Values) {
-                if (!worldObject.deleted && worldObject.containerId == containerId) {
-                    resultWorldObjects.Add(worldObject);
-                }
-            }
-            return resultWorldObjects;
+            return newWorldObjects;
         }
 
         public WorldObject create() {
-            WorldObject newObject = new(instanceIdGenerator.next(), this, playerManager);
+            WorldObject newObject = new(instanceIdGenerator.next(), world);
             worldObjects[newObject.id] = newObject;
             return newObject;
         }
 
-        public void syncNewPlayer(Player player) {
+        public void broadcastUpdates() {
             foreach (WorldObject worldObject in worldObjects.Values) {
-                if (worldObject.inWorld) {
-                    worldObject.addVisible(player);
-                }
-            }
-        }
-
-        public void broadcastUpdates(double time) {
-            foreach (WorldObject worldObject in worldObjects.Values) {
-                worldObject.broadcastPhysics(time);
+                worldObject.broadcastPhysics(world.serverTime.time);
                 worldObject.broadcastQualities();
                 worldObject.broadcastVisualUpdate();
             }

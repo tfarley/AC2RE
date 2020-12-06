@@ -20,6 +20,13 @@ namespace AC2RE.Server {
             }
         }
 
+        public void processClient(ClientId clientId, Action<ClientConnection> action) {
+            ClientConnection client = _clients[clientId];
+            lock (client) {
+                action.Invoke(client);
+            }
+        }
+
         public bool tryProcessClient(ClientId clientId, Action<ClientConnection> action) {
             if (_clients.TryGetValue(clientId, out ClientConnection? client)) {
                 lock (client) {
@@ -31,12 +38,12 @@ namespace AC2RE.Server {
             return false;
         }
 
-        public ClientId addClient(IPEndPoint clientEndpoint, Account account) {
+        public ClientId addClient(uint connectionSeq, IPEndPoint clientEndpoint, Account account) {
             if (_clients.Count > MAX_CLIENTS) {
                 return ClientId.NULL;
             }
 
-            ClientConnection client = new(clientIdGenerator.next(), clientEndpoint, account);
+            ClientConnection client = new(clientIdGenerator.next(), connectionSeq, clientEndpoint, account);
             _clients[client.id] = client;
 
             return client.id;

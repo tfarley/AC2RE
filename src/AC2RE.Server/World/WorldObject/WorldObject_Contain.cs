@@ -9,9 +9,9 @@ namespace AC2RE.Server {
 
     internal partial class WorldObject {
 
+        [DbPersist]
         private List<InstanceId>? containedItemIds;
 
-        [DatabaseIgnore]
         public IEnumerable<InstanceId> containedItemIdsEnumerable => containedItemIds ?? Enumerable.Empty<InstanceId>();
 
         public void initContain() {
@@ -29,7 +29,7 @@ namespace AC2RE.Server {
                 }
 
                 // TODO: Hack to prevent weird case where icon wraps to next line when dragged to an empty slot
-                slot = Math.Clamp(slot, 0, Math.Max(container.containedItemIds.Count - (container.equippedItemIds?.Count ?? 0) - 2, 0));
+                slot = Math.Clamp(slot, 0, Math.Max(container.containedItemIds.Count - (container.invLocToEquippedItemId?.Count ?? 0) - 2, 0));
 
                 if (containerId != container.id) {
                     containerId = container.id;
@@ -45,11 +45,10 @@ namespace AC2RE.Server {
                     return curSlot;
                 }
             } else if (containerId != InstanceId.NULL) {
-                WorldObject? curContainer = objectManager.get(containerId);
-                if (curContainer != null) {
+                if (world.objectManager.tryGet(containerId, out WorldObject? curContainer)) {
                     curContainer.containedItemIds!.Remove(id);
 
-                    playerManager.sendAllVisibleExcept(id, requester, new ContainMsg {
+                    world.playerManager.sendAllVisibleExcept(id, requester, new ContainMsg {
                         childIdWithPosStamp = getInstanceIdWithStamp(++physics.timestamps[(int)PhysicsTimeStamp.POSITION]),
                     });
                 }
