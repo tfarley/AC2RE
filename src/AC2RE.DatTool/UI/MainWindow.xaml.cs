@@ -1,6 +1,8 @@
 ﻿using AC2RE.Definitions;
 using AC2RE.UICommon.UI;
+using AC2RE.Utils;
 using Microsoft.Win32;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 
@@ -16,11 +18,33 @@ namespace AC2RE.DatTool.UI {
             originalTitle = Title;
 
             Loaded += (_, _) => {
+                
                 /*
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\portal.dat_server")) {
-                    DatParse.parseDat(DatParse.DatType.PORTAL, datReader, "portalparsed", DbType.WSTATE);
+                    //DatParse.parseDat(DatParse.DatType.PORTAL, datReader, "portalparsed", DbType.WSTATE);
+
+                    MasterProperty.loadMasterProperties(datReader);
+                    PackageManager.loadPackageTypes(datReader);
+
+                    /*
+                    Dictionary<PackageType, List<DataId>> packageTypeToDids = DatParse.getWeeniePackageTypes(datReader);
+                    File.WriteAllText("weeniePackageTypes.txt", Util.objectToString(packageTypeToDids));
+                    */
+
+                    /*
+                    using (DatReader localDatReader = new("G:\\Asheron's Call 2\\local_English.dat")) {
+                        Dictionary<DataId, string> monsterDidToName = DatParse.getMonsterNames(datReader, localDatReader);
+                        File.WriteAllText("monsterNames.txt", Util.objectToString(monsterDidToName));
+                    }
+                    */
+
+                    /*
+                    Dictionary<SkillId, DataId> skillIdToDid = DatParse.getSkills(datReader);
+                    File.WriteAllText("skills.txt", Util.objectToString(skillIdToDid));
+                    */
                 }
                 */
+
 
                 /*
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\portal.dat_server")) {

@@ -33,7 +33,7 @@ namespace AC2RE.Server {
         private bool velScaleDirty;
         private bool positionDirty;
         private bool lookAtDirty;
-        private HashSet<uint> dirtySliders = new();
+        private readonly HashSet<uint> dirtySliders = new();
 
         private void initPhysics() {
             physics = new();

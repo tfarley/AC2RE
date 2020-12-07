@@ -13,6 +13,8 @@ namespace AC2RE.Definitions {
         private static readonly Dictionary<Type, Type> TYPE_REPLACEMENTS = new() {
             { typeof(DataId), typeof(uint) },
             { typeof(CellId), typeof(uint) },
+            { typeof(EnumId), typeof(uint) },
+            { typeof(QuestUpdateType), typeof(uint) },
 
             { typeof(InstanceId), typeof(ulong) },
         };

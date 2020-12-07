@@ -7,8 +7,8 @@ namespace AC2RE.Definitions {
 
         public static readonly int MAX_NUM_CHILDREN = 62;
 
-        public List<uint> childOffsets = new(); // NextNode_
-        public List<BTEntry> entries = new(); // NumEntries_ + Entry_
+        public readonly List<uint> childOffsets = new(); // NextNode_
+        public readonly List<BTEntry> entries = new(); // NumEntries_ + Entry_
 
         public BTNode(AC2Reader data, uint numChildren, uint numEntries) {
             for (int i = 0; i < numChildren; i++) {

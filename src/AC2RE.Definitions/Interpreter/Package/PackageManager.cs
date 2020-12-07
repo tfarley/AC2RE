@@ -78,6 +78,21 @@ namespace AC2RE.Definitions {
             };
         }
 
+        public static bool isPackageType(PackageType packageType, PackageType comparePackageType) {
+            if (packageType == comparePackageType) {
+                return true;
+            }
+
+            List<PackageType> packageTypeHierarchy = packageTypes.getPackageTypeHierarchy(packageType);
+            foreach (PackageType inheritedPackageType in packageTypeHierarchy) {
+                if (inheritedPackageType == comparePackageType) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static IPackage read(AC2Reader data, PackageType packageType) {
             IPackage package = readInternal(data, packageType);
 

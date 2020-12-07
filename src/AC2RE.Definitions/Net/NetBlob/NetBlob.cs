@@ -10,7 +10,7 @@ namespace AC2RE.Definitions {
         public NetQueue queueId; // queueID_
         public byte[] payload; // buf_
 
-        public SortedDictionary<ushort, NetBlobFrag> frags = new();
+        public readonly SortedDictionary<ushort, NetBlobFrag> frags = new();
 
         public NetBlob() {
 

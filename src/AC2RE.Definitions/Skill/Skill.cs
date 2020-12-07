@@ -7,7 +7,7 @@ namespace AC2RE.Definitions {
         public override PackageType packageType => PackageType.Skill;
 
         public StringInfo lore; // mLore
-        public int allowedSpecies; // mAllowedSpecies
+        public SpeciesType allowedSpecies; // mAllowedSpecies
         public uint minCharLevel; // mMinCharLevel
         public Dictionary<uint, uint> barringSkills; // mBarringSkills
         public int levelWhenTrained; // mLevelWhenTrained
@@ -32,7 +32,7 @@ namespace AC2RE.Definitions {
 
         public Skill(AC2Reader data) : base(data) {
             data.ReadPkg<StringInfo>(v => lore = v);
-            allowedSpecies = data.ReadInt32();
+            allowedSpecies = (SpeciesType)data.ReadUInt32();
             minCharLevel = data.ReadUInt32();
             data.ReadPkg<AAHash>(v => barringSkills = v);
             levelWhenTrained = data.ReadInt32();

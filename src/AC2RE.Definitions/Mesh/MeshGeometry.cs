@@ -5,7 +5,7 @@ namespace AC2RE.Definitions {
     public class MeshGeometry {
 
         public uint meshType; // mesh_type
-        public List<ushort> indices = new();
+        public readonly List<ushort> indices = new();
 
         public MeshGeometry(uint meshType, AC2Reader data) {
             this.meshType = meshType;

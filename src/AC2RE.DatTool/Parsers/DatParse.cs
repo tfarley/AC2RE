@@ -3,10 +3,98 @@ using AC2RE.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace AC2RE.DatTool {
 
     internal class DatParse {
+
+        public static Dictionary<PackageType, List<DataId>> getWeeniePackageTypes(DatReader portalDatReader) {
+            Dictionary<PackageType, List<DataId>> packageTypeToDids = new();
+
+            foreach (DataId did in portalDatReader.dids) {
+                DbType dbType = DbTypeDef.getType(DbTypeDef.DatType.PORTAL, did);
+
+                if (dbType == DbType.WSTATE) {
+                    using (AC2Reader data = portalDatReader.getFileReader(did)) {
+                        WState wstate = new WState(data);
+                        packageTypeToDids.GetOrCreate(wstate.packageType).Add(did);
+                    }
+                }
+            }
+
+            return packageTypeToDids;
+        }
+
+        public static Dictionary<DataId, string> getMonsterNames(DatReader portalDatReader, DatReader localDatReader) {
+            Dictionary<DataId, string> monsterDidToName = new();
+
+            foreach (DataId did in portalDatReader.dids) {
+                DbType dbType = DbTypeDef.getType(DbTypeDef.DatType.PORTAL, did);
+
+                if (dbType == DbType.ENTITYDESC) {
+                    using (AC2Reader data = portalDatReader.getFileReader(did)) {
+                        EntityDesc entityDesc = new EntityDesc(data);
+                        if (entityDesc.dataId != DataId.NULL) {
+                            DbType relatedDbType = DbTypeDef.getType(DbTypeDef.DatType.PORTAL, entityDesc.dataId);
+
+                            if (relatedDbType == DbType.ENTITYDESC) {
+                                using (AC2Reader relatedData = portalDatReader.getFileReader(entityDesc.dataId)) {
+                                    EntityDesc relatedEntityDesc = new EntityDesc(relatedData);
+                                    if (PackageManager.isPackageType(relatedEntityDesc.packageType, PackageType.MonsterTemplate) && entityDesc.properties != null) {
+                                        string? name = null;
+                                        string? description = null;
+                                        foreach (PropertyGroup propertyGroup in entityDesc.properties.groups) {
+                                            foreach (BaseProperty property in propertyGroup.properties) {
+                                                if (property.name == PropertyName.NAME) {
+                                                    name = readString(localDatReader, (StringInfo)property.value);
+                                                } else if (property.name == PropertyName.DESCRIPTION) {
+                                                    description = readString(localDatReader, (StringInfo)property.value);
+                                                }
+                                            }
+                                        }
+                                        monsterDidToName[did] = $"{name} / {description}";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return monsterDidToName;
+        }
+
+        public static Dictionary<SkillId, DataId> getSkills(DatReader portalDatReader) {
+            Dictionary<SkillId, DataId> skillIdToDid = new();
+
+            foreach (DataId did in portalDatReader.dids) {
+                DbType dbType = DbTypeDef.getType(DbTypeDef.DatType.PORTAL, did);
+
+                if (dbType == DbType.WSTATE) {
+                    using (AC2Reader data = portalDatReader.getFileReader(did)) {
+                        WState wstate = new WState(data);
+                        if (PackageManager.isPackageType(wstate.packageType, PackageType.Skill)) {
+                            Skill skill = (Skill)wstate.package;
+                            skillIdToDid[(SkillId)skill.enumVal] = did;
+                        }
+                    }
+                }
+            }
+
+            return skillIdToDid;
+        }
+
+        private static string? readString(DatReader localDatReader, StringInfo stringInfo) {
+            if (stringInfo.literalValue != null) {
+                return stringInfo.literalValue;
+            }
+
+            using (AC2Reader data = localDatReader.getFileReader(stringInfo.tableDid)) {
+                StringTable stringTable = new StringTable(data);
+                return stringTable.strings.GetValueOrDefault(stringInfo.stringId)?.strings.FirstOrDefault();
+            }
+        }
 
         public static void parseDat(DbTypeDef.DatType datType, DatReader datReader, string outputBaseDir, params DbType[] typesToParse) {
             Logs.GENERAL.info("Parsing dat...",

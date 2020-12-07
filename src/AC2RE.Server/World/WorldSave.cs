@@ -4,8 +4,8 @@ namespace AC2RE.Server.Database {
 
     internal class WorldSave {
 
-        public List<Character> characters = new();
+        public readonly List<Character> characters = new();
         public InstanceIdGenerator? idGenerator;
-        public List<WorldObject> worldObjects = new();
+        public readonly List<WorldObject> worldObjects = new();
     }
 }

@@ -200,7 +200,6 @@ namespace AC2RE.Server {
                                 weenieDesc = landblockObject.qualities.weenieDesc,
                             });
                         }
-                        // TODO: Probably don't need to sync every child object, only those with visuals?
                         foreach (InstanceId childId in landblockObject.childIdsEnumerable) {
                             if (landblockVisibleObjectIds.Add(childId) && player.visibleObjectIds.Add(childId) && world.objectManager.tryGet(childId, out WorldObject? childObject)) {
                                 world.playerManager.send(player, new CreateObjectMsg {
