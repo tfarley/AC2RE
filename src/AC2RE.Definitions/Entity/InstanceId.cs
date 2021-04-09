@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions {
 
-    public struct InstanceId : IEquatable<InstanceId> {
+    public readonly struct InstanceId : IEquatable<InstanceId> {
 
         public static readonly InstanceId NULL = new(0);
 
@@ -17,7 +17,7 @@ namespace AC2RE.Definitions {
             DYNAMIC,
         }
 
-        public ulong id;
+        public readonly ulong id;
 
         public InstanceId(ulong id) {
             this.id = id;

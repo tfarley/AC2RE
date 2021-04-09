@@ -2,11 +2,11 @@
 
 namespace AC2RE.Server {
 
-    internal struct ClientId : IEquatable<ClientId> {
+    internal readonly struct ClientId : IEquatable<ClientId> {
 
         public static readonly ClientId NULL = new(0);
 
-        public ushort id;
+        public readonly ushort id;
 
         public ClientId(ushort id) {
             this.id = id;

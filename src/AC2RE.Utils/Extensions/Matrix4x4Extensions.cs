@@ -5,7 +5,7 @@ namespace AC2RE.Utils {
     public static class Matrix4x4Extensions {
 
         public static float[] ToFloats(this Matrix4x4 m) {
-            return new float[] {
+            return new[] {
                 m.M11,
                 m.M12,
                 m.M13,

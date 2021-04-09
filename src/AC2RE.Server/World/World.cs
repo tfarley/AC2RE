@@ -517,7 +517,7 @@ namespace AC2RE.Server {
                         CLookAtDirMsg msg = (CLookAtDirMsg)genericMsg;
 
                         if (objectManager.tryGet(player.characterId, out WorldObject? character) && character.inWorld) {
-                            character.lookAtDir = new Vector2(msg.x, msg.z);
+                            character.lookAtDir = new(msg.x, msg.z);
                         }
 
                         break;

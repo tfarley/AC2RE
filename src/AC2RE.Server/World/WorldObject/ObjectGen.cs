@@ -14,10 +14,10 @@ namespace AC2RE.Server {
             DataId qualitiesDid = new(0x81000000 + entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
             CBaseQualities baseQualities = contentManager.getQualities(qualitiesDid);
             WeenieDesc baseWeenie = baseQualities.weenieDesc;
-            worldObject.qualities = new CBaseQualities {
+            worldObject.qualities = new() {
                 packFlags = baseQualities.packFlags,
                 did = baseQualities.did,
-                weenieDesc = new WeenieDesc {
+                weenieDesc = new() {
                     bitfield = baseWeenie.bitfield,
                     packageType = baseWeenie.packageType,
                     entityDid = baseWeenie.entityDid,

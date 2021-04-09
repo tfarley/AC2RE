@@ -2,9 +2,9 @@
 
 namespace AC2RE.Server {
 
-    internal struct AccountId : IEquatable<AccountId> {
+    internal readonly struct AccountId : IEquatable<AccountId> {
 
-        public Guid id;
+        public readonly Guid id;
 
         public AccountId(Guid id) {
             this.id = id;

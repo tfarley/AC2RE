@@ -2,9 +2,9 @@
 
 namespace AC2RE.Definitions {
 
-    public struct LandblockId : IEquatable<LandblockId> {
+    public readonly struct LandblockId : IEquatable<LandblockId> {
 
-        public ushort id;
+        public readonly ushort id;
 
         public byte x => (byte)((id >> 8) & 0xFF);
         public byte y => (byte)(id & 0xFF);

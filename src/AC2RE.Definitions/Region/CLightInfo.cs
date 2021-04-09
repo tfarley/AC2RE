@@ -30,7 +30,7 @@ namespace AC2RE.Definitions {
                 uint unk1 = data.ReadUInt32();
                 if (unk1 > 0) {
                     int numIndices = (int)(data.ReadUInt32() / sizeof(ushort));
-                    indices = new List<ushort>(numIndices);
+                    indices = new(numIndices);
                     for (int i = 0; i < numIndices; i++) {
                         indices.Add(data.ReadUInt16());
                     }

@@ -2,9 +2,9 @@
 
 namespace AC2RE.Definitions {
 
-    public struct EnumId : IEquatable<EnumId> {
+    public readonly struct EnumId : IEquatable<EnumId> {
 
-        public uint id;
+        public readonly uint id;
 
         public EnumId(uint id) {
             this.id = id;

@@ -2,9 +2,9 @@
 
 namespace AC2RE.Definitions {
 
-    public struct LocalCellId : IEquatable<LocalCellId> {
+    public readonly struct LocalCellId : IEquatable<LocalCellId> {
 
-        public ushort id;
+        public readonly ushort id;
 
         public byte indoorCellId => (byte)((id >> 8) & 0xFF);
         public byte outdoorCellId => (byte)(id & 0xFF);

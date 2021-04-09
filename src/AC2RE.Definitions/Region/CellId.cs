@@ -2,9 +2,9 @@
 
 namespace AC2RE.Definitions {
 
-    public struct CellId : IEquatable<CellId> {
+    public readonly struct CellId : IEquatable<CellId> {
 
-        public uint id;
+        public readonly uint id;
 
         public byte landblockX => (byte)((id >> 24) & 0xFF);
         public byte landblockY => (byte)((id >> 16) & 0xFF);

@@ -2,11 +2,11 @@
 
 namespace AC2RE.Definitions {
 
-    public struct DataId : IEquatable<DataId> {
+    public readonly struct DataId : IEquatable<DataId> {
 
         public static readonly DataId NULL = new(0);
 
-        public uint id;
+        public readonly uint id;
 
         public DataId(uint id) {
             this.id = id;

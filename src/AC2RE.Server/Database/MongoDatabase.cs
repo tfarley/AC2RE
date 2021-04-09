@@ -9,7 +9,7 @@ namespace AC2RE.Server.Database {
 
     internal abstract class MongoDatabase {
 
-        public static readonly ConventionPack GLOBAL_CONVENTIONS = new ConventionPack {
+        public static readonly IConventionPack GLOBAL_CONVENTIONS = new ConventionPack {
             new DatabaseAttributesConvention(),
             new IgnoreIfDefaultConvention(true),
             new IgnoreExtraElementsConvention(true),

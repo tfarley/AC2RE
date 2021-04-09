@@ -17,7 +17,7 @@ namespace AC2RE.DatTool {
 
                 if (dbType == DbType.WSTATE) {
                     using (AC2Reader data = portalDatReader.getFileReader(did)) {
-                        WState wstate = new WState(data);
+                        WState wstate = new(data);
                         packageTypeToDids.GetOrCreate(wstate.packageType).Add(did);
                     }
                 }
@@ -34,13 +34,13 @@ namespace AC2RE.DatTool {
 
                 if (dbType == DbType.ENTITYDESC) {
                     using (AC2Reader data = portalDatReader.getFileReader(did)) {
-                        EntityDesc entityDesc = new EntityDesc(data);
+                        EntityDesc entityDesc = new(data);
                         if (entityDesc.dataId != DataId.NULL) {
                             DbType relatedDbType = DbTypeDef.getType(DbTypeDef.DatType.PORTAL, entityDesc.dataId);
 
                             if (relatedDbType == DbType.ENTITYDESC) {
                                 using (AC2Reader relatedData = portalDatReader.getFileReader(entityDesc.dataId)) {
-                                    EntityDesc relatedEntityDesc = new EntityDesc(relatedData);
+                                    EntityDesc relatedEntityDesc = new(relatedData);
                                     if (PackageManager.isPackageType(relatedEntityDesc.packageType, PackageType.MonsterTemplate) && entityDesc.properties != null) {
                                         string? name = null;
                                         string? description = null;
@@ -73,7 +73,7 @@ namespace AC2RE.DatTool {
 
                 if (dbType == DbType.WSTATE) {
                     using (AC2Reader data = portalDatReader.getFileReader(did)) {
-                        WState wstate = new WState(data);
+                        WState wstate = new(data);
                         if (PackageManager.isPackageType(wstate.packageType, PackageType.Skill)) {
                             Skill skill = (Skill)wstate.package;
                             skillIdToDid[(SkillId)skill.enumVal] = did;
@@ -91,7 +91,7 @@ namespace AC2RE.DatTool {
             }
 
             using (AC2Reader data = localDatReader.getFileReader(stringInfo.tableDid)) {
-                StringTable stringTable = new StringTable(data);
+                StringTable stringTable = new(data);
                 return stringTable.strings.GetValueOrDefault(stringInfo.stringId)?.strings.FirstOrDefault();
             }
         }
@@ -390,19 +390,19 @@ namespace AC2RE.DatTool {
                             // 4 DID + 4 unk + 4 file size
                             int ac2HeaderSize = sizeof(uint) + sizeof(uint) + sizeof(uint);
                             int fmtHeaderSize = 16;
-                            outputWriter.Write(new byte[] { (byte)'R', (byte)'I', (byte)'F', (byte)'F' });
+                            outputWriter.Write(new[] { (byte)'R', (byte)'I', (byte)'F', (byte)'F' });
                             // 4 "WAVE" + 4 "fmt " + 4 fmtHeaderSize + 16 fmtHeader + 4 "data" + 4 dataSize
                             outputWriter.Write(entry.size - ac2HeaderSize + sizeof(uint) + sizeof(uint) + sizeof(uint) + fmtHeaderSize + sizeof(uint) + sizeof(uint));
-                            outputWriter.Write(new byte[] { (byte)'W', (byte)'A', (byte)'V', (byte)'E' });
+                            outputWriter.Write(new[] { (byte)'W', (byte)'A', (byte)'V', (byte)'E' });
 
-                            outputWriter.Write(new byte[] { (byte)'f', (byte)'m', (byte)'t', (byte)' ' });
+                            outputWriter.Write(new[] { (byte)'f', (byte)'m', (byte)'t', (byte)' ' });
                             outputWriter.Write(fmtHeaderSize);
                             // + 4 to skip nextBlockOffset
                             datReader.data.BaseStream.Seek(entry.offset + sizeof(uint) + ac2HeaderSize, SeekOrigin.Begin);
                             byte[] fmtHeader = datReader.data.ReadBytes(fmtHeaderSize);
                             outputWriter.Write(fmtHeader);
 
-                            outputWriter.Write(new byte[] { (byte)'d', (byte)'a', (byte)'t', (byte)'a' });
+                            outputWriter.Write(new[] { (byte)'d', (byte)'a', (byte)'t', (byte)'a' });
                             outputWriter.Write(entry.size - ac2HeaderSize - fmtHeaderSize);
                             datReader.readFile(did, output, ac2HeaderSize + fmtHeaderSize);
                         }

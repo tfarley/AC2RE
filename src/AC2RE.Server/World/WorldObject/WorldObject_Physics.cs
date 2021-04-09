@@ -114,7 +114,7 @@ namespace AC2RE.Server {
                 physics.sliders = new();
             }
 
-            physics.sliders[slider] = new PhysicsDesc.SliderData {
+            physics.sliders[slider] = new() {
                 value = value,
                 velocity = velocity,
             };

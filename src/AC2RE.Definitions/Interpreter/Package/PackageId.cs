@@ -2,11 +2,11 @@
 
 namespace AC2RE.Definitions {
 
-    public struct PackageId : IEquatable<PackageId> {
+    public readonly struct PackageId : IEquatable<PackageId> {
 
         public static readonly PackageId NULL = new(0xFFFFFFFF);
 
-        public uint id;
+        public readonly uint id;
 
         public PackageId(uint id) {
             this.id = id;

@@ -26,22 +26,16 @@ namespace AC2RE.DatTool.UI {
                     MasterProperty.loadMasterProperties(datReader);
                     PackageManager.loadPackageTypes(datReader);
 
-                    /*
-                    Dictionary<PackageType, List<DataId>> packageTypeToDids = DatParse.getWeeniePackageTypes(datReader);
-                    File.WriteAllText("weeniePackageTypes.txt", Util.objectToString(packageTypeToDids));
-                    */
+                    //Dictionary<PackageType, List<DataId>> packageTypeToDids = DatParse.getWeeniePackageTypes(datReader);
+                    //File.WriteAllText("weeniePackageTypes.txt", Util.objectToString(packageTypeToDids));
 
-                    /*
-                    using (DatReader localDatReader = new("G:\\Asheron's Call 2\\local_English.dat")) {
-                        Dictionary<DataId, string> monsterDidToName = DatParse.getMonsterNames(datReader, localDatReader);
-                        File.WriteAllText("monsterNames.txt", Util.objectToString(monsterDidToName));
-                    }
-                    */
+                    //using (DatReader localDatReader = new("G:\\Asheron's Call 2\\local_English.dat")) {
+                    //    Dictionary<DataId, string> monsterDidToName = DatParse.getMonsterNames(datReader, localDatReader);
+                    //    File.WriteAllText("monsterNames.txt", Util.objectToString(monsterDidToName));
+                    //}
 
-                    /*
-                    Dictionary<SkillId, DataId> skillIdToDid = DatParse.getSkills(datReader);
-                    File.WriteAllText("skills.txt", Util.objectToString(skillIdToDid));
-                    */
+                    //Dictionary<SkillId, DataId> skillIdToDid = DatParse.getSkills(datReader);
+                    //File.WriteAllText("skills.txt", Util.objectToString(skillIdToDid));
                 }
                 */
 
