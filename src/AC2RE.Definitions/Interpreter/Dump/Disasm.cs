@@ -11,9 +11,10 @@ namespace AC2RE.Definitions {
 
             public uint offset;
             public uint raw;
-            public bool dwordFlag;
             public Opcode opcode;
-            public uint immediate;
+            public bool dwordFlag;
+            public byte tag;
+            public short immediate;
             public bool valIsDec;
             public bool val2IsDec;
             public long? val;
@@ -54,9 +55,10 @@ namespace AC2RE.Definitions {
                 Instruction instruction = new() {
                     offset = i,
                     raw = rawInstruction,
-                    dwordFlag = (rawInstruction & (uint)Opcode.DWORD_FLAG) != 0,
                     opcode = (Opcode)(rawInstruction & 0x7F),
-                    immediate = ((rawInstruction & 0x7FFF0000) >> 16),
+                    dwordFlag = (rawInstruction & (uint)Opcode.DWORD_FLAG) != 0,
+                    tag = (byte)((rawInstruction & 0xFF00) >> 8),
+                    immediate = (short)((rawInstruction & 0xFFFF0000) >> 16),
                 };
                 // TODO: Decode more opcodes - some may be multi-word like the ones below, and may be some with embedded immediates
                 switch (instruction.opcode) {
@@ -104,6 +106,7 @@ namespace AC2RE.Definitions {
                         instruction.val = instruction.immediate;
                         break;
                     case Opcode.RLOAD:
+                    case Opcode.RSTORE:
                         instruction.val = instruction.immediate;
                         break;
                     case Opcode.SWITCH: {
@@ -207,6 +210,9 @@ namespace AC2RE.Definitions {
                 }
                 if (instruction.targetString != null) {
                     data.Write($" \"{instruction.targetString}\"");
+                }
+                if (instruction.tag != 0) {
+                    data.Write($" Tag: {instruction.tag}");
                 }
                 //data.Write($" {instruction.raw:X8}");
                 data.WriteLine();

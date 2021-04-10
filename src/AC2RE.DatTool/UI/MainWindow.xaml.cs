@@ -18,10 +18,10 @@ namespace AC2RE.DatTool.UI {
             originalTitle = Title;
 
             Loaded += (_, _) => {
-                
+
                 /*
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\portal.dat_server")) {
-                    //DatParse.parseDat(DatParse.DatType.PORTAL, datReader, "portalparsed", DbType.WSTATE);
+                    //DatParse.parseDat(DbTypeDef.DatType.PORTAL, datReader, "portalparsed", DbType.WSTATE);
 
                     MasterProperty.loadMasterProperties(datReader);
                     PackageManager.loadPackageTypes(datReader);
@@ -53,19 +53,19 @@ namespace AC2RE.DatTool.UI {
 
                 /*
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\cell_2.dat")) {
-                    DatParse.parseDat(DatParse.DatType.CELL, datReader, "cell2parsed", DbType.DATFILEDATA);
+                    DatParse.parseDat(DbTypeDef.DatType.CELL, datReader, "cell2parsed", DbType.DATFILEDATA);
                 }
                 */
 
                 /*
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\highres.dat")) {
-                    DatParse.parseDat(DatParse.DatType.PORTAL, datReader, "highresparsed", DbType.DATFILEDATA);
+                    DatParse.parseDat(DbTypeDef.DatType.PORTAL, datReader, "highresparsed", DbType.DATFILEDATA);
                 }
                 */
 
                 /*
                 using (DatReader datReader = new("G:\\Asheron's Call 2\\local_English.dat")) {
-                    DatParse.parseDat(DatParse.DatType.LOCAL, datReader, "localenglishparsed", DbType.ENCODED_WAV);
+                    DatParse.parseDat(DbTypeDef.DatType.LOCAL, datReader, "localenglishparsed", DbType.ENCODED_WAV);
                 }
                 */
             };
