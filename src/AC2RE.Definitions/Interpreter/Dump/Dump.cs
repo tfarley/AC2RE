@@ -15,15 +15,19 @@ namespace AC2RE.Definitions {
                 if (frame.type == FrameDebugInfo.FrameType.PACKAGE) {
                     ExportData export = packageNameToExport[frame.name];
                     data.WriteLine();
-                    data.Write($"{export.args.packageType} package {frame.name}");
+                    data.Write($"{export.args.packageType} package {export.args.name}");
                     if (export.args.parentIndex != -1) {
                         data.Write($" : {export.args.baseName} - 0x{export.args.parentIndex:X8}");
                     }
-                    data.Write($" size {export.args.size} checksum {export.args.checksum} [{export.args.flags}]");
+                    uint parentSize = frame.size - export.args.size;
+                    data.Write($" size {frame.size} (parent {parentSize} + self {export.args.size}) checksum {export.args.checksum} [{export.args.flags}]");
                     data.WriteLine();
 
                     foreach (FrameMemberDebugInfo member in frame.members) {
-                        data.WriteLine($"    {member.type} ({member.typeName}) {member.name}");
+                        if (member.offset < parentSize) {
+                            continue;
+                        }
+                        data.WriteLine($"    {member.offset} {member.typeName} {member.name}");
                     }
                 }
             }

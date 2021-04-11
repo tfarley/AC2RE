@@ -111,17 +111,17 @@ namespace AC2RE.Definitions {
                         break;
                     case Opcode.SWITCH: {
                             i += 4;
-                            uint val1 = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
+                            uint defaultOffset = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
                             i += 4;
                             uint numCases = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
-                            instruction.targetString = $"{val1} {numCases}:";
                             uint switchEndOffset = i + numCases * 2 * 4 + 4;
+                            instruction.targetString = $"default: 0x{switchEndOffset + defaultOffset:X8}";
                             for (int j = 0; j < numCases; j++) {
                                 i += 4;
                                 uint caseValue = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
                                 i += 4;
                                 uint caseOffset = switchEndOffset + BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
-                                instruction.targetString += $" {caseValue} 0x{caseOffset:X8}";
+                                instruction.targetString += $" {caseValue}: 0x{caseOffset:X8}";
                             }
                             break;
                         }
@@ -144,12 +144,16 @@ namespace AC2RE.Definitions {
             }
         }
 
-        private void writeFunction(StreamWriter data, string functionName) {
+        private void writeFunction(StreamWriter data, string functionName, bool printStackVars) {
             data.Write(functionName);
             if (nameToFrame.TryGetValue(functionName, out FrameDebugInfo frame)) {
                 bool firstMember = true;
                 data.Write('(');
                 foreach (FrameMemberDebugInfo frameMember in frame.members) {
+                    if (frameMember.offset >= 0) {
+                        continue;
+                    }
+
                     if (!firstMember) {
                         data.Write(", ");
                     }
@@ -157,6 +161,24 @@ namespace AC2RE.Definitions {
                     firstMember = false;
                 }
                 data.Write(')');
+
+                if (printStackVars) {
+                    firstMember = true;
+                    data.Write(" [");
+                    foreach (FrameMemberDebugInfo frameMember in frame.members) {
+                        if (frameMember.offset < 0) {
+                            continue;
+                        }
+
+                        if (!firstMember) {
+                            data.Write(", ");
+                        }
+                        data.Write($"{frameMember.typeName} {frameMember.name}");
+                        firstMember = false;
+                    }
+                    data.Write(']');
+
+                }
             }
         }
 
@@ -171,10 +193,11 @@ namespace AC2RE.Definitions {
                     funcId.isAbs = true;
                     data.WriteLine();
                     data.Write($"0x{funcId.id:X8} func ");
-                    writeFunction(data, functionName);
+                    writeFunction(data, functionName, true);
+                    data.Write($" pkg 0x{funcId.packageNum:X4} func 0x{funcId.funcNum:X4}");
                     data.WriteLine();
                 }
-                data.Write($"0x{instruction.offset:X8} {instruction.opcode}");
+                data.Write($"0x{instruction.offset:X8} {instruction.raw:X8} {instruction.opcode}");
                 if (instruction.dwordFlag) {
                     data.Write("(L)");
                 }
@@ -196,17 +219,15 @@ namespace AC2RE.Definitions {
                         data.Write($" 0x{instruction.val2.Value:X8}");
                     }
                 }
-                if (instruction.targetPackage != null) {
-                    data.Write($" {instruction.targetPackage.args.name}");
-                    if (instruction.targetFunc == null) {
-                        data.Write($" (0x{(uint)instruction.targetPackage.args.packageType:X8})");
-                    }
+                if (instruction.targetPackage != null && instruction.targetFunc == null) {
+                    data.Write($" {instruction.targetPackage.args.name} (0x{(uint)instruction.targetPackage.args.packageType:X8})");
                 }
                 if (instruction.targetFunc != null) {
-                    writeFunction(data, $"::{instruction.targetFunc.name}");
+                    data.Write(' ');
+                    writeFunction(data, $"{instruction.targetPackage.args.name}::{instruction.targetFunc.name}", false);
                     FunctionId funcId = instruction.targetFunc.funcId;
                     funcId.isAbs = true;
-                    data.Write($" [pkg 0x{funcId.packageNum:X4} func 0x{funcId.funcNum:X4} full id 0x{funcId.id:X8}]");
+                    data.Write($" [0x{funcId.id:X8}]");
                 }
                 if (instruction.targetString != null) {
                     data.Write($" \"{instruction.targetString}\"");
@@ -214,7 +235,6 @@ namespace AC2RE.Definitions {
                 if (instruction.tag != 0) {
                     data.Write($" Tag: {instruction.tag}");
                 }
-                //data.Write($" {instruction.raw:X8}");
                 data.WriteLine();
             }
         }
