@@ -188,7 +188,7 @@ namespace AC2RE.Server {
                                 },
                                 quests = new() {
                                     new() {
-                                        questId = QuestId.QUESTFINDEXPLORERARWIC,
+                                        questId = QuestId.FINDEXPLORERARWIC,
                                         questName = new(new(0x250017EB), 2824895724),
                                         questDescription = new(new(0x250017EB), 1816499044),
                                         iconDid = new(0x4100034B),

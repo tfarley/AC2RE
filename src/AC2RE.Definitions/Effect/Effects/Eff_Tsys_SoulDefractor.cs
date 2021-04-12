@@ -5,7 +5,7 @@
         public override PackageType packageType => PackageType.Eff_Tsys_SoulDefractor;
 
         public float subVariance; // m_variance
-        public uint movementType; // m_mType
+        public AIMovementType movementType; // m_mType
         public int magicDefense; // m_magicDefense
         public int level; // m_level
         public int health; // m_health
@@ -27,7 +27,7 @@
 
         public Eff_Tsys_SoulDefractor(AC2Reader data) : base(data) {
             subVariance = data.ReadSingle();
-            movementType = data.ReadUInt32();
+            movementType = (AIMovementType)data.ReadUInt32();
             magicDefense = data.ReadInt32();
             level = data.ReadInt32();
             health = data.ReadInt32();

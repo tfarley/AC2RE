@@ -6,7 +6,7 @@
 
         public IPackage travelRec; // m_travelRec
         public uint scene; // m_siScene
-        public uint sceneId; // m_sceneID
+        public uint sceneId; // m_sceneID // TODO: SceneId?
 
         public ShardUsageBlob() : base() {
 

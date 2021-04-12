@@ -6,7 +6,7 @@ namespace AC2RE.Definitions {
 
         public NativeType nativeType => NativeType.GMSCENEINFO;
 
-        public uint id; // _ID
+        public SceneId id; // _ID
         public StringInfo name; // _siName
         public uint actId; // _actID
         public uint sceneNum; // _uiSceneNum
@@ -19,7 +19,7 @@ namespace AC2RE.Definitions {
         }
 
         public GMSceneInfo(AC2Reader data) {
-            id = data.ReadUInt32();
+            id = (SceneId)data.ReadUInt32();
             name = new(data);
             actId = data.ReadUInt32();
             sceneNum = data.ReadUInt32();
@@ -29,7 +29,7 @@ namespace AC2RE.Definitions {
         }
 
         public void write(AC2Writer data) {
-            data.Write(id);
+            data.Write((uint)id);
             name.write(data);
             data.Write(actId);
             data.Write(sceneNum);

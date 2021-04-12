@@ -6,7 +6,7 @@ namespace AC2RE.Definitions {
 
         public NativeType nativeType => NativeType.GMKEYFRAME;
 
-        public uint sceneId; // m_sceneID
+        public SceneId sceneId; // m_sceneID
         public uint frameNum; // m_uiFrameNum
         public double duration; // m_ttDuration
         public DataId videoFragmentDid; // m_didVideoFragment
@@ -21,7 +21,7 @@ namespace AC2RE.Definitions {
         }
 
         public GMKeyframe(AC2Reader data) {
-            sceneId = data.ReadUInt32();
+            sceneId = (SceneId)data.ReadUInt32();
             frameNum = data.ReadUInt32();
             duration = data.ReadDouble();
             videoFragmentDid = data.ReadDataId();
@@ -33,7 +33,7 @@ namespace AC2RE.Definitions {
         }
 
         public void write(AC2Writer data) {
-            data.Write(sceneId);
+            data.Write((uint)sceneId);
             data.Write(frameNum);
             data.Write(duration);
             data.Write(videoFragmentDid);

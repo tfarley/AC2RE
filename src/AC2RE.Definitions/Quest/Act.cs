@@ -14,7 +14,7 @@ namespace AC2RE.Definitions {
         public StringInfo description; // m_siDescription
         public Dictionary<uint, IPackage> sceneExaminationInfo; // m_sceneExaminationInfo
         public uint numToComplete; // m_uiNumToComplete
-        public Dictionary<uint, GMSceneInfo> sceneTable; // m_sceneTable
+        public Dictionary<SceneId, GMSceneInfo> sceneTable; // m_sceneTable
         public bool isActive; // m_bIsActive
         public uint actNum; // m_uiActNum
         public StringInfo name; // m_strName
@@ -28,7 +28,7 @@ namespace AC2RE.Definitions {
             data.ReadPkg<StringInfo>(v => description = v);
             data.ReadPkg<ARHash>(v => sceneExaminationInfo = v);
             numToComplete = data.ReadUInt32();
-            data.ReadPkg<ARHash>(v => sceneTable = v.to<uint, GMSceneInfo>());
+            data.ReadPkg<ARHash>(v => sceneTable = v.to<SceneId, GMSceneInfo>());
             isActive = data.ReadBoolean();
             actNum = data.ReadUInt32();
             data.ReadPkg<StringInfo>(v => name = v);

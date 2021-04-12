@@ -19,6 +19,11 @@
         R_HAND2 = 18,
         L_HAND3 = 19,
 
+        ORB_LEFT = 32,
+        ORB_RIGHT = 48,
+        CELESTRUM = 64,
+        PROJECTILE = 80,
+
         ORIGIN = 0x40000003,
         CAMERA_ORIGIN = 0x40000004,
         CAMERA_TARGET = 0x40000005,

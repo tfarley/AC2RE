@@ -96,13 +96,13 @@ namespace AC2RE.DatTool {
             }
         }
 
-        public static void parseDat(DbTypeDef.DatType datType, DatReader datReader, string outputBaseDir, params DbType[] typesToParse) {
+        public static void parseDat(DbTypeDef.DatType datType, DatReader datReader, string? outputBaseDir, params DbType[] typesToParse) {
             Logs.GENERAL.info("Parsing dat...",
                 "fileName", datReader.datFileName);
 
             HashSet<DbType> typesToParseSet = new(typesToParse);
 
-            Dictionary<DbType, string> directoryCache = new();
+            Dictionary<DbType, string?> directoryCache = new();
             Dictionary<DataId, string> didToFileName = new();
 
             HashSet<DbType> allSeenTypes = new();
@@ -121,7 +121,7 @@ namespace AC2RE.DatTool {
 
                 if (!directoryCache.TryGetValue(dbType, out string? directory)) {
                     if (typesToParseSet.Contains(dbType)) {
-                        directory = getOrCreateDir(outputBaseDir, dbTypeDef.strDataDir);
+                        directory = outputBaseDir != null ? getOrCreateDir(outputBaseDir, dbTypeDef.strDataDir) : null;
                         directoryCache[dbType] = directory;
                     }
                 }
@@ -130,7 +130,7 @@ namespace AC2RE.DatTool {
                     using (AC2Reader data = datReader.getFileReader(did)) {
                         DBFile2IDTable file2IdTable = new(data);
 
-                        if (typesToParseSet.Contains(dbType)) {
+                        if (directory != null && typesToParseSet.Contains(dbType)) {
                             File.WriteAllText(Path.Combine(directory!, $"{did.id:X8}{dbTypeDef.extension}.txt"), Util.objectToString(file2IdTable));
                         }
 
@@ -165,7 +165,7 @@ namespace AC2RE.DatTool {
                 DbTypeDef dbTypeDef = DbTypeDef.TYPE_TO_DEF[dbType];
 
                 if (!directoryCache.TryGetValue(dbType, out string? directory)) {
-                    directory = getOrCreateDir(outputBaseDir, dbTypeDef.strDataDir);
+                    directory = outputBaseDir != null ? getOrCreateDir(outputBaseDir, dbTypeDef.strDataDir) : null;
                     directoryCache[dbType] = directory;
                 }
 
@@ -175,7 +175,7 @@ namespace AC2RE.DatTool {
                     fileName = $"{did.id:X8}{dbTypeDef.extension}";
                 }
 
-                string outputPath = Path.Combine(directory, fileName);
+                string? outputPath = directory != null ? Path.Combine(directory, fileName) : null;
 
                 parseFile(datReader, did, dbType, outputPath);
             }
@@ -186,7 +186,7 @@ namespace AC2RE.DatTool {
                 "allSeenTypes", Util.objectToString(allSeenTypes));
         }
 
-        private static void parseFile(DatReader datReader, DataId did, DbType dbType, string outputPath) {
+        private static void parseFile(DatReader datReader, DataId did, DbType dbType, string? outputPath) {
             switch (dbType) {
                 case DbType.APPEARANCE:
                     readAndDump(datReader, did, outputPath, data => new AppearanceTable(data));
@@ -228,6 +228,9 @@ namespace AC2RE.DatTool {
                     readAndDump(datReader, did, outputPath, data => new DBAnimator(data));
                     break;
                 case DbType.ENCODED_WAV: {
+                        if (outputPath == null) {
+                            break;
+                        }
                         using (Stream output = File.OpenWrite(outputPath + ".wav")) {
                             // 4 DID + 4 file size
                             int ac2HeaderSize = sizeof(uint) + sizeof(uint);
@@ -239,12 +242,14 @@ namespace AC2RE.DatTool {
                     readAndDump(datReader, did, outputPath, data => new CEncounterDesc(data));
                     break;
                 case DbType.ENUM_MAPPER: {
-                        using (StreamWriter output = new(File.OpenWrite(outputPath + ".txt")))
+                        using (StreamWriter? output = outputPath != null ? new(File.OpenWrite(outputPath + ".txt")) : null)
                         using (AC2Reader data = datReader.getFileReader(did)) {
                             EnumMapper emp = new(data);
 
-                            foreach (var mapping in emp.idToString) {
-                                output.WriteLine($"{mapping.Key}\t{mapping.Value}");
+                            if (output != null) {
+                                foreach (var mapping in emp.idToString) {
+                                    output.WriteLine($"{mapping.Key}\t{mapping.Value}");
+                                }
                             }
 
                             checkFullRead(data, did);
@@ -340,7 +345,9 @@ namespace AC2RE.DatTool {
                         using (AC2Reader data = datReader.getFileReader(did)) {
                             RenderSurface surface = new(data);
 
-                            File.WriteAllBytes(outputPath, surface.sourceData);
+                            if (outputPath != null) {
+                                File.WriteAllBytes(outputPath, surface.sourceData);
+                            }
 
                             checkFullRead(data, did);
                         }
@@ -384,6 +391,9 @@ namespace AC2RE.DatTool {
                     readAndDump(datReader, did, outputPath, data => new VisualDesc(data));
                     break;
                 case DbType.WAVE: {
+                        if (outputPath == null) {
+                            break;
+                        }
                         using (Stream output = File.OpenWrite(outputPath))
                         using (BinaryWriter outputWriter = new(output)) {
                             BTEntry entry = datReader.getEntry(did);
@@ -414,16 +424,22 @@ namespace AC2RE.DatTool {
                 case DbType.WLIB: {
                         using (AC2Reader data = datReader.getFileReader(did)) {
                             WLib wlib = new(data);
-                            using (StreamWriter output = new(File.OpenWrite(outputPath + ".packages.txt"))) {
-                                Dump.dumpPackages(output, wlib.byteStream);
+                            if (outputPath != null) {
+                                using (StreamWriter output = new(File.OpenWrite(outputPath + ".packages.txt"))) {
+                                    Dump.dumpPackages(output, wlib.byteStream);
+                                }
                             }
 
                             Disasm disasm = new(wlib.byteStream);
-                            using (StreamWriter output = new(File.OpenWrite(outputPath + ".disasm.txt"))) {
-                                disasm.write(output);
+                            if (outputPath != null) {
+                                using (StreamWriter output = new(File.OpenWrite(outputPath + ".disasm.txt"))) {
+                                    disasm.write(output);
+                                }
                             }
 
-                            File.WriteAllText(outputPath + ".frames.txt", Util.objectToString(wlib.byteStream.frames));
+                            if (outputPath != null) {
+                                File.WriteAllText(outputPath + ".frames.txt", Util.objectToString(wlib.byteStream.frames));
+                            }
 
                             checkFullRead(data, did);
                         }
@@ -436,11 +452,13 @@ namespace AC2RE.DatTool {
             }
         }
 
-        private static void readAndDump(DatReader datReader, DataId did, string outputPath, Func<AC2Reader, object> readFunc) {
+        private static void readAndDump(DatReader datReader, DataId did, string? outputPath, Func<AC2Reader, object> readFunc) {
             using (AC2Reader data = datReader.getFileReader(did)) {
                 object readObj = readFunc.Invoke(data);
 
-                File.WriteAllText(outputPath + ".txt", Util.objectToString(readObj));
+                if (outputPath != null) {
+                    File.WriteAllText(outputPath + ".txt", Util.objectToString(readObj));
+                }
 
                 checkFullRead(data, did);
             }

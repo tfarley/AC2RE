@@ -7,7 +7,7 @@
         // WM_Quest::PostCEvt_UpdateStoryQuest_Done
         public ErrorType status; // _status
         public bool addScene; // _bAddScene
-        public uint sceneId; // _sceneID
+        public uint sceneId; // _sceneID // TODO: SceneId?
 
         public UpdateStoryQuestDoneCEvt() {
 

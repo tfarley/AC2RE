@@ -3,6 +3,7 @@
 namespace AC2RE.Definitions {
 
     // Const *_InvLoc
+    // Dat file 23000074
     [Flags]
     public enum InvLoc : uint {
         NONE = 0,

@@ -30,7 +30,7 @@ namespace AC2RE.Definitions {
         public PackFlag packFlags;
         public PartGroupKey key; // m_key
         public PartGroupKey parentKey; // m_parent_key
-        public uint connectionPoint; // m_conn_pt // TODO: HoldingLocation?
+        public ConnectionPoint connectionPoint; // m_conn_pt
         public DataId setupDid; // m_setupDID
         public DataId animMapDid; // m_animMapDID
         public Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos; // m_app_hash
@@ -52,7 +52,7 @@ namespace AC2RE.Definitions {
                 parentKey = (PartGroupKey)data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.CONNECTIONPOINT)) {
-                connectionPoint = data.ReadUInt32();
+                connectionPoint = (ConnectionPoint)data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.SETUP)) {
                 setupDid = data.ReadDataId();
@@ -94,7 +94,7 @@ namespace AC2RE.Definitions {
                 data.Write((uint)parentKey);
             }
             if (packFlags.HasFlag(PackFlag.CONNECTIONPOINT)) {
-                data.Write(connectionPoint);
+                data.Write((uint)connectionPoint);
             }
             if (packFlags.HasFlag(PackFlag.SETUP)) {
                 data.Write(setupDid);

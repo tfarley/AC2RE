@@ -5,7 +5,7 @@
         public override PackageType packageType => PackageType.TravelUsageBlob;
 
         public IPackage travelRec; // m_travelRec
-        public uint scene; // m_siScene
+        public uint scene; // m_siScene // TODO: SceneId?
 
         public TravelUsageBlob() : base() {
 
