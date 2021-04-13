@@ -6,7 +6,7 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.TotemUsageBlob;
 
-        public uint targetWeenieType; // m_targetWeenieType
+        public WeenieType targetWeenieType; // m_targetWeenieType
         public StringInfo playerName; // m_siPlayerName
         public int minTargetLore; // m_minTargetLore
         public Dictionary<uint, IPackage> effects; // m_effects
@@ -17,7 +17,7 @@ namespace AC2RE.Definitions {
         }
 
         public TotemUsageBlob(AC2Reader data) : base(data) {
-            targetWeenieType = data.ReadUInt32();
+            targetWeenieType = (WeenieType)data.ReadUInt32();
             data.ReadPkg<StringInfo>(v => playerName = v);
             minTargetLore = data.ReadInt32();
             data.ReadPkg<ARHash>(v => effects = v);
@@ -26,7 +26,7 @@ namespace AC2RE.Definitions {
 
         public override void write(AC2Writer data) {
             base.write(data);
-            data.Write(targetWeenieType);
+            data.Write((uint)targetWeenieType);
             data.WritePkg(playerName);
             data.Write(minTargetLore);
             data.WritePkg(ARHash.from(effects));

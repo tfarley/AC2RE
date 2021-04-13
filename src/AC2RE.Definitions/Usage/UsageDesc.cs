@@ -10,7 +10,7 @@ namespace AC2RE.Definitions {
         public UsageBlob usageBlob; // m_usageBlob
         public InstanceId itemId; // m_itemID
         public Position userPos; // m_posUser
-        public uint userWeenieType; // m_wtUser // TODO: WeenieType
+        public WeenieType userWeenieType; // m_wtUser
         public InstanceId userId; // m_userID
         public float distToUsedItem; // m_fDistanceToUsedItem
         public InstanceId targetId; // m_targetID
@@ -32,7 +32,7 @@ namespace AC2RE.Definitions {
             data.ReadPkg<UsageBlob>(v => usageBlob = v);
             itemId = data.ReadInstanceId();
             data.ReadPkg<Position>(v => userPos = v);
-            userWeenieType = data.ReadUInt32();
+            userWeenieType = (WeenieType)data.ReadUInt32();
             userId = data.ReadInstanceId();
             distToUsedItem = data.ReadSingle();
             targetId = data.ReadInstanceId();
@@ -51,7 +51,7 @@ namespace AC2RE.Definitions {
             data.WritePkg(usageBlob);
             data.Write(itemId);
             data.WritePkg(userPos);
-            data.Write(userWeenieType);
+            data.Write((uint)userWeenieType);
             data.Write(userId);
             data.Write(distToUsedItem);
             data.Write(targetId);

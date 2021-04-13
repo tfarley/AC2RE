@@ -10,6 +10,7 @@ namespace AC2RE.Definitions {
             INVALID = 0,
             DEFAULT_BODY = 0x40000001,
             ENTIRE_TREE = 0x40000002,
+            // NOTE: If MSB is set (0x80000000) then it is probably a kind of dynamic/numbered key
         }
 
         // Enum PGDDPack::Flag
@@ -43,7 +44,6 @@ namespace AC2RE.Definitions {
         }
 
         public PartGroupDataDesc(AC2Reader data) {
-            // TODO: Need to verify parsing of all of these properties
             packFlags = (PackFlag)data.ReadUInt32();
             if (packFlags.HasFlag(PackFlag.KEY)) {
                 key = (PartGroupKey)data.ReadUInt32();

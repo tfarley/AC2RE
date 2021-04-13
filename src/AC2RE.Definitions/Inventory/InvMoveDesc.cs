@@ -19,7 +19,7 @@ namespace AC2RE.Definitions {
         public uint moveType; // moveType
         public bool checkTakePerm; // checkTakePermFlag
         public bool hidden; // bHidden
-        public uint targetWeenieType; // targetWeenieType
+        public WeenieType targetWeenieType; // targetWeenieType
         public InstanceId fromId; // fromID
         public InstanceId splitItemAttunedId; // splitItemAttunedID
         public bool trade; // tradeFlag
@@ -68,7 +68,7 @@ namespace AC2RE.Definitions {
             moveType = data.ReadUInt32();
             checkTakePerm = data.ReadBoolean();
             hidden = data.ReadBoolean();
-            targetWeenieType = data.ReadUInt32();
+            targetWeenieType = (WeenieType)data.ReadUInt32();
             fromId = data.ReadInstanceId();
             splitItemAttunedId = data.ReadInstanceId();
             trade = data.ReadBoolean();
@@ -114,7 +114,7 @@ namespace AC2RE.Definitions {
             data.Write(moveType);
             data.Write(checkTakePerm);
             data.Write(hidden);
-            data.Write(targetWeenieType);
+            data.Write((uint)targetWeenieType);
             data.Write(fromId);
             data.Write(splitItemAttunedId);
             data.Write(trade);

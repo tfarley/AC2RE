@@ -4,11 +4,11 @@
 
         public override PackageType packageType => PackageType.TravelTieEffect;
 
-        public uint weenieType; // m_wtype
+        public WeenieType weenieType; // m_wtype
         public uint portalLink; // m_link
 
         public TravelTieEffect(AC2Reader data) : base(data) {
-            weenieType = data.ReadUInt32();
+            weenieType = (WeenieType)data.ReadUInt32();
             portalLink = data.ReadUInt32();
         }
     }
