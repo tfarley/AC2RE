@@ -7,12 +7,12 @@ namespace AC2RE.Definitions {
         public override PackageType packageType => PackageType.ActiveSkill;
 
         public int maxPets; // m_MaxPets
-        public uint behaviorOtherHit; // m_BehaviorOtherHit
+        public BehaviorId behaviorOtherHit; // m_BehaviorOtherHit
         public int maxVigor; // m_MaxVigor
         public float minUseTime; // m_MinUseTime
         public List<SingletonPkg<Effect>> reqEffects; // m_ReqEffects
         public int minHealth; // m_MinHealth
-        public int allowedImplementsRight; // m_AllowedImplementsRight
+        public ImplementType allowedImplementsRight; // m_AllowedImplementsRight
         public List<SingletonPkg<Effect>> barringEffects; // m_BarringEffects
         public float minRange; // m_MinRange
         public int endFocusModAdd; // m_endFocusModAdd
@@ -20,20 +20,20 @@ namespace AC2RE.Definitions {
         public int maxHealth; // m_MaxHealth
         public List<SingletonPkg<Effect>> userEffects; // m_UserEffects
         public HashSet<uint> validWeenieTypes; // m_validWeenieTypes
-        public uint behaviorSelfHit; // m_BehaviorSelfHit
+        public BehaviorId behaviorSelfHit; // m_BehaviorSelfHit
         public int minVigor; // m_MinVigor
-        public uint behaviorSelfMiss; // m_BehaviorSelfMiss
+        public BehaviorId behaviorSelfMiss; // m_BehaviorSelfMiss
         public Dictionary<uint, uint> weightHash; // m_WeightHash
         public uint minRank; // m_nMinRank
-        public uint behaviorOtherMiss; // m_BehaviorOtherMiss
+        public BehaviorId behaviorOtherMiss; // m_BehaviorOtherMiss
         public uint validTargets; // m_validTargets
         public uint validPetOnly; // m_validPetOnly
-        public uint powerUpBehavior; // m_powerUpBehavior
+        public BehaviorId powerUpBehavior; // m_powerUpBehavior
         public float startFocusModMult; // m_startFocusModMult
         public float dmgAttributeMod; // m_fDmgAttributeMod
-        public int allowedImplementsLeft; // m_AllowedImplementsLeft
+        public ImplementType allowedImplementsLeft; // m_AllowedImplementsLeft
         public uint requiredSkillTargetFlags; // m_requiredSkillTargetFlags
-        public uint behaviorOtherCrit; // m_BehaviorOtherCrit
+        public BehaviorId behaviorOtherCrit; // m_BehaviorOtherCrit
         public uint minLevel; // m_nMinLevel
         public uint maxLevel; // m_nMaxLevel
         public Dictionary<uint, uint> useBarringSkills; // m_UseBarringSkills
@@ -56,12 +56,12 @@ namespace AC2RE.Definitions {
 
         public ActiveSkill(AC2Reader data) : base(data) {
             maxPets = data.ReadInt32();
-            behaviorOtherHit = data.ReadUInt32();
+            behaviorOtherHit = (BehaviorId)data.ReadUInt32();
             maxVigor = data.ReadInt32();
             minUseTime = data.ReadSingle();
             data.ReadPkg<RList>(v => reqEffects = v.to(SingletonPkg<Effect>.cast));
             minHealth = data.ReadInt32();
-            allowedImplementsRight = data.ReadInt32();
+            allowedImplementsRight = (ImplementType)data.ReadInt32();
             data.ReadPkg<RList>(v => barringEffects = v.to(SingletonPkg<Effect>.cast));
             minRange = data.ReadSingle();
             endFocusModAdd = data.ReadInt32();
@@ -69,20 +69,20 @@ namespace AC2RE.Definitions {
             maxHealth = data.ReadInt32();
             data.ReadPkg<RList>(v => userEffects = v.to(SingletonPkg<Effect>.cast));
             data.ReadPkg<AHashSet>(v => validWeenieTypes = v);
-            behaviorSelfHit = data.ReadUInt32();
+            behaviorSelfHit = (BehaviorId)data.ReadUInt32();
             minVigor = data.ReadInt32();
-            behaviorSelfMiss = data.ReadUInt32();
+            behaviorSelfMiss = (BehaviorId)data.ReadUInt32();
             data.ReadPkg<AAHash>(v => weightHash = v);
             minRank = data.ReadUInt32();
-            behaviorOtherMiss = data.ReadUInt32();
+            behaviorOtherMiss = (BehaviorId)data.ReadUInt32();
             validTargets = data.ReadUInt32();
             validPetOnly = data.ReadUInt32();
-            powerUpBehavior = data.ReadUInt32();
+            powerUpBehavior = (BehaviorId)data.ReadUInt32();
             startFocusModMult = data.ReadSingle();
             dmgAttributeMod = data.ReadSingle();
-            allowedImplementsLeft = data.ReadInt32();
+            allowedImplementsLeft = (ImplementType)data.ReadInt32();
             requiredSkillTargetFlags = data.ReadUInt32();
-            behaviorOtherCrit = data.ReadUInt32();
+            behaviorOtherCrit = (BehaviorId)data.ReadUInt32();
             minLevel = data.ReadUInt32();
             maxLevel = data.ReadUInt32();
             data.ReadPkg<AAHash>(v => useBarringSkills = v);
