@@ -10,7 +10,7 @@ namespace AC2RE.Definitions {
         public Dictionary<uint, WPString> physiqueTypeLabelTable; // m_PhysiqueTypeLabelTable
         public Dictionary<SpeciesType, List<SexType>> raceSexTable; // m_RaceSexTable
         public Dictionary<SpeciesType, Dictionary<uint, Dictionary<uint, List<StartInvData>>>> startingInventoryTable; // m_StartingInventoryTable
-        public Dictionary<uint, GMRaceSexInfo> raceSexInfoTable; // m_RaceSexInfoTable
+        public Dictionary<uint, GMRaceSexInfo> raceSexInfoTable; // m_RaceSexInfoTable // TODO: This is SpeciesType | SexType
         public Dictionary<SpeciesType, Dictionary<SexType, Dictionary<uint, AttributeProfile>>> startingAttributesTable; // m_StartingAttributesTable
         public Dictionary<uint, StartArea> startAreaHash; // m_StartAreaHash
         public Dictionary<uint, List<IPackage>> startingSkillsTable; // m_StartingSkillsTable

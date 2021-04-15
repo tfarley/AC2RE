@@ -48,7 +48,7 @@ namespace AC2RE.Definitions {
         public InstanceId targetId; // mTargetID
         public InstanceId cameraTargetId; // mCameraTargetID
         public uint cameraBehavior; // mCameraBehavior
-        public uint visualDescToClone; // mVDescToClone
+        public DataId visualDescToClone; // mVDescToClone
         public DataId clonedAprDid; // m_clonedAprID
         public Dictionary<AppearanceKey, float> clonedAppHash; // m_clonedAppAprHash
         public Vector3 impulse; // mImpulse
@@ -99,7 +99,7 @@ namespace AC2RE.Definitions {
                 cameraBehavior = data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.VDESC)) {
-                visualDescToClone = data.ReadUInt32();
+                visualDescToClone = data.ReadDataId();
                 clonedAprDid = data.ReadDataId();
                 clonedAppHash = data.ReadDictionary(() => (AppearanceKey)data.ReadUInt32(), data.ReadSingle);
             }

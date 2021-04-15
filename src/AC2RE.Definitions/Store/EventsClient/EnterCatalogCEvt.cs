@@ -7,7 +7,7 @@ namespace AC2RE.Definitions {
         public ClientEventFunctionId funcId => ClientEventFunctionId.Store__EnterCatalog;
 
         // WM_Store::PostCEvt_Store_EnterCatalog
-        public Dictionary<uint, uint> view; // _view
+        public Dictionary<DataId, uint> view; // _view
         public DataId catalogDid; // _didCatalog
         public InstanceId storekeeperId; // _iidStorekeeper
 
@@ -16,7 +16,7 @@ namespace AC2RE.Definitions {
         }
 
         public EnterCatalogCEvt(AC2Reader data) {
-            view = data.UnpackPackage<AAHash>();
+            view = data.UnpackPackage<AAHash>().to<DataId, uint>();
             catalogDid = data.UnpackDataId();
             storekeeperId = data.UnpackInstanceId();
         }

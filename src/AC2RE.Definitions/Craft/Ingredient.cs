@@ -12,7 +12,7 @@ namespace AC2RE.Definitions {
         public bool autoSpinner; // m_bAutoSpinner
         public uint minSpinnerVal; // m_minSpinnerVal
         public uint requiredFlags; // m_requiredFlags
-        public Dictionary<uint, uint> items; // m_hashItems
+        public Dictionary<DataId, DataId> items; // m_hashItems
         public uint flags; // m_flags
         public StringInfo pluralDescription; // m_siPluralDesc
         public bool autoPopulate; // m_bAutoPopulate
@@ -33,7 +33,7 @@ namespace AC2RE.Definitions {
             autoSpinner = data.ReadBoolean();
             minSpinnerVal = data.ReadUInt32();
             requiredFlags = data.ReadUInt32();
-            data.ReadPkg<AAHash>(v => items = v);
+            data.ReadPkg<AAHash>(v => items = v.to<DataId, DataId>());
             flags = data.ReadUInt32();
             data.ReadPkg<StringInfo>(v => pluralDescription = v);
             autoPopulate = data.ReadBoolean();

@@ -9,7 +9,7 @@
         public DataId markerDid; // _marker
         public CellId cell; // _cell
         public InstanceId id; // _id
-        public uint type; // _type
+        public uint type; // _type // TODO: MarkerType (has enum mapper id 0x2300010C, but not in dat)
 
         public DisplayMarkerCEvt() {
 

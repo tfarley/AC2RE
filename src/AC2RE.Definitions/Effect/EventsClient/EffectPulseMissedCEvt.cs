@@ -7,14 +7,14 @@ namespace AC2RE.Definitions {
         public ClientEventFunctionId funcId => ClientEventFunctionId.Effect__PulseMissed;
 
         // WM_Effect::PostCEvt_Effect_PulseMissed
-        public List<uint> effectIds; // _effectEIDs
+        public List<EffectId> effectIds; // _effectEIDs
 
         public EffectPulseMissedCEvt() {
 
         }
 
         public EffectPulseMissedCEvt(AC2Reader data) {
-            effectIds = data.UnpackPackage<AList>();
+            effectIds = data.UnpackPackage<AList>().to<EffectId>();
         }
 
         public void write(AC2Writer data) {

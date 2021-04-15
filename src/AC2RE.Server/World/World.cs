@@ -176,7 +176,7 @@ namespace AC2RE.Server {
                             netEvent = new HandleCharacterSessionStartCEvt {
                                 money = 12345,
                                 actRegistry = new() {
-                                    viewingProtectionEffectId = 0,
+                                    viewingProtectionEffectId = EffectId.NULL,
                                     actSceneTable = new() {
                                         { 0x40000005, new() },
                                         { 0x40000006, new() },
@@ -444,18 +444,18 @@ namespace AC2RE.Server {
                                             fromItemId = player.characterId,
                                             flags = 0x00000051,
                                             durabilityLevel = 0,
-                                            relatedEffectId = 0,
-                                            effectId = 0x00000BD9,
+                                            relatedEffectId = EffectId.NULL,
+                                            effectId = EffectId.NULL,
                                             categories = 1,
                                             maxDurabilityLevel = 0,
                                         },
-                                        effectId = 0x00000BD9,
+                                        effectId = new EffectId(0x00000BD9),
                                     }
                                 });
                             } else {
                                 playerManager.send(player, new InterpCEventPrivateMsg {
                                     netEvent = new ClientRemoveEffectCEvt {
-                                        effectId = 0x00000BD9,
+                                        effectId = new EffectId(0x00000BD9),
                                     }
                                 });
                             }

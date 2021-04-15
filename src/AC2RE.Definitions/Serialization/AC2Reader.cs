@@ -80,6 +80,10 @@ namespace AC2RE.Definitions {
             return new(UnpackUInt32());
         }
 
+        public EffectId UnpackEffectId() {
+            return new(UnpackUInt32());
+        }
+
         public T UnpackPackage<T>(bool skipPackTag = false) where T : IPackage {
             if (!skipPackTag) {
                 checkPackTag(PackTag.PACKAGE);
@@ -377,6 +381,10 @@ namespace AC2RE.Definitions {
         }
 
         public EnumId ReadEnumId() {
+            return new(ReadUInt32());
+        }
+
+        public EffectId ReadEffectId() {
             return new(ReadUInt32());
         }
 

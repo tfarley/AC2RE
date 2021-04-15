@@ -335,8 +335,8 @@ namespace AC2RE.Server {
         }
 
         public Orientation holdOrientation {
-            get => (Orientation)getQ(IntStat.INV_PRIMARYPARENTINGLOCATION);
-            set => setQ(IntStat.INV_PRIMARYPARENTINGLOCATION, (int)value);
+            get => (Orientation)getQ(IntStat.PLACEMENTPOSITION);
+            set => setQ(IntStat.PLACEMENTPOSITION, (int)value);
         }
 
         public DataId entityDid {

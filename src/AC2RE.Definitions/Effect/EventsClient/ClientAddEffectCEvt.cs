@@ -6,7 +6,7 @@
 
         // WM_Effect::PostCEvt_Effect_ClientAddEffect
         public EffectRecord effectRecord; // _record
-        public uint effectId; // _eid
+        public EffectId effectId; // _eid
 
         public ClientAddEffectCEvt() {
 
@@ -14,7 +14,7 @@
 
         public ClientAddEffectCEvt(AC2Reader data) {
             effectRecord = data.UnpackPackage<EffectRecord>();
-            effectId = data.UnpackUInt32();
+            effectId = data.UnpackEffectId();
         }
 
         public void write(AC2Writer data) {

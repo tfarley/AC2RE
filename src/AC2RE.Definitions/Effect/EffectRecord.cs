@@ -20,8 +20,8 @@
         public InstanceId fromItemId; // m_iidFromItem
         public uint flags; // m_flags
         public uint durabilityLevel; // m_uiDurabilityLevel
-        public uint relatedEffectId; // m_relatedEID
-        public uint effectId; // m_effectID
+        public EffectId relatedEffectId; // m_relatedEID
+        public EffectId effectId; // m_effectID
         public uint categories; // m_categories
         public uint maxDurabilityLevel; // m_uiMaxDurabilityLevel
 
@@ -46,8 +46,8 @@
             fromItemId = data.ReadInstanceId();
             flags = data.ReadUInt32();
             durabilityLevel = data.ReadUInt32();
-            relatedEffectId = data.ReadUInt32();
-            effectId = data.ReadUInt32();
+            relatedEffectId = data.ReadEffectId();
+            effectId = data.ReadEffectId();
             categories = data.ReadUInt32();
             maxDurabilityLevel = data.ReadUInt32();
         }

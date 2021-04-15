@@ -6,7 +6,7 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.ActRegistry;
 
-        public int viewingProtectionEffectId; // m_viewingProtectionEID
+        public EffectId viewingProtectionEffectId; // m_viewingProtectionEID
         public Dictionary<uint, List<SceneId>> actSceneTable; // m_actSceneTable
 
         public ActRegistry() {
@@ -14,7 +14,7 @@ namespace AC2RE.Definitions {
         }
 
         public ActRegistry(AC2Reader data) {
-            viewingProtectionEffectId = data.ReadInt32();
+            viewingProtectionEffectId = data.ReadEffectId();
             data.ReadPkg<ARHash>(v => actSceneTable = v.to<uint, List<SceneId>>(v => (v as AList).to<SceneId>()));
         }
 

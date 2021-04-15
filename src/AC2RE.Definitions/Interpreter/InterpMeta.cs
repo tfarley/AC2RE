@@ -14,6 +14,7 @@ namespace AC2RE.Definitions {
             { typeof(DataId), typeof(uint) },
             { typeof(CellId), typeof(uint) },
             { typeof(EnumId), typeof(uint) },
+            { typeof(EffectId), typeof(uint) },
             { typeof(QuestUpdateType), typeof(uint) },
 
             { typeof(InstanceId), typeof(ulong) },

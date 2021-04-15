@@ -75,6 +75,10 @@ namespace AC2RE.Definitions {
             Pack(value.id);
         }
 
+        public void Pack(EffectId value) {
+            Pack(value.id);
+        }
+
         public void Pack(IPackage value) {
             packageRegistry.references.Add(value);
 
@@ -329,6 +333,10 @@ namespace AC2RE.Definitions {
         }
 
         public void Write(EnumId value) {
+            Write(value.id);
+        }
+
+        public void Write(EffectId value) {
             Write(value.id);
         }
 

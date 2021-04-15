@@ -5,7 +5,7 @@
         public ClientEventFunctionId funcId => ClientEventFunctionId.Store__UpdateSale;
 
         // WM_Store::PostCEvt_Store_UpdateSale
-        public int stockDesc; // __iStockdesc
+        public int stock; // __iStock
         public InstanceId itemId; // _iidItem
         public InstanceId storekeeperId; // _iidStorekeeper
 
@@ -14,13 +14,13 @@
         }
 
         public UpdateSaleCEvt(AC2Reader data) {
-            stockDesc = data.UnpackInt32();
+            stock = data.UnpackInt32();
             itemId = data.UnpackInstanceId();
             storekeeperId = data.UnpackInstanceId();
         }
 
         public void write(AC2Writer data) {
-            data.Pack(stockDesc);
+            data.Pack(stock);
             data.Pack(itemId);
             data.Pack(storekeeperId);
         }
