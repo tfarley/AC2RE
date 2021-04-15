@@ -10,8 +10,8 @@ namespace AC2RE.Definitions {
         public float craftSkillScore; // m_CraftSkillScore
         public uint craftSkillTitle; // m_CraftSkillTitle // TODO: CraftSkillTitleType
         public double usageResetTime; // m_usageResetTime
-        public Dictionary<uint, CraftSkillRecord> craftSkillRecords; // m_hashCraftSkillRecords
-        public Dictionary<uint, RecipeRecord> recipeRecords2; // m_hashRecipeRecords
+        public Dictionary<DataId, CraftSkillRecord> craftSkillRecords; // m_hashCraftSkillRecords
+        public Dictionary<DataId, RecipeRecord> recipeRecords2; // m_hashRecipeRecords
 
         public CraftRegistry() {
 
@@ -22,8 +22,8 @@ namespace AC2RE.Definitions {
             craftSkillScore = data.ReadSingle();
             craftSkillTitle = data.ReadUInt32();
             usageResetTime = data.ReadDouble();
-            data.ReadPkg<ARHash>(v => craftSkillRecords = v.to<uint, CraftSkillRecord>());
-            data.ReadPkg<ARHash>(v => recipeRecords2 = v.to<uint, RecipeRecord>());
+            data.ReadPkg<ARHash>(v => craftSkillRecords = v.to<DataId, CraftSkillRecord>());
+            data.ReadPkg<ARHash>(v => recipeRecords2 = v.to<DataId, RecipeRecord>());
         }
 
         public void write(AC2Writer data) {
