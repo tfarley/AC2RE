@@ -6,14 +6,14 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.ChatChannelControl;
 
-        public uint unk1;
+        public uint pad1;
         public Dictionary<uint, StringInfo> regionNameTable; // m_regionNameTable
-        public uint unk2;
+        public uint pad2;
 
         public ChatChannelControl(AC2Reader data) {
-            unk1 = data.ReadUInt32();
+            pad1 = data.ReadUInt32();
             data.ReadPkg<ARHash>(v => regionNameTable = v.to<uint, StringInfo>());
-            unk2 = data.ReadUInt32();
+            pad2 = data.ReadUInt32();
         }
     }
 }

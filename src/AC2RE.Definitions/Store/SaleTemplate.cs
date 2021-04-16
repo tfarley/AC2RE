@@ -8,7 +8,7 @@ namespace AC2RE.Definitions {
 
         public uint ordinal; // m_uiOrdinal
         public DataId productDid; // m_didProduct
-        public Dictionary<uint, uint> requiredQuests; // m_requiredQuests
+        public Dictionary<QuestId, uint> requiredQuests; // m_requiredQuests
         public float cost; // m_fCost
         public SpeciesType race; // m_race
         public DataId tradeDid; // m_didTrade
@@ -18,7 +18,7 @@ namespace AC2RE.Definitions {
         public SaleTemplate(AC2Reader data) {
             ordinal = data.ReadUInt32();
             productDid = data.ReadDataId();
-            data.ReadPkg<AAHash>(v => requiredQuests = v);
+            data.ReadPkg<AAHash>(v => requiredQuests = v.to<QuestId, uint>());
             cost = data.ReadSingle();
             race = (SpeciesType)data.ReadUInt32();
             tradeDid = data.ReadDataId();

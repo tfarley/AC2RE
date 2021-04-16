@@ -13,11 +13,11 @@ namespace AC2RE.Definitions {
         public List<ItemInteractionOutcome> failureOutcomes; // m_listFailureOutcomes
         public uint userAnimRepeatCount; // m_fUserAnimRepeatCount
         public DataId craftSkillDid; // m_didCraftSkill
-        public uint anim; // m_anim
+        public BehaviorId anim; // m_anim
         public float externalTargetMaxDistance; // m_fExternalTargetMaxDistance
         public bool validTargetPet; // m_bValidTargetPet
         public float userAnimTimeScale; // m_fUserAnimTimeScale
-        public HashSet<uint> validTargets; // m_hashValidTargets
+        public HashSet<DataId> validTargets; // m_hashValidTargets
         public int iidMod; // m_nIIDMod
         public uint difficulty; // m_uiDifficulty
         public bool userAnimFadeChildren; // m_bUserAnimFadeChildren
@@ -31,11 +31,11 @@ namespace AC2RE.Definitions {
             data.ReadPkg<RList>(v => failureOutcomes = v.to<ItemInteractionOutcome>());
             userAnimRepeatCount = data.ReadUInt32();
             craftSkillDid = data.ReadDataId();
-            anim = data.ReadUInt32();
+            anim = (BehaviorId)data.ReadUInt32();
             externalTargetMaxDistance = data.ReadSingle();
             validTargetPet = data.ReadBoolean();
             userAnimTimeScale = data.ReadSingle();
-            data.ReadPkg<AHashSet>(v => validTargets = v);
+            data.ReadPkg<AHashSet>(v => validTargets = v.to<DataId>());
             iidMod = data.ReadInt32();
             difficulty = data.ReadUInt32();
             userAnimFadeChildren = data.ReadBoolean();

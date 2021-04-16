@@ -12,7 +12,7 @@ namespace AC2RE.Definitions {
         public Dictionary<uint, PhaseInfo> questPhaseInfo; // m_questPhaseInfo
         public StringInfo description; // m_siDescription
         public bool playFxOnUpdate; // m_bPlayFXOnUpdate
-        public Dictionary<uint, List<IPackage>> questUpdateEffects; // m_questUpdateEffects
+        public Dictionary<uint, List<EffectRecord>> questUpdateEffects; // m_questUpdateEffects
 
         public Quest(AC2Reader data) : base(data) {
             data.ReadPkg<StringInfo>(v => longName = v);
@@ -21,7 +21,8 @@ namespace AC2RE.Definitions {
             data.ReadPkg<ARHash>(v => questPhaseInfo = v.to<uint, PhaseInfo>());
             data.ReadPkg<StringInfo>(v => description = v);
             playFxOnUpdate = data.ReadBoolean();
-            data.ReadPkg<ARHash>(v => questUpdateEffects = v.to<uint, List<IPackage>>());
+            data.ReadPkg<ARHash>(v => questUpdateEffects = v.to<uint, List<EffectRecord>>(
+                v => (v as RList).to<EffectRecord>()));
         }
     }
 }

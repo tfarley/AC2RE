@@ -18,7 +18,7 @@ namespace AC2RE.Definitions {
 
         public BaseProperty(AC2Reader data) {
             name = (PropertyName)data.ReadUInt32();
-            BasePropertyDesc propertyDesc = MasterProperty.instance.properties[(uint)name];
+            BasePropertyDesc propertyDesc = MasterProperty.instance.properties[name];
             type = propertyDesc.type;
             group = propertyDesc.group;
             value = type switch {

@@ -9,13 +9,13 @@ namespace AC2RE.Definitions {
         public StringInfo lore; // mLore
         public SpeciesType allowedSpecies; // mAllowedSpecies
         public uint minCharLevel; // mMinCharLevel
-        public Dictionary<uint, uint> barringSkills; // mBarringSkills
+        public Dictionary<SkillId, uint> barringSkills; // mBarringSkills
         public int levelWhenTrained; // mLevelWhenTrained
-        public Dictionary<uint, uint> parents; // mParents
+        public Dictionary<SkillId, uint> parents; // mParents
         public float combatSpeedModifier; // m_fCombatSpeedModifier
         public QuestId reqQuestId; // m_reqQuestID
         public int allowedClasses; // mAllowedClasses
-        public Dictionary<uint, uint> prereqs; // mPrereqs
+        public Dictionary<SkillId, uint> prereqs; // mPrereqs
         public float advMod; // mAdvMod
         public int minPkRating; // m_iMinPKRating
         public bool shouldStartTimerOnEffectFailure; // mShouldStartTimerOnEffectFailure
@@ -34,13 +34,13 @@ namespace AC2RE.Definitions {
             data.ReadPkg<StringInfo>(v => lore = v);
             allowedSpecies = (SpeciesType)data.ReadUInt32();
             minCharLevel = data.ReadUInt32();
-            data.ReadPkg<AAHash>(v => barringSkills = v);
+            data.ReadPkg<AAHash>(v => barringSkills = v.to<SkillId, uint>());
             levelWhenTrained = data.ReadInt32();
-            data.ReadPkg<AAHash>(v => parents = v);
+            data.ReadPkg<AAHash>(v => parents = v.to<SkillId, uint>());
             combatSpeedModifier = data.ReadSingle();
             reqQuestId = (QuestId)data.ReadUInt32();
             allowedClasses = data.ReadInt32();
-            data.ReadPkg<AAHash>(v => prereqs = v);
+            data.ReadPkg<AAHash>(v => prereqs = v.to<SkillId, uint>());
             advMod = data.ReadSingle();
             minPkRating = data.ReadInt32();
             shouldStartTimerOnEffectFailure = data.ReadBoolean();

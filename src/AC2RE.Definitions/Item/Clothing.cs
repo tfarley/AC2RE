@@ -6,10 +6,10 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.Clothing;
 
-        public Dictionary<uint, DataId> wornAppearanceDidHash; // m_hashWornAppearanceDID
+        public Dictionary<PhysiqueSpeciesSexId, DataId> wornAppearanceDidHash; // m_hashWornAppearanceDID
 
         public Clothing(AC2Reader data) : base(data) {
-            data.ReadPkg<AAHash>(v => wornAppearanceDidHash = v.to<uint, DataId>());
+            data.ReadPkg<AAHash>(v => wornAppearanceDidHash = v.to<PhysiqueSpeciesSexId, DataId>());
         }
     }
 }

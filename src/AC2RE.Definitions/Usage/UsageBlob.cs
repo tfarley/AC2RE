@@ -8,7 +8,7 @@
         public StringInfo successText; // m_successMessage
         public uint userBehaviorRepeatCount; // m_userBehaviorRepeatCount
         public float userBehaviorTimeScale; // m_userBehaviorTimeScale
-        public uint userBehavior; // m_userBehavior
+        public BehaviorId userBehavior; // m_userBehavior
         public bool userBehaviorFadeChildren; // m_userBehaviorFadeChildren
 
         public UsageBlob() {
@@ -20,7 +20,7 @@
             data.ReadPkg<StringInfo>(v => successText = v);
             userBehaviorRepeatCount = data.ReadUInt32();
             userBehaviorTimeScale = data.ReadSingle();
-            userBehavior = data.ReadUInt32();
+            userBehavior = (BehaviorId)data.ReadUInt32();
             userBehaviorFadeChildren = data.ReadBoolean();
         }
 
@@ -29,7 +29,7 @@
             data.WritePkg(successText);
             data.Write(userBehaviorRepeatCount);
             data.Write(userBehaviorTimeScale);
-            data.Write(userBehavior);
+            data.Write((uint)userBehavior);
             data.Write(userBehaviorFadeChildren);
         }
     }

@@ -16,12 +16,12 @@ namespace AC2RE.Definitions {
 
         public DataId did; // m_DID
         public EnumMapper enumMapper; // m_emapper
-        public Dictionary<uint, BasePropertyDesc> properties; // m_properties
+        public Dictionary<PropertyName, BasePropertyDesc> properties; // m_properties
 
         public MasterProperty(AC2Reader data) {
             did = data.ReadDataId();
             enumMapper = new(data);
-            properties = data.ReadDictionary(data.ReadUInt32, () => new BasePropertyDesc(data));
+            properties = data.ReadDictionary(() => (PropertyName)data.ReadUInt32(), () => new BasePropertyDesc(data));
         }
     }
 }

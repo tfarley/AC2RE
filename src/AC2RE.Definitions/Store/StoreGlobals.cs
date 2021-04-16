@@ -5,7 +5,7 @@
         public PackageType packageType => PackageType.StoreGlobals;
 
         public uint nextSaleId; // NextSaleID_StoreGlobals
-        public DataId goldDid; // m_index
+        public DataId goldDid; // DIDGold_StoreGlobals
 
         public StoreGlobals(AC2Reader data) {
             nextSaleId = data.ReadUInt32();

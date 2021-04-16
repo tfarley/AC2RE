@@ -4,10 +4,10 @@
 
         public PackageType packageType => PackageType.FactionGlobals;
 
-        public uint unk1;
+        public uint pad1;
 
         public FactionGlobals(AC2Reader data) {
-            unk1 = data.ReadUInt32();
+            pad1 = data.ReadUInt32();
         }
     }
 }

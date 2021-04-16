@@ -26,7 +26,7 @@ namespace AC2RE.Server {
                 }
             }
 
-            GMRaceSexInfo raceSexInfo = charGenMatrix.raceSexInfoTable[(uint)species | (uint)sex];
+            GMRaceSexInfo raceSexInfo = charGenMatrix.raceSexInfoTable[new(species, sex)];
 
             Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos = new();
             foreach (KeyValuePair<PhysiqueType, float> physiqueTypeValue in physiqueTypeValues) {
@@ -100,7 +100,7 @@ namespace AC2RE.Server {
                 DataId weenieStateDid = new(0x71000000 + item.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
                 WState clothingWeenieState = contentManager.getWeenieState(weenieStateDid);
                 if (clothingWeenieState.package is Clothing clothing) {
-                    DataId appearanceDid = clothing.wornAppearanceDidHash[((uint)character.species! | (uint)character.sex!)];
+                    DataId appearanceDid = clothing.wornAppearanceDidHash[new(character.species!, character.sex!)];
                     Dictionary<DataId, Dictionary<AppearanceKey, float>> itemAppearanceInfos = new();
                     if (appearanceInfos.TryGetValue(appearanceDid, out Dictionary<AppearanceKey, float>? appearances)) {
                         itemAppearanceInfos[appearanceDid] = appearances;

@@ -4,36 +4,36 @@
 
         public PackageType packageType => PackageType.FellowshipControl;
 
-        public uint unk1;
-        public uint unk2;
-        public uint unk3;
-        public uint unk4;
+        public uint pad1;
+        public uint pad2;
+        public uint pad3;
+        public uint pad4;
         public DataId fellowMarkerDid; // DIDFellowMarker_FellowGlobals
-        public uint unk5;
-        public uint unk6;
-        public uint unk7;
-        public uint unk8;
-        public uint unk9;
-        public uint unk10;
-        public uint unk11;
-        public uint unk12;
-        public uint unk13;
+        public uint pad5;
+        public uint pad6;
+        public uint pad7;
+        public uint pad8;
+        public uint pad9;
+        public uint pad10;
+        public uint pad11;
+        public uint pad12;
+        public uint pad13;
 
         public FellowshipControl(AC2Reader data) {
-            unk1 = data.ReadUInt32();
-            unk2 = data.ReadUInt32();
-            unk3 = data.ReadUInt32();
-            unk4 = data.ReadUInt32();
+            pad1 = data.ReadUInt32();
+            pad2 = data.ReadUInt32();
+            pad3 = data.ReadUInt32();
+            pad4 = data.ReadUInt32();
             fellowMarkerDid = data.ReadDataId();
-            unk5 = data.ReadUInt32();
-            unk6 = data.ReadUInt32();
-            unk7 = data.ReadUInt32();
-            unk8 = data.ReadUInt32();
-            unk9 = data.ReadUInt32();
-            unk10 = data.ReadUInt32();
-            unk11 = data.ReadUInt32();
-            unk12 = data.ReadUInt32();
-            unk13 = data.ReadUInt32();
+            pad5 = data.ReadUInt32();
+            pad6 = data.ReadUInt32();
+            pad7 = data.ReadUInt32();
+            pad8 = data.ReadUInt32();
+            pad9 = data.ReadUInt32();
+            pad10 = data.ReadUInt32();
+            pad11 = data.ReadUInt32();
+            pad12 = data.ReadUInt32();
+            pad13 = data.ReadUInt32();
         }
     }
 }

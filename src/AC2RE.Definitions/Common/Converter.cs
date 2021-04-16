@@ -42,6 +42,7 @@ namespace AC2RE.Definitions {
             { typeof(bool), new Converter<uint>(v => v != 0, v => (bool)v ? 1u : 0u) },
             { typeof(DataId), new Converter<uint>(v => new DataId(v), v => ((DataId)v).id) },
             { typeof(EffectId), new Converter<uint>(v => new EffectId(v), v => ((EffectId)v).id) },
+            { typeof(PhysiqueSpeciesSexId), new Converter<uint>(v => new PhysiqueSpeciesSexId(v), v => ((PhysiqueSpeciesSexId)v).id) },
         };
 
         public static Converter<uint> getUInt(Type type) {

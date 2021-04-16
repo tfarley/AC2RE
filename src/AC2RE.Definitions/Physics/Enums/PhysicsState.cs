@@ -22,12 +22,12 @@ namespace AC2RE.Definitions {
         INELASTIC = 1 << 13, // 0x00002000
         CLOAKED = 1 << 14, // 0x00004000
         EDGE_SLIDE = 1 << 15, // 0x00008000
-        SLEDDING = 1 << 16, // 0x00011000
-        MOVEMENT_FROZEN = 1 << 17, // 0x00021000
-        ANIMATION_FROZEN = 1 << 18, // 0x00041000
-        GAMEDRAW = 1 << 19, // 0x00081000
-        TOOLSDRAW = 1 << 20, // 0x00101000
-        MOBILE = 1 << 21, // 0x00201000
+        SLEDDING = 1 << 16, // 0x00010000
+        MOVEMENT_FROZEN = 1 << 17, // 0x00020000
+        ANIMATION_FROZEN = 1 << 18, // 0x00040000
+        GAMEDRAW = 1 << 19, // 0x00080000
+        TOOLSDRAW = 1 << 20, // 0x00100000
+        MOBILE = 1 << 21, // 0x00200000
 
         INWORKSPACE = 1 << 28, // 0x10000000
         PHYSICSDISABLED = 1 << 29, // 0x20000000
