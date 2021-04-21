@@ -35,7 +35,7 @@
             absorbMagEnd = data.ReadSingle();
             reflectVar = data.ReadSingle();
             generateSpellcraftEnd = data.ReadSingle();
-            data.ReadSingletonPkg<Effect>(v => effGenerate = v);
+            data.ReadPkg<Effect>(v => effGenerate = v);
             reflectPKMod = data.ReadSingle();
             absorbVar = data.ReadSingle();
             generateSpellcraftBegin = data.ReadSingle();

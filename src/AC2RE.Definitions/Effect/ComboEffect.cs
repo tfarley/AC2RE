@@ -16,14 +16,14 @@ namespace AC2RE.Definitions {
         public SingletonPkg<Effect> effectToAddIfNotPresent; // m_effToAddIfNotPresent
 
         public ComboEffect(AC2Reader data) : base(data) {
-            data.ReadSingletonPkg<Effect>(v => effectToGiveBackIfNotPresent = v);
-            data.ReadSingletonPkg<Effect>(v => effectToGiveBackIfPresent = v);
-            data.ReadSingletonPkg<Effect>(v => effectToAddIfPresent = v);
+            data.ReadPkg<Effect>(v => effectToGiveBackIfNotPresent = v);
+            data.ReadPkg<Effect>(v => effectToGiveBackIfPresent = v);
+            data.ReadPkg<Effect>(v => effectToAddIfPresent = v);
             data.ReadPkg<AList>(v => effectPresentByClass = v);
             data.ReadPkg<AList>(v => effectPresentByType = v);
             spellcraftAdjustmentIfNotPresent = data.ReadInt32();
             spellcraftAdjustmentIfPresent = data.ReadInt32();
-            data.ReadSingletonPkg<Effect>(v => effectToAddIfNotPresent = v);
+            data.ReadPkg<Effect>(v => effectToAddIfNotPresent = v);
         }
     }
 }

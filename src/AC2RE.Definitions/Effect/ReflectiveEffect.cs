@@ -39,7 +39,7 @@ namespace AC2RE.Definitions {
             reflectVar = data.ReadSingle();
             data.ReadPkg<AList>(v => generateClasses = v);
             generateSpellcraftEnd = data.ReadSingle();
-            data.ReadSingletonPkg<Effect>(v => generateEffect = v);
+            data.ReadPkg<Effect>(v => generateEffect = v);
             absorbVar = data.ReadSingle();
             generateSpellcraftBegin = data.ReadSingle();
             generateProbBegin = data.ReadSingle();

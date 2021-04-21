@@ -46,9 +46,9 @@ namespace AC2RE.Definitions {
 
         public Recipe(AC2Reader data) {
             difficultyMinusSkillCutoff = data.ReadInt32();
-            data.ReadSingletonPkg<LevelMappingTable>(v => costMappingTable = v);
+            data.ReadPkg<LevelMappingTable>(v => costMappingTable = v);
             data.ReadPkg<ARHash>(v => craftMessageOverrides = v.to<uint, StringInfo>());
-            data.ReadSingletonPkg<LevelMappingTable>(v => m_difficultyMappingTable = v);
+            data.ReadPkg<LevelMappingTable>(v => m_difficultyMappingTable = v);
             iconDid = data.ReadDataId();
             data.ReadPkg<ARHash>(v => craftCheckEntries = v.to<uint, CraftCheckEntry>());
             craftSkillCategory = data.ReadUInt32();
@@ -61,7 +61,7 @@ namespace AC2RE.Definitions {
             minSpinnerVal = data.ReadUInt32();
             bonus = data.ReadSingle();
             charges = data.ReadInt32();
-            data.ReadSingletonPkg<RecipeNameColoringTable>(v => nameColoringTable = v);
+            data.ReadPkg<RecipeNameColoringTable>(v => nameColoringTable = v);
             chargeRefreshPeriod = data.ReadInt32();
             numAnimCycles = data.ReadUInt32();
             data.ReadPkg<AList>(v => craftThresholds = v);
@@ -69,14 +69,14 @@ namespace AC2RE.Definitions {
             maxSpinnerVal = data.ReadUInt32();
             minLevel = data.ReadUInt32();
             lastProductOrdinal = data.ReadUInt32();
-            data.ReadSingletonPkg<LevelMappingTable>(v => craftXpMappingTable = v);
+            data.ReadPkg<LevelMappingTable>(v => craftXpMappingTable = v);
             data.ReadPkg<CraftRandomEntry>(v => curRandEntry = v);
             data.ReadPkg<AAHash>(v => targetsHash = v);
             craftXp = data.ReadUInt32();
             requiresTarget = data.ReadBoolean();
             difficulty = data.ReadUInt32();
-            data.ReadSingletonPkg<SkillCheck>(v => skillCheckOverride = v);
-            data.ReadSingletonPkg<Effect>(v => requiredEffect = v);
+            data.ReadPkg<SkillCheck>(v => skillCheckOverride = v);
+            data.ReadPkg<Effect>(v => requiredEffect = v);
             animation = data.ReadUInt32();
             recoveryTime = data.ReadSingle();
             cost = data.ReadInt32();

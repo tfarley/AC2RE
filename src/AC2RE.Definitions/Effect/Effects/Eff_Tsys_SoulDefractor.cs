@@ -44,7 +44,7 @@
             petFlags = data.ReadUInt32();
             missileDefense = data.ReadInt32();
             missileAttack = data.ReadInt32();
-            data.ReadSingletonPkg<IPackage>(v => npcTable = v); // TODO: NPCTable
+            data.ReadPkg<IPackage>(v => npcTable = v); // TODO: NPCTable
             data.ReadPkg<StringInfo>(v => subName = v);
         }
     }

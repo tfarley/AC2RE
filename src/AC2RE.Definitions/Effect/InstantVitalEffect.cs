@@ -15,11 +15,11 @@ namespace AC2RE.Definitions {
 
         public InstantVitalEffect(AC2Reader data) : base(data) {
             data.ReadPkg<RArray>(v => lowBounds = v.to<FloatScaleDuple>());
-            data.ReadSingletonPkg<Effect>(v => hateComboEffect = v);
+            data.ReadPkg<Effect>(v => hateComboEffect = v);
             data.ReadPkg<RArray>(v => changeData = v.to<FloatScaleDuple>());
             initialChangeVar = data.ReadSingle();
             data.ReadPkg<RArray>(v => highBounds = v.to<FloatScaleDuple>());
-            data.ReadSingletonPkg<Effect>(v => hateLinkerEffect = v);
+            data.ReadPkg<Effect>(v => hateLinkerEffect = v);
         }
     }
 }

@@ -18,12 +18,12 @@ namespace AC2RE.Definitions {
         public gmEntity(AC2Reader data) : base(data) {
             data.ReadPkg<VisualDescInfo>(v => pileVisualDesc = v);
             data.ReadPkg<AAHash>(v => appearanceMutationHash = v);
-            data.ReadSingletonPkg<MasterListMember>(v => usagePermission = v);
-            data.ReadSingletonPkg<BiasProfile>(v => biasProfile = v);
-            data.ReadSingletonPkg<MasterListMember>(v => usageAction = v);
+            data.ReadPkg<MasterListMember>(v => usagePermission = v);
+            data.ReadPkg<BiasProfile>(v => biasProfile = v);
+            data.ReadPkg<MasterListMember>(v => usageAction = v);
             data.ReadPkg<EffectRegistry>(v => effectRegistry = v);
             data.ReadPkg<AList>(v => thresholdList = v);
-            data.ReadSingletonPkg<IPackage>(v => usageTakePermission = v);
+            data.ReadPkg<IPackage>(v => usageTakePermission = v);
         }
     }
 }

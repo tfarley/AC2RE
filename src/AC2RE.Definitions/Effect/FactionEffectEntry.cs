@@ -8,7 +8,7 @@
         public uint rating; // m_rating
 
         public FactionEffectEntry(AC2Reader data) {
-            data.ReadSingletonPkg<Effect>(v => effect = v);
+            data.ReadPkg<Effect>(v => effect = v);
             rating = data.ReadUInt32();
         }
     }

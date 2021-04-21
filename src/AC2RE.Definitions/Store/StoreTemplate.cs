@@ -18,7 +18,7 @@ namespace AC2RE.Definitions {
 
         public StoreTemplate(AC2Reader data) {
             data.ReadPkg<RList>(v => filters = v);
-            data.ReadSingletonPkg<StoreSorter>(v => sorter = v);
+            data.ReadPkg<StoreSorter>(v => sorter = v);
             data.ReadPkg<StringInfo>(v => name = v);
             data.ReadPkg<StringInfo>(v => description = v);
             totalSales = data.ReadInt32();

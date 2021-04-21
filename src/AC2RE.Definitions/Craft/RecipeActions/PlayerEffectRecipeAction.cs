@@ -11,7 +11,7 @@
 
         public PlayerEffectRecipeAction(AC2Reader data) {
             spellcraft = data.ReadSingle();
-            data.ReadSingletonPkg<Effect>(v => effect = v);
+            data.ReadPkg<Effect>(v => effect = v);
             flags = data.ReadUInt32();
             mappingTableDid = data.ReadDataId();
         }

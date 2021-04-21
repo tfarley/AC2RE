@@ -7,7 +7,7 @@
         public SingletonPkg<Effect> resultEffect; // m_effResult
 
         public CountdownEffect(AC2Reader data) : base(data) {
-            data.ReadSingletonPkg<Effect>(v => resultEffect = v);
+            data.ReadPkg<Effect>(v => resultEffect = v);
         }
     }
 }

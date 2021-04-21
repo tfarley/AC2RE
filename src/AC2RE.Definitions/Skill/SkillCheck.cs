@@ -15,7 +15,7 @@
 
         public SkillCheck(AC2Reader data) {
             maxSr = data.ReadSingle();
-            data.ReadSingletonPkg<SRFormula>(v => srFormula = v);
+            data.ReadPkg<SRFormula>(v => srFormula = v);
             seeded = data.ReadBoolean();
             luckMod = data.ReadSingle();
             slopeMod = data.ReadSingle();

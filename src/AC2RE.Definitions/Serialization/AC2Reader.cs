@@ -161,7 +161,7 @@ namespace AC2RE.Definitions {
             return packageId;
         }
 
-        public PackageId ReadSingletonPkg<T>(Action<SingletonPkg<T>> assigner) where T : class, IPackage {
+        public PackageId ReadPkg<T>(Action<SingletonPkg<T>> assigner) where T : class, IPackage {
             PackageId packageId = ReadPackageId();
             if (packageId != PackageId.NULL) {
                 packageRegistry.addResolver(() => assigner.Invoke(SingletonPkg<T>.cast(packageRegistry.get<IPackage>(packageId))));

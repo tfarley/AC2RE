@@ -18,7 +18,7 @@
             ordinal = data.ReadUInt32();
             timeout = data.ReadSingle();
             spellcraft = data.ReadSingle();
-            data.ReadSingletonPkg<Effect>(v => effect = v);
+            data.ReadPkg<Effect>(v => effect = v);
             effectKind = data.ReadInt32();
             flags = data.ReadUInt32();
             mappingTableDid = data.ReadDataId();

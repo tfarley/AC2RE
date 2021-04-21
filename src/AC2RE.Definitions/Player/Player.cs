@@ -15,7 +15,7 @@ namespace AC2RE.Definitions {
         public bool isAttacking; // m_isAttacking
         public CraftRegistry craftRegistry; // m_craftRegistry
         public GameplayOptionsProfile currentOptionsProfile; // m_currentOptionsProfile
-        public SingletonPkg<StringInfo> logoffOK; // m_bLogoffOK
+        public bool logoffOK; // m_bLogoffOK
         public ResurrectionRequest rezRequest; // m_rezRequest
         public Trade trade; // m_trade
         public ActRegistry acts; // m_Acts
@@ -30,7 +30,7 @@ namespace AC2RE.Definitions {
             isAttacking = data.ReadBoolean();
             data.ReadPkg<CraftRegistry>(v => craftRegistry = v);
             data.ReadPkg<GameplayOptionsProfile>(v => currentOptionsProfile = v);
-            data.ReadSingletonPkg<StringInfo>(v => logoffOK = v);
+            logoffOK = data.ReadBoolean();
             data.ReadPkg<ResurrectionRequest>(v => rezRequest = v);
             data.ReadPkg<Trade>(v => trade = v);
             data.ReadPkg<ActRegistry>(v => acts = v);

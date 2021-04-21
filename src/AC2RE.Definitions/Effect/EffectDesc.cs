@@ -49,7 +49,7 @@ namespace AC2RE.Definitions {
             casterLevel = data.ReadInt32();
             targetHealth = data.ReadInt32();
             sourceHealthChange = data.ReadInt32();
-            data.ReadSingletonPkg<Effect>(v => effect = v);
+            data.ReadPkg<Effect>(v => effect = v);
             targetVigor = data.ReadInt32();
             flags = data.ReadUInt32();
             durabilityLevel = data.ReadUInt32();

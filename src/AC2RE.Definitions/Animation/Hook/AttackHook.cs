@@ -49,7 +49,7 @@ namespace AC2RE.Definitions {
             weaponBehaviorHit = (BehaviorId)data.ReadUInt32();
             targetBehaviorCrit = (BehaviorId)data.ReadUInt32();
             weaponFxMiss = (FxId)data.ReadUInt32();
-            data.ReadSingletonPkg<Effect>(v => requiredEffect = v);
+            data.ReadPkg<Effect>(v => requiredEffect = v);
             missileSourceOffset = data.ReadSingle();
             data.ReadPkg<RList>(v => userEffects = v.to(SingletonPkg<Effect>.cast));
             animHookIndex = data.ReadUInt32();
