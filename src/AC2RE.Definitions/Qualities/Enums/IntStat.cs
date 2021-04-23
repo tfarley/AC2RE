@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions {
 
-    // Const *_IntStat
+    // Const *_IntStat and WSL func gmPropertyMapper::constructor
     public enum IntStat : uint {
         UNDEF = 0,
         PLACEMENT = 1,
@@ -168,6 +168,7 @@
         ENTERWORLDFX = 4102,
         APPEARANCEMUTATIONKEY = 4103,
         SKILLTARGETFLAGS = 4104,
+        NPC_DAMAGETYPE = 4105,
         QUEST_BESTOWEDSCENEID = 4200,
         TRAVEL_PORTALFLAGS = 4201,
         TRAVEL_PORTALSCENE = 4202,

@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions {
 
-    // Const *_DIDStat
+    // Const *_DIDStat and WSL func gmPropertyMapper::constructor
     public enum DataIdStat : uint {
         UNDEF = 0,
         PHYSOBJ = 1,
@@ -22,5 +22,6 @@
         STORETEMPLATE = 312,
         BOOK_IMAGE = 313,
         STOREGROUP = 314,
+        NPC_CORPSEOVERRIDEENTITY = 315,
     }
 }
