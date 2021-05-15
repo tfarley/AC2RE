@@ -163,12 +163,14 @@ namespace AC2RE.PdbTool {
             Console.WriteLine();
 
             foreach (UDTInfo udtInfo in pdbParser.udtInfoById.Values) {
-                Console.WriteLine(udtToString(udtInfo));
-                Console.WriteLine();
+                if (udtInfo.udtSymbol.unmodifiedTypeId == 0 && udtInfo.udtSymbol.nested == 0) {
+                    Console.WriteLine(udtToString(udtInfo));
+                    Console.WriteLine();
+                }
             }
 
             foreach (FunctionInfo functionInfo in pdbParser.functionInfoById.Values) {
-                if (!functionInfo.isMember) {
+                if (functionInfo.functionSymbol.classParentId == 0) {
                     Console.WriteLine(functionToString(functionInfo));
                 }
             }
@@ -207,11 +209,11 @@ namespace AC2RE.PdbTool {
             }
             foreach (IDiaSymbol constantSymbol in udtInfo.constantSymbols) {
                 sb.AppendLine();
-                sb.Append(memberToString(constantSymbol, "constant", indentLevel + 1));
+                sb.Append(dataToString(constantSymbol, "constant", indentLevel + 1));
             }
             foreach (IDiaSymbol memberSymbol in udtInfo.memberSymbols) {
                 sb.AppendLine();
-                sb.Append(memberToString(memberSymbol, "", indentLevel + 1));
+                sb.Append(dataToString(memberSymbol, "", indentLevel + 1));
             }
             foreach (FunctionInfo functionInfo in udtInfo.functionInfos) {
                 sb.AppendLine();
@@ -252,6 +254,11 @@ namespace AC2RE.PdbTool {
                 sb.Append(locationStr);
                 sb.Append(' ');
             }
+            CV_access_e access = (CV_access_e)functionInfo.functionSymbol.access;
+            if (access != 0) {
+                sb.Append(accessToString(access));
+                sb.Append(' ');
+            }
             sb.Append(functionInfo.functionSymbol.name);
             sb.Append('(');
             for (int i = 0; i < functionInfo.argSymbols.Count; i++) {
@@ -266,37 +273,57 @@ namespace AC2RE.PdbTool {
             sb.Append(')');
             foreach (IDiaSymbol constantSymbol in functionInfo.constantSymbols) {
                 sb.AppendLine();
-                sb.Append(memberToString(constantSymbol, "constant", indentLevel + 1));
+                sb.Append(dataToString(constantSymbol, "constant", indentLevel + 1));
             }
             foreach (IDiaSymbol ptrSymbol in functionInfo.ptrSymbols) {
                 sb.AppendLine();
-                sb.Append(memberToString(ptrSymbol, "ptr", indentLevel + 1));
+                sb.Append(dataToString(ptrSymbol, "ptr", indentLevel + 1));
             }
             foreach (IDiaSymbol argSymbol in functionInfo.argSymbols) {
                 sb.AppendLine();
-                sb.Append(memberToString(argSymbol, "arg", indentLevel + 1));
+                sb.Append(dataToString(argSymbol, "arg", indentLevel + 1));
             }
             foreach (IDiaSymbol localSymbol in functionInfo.localSymbols) {
                 sb.AppendLine();
-                sb.Append(memberToString(localSymbol, "local", indentLevel + 1));
+                sb.Append(dataToString(localSymbol, "local", indentLevel + 1));
             }
             return sb.ToString();
         }
 
-        private static string memberToString(IDiaSymbol memberSymbol, string descriptor, int indentLevel) {
+        private static string accessToString(CV_access_e access) {
+            switch (access) {
+                case 0:
+                    return "";
+                case CV_access_e.CV_private:
+                    return "private";
+                case CV_access_e.CV_protected:
+                    return "protected";
+                case CV_access_e.CV_public:
+                    return "public";
+                default:
+                    throw new NotImplementedException(access.ToString());
+            }
+        }
+
+        private static string dataToString(IDiaSymbol dataSymbol, string descriptor, int indentLevel) {
             StringBuilder sb = new();
             sb.Append(' ', indentLevel * 2);
-            sb.Append(locationToString(memberSymbol));
+            sb.Append(locationToString(dataSymbol));
             sb.Append(' ');
+            CV_access_e access = (CV_access_e)dataSymbol.access;
+            if (access != 0) {
+                sb.Append(accessToString(access));
+                sb.Append(' ');
+            }
             if (descriptor.Length > 0) {
                 sb.Append(descriptor);
                 sb.Append(" = ");
             }
-            if (memberSymbol.type != null) {
-                sb.Append(typeToString(memberSymbol.type));
+            if (dataSymbol.type != null) {
+                sb.Append(typeToString(dataSymbol.type));
                 sb.Append(' ');
             }
-            sb.Append(memberSymbol.name);
+            sb.Append(dataSymbol.name);
             return sb.ToString();
         }
 

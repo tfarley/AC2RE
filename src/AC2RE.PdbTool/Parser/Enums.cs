@@ -5,7 +5,7 @@
         UdtClass,
         UdtUnion,
         UdtInterface,
-    };
+    }
 
     public enum DataKind {
         DataIsUnknown,
@@ -18,7 +18,7 @@
         DataIsMember,
         DataIsStaticMember,
         DataIsConstant,
-    };
+    }
 
     public enum BasicType {
         btNoType = 0,
@@ -42,7 +42,13 @@
         btChar16 = 32,  // char16_t
         btChar32 = 33,  // char32_t
         btChar8 = 34,  // char8_t
-    };
+    }
+
+    public enum CV_access_e {
+        CV_private = 1,
+        CV_protected = 2,
+        CV_public = 3,
+    }
 
     public enum LocationType {
         LocIsNull,

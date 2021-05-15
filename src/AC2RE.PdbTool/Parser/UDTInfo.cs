@@ -50,11 +50,14 @@ namespace AC2RE.PdbTool {
                             functionInfo = new FunctionInfo(pdbParser, childSymbol);
                             pdbParser.functionInfoById[childSymbol.symIndexId] = functionInfo;
                         }
-                        functionInfo.isMember = true;
                         functionInfos.Add(functionInfo);
                         break;
                     case SymTagEnum.SymTagUDT:
-                        nestedUdtInfos.Add(new UDTInfo(pdbParser, childSymbol, false, namePrefix + udtSymbol.name + "::"));
+                        if (!pdbParser.udtInfoById.TryGetValue(childSymbol.symIndexId, out UDTInfo? udtInfo)) {
+                            udtInfo = new UDTInfo(pdbParser, childSymbol, false, namePrefix + udtSymbol.name + "::");
+                            pdbParser.udtInfoById[childSymbol.symIndexId] = udtInfo;
+                        }
+                        nestedUdtInfos.Add(udtInfo);
                         break;
                     case SymTagEnum.SymTagEnum:
                         nestedUdtInfos.Add(new UDTInfo(pdbParser, childSymbol, true, namePrefix + udtSymbol.name + "::"));

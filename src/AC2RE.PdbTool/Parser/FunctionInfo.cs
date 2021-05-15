@@ -11,7 +11,6 @@ namespace AC2RE.PdbTool {
         public readonly List<IDiaSymbol> ptrSymbols = new();
         public readonly List<IDiaSymbol> argSymbols = new();
         public readonly List<IDiaSymbol> localSymbols = new();
-        public bool isMember;
 
         public FunctionInfo(PdbParser pdbParser, IDiaSymbol functionSymbol) {
             this.functionSymbol = functionSymbol;
