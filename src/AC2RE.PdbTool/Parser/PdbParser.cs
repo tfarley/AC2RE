@@ -9,6 +9,7 @@ namespace AC2RE.PdbTool {
 
         private static readonly int REGDB_E_CLASSNOTREG = unchecked((int)0x80040154);
 
+        public Guid guid;
         public readonly Dictionary<uint, IDiaSymbol> typedefById = new();
         public readonly Dictionary<uint, UDTInfo> udtInfoById = new();
         public readonly Dictionary<uint, FunctionInfo> functionInfoById = new();
@@ -29,6 +30,8 @@ namespace AC2RE.PdbTool {
             diaSrc.loadDataFromPdb(pdbFilePath);
 
             diaSrc.openSession(out IDiaSession diaSession);
+
+            guid = diaSession.globalScope.guid;
 
             IDiaEnumSymbols typedefSymbols = getChildSymbols(diaSession.globalScope, SymTagEnum.SymTagTypedef);
             foreach (IDiaSymbol typedefSymbol in typedefSymbols) {

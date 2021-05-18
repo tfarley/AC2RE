@@ -156,6 +156,10 @@ namespace AC2RE.PdbTool {
         };
 
         public static void print(PdbParser pdbParser) {
+            Console.WriteLine($"Guid: {pdbParser.guid}");
+
+            Console.WriteLine();
+
             foreach (IDiaSymbol typedefSymbol in pdbParser.typedefById.Values) {
                 Console.WriteLine(typedefToString(typedefSymbol));
             }

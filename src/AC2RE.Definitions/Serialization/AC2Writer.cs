@@ -168,7 +168,7 @@ namespace AC2RE.Definitions {
         }
 
         public void Write(string str, Encoding encoding) {
-            int numChars = str != null ? str.Length : 0;
+            int numChars = str?.Length ?? 0;
             Write((ushort)numChars);
             if (numChars == 0) {
                 Align(4);
@@ -181,7 +181,7 @@ namespace AC2RE.Definitions {
         }
 
         public void Write<T>(List<T> list, Action<T> elementWriter, uint sizeOfSize = 4) {
-            int count = list != null ? list.Count : 0;
+            int count = list?.Count ?? 0;
             if (sizeOfSize == 1) {
                 Write((byte)count);
             } else if (sizeOfSize == 2) {
@@ -199,7 +199,7 @@ namespace AC2RE.Definitions {
         }
 
         public void Write<T>(HashSet<T> set, Action<T> elementWriter) {
-            int count = set != null ? set.Count : 0;
+            int count = set?.Count ?? 0;
             Write((ushort)count);
             // NOTE: The client may crash if this table size value is too small, even if the set itself does not have many entries
             Write((ushort)Math.Max(count, 0x800));
@@ -211,7 +211,7 @@ namespace AC2RE.Definitions {
         }
 
         public void WriteMulti<K, V>(Dictionary<K, List<V>> dict, Action<K> keyWriter, Action<V> valueWriter) {
-            int count = dict != null ? dict.Count : 0;
+            int count = dict?.Count ?? 0;
             Write(count);
             if (count > 0) {
                 foreach (var element in dict) {
@@ -224,7 +224,7 @@ namespace AC2RE.Definitions {
         }
 
         public void Write<K, V>(Dictionary<K, V> dict, Action<K> keyWriter, Action<V> valueWriter) {
-            int count = dict != null ? dict.Count : 0;
+            int count = dict?.Count ?? 0;
             Write((ushort)count);
             // NOTE: The client may crash if this table size value is too small, even if the dictionary itself does not have many entries
             Write((ushort)Math.Max(count, 0x800));
@@ -238,7 +238,7 @@ namespace AC2RE.Definitions {
 
         public void WriteStlMap<K, V>(Dictionary<K, V> dict, Action<K> keyWriter, Action<V> valueWriter) {
             // Variation of dictionary where the count is a full 32 bits without any table size (used for std::map specifically, see STREAMPACK_STL)
-            int count = dict != null ? dict.Count : 0;
+            int count = dict?.Count ?? 0;
             Write(count);
             if (count > 0) {
                 foreach (var element in dict) {

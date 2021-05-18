@@ -170,9 +170,7 @@ namespace AC2RE.Definitions {
         }
 
         public string ReadNullTermString(Encoding encoding = null) {
-            if (encoding == null) {
-                encoding = Encoding.ASCII;
-            }
+            encoding ??= Encoding.ASCII;
             MemoryStream buffer = new();
             using (AC2Writer data = new(buffer, packageRegistry)) {
                 byte val;
