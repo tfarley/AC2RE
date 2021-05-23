@@ -1,5 +1,4 @@
 ﻿using AC2RE.Definitions;
-using AC2RE.Server.Database;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +6,6 @@ namespace AC2RE.Server {
 
     internal partial class WorldObject {
 
-        [DbPersist]
         private Dictionary<InvLoc, InstanceId>? invLocToEquippedItemId;
 
         public IEnumerable<KeyValuePair<InvLoc, InstanceId>> invLocToEquippedItemIdEnumerable => invLocToEquippedItemId ?? Enumerable.Empty<KeyValuePair<InvLoc, InstanceId>>();
@@ -15,6 +13,16 @@ namespace AC2RE.Server {
 
         private void initEquip() {
 
+        }
+
+        public void recacheEquip(List<WorldObject> equippedItems) {
+            if (invLocToEquippedItemId == null) {
+                invLocToEquippedItemId = new();
+            }
+
+            foreach (WorldObject equippedItem in equippedItems) {
+                invLocToEquippedItemId[equippedItem.equippedLocation] = equippedItem.id;
+            }
         }
 
         public bool isEquipped(InvLoc invLoc) {
@@ -42,6 +50,7 @@ namespace AC2RE.Server {
                 invLocToEquippedItemId[equipLoc] = item.id;
 
                 item.wielderId = id;
+                item.equippedLocation = equipLoc;
 
                 HoldingLocation holdLoc = item.primaryHoldLoc;
                 if (holdLoc != HoldingLocation.INVALID) {

@@ -5,9 +5,9 @@ namespace AC2RE.Server {
 
     internal class AccountManager {
 
-        private readonly AccountDatabase accountDb;
+        private readonly IAccountDatabase accountDb;
 
-        public AccountManager(AccountDatabase accountDb) {
+        public AccountManager(IAccountDatabase accountDb) {
             this.accountDb = accountDb;
         }
 

@@ -12,6 +12,7 @@
                 <MenuItem x:Name="openMenuItem" Header="Open" Click="openMenuItem_Click"/>
             </MenuItem>
             <MenuItem Header="_Search" Click="searchMenuItem_Click"/>
+            <MenuItem Header="_Tools" Click="toolsMenuItem_Click"/>
             <MenuItem Header="_Export">
                 <MenuItem Header="Export _JSON" Click="exportJsonMenuItem_Click"/>
             </MenuItem>

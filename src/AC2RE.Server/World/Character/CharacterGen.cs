@@ -42,12 +42,10 @@ namespace AC2RE.Server {
                 }
             }
 
-            WorldObject character = objectManager.create();
-            ObjectGen.applyWeenie(character, contentManager, characterGenSystem.playerEntityDid);
-            ObjectGen.applyPhysics(character, contentManager, raceSexInfo.physObjDid);
+            WorldObject character = objectManager.create(characterGenSystem.playerEntityDid, raceSexInfo.physObjDid, true);
             setCharacterPhysics(character, startPos);
             setCharacterVisual(character, appProfileMap, appearanceInfos);
-            setCharacterQualities(character, raceSexInfo.physObjDid, species, sex);
+            setCharacterQualities(character, species, sex);
 
             character.name = new(name);
 
@@ -58,9 +56,7 @@ namespace AC2RE.Server {
 
         private static void setCharacterPhysics(WorldObject character, Position startPos) {
             character.setSliderValue(1073741834, 1.0f, 0.0f);
-            character.mode = ModeId.PEACE;
             character.pos = startPos;
-            character.velScale = 2.0f;
         }
 
         private static void setCharacterVisual(WorldObject character, Dictionary<PhysiqueType, Dictionary<float, Tuple<AppearanceKey, DataId>>> appProfileMap, Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos) {
@@ -71,8 +67,7 @@ namespace AC2RE.Server {
             };
         }
 
-        private static void setCharacterQualities(WorldObject character, DataId physObjDid, SpeciesType species, SexType sex) {
-            character.physObjDid = physObjDid;
+        private static void setCharacterQualities(WorldObject character, SpeciesType species, SexType sex) {
             character.capacity = 78;
             character.species = species;
             character.sex = sex;
@@ -94,8 +89,7 @@ namespace AC2RE.Server {
         private static void createStartingInventory(WorldObjectManager objectManager, ContentManager contentManager, InventoryManager inventoryManager, WorldObject character, CharGenMatrix charGenMatrix, SpeciesType species, Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos) {
             List<StartInvData> startInvItems = charGenMatrix.startingInventoryTable[species][0][0];
             foreach (StartInvData startInvItem in startInvItems) {
-                WorldObject item = objectManager.create();
-                ObjectGen.applyWeenie(item, contentManager, startInvItem.entityDid);
+                WorldObject item = objectManager.create(startInvItem.entityDid, DataId.NULL, true);
 
                 DataId weenieStateDid = new(0x71000000 + item.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
                 WState clothingWeenieState = contentManager.getWeenieState(weenieStateDid);

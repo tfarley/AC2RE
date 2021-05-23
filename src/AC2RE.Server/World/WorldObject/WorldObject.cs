@@ -1,5 +1,4 @@
 ﻿using AC2RE.Definitions;
-using AC2RE.Server.Database;
 
 namespace AC2RE.Server {
 
@@ -7,34 +6,23 @@ namespace AC2RE.Server {
 
         private World world;
 
-        [DbId]
         public readonly InstanceId id;
-
-        [property: DbPersist]
         public bool destroyed { get; private set; }
 
-        [property: DbPersist]
-        public ushort instanceStamp { get; private set; }
+        public bool persistent;
 
         public bool inWorld { get; private set; }
 
-        [DbConstructor]
-        private WorldObject(InstanceId id) {
+        public WorldObject(World world, InstanceId id, bool persistent) {
+            this.world = world;
             this.id = id;
-        }
-
-        public WorldObject(InstanceId id, World world) : this(id) {
-            init(world);
+            this.persistent = persistent;
 
             initContain();
             initEquip();
             initPhysics();
             initQualities();
             initVisual();
-        }
-
-        public void init(World world) {
-            this.world = world;
         }
 
         public void destroy() {
@@ -45,7 +33,7 @@ namespace AC2RE.Server {
         public InstanceIdWithStamp getInstanceIdWithStamp(ushort otherStamp = 0) {
             return new() {
                 id = id,
-                instanceStamp = instanceStamp,
+                instanceStamp = physics.instanceStamp,
                 otherStamp = otherStamp,
             };
         }
@@ -76,7 +64,7 @@ namespace AC2RE.Server {
 
             world.landblockManager.leaveWorld(this);
 
-            instanceStamp++;
+            physics.instanceStamp++;
         }
     }
 }

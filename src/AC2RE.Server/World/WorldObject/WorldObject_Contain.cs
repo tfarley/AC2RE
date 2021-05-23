@@ -1,5 +1,4 @@
 ﻿using AC2RE.Definitions;
-using AC2RE.Server.Database;
 using AC2RE.Utils;
 using System;
 using System.Collections.Generic;
@@ -9,13 +8,22 @@ namespace AC2RE.Server {
 
     internal partial class WorldObject {
 
-        [DbPersist]
         private List<InstanceId>? containedItemIds;
 
         public IEnumerable<InstanceId> containedItemIdsEnumerable => containedItemIds ?? Enumerable.Empty<InstanceId>();
 
         public void initContain() {
 
+        }
+
+        public void recacheContain(List<WorldObject> containedItems) {
+            if (containedItemIds == null) {
+                containedItemIds = new();
+            }
+
+            foreach (WorldObject containedItem in containedItems) {
+                containedItemIds.Add(containedItem.id);
+            }
         }
 
         public bool contains(InstanceId itemId) {
@@ -31,12 +39,10 @@ namespace AC2RE.Server {
                 // TODO: Hack to prevent weird case where icon wraps to next line when dragged to an empty slot
                 slot = Math.Clamp(slot, 0, Math.Max(container.containedItemIds.Count - (container.invLocToEquippedItemId?.Count ?? 0) - 2, 0));
 
-                if (containerId != container.id) {
-                    containerId = container.id;
+                containerId = container.id;
 
-                    return container.containedItemIds.InsertSafe(slot, id);
-                } else {
-                    int curSlot = container.containedItemIds.IndexOf(id);
+                int curSlot = container.containedItemIds.IndexOf(id);
+                if (curSlot != -1) {
                     if (slot != curSlot) {
                         // TODO: Reshuffle to correct index?
                         container.containedItemIds.RemoveAt(curSlot);
@@ -44,6 +50,8 @@ namespace AC2RE.Server {
                     }
                     return curSlot;
                 }
+
+                return container.containedItemIds.InsertSafe(slot, id);
             } else if (containerId != InstanceId.NULL) {
                 if (world.objectManager.tryGet(containerId, out WorldObject? curContainer)) {
                     curContainer.containedItemIds!.Remove(id);

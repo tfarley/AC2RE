@@ -1,12 +1,10 @@
 ﻿using AC2RE.Definitions;
-using AC2RE.Server.Database;
 using System.Collections.Generic;
 
 namespace AC2RE.Server {
 
     internal partial class WorldObject {
 
-        [DbPersist]
         public CBaseQualities qualities;
 
         private HashSet<object> dirtyStats = new();
@@ -16,58 +14,34 @@ namespace AC2RE.Server {
             qualities.weenieDesc = new();
         }
 
-        // TODO: Confirm these via packet logs, some are additional based on guesses
-        private static readonly HashSet<IntStat> INT_VISUAL_STATS = new() {
-            IntStat.ETHEREALPHYSICSTYPELOW,
-            IntStat.ETHEREALPHYSICSTYPEHIGH,
-            IntStat.ETHEREALPLACEMENTTYPELOW,
-            IntStat.ETHEREALPLACEMENTTYPEHIGH,
-            IntStat.ETHEREALMOVEMENTTYPELOW,
-            IntStat.ETHEREALMOVEMENTTYPEHIGH,
-            IntStat.QUANTITY,
-            IntStat.DURABILITY_CURRENTLEVEL,
-        };
-
-        private static readonly HashSet<BoolStat> BOOL_VISUAL_STATS = new() {
-            BoolStat.NODRAW,
-            BoolStat.DEAD,
-            BoolStat.ISSELECTABLE,
-            BoolStat.OPEN,
-        };
-
-        private static readonly HashSet<FloatStat> FLOAT_VISUAL_STATS = new() {
-            FloatStat.PHYSICS_SCALE,
-        };
-
-        private static readonly HashSet<TimestampStat> TIMESTAMP_VISUAL_STATS = new() {
-
-        };
-
-        private static readonly HashSet<DataIdStat> DATA_ID_VISUAL_STATS = new() {
-
-        };
-
-        private static readonly HashSet<InstanceIdStat> INSTANCE_ID_VISUAL_STATS = new() {
-            InstanceIdStat.CONTAINER,
-            InstanceIdStat.EQUIPPER,
-            InstanceIdStat.PLUNDERER,
-            InstanceIdStat.ORIGINATOR,
-            InstanceIdStat.CLAIMANT,
-            InstanceIdStat.ALLEGIANCE_MONARCH,
-        };
-
-        private static readonly HashSet<PositionStat> POSITION_VISUAL_STATS = new() {
-
-        };
-
-        private static readonly HashSet<StringInfoStat> STRING_INFO_VISUAL_STATS = new() {
-            StringInfoStat.NAME,
-            StringInfoStat.PLURALNAME,
-        };
-
-        private static readonly HashSet<LongIntStat> LONG_INT_VISUAL_STATS = new() {
-
-        };
+        public void syncWeenieDesc() {
+            WeenieDesc weenie = qualities.weenieDesc;
+            weenie.entityDid = entityDid;
+            weenie.name = name;
+            weenie.pluralName = pluralName;
+            weenie.iconDid = iconDid;
+            weenie.containerId = containerId;
+            weenie.wielderId = wielderId;
+            weenie.monarchId = monarchId;
+            weenie.originatorId = originatorId;
+            weenie.claimantId = claimantId;
+            weenie.killerId = killerId;
+            weenie.petSummonerId = summonerId;
+            weenie.quantity = quantity;
+            weenie.value = value;
+            weenie.factionType = faction;
+            weenie.pkAlwaysTruePermissions = pkAlwaysTruePermissions;
+            weenie.pkAlwaysFalsePermissions = pkAlwaysFalsePermissions;
+            weenie.physicsTypeLow = physicsTypeLow;
+            weenie.physicsTypeHigh = physicsTypeHigh;
+            weenie.movementEtherealLow = movementEtherealLow;
+            weenie.movementEtherealHigh = movementEtherealHigh;
+            weenie.placementEtherealLow = placementEtherealLow;
+            weenie.placementEtherealHigh = placementEtherealHigh;
+            weenie.durabilityCurrentLevel = durability;
+            weenie.durabilityMaxLevel = durabilityMax;
+            weenie.scale = scale;
+        }
 
         public StringInfo? name {
             get => getQ(StringInfoStat.NAME);
@@ -86,7 +60,7 @@ namespace AC2RE.Server {
         }
 
         public DataId iconDid {
-            get => getQ(DataIdStat.PHYSOBJ);
+            get => getQ(DataIdStat.ICONID);
             set {
                 setQ(DataIdStat.ICONID, value);
                 qualities.weenieDesc.iconDid = value;
@@ -107,6 +81,11 @@ namespace AC2RE.Server {
                 setQ(InstanceIdStat.EQUIPPER, value);
                 qualities.weenieDesc.wielderId = value;
             }
+        }
+
+        public InvLoc equippedLocation {
+            get => (InvLoc)getQ(IntStat.CURRENTEQUIPPEDLOCATION);
+            set => setQ(IntStat.CURRENTEQUIPPEDLOCATION, (int)value);
         }
 
         public InstanceId monarchId {
@@ -349,7 +328,7 @@ namespace AC2RE.Server {
             set => qualities.weenieDesc.packageType = value;
         }
 
-        public DataId physObjDid {
+        public DataId physicsEntityDid {
             get => getQ(DataIdStat.PHYSOBJ);
             set => setQ(DataIdStat.PHYSOBJ, value);
         }
@@ -435,110 +414,137 @@ namespace AC2RE.Server {
                 foreach (object dirtyStat in dirtyStats) {
                     switch (dirtyStat) {
                         case IntStat stat: {
-                                int statVal = getQ(stat);
+                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+                                if (syncMode != StatCfg.SyncMode.NONE) {
+                                    int statVal = getQ(stat);
 
-                                if (owningPlayer != null) {
-                                    world.playerManager.send(owningPlayer, new QualUpdateIntPrivateMsg(stat, statVal));
-                                }
+                                    if (owningPlayer != null) {
+                                        world.playerManager.send(owningPlayer, new QualUpdateIntPrivateMsg(stat, statVal));
+                                    }
 
-                                if (INT_VISUAL_STATS.Contains(stat)) {
-                                    world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateIntVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
+                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateIntVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    }
                                 }
                                 break;
                             }
                         case BoolStat stat: {
-                                bool statVal = getQ(stat);
+                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+                                if (syncMode != StatCfg.SyncMode.NONE) {
+                                    bool statVal = getQ(stat);
 
-                                if (owningPlayer != null) {
-                                    world.playerManager.send(owningPlayer, new QualUpdateBoolPrivateMsg(stat, statVal));
-                                }
+                                    if (owningPlayer != null) {
+                                        world.playerManager.send(owningPlayer, new QualUpdateBoolPrivateMsg(stat, statVal));
+                                    }
 
-                                if (BOOL_VISUAL_STATS.Contains(stat)) {
-                                    world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateBoolVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
+                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateBoolVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    }
                                 }
                                 break;
                             }
                         case FloatStat stat: {
-                                float statVal = getQ(stat);
+                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+                                if (syncMode != StatCfg.SyncMode.NONE) {
+                                    float statVal = getQ(stat);
 
-                                if (owningPlayer != null) {
-                                    world.playerManager.send(owningPlayer, new QualUpdateFloatPrivateMsg(stat, statVal));
-                                }
+                                    if (owningPlayer != null) {
+                                        world.playerManager.send(owningPlayer, new QualUpdateFloatPrivateMsg(stat, statVal));
+                                    }
 
-                                if (FLOAT_VISUAL_STATS.Contains(stat)) {
-                                    world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateFloatVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
+                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateFloatVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    }
                                 }
                                 break;
                             }
                         case TimestampStat stat: {
-                                double statVal = getQ(stat);
+                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+                                if (syncMode != StatCfg.SyncMode.NONE) {
+                                    double statVal = getQ(stat);
 
-                                if (owningPlayer != null) {
-                                    world.playerManager.send(owningPlayer, new QualUpdateTimestampPrivateMsg(stat, statVal));
-                                }
+                                    if (owningPlayer != null) {
+                                        world.playerManager.send(owningPlayer, new QualUpdateTimestampPrivateMsg(stat, statVal));
+                                    }
 
-                                if (TIMESTAMP_VISUAL_STATS.Contains(stat)) {
-                                    world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateTimestampVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
+                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateTimestampVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    }
                                 }
                                 break;
                             }
                         case DataIdStat stat: {
-                                DataId statVal = getQ(stat);
+                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+                                if (syncMode != StatCfg.SyncMode.NONE) {
+                                    DataId statVal = getQ(stat);
 
-                                if (owningPlayer != null) {
-                                    world.playerManager.send(owningPlayer, new QualUpdateDataIdPrivateMsg(stat, statVal));
-                                }
+                                    if (owningPlayer != null) {
+                                        world.playerManager.send(owningPlayer, new QualUpdateDataIdPrivateMsg(stat, statVal));
+                                    }
 
-                                if (DATA_ID_VISUAL_STATS.Contains(stat)) {
-                                    world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateDataIdVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
+                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateDataIdVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    }
                                 }
                                 break;
                             }
                         case InstanceIdStat stat: {
-                                InstanceId statVal = getQ(stat);
+                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+                                if (syncMode != StatCfg.SyncMode.NONE) {
+                                    InstanceId statVal = getQ(stat);
 
-                                if (owningPlayer != null) {
-                                    world.playerManager.send(owningPlayer, new QualUpdateInstanceIdPrivateMsg(stat, statVal));
-                                }
+                                    if (owningPlayer != null) {
+                                        world.playerManager.send(owningPlayer, new QualUpdateInstanceIdPrivateMsg(stat, statVal));
+                                    }
 
-                                if (INSTANCE_ID_VISUAL_STATS.Contains(stat)) {
-                                    world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateInstanceIdVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
+                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateInstanceIdVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    }
                                 }
                                 break;
                             }
                         case PositionStat stat: {
-                                Position? statVal = getQ(stat);
+                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+                                if (syncMode != StatCfg.SyncMode.NONE) {
+                                    Position? statVal = getQ(stat);
 
-                                if (owningPlayer != null) {
-                                    world.playerManager.send(owningPlayer, new QualUpdatePositionPrivateMsg(stat, statVal));
-                                }
+                                    if (owningPlayer != null) {
+                                        world.playerManager.send(owningPlayer, new QualUpdatePositionPrivateMsg(stat, statVal));
+                                    }
 
-                                if (POSITION_VISUAL_STATS.Contains(stat)) {
-                                    world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdatePositionVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
+                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdatePositionVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    }
                                 }
                                 break;
                             }
                         case StringInfoStat stat: {
-                                StringInfo? statVal = getQ(stat);
+                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+                                if (syncMode != StatCfg.SyncMode.NONE) {
+                                    StringInfo? statVal = getQ(stat);
 
-                                if (owningPlayer != null) {
-                                    world.playerManager.send(owningPlayer, new QualUpdateStringInfoPrivateMsg(stat, statVal));
-                                }
+                                    if (owningPlayer != null) {
+                                        world.playerManager.send(owningPlayer, new QualUpdateStringInfoPrivateMsg(stat, statVal));
+                                    }
 
-                                if (STRING_INFO_VISUAL_STATS.Contains(stat)) {
-                                    world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateStringInfoVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
+                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateStringInfoVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    }
                                 }
                                 break;
                             }
                         case LongIntStat stat: {
-                                long statVal = getQ(stat);
+                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+                                if (syncMode != StatCfg.SyncMode.NONE) {
+                                    long statVal = getQ(stat);
 
-                                if (owningPlayer != null) {
-                                    world.playerManager.send(owningPlayer, new QualUpdateLongIntPrivateMsg(stat, statVal));
-                                }
+                                    if (owningPlayer != null) {
+                                        world.playerManager.send(owningPlayer, new QualUpdateLongIntPrivateMsg(stat, statVal));
+                                    }
 
-                                if (LONG_INT_VISUAL_STATS.Contains(stat)) {
-                                    world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateLongIntVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
+                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateLongIntVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                    }
                                 }
                                 break;
                             }
@@ -549,121 +555,191 @@ namespace AC2RE.Server {
             dirtyStats.Clear();
         }
 
-        private int getQ(IntStat stat) => qualities.ints?.GetValueOrDefault(stat) ?? default;
-        private void setQ(IntStat stat, int value) {
+        public int getQ(IntStat stat) => qualities.ints?.GetValueOrDefault(stat) ?? default;
+        public void setQ(IntStat stat, int value) {
             if (qualities.ints == null) {
-                qualities.ints = new() { { stat, value } };
+                if (value != default) {
+                    qualities.ints = new() { { stat, value } };
+                    dirtyStats.Add(stat);
+                }
             } else {
-                qualities.ints[stat] = value;
+                if (value != default) {
+                    qualities.ints[stat] = value;
+                } else {
+                    qualities.ints.Remove(stat);
+                }
+                dirtyStats.Add(stat);
             }
-
-            dirtyStats.Add(stat);
         }
 
-        private bool getQ(BoolStat stat) => qualities.bools?.GetValueOrDefault(stat) ?? default;
-        private void setQ(BoolStat stat, bool value) {
+        public bool getQ(BoolStat stat) => qualities.bools?.GetValueOrDefault(stat) ?? default;
+        public void setQ(BoolStat stat, bool value) {
             if (qualities.bools == null) {
-                qualities.bools = new() { { stat, value } };
+                if (value != default) {
+                    qualities.bools = new() { { stat, value } };
+                    dirtyStats.Add(stat);
+                }
             } else {
-                qualities.bools[stat] = value;
+                if (value != default) {
+                    qualities.bools[stat] = value;
+                } else {
+                    qualities.bools.Remove(stat);
+                }
+                dirtyStats.Add(stat);
             }
-
-            dirtyStats.Add(stat);
         }
 
-        private float getQ(FloatStat stat) => qualities.floats?.GetValueOrDefault(stat) ?? default;
-        private void setQ(FloatStat stat, float value) {
+        public float getQ(FloatStat stat) => qualities.floats?.GetValueOrDefault(stat) ?? default;
+        public void setQ(FloatStat stat, float value) {
             if (qualities.floats == null) {
-                qualities.floats = new() { { stat, value } };
+                if (value != default) {
+                    qualities.floats = new() { { stat, value } };
+                    dirtyStats.Add(stat);
+                }
             } else {
-                qualities.floats[stat] = value;
+                if (value != default) {
+                    qualities.floats[stat] = value;
+                } else {
+                    qualities.floats.Remove(stat);
+                }
+                dirtyStats.Add(stat);
             }
-
-            dirtyStats.Add(stat);
         }
 
-        private double getQ(TimestampStat stat) => qualities.doubles?.GetValueOrDefault(stat) ?? default;
-        private void setQ(TimestampStat stat, double value) {
+        public double getQ(TimestampStat stat) => qualities.doubles?.GetValueOrDefault(stat) ?? default;
+        public void setQ(TimestampStat stat, double value) {
             if (qualities.doubles == null) {
-                qualities.doubles = new() { { stat, value } };
+                if (value != default) {
+                    qualities.doubles = new() { { stat, value } };
+                    dirtyStats.Add(stat);
+                }
             } else {
-                qualities.doubles[stat] = value;
+                if (value != default) {
+                    qualities.doubles[stat] = value;
+                } else {
+                    qualities.doubles.Remove(stat);
+                }
+                dirtyStats.Add(stat);
             }
-
-            dirtyStats.Add(stat);
         }
 
-        private string? getQ(StringStat stat) => qualities.strings?.GetValueOrDefault(stat) ?? default;
-        private void setQ(StringStat stat, string? value) {
+        public string? getQ(StringStat stat) => qualities.strings?.GetValueOrDefault(stat) ?? default;
+        public void setQ(StringStat stat, string? value) {
             if (qualities.strings == null) {
-                qualities.strings = new() { { stat, value } };
+                if (value != default) {
+                    qualities.strings = new() { { stat, value } };
+                    dirtyStats.Add(stat);
+                }
             } else {
-                qualities.strings[stat] = value;
+                if (value != default) {
+                    qualities.strings[stat] = value;
+                } else {
+                    qualities.strings.Remove(stat);
+                }
+                dirtyStats.Add(stat);
             }
         }
 
-        private DataId getQ(DataIdStat stat) => qualities.dids?.GetValueOrDefault(stat) ?? default;
-        private void setQ(DataIdStat stat, DataId value) {
+        public DataId getQ(DataIdStat stat) => qualities.dids?.GetValueOrDefault(stat) ?? default;
+        public void setQ(DataIdStat stat, DataId value) {
             if (qualities.dids == null) {
-                qualities.dids = new() { { stat, value } };
+                if (value != default) {
+                    qualities.dids = new() { { stat, value } };
+                    dirtyStats.Add(stat);
+                }
             } else {
-                qualities.dids[stat] = value;
+                if (value != default) {
+                    qualities.dids[stat] = value;
+                } else {
+                    qualities.dids.Remove(stat);
+                }
+                dirtyStats.Add(stat);
             }
-
-            dirtyStats.Add(stat);
         }
 
-        private InstanceId getQ(InstanceIdStat stat) => qualities.ids?.GetValueOrDefault(stat) ?? default;
-        private void setQ(InstanceIdStat stat, InstanceId value) {
+        public InstanceId getQ(InstanceIdStat stat) => qualities.ids?.GetValueOrDefault(stat) ?? default;
+        public void setQ(InstanceIdStat stat, InstanceId value) {
             if (qualities.ids == null) {
-                qualities.ids = new() { { stat, value } };
+                if (value != default) {
+                    qualities.ids = new() { { stat, value } };
+                    dirtyStats.Add(stat);
+                }
             } else {
-                qualities.ids[stat] = value;
+                if (value != default) {
+                    qualities.ids[stat] = value;
+                } else {
+                    qualities.ids.Remove(stat);
+                }
+                dirtyStats.Add(stat);
             }
-
-            dirtyStats.Add(stat);
         }
 
-        private Position? getQ(PositionStat stat) => qualities.poss?.GetValueOrDefault(stat) ?? default;
-        private void setQ(PositionStat stat, Position? value) {
+        public Position? getQ(PositionStat stat) => qualities.poss?.GetValueOrDefault(stat) ?? default;
+        public void setQ(PositionStat stat, Position? value) {
             if (qualities.poss == null) {
-                qualities.poss = new() { { stat, value } };
+                if (value != default) {
+                    qualities.poss = new() { { stat, value } };
+                    dirtyStats.Add(stat);
+                }
             } else {
-                qualities.poss[stat] = value;
+                if (value != default) {
+                    qualities.poss[stat] = value;
+                } else {
+                    qualities.poss.Remove(stat);
+                }
+                dirtyStats.Add(stat);
             }
-
-            dirtyStats.Add(stat);
         }
 
-        private StringInfo? getQ(StringInfoStat stat) => qualities.stringInfos?.GetValueOrDefault(stat) ?? default;
-        private void setQ(StringInfoStat stat, StringInfo? value) {
+        public StringInfo? getQ(StringInfoStat stat) => qualities.stringInfos?.GetValueOrDefault(stat) ?? default;
+        public void setQ(StringInfoStat stat, StringInfo? value) {
             if (qualities.stringInfos == null) {
-                qualities.stringInfos = new() { { stat, value } };
+                if (value != default) {
+                    qualities.stringInfos = new() { { stat, value } };
+                    dirtyStats.Add(stat);
+                }
             } else {
-                qualities.stringInfos[stat] = value;
+                if (value != default) {
+                    qualities.stringInfos[stat] = value;
+                } else {
+                    qualities.stringInfos.Remove(stat);
+                }
+                dirtyStats.Add(stat);
             }
-
-            dirtyStats.Add(stat);
         }
 
-        private PackageId getQ(uint stat) => qualities.packageIds?.GetValueOrDefault(stat) ?? default;
-        private void setQ(uint stat, PackageId value) {
+        public PackageId getQ(uint stat) => qualities.packageIds?.GetValueOrDefault(stat) ?? default;
+        public void setQ(uint stat, PackageId value) {
             if (qualities.packageIds == null) {
-                qualities.packageIds = new() { { stat, value } };
+                if (value != default) {
+                    qualities.packageIds = new() { { stat, value } };
+                    dirtyStats.Add(stat);
+                }
             } else {
-                qualities.packageIds[stat] = value;
+                if (value != default) {
+                    qualities.packageIds[stat] = value;
+                } else {
+                    qualities.packageIds.Remove(stat);
+                }
+                dirtyStats.Add(stat);
             }
         }
 
-        private long getQ(LongIntStat stat) => qualities.longs?.GetValueOrDefault(stat) ?? default;
-        private void setQ(LongIntStat stat, long value) {
+        public long getQ(LongIntStat stat) => qualities.longs?.GetValueOrDefault(stat) ?? default;
+        public void setQ(LongIntStat stat, long value) {
             if (qualities.longs == null) {
-                qualities.longs = new() { { stat, value } };
+                if (value != default) {
+                    qualities.longs = new() { { stat, value } };
+                    dirtyStats.Add(stat);
+                }
             } else {
-                qualities.longs[stat] = value;
+                if (value != default) {
+                    qualities.longs[stat] = value;
+                } else {
+                    qualities.longs.Remove(stat);
+                }
+                dirtyStats.Add(stat);
             }
-
-            dirtyStats.Add(stat);
         }
     }
 }

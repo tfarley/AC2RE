@@ -29,7 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rendering", "Rendering", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{AFB529A4-79FB-4453-BD2C-C5A48E73D54B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC2RE.PdbTool", "AC2RE.PdbTool\AC2RE.PdbTool.csproj", "{DC1DA3E4-D6D0-4A05-8217-241FE1C10931}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AC2RE.PdbTool", "AC2RE.PdbTool\AC2RE.PdbTool.csproj", "{DC1DA3E4-D6D0-4A05-8217-241FE1C10931}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -20,7 +20,8 @@ namespace AC2RE.Server {
             frame = new(new(131.13126f, 13.535009f, 127.25996f), Quaternion.Identity),
         };
 
-        public readonly WorldDatabase worldDb;
+        public readonly IMapDatabase mapDb;
+        public readonly IWorldDatabase worldDb;
         public readonly ServerTime serverTime;
         private readonly PacketHandler packetHandler;
         public readonly ContentManager contentManager;
@@ -33,14 +34,15 @@ namespace AC2RE.Server {
 
         private int toggleCounter = 0;
 
-        public World(WorldDatabase worldDb, ServerTime serverTime, PacketHandler packetHandler, ContentManager contentManager) {
+        public World(IMapDatabase mapDb, IWorldDatabase worldDb, ServerTime serverTime, PacketHandler packetHandler, ContentManager contentManager) {
+            this.mapDb = mapDb;
             this.worldDb = worldDb;
             this.serverTime = serverTime;
             this.packetHandler = packetHandler;
             this.contentManager = contentManager;
             playerManager = new(packetHandler);
             characterManager = new(this);
-            objectManager = new(this);
+            objectManager = new(this, contentManager);
             landblockManager = new(this);
             inventoryManager = new(this);
         }
@@ -390,6 +392,9 @@ namespace AC2RE.Server {
                                 item.enterWorld();
                             }
                         }
+
+                        character.mode = ModeId.PEACE;
+                        character.velScale = 2.0f;
 
                         character.enterWorld();
 

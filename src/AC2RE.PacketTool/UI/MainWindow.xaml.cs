@@ -113,6 +113,12 @@ namespace AC2RE.PacketTool.UI {
             });
         }
 
+        private void toolsMenuItem_Click(object sender, RoutedEventArgs e) {
+            UIUtil.swallowException(() => {
+                new ToolsDialog(this).Show();
+            });
+        }
+
         private void exportJsonMenuItem_Click(object sender, RoutedEventArgs e) {
             UIUtil.swallowException(() => {
 

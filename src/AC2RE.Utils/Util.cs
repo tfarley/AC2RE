@@ -75,9 +75,9 @@ namespace AC2RE.Utils {
             }
 
             if (target is string targetString) {
-                stringBuilder.Append('"');
-                stringBuilder.Append(targetString);
-                stringBuilder.Append('"');
+                stringBuilder.Append('"')
+                    .Append(targetString)
+                    .Append('"');
                 return;
             }
 
@@ -96,8 +96,8 @@ namespace AC2RE.Utils {
                         objectToString(stringBuilder, levelVisited, indentLevel + 2, entry.Value);
                         stringBuilder.AppendLine();
                     }
-                    stringBuilder.Append(' ', indentLevel);
-                    stringBuilder.Append('}');
+                    stringBuilder.Append(' ', indentLevel)
+                        .Append('}');
                 } else {
                     stringBuilder.Append("{ }");
                 }
@@ -116,9 +116,9 @@ namespace AC2RE.Utils {
                         objectToString(stringBuilder, levelVisited, indentLevel + 2, val);
                         first = false;
                     }
-                    stringBuilder.AppendLine();
-                    stringBuilder.Append(' ', indentLevel);
-                    stringBuilder.Append(']');
+                    stringBuilder.AppendLine()
+                        .Append(' ', indentLevel)
+                        .Append(']');
                 } else {
                     stringBuilder.Append("[ ]");
                 }
@@ -137,8 +137,8 @@ namespace AC2RE.Utils {
                         string? line;
                         while ((line = toStringReader.ReadLine()) != null) {
                             if (!first) {
-                                stringBuilder.AppendLine();
-                                stringBuilder.Append(' ', indentLevel);
+                                stringBuilder.AppendLine()
+                                    .Append(' ', indentLevel);
                             }
                             stringBuilder.Append(line);
                             first = false;
@@ -159,8 +159,8 @@ namespace AC2RE.Utils {
                         stringBuilder.AppendLine();
                     }
                 }
-                stringBuilder.Append(' ', indentLevel);
-                stringBuilder.Append('}');
+                stringBuilder.Append(' ', indentLevel)
+                    .Append('}');
             } else {
                 stringBuilder.Append("{ }");
             }

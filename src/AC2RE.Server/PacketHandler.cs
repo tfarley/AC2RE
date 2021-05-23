@@ -226,7 +226,7 @@ namespace AC2RE.Server {
         }
 
         private void send(ClientId clientId, INetMessage msg, byte[] payload) {
-            clientManager.processClient(clientId, client => {
+            clientManager.tryProcessClient(clientId, client => {
                 client.enqueueBlob(msg.blobFlags, msg.queueId, payload);
                 Logs.NET.debug("Enqueued msg",
                     "client", client,

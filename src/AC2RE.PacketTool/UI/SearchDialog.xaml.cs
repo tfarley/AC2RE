@@ -75,11 +75,6 @@ namespace AC2RE.PacketTool.UI {
 
                 resultsListView.Items.Clear();
 
-                List<string> allPcapFileNames = new();
-
-                allPcapFileNames.AddRange(Directory.GetFiles(pathTextBox.Text, "*.pcap", SearchOption.AllDirectories));
-                allPcapFileNames.AddRange(Directory.GetFiles(pathTextBox.Text, "*.pcapng", SearchOption.AllDirectories));
-
                 string opcodeFilter = opcodeFilterTextBox.Text;
                 string eventFilter = eventFilterTextBox.Text;
                 string? stringFilter = stringFilterHexCheckBox.IsChecked != true ? stringFilterTextBox.Text : null;
@@ -91,22 +86,18 @@ namespace AC2RE.PacketTool.UI {
 
                 resultsListViewExtraColumnManager.setExtraColumns(customFilter?.resultColumns);
 
-                foreach (string pcapFileName in allPcapFileNames) {
-                    using (FileStream fileStream = File.OpenRead(pcapFileName)) {
-                        NetBlobCollection netBlobCollection = PcapReader.read(fileStream);
+                PacketUtil.processAllPcaps(pathTextBox.Text, (pcapFileName, netBlobCollection) => {
+                    int lineNum = 1;
+                    foreach (NetBlobRecord netBlobRecord in netBlobCollection.records) {
+                        NetBlobRow netBlobRow = new(lineNum, netBlobRecord);
 
-                        int lineNum = 1;
-                        foreach (NetBlobRecord netBlobRecord in netBlobCollection.records) {
-                            NetBlobRow netBlobRow = new(lineNum, netBlobRecord);
-
-                            if (netBlobRow.matches(opcodeFilter, eventFilter, errorsFilter, stringFilter, bytePatternFilter, showIncomplete, customFilter)) {
-                                resultsListView.Items.Add(new SearchResult(pcapFileName, lineNum, netBlobRow.opcodeName, netBlobRow.eventName, netBlobRow.matchResultValues));
-                            }
-
-                            lineNum++;
+                        if (netBlobRow.matches(opcodeFilter, eventFilter, errorsFilter, stringFilter, bytePatternFilter, showIncomplete, customFilter)) {
+                            resultsListView.Items.Add(new SearchResult(pcapFileName, lineNum, netBlobRow.opcodeName, netBlobRow.eventName, netBlobRow.matchResultValues));
                         }
+
+                        lineNum++;
                     }
-                }
+                });
             });
         }
 

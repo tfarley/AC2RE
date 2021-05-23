@@ -181,22 +181,22 @@ namespace AC2RE.PdbTool {
         }
 
         private static string typedefToString(IDiaSymbol typedefSymbol, int indentLevel = 0) {
-            StringBuilder sb = new();
-            sb.Append(' ', indentLevel * 2);
-            sb.Append("typedef ");
-            sb.Append(typeToString(typedefSymbol.type));
-            sb.Append(' ');
-            sb.Append(typedefSymbol.name);
+            StringBuilder sb = new StringBuilder()
+                .Append(' ', indentLevel * 2)
+                .Append("typedef ")
+                .Append(typeToString(typedefSymbol.type))
+                .Append(' ')
+                .Append(typedefSymbol.name);
             return sb.ToString();
         }
 
         private static string udtToString(UDTInfo udtInfo, int indentLevel = 0) {
-            StringBuilder sb = new();
-            sb.Append(' ', indentLevel * 2);
-            sb.Append(udtKindToString(udtInfo));
-            sb.Append(' ');
-            sb.Append(udtInfo.namePrefix);
-            sb.Append(udtInfo.udtSymbol.name);
+            StringBuilder sb = new StringBuilder()
+                .Append(' ', indentLevel * 2)
+                .Append(udtKindToString(udtInfo))
+                .Append(' ')
+                .Append(udtInfo.namePrefix)
+                .Append(udtInfo.udtSymbol.name);
             if (udtInfo.baseClassSymbols.Count > 0) {
                 sb.Append(" : ");
                 for (int i = 0; i < udtInfo.baseClassSymbols.Count; i++) {
@@ -208,24 +208,24 @@ namespace AC2RE.PdbTool {
                 }
             }
             foreach (IDiaSymbol typedefSymbol in udtInfo.typedefSymbols) {
-                sb.AppendLine();
-                sb.Append(typedefToString(typedefSymbol, indentLevel + 1));
+                sb.AppendLine()
+                    .Append(typedefToString(typedefSymbol, indentLevel + 1));
             }
             foreach (IDiaSymbol constantSymbol in udtInfo.constantSymbols) {
-                sb.AppendLine();
-                sb.Append(dataToString(constantSymbol, "constant", indentLevel + 1));
+                sb.AppendLine()
+                    .Append(dataToString(constantSymbol, "constant", indentLevel + 1));
             }
             foreach (IDiaSymbol memberSymbol in udtInfo.memberSymbols) {
-                sb.AppendLine();
-                sb.Append(dataToString(memberSymbol, "", indentLevel + 1));
+                sb.AppendLine()
+                    .Append(dataToString(memberSymbol, "", indentLevel + 1));
             }
             foreach (FunctionInfo functionInfo in udtInfo.functionInfos) {
-                sb.AppendLine();
-                sb.Append(functionToString(functionInfo, indentLevel + 1));
+                sb.AppendLine()
+                    .Append(functionToString(functionInfo, indentLevel + 1));
             }
             foreach (UDTInfo nestedUdtInfo in udtInfo.nestedUdtInfos) {
-                sb.AppendLine();
-                sb.Append(udtToString(nestedUdtInfo, indentLevel + 1));
+                sb.AppendLine()
+                    .Append(udtToString(nestedUdtInfo, indentLevel + 1));
             }
             return sb.ToString();
         }
@@ -255,41 +255,41 @@ namespace AC2RE.PdbTool {
             sb.Append(' ', indentLevel * 2);
             string locationStr = locationToString(functionInfo.functionSymbol);
             if (locationStr.Length > 0) {
-                sb.Append(locationStr);
-                sb.Append(' ');
+                sb.Append(locationStr)
+                    .Append(' ');
             }
             CV_access_e access = (CV_access_e)functionInfo.functionSymbol.access;
             if (access != 0) {
-                sb.Append(accessToString(access));
-                sb.Append(' ');
+                sb.Append(accessToString(access))
+                    .Append(' ');
             }
-            sb.Append(functionInfo.functionSymbol.name);
-            sb.Append('(');
+            sb.Append(functionInfo.functionSymbol.name)
+                .Append('(');
             for (int i = 0; i < functionInfo.argSymbols.Count; i++) {
                 IDiaSymbol argSymbol = functionInfo.argSymbols[i];
                 if (i != 0) {
                     sb.Append(", ");
                 }
-                sb.Append(typeToString(argSymbol.type));
-                sb.Append(' ');
-                sb.Append(argSymbol.name);
+                sb.Append(typeToString(argSymbol.type))
+                    .Append(' ')
+                    .Append(argSymbol.name);
             }
             sb.Append(')');
             foreach (IDiaSymbol constantSymbol in functionInfo.constantSymbols) {
-                sb.AppendLine();
-                sb.Append(dataToString(constantSymbol, "constant", indentLevel + 1));
+                sb.AppendLine()
+                    .Append(dataToString(constantSymbol, "constant", indentLevel + 1));
             }
             foreach (IDiaSymbol ptrSymbol in functionInfo.ptrSymbols) {
-                sb.AppendLine();
-                sb.Append(dataToString(ptrSymbol, "ptr", indentLevel + 1));
+                sb.AppendLine()
+                    .Append(dataToString(ptrSymbol, "ptr", indentLevel + 1));
             }
             foreach (IDiaSymbol argSymbol in functionInfo.argSymbols) {
-                sb.AppendLine();
-                sb.Append(dataToString(argSymbol, "arg", indentLevel + 1));
+                sb.AppendLine()
+                    .Append(dataToString(argSymbol, "arg", indentLevel + 1));
             }
             foreach (IDiaSymbol localSymbol in functionInfo.localSymbols) {
-                sb.AppendLine();
-                sb.Append(dataToString(localSymbol, "local", indentLevel + 1));
+                sb.AppendLine()
+                    .Append(dataToString(localSymbol, "local", indentLevel + 1));
             }
             return sb.ToString();
         }
@@ -310,22 +310,22 @@ namespace AC2RE.PdbTool {
         }
 
         private static string dataToString(IDiaSymbol dataSymbol, string descriptor, int indentLevel) {
-            StringBuilder sb = new();
-            sb.Append(' ', indentLevel * 2);
-            sb.Append(locationToString(dataSymbol));
-            sb.Append(' ');
+            StringBuilder sb = new StringBuilder()
+                .Append(' ', indentLevel * 2)
+                .Append(locationToString(dataSymbol))
+                .Append(' ');
             CV_access_e access = (CV_access_e)dataSymbol.access;
             if (access != 0) {
-                sb.Append(accessToString(access));
-                sb.Append(' ');
+                sb.Append(accessToString(access))
+                    .Append(' ');
             }
             if (descriptor.Length > 0) {
-                sb.Append(descriptor);
-                sb.Append(" = ");
+                sb.Append(descriptor)
+                    .Append(" = ");
             }
             if (dataSymbol.type != null) {
-                sb.Append(typeToString(dataSymbol.type));
-                sb.Append(' ');
+                sb.Append(typeToString(dataSymbol.type))
+                    .Append(' ');
             }
             sb.Append(dataSymbol.name);
             return sb.ToString();
@@ -385,17 +385,17 @@ namespace AC2RE.PdbTool {
                     if (typeSymbol.rank != 0) {
                         throw new NotImplementedException(typeSymbol.rank.ToString());
                     } else if (typeSymbol.count != 0) {
-                        sb.Append('[');
-                        sb.Append(typeSymbol.count);
-                        sb.Append(']');
+                        sb.Append('[')
+                            .Append(typeSymbol.count)
+                            .Append(']');
                     } else if (baseTypeSymbol.length == 0) {
-                        sb.Append('[');
-                        sb.Append(typeSymbol.length);
-                        sb.Append(']');
+                        sb.Append('[')
+                            .Append(typeSymbol.length)
+                            .Append(']');
                     } else {
-                        sb.Append('[');
-                        sb.Append(typeSymbol.length / baseTypeSymbol.length);
-                        sb.Append(']');
+                        sb.Append('[')
+                            .Append(typeSymbol.length / baseTypeSymbol.length)
+                            .Append(']');
                     }
                     break;
 

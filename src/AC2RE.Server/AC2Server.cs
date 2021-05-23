@@ -1,12 +1,11 @@
 ﻿using AC2RE.Server.Database;
+using AC2RE.Server.Migration;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace AC2RE.Server {
 
     internal class AC2Server {
-
-        private static readonly string MONGODB_CONNECTION_ENDPOINT = "mongodb://localhost:27017?replicaSet=rs0";
 
         private static readonly double TICK_DELTA_TIME = 1.0 / 20.0;
         private static readonly double MAX_DELTA_TIME = TICK_DELTA_TIME * 3.0;
@@ -15,9 +14,12 @@ namespace AC2RE.Server {
 
         private bool active;
 
-        private AccountDatabase? accountDb;
-        private WorldDatabase? worldDb;
+        private IMigrationDatabase? migrationDb;
+        private IAccountDatabase? accountDb;
+        private IMapDatabase? mapDb;
+        private IWorldDatabase? worldDb;
 
+        private MigrationManager? migrationManager;
         private AccountManager? accountManager;
         private ClientManager? clientManager;
         private ContentManager? contentManager;
@@ -46,9 +48,16 @@ namespace AC2RE.Server {
 
             time.restart();
 
+            Logs.STATUS.info("Running migrations...");
+            MigrationManager.bootstrap();
+            migrationDb = new MigrationMySqlDatabase();
+            migrationManager = new(migrationDb);
+            migrationManager.runMigrations();
+
             Logs.STATUS.info("Initializing databases...");
-            accountDb = new(MONGODB_CONNECTION_ENDPOINT);
-            worldDb = new(MONGODB_CONNECTION_ENDPOINT);
+            accountDb = new AccountMySqlDatabase();
+            mapDb = new MapMySqlDatabase();
+            worldDb = new WorldMySqlDatabase();
 
             Logs.STATUS.info("Initializing account manager...");
             accountManager = new(accountDb);
@@ -63,7 +72,7 @@ namespace AC2RE.Server {
             packetHandler = new(accountManager, clientManager, time);
 
             Logs.STATUS.info("Initializing world...");
-            world = new(worldDb, time, packetHandler, contentManager);
+            world = new(mapDb, worldDb, time, packetHandler, contentManager);
 
             Logs.STATUS.info("Initializing network...");
             logonNetInterface = new(port);
@@ -105,7 +114,13 @@ namespace AC2RE.Server {
             contentManager!.Dispose();
             contentManager = null;
 
+            migrationDb!.Dispose();
+            migrationDb = null;
+            accountDb!.Dispose();
             accountDb = null;
+            mapDb!.Dispose();
+            mapDb = null;
+            worldDb!.Dispose();
             worldDb = null;
 
             active = false;

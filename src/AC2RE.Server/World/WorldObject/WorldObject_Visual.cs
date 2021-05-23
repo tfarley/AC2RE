@@ -1,12 +1,10 @@
 ﻿using AC2RE.Definitions;
-using AC2RE.Server.Database;
 using System.Numerics;
 
 namespace AC2RE.Server {
 
     internal partial class WorldObject {
 
-        [DbPersist]
         public VisualDesc visual;
 
         private bool visualDirty;

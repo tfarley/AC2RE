@@ -10,13 +10,8 @@ namespace AC2RE.Server {
 
     internal partial class WorldObject {
 
-        [DbPersist]
         public PhysicsDesc physics;
-
-        [DbPersist]
         public LandblockId landblockId => physics.pos.cell.landblockId;
-
-        [DbPersist]
         private HashSet<InstanceId>? childIds;
 
         public IEnumerable<InstanceId> childIdsEnumerable => childIds ?? Enumerable.Empty<InstanceId>();
@@ -38,6 +33,16 @@ namespace AC2RE.Server {
         private void initPhysics() {
             physics = new();
             physics.pos = new();
+        }
+
+        public void recachePhysics(List<WorldObject> childWorldObjects) {
+            if (childIds == null) {
+                childIds = new();
+            }
+
+            foreach (WorldObject childWorldObject in childWorldObjects) {
+                childIds.Add(childWorldObject.id);
+            }
         }
 
         public float heading {
@@ -243,7 +248,7 @@ namespace AC2RE.Server {
 
                     physics.parentId = parent.id;
                     physics.locationId = holdLoc;
-                    physics.parentInstanceStamp = parent.instanceStamp;
+                    physics.parentInstanceStamp = parent.physics.instanceStamp;
                     physics.orientationId = holdOrientation;
 
                     world.landblockManager.syncObjectVisibility(this);

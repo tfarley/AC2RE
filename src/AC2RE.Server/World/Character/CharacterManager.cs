@@ -50,7 +50,7 @@ namespace AC2RE.Server {
                     charactersWithAccount.Add(character);
                 }
             }
-            charactersWithAccount.Sort((c1, c2) => c1.order.CompareTo(c2.order));
+            charactersWithAccount.Sort((c1, c2) => c1.sequence.CompareTo(c2.sequence));
             return charactersWithAccount;
         }
 
@@ -83,7 +83,7 @@ namespace AC2RE.Server {
             uint highestOrder = 0;
             List<Character> existingCharacters = getWithAccount(accountId);
             if (existingCharacters.Count > 0) {
-                highestOrder = existingCharacters[^1].order;
+                highestOrder = existingCharacters[^1].sequence;
             }
 
             Character character = new(new(Guid.NewGuid()), highestOrder + 1, accountId, objectId);
