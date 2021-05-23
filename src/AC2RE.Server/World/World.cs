@@ -2,6 +2,7 @@
 using AC2RE.Server.Database;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -494,27 +495,295 @@ namespace AC2RE.Server {
                             toggleCounter++;
                         } else if (msg.netEvent.funcId == ServerEventFunctionId.Examination__QueryExaminationProfile) {
                             QueryExaminationProfileSEvt sEvent = (QueryExaminationProfileSEvt)msg.netEvent;
-                            playerManager.send(player, new InterpCEventPrivateMsg {
-                                netEvent = new UpdateExaminationProfileCEvt {
-                                    profile = new() {
-                                        request = sEvent.request,
-                                        nodes = new() {
-                                            new() {
-                                                order = 2,
-                                                type = ExaminationDataNode.DataType.INT,
-                                                valInt = 12345,
-                                                appearanceId = 3193660691,
+                            if (sEvent.request.dataId != InstanceId.NULL && objectManager.tryGet(sEvent.request.dataId, out WorldObject? target) && target.inWorld) {
+                                List<ExaminationDataNode> nodes = new();
+                                if (target.qualities.ints != null) {
+                                    foreach ((IntStat stat, int value) in target.qualities.ints) {
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.STRING,
+                                            valString = new(stat.ToString()),
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.TAB,
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.INT,
+                                            valInt = value,
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.BREAK,
+                                        });
+                                    }
+                                }
+                                if (target.qualities.longs != null) {
+                                    foreach ((LongIntStat stat, long value) in target.qualities.longs) {
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.STRING,
+                                            valString = new(stat.ToString()),
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.TAB,
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.LONG_INT,
+                                            valLongInt = value,
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.BREAK,
+                                        });
+                                    }
+                                }
+                                if (target.qualities.bools != null) {
+                                    foreach ((BoolStat stat, bool value) in target.qualities.bools) {
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.STRING,
+                                            valString = new(stat.ToString()),
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.TAB,
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.BOOL,
+                                            valBool = value,
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.BREAK,
+                                        });
+                                    }
+                                }
+                                if (target.qualities.floats != null) {
+                                    foreach ((FloatStat stat, float value) in target.qualities.floats) {
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.STRING,
+                                            valString = new(stat.ToString()),
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.TAB,
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.FLOAT,
+                                            valFloat = value,
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.BREAK,
+                                        });
+                                    }
+                                }
+                                if (target.qualities.doubles != null) {
+                                    foreach ((TimestampStat stat, double value) in target.qualities.doubles) {
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.STRING,
+                                            valString = new(stat.ToString()),
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.TAB,
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.COUNTDOWN,
+                                            valTime = value,
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.BREAK,
+                                        });
+                                    }
+                                }
+                                if (target.qualities.ids != null) {
+                                    foreach ((InstanceIdStat stat, InstanceId value) in target.qualities.ids) {
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.STRING,
+                                            valString = new(stat.ToString()),
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.TAB,
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.STRING,
+                                            valString = new(value.ToString()),
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.BREAK,
+                                        });
+                                    }
+                                }
+                                if (target.qualities.dids != null) {
+                                    foreach ((DataIdStat stat, DataId value) in target.qualities.dids) {
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.STRING,
+                                            valString = new(stat.ToString()),
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.TAB,
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.STRING,
+                                            valString = new(value.ToString()),
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.BREAK,
+                                        });
+                                    }
+                                }
+                                if (target.qualities.strings != null) {
+                                    foreach ((StringStat stat, string value) in target.qualities.strings) {
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.STRING,
+                                            valString = new(stat.ToString()),
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.TAB,
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.STRING,
+                                            valString = new(value),
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.BREAK,
+                                        });
+                                    }
+                                }
+                                if (target.qualities.stringInfos != null) {
+                                    foreach ((StringInfoStat stat, Definitions.StringInfo value) in target.qualities.stringInfos) {
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.STRING,
+                                            valString = new(stat.ToString()),
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.TAB,
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.STRING,
+                                            valString = value,
+                                        });
+                                        nodes.Add(new() {
+                                            order = (uint)nodes.Count,
+                                            type = ExaminationDataNode.DataType.BREAK,
+                                        });
+                                    }
+                                }
+                                playerManager.send(player, new InterpCEventPrivateMsg {
+                                    netEvent = new UpdateExaminationProfileCEvt {
+                                        profile = new() {
+                                            request = sEvent.request,
+                                            nodes = nodes,
+                                        }
+                                    }
+                                });
+                            } else {
+                                playerManager.send(player, new InterpCEventPrivateMsg {
+                                    netEvent = new UpdateExaminationProfileCEvt {
+                                        profile = new() {
+                                            request = sEvent.request,
+                                            nodes = new() {
+                                                new() {
+                                                    order = 2,
+                                                    type = ExaminationDataNode.DataType.INT,
+                                                    valInt = 12345,
+                                                    appearanceId = 3193660691,
+                                                }
                                             }
                                         }
                                     }
-                                }
-                            });
+                                });
+                            }
                         } else if (msg.netEvent.funcId == ServerEventFunctionId.Inventory__DirectiveEquipItem) {
                             DirectiveEquipItemSEvt sEvent = (DirectiveEquipItemSEvt)msg.netEvent;
                             inventoryManager.equipItem(sEvent.equipDesc, player);
                         } else if (msg.netEvent.funcId == ServerEventFunctionId.Inventory__DirectiveUnEquipItem) {
                             DirectiveUnequipItemSEvt sEvent = (DirectiveUnequipItemSEvt)msg.netEvent;
                             inventoryManager.unequipItem(sEvent.equipDesc, player);
+                        } else if (msg.netEvent.funcId == ServerEventFunctionId.Communication__Say) {
+                            SaySEvt sEvent = (SaySEvt)msg.netEvent;
+                            if (sEvent.text.literalValue != null && sEvent.text.literalValue.StartsWith('.')) {
+                                string[] splitText = sEvent.text.literalValue.Split(' ');
+                                switch (splitText[0]) {
+                                    case ".vel": {
+                                            if (splitText.Length < 2) {
+                                                sendMessage(player, "Too few arguments", TextType.ERROR);
+                                                break;
+                                            }
+                                            if (!float.TryParse(splitText[1], out float value)) {
+                                                sendMessage(player, "Cannot parse argument", TextType.ERROR);
+                                                break;
+                                            }
+                                            if (objectManager.tryGet(player.characterId, out WorldObject? character) && character.inWorld) {
+                                                character.velScale = value;
+                                                character.doFx(FxId.PORTAL_USE, 1.0f);
+                                            }
+                                            break;
+                                        }
+                                    case ".pos": {
+                                            if (objectManager.tryGet(player.characterId, out WorldObject? character) && character.inWorld) {
+                                                sendMessage(player, $"{character.pos.cell.id:X8} {character.pos.frame.pos.X} {character.pos.frame.pos.Y} {character.pos.frame.pos.Z}");
+                                            }
+                                            break;
+                                        }
+                                    case ".tp": {
+                                            if (splitText.Length < 2) {
+                                                sendMessage(player, "Too few arguments", TextType.ERROR);
+                                                break;
+                                            }
+                                            if (!uint.TryParse(splitText[1], NumberStyles.HexNumber, null, out uint cellId)) {
+                                                sendMessage(player, "Cannot parse argument", TextType.ERROR);
+                                                break;
+                                            }
+                                            Vector3 offset = new();
+                                            if (splitText.Length >= 5) {
+                                                if (!float.TryParse(splitText[2], out offset.X)) {
+                                                    sendMessage(player, "Cannot parse argument", TextType.ERROR);
+                                                    break;
+                                                }
+                                                if (!float.TryParse(splitText[3], out offset.Y)) {
+                                                    sendMessage(player, "Cannot parse argument", TextType.ERROR);
+                                                    break;
+                                                }
+                                                if (!float.TryParse(splitText[4], out offset.Z)) {
+                                                    sendMessage(player, "Cannot parse argument", TextType.ERROR);
+                                                    break;
+                                                }
+                                            }
+                                            teleport(player, new(new(cellId), offset));
+                                            break;
+                                        }
+                                    default:
+                                        sendMessage(player, "Invalid command", TextType.ERROR);
+                                        break;
+                                }
+                            }
                         }
                         break;
                     }
@@ -548,6 +817,34 @@ namespace AC2RE.Server {
                     }
             }
             return handled;
+        }
+
+        private void sendMessage(Player player, string text, TextType type = TextType.ADMIN) {
+            playerManager.send(player, new InterpCEventPrivateMsg {
+                netEvent = new DisplayStringInfoCEvt {
+                    text = new($"{text}\n"),
+                    type = type,
+                }
+            });
+        }
+
+        private void teleport(Player player, PositionOffset target) {
+            if (objectManager.tryGet(player.characterId, out WorldObject? character) && character.inWorld) {
+                PositionPack posPack = new() {
+                    time = serverTime.time,
+                    offset = target,
+                    heading = new(character.heading),
+                    packFlags = PositionPack.PackFlag.CONTACT,
+                    posStamp = ++character.physics.timestamps[(int)PhysicsTimeStamp.POSITION],
+                    forcePosStamp = character.physics.timestamps[(int)PhysicsTimeStamp.FORCE_POSITION],
+                    teleportStamp = ++character.physics.timestamps[(int)PhysicsTimeStamp.TELEPORT],
+                };
+
+                playerManager.send(player, new PositionCellMsg {
+                    senderIdWithStamp = character.getInstanceIdWithStamp(),
+                    posPack = posPack,
+                });
+            }
         }
 
         private void sendCharacters(Player player) {

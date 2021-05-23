@@ -135,7 +135,7 @@ namespace AC2RE.Server {
         public void applyEntities(WorldObject worldObject, DataId physicsEntityDidOverride = default) {
             if (worldObject.entityDid != DataId.NULL) {
                 EntityDef entityDef = contentManager.getEntityDef(worldObject.entityDid);
-                if (entityDef.type != EntityType.WEENIE) {
+                if (entityDef.type != EntityType.WEENIE && entityDef.type != EntityType.ENTITY_DESC) {
                     throw new ArgumentException(entityDef.type.ToString());
                 }
 
@@ -191,12 +191,19 @@ namespace AC2RE.Server {
             }
 
             if (worldObject.physicsEntityDid != DataId.NULL) {
-                EntityDef physicsEntityDef = contentManager.getEntityDef(worldObject.physicsEntityDid);
-                if (physicsEntityDef.type != EntityType.PHYSICS) {
-                    throw new ArgumentException(physicsEntityDef.type.ToString());
-                }
+                DbType dbType = DbTypeDef.getType(DbTypeDef.DatType.PORTAL, worldObject.physicsEntityDid);
+                if (dbType == DbType.VISUAL_DESC) {
+                    worldObject.visual.parentDid = worldObject.physicsEntityDid;
+                } else if (dbType == DbType.ENTITYDESC) {
+                    EntityDef physicsEntityDef = contentManager.getEntityDef(worldObject.physicsEntityDid);
+                    if (physicsEntityDef.type != EntityType.PHYSICS) {
+                        throw new ArgumentException(physicsEntityDef.type.ToString());
+                    }
 
-                worldObject.visual.parentDid = physicsEntityDef.dataId;
+                    worldObject.visual.parentDid = physicsEntityDef.dataId;
+                } else {
+                    throw new ArgumentException(dbType.ToString());
+                }
             }
         }
 
