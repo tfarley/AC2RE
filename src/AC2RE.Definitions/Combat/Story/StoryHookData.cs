@@ -33,7 +33,7 @@ namespace AC2RE.Definitions {
         public HookType type; // m_type
         public InstanceId targetId; // m_target_id
         public InstanceId weaponId; // m_weaponID
-        public uint attackResult; // m_attack_result
+        public CombatResultType attackResult; // m_attack_result
         public uint animHookNumber; // m_animHookNumber
         public uint attackHookNumber; // m_attackHookNumber
         public int targetHealthChange; // m_targetHealthChange
@@ -52,7 +52,7 @@ namespace AC2RE.Definitions {
                 weaponId = data.ReadInstanceId();
             }
             if (packFlags.HasFlag(PackFlag.ATTACK_RESULT)) {
-                attackResult = data.ReadUInt32();
+                attackResult = (CombatResultType)data.ReadUInt32();
             }
             if (packFlags.HasFlag(PackFlag.ANIM_HOOK_NUMBER)) {
                 animHookNumber = data.ReadUInt32();

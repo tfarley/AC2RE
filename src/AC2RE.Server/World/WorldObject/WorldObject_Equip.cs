@@ -49,7 +49,7 @@ namespace AC2RE.Server {
 
                 invLocToEquippedItemId[equipLoc] = item.id;
 
-                item.wielderId = id;
+                item.equipperId = id;
                 item.equippedLocation = equipLoc;
 
                 HoldingLocation holdLoc = item.primaryHoldLoc;

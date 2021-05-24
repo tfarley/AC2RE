@@ -21,7 +21,7 @@ namespace AC2RE.Server {
             weenie.pluralName = pluralName;
             weenie.iconDid = iconDid;
             weenie.containerId = containerId;
-            weenie.wielderId = wielderId;
+            weenie.wielderId = equipperId;
             weenie.monarchId = monarchId;
             weenie.originatorId = originatorId;
             weenie.claimantId = claimantId;
@@ -75,7 +75,7 @@ namespace AC2RE.Server {
             }
         }
 
-        public InstanceId wielderId {
+        public InstanceId equipperId {
             get => getQ(InstanceIdStat.EQUIPPER);
             set {
                 setQ(InstanceIdStat.EQUIPPER, value);

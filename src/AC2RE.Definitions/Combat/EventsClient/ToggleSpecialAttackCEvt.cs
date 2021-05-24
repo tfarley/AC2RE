@@ -6,7 +6,7 @@
 
         // WM_Combat::PostCEvt_ToggleSpecialAttack
         public bool toggled; // _toggled
-        public SkillId maneuver; // _maneuver
+        public SkillId skill; // _maneuver
 
         public ToggleSpecialAttackCEvt() {
 
@@ -14,12 +14,12 @@
 
         public ToggleSpecialAttackCEvt(AC2Reader data) {
             toggled = data.UnpackBoolean();
-            maneuver = (SkillId)data.UnpackUInt32();
+            skill = (SkillId)data.UnpackUInt32();
         }
 
         public void write(AC2Writer data) {
             data.Pack(toggled);
-            data.Pack((uint)maneuver);
+            data.Pack((uint)skill);
         }
     }
 }

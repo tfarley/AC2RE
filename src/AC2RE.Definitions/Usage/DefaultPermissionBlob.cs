@@ -23,8 +23,8 @@
         public QuestStatus questStatusRequired; // m_questStatusRequired
         public float veryFarProximityMsgRadius; // m_fVeryFarProximityMsgRadius
         public int minRank; // m_iMinRank
-        public SkillId stRequired1; // m_stRequired1
-        public SkillId stRequired2; // m_stRequired2
+        public SkillId skillIdRequired1; // m_stRequired1
+        public SkillId skillIdRequired2; // m_stRequired2
         public QuestId questRequired; // m_questRequired
         public SpeciesType speciesRequired; // m_speciesRequired
         public Position lastPosition; // m_posLastPosition
@@ -32,8 +32,8 @@
         public uint stRequired2Rating; // m_stRequired2Rating
         public int minLevel; // m_iMinLevel
         public int maxLevel; // m_iMaxLevel
-        public SkillId stRestricted1; // m_stRestricted1
-        public SkillId stRestricted2; // m_stRestricted2
+        public SkillId skillIdRestricted1; // m_stRestricted1
+        public SkillId skillIdRestricted2; // m_stRestricted2
         public uint mask; // m_uiMask
         public bool landblockFaction; // m_bLandblockFaction
         public bool legionsExpansionOnly; // m_bLegionsExpansionOnly
@@ -64,8 +64,8 @@
             questStatusRequired = (QuestStatus)data.ReadUInt32();
             veryFarProximityMsgRadius = data.ReadSingle();
             minRank = data.ReadInt32();
-            stRequired1 = (SkillId)data.ReadUInt32();
-            stRequired2 = (SkillId)data.ReadUInt32();
+            skillIdRequired1 = (SkillId)data.ReadUInt32();
+            skillIdRequired2 = (SkillId)data.ReadUInt32();
             questRequired = (QuestId)data.ReadUInt32();
             speciesRequired = (SpeciesType)data.ReadUInt32();
             data.ReadPkg<Position>(v => lastPosition = v);
@@ -73,8 +73,8 @@
             stRequired2Rating = data.ReadUInt32();
             minLevel = data.ReadInt32();
             maxLevel = data.ReadInt32();
-            stRestricted1 = (SkillId)data.ReadUInt32();
-            stRestricted2 = (SkillId)data.ReadUInt32();
+            skillIdRestricted1 = (SkillId)data.ReadUInt32();
+            skillIdRestricted2 = (SkillId)data.ReadUInt32();
             mask = data.ReadUInt32();
             landblockFaction = data.ReadBoolean();
             legionsExpansionOnly = data.ReadBoolean();

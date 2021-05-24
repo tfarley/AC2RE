@@ -31,6 +31,10 @@ namespace AC2RE.Server {
             portalDatReader.Dispose();
         }
 
+        public bool contains(DataId did) {
+            return portalDatReader.contains(did);
+        }
+
         public CharacterGenSystem getCharacterGenSystem() {
             if (characterGenSystem == null) {
                 using (AC2Reader data = portalDatReader.getFileReader(new(0x70000096))) {

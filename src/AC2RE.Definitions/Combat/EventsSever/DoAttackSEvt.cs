@@ -6,12 +6,12 @@
 
         // WM_Combat::SendSEvt_DoAttack
         public uint specialAttackId; // _special_attack_id
-        public SkillId maneuver; // _maneuver
+        public SkillId skillId; // _maneuver
         public InstanceId targetId; // _target
 
         public DoAttackSEvt(AC2Reader data) {
             specialAttackId = data.UnpackUInt32();
-            maneuver = (SkillId)data.UnpackUInt32();
+            skillId = (SkillId)data.UnpackUInt32();
             targetId = data.UnpackInstanceId();
         }
     }

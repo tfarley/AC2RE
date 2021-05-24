@@ -324,7 +324,7 @@ namespace AC2RE.Server {
                 worldObject.pluralName = baseWeenie.pluralName;
                 worldObject.iconDid = baseWeenie.iconDid;
                 worldObject.containerId = baseWeenie.containerId;
-                worldObject.wielderId = baseWeenie.wielderId;
+                worldObject.equipperId = baseWeenie.wielderId;
                 worldObject.monarchId = baseWeenie.monarchId;
                 worldObject.originatorId = baseWeenie.originatorId;
                 worldObject.claimantId = baseWeenie.claimantId;

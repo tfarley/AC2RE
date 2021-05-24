@@ -14,7 +14,7 @@
         public uint trainedDependents; // m_nTrainedDependents
         public uint costWhenLearned; // m_nCostWhenLearned
         public uint skillOverride; // m_nSkillOverride
-        public SkillId typeSkill; // m_typeSkill
+        public SkillId skillId; // m_typeSkill
 
         public SkillInfo() {
 
@@ -31,7 +31,7 @@
             trainedDependents = data.ReadUInt32();
             costWhenLearned = data.ReadUInt32();
             skillOverride = data.ReadUInt32();
-            typeSkill = (SkillId)data.ReadUInt32();
+            skillId = (SkillId)data.ReadUInt32();
         }
 
         public void write(AC2Writer data) {
@@ -45,7 +45,7 @@
             data.Write(trainedDependents);
             data.Write(costWhenLearned);
             data.Write(skillOverride);
-            data.Write((uint)typeSkill);
+            data.Write((uint)skillId);
         }
     }
 }

@@ -6,11 +6,11 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.ToolPermissionBlob;
 
-        public List<SkillId> requiredSkills; // m_RequiredSkillList
+        public List<SkillId> requiredSkillIds; // m_RequiredSkillList
         public uint skillLevel; // m_uiSkillLevel
 
         public ToolPermissionBlob(AC2Reader data) {
-            data.ReadPkg<AList>(v => requiredSkills = v.to<SkillId>());
+            data.ReadPkg<AList>(v => requiredSkillIds = v.to<SkillId>());
             skillLevel = data.ReadUInt32();
         }
     }
