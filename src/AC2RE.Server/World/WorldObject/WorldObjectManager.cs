@@ -134,25 +134,188 @@ namespace AC2RE.Server {
 
         public void applyEntities(WorldObject worldObject, DataId physicsEntityDidOverride = default) {
             if (worldObject.entityDid != DataId.NULL) {
-                EntityDef entityDef = contentManager.getEntityDef(worldObject.entityDid);
+                EntityDef entityDef = contentManager.getInheritedEntityDef(worldObject.entityDid);
                 if (entityDef.type != EntityType.WEENIE && entityDef.type != EntityType.ENTITY_DESC) {
                     throw new ArgumentException(entityDef.type.ToString());
+                }
+
+                if (entityDef.bools != null) {
+                    foreach ((PropertyName prop, bool value) in entityDef.bools) {
+                        if (PropertyMapper.PROPERTY_NAME_TO_BOOL_STAT.TryGetValue(prop, out BoolStat stat)) {
+                            if (worldObject.qualities.bools == null) {
+                                worldObject.qualities.bools = new();
+                            }
+                            worldObject.qualities.bools[stat] = value;
+                        }
+                    }
+                }
+                if (entityDef.ints != null) {
+                    foreach ((PropertyName prop, int value) in entityDef.ints) {
+                        if (PropertyMapper.PROPERTY_NAME_TO_INT_STAT.TryGetValue(prop, out IntStat stat)) {
+                            if (worldObject.qualities.ints == null) {
+                                worldObject.qualities.ints = new();
+                            }
+                            worldObject.qualities.ints[stat] = value;
+                        }
+                    }
+                }
+                if (entityDef.floats != null) {
+                    foreach ((PropertyName prop, float value) in entityDef.floats) {
+                        if (PropertyMapper.PROPERTY_NAME_TO_FLOAT_STAT.TryGetValue(prop, out FloatStat stat)) {
+                            if (worldObject.qualities.floats == null) {
+                                worldObject.qualities.floats = new();
+                            }
+                            worldObject.qualities.floats[stat] = value;
+                        }
+                    }
+                }
+                if (entityDef.strings != null) {
+                    foreach ((PropertyName prop, string value) in entityDef.strings) {
+                        if (PropertyMapper.PROPERTY_NAME_TO_STRING_STAT.TryGetValue(prop, out StringStat stat)) {
+                            if (worldObject.qualities.strings == null) {
+                                worldObject.qualities.strings = new();
+                            }
+                            worldObject.qualities.strings[stat] = value;
+                        }
+                    }
+                }
+                if (entityDef.dids != null) {
+                    foreach ((PropertyName prop, DataId value) in entityDef.dids) {
+                        if (PropertyMapper.PROPERTY_NAME_TO_DATA_ID_STAT.TryGetValue(prop, out DataIdStat stat)) {
+                            if (worldObject.qualities.dids == null) {
+                                worldObject.qualities.dids = new();
+                            }
+                            worldObject.qualities.dids[stat] = value;
+                        }
+                    }
+                }
+                if (entityDef.stringInfos != null) {
+                    // TODO: Need to do a deep copy of the StringInfos?
+                    foreach ((PropertyName prop, StringInfo value) in entityDef.stringInfos) {
+                        if (PropertyMapper.PROPERTY_NAME_TO_STRING_INFO_STAT.TryGetValue(prop, out StringInfoStat stat)) {
+                            if (worldObject.qualities.stringInfos == null) {
+                                worldObject.qualities.stringInfos = new();
+                            }
+                            worldObject.qualities.stringInfos[stat] = value;
+                        }
+                    }
+                }
+                if (entityDef.packageIds != null) {
+                    // TODO: Is there a mapping for this?
+                }
+                if (entityDef.longs != null) {
+                    foreach ((PropertyName prop, long value) in entityDef.longs) {
+                        if (PropertyMapper.PROPERTY_NAME_TO_LONG_INT_STAT.TryGetValue(prop, out LongIntStat stat)) {
+                            if (worldObject.qualities.longs == null) {
+                                worldObject.qualities.longs = new();
+                            }
+                            worldObject.qualities.longs[stat] = value;
+                        }
+                    }
+                }
+                if (entityDef.poss != null) {
+                    foreach ((PropertyName prop, Position value) in entityDef.poss) {
+                        if (PropertyMapper.PROPERTY_NAME_TO_POSITION_STAT.TryGetValue(prop, out PositionStat stat)) {
+                            if (worldObject.qualities.poss == null) {
+                                worldObject.qualities.poss = new();
+                            }
+                            worldObject.qualities.poss[stat] = value;
+                        }
+                    }
                 }
 
                 DataId qualitiesDid = new(0x81000000 + worldObject.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
                 CBaseQualities baseQualities = contentManager.getQualities(qualitiesDid);
 
-                worldObject.qualities.ints = baseQualities.ints != null ? new(baseQualities.ints) : null;
-                worldObject.qualities.longs = baseQualities.longs != null ? new(baseQualities.longs) : null;
-                worldObject.qualities.bools = baseQualities.bools != null ? new(baseQualities.bools) : null;
-                worldObject.qualities.floats = baseQualities.floats != null ? new(baseQualities.floats) : null;
-                worldObject.qualities.doubles = baseQualities.doubles != null ? new(baseQualities.doubles) : null;
-                worldObject.qualities.strings = baseQualities.strings != null ? new(baseQualities.strings) : null;
-                worldObject.qualities.dids = baseQualities.dids != null ? new(baseQualities.dids) : null;
-                worldObject.qualities.ids = baseQualities.ids != null ? new(baseQualities.ids) : null;
-                worldObject.qualities.poss = baseQualities.poss != null ? new(baseQualities.poss) : null;
-                worldObject.qualities.stringInfos = baseQualities.stringInfos != null ? new(baseQualities.stringInfos) : null; // TODO: Need to do a deep copy of the StringInfos?
-                worldObject.qualities.packageIds = baseQualities.packageIds != null ? new(baseQualities.packageIds) : null;
+                if (baseQualities.ints != null) {
+                    foreach ((IntStat stat, int value) in baseQualities.ints) {
+                        if (worldObject.qualities.ints == null) {
+                            worldObject.qualities.ints = new();
+                        }
+                        worldObject.qualities.ints[stat] = value;
+                    }
+                }
+                if (baseQualities.longs != null) {
+                    foreach ((LongIntStat stat, long value) in baseQualities.longs) {
+                        if (worldObject.qualities.longs == null) {
+                            worldObject.qualities.longs = new();
+                        }
+                        worldObject.qualities.longs[stat] = value;
+                    }
+                }
+                if (baseQualities.bools != null) {
+                    foreach ((BoolStat stat, bool value) in baseQualities.bools) {
+                        if (worldObject.qualities.bools == null) {
+                            worldObject.qualities.bools = new();
+                        }
+                        worldObject.qualities.bools[stat] = value;
+                    }
+                }
+                if (baseQualities.floats != null) {
+                    foreach ((FloatStat stat, float value) in baseQualities.floats) {
+                        if (worldObject.qualities.floats == null) {
+                            worldObject.qualities.floats = new();
+                        }
+                        worldObject.qualities.floats[stat] = value;
+                    }
+                }
+                if (baseQualities.doubles != null) {
+                    foreach ((TimestampStat stat, double value) in baseQualities.doubles) {
+                        if (worldObject.qualities.doubles == null) {
+                            worldObject.qualities.doubles = new();
+                        }
+                        worldObject.qualities.doubles[stat] = value;
+                    }
+                }
+                if (baseQualities.strings != null) {
+                    foreach ((StringStat stat, string value) in baseQualities.strings) {
+                        if (worldObject.qualities.strings == null) {
+                            worldObject.qualities.strings = new();
+                        }
+                        worldObject.qualities.strings[stat] = value;
+                    }
+                }
+                if (baseQualities.dids != null) {
+                    foreach ((DataIdStat stat, DataId value) in baseQualities.dids) {
+                        if (worldObject.qualities.dids == null) {
+                            worldObject.qualities.dids = new();
+                        }
+                        worldObject.qualities.dids[stat] = value;
+                    }
+                }
+                if (baseQualities.ids != null) {
+                    foreach ((InstanceIdStat stat, InstanceId value) in baseQualities.ids) {
+                        if (worldObject.qualities.ids == null) {
+                            worldObject.qualities.ids = new();
+                        }
+                        worldObject.qualities.ids[stat] = value;
+                    }
+                }
+                if (baseQualities.poss != null) {
+                    foreach ((PositionStat stat, Position value) in baseQualities.poss) {
+                        if (worldObject.qualities.poss == null) {
+                            worldObject.qualities.poss = new();
+                        }
+                        worldObject.qualities.poss[stat] = value;
+                    }
+                }
+                if (baseQualities.stringInfos != null) {
+                    // TODO: Need to do a deep copy of the StringInfos?
+                    foreach ((StringInfoStat stat, StringInfo value) in baseQualities.stringInfos) {
+                        if (worldObject.qualities.stringInfos == null) {
+                            worldObject.qualities.stringInfos = new();
+                        }
+                        worldObject.qualities.stringInfos[stat] = value;
+                    }
+                }
+                if (baseQualities.packageIds != null) {
+                    foreach ((uint stat, PackageId value) in baseQualities.packageIds) {
+                        if (worldObject.qualities.packageIds == null) {
+                            worldObject.qualities.packageIds = new();
+                        }
+                        worldObject.qualities.packageIds[stat] = value;
+                    }
+                }
 
                 WeenieDesc baseWeenie = baseQualities.weenieDesc;
                 worldObject.qualities.did = baseQualities.did;
@@ -195,7 +358,7 @@ namespace AC2RE.Server {
                 if (dbType == DbType.VISUAL_DESC) {
                     worldObject.visual.parentDid = worldObject.physicsEntityDid;
                 } else if (dbType == DbType.ENTITYDESC) {
-                    EntityDef physicsEntityDef = contentManager.getEntityDef(worldObject.physicsEntityDid);
+                    EntityDef physicsEntityDef = contentManager.getInheritedEntityDef(worldObject.physicsEntityDid);
                     if (physicsEntityDef.type != EntityType.PHYSICS) {
                         throw new ArgumentException(physicsEntityDef.type.ToString());
                     }

@@ -15,12 +15,20 @@ namespace AC2RE.Server {
         public readonly Dictionary<PropertyName, float> floats = new();
         public readonly Dictionary<PropertyName, Vector3> vectors = new();
         public readonly Dictionary<PropertyName, RGBAColor> colors = new();
-        public readonly Dictionary<PropertyName, StringInfo> strings = new();
+        public readonly Dictionary<PropertyName, string> strings = new();
         public readonly Dictionary<PropertyName, uint> enums = new();
         public readonly Dictionary<PropertyName, DataId> dids = new();
         public readonly Dictionary<PropertyName, Waveform> waveforms = new();
+        public readonly Dictionary<PropertyName, StringInfo> stringInfos = new();
+        public readonly Dictionary<PropertyName, PackageId> packageIds = new();
         public readonly Dictionary<PropertyName, long> longs = new();
         public readonly Dictionary<PropertyName, Position> poss = new();
+
+        public EntityDef(EntityDef entityDef) {
+            type = entityDef.type;
+            dataId = entityDef.dataId;
+            packageType = entityDef.packageType;
+        }
 
         public EntityDef(EntityDesc entityDesc) {
             type = entityDesc.type;
@@ -46,7 +54,7 @@ namespace AC2RE.Server {
                                 colors[property.name] = (RGBAColor)property.value;
                                 break;
                             case PropertyType.STRING:
-                                strings[property.name] = new((string)property.value);
+                                strings[property.name] = (string)property.value;
                                 break;
                             case PropertyType.ENUM:
                                 enums[property.name] = (uint)property.value;
@@ -58,10 +66,10 @@ namespace AC2RE.Server {
                                 waveforms[property.name] = (Waveform)property.value;
                                 break;
                             case PropertyType.STRING_INFO:
-                                strings[property.name] = (StringInfo)property.value;
+                                stringInfos[property.name] = (StringInfo)property.value;
                                 break;
                             case PropertyType.PACKAGE_ID:
-                                ints[property.name] = (int)property.value;
+                                packageIds[property.name] = (PackageId)property.value;
                                 break;
                             case PropertyType.LONG_INTEGER:
                                 longs[property.name] = (long)property.value;

@@ -1,6 +1,7 @@
 ﻿using AC2RE.Definitions;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace AC2RE.Server {
 
@@ -11,9 +12,11 @@ namespace AC2RE.Server {
         private CharacterGenSystem? characterGenSystem;
         private CharGenMatrix? charGenMatrix;
         private readonly Dictionary<DataId, EntityDef> entityDefCache = new();
+        private readonly Dictionary<DataId, EntityDef> inheritedEntityDefCache = new();
         private readonly Dictionary<DataId, CBaseQualities> qualitiesCache = new();
         private readonly Dictionary<DataId, WState> weenieStateCache = new();
         private readonly Dictionary<DataId, VisualDesc> visualDescCache = new();
+        private readonly Dictionary<DataId, VisualDesc> inheritedVisualDescCache = new();
         private readonly Dictionary<DataId, CEnvCell> envCellCache = new();
 
         public ContentManager() {
@@ -50,7 +53,7 @@ namespace AC2RE.Server {
             return charGenMatrix;
         }
 
-        public EntityDef getEntityDef(DataId did) {
+        private EntityDef getEntityDef(DataId did) {
             if (!entityDefCache.TryGetValue(did, out EntityDef? entityDef)) {
                 using (AC2Reader data = portalDatReader.getFileReader(did)) {
                     EntityDesc entityDesc = new(data);
@@ -59,6 +62,74 @@ namespace AC2RE.Server {
                 }
             }
             return entityDef;
+        }
+
+        public EntityDef getInheritedEntityDef(DataId did) {
+            if (!inheritedEntityDefCache.TryGetValue(did, out EntityDef? inheritedEntityDef)) {
+                EntityDef entityDef = getEntityDef(did);
+
+                inheritedEntityDef = new(entityDef);
+
+                List<EntityDef> parentDefs = new();
+                parentDefs.Add(entityDef);
+                EntityType entityType = entityDef.type;
+                DataId parentDid = entityDef.dataId;
+                while (entityType == EntityType.ENTITY_DESC && parentDid != DataId.NULL) {
+                    EntityDef parentEntityDef = getEntityDef(parentDid);
+                    parentDefs.Add(parentEntityDef);
+                    entityType = parentEntityDef.type;
+                    parentDid = parentEntityDef.dataId;
+                }
+
+                foreach (EntityDef parentDef in parentDefs) {
+                    mergeEntityDefs(parentDef, inheritedEntityDef);
+                }
+
+                inheritedEntityDefCache[did] = inheritedEntityDef;
+            }
+            return inheritedEntityDef;
+        }
+
+        private void mergeEntityDefs(EntityDef parentEntityDef, EntityDef childEntityDef) {
+            foreach ((PropertyName prop, bool value) in parentEntityDef.bools) {
+                childEntityDef.bools[prop] = value;
+            }
+            foreach ((PropertyName prop, int value) in parentEntityDef.ints) {
+                childEntityDef.ints[prop] = value;
+            }
+            foreach ((PropertyName prop, float value) in parentEntityDef.floats) {
+                childEntityDef.floats[prop] = value;
+            }
+            foreach ((PropertyName prop, Vector3 value) in parentEntityDef.vectors) {
+                childEntityDef.vectors[prop] = value;
+            }
+            foreach ((PropertyName prop, RGBAColor value) in parentEntityDef.colors) {
+                childEntityDef.colors[prop] = value;
+            }
+            foreach ((PropertyName prop, string value) in parentEntityDef.strings) {
+                childEntityDef.strings[prop] = value;
+            }
+            foreach ((PropertyName prop, uint value) in parentEntityDef.enums) {
+                childEntityDef.enums[prop] = value;
+            }
+            foreach ((PropertyName prop, DataId value) in parentEntityDef.dids) {
+                childEntityDef.dids[prop] = value;
+            }
+            foreach ((PropertyName prop, Waveform value) in parentEntityDef.waveforms) {
+                childEntityDef.waveforms[prop] = value;
+            }
+            foreach ((PropertyName prop, StringInfo value) in parentEntityDef.stringInfos) {
+                childEntityDef.stringInfos[prop] = value;
+            }
+            foreach ((PropertyName prop, PackageId value) in parentEntityDef.packageIds) {
+                childEntityDef.packageIds[prop] = value;
+            }
+            foreach ((PropertyName prop, long value) in parentEntityDef.longs) {
+                childEntityDef.longs[prop] = value;
+            }
+            foreach ((PropertyName prop, Position value) in parentEntityDef.poss) {
+                childEntityDef.poss[prop] = value;
+            }
         }
 
         public CBaseQualities getQualities(DataId did) {
@@ -91,22 +162,28 @@ namespace AC2RE.Server {
             return visualDesc;
         }
 
-        public VisualDesc getInheritedVisualDesc(VisualDesc visualDesc) {
-            List<VisualDesc> parentDescs = new();
-            parentDescs.Add(visualDesc);
-            DataId parentDid = visualDesc.parentDid;
-            while (parentDid != DataId.NULL) {
-                VisualDesc parentVisualDesc = getVisualDesc(parentDid);
-                parentDescs.Add(parentVisualDesc);
-                parentDid = parentVisualDesc.parentDid;
+        public VisualDesc getInheritedVisualDesc(DataId did) {
+            if (!inheritedVisualDescCache.TryGetValue(did, out VisualDesc? inheritedVisualDesc)) {
+                VisualDesc visualDesc = getVisualDesc(did);
+
+                // TODO: Need to set all other members except the inherited ones from the desc above on this new object
+                inheritedVisualDesc = new();
+
+                List<VisualDesc> parentDescs = new();
+                parentDescs.Add(visualDesc);
+                DataId parentDid = visualDesc.parentDid;
+                while (parentDid != DataId.NULL) {
+                    VisualDesc parentVisualDesc = getVisualDesc(parentDid);
+                    parentDescs.Add(parentVisualDesc);
+                    parentDid = parentVisualDesc.parentDid;
+                }
+
+                foreach (VisualDesc parentDesc in parentDescs) {
+                    mergeVisualDescs(parentDesc, inheritedVisualDesc);
+                }
+
+                inheritedVisualDescCache[did] = inheritedVisualDesc;
             }
-
-            VisualDesc inheritedVisualDesc = new();
-
-            foreach (VisualDesc parentDesc in parentDescs) {
-                mergeVisualDescs(parentDesc, inheritedVisualDesc);
-            }
-
             return inheritedVisualDesc;
         }
 
