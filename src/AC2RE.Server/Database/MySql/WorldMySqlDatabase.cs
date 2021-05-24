@@ -240,20 +240,6 @@ namespace AC2RE.Server.Database {
 
         public bool save(WorldSave worldSave) {
             return runInTransaction(connection, transaction => {
-                using (MySqlCommand cmd = upsertCommand(connection, transaction, "characters",
-                    new("id", MySqlDbType.String),
-                    new("sequence", MySqlDbType.UInt16),
-                    new("accountId", MySqlDbType.String),
-                    new("objectId", MySqlDbType.UInt64))) {
-                    foreach (Character character in worldSave.characters) {
-                        cmd.Parameters[0].Value = character.id.id;
-                        cmd.Parameters[1].Value = character.sequence;
-                        cmd.Parameters[2].Value = character.accountId.id;
-                        cmd.Parameters[3].Value = character.objectId.id;
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-
                 InstanceIdGenerator? idGenerator = worldSave.idGenerator;
                 if (idGenerator != null) {
                     using (MySqlCommand cmd = upsertCommand(connection, transaction, "id_gen",
@@ -265,204 +251,219 @@ namespace AC2RE.Server.Database {
                     }
                 }
 
-                foreach (WorldObject worldObject in worldSave.worldObjects) {
-                    using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj",
-                        new("id", MySqlDbType.UInt64),
-                        new("entityDid", MySqlDbType.UInt32),
-                        new("physicsEntityDid", MySqlDbType.UInt32))) {
-                        cmd.Parameters[0].Value = worldObject.id.id;
-                        cmd.Parameters[1].Value = worldObject.entityDid.id;
-                        cmd.Parameters[2].Value = worldObject.physicsEntityDid.id;
-                        cmd.ExecuteNonQuery();
-                    }
-                    if (worldObject.qualities.ints != null) {
-                        using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_int",
-                        new("objectId", MySqlDbType.UInt64),
-                        new("stat", MySqlDbType.UInt32),
-                        new("value", MySqlDbType.Int32))) {
-                            cmd.Parameters[0].Value = worldObject.id.id;
-                            foreach ((IntStat stat, int value) in worldObject.qualities.ints) {
-                                cmd.Parameters[1].Value = (uint)stat;
-                                cmd.Parameters[2].Value = value;
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                    if (worldObject.qualities.longs != null) {
-                        using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_long",
-                        new("objectId", MySqlDbType.UInt64),
-                        new("stat", MySqlDbType.UInt32),
-                        new("value", MySqlDbType.Int64))) {
-                            cmd.Parameters[0].Value = worldObject.id.id;
-                            foreach ((LongIntStat stat, long value) in worldObject.qualities.longs) {
-                                cmd.Parameters[1].Value = (uint)stat;
-                                cmd.Parameters[2].Value = value;
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                    if (worldObject.qualities.bools != null) {
-                        using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_bool",
-                        new("objectId", MySqlDbType.UInt64),
-                        new("stat", MySqlDbType.UInt32),
-                        new("value", MySqlDbType.Bool))) {
-                            cmd.Parameters[0].Value = worldObject.id.id;
-                            foreach ((BoolStat stat, bool value) in worldObject.qualities.bools) {
-                                cmd.Parameters[1].Value = (uint)stat;
-                                cmd.Parameters[2].Value = value;
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                    if (worldObject.qualities.floats != null) {
-                        using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_float",
-                        new("objectId", MySqlDbType.UInt64),
-                        new("stat", MySqlDbType.UInt32),
-                        new("value", MySqlDbType.Float))) {
-                            cmd.Parameters[0].Value = worldObject.id.id;
-                            foreach ((FloatStat stat, float value) in worldObject.qualities.floats) {
-                                cmd.Parameters[1].Value = (uint)stat;
-                                cmd.Parameters[2].Value = value;
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                    if (worldObject.qualities.doubles != null) {
-                        using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_double",
+                using (MySqlCommand objCmd = upsertCommand(connection, transaction, "world_obj",
+                    new("id", MySqlDbType.UInt64),
+                    new("entityDid", MySqlDbType.UInt32),
+                    new("physicsEntityDid", MySqlDbType.UInt32))) {
+                    foreach (WorldObject worldObject in worldSave.worldObjects) {
+                        objCmd.Parameters[0].Value = worldObject.id.id;
+                        objCmd.Parameters[1].Value = worldObject.entityDid.id;
+                        objCmd.Parameters[2].Value = worldObject.physicsEntityDid.id;
+                        objCmd.ExecuteNonQuery();
+
+                        if (worldObject.qualities.ints != null) {
+                            using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_int",
                             new("objectId", MySqlDbType.UInt64),
                             new("stat", MySqlDbType.UInt32),
-                            new("value", MySqlDbType.Double))) {
-                            cmd.Parameters[0].Value = worldObject.id.id;
-                            foreach ((TimestampStat stat, double value) in worldObject.qualities.doubles) {
-                                cmd.Parameters[1].Value = (uint)stat;
-                                cmd.Parameters[2].Value = value;
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                    if (worldObject.qualities.ids != null) {
-                        using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_id",
-                        new("objectId", MySqlDbType.UInt64),
-                        new("stat", MySqlDbType.UInt32),
-                        new("value", MySqlDbType.UInt64))) {
-                            cmd.Parameters[0].Value = worldObject.id.id;
-                            foreach ((InstanceIdStat stat, InstanceId value) in worldObject.qualities.ids) {
-                                cmd.Parameters[1].Value = (uint)stat;
-                                cmd.Parameters[2].Value = value.id;
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                    if (worldObject.qualities.dids != null) {
-                        using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_did",
-                        new("objectId", MySqlDbType.UInt64),
-                        new("stat", MySqlDbType.UInt32),
-                        new("value", MySqlDbType.UInt32))) {
-                            cmd.Parameters[0].Value = worldObject.id.id;
-                            foreach ((DataIdStat stat, DataId value) in worldObject.qualities.dids) {
-                                cmd.Parameters[1].Value = (uint)stat;
-                                cmd.Parameters[2].Value = value.id;
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                    if (worldObject.qualities.strings != null) {
-                        using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_str",
-                        new("objectId", MySqlDbType.UInt64),
-                        new("stat", MySqlDbType.UInt32),
-                        new("value", MySqlDbType.VarString))) {
-                            cmd.Parameters[0].Value = worldObject.id.id;
-                            foreach ((StringStat stat, string value) in worldObject.qualities.strings) {
-                                cmd.Parameters[1].Value = (uint)stat;
-                                cmd.Parameters[2].Value = value;
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                    if (worldObject.qualities.stringInfos != null) {
-                        using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_strinfo",
-                        new("objectId", MySqlDbType.UInt64),
-                        new("stat", MySqlDbType.UInt32),
-                        new("stringId", MySqlDbType.UInt32),
-                        new("tableDid", MySqlDbType.UInt32),
-                        new("literalValue", MySqlDbType.VarString))) {
-                            cmd.Parameters[0].Value = worldObject.id.id;
-                            foreach ((StringInfoStat stat, StringInfo value) in worldObject.qualities.stringInfos) {
-                                cmd.Parameters[1].Value = (uint)stat;
-                                cmd.Parameters[2].Value = value.stringId;
-                                cmd.Parameters[3].Value = value.tableDid.id;
-                                cmd.Parameters[4].Value = value.literalValue;
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-
-                    using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_phys",
-                        new("objectId", MySqlDbType.UInt64),
-                        new("landblockId", MySqlDbType.UInt16),
-                        new("cellId", MySqlDbType.UInt16),
-                        new("posX", MySqlDbType.Float),
-                        new("posY", MySqlDbType.Float),
-                        new("posZ", MySqlDbType.Float),
-                        new("rotX", MySqlDbType.Float),
-                        new("rotY", MySqlDbType.Float),
-                        new("rotZ", MySqlDbType.Float),
-                        new("rotW", MySqlDbType.Float),
-                        new("headingX", MySqlDbType.Float),
-                        new("headingZ", MySqlDbType.Float),
-                        new("parentId", MySqlDbType.UInt64),
-                        new("parentInstanceStamp", MySqlDbType.UInt16),
-                        new("locationId", MySqlDbType.UInt32),
-                        new("orientationId", MySqlDbType.UInt32),
-                        new("instanceStamp", MySqlDbType.UInt16))) {
-                        cmd.Parameters[0].Value = worldObject.id.id;
-                        cmd.Parameters[1].Value = worldObject.physics.pos.cell.landblockId.id;
-                        cmd.Parameters[2].Value = worldObject.physics.pos.cell.localCellId.id;
-                        cmd.Parameters[3].Value = worldObject.physics.pos.frame.pos.X;
-                        cmd.Parameters[4].Value = worldObject.physics.pos.frame.pos.Y;
-                        cmd.Parameters[5].Value = worldObject.physics.pos.frame.pos.Z;
-                        cmd.Parameters[6].Value = worldObject.physics.pos.frame.rot.X;
-                        cmd.Parameters[7].Value = worldObject.physics.pos.frame.rot.Y;
-                        cmd.Parameters[8].Value = worldObject.physics.pos.frame.rot.Z;
-                        cmd.Parameters[9].Value = worldObject.physics.pos.frame.rot.W;
-                        cmd.Parameters[10].Value = worldObject.physics.headingX;
-                        cmd.Parameters[11].Value = worldObject.physics.headingZ;
-                        cmd.Parameters[12].Value = worldObject.physics.parentId.id;
-                        cmd.Parameters[13].Value = worldObject.physics.parentInstanceStamp;
-                        cmd.Parameters[14].Value = worldObject.physics.locationId;
-                        cmd.Parameters[15].Value = worldObject.physics.orientationId;
-                        cmd.Parameters[16].Value = worldObject.physics.instanceStamp;
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_visual",
-                        new("objectId", MySqlDbType.UInt64),
-                        new("scaleX", MySqlDbType.Float),
-                        new("scaleY", MySqlDbType.Float),
-                        new("scaleZ", MySqlDbType.Float))) {
-                        cmd.Parameters[0].Value = worldObject.id.id;
-                        cmd.Parameters[1].Value = worldObject.visualScale.X;
-                        cmd.Parameters[2].Value = worldObject.visualScale.Y;
-                        cmd.Parameters[3].Value = worldObject.visualScale.Z;
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    if (worldObject.globalAppearanceModifiers != null) {
-                        using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_apr",
-                            new("objectId", MySqlDbType.UInt64),
-                            new("partDid", MySqlDbType.UInt32),
-                            new("aprKey", MySqlDbType.UInt32),
-                            new("value", MySqlDbType.Float))) {
-                            cmd.Parameters[0].Value = worldObject.id.id;
-                            foreach ((DataId partDid, Dictionary<AppearanceKey, float> appearances) in worldObject.globalAppearanceModifiers.appearanceInfos) {
-                                cmd.Parameters[1].Value = partDid.id;
-                                foreach ((AppearanceKey aprKey, float value) in appearances) {
-                                    cmd.Parameters[2].Value = (uint)aprKey;
-                                    cmd.Parameters[3].Value = value;
+                            new("value", MySqlDbType.Int32))) {
+                                cmd.Parameters[0].Value = worldObject.id.id;
+                                foreach ((IntStat stat, int value) in worldObject.qualities.ints) {
+                                    cmd.Parameters[1].Value = (uint)stat;
+                                    cmd.Parameters[2].Value = value;
                                     cmd.ExecuteNonQuery();
                                 }
                             }
                         }
+                        if (worldObject.qualities.longs != null) {
+                            using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_long",
+                            new("objectId", MySqlDbType.UInt64),
+                            new("stat", MySqlDbType.UInt32),
+                            new("value", MySqlDbType.Int64))) {
+                                cmd.Parameters[0].Value = worldObject.id.id;
+                                foreach ((LongIntStat stat, long value) in worldObject.qualities.longs) {
+                                    cmd.Parameters[1].Value = (uint)stat;
+                                    cmd.Parameters[2].Value = value;
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                        if (worldObject.qualities.bools != null) {
+                            using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_bool",
+                            new("objectId", MySqlDbType.UInt64),
+                            new("stat", MySqlDbType.UInt32),
+                            new("value", MySqlDbType.Bool))) {
+                                cmd.Parameters[0].Value = worldObject.id.id;
+                                foreach ((BoolStat stat, bool value) in worldObject.qualities.bools) {
+                                    cmd.Parameters[1].Value = (uint)stat;
+                                    cmd.Parameters[2].Value = value;
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                        if (worldObject.qualities.floats != null) {
+                            using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_float",
+                            new("objectId", MySqlDbType.UInt64),
+                            new("stat", MySqlDbType.UInt32),
+                            new("value", MySqlDbType.Float))) {
+                                cmd.Parameters[0].Value = worldObject.id.id;
+                                foreach ((FloatStat stat, float value) in worldObject.qualities.floats) {
+                                    cmd.Parameters[1].Value = (uint)stat;
+                                    cmd.Parameters[2].Value = value;
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                        if (worldObject.qualities.doubles != null) {
+                            using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_double",
+                                new("objectId", MySqlDbType.UInt64),
+                                new("stat", MySqlDbType.UInt32),
+                                new("value", MySqlDbType.Double))) {
+                                cmd.Parameters[0].Value = worldObject.id.id;
+                                foreach ((TimestampStat stat, double value) in worldObject.qualities.doubles) {
+                                    cmd.Parameters[1].Value = (uint)stat;
+                                    cmd.Parameters[2].Value = value;
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                        if (worldObject.qualities.ids != null) {
+                            using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_id",
+                            new("objectId", MySqlDbType.UInt64),
+                            new("stat", MySqlDbType.UInt32),
+                            new("value", MySqlDbType.UInt64))) {
+                                cmd.Parameters[0].Value = worldObject.id.id;
+                                foreach ((InstanceIdStat stat, InstanceId value) in worldObject.qualities.ids) {
+                                    cmd.Parameters[1].Value = (uint)stat;
+                                    cmd.Parameters[2].Value = value.id;
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                        if (worldObject.qualities.dids != null) {
+                            using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_did",
+                            new("objectId", MySqlDbType.UInt64),
+                            new("stat", MySqlDbType.UInt32),
+                            new("value", MySqlDbType.UInt32))) {
+                                cmd.Parameters[0].Value = worldObject.id.id;
+                                foreach ((DataIdStat stat, DataId value) in worldObject.qualities.dids) {
+                                    cmd.Parameters[1].Value = (uint)stat;
+                                    cmd.Parameters[2].Value = value.id;
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                        if (worldObject.qualities.strings != null) {
+                            using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_str",
+                            new("objectId", MySqlDbType.UInt64),
+                            new("stat", MySqlDbType.UInt32),
+                            new("value", MySqlDbType.VarString))) {
+                                cmd.Parameters[0].Value = worldObject.id.id;
+                                foreach ((StringStat stat, string value) in worldObject.qualities.strings) {
+                                    cmd.Parameters[1].Value = (uint)stat;
+                                    cmd.Parameters[2].Value = value;
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                        if (worldObject.qualities.stringInfos != null) {
+                            using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_strinfo",
+                            new("objectId", MySqlDbType.UInt64),
+                            new("stat", MySqlDbType.UInt32),
+                            new("stringId", MySqlDbType.UInt32),
+                            new("tableDid", MySqlDbType.UInt32),
+                            new("literalValue", MySqlDbType.VarString))) {
+                                cmd.Parameters[0].Value = worldObject.id.id;
+                                foreach ((StringInfoStat stat, StringInfo value) in worldObject.qualities.stringInfos) {
+                                    cmd.Parameters[1].Value = (uint)stat;
+                                    cmd.Parameters[2].Value = value.stringId;
+                                    cmd.Parameters[3].Value = value.tableDid.id;
+                                    cmd.Parameters[4].Value = value.literalValue;
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
+
+                        using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_phys",
+                            new("objectId", MySqlDbType.UInt64),
+                            new("landblockId", MySqlDbType.UInt16),
+                            new("cellId", MySqlDbType.UInt16),
+                            new("posX", MySqlDbType.Float),
+                            new("posY", MySqlDbType.Float),
+                            new("posZ", MySqlDbType.Float),
+                            new("rotX", MySqlDbType.Float),
+                            new("rotY", MySqlDbType.Float),
+                            new("rotZ", MySqlDbType.Float),
+                            new("rotW", MySqlDbType.Float),
+                            new("headingX", MySqlDbType.Float),
+                            new("headingZ", MySqlDbType.Float),
+                            new("parentId", MySqlDbType.UInt64),
+                            new("parentInstanceStamp", MySqlDbType.UInt16),
+                            new("locationId", MySqlDbType.UInt32),
+                            new("orientationId", MySqlDbType.UInt32),
+                            new("instanceStamp", MySqlDbType.UInt16))) {
+                            cmd.Parameters[0].Value = worldObject.id.id;
+                            cmd.Parameters[1].Value = worldObject.physics.pos.cell.landblockId.id;
+                            cmd.Parameters[2].Value = worldObject.physics.pos.cell.localCellId.id;
+                            cmd.Parameters[3].Value = worldObject.physics.pos.frame.pos.X;
+                            cmd.Parameters[4].Value = worldObject.physics.pos.frame.pos.Y;
+                            cmd.Parameters[5].Value = worldObject.physics.pos.frame.pos.Z;
+                            cmd.Parameters[6].Value = worldObject.physics.pos.frame.rot.X;
+                            cmd.Parameters[7].Value = worldObject.physics.pos.frame.rot.Y;
+                            cmd.Parameters[8].Value = worldObject.physics.pos.frame.rot.Z;
+                            cmd.Parameters[9].Value = worldObject.physics.pos.frame.rot.W;
+                            cmd.Parameters[10].Value = worldObject.physics.headingX;
+                            cmd.Parameters[11].Value = worldObject.physics.headingZ;
+                            cmd.Parameters[12].Value = worldObject.physics.parentId.id;
+                            cmd.Parameters[13].Value = worldObject.physics.parentInstanceStamp;
+                            cmd.Parameters[14].Value = worldObject.physics.locationId;
+                            cmd.Parameters[15].Value = worldObject.physics.orientationId;
+                            cmd.Parameters[16].Value = worldObject.physics.instanceStamp;
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_visual",
+                            new("objectId", MySqlDbType.UInt64),
+                            new("scaleX", MySqlDbType.Float),
+                            new("scaleY", MySqlDbType.Float),
+                            new("scaleZ", MySqlDbType.Float))) {
+                            cmd.Parameters[0].Value = worldObject.id.id;
+                            cmd.Parameters[1].Value = worldObject.visualScale.X;
+                            cmd.Parameters[2].Value = worldObject.visualScale.Y;
+                            cmd.Parameters[3].Value = worldObject.visualScale.Z;
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        if (worldObject.globalAppearanceModifiers != null) {
+                            using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_apr",
+                                new("objectId", MySqlDbType.UInt64),
+                                new("partDid", MySqlDbType.UInt32),
+                                new("aprKey", MySqlDbType.UInt32),
+                                new("value", MySqlDbType.Float))) {
+                                cmd.Parameters[0].Value = worldObject.id.id;
+                                foreach ((DataId partDid, Dictionary<AppearanceKey, float> appearances) in worldObject.globalAppearanceModifiers.appearanceInfos) {
+                                    cmd.Parameters[1].Value = partDid.id;
+                                    foreach ((AppearanceKey aprKey, float value) in appearances) {
+                                        cmd.Parameters[2].Value = (uint)aprKey;
+                                        cmd.Parameters[3].Value = value;
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                using (MySqlCommand cmd = upsertCommand(connection, transaction, "characters",
+                    new("id", MySqlDbType.String),
+                    new("sequence", MySqlDbType.UInt16),
+                    new("accountId", MySqlDbType.String),
+                    new("objectId", MySqlDbType.UInt64))) {
+                    foreach (Character character in worldSave.characters) {
+                        cmd.Parameters[0].Value = character.id.id;
+                        cmd.Parameters[1].Value = character.sequence;
+                        cmd.Parameters[2].Value = character.accountId.id;
+                        cmd.Parameters[3].Value = character.objectId.id;
+                        cmd.ExecuteNonQuery();
                     }
                 }
 

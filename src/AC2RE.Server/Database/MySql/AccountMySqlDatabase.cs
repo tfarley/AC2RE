@@ -9,10 +9,10 @@ namespace AC2RE.Server.Database {
         protected override string? databaseName => "ac2re_account";
 
         public Account? getAccountWithUserNameAndPassword(string userName, string password) {
-            using (MySqlCommand cmd = new($"SELECT id FROM account WHERE userName = '{userName}' AND password = '{password}';", connection)) {
+            using (MySqlCommand cmd = new($"SELECT * FROM account WHERE userName = '{userName}' AND password = '{password}';", connection)) {
                 using (MySqlDataReader reader = cmd.ExecuteReader(CommandBehavior.SingleResult)) {
                     if (reader.Read()) {
-                        return new(new(reader.GetGuid("id")), userName, password);
+                        return new(new(reader.GetGuid("id")), reader.GetBoolean("deleted"), userName, password, reader.GetBoolean("banned"));
                     }
                 }
             }
@@ -32,11 +32,15 @@ namespace AC2RE.Server.Database {
             runInTransaction(connection, transaction => {
                 using (MySqlCommand cmd = upsertCommand(connection, transaction, "account",
                     new("id", MySqlDbType.String),
+                    new("deleted", MySqlDbType.Bool),
                     new("userName", MySqlDbType.VarString),
-                    new("password", MySqlDbType.VarString))) {
+                    new("password", MySqlDbType.VarString),
+                    new("banned", MySqlDbType.Bool))) {
                     cmd.Parameters[0].Value = account.id.id;
-                    cmd.Parameters[1].Value = escape(account.userName);
-                    cmd.Parameters[2].Value = escape(account.password);
+                    cmd.Parameters[1].Value = account.deleted;
+                    cmd.Parameters[2].Value = escape(account.userName);
+                    cmd.Parameters[3].Value = escape(account.password);
+                    cmd.Parameters[4].Value = account.banned;
                     return cmd.ExecuteNonQuery();
                 }
             });

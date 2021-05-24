@@ -16,7 +16,7 @@ namespace AC2RE.Server {
         }
 
         public Account create(string userName, string password) {
-            Account account = new(new(Guid.NewGuid()), userName, password);
+            Account account = new(new(Guid.NewGuid()), false, userName, password, false);
 
             accountDb.upsertAccount(account);
 

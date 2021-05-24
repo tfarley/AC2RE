@@ -6,11 +6,14 @@
         public bool deleted;
         public string userName;
         public string password;
+        public bool banned;
 
-        public Account(AccountId id, string userName, string password) {
+        public Account(AccountId id, bool deleted, string userName, string password, bool banned) {
             this.id = id;
+            this.deleted = deleted;
             this.userName = userName;
             this.password = password;
+            this.banned = banned;
         }
     }
 }
