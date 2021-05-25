@@ -9,7 +9,7 @@ namespace AC2RE.Definitions {
 
         public uint stringId; // m_stringID
         public DataId tableDid; // m_tableID
-        public Dictionary<uint, StringInfoData> variables; // m_variables
+        public Dictionary<StringVariable, StringInfoData> variables; // m_variables
         public string literalValue; // m_LiteralValue
 
         public StringInfo() {
@@ -25,6 +25,12 @@ namespace AC2RE.Definitions {
             this.stringId = stringId;
         }
 
+        public StringInfo(DataId tableDid, uint stringId, Dictionary<StringVariable, StringInfoData> variables) {
+            this.tableDid = tableDid;
+            this.stringId = stringId;
+            this.variables = variables;
+        }
+
         public StringInfo(AC2Reader data) {
             stringId = data.ReadUInt32();
             tableDid = data.ReadDataId();
@@ -34,7 +40,7 @@ namespace AC2RE.Definitions {
                 literalValue = data.ReadString(Encoding.Unicode);
             }
             for (int i = 0; i < numVariables; i++) {
-                variables.Add(data.ReadUInt32(), new(data));
+                variables.Add((StringVariable)data.ReadUInt32(), new(data));
             }
         }
 
@@ -50,9 +56,9 @@ namespace AC2RE.Definitions {
                 data.Write((ushort)0);
             }
             if (numVariables > 0) {
-                foreach (var element in variables) {
-                    data.Write(element.Key);
-                    element.Value.write(data);
+                foreach ((StringVariable variable, StringInfoData variableData) in variables) {
+                    data.Write((uint)variable);
+                    variableData.write(data);
                 }
             }
         }

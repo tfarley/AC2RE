@@ -11,6 +11,9 @@ namespace AC2RE.Server {
         private readonly DatReader cell1DatReader;
         private CharacterGenSystem? characterGenSystem;
         private CharGenMatrix? charGenMatrix;
+        private LevelTable? levelTable;
+        private readonly Dictionary<SkillId, Skill> skillCache = new();
+        private readonly Dictionary<DataId, AdvancementTable> advancementTableCache = new();
         private readonly Dictionary<DataId, EntityDef> entityDefCache = new();
         private readonly Dictionary<DataId, EntityDef> inheritedEntityDefCache = new();
         private readonly Dictionary<DataId, CBaseQualities> qualitiesCache = new();
@@ -25,6 +28,18 @@ namespace AC2RE.Server {
 
             MasterProperty.loadMasterProperties(portalDatReader);
             PackageManager.loadPackageTypes(portalDatReader);
+
+            foreach (DataId did in portalDatReader.dids) {
+                DbType dbType = DbTypeDef.getType(DbTypeDef.DatType.PORTAL, did);
+
+                if (dbType == DbType.WSTATE) {
+                    WState wstate = getWeenieState(did);
+                    if (PackageManager.isPackageType(wstate.packageType, PackageType.Skill)) {
+                        Skill skill = (Skill)wstate.package;
+                        skillCache[(SkillId)skill.enumVal] = skill;
+                    }
+                }
+            }
         }
 
         public void Dispose() {
@@ -55,6 +70,26 @@ namespace AC2RE.Server {
             }
 
             return charGenMatrix;
+        }
+
+        public LevelTable getLevelTable() {
+            if (levelTable == null) {
+                using (AC2Reader data = portalDatReader.getFileReader(new(0x70000380))) {
+                    WState wState = new(data);
+                    levelTable = (LevelTable)wState.package;
+                }
+            }
+
+            return levelTable;
+        }
+
+        public Skill getSkill(SkillId skillId) {
+            return skillCache[skillId];
+        }
+
+        public AdvancementTable getAdvancementTable(DataId did) {
+            WState wstate = getWeenieState(did);
+            return (AdvancementTable)wstate.package;
         }
 
         private EntityDef getEntityDef(DataId did) {

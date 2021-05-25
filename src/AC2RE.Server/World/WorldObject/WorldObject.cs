@@ -22,6 +22,7 @@ namespace AC2RE.Server {
             initEquip();
             initPhysics();
             initQualities();
+            initSkills();
             initVisual();
         }
 

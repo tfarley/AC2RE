@@ -7,10 +7,10 @@ namespace AC2RE.Definitions {
         public PackageType packageType => PackageType.SkillRepository;
 
         public uint skillCredits; // m_nSkillCredits
-        public ulong untrainXp; // m_nUntrainXP
+        public ulong untrainingXp; // m_nUntrainXP
         public uint heroSkillCredits; // m_nHeroSkillCredits
         public Dictionary<uint, uint> perkTypes; // m_hashPerkTypes
-        public uint typeUntrained; // m_typeUntrained
+        public SkillId skillIdUntraining; // m_typeUntrained
         public Dictionary<uint, uint> categories; // m_hashCategories
         public Dictionary<SkillId, SkillInfo> skills; // m_hashSkills
 
@@ -20,20 +20,20 @@ namespace AC2RE.Definitions {
 
         public SkillRepository(AC2Reader data) {
             skillCredits = data.ReadUInt32();
-            untrainXp = data.ReadUInt64();
+            untrainingXp = data.ReadUInt64();
             heroSkillCredits = data.ReadUInt32();
             data.ReadPkg<AAHash>(v => perkTypes = v);
-            typeUntrained = data.ReadUInt32();
+            skillIdUntraining = (SkillId)data.ReadUInt32();
             data.ReadPkg<AAHash>(v => categories = v);
             data.ReadPkg<ARHash>(v => skills = v.to<SkillId, SkillInfo>());
         }
 
         public void write(AC2Writer data) {
             data.Write(skillCredits);
-            data.Write(untrainXp);
+            data.Write(untrainingXp);
             data.Write(heroSkillCredits);
             data.WritePkg(AAHash.from(perkTypes));
-            data.Write(typeUntrained);
+            data.Write((uint)skillIdUntraining);
             data.WritePkg(AAHash.from(categories));
             data.WritePkg(ARHash.from(skills));
         }

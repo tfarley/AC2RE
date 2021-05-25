@@ -30,6 +30,20 @@ namespace AC2RE.Definitions {
         public ulong valULong;
         public StringInfo valString;
 
+        public StringInfoData() {
+
+        }
+
+        public StringInfoData(StringInfo value) {
+            type = DataType.STRING_INFO;
+            valString = value;
+        }
+
+        public StringInfoData(int value, DataType type = DataType.INT) {
+            this.type = type;
+            valInt = value;
+        }
+
         public StringInfoData(AC2Reader data) {
             // TODO: Not sure if this should be full 32 read or 16 + align
             type = (DataType)data.ReadUInt16();

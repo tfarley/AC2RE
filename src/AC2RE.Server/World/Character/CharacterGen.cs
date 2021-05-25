@@ -6,11 +6,20 @@ namespace AC2RE.Server {
 
     internal static class CharacterGen {
 
-        public static WorldObject createCharacterObject(WorldObjectManager objectManager, ContentManager contentManager, InventoryManager inventoryManager, Position startPos, string name, SpeciesType species, SexType sex, Dictionary<PhysiqueType, float> physiqueTypeValues) {
+        //TODO: Not sure how this mapping is actually determined
+        private static readonly Dictionary<SpeciesType, uint> SPECIES_TO_UNK_SKILLS = new() {
+            { SpeciesType.LUGIAN, (1 << 1) },
+            { SpeciesType.HUMAN, (1 << 2) },
+            { SpeciesType.TUMEROK, (1 << 3) },
+            { SpeciesType.MOSSWART, (1 << 15) },
+            { SpeciesType.EMPYREAN, (1 << 20) },
+        };
+
+        public static WorldObject createCharacterObject(World world, Position startPos, string name, SpeciesType species, SexType sex, Dictionary<PhysiqueType, float> physiqueTypeValues) {
             Dictionary<PhysiqueType, Dictionary<float, Tuple<AppearanceKey, DataId>>> appProfileMap = new();
 
-            CharacterGenSystem characterGenSystem = contentManager.getCharacterGenSystem();
-            CharGenMatrix charGenMatrix = contentManager.getCharGenMatrix();
+            CharacterGenSystem characterGenSystem = world.contentManager.getCharacterGenSystem();
+            CharGenMatrix charGenMatrix = world.contentManager.getCharGenMatrix();
 
             foreach (KeyValuePair<PhysiqueType, List<AppearanceProfile>> physiqueAndAppProfiles in charGenMatrix.physiqueTypeModifierTable[species][sex]) {
                 PhysiqueType physiqueType = physiqueAndAppProfiles.Key;
@@ -42,14 +51,16 @@ namespace AC2RE.Server {
                 }
             }
 
-            WorldObject character = objectManager.create(characterGenSystem.playerEntityDid, raceSexInfo.physObjDid, true);
+            WorldObject character = world.objectManager.create(characterGenSystem.playerEntityDid, raceSexInfo.physObjDid, true);
             setCharacterPhysics(character, startPos);
             setCharacterVisual(character, appProfileMap, appearanceInfos);
             setCharacterQualities(character, species, sex);
 
             character.name = new(name);
 
-            createStartingInventory(objectManager, contentManager, inventoryManager, character, charGenMatrix, species, appearanceInfos);
+            addStartingSkills(world, character, charGenMatrix, species);
+
+            createStartingInventory(world, character, charGenMatrix, species, appearanceInfos);
 
             return character;
         }
@@ -86,13 +97,29 @@ namespace AC2RE.Server {
             character.craftXpAvailable = 40;
         }
 
-        private static void createStartingInventory(WorldObjectManager objectManager, ContentManager contentManager, InventoryManager inventoryManager, WorldObject character, CharGenMatrix charGenMatrix, SpeciesType species, Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos) {
+        private static void addStartingSkills(World world, WorldObject character, CharGenMatrix charGenMatrix, SpeciesType species) {
+            List<SkillProfile> startingSkillProfiles = charGenMatrix.startingSkillsTable[SPECIES_TO_UNK_SKILLS[species]];
+            foreach (SkillProfile startingSkillProfile in startingSkillProfiles) {
+                // TODO: Remove starting credits
+                character.skillRepo.skillCredits = 5;
+                Skill skill = world.contentManager.getSkill(startingSkillProfile.skillId);
+                character.skillRepo.skills[startingSkillProfile.skillId] = new() {
+                    levelCached = (uint)startingSkillProfile.level,
+                    timeCached = world.serverTime.time,
+                    xpAllocated = world.contentManager.getAdvancementTable(skill.advTableDid).map[startingSkillProfile.level],
+                    mask = SkillInfoMask.TRAINED,
+                    skillId = startingSkillProfile.skillId,
+                };
+            }
+        }
+
+        private static void createStartingInventory(World world, WorldObject character, CharGenMatrix charGenMatrix, SpeciesType species, Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos) {
             List<StartInvData> startInvItems = charGenMatrix.startingInventoryTable[species][0][0];
             foreach (StartInvData startInvItem in startInvItems) {
-                WorldObject item = objectManager.create(startInvItem.entityDid, DataId.NULL, true);
+                WorldObject item = world.objectManager.create(startInvItem.entityDid, DataId.NULL, true);
 
                 DataId weenieStateDid = new(0x71000000 + item.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
-                WState clothingWeenieState = contentManager.getWeenieState(weenieStateDid);
+                WState clothingWeenieState = world.contentManager.getWeenieState(weenieStateDid);
                 if (clothingWeenieState.package is Clothing clothing) {
                     DataId appearanceDid = clothing.wornAppearanceDidHash[new(character.species!, character.sex!)];
                     Dictionary<DataId, Dictionary<AppearanceKey, float>> itemAppearanceInfos = new();

@@ -2045,9 +2045,9 @@ namespace AC2RE.Definitions {
         public static DbType getType(DatType datType, uint did) {
             DbType dbType = DbType.UNDEFINED;
 
-            foreach (var entry in TYPE_TO_DEF) {
-                if (entry.Value.contains(did)) {
-                    dbType = entry.Key;
+            foreach ((DbType entryType, DbTypeDef entryTypeDef) in TYPE_TO_DEF) {
+                if (entryTypeDef.contains(did)) {
+                    dbType = entryType;
                 }
             }
 

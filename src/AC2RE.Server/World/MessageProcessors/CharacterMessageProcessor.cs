@@ -25,7 +25,7 @@ namespace AC2RE.Server {
                 case MessageOpcode.CHARACTER_CREATE_EVENT: {
                         CharacterCreateMsg msg = (CharacterCreateMsg)genericMsg;
 
-                        WorldObject characterObject = CharacterGen.createCharacterObject(world.objectManager, world.contentManager, world.inventoryManager, World.ARWIC_START_POS, msg.characterName, msg.species, msg.sex, msg.physiqueTypeValues);
+                        WorldObject characterObject = CharacterGen.createCharacterObject(world, World.ARWIC_START_POS, msg.characterName, msg.species, msg.sex, msg.physiqueTypeValues);
 
                         Character character = world.characterManager.createWithAccountAndObject(player.account.id, characterObject.id);
 
@@ -98,8 +98,8 @@ namespace AC2RE.Server {
                                 };
                                 if (item.globalAppearanceModifiers != null) {
                                     profile.visualDescInfo.appInfoHash = new();
-                                    foreach (var entry in item.globalAppearanceModifiers.appearanceInfos) {
-                                        profile.visualDescInfo.appInfoHash[entry.Key] = entry.Value;
+                                    foreach ((DataId partDid, Dictionary<AppearanceKey, float> appearanceInfos) in item.globalAppearanceModifiers.appearanceInfos) {
+                                        profile.visualDescInfo.appInfoHash[partDid] = appearanceInfos;
                                     }
                                 }
                                 inventoryByLocationTable[(uint)equipLoc] = profile;
@@ -257,45 +257,7 @@ namespace AC2RE.Server {
                                         { 0xA0746B95, 0.65f },
                                     },
                                 },
-                                skills = new() {
-                                    skillCredits = 0,
-                                    untrainXp = 0,
-                                    perkTypes = new(),
-                                    typeUntrained = 0,
-                                    categories = new(),
-                                    skills = new() {
-                                        {
-                                            SkillId.HUM_ME_RIPOSTE,
-                                            new() {
-                                                lastUsedTime = -1,
-                                                mask = 33,
-                                                grantedTime = -1,
-                                                skillOverride = 1,
-                                                skillId = SkillId.HUM_ME_RIPOSTE,
-                                            }
-                                        },
-                                        {
-                                            SkillId.HUM_ME_UNPREDICTABLEBLOW,
-                                            new() {
-                                                lastUsedTime = -1,
-                                                mask = 33,
-                                                grantedTime = -1,
-                                                skillOverride = 1,
-                                                skillId = SkillId.HUM_ME_UNPREDICTABLEBLOW,
-                                            }
-                                        },
-                                        {
-                                            SkillId.COM_LIFESTONERECALL,
-                                            new() {
-                                                lastUsedTime = -1,
-                                                mask = 33,
-                                                grantedTime = -1,
-                                                skillOverride = 1,
-                                                skillId = SkillId.COM_LIFESTONERECALL,
-                                            }
-                                        },
-                                    },
-                                },
+                                skills = character.skillRepo,
                                 effectRegistry = new() {
                                     qualitiesModifiedCount = null,
                                     appliedFx = new(),
@@ -371,7 +333,7 @@ namespace AC2RE.Server {
                 case MessageOpcode.Evt_Physics__CLookAtDir_ID: {
                         CLookAtDirMsg msg = (CLookAtDirMsg)genericMsg;
 
-                        if (world.objectManager.tryGet(player.characterId, out WorldObject? character) && character.inWorld) {
+                        if (tryGetCharacter(player, out WorldObject? character)) {
                             character.lookAtDir = new(msg.x, msg.z);
                         }
 
@@ -380,7 +342,7 @@ namespace AC2RE.Server {
                 case MessageOpcode.Evt_Physics__CPosition_ID: {
                         CPositionMsg msg = (CPositionMsg)genericMsg;
 
-                        if (world.objectManager.tryGet(player.characterId, out WorldObject? character) && character.inWorld) {
+                        if (tryGetCharacter(player, out WorldObject? character)) {
                             character.offset = msg.posPack.offset;
                             character.heading = msg.posPack.heading.rotDegrees;
                             character.motion = msg.posPack.doMotion;

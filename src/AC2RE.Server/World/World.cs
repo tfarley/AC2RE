@@ -30,7 +30,6 @@ namespace AC2RE.Server {
         public readonly CharacterManager characterManager;
         public readonly WorldObjectManager objectManager;
         public readonly LandblockManager landblockManager;
-        public readonly InventoryManager inventoryManager;
 
         public World(IMapDatabase mapDb, IWorldDatabase worldDb, ServerTime serverTime, PacketHandler packetHandler, ContentManager contentManager) {
             this.mapDb = mapDb;
@@ -42,7 +41,6 @@ namespace AC2RE.Server {
             characterManager = new(this);
             objectManager = new(this, contentManager);
             landblockManager = new(this);
-            inventoryManager = new(this);
             MESSAGE_PROCESSORS = new() {
                 new CharacterMessageProcessor(this),
                 new CombatMessageProcessor(this),
@@ -50,6 +48,7 @@ namespace AC2RE.Server {
                 new DataMessageProcessor(this),
                 new EquipMessageProcessor(this),
                 new ExaminationMessageProcessor(this),
+                new SkillMessageProcessor(this),
             };
         }
 

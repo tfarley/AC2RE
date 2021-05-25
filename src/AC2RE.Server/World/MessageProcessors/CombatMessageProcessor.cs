@@ -76,7 +76,7 @@ namespace AC2RE.Server {
 
                             newTestObject.enterWorld();
 
-                            if (world.objectManager.tryGet(player.characterId, out WorldObject? character) && character.inWorld) {
+                            if (tryGetCharacter(player, out WorldObject? character)) {
                                 character.health = toggleCounter;
 
                                 character.doFx(FxId.PORTAL_USE, 1.0f);

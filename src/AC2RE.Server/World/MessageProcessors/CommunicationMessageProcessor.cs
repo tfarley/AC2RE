@@ -28,14 +28,14 @@ namespace AC2RE.Server {
                                                 sendMessage(player, "Cannot parse argument", TextType.ERROR);
                                                 break;
                                             }
-                                            if (world.objectManager.tryGet(player.characterId, out WorldObject? character) && character.inWorld) {
+                                            if (tryGetCharacter(player, out WorldObject? character)) {
                                                 character.velScale = value;
                                                 character.doFx(FxId.PORTAL_USE, 1.0f);
                                             }
                                             break;
                                         }
                                     case ".pos": {
-                                            if (world.objectManager.tryGet(player.characterId, out WorldObject? character) && character.inWorld) {
+                                            if (tryGetCharacter(player, out WorldObject? character)) {
                                                 sendMessage(player, $"{character.pos.cell.id:X8} {character.pos.frame.pos.X} {character.pos.frame.pos.Y} {character.pos.frame.pos.Z}");
                                             }
                                             break;

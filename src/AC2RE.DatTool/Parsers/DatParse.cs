@@ -135,8 +135,8 @@ namespace AC2RE.DatTool {
                         }
 
                         foreach (var element in file2IdTable.cacheByDid.Values) {
-                            foreach (var didAndEntry in element.didToEntry) {
-                                didToFileName.Add(didAndEntry.Key, didAndEntry.Value.fileName);
+                            foreach ((DataId entryDid, DBFile2IDTable.TFileEntry entry) in element.didToEntry) {
+                                didToFileName.Add(entryDid, entry.fileName);
                             }
                         }
 
@@ -247,8 +247,8 @@ namespace AC2RE.DatTool {
                             EnumMapper emp = new(data);
 
                             if (output != null) {
-                                foreach (var mapping in emp.idToString) {
-                                    output.WriteLine($"{mapping.Key}\t{mapping.Value}");
+                                foreach ((uint id, string str) in emp.idToString) {
+                                    output.WriteLine($"{id}\t{str}");
                                 }
                             }
 

@@ -15,7 +15,7 @@ namespace AC2RE.Server {
                         InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
                         if (msg.netEvent.funcId == ServerEventFunctionId.Examination__QueryExaminationProfile) {
                             QueryExaminationProfileSEvt sEvent = (QueryExaminationProfileSEvt)msg.netEvent;
-                            if (sEvent.request.dataId != InstanceId.NULL && world.objectManager.tryGet(sEvent.request.dataId, out WorldObject? target) && target.inWorld) {
+                            if (sEvent.request.dataId != InstanceId.NULL && tryGetObject(sEvent.request.dataId, out WorldObject? target)) {
                                 List<ExaminationDataNode> nodes = new();
                                 if (target.qualities.ints != null) {
                                     foreach ((IntStat stat, int value) in target.qualities.ints) {
