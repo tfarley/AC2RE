@@ -6,6 +6,8 @@ namespace AC2RE.Definitions {
     [Flags]
     public enum TypeFlag : uint {
         NONE = 0,
+        ALL = uint.MaxValue,
+
         APPOBJECT = 1 << 0, // 0x00000001
         CANCREATE = 1 << 1, // 0x00000002
         LICENSED = 1 << 2, // 0x00000004

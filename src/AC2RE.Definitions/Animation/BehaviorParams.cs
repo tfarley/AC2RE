@@ -12,6 +12,8 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
+            ALL = uint.MaxValue,
+
             BEHAVIOR_ID = 1 << 0, // 0x00000001
             MODE_ID = 1 << 1, // 0x00000002
             TIME_SCALE = 1 << 2, // 0x00000004

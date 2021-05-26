@@ -6,6 +6,8 @@ namespace AC2RE.Definitions {
     [Flags]
     public enum TransientState : uint {
         NONE = 0,
+        ALL = uint.MaxValue,
+
         CONTACT = 1 << 0, // 0x00000001
         ON_WALKABLE = 1 << 1, // 0x00000002
         SLIDING = 1 << 2, // 0x00000004

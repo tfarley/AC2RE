@@ -7,6 +7,8 @@ namespace AC2RE.Definitions {
     [Flags]
     public enum FactionType : uint {
         UNDEF = 0,
+        ALL = uint.MaxValue,
+
         FACTION_1 = 1 << 0, // 0x00000001
         FACTION_2 = 1 << 1, // 0x00000002
         FACTION_3 = 1 << 2, // 0x00000004

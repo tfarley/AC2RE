@@ -5,6 +5,9 @@ namespace AC2RE.Definitions {
     // Dat file 23000003
     [Flags]
     public enum ImplementType : uint {
+        UNDEF = 0,
+        ALL = uint.MaxValue,
+
         NONE = 1 << 0, // 0x00000001
         SWORD = 1 << 1, // 0x00000002
         BOW = 1 << 2, // 0x00000004

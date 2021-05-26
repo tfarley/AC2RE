@@ -6,6 +6,8 @@ namespace AC2RE.Definitions {
     [Flags]
     public enum PhysicsState : uint {
         NONE = 0,
+        ALL = uint.MaxValue,
+
         STATIC = 1 << 0, // 0x00000001
         CANNOT_STAND_ON = 1 << 1, // 0x00000002
         REPORT_COLLISIONS = 1 << 2, // 0x00000004

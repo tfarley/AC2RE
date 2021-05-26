@@ -12,6 +12,8 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum ContentFlag : uint {
             NONE = 0,
+            ALL = uint.MaxValue,
+
             ALIAS_TABLE = 1 << 0, // 0x00000001
             SHORTCUT_ARRAY = 1 << 1, // 0x00000002
             SHORTCUT_SET = 1 << 2, // 0x00000004
@@ -32,6 +34,8 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum Flag : uint {
             NONE = 0,
+            ALL = uint.MaxValue,
+
             SHOW_SHORTCUT_NUMBERS = 1 << 0, // 0x00000001
             SHOW_DAMAGE_TEXT = 1 << 1, // 0x00000002
             SHOW_DAMAGE_OTHER = 1 << 2, // 0x00000004

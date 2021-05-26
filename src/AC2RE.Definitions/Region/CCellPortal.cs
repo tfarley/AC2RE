@@ -9,6 +9,8 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : ulong {
             NONE = 0,
+            ALL = uint.MaxValue,
+
             EXACT_MATCH = 1 << 0, // 0x00000001
             NO_OTHER_CELL_ID = 1 << 1, // 0x00000002
             STAB_LIST = 1 << 2, // 0x00000004

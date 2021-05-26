@@ -19,20 +19,20 @@ namespace AC2RE.Definitions {
         public float recoveryTime; // m_RecoveryTime
         public int maxHealth; // m_MaxHealth
         public List<SingletonPkg<Effect>> userEffects; // m_UserEffects
-        public HashSet<uint> validWeenieTypes; // m_validWeenieTypes
+        public HashSet<WeenieType> validWeenieTypes; // m_validWeenieTypes
         public BehaviorId behaviorSelfHit; // m_BehaviorSelfHit
         public int minVigor; // m_MinVigor
         public BehaviorId behaviorSelfMiss; // m_BehaviorSelfMiss
         public Dictionary<uint, uint> weightHash; // m_WeightHash
         public uint minRank; // m_nMinRank
         public BehaviorId behaviorOtherMiss; // m_BehaviorOtherMiss
-        public uint validTargets; // m_validTargets
+        public ActiveSkillTarget validTargets; // m_validTargets
         public uint validPetOnly; // m_validPetOnly
         public BehaviorId powerUpBehavior; // m_powerUpBehavior
         public float startFocusModMult; // m_startFocusModMult
         public float dmgAttributeMod; // m_fDmgAttributeMod
         public ImplementType allowedImplementsLeft; // m_AllowedImplementsLeft
-        public uint requiredSkillTargetFlags; // m_requiredSkillTargetFlags
+        public ActiveSkillTarget requiredSkillTargetFlags; // m_requiredSkillTargetFlags
         public BehaviorId behaviorOtherCrit; // m_BehaviorOtherCrit
         public uint minLevel; // m_nMinLevel
         public uint maxLevel; // m_nMaxLevel
@@ -52,7 +52,7 @@ namespace AC2RE.Definitions {
         public int minFocus; // m_MinFocus
         public float dmgAttributeChance; // m_fDmgAttributeChance
         public float maxRange; // m_MaxRange
-        public uint flags; // m_uiFlags
+        public ActiveSkillFlag activeFlags; // m_uiFlags
 
         public ActiveSkill(AC2Reader data) : base(data) {
             maxPets = data.ReadInt32();
@@ -68,20 +68,20 @@ namespace AC2RE.Definitions {
             recoveryTime = data.ReadSingle();
             maxHealth = data.ReadInt32();
             data.ReadPkg<RList>(v => userEffects = v.to(SingletonPkg<Effect>.cast));
-            data.ReadPkg<AHashSet>(v => validWeenieTypes = v);
+            data.ReadPkg<AHashSet>(v => validWeenieTypes = v.to<WeenieType>());
             behaviorSelfHit = (BehaviorId)data.ReadUInt32();
             minVigor = data.ReadInt32();
             behaviorSelfMiss = (BehaviorId)data.ReadUInt32();
             data.ReadPkg<AAHash>(v => weightHash = v);
             minRank = data.ReadUInt32();
             behaviorOtherMiss = (BehaviorId)data.ReadUInt32();
-            validTargets = data.ReadUInt32();
+            validTargets = (ActiveSkillTarget)data.ReadUInt32();
             validPetOnly = data.ReadUInt32();
             powerUpBehavior = (BehaviorId)data.ReadUInt32();
             startFocusModMult = data.ReadSingle();
             dmgAttributeMod = data.ReadSingle();
             allowedImplementsLeft = (ImplementType)data.ReadInt32();
-            requiredSkillTargetFlags = data.ReadUInt32();
+            requiredSkillTargetFlags = (ActiveSkillTarget)data.ReadUInt32();
             behaviorOtherCrit = (BehaviorId)data.ReadUInt32();
             minLevel = data.ReadUInt32();
             maxLevel = data.ReadUInt32();
@@ -101,7 +101,7 @@ namespace AC2RE.Definitions {
             minFocus = data.ReadInt32();
             dmgAttributeChance = data.ReadSingle();
             maxRange = data.ReadSingle();
-            flags = data.ReadUInt32();
+            activeFlags = (ActiveSkillFlag)data.ReadUInt32();
         }
     }
 }

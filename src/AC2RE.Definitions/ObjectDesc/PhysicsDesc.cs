@@ -30,6 +30,8 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
+            ALL = uint.MaxValue,
+
             BEHAVIORS = 1 << 0, // 0x00000001
             SLIDERS = 1 << 1, // 0x00000002
             VELOCITY = 1 << 2, // 0x00000004

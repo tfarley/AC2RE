@@ -8,6 +8,8 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum Flag : uint {
             NONE = 0,
+            ALL = uint.MaxValue,
+
             SOUNDINFO = 1 << 0, // 0x00000001
             MUSICINFO = 1 << 1, // 0x00000002
             DOMINANT = 1 << 2, // 0x00000004

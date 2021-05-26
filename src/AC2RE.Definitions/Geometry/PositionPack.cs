@@ -9,6 +9,7 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
+            ALL = uint.MaxValue,
 
             JUMP = 1 << 1, // 0x00000002
             CONTACT = 1 << 2, // 0x00000004

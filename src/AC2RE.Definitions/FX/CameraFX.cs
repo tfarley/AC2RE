@@ -8,6 +8,8 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : ulong {
             NONE = 0,
+            ALL = uint.MaxValue,
+
             SHAKE = 1 << 0, // 0x00000001
             LOOKAT = 1 << 1, // 0x00000002
             FREE_CAMERA = 1 << 2, // 0x00000004

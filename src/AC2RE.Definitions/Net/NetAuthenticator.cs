@@ -8,6 +8,8 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum AuthFlag : uint {
             NONE = 0,
+            ALL = uint.MaxValue,
+
             ENABLECRYPTO = 1 << 0, // 0x00000001
             ADMINACCTOVERRIDE = 1 << 1, // 0x00000002
             EXTRADATA = 1 << 2, // 0x00000004

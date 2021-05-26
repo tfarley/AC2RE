@@ -7,6 +7,7 @@ namespace AC2RE.Definitions {
     [Flags]
     public enum SexType : uint {
         UNDEF = 0,
+        ALL = uint.MaxValue,
 
         MALE = 1 << 12, // 0x00001000
         FEMALE = 1 << 13, // 0x00002000

@@ -1,9 +1,6 @@
-﻿using System;
-
-namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions {
 
     // Enum TransitionState
-    [Flags]
     public enum TransitionState : uint {
         INVALID,
         OK,

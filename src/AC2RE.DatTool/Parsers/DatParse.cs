@@ -65,9 +65,7 @@ namespace AC2RE.DatTool {
             return monsterDidToName;
         }
 
-        public static Dictionary<SkillId, DataId> getSkills(DatReader portalDatReader) {
-            Dictionary<SkillId, DataId> skillIdToDid = new();
-
+        public static void getSkills(DatReader portalDatReader, Dictionary<SkillId, DataId> skillIdToDid, Dictionary<SkillId, Skill> skillIdToSkill) {
             foreach (DataId did in portalDatReader.dids) {
                 DbType dbType = DbTypeDef.getType(DbTypeDef.DatType.PORTAL, did);
 
@@ -76,13 +74,13 @@ namespace AC2RE.DatTool {
                         WState wstate = new(data);
                         if (PackageManager.isPackageType(wstate.packageType, PackageType.Skill)) {
                             Skill skill = (Skill)wstate.package;
-                            skillIdToDid[(SkillId)skill.enumVal] = did;
+                            SkillId skillId = (SkillId)skill.enumVal;
+                            skillIdToDid[skillId] = did;
+                            skillIdToSkill[skillId] = skill;
                         }
                     }
                 }
             }
-
-            return skillIdToDid;
         }
 
         private static string? readString(DatReader localDatReader, StringInfo stringInfo) {

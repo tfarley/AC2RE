@@ -7,6 +7,8 @@ namespace AC2RE.Definitions {
     [Flags]
     public enum ClassType : uint {
         UNDEF = 0,
+        ALL = uint.MaxValue,
+
         WARRIOR = 1 << 0, // 0x00000001
         ARCHER = 1 << 1, // 0x00000002
         SHAMAN = 1 << 2, // 0x00000004

@@ -34,8 +34,10 @@ namespace AC2RE.DatTool.UI {
                     //    File.WriteAllText("monsterNames.txt", Util.objectToString(monsterDidToName));
                     //}
 
-                    //Dictionary<SkillId, DataId> skillIdToDid = DatParse.getSkills(datReader);
-                    //File.WriteAllText("skills.txt", Util.objectToString(skillIdToDid));
+                    //Dictionary<SkillId, DataId> skillIdToDid = new();
+                    //Dictionary<SkillId, Skill> skillIdToSkill = new();
+                    //DatParse.getSkills(datReader, skillIdToDid, skillIdToSkill);
+                    //File.WriteAllText("skills.txt", Util.objectToString(skillIdToDid) + '\n' + Util.objectToString(skillIdToSkill));
                 }
                 */
 

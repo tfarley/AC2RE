@@ -6,6 +6,8 @@ namespace AC2RE.Definitions {
     [Flags]
     public enum OptionalHeaderFlag : uint {
         NONE = 0,
+        ALL = uint.MaxValue,
+
         DISPOSABLE = 1 << 0, // 0x00000001
         EXCLUSIVE = 1 << 1, // 0x00000002
         NOT_CONN = 1 << 2, // 0x00000004

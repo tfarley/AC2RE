@@ -28,7 +28,7 @@ namespace AC2RE.Definitions {
         public uint cost; // mCost
         public DataId iconDid; // mIcon
         public StringInfo name; // mName
-        public uint skillFlags; // m_skillFlags
+        public SkillFlag flags; // m_skillFlags
 
         public Skill(AC2Reader data) : base(data) {
             data.ReadPkg<StringInfo>(v => lore = v);
@@ -53,7 +53,7 @@ namespace AC2RE.Definitions {
             cost = data.ReadUInt32();
             iconDid = data.ReadDataId();
             data.ReadPkg<StringInfo>(v => name = v);
-            skillFlags = data.ReadUInt32();
+            flags = (SkillFlag)data.ReadUInt32();
         }
     }
 }

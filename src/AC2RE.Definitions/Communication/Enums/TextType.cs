@@ -7,6 +7,8 @@ namespace AC2RE.Definitions {
     [Flags]
     public enum TextType : uint {
         UNDEF = 0,
+        ALL = uint.MaxValue,
+
         ERROR = 1 << 0, // 0x00000001
         COMBAT = 1 << 1, // 0x00000002
         ADMIN = 1 << 2, // 0x00000004
@@ -26,7 +28,5 @@ namespace AC2RE.Definitions {
         FACTION = 1 << 22, // 0x00400000
         DEVOTED = 1 << 23, // 0x00800000
         PK = 1 << 24, // 0x01000000
-
-        ALL = uint.MaxValue, // 0xFFFFFFFF
     }
 }

@@ -6,6 +6,9 @@ namespace AC2RE.Definitions {
     // Dat file 2300001F
     [Flags]
     public enum AppearanceKey : uint {
+        NONE = 0,
+        ALL = uint.MaxValue,
+
         SKINCOLOR = 0x1,
         CLOTHINGCOLOR = 0x2,
         HEADMESH = 0x3,

@@ -6,6 +6,8 @@ namespace AC2RE.Definitions {
     [Flags]
     public enum LibFlag : uint {
         NONE = 0,
+        ALL = uint.MaxValue,
+
         RESTRICTED = 1 << 0, // 0x00000001
         CONTROL = 1 << 1, // 0x00000002
         HIDDEN = 1 << 2, // 0x00000004

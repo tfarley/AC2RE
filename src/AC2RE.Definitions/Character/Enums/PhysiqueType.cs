@@ -7,6 +7,8 @@ namespace AC2RE.Definitions {
     [Flags]
     public enum PhysiqueType : uint {
         UNDEF = 0,
+        ALL = uint.MaxValue,
+
         BUILD = 1 << 0, // 0x00000001
         HEIGHT = 1 << 1, // 0x00000002
         SKIN_TONE = 1 << 2, // 0x00000004
@@ -21,7 +23,5 @@ namespace AC2RE.Definitions {
         CLOTHING_MASK = SHIRT_CLOTHING_COLOR | PANTS_CLOTHING_COLOR | BOOTS_CLOTHING_COLOR, // 0x00000700
         FACE_DETAIL = 1 << 11, // 0x00000800
         EYE_COLOR = 1 << 12, // 0x00001000
-
-        ALL = uint.MaxValue, // 0xFFFFFFFF
     }
 }

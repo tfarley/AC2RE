@@ -8,6 +8,8 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : uint {
             UNDEF = 0,
+            ALL = uint.MaxValue,
+
             MY_PACKAGE_ID = 1 << 0, // 0x00000001
             BITFIELD = 1 << 1, // 0x00000002
             NAME = 1 << 2, // 0x00000004
@@ -45,6 +47,8 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum Bitfield : uint {
             UNDEF = 0,
+            ALL = uint.MaxValue,
+
             OPEN = 1 << 0, // 0x00000001
             SELECTABLE = 1 << 1, // 0x00000002
             NO_DRAW = 1 << 2, // 0x00000004

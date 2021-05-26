@@ -6,6 +6,8 @@ namespace AC2RE.Definitions {
     [Flags]
     public enum WeenieType : uint {
         UNDEF = 0,
+        ALL = uint.MaxValue,
+
         ENTITY = 1 << 0, // 0xF
         CONTAINER = (1 << 1) | ENTITY, // 0x3
         INVENTORY = (1 << 2) | CONTAINER, // 0x7

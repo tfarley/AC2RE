@@ -16,6 +16,7 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
+            ALL = uint.MaxValue,
 
             WEAPON_ID = 1 << 5, // 0x00000020
 

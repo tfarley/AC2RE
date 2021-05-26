@@ -6,6 +6,8 @@ namespace AC2RE.Definitions {
     [Flags]
     public enum VarFlag : uint {
         NONE = 0,
+        ALL = uint.MaxValue,
+
         READONLY = 1 << 0, // 0x00000001
         SOURCE = 1 << 1, // 0x00000002
         BINDABLE = 1 << 2, // 0x00000004

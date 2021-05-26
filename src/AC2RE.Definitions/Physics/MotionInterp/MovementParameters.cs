@@ -12,6 +12,8 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
+            ALL = uint.MaxValue,
+
             MOVE = 1 << 0, // m_move 0x00000001
             TURN = 1 << 1, // m_turn 0x00000002
             AWAY = 1 << 2, // m_away 0x00000004

@@ -17,6 +17,8 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
+            ALL = uint.MaxValue,
+
             KEY = 1 << 0, // 0x00000001
             PARENTKEY = 1 << 1, // 0x00000002
             CONNECTIONPOINT = 1 << 2, // 0x00000004

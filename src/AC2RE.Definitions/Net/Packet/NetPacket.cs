@@ -11,6 +11,7 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum Flag : uint {
             NONE = 0,
+            ALL = uint.MaxValue,
 
             // Flags
             RETRANSMITTING = 1 << 0, // 0x00000001

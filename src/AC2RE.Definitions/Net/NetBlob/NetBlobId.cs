@@ -7,6 +7,7 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum Flag : ulong {
             NONE = 0,
+            ALL = uint.MaxValue,
 
             OUT_OF_WORLD = 0x2000000000000000,
             CELL = 0x4000000000000000,
