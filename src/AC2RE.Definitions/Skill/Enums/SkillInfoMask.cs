@@ -13,8 +13,8 @@ namespace AC2RE.Definitions {
 
         BASE_MANEUVER = 1 << 3, // 0x00000008, SkillInfo::IsBaseManeuver
         CANNOT_RAISE = 1 << 4, // 0x00000010, SkillInfo::IsCannotRaise
-        HAS_TIME_LAST_USED = 1 << 5, // 0x00000020, SkillInfo::HasTimeLastUsed
-        HAS_TIME_GRANTED = 1 << 6, // 0x00000040, SkillInfo::HasTimeGranted
+        TIME_LAST_USED = 1 << 5, // 0x00000020, SkillInfo::HasTimeLastUsed
+        TIME_GRANTED = 1 << 6, // 0x00000040, SkillInfo::HasTimeGranted
         TOGGLED = 1 << 7, // 0x00000080, SkillInfo::IsToggled
     }
 }

@@ -14,6 +14,6 @@ namespace AC2RE.Definitions {
         NOT_TRAINABLE_BY_PLAYER = 1 << 3, // 0x00000008, Skill::IsNotTrainableByPlayer
         HERO_SKILL = 1 << 4, // 0x00000010, Skill::IsHeroSkill
         TOGGLED = 1 << 5, // 0x00000020, Skill::IsToggleSkill
-        HAS_ZERO_VIGOR_PENALTY = 1 << 6, // 0x00000040, Skill::HasZeroVigorPenalty
+        ZERO_VIGOR_PENALTY = 1 << 6, // 0x00000040, Skill::HasZeroVigorPenalty
     }
 }

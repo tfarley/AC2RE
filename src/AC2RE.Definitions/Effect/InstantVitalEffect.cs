@@ -12,6 +12,7 @@ namespace AC2RE.Definitions {
         public float initialChangeVar; // m_fInitialChangeVar
         public List<FloatScaleDuple> highBounds; // m_HighBounds
         public SingletonPkg<Effect> hateLinkerEffect; // m_effHateLinker
+        public InstantVitalEffectFlag instantVitalFlags => (InstantVitalEffectFlag)flags;
 
         public InstantVitalEffect(AC2Reader data) : base(data) {
             data.ReadPkg<RArray>(v => lowBounds = v.to<FloatScaleDuple>());

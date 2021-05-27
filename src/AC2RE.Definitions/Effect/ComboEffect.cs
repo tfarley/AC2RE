@@ -14,6 +14,7 @@ namespace AC2RE.Definitions {
         public int spellcraftAdjustmentIfNotPresent; // m_iSpellcraftAdjustmentIfNotPresent
         public int spellcraftAdjustmentIfPresent; // m_iSpellcraftAdjustmentIfPresent
         public SingletonPkg<Effect> effectToAddIfNotPresent; // m_effToAddIfNotPresent
+        public ComboEffectFlag comboFlags => (ComboEffectFlag)flags;
 
         public ComboEffect(AC2Reader data) : base(data) {
             data.ReadPkg<Effect>(v => effectToGiveBackIfNotPresent = v);

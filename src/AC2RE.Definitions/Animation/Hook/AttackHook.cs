@@ -25,7 +25,7 @@ namespace AC2RE.Definitions {
         public VectorPkg missileSourceOffsetVector; // m_missileSourceOffsetVector
         public uint missileHoldingLocation; // m_missileHoldingLocation
         public FxId attackerFxHit; // mAttackerFXHit
-        public uint flags; // m_flags
+        public AttackHookFlag flags; // m_flags
         public FxId targetFxMiss; // mTargetFXMiss
         public MissileParameters missileParams; // m_missileParams
         public float requiredEffectWeight; // m_fRequiredEffectWeight
@@ -58,7 +58,7 @@ namespace AC2RE.Definitions {
             data.ReadPkg<VectorPkg>(v => missileSourceOffsetVector = v);
             missileHoldingLocation = data.ReadUInt32();
             attackerFxHit = (FxId)data.ReadUInt32();
-            flags = data.ReadUInt32();
+            flags = (AttackHookFlag)data.ReadUInt32();
             targetFxMiss = (FxId)data.ReadUInt32();
             data.ReadPkg<MissileParameters>(v => missileParams = v);
             requiredEffectWeight = data.ReadSingle();

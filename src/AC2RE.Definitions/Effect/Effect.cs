@@ -9,11 +9,11 @@ namespace AC2RE.Definitions {
         public List<FloatScaleDuple> durationData; // m_durationData
         public FxId fxId; // m_fxID
         public float appValue; // m_fAprValue
-        public uint externalFlags; // m_uiExternalFlags
+        public EffectFlag flags; // m_uiExternalFlags
         public bool tracked; // m_tracked
         public uint enumVal; // m_enum
         public float minTsysSpellcraft; // m_fMinTsysSpellcraft
-        public ulong internalFlags; // m_uiInternalFlags
+        public EffectInternalFlag internalFlags; // m_uiInternalFlags
         public float probVariance; // m_fProbVariance
         public StringInfo tsysItemName; // m_strTsysItemName
         public StringInfo description; // m_strDescription
@@ -45,11 +45,11 @@ namespace AC2RE.Definitions {
             data.ReadPkg<RArray>(v => durationData = v.to<FloatScaleDuple>());
             fxId = (FxId)data.ReadUInt32();
             appValue = data.ReadSingle();
-            externalFlags = data.ReadUInt32();
+            flags = (EffectFlag)data.ReadUInt32();
             tracked = data.ReadBoolean();
             enumVal = data.ReadUInt32();
             minTsysSpellcraft = data.ReadSingle();
-            internalFlags = data.ReadUInt64();
+            internalFlags = (EffectInternalFlag)data.ReadUInt64();
             probVariance = data.ReadSingle();
             data.ReadPkg<StringInfo>(v => tsysItemName = v);
             data.ReadPkg<StringInfo>(v => description = v);

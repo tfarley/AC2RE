@@ -7,9 +7,9 @@ namespace AC2RE.Definitions {
 
         // Const CELLPORTAL_PACK_*
         [Flags]
-        public enum PackFlag : ulong {
+        public enum PackFlag : ushort {
             NONE = 0,
-            ALL = uint.MaxValue,
+            ALL = ushort.MaxValue,
 
             EXACT_MATCH = 1 << 0, // 0x00000001
             NO_OTHER_CELL_ID = 1 << 1, // 0x00000002

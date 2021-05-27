@@ -83,6 +83,25 @@ namespace AC2RE.DatTool {
             }
         }
 
+        public static Dictionary<DataId, Effect> getEffects(DatReader portalDatReader) {
+            Dictionary<DataId, Effect> didToEffect = new();
+
+            foreach (DataId did in portalDatReader.dids) {
+                DbType dbType = DbTypeDef.getType(DbTypeDef.DatType.PORTAL, did);
+
+                if (dbType == DbType.WSTATE) {
+                    using (AC2Reader data = portalDatReader.getFileReader(did)) {
+                        WState wstate = new(data);
+                        if (PackageManager.isPackageType(wstate.packageType, PackageType.Effect)) {
+                            didToEffect[did] = (Effect)wstate.package;
+                        }
+                    }
+                }
+            }
+
+            return didToEffect;
+        }
+
         private static string? readString(DatReader localDatReader, StringInfo stringInfo) {
             if (stringInfo.literalValue != null) {
                 return stringInfo.literalValue;

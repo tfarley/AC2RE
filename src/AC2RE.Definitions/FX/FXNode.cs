@@ -10,7 +10,7 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : ulong {
             NONE = 0,
-            ALL = uint.MaxValue,
+            ALL = ulong.MaxValue,
 
             SOUND_LIST = 1 << 0, // 0x00000001
             PARTICLE_LIST = 1 << 1, // 0x00000002
@@ -44,14 +44,14 @@ namespace AC2RE.Definitions {
             WATER_PLANE = 1 << 29, // 0x20000000
             CONDITIONAL_CLONE = 1 << 30, // 0x40000000
             HAS_DECAL = 1u << 31, // 0x80000000
-            HAS_LIGHT = 1ul << 32, // 0x00000001
-            HAS_REPULSOR = 1ul << 33, // 0x00000002
-            PLAYER_ONLY = 1ul << 34, // 0x00000004
-            HIDE_TARGET = 1ul << 35, // 0x00000008
-            FX_SCRIPT = 1ul << 36, // 0x00000010
-            COLOR_LIFE_TIME = 1ul << 37, // 0x00000020
-            REMOVE_ROTATION = 1ul << 38, // 0x00000040
-            MUSIC_LIST = 1ul << 39, // 0x00000080
+            HAS_LIGHT = 1ul << 32, // 0x0000000100000000
+            HAS_REPULSOR = 1ul << 33, // 0x0000000200000000
+            PLAYER_ONLY = 1ul << 34, // 0x0000000400000000
+            HIDE_TARGET = 1ul << 35, // 0x0000000800000000
+            FX_SCRIPT = 1ul << 36, // 0x0000001000000000
+            COLOR_LIFE_TIME = 1ul << 37, // 0x0000002000000000
+            REMOVE_ROTATION = 1ul << 38, // 0x0000004000000000
+            MUSIC_LIST = 1ul << 39, // 0x0000008000000000
         }
 
         public PackFlag packFlags;

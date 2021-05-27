@@ -10,6 +10,7 @@ namespace AC2RE.Definitions {
         public float casterChangeVar; // m_fCasterChangeVar
         public List<FloatScaleDuple> targetChangeData; // m_targetChangeData
         public float targetChangeVar; // m_fTargetChangeVar
+        public VitalTransferEffectFlag vitalTransferFlags => (VitalTransferEffectFlag)flags;
 
         public VitalTransferEffect(AC2Reader data) : base(data) {
             data.ReadPkg<RArray>(v => casterChangeData = v.to<FloatScaleDuple>());

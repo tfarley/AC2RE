@@ -8,6 +8,7 @@ namespace AC2RE.Definitions {
 
         public float numericVariance; // m_fVariance
         public List<FloatScaleDuple> magData; // m_magData
+        public ParameterizedNumericEffectFlag parameterizedNumericFlags => (ParameterizedNumericEffectFlag)flags;
 
         public ParameterizedNumericEffect(AC2Reader data) : base(data) {
             numericVariance = data.ReadSingle();

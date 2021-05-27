@@ -11,6 +11,7 @@ namespace AC2RE.Definitions {
         public List<FloatScaleDuple> changeData; // m_changeData
         public List<FloatScaleDuple> highBounds; // m_HighBounds
         public List<uint> tickFx; // m_TickFX
+        public VitalOverTimeEffectFlag vitalOverTimeFlags => (VitalOverTimeEffectFlag)flags;
 
         public VitalOverTimeEffect(AC2Reader data) : base(data) {
             changePerSecVar = data.ReadSingle();

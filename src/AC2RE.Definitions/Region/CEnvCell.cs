@@ -7,7 +7,7 @@ namespace AC2RE.Definitions {
 
         // Const ENVCELL_PACK_*
         [Flags]
-        public enum PackFlag : ulong {
+        public enum PackFlag : uint {
             NONE = 0,
             ALL = uint.MaxValue,
 

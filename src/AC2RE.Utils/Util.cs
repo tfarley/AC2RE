@@ -48,13 +48,19 @@ namespace AC2RE.Utils {
             return (ushort)(((value & 0x00FFU) << 8) | ((value & 0xFF00U) >> 8));
         }
 
-        public static string objectToString(object? target) {
+        public enum PropertyInclusion {
+            NONE,
+            WRITABLE,
+            ALL,
+        }
+
+        public static string objectToString(object? target, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public, PropertyInclusion propertyInclusion = PropertyInclusion.ALL) {
             StringBuilder stringBuilder = new();
-            objectToString(stringBuilder, new(), 0, target);
+            objectToString(stringBuilder, new(), 0, target, bindingFlags, propertyInclusion);
             return stringBuilder.ToString();
         }
 
-        private static void objectToString(StringBuilder stringBuilder, HashSet<object> visited, int indentLevel, object? target) {
+        private static void objectToString(StringBuilder stringBuilder, HashSet<object> visited, int indentLevel, object? target, BindingFlags bindingFlags, PropertyInclusion propertyInclusion) {
             HashSet<object> levelVisited = new(visited);
 
             if (target == null) {
@@ -65,12 +71,48 @@ namespace AC2RE.Utils {
             Type targetType = target.GetType();
 
             if (target is IDelegateToString delegateToStringTarget) {
-                objectToString(stringBuilder, levelVisited, indentLevel, delegateToStringTarget.delegatedToStringObject);
+                objectToString(stringBuilder, levelVisited, indentLevel, delegateToStringTarget.delegatedToStringObject, bindingFlags, propertyInclusion);
                 return;
             }
 
-            if (targetType.IsPrimitive || target is Enum) {
+            if (targetType.IsPrimitive) {
                 stringBuilder.Append(target.ToString());
+                return;
+            }
+
+            if (target is Enum) {
+                string? enumString = target.ToString();
+                if (enumString != null && enumString.Length > 0) {
+                    char firstDigit = enumString[0];
+                    if ((char.IsDigit(firstDigit) || firstDigit == '-') && targetType.GetCustomAttribute<FlagsAttribute>() != null) {
+                        // TODO: Cache the valid flags mask per-enum, maybe turn the object printer into a stateful object for sharing
+                        ulong validFlagsMask = 0;
+                        Type enumUnderlyingType = Enum.GetUnderlyingType(targetType);
+                        ulong enumAllValue;
+                        if (enumUnderlyingType == typeof(byte)) {
+                            enumAllValue = byte.MaxValue;
+                        } else if (enumUnderlyingType == typeof(ushort)) {
+                            enumAllValue = ushort.MaxValue;
+                        } else if (enumUnderlyingType == typeof(uint)) {
+                            enumAllValue = uint.MaxValue;
+                        } else if (enumUnderlyingType == typeof(ulong)) {
+                            enumAllValue = ulong.MaxValue;
+                        } else {
+                            throw new NotImplementedException(enumUnderlyingType.ToString());
+                        }
+                        foreach (var value in Enum.GetValues(targetType)) {
+                            ulong validValue = Convert.ToUInt64(value);
+                            if (validValue != enumAllValue) {
+                                validFlagsMask |= validValue;
+                            }
+                        }
+                        ulong targetValue = Convert.ToUInt64(target);
+                        ulong validValues = (targetValue & validFlagsMask);
+                        ulong invalidValues = (targetValue & (~validFlagsMask));
+                        enumString = $"{Enum.ToObject(targetType, validValues)} & Extra {invalidValues}";
+                    }
+                }
+                stringBuilder.Append(enumString);
                 return;
             }
 
@@ -91,9 +133,9 @@ namespace AC2RE.Utils {
                     stringBuilder.AppendLine("{");
                     foreach (DictionaryEntry entry in dictionaryTarget) {
                         stringBuilder.Append(' ', indentLevel + 2);
-                        objectToString(stringBuilder, levelVisited, indentLevel + 2, entry.Key);
+                        objectToString(stringBuilder, levelVisited, indentLevel + 2, entry.Key, bindingFlags, propertyInclusion);
                         stringBuilder.Append(" : ");
-                        objectToString(stringBuilder, levelVisited, indentLevel + 2, entry.Value);
+                        objectToString(stringBuilder, levelVisited, indentLevel + 2, entry.Value, bindingFlags, propertyInclusion);
                         stringBuilder.AppendLine();
                     }
                     stringBuilder.Append(' ', indentLevel)
@@ -113,7 +155,7 @@ namespace AC2RE.Utils {
                             stringBuilder.AppendLine(",");
                         }
                         stringBuilder.Append(' ', indentLevel + 2);
-                        objectToString(stringBuilder, levelVisited, indentLevel + 2, val);
+                        objectToString(stringBuilder, levelVisited, indentLevel + 2, val, bindingFlags, propertyInclusion);
                         first = false;
                     }
                     stringBuilder.AppendLine()
@@ -148,15 +190,27 @@ namespace AC2RE.Utils {
                 }
             }
 
-            FieldInfo[] fieldInfos = targetType.GetFields();
-            if (fieldInfos.Length > 0) {
+            FieldInfo[] fieldInfos = targetType.GetFields(bindingFlags);
+            PropertyInfo[] propertyInfos = propertyInclusion != PropertyInclusion.NONE ? targetType.GetProperties(bindingFlags) : Array.Empty<PropertyInfo>();
+            if (fieldInfos.Length > 0 || propertyInfos.Length > 0) {
                 stringBuilder.AppendLine("{");
                 string fieldIndent = new(' ', indentLevel + 2);
-                foreach (FieldInfo fieldInfo in fieldInfos) {
-                    if (!fieldInfo.IsStatic) {
-                        stringBuilder.Append($"{fieldIndent}{fieldInfo.Name} = ");
-                        objectToString(stringBuilder, levelVisited, indentLevel + 2, fieldInfo.GetValue(target));
-                        stringBuilder.AppendLine();
+                if (fieldInfos.Length > 0) {
+                    foreach (FieldInfo fieldInfo in fieldInfos) {
+                        if (!fieldInfo.IsStatic) {
+                            stringBuilder.Append($"{fieldIndent}{fieldInfo.Name} = ");
+                            objectToString(stringBuilder, levelVisited, indentLevel + 2, fieldInfo.GetValue(target), bindingFlags, propertyInclusion);
+                            stringBuilder.AppendLine();
+                        }
+                    }
+                }
+                if (propertyInfos.Length > 0) {
+                    foreach (PropertyInfo propertyInfo in propertyInfos) {
+                        if (propertyInclusion == PropertyInclusion.ALL || propertyInfo.CanWrite) {
+                            stringBuilder.Append($"{fieldIndent}{propertyInfo.Name} = ");
+                            objectToString(stringBuilder, levelVisited, indentLevel + 2, propertyInfo.GetValue(target), bindingFlags, propertyInclusion);
+                            stringBuilder.AppendLine();
+                        }
                     }
                 }
                 stringBuilder.Append(' ', indentLevel)
