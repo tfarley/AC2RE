@@ -2,7 +2,12 @@
 
 namespace AC2RE.Definitions {
 
-    public class InterpCEventCellMsg : INetMessage {
+    public interface IInterpCEventMsg {
+
+        public IClientEvent netEvent { get; }
+    }
+
+    public class InterpCEventCellMsg : INetMessage, IInterpCEventMsg {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
@@ -10,7 +15,7 @@ namespace AC2RE.Definitions {
 
         // ECM_Interp::RecvEvt_InterpCEvent_Cell
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public IClientEvent netEvent;
+        public IClientEvent netEvent { get; set; }
 
         public InterpCEventCellMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
@@ -20,14 +25,14 @@ namespace AC2RE.Definitions {
         }
     }
 
-    public class InterpCEventPrivateMsg : INetMessage {
+    public class InterpCEventPrivateMsg : INetMessage, IInterpCEventMsg {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
         public MessageOpcode opcode => MessageOpcode.Evt_Interp__InterpCEvent_Private_ID;
 
         // ECM_Interp::RecvEvt_InterpCEvent_Private
-        public IClientEvent netEvent;
+        public IClientEvent netEvent { get; set; }
 
         public InterpCEventPrivateMsg() {
 
@@ -53,7 +58,7 @@ namespace AC2RE.Definitions {
         }
     }
 
-    public class InterpCEventVisualMsg : INetMessage {
+    public class InterpCEventVisualMsg : INetMessage, IInterpCEventMsg {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
@@ -61,7 +66,7 @@ namespace AC2RE.Definitions {
 
         // ECM_Interp::RecvEvt_InterpCEvent_Visual
         public InstanceIdWithStamp senderIdWithStamp; // sender
-        public IClientEvent netEvent;
+        public IClientEvent netEvent { get; set; }
 
         public InterpCEventVisualMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();

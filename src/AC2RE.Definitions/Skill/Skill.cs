@@ -1,10 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AC2RE.Definitions {
 
     public class Skill : MasterListMember {
 
         public override PackageType packageType => PackageType.Skill;
+
+        // WLib
+        [Flags]
+        public enum Flag : uint {
+            NONE = 0,
+            ALL = uint.MaxValue,
+
+            UNTRAINABLE = 1 << 0, // 0x00000001, Skill::GetUntrainable
+            HIDDEN = 1 << 1, // 0x00000002, Skill::GetHidden
+            CANNOT_RAISE = 1 << 2, // 0x00000004, Skill::IsCannotRaise
+            NOT_TRAINABLE_BY_PLAYER = 1 << 3, // 0x00000008, Skill::IsNotTrainableByPlayer
+            HERO_SKILL = 1 << 4, // 0x00000010, Skill::IsHeroSkill
+            TOGGLED = 1 << 5, // 0x00000020, Skill::IsToggleSkill
+            ZERO_VIGOR_PENALTY = 1 << 6, // 0x00000040, Skill::HasZeroVigorPenalty
+        }
 
         public StringInfo lore; // mLore
         public SpeciesType allowedSpecies; // mAllowedSpecies
@@ -28,7 +44,7 @@ namespace AC2RE.Definitions {
         public uint cost; // mCost
         public DataId iconDid; // mIcon
         public StringInfo name; // mName
-        public SkillFlag flags; // m_skillFlags
+        public Flag flags; // m_skillFlags
 
         public Skill(AC2Reader data) : base(data) {
             data.ReadPkg<StringInfo>(v => lore = v);
@@ -53,7 +69,7 @@ namespace AC2RE.Definitions {
             cost = data.ReadUInt32();
             iconDid = data.ReadDataId();
             data.ReadPkg<StringInfo>(v => name = v);
-            flags = (SkillFlag)data.ReadUInt32();
+            flags = (Flag)data.ReadUInt32();
         }
     }
 }

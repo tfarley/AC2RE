@@ -1,10 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AC2RE.Definitions {
 
     public class EffectRegistry : IPackage {
 
         public PackageType packageType => PackageType.EffectRegistry;
+
+        // WLib
+        [Flags]
+        public enum Flag : uint {
+            NONE = 0,
+            ALL = uint.MaxValue,
+
+            ACQUIRE_EFFECTS_APPLIED_ONLY_ONCE = 1 << 0, // 0x00000001, EffectRegistry::AreAcquireEffectsAppliedOnlyOnce
+            APPLIED_ACQUIRE_EFFECTS_AT_LEAST_ONCE = 1 << 1, // 0x00000002, EffectRegistry::HaveAppliedAcquireEffectsAtLeastOnce
+            HEARTBEAT_EFFECTS = 1 << 2, // 0x00000004, EffectRegistry::HasHeartbeatEffects
+            PULSE_EFFECTS = 1 << 3, // 0x00000008, EffectRegistry::HasPulseEffects
+        }
 
         public Dictionary<uint, uint> qualitiesModifiedCount; // m_qualitiesModifiedCount
         public Dictionary<FxId, uint> appliedFx; // m_appliedFX
@@ -14,7 +27,7 @@ namespace AC2RE.Definitions {
         public double lastPulseTime; // m_ttLastPulse
         public List<EffectId> equipperEffectIds; // m_listEquipperEffectEids
         public List<EffectId> acquirerEffectIds; // m_listAcquirerEffectEids
-        public uint flags; // m_flags
+        public Flag flags; // m_flags
         public HashSet<uint> trackedEffects; // m_setTrackedEffects
         public Dictionary<uint, EffectId> topEffects; // m_topEffects
         public Dictionary<uint, List<EffectId>> effectCategorizationTable; // m_effectCategorizationTable
@@ -33,7 +46,7 @@ namespace AC2RE.Definitions {
             lastPulseTime = data.ReadDouble();
             data.ReadPkg<AList>(v => equipperEffectIds = v.to<EffectId>());
             data.ReadPkg<AList>(v => acquirerEffectIds = v.to<EffectId>());
-            flags = data.ReadUInt32();
+            flags = (Flag)data.ReadUInt32();
             data.ReadPkg<AHashSet>(v => trackedEffects = v);
             data.ReadPkg<AAHash>(v => topEffects = v.to<uint, EffectId>());
             data.ReadPkg<AAMultiHash>(v => effectCategorizationTable = v.to<uint, EffectId>());
@@ -49,7 +62,7 @@ namespace AC2RE.Definitions {
             data.Write(lastPulseTime);
             data.WritePkg(AList.from(equipperEffectIds));
             data.WritePkg(AList.from(acquirerEffectIds));
-            data.Write(flags);
+            data.Write((uint)flags);
             data.WritePkg(AHashSet.from(trackedEffects));
             data.WritePkg(AAHash.from(topEffects));
             data.WritePkg(AAMultiHash.from(effectCategorizationTable));

@@ -1,10 +1,36 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AC2RE.Definitions {
 
     public class Recipe : IPackage {
 
         public virtual PackageType packageType => PackageType.Recipe;
+
+        // WLib
+        [Flags]
+        public enum Flag : uint {
+            NONE = 0,
+            ALL = uint.MaxValue,
+
+            FIXED_COST = 1 << 0, // 0x00000001, Recipe::IsFixedCost
+            DYNAMIC_COST = 1 << 1, // 0x00000002, Recipe::IsDynamicCost
+
+            HIDDEN_WHEN_ZERO_CHARGES = 1 << 3, // 0x00000008, Recipe::IsHiddenWhenZeroCharges
+            MIN_LEVEL_RESTRICTION = 1 << 4, // 0x00000010, Recipe::InqMinLevelRestriction
+            MAX_LEVEL_RESTRICTION = 1 << 5, // 0x00000020, Recipe::InqMaxLevelRestriction
+            CHARGE_REFRESHING = 1 << 6, // 0x00000040, Recipe::IsChargeRefreshing
+            USES_SPINNER = 1 << 7, // 0x00000080, Recipe::UsesSpinner
+            FIXED_DIFFICULTY = 1 << 8, // 0x00000100, Recipe::IsFixedDifficulty
+            DYNAMIC_DIFFICULTY = 1 << 9, // 0x00000200, Recipe::IsDynamicDifficulty
+            DIFFICULTY_MINUS_SKILL_CUTOFF = 1 << 10, // 0x00000400, Recipe::HasDifficultyMinusSkillCutoff
+            FIXED_CRAFT_XP = 1 << 11, // 0x00000800, Recipe::IsFixedCraftXP
+            DYNAMIC_CRAFT_XP = 1 << 12, // 0x00001000, Recipe::IsDynamicCraftXP
+            REQUIRED_EFFECT = 1 << 13, // 0x00002000, Recipe::InqRequiredEffect
+            READ_ONLY_SPINNER = 1 << 14, // 0x00004000, Recipe::HasReadOnlySpinner
+            SKILL_CHECK_OVERRIDE = 1 << 15, // 0x00008000, Recipe::HasSkillCheckOverride
+            NAME_COLORING_TABLE = 1 << 16, // 0x00010000, Recipe::HasNameColoringTable
+        }
 
         public int difficultyMinusSkillCutoff; // m_difficultyMinusSkillCutoff
         public SingletonPkg<LevelMappingTable> costMappingTable; // m_costMappingTable
@@ -26,7 +52,7 @@ namespace AC2RE.Definitions {
         public int chargeRefreshPeriod; // m_chargeRefreshPeriod
         public uint numAnimCycles; // m_uiNumAnimCycles
         public List<uint> craftThresholds; // m_craftThreshs
-        public uint flags; // m_flags
+        public Flag flags; // m_flags
         public uint maxSpinnerVal; // m_maxSpinnerVal
         public uint minLevel; // m_minLevel
         public uint lastProductOrdinal; // m_uiLastProductOrdinal
@@ -65,7 +91,7 @@ namespace AC2RE.Definitions {
             chargeRefreshPeriod = data.ReadInt32();
             numAnimCycles = data.ReadUInt32();
             data.ReadPkg<AList>(v => craftThresholds = v);
-            flags = data.ReadUInt32();
+            flags = (Flag)data.ReadUInt32();
             maxSpinnerVal = data.ReadUInt32();
             minLevel = data.ReadUInt32();
             lastProductOrdinal = data.ReadUInt32();

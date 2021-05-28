@@ -1,10 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AC2RE.Definitions {
 
     public class ComboEffect : Effect {
 
         public override PackageType packageType => PackageType.ComboEffect;
+
+        // WLib
+        [Flags]
+        public new enum Flag : uint {
+            NONE = 0,
+            ALL = uint.MaxValue,
+
+            REMOVE_OLD_EFFECT_IF_PRESENT = 1 << 1, // 0x00000001, ComboEffect::SetRemoveOldEffectIfPresent
+            REMOVE_ALL_OLD_EFFECTS_IF_PRESENT = 1 << 2, // 0x00000002, ComboEffect::SetRemoveAllOldEffectsIfPresent
+            IGNORE_CONSIDERATION = 1 << 3, // 0x00000004, ComboEffect::IsIgnoreConsideration
+        }
 
         public SingletonPkg<Effect> effectToGiveBackIfNotPresent; // m_effToGiveBackIfNotPresent
         public SingletonPkg<Effect> effectToGiveBackIfPresent; // m_effToGiveBackIfPresent
@@ -14,7 +26,7 @@ namespace AC2RE.Definitions {
         public int spellcraftAdjustmentIfNotPresent; // m_iSpellcraftAdjustmentIfNotPresent
         public int spellcraftAdjustmentIfPresent; // m_iSpellcraftAdjustmentIfPresent
         public SingletonPkg<Effect> effectToAddIfNotPresent; // m_effToAddIfNotPresent
-        public ComboEffectFlag comboFlags => (ComboEffectFlag)flags;
+        public Flag comboFlags => (Flag)flags;
 
         public ComboEffect(AC2Reader data) : base(data) {
             data.ReadPkg<Effect>(v => effectToGiveBackIfNotPresent = v);

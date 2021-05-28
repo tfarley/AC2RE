@@ -1,10 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AC2RE.Definitions {
 
     public class EffectDesc : IPackage {
 
         public PackageType packageType => PackageType.EffectDesc;
+
+        // WLib
+        [Flags]
+        public enum Flag : uint {
+            NONE = 0,
+            ALL = uint.MaxValue,
+
+            CONSIDERING = 1 << 0, // 0x00000001, EffectDesc::IsConsidering
+            IGNORE_PROBABILITY = 1 << 1, // 0x00000002, EffectDesc::IsIgnoreProbability
+            IGNORE_CONSIDERATION = 1 << 2, // 0x00000004, EffectDesc::IsIgnoreConsideration
+            INFINITE_TIMEOUT = 1 << 3, // 0x00000008, EffectDesc::IsInfiniteTimeout
+            NORMAL_TIMEOUT = 1 << 4, // 0x00000010, EffectDesc::IsNormalTimeout
+            SPECIFIED_TIMEOUT = 1 << 5, // 0x00000020, EffectDesc::IsSpecifiedTimeout
+            REMOVE_ON_LOGOUT = 1 << 6, // 0x00000040, EffectDesc::IsRemoveOnLogout
+            EQUIPPER = 1 << 7, // 0x00000080, EffectDesc::IsEquipperEffect
+            TOGGLED = 1 << 8, // 0x00000100, EffectDesc::IsToggled
+            PULSED = 1 << 9, // 0x00000200, EffectDesc::IsPulsed
+            CLIENT_NO_UI = 1 << 10, // 0x00000400, EffectDesc::IsClientNoUI
+        }
 
         public Dictionary<uint, IPackage> considerationHash; // m_hashConsideration
         public uint eid; // m_eid
@@ -22,7 +42,7 @@ namespace AC2RE.Definitions {
         public int sourceHealthChange; // m_iSourceHealthChange
         public SingletonPkg<Effect> effect; // m_effect
         public int targetVigor; // m_iTargetVigor
-        public uint flags; // m_flags
+        public Flag flags; // m_flags
         public uint durabilityLevel; // m_uiDurabilityLevel
         public List<IPackage> sourceEffects; // m_listSourceEffect
         public int targetFocus; // m_iTargetFocus
@@ -51,7 +71,7 @@ namespace AC2RE.Definitions {
             sourceHealthChange = data.ReadInt32();
             data.ReadPkg<Effect>(v => effect = v);
             targetVigor = data.ReadInt32();
-            flags = data.ReadUInt32();
+            flags = (Flag)data.ReadUInt32();
             durabilityLevel = data.ReadUInt32();
             data.ReadPkg<RList>(v => sourceEffects = v);
             targetFocus = data.ReadInt32();

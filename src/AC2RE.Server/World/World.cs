@@ -3,6 +3,7 @@ using AC2RE.Server.Database;
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
+using System.Text;
 
 namespace AC2RE.Server {
 
@@ -69,11 +70,6 @@ namespace AC2RE.Server {
                 if (handled) {
                     break;
                 }
-            }
-
-            if (!handled) {
-                Logs.NET.error("Unhandled opcode - message not processed!",
-                            "op", genericMsg.opcode);
             }
 
             return handled;

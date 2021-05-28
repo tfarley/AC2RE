@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions {
 
-    public class Eff_Tsys_SoulDefractor : ParameterizedNumericEffect {
+    public class Eff_Tsys_SoulDefractor : GenesisEffect {
 
         public override PackageType packageType => PackageType.Eff_Tsys_SoulDefractor;
 

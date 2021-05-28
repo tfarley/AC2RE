@@ -1,10 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AC2RE.Definitions {
 
     public class StoreTemplate : IPackage {
 
         public PackageType packageType => PackageType.StoreTemplate;
+
+        // WLib
+        [Flags]
+        public enum Flag : uint {
+            NONE = 0,
+            ALL = uint.MaxValue,
+
+            HIDE_RESTRICTED = 1 << 0, // 0x00000001, StoreTemplate::HideRestricted
+        }
 
         public List<IPackage> filters; // m_filters
         public SingletonPkg<StoreSorter> sorter; // m_sorter
@@ -14,7 +24,7 @@ namespace AC2RE.Definitions {
         public List<SaleTemplate> sales; // m_sales
         public DataId portraitDid; // m_didPortrait
         public int version; // m_iVersion
-        public uint flags; // m_uiFlags
+        public Flag flags; // m_uiFlags
 
         public StoreTemplate(AC2Reader data) {
             data.ReadPkg<RList>(v => filters = v);
@@ -25,7 +35,7 @@ namespace AC2RE.Definitions {
             data.ReadPkg<RArray>(v => sales = v.to<SaleTemplate>());
             portraitDid = data.ReadDataId();
             version = data.ReadInt32();
-            flags = data.ReadUInt32();
+            flags = (Flag)data.ReadUInt32();
         }
     }
 }

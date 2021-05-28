@@ -195,7 +195,7 @@ namespace AC2RE.Server {
                         MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
                         INetMessage genericMsg = INetMessage.read(opcode, data, true);
 
-                        StringBuilder msgString = new(genericMsg.ToString());
+                        StringBuilder msgString = new(genericMsg.GetType().Name);
                         if (opcode == MessageOpcode.Evt_Interp__InterpSEvent_ID) {
                             InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
                             msgString.Append($" {msg.netEvent.funcId}");
@@ -205,8 +205,15 @@ namespace AC2RE.Server {
                             "client", client,
                             "msg", msgString);
 
-                        if (world.processMessage(client, genericMsg) && data.BaseStream.Position < data.BaseStream.Length) {
+                        if (!world.processMessage(client, genericMsg)) {
+                            Logs.NET.warn("Unhandled message",
+                                "client", client,
+                                "msg", msgString);
+                        }
+
+                        if (data.BaseStream.Position < data.BaseStream.Length) {
                             Logs.NET.warn("NetBlob was not fully read",
+                                "msg", msgString,
                                 "client", client,
                                 "pos", data.BaseStream.Position,
                                 "len", data.BaseStream.Length);
@@ -228,10 +235,15 @@ namespace AC2RE.Server {
         private void send(ClientId clientId, INetMessage msg, byte[] payload) {
             clientManager.tryProcessClient(clientId, client => {
                 client.enqueueBlob(msg.blobFlags, msg.queueId, payload);
+
+                StringBuilder msgString = new(msg.GetType().Name);
+                if (msg is IInterpCEventMsg cEventMsg) {
+                    msgString.Append($" {cEventMsg.netEvent.funcId}");
+                }
+
                 Logs.NET.debug("Enqueued msg",
                     "client", client,
-                    "msg", msg,
-                    "payload", BitConverter.ToString(payload));
+                    "msg", msgString);
             });
         }
 

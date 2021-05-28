@@ -31,7 +31,7 @@ namespace AC2RE.Server {
 
             HashSet<SkillId> trainedSkills = new();
             foreach (SkillInfo ownedSkill in skillRepo.skills.Values) {
-                if (ownedSkill.mask.HasFlag(SkillInfoMask.TRAINED)) {
+                if (ownedSkill.flags.HasFlag(SkillInfo.Flag.TRAINED)) {
                     if (ownedSkill.skillId == skillId) {
                         return ErrorType.SKILL_ALREADYTRAINED;
                     }
@@ -68,7 +68,7 @@ namespace AC2RE.Server {
                 skillRepo.skills[skillId] = skillInfo;
             }
 
-            skillInfo.mask |= SkillInfoMask.TRAINED | SkillInfoMask.PERSONAL_UNTRAINABLE;
+            skillInfo.flags |= SkillInfo.Flag.TRAINED | SkillInfo.Flag.PERSONAL_UNTRAINABLE;
 
             skillRepo.skillCredits -= skill.cost;
 
@@ -80,7 +80,7 @@ namespace AC2RE.Server {
                 return ErrorType.SKILL_BEINGUNTRAINED;
             }
 
-            if (!skillRepo.skills.TryGetValue(skillId, out SkillInfo? skillInfo) || !skillInfo.mask.HasFlag(SkillInfoMask.TRAINED)) {
+            if (!skillRepo.skills.TryGetValue(skillId, out SkillInfo? skillInfo) || !skillInfo.flags.HasFlag(SkillInfo.Flag.TRAINED)) {
                 return ErrorType.SKILL_NOTTRAINED;
             }
 

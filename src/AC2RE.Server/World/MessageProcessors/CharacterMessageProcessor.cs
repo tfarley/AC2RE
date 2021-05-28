@@ -267,7 +267,7 @@ namespace AC2RE.Server {
                                     lastPulseTime = -1.0,
                                     equipperEffectIds = null,
                                     acquirerEffectIds = null,
-                                    flags = 0x000C0001,
+                                    flags = (EffectRegistry.Flag)0x000C0001,
                                     trackedEffects = null,
                                     topEffects = null,
                                     effectCategorizationTable = null,

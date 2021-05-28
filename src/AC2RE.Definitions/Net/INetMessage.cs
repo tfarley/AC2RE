@@ -22,10 +22,10 @@ namespace AC2RE.Definitions {
                 MessageOpcode.Evt_Interp__InterpCEvent_Visual_ID => new InterpCEventVisualMsg(data),
                 MessageOpcode.Evt_Interp__InterpSEvent_ID => new InterpSEventMsg(data),
                 MessageOpcode.CHARACTER_CREATE_EVENT => new CharacterCreateMsg(data),
-                MessageOpcode.Evt_Login__CharacterDeletion_ID => isClientToServer ? (INetMessage)new CharacterDeletionSMsg(data) : new CharacterDeletionCMsg(data),
+                MessageOpcode.Evt_Login__CharacterDeletion_ID => isClientToServer ? new CharacterDeletionSMsg(data) : new CharacterDeletionCMsg(data),
                 MessageOpcode.CHARACTER_ENTER_GAME_EVENT => new CharacterEnterGameMsg(data),
                 MessageOpcode.Evt_Login__CharacterError_ID => new CharacterErrorMsg(data),
-                MessageOpcode.Evt_Login__CharExitGame_ID => isClientToServer ? (INetMessage)new CharacterExitGameSMsg(data) : new CharacterExitGameCMsg(data),
+                MessageOpcode.Evt_Login__CharExitGame_ID => isClientToServer ? new CharacterExitGameSMsg(data) : new CharacterExitGameCMsg(data),
                 MessageOpcode.Evt_Login__CharacterSet_ID => new CharacterSetMsg(data),
                 MessageOpcode.Evt_Login__CharGenVerification_ID => new CharGenVerificationMsg(data),
                 MessageOpcode.Evt_Login__ChatServerData_ID => new GenericMsg {

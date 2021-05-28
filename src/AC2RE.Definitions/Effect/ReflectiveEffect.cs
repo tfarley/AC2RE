@@ -1,10 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AC2RE.Definitions {
 
     public class ReflectiveEffect : Effect {
 
         public override PackageType packageType => PackageType.ReflectiveEffect;
+
+        // WLib
+        [Flags]
+        public new enum Flag : uint {
+            NONE = 0,
+            ALL = uint.MaxValue,
+
+            CONSTANT_ABSORB_PROBABILITY = 1 << 0, // 0x00000001, ReflectiveEffect::SetConstantAbsorbProbability
+            VARIABLE_ABSORB_PROBABILITY = 1 << 1, // 0x00000002, ReflectiveEffect::SetVariableAbsorbProbability
+            CONSTANT_REFLECT_PROBABILITY = 1 << 2, // 0x00000004, ReflectiveEffect::SetConstantReflectProbability
+            VARIABLE_REFLECT_PROBABILITY = 1 << 3, // 0x00000008, ReflectiveEffect::SetVariableReflectProbability
+            CONSTANT_GENERATE_PROBABILITY = 1 << 4, // 0x00000010, ReflectiveEffect::SetConstantGenerateProbability
+            VARIABLE_GENERATE_PROBABILITY = 1 << 5, // 0x00000020, ReflectiveEffect::SetVariableGenerateProbability
+        }
 
         public float reflectProbEnd; // m_fReflectProbEnd
         public List<uint> reflectClasses; // m_clsReflectList
@@ -25,6 +40,7 @@ namespace AC2RE.Definitions {
         public float reflectProbBegin; // m_fReflectProbBegin
         public float generateProbEnd; // m_fGenerateProbEnd
         public float absorbSpellcraftBegin; // m_fAbsorbSpellcraftBegin
+        public Flag reflectiveFlags => (Flag)flags;
 
         public ReflectiveEffect(AC2Reader data) : base(data) {
             reflectProbEnd = data.ReadSingle();

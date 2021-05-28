@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions {
 
-    public class Eff_Mn_Doppelganger : ParameterizedNumericEffect {
+    public class Eff_Mn_Doppelganger : GenesisEffect {
 
         public override PackageType packageType => PackageType.Eff_Mn_Doppelganger;
 

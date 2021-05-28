@@ -1,8 +1,30 @@
-﻿namespace AC2RE.Definitions {
+﻿using System;
+
+namespace AC2RE.Definitions {
 
     public class EffectRecord : IPackage {
 
         public PackageType packageType => PackageType.EffectRecord;
+
+        // WLib
+        [Flags]
+        public enum Flag : uint {
+            NONE = 0,
+            ALL = uint.MaxValue,
+
+            INFINITE_TIMEOUT = 1 << 0, // 0x00000001, EffectRecord::IsInfiniteTimeout
+            NORMAL_TIMEOUT = 1 << 1, // 0x00000002, EffectRecord::IsNormalTimeout
+            SPECIFIED_TIMEOUT = 1 << 2, // 0x00000004, EffectRecord::IsSpecifiedTimeout
+
+            REMOVE_ON_LOGOUT = 1 << 4, // 0x00000010, EffectRecord::IsRemoveOnLogout
+            PERMANENT = 1 << 5, // 0x00000020, EffectRecord::IsPermanentEffect
+            TRANSIENT = 1 << 6, // 0x00000040, EffectRecord::IsTransientEffect
+            EQUIPPER = 1 << 7, // 0x00000080, EffectRecord::IsEquipperEffect
+            EXTRACTABLE = 1 << 8, // 0x00000100, EffectRecord::IsExtractable
+            TOGGLED = 1 << 9, // 0x00000200, EffectRecord::IsToggled
+            PULSED = 1 << 10, // 0x00000400, EffectRecord::IsPulsed
+            CLIENT_NO_UI = 1 << 11, // 0x00000800, EffectRecord::IsClientNoUI
+        }
 
         public double timeDemotedFromTopLevel; // m_timeDemotedFromTopLevel
         public double timeCast; // m_timeCast
@@ -18,7 +40,7 @@
         public InstanceId actingForWhomId; // m_iidActingForWhom
         public DataId skillDid; // m_didSkill
         public InstanceId fromItemId; // m_iidFromItem
-        public uint flags; // m_flags
+        public Flag flags; // m_flags
         public uint durabilityLevel; // m_uiDurabilityLevel
         public EffectId relatedEffectId; // m_relatedEID
         public EffectId effectId; // m_effectID
@@ -44,7 +66,7 @@
             actingForWhomId = data.ReadInstanceId();
             skillDid = data.ReadDataId();
             fromItemId = data.ReadInstanceId();
-            flags = data.ReadUInt32();
+            flags = (Flag)data.ReadUInt32();
             durabilityLevel = data.ReadUInt32();
             relatedEffectId = data.ReadEffectId();
             effectId = data.ReadEffectId();
@@ -67,7 +89,7 @@
             data.Write(actingForWhomId);
             data.Write(skillDid);
             data.Write(fromItemId);
-            data.Write(flags);
+            data.Write((uint)flags);
             data.Write(durabilityLevel);
             data.Write(relatedEffectId);
             data.Write(effectId);
