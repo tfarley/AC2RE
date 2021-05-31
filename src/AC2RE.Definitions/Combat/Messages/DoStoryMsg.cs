@@ -4,7 +4,8 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Physics__SetAccelerationScale_ID;
+        public MessageOpcode opcode => MessageOpcode.Evt_Physics__DoStory_ID;
+        public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
 
         // ECM_Physics::RecvEvt_SetAccelerationScale
         public InstanceIdWithStamp senderIdWithStamp; // sender

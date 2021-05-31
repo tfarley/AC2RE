@@ -5,6 +5,7 @@
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
         public MessageOpcode opcode => MessageOpcode.Evt_Physics__MoveTo_ID;
+        public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
 
         // ECM_Physics::RecvEvt_MoveTo
         public InstanceIdWithStamp senderIdWithStamp; // sender

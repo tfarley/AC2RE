@@ -31,6 +31,7 @@
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
         public MessageOpcode opcode => MessageOpcode.Evt_Qualities__UpdateTimestamp_Visual_ID;
+        public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
 
         // ECM_Qualities::RecvEvt_UpdateTimestamp_Visual
         public InstanceIdWithStamp senderIdWithStamp; // sender

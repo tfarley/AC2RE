@@ -38,7 +38,7 @@ namespace AC2RE.Server {
                                             actingForWhomId = default,
                                             skillDid = default,
                                             fromItemId = player.characterId,
-                                            flags = 0x00000051,
+                                            flags = EffectRecord.Flag.INFINITE_TIMEOUT | EffectRecord.Flag.REMOVE_ON_LOGOUT | EffectRecord.Flag.TRANSIENT,
                                             durabilityLevel = 0,
                                             relatedEffectId = EffectId.NULL,
                                             effectId = EffectId.NULL,

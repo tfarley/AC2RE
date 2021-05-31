@@ -160,6 +160,10 @@ namespace AC2RE.PdbTool {
 
             Console.WriteLine();
 
+            foreach (IDiaSymbol dataSymbol in pdbParser.dataById.Values) {
+                Console.WriteLine(dataToString(dataSymbol, "", 0));
+            }
+
             foreach (IDiaSymbol typedefSymbol in pdbParser.typedefById.Values) {
                 Console.WriteLine(typedefToString(typedefSymbol));
             }

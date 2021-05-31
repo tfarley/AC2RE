@@ -3,6 +3,7 @@ using AC2RE.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace AC2RE.PacketTool.UI {
 
@@ -16,6 +17,7 @@ namespace AC2RE.PacketTool.UI {
             { "DumpMapObjects", filePath => new DumpObjects(filePath, "map_dump.txt", MAP_FILTER) },
             { "GenerateDb", filePath => new GenerateDb(filePath, "obj.csv", ALL_FILTER) },
             { "DumpObjects", filePath => new DumpObjects(filePath, "obj_dump.txt", ALL_FILTER) },
+            { "CorrelatePacketMetadata", filePath => new CorrelatePacketMetadata(filePath) },
         };
 
         private class GenerateDb : Tool {
@@ -54,6 +56,60 @@ namespace AC2RE.PacketTool.UI {
                             }
                         }
                     });
+                }
+            }
+        }
+
+        private class CorrelatePacketMetadata : Tool {
+
+            private class Metadata {
+
+                public NetBlobId.Flag flags;
+                public readonly HashSet<NetQueue> queues = new();
+                public readonly HashSet<OrderingType> orderingTypes = new();
+            }
+
+            public CorrelatePacketMetadata(string filePath) {
+
+                Dictionary<string, Metadata> opcodeAndEventToMetadata = new();
+
+                PacketUtil.processAllPcaps(filePath, (pcapFileName, netBlobCollection) => {
+                    foreach (NetBlobRecord netBlobRecord in netBlobCollection.records) {
+                        NetBlobRow netBlobRow = new(0, netBlobRecord);
+                        string opcodeAndEvent = $"{netBlobRow.opcodeName},{netBlobRow.eventName}";
+                        Metadata metadata = opcodeAndEventToMetadata.GetOrCreate(opcodeAndEvent);
+                        metadata.flags |= netBlobRecord.netBlob.blobId.flags;
+                        metadata.queues.Add(netBlobRecord.netBlob.queueId);
+                        metadata.orderingTypes.Add(netBlobRecord.netBlob.blobId.orderingType);
+                    }
+                });
+
+                using (StreamWriter csvWriter = new(File.OpenWrite("pkt_meta.txt"))) {
+                    csvWriter.WriteLine("opcode,event,queues,flags,orderingTypes");
+                    foreach ((string opcodeAndEvent, Metadata metadata) in opcodeAndEventToMetadata) {
+                        StringBuilder sb = new(opcodeAndEvent);
+                        sb.Append(',');
+                        bool first = true;
+                        foreach (NetQueue queue in metadata.queues) {
+                            if (!first) {
+                                sb.Append('/');
+                            }
+                            sb.Append(queue);
+                            first = false;
+                        }
+                        sb.Append(',');
+                        sb.Append(metadata.flags);
+                        sb.Append(',');
+                        first = true;
+                        foreach (OrderingType orderingType in metadata.orderingTypes) {
+                            if (!first) {
+                                sb.Append('/');
+                            }
+                            sb.Append(orderingType);
+                            first = false;
+                        }
+                        csvWriter.WriteLine(sb.ToString());
+                    }
                 }
             }
         }

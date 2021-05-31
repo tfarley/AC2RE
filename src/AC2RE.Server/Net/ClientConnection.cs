@@ -12,10 +12,6 @@ namespace AC2RE.Server {
         private static readonly float ACK_INTERVAL = 2.0f;
         private static readonly float TIME_SYNC_INTERVAL = 20.0f;
 
-        private static readonly byte ORDERING_TYPE_WEENIE = 0x01;
-        private static readonly byte ORDERING_TYPE_UNK1 = 0x02;
-        private static readonly byte ORDERING_TYPE_NORMAL = 0x03;
-
         public readonly ClientId id;
         public readonly uint connectionSeq;
         public IPEndPoint endpoint { get; private set; }
@@ -30,6 +26,7 @@ namespace AC2RE.Server {
         public uint highestReceivedPacketSeq;
         public uint highestAckedPacketSeq;
         public readonly List<uint> nackedSeqs = new();
+        public readonly Dictionary<OrderingType, ushort> orderingStamps = new();
         public uint blobSeq;
         public readonly Queue<NetBlobFrag> outgoingFragQueue = new();
         public readonly Dictionary<NetBlobId, NetBlob> incomingBlobs = new();
@@ -94,18 +91,23 @@ namespace AC2RE.Server {
             }
         }
 
-        public void enqueueBlob(NetBlobId.Flag blobFlags, NetQueue queueId, byte[] payload) {
-            // TODO: Determining order this way doesn't seem correct, see packet with 66:00:01:00 having EVENT queue but WEENIE ordering
-            byte orderingType = (queueId == NetQueue.WEENIE || queueId == NetQueue.SECUREWEENIE) ? ORDERING_TYPE_WEENIE : ORDERING_TYPE_NORMAL;
+        public void enqueueBlob(NetBlobId.Flag blobFlags, NetQueue queueId, byte[] payload, OrderingType orderingType) {
+            orderingStamps.TryGetValue(orderingType, out ushort orderingStamp);
+
             NetBlob blob = new() {
-                blobId = new(blobFlags, orderingType, 0, blobSeq),
+                blobId = new(blobFlags, orderingType, orderingStamp, blobSeq),
                 queueId = queueId,
                 payload = payload,
             };
+
             blob.fragmentize();
+
             foreach (NetBlobFrag frag in blob.frags.Values) {
                 outgoingFragQueue.Enqueue(frag);
             }
+
+            orderingStamp++;
+            orderingStamps[orderingType] = orderingStamp;
             blobSeq++;
         }
 

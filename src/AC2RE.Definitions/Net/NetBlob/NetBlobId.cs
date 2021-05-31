@@ -14,6 +14,7 @@ namespace AC2RE.Definitions {
             EPHEMERAL = 0x8000000000000000,
         }
 
+        private static readonly ulong FLAGS_MASK = 0xE000000000000000;
         private static readonly ulong ORDERING_TYPE_MASK = 0x1F00000000000000;
         private static readonly ulong ORDERING_STAMP_MASK = 0x0000FFFF00000000;
         private static readonly ulong SEQUENCE_ID_MASK = 0x00FF0000FFFFFFFF;
@@ -24,8 +25,13 @@ namespace AC2RE.Definitions {
             this.id = id;
         }
 
-        public NetBlobId(Flag flags, byte orderingType, ushort orderingStamp, ulong sequenceId) {
+        public NetBlobId(Flag flags, OrderingType orderingType, ushort orderingStamp, ulong sequenceId) {
             id = (ulong)flags | (((ulong)orderingType << 56) & ORDERING_TYPE_MASK) | ((ulong)orderingStamp) << 32 | (sequenceId & SEQUENCE_ID_MASK);
+        }
+
+        public Flag flags {
+            get => (Flag)(id & FLAGS_MASK);
+            set => id = (id & ~FLAGS_MASK) | ((ulong)value & FLAGS_MASK);
         }
 
         public bool isEphemeral {
@@ -43,8 +49,8 @@ namespace AC2RE.Definitions {
             set => setFlag(Flag.OUT_OF_WORLD, value);
         }
 
-        public byte orderingType {
-            get => (byte)((id & ORDERING_TYPE_MASK) >> 56);
+        public OrderingType orderingType {
+            get => (OrderingType)((id & ORDERING_TYPE_MASK) >> 56);
             set => id = (id & ~ORDERING_TYPE_MASK) | (((ulong)value << 56) & ORDERING_TYPE_MASK);
         }
 

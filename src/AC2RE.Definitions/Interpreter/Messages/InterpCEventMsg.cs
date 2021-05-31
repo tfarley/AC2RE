@@ -63,6 +63,7 @@ namespace AC2RE.Definitions {
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
         public MessageOpcode opcode => MessageOpcode.Evt_Interp__InterpCEvent_Visual_ID;
+        public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
 
         // ECM_Interp::RecvEvt_InterpCEvent_Visual
         public InstanceIdWithStamp senderIdWithStamp; // sender

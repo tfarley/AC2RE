@@ -7,6 +7,7 @@ namespace AC2RE.Definitions {
         NetBlobId.Flag blobFlags { get; }
         NetQueue queueId { get; }
         MessageOpcode opcode { get; }
+        OrderingType orderingType => OrderingType.PRIVATE_ORDERED;
 
         public static INetMessage read(MessageOpcode opcode, AC2Reader data, bool isClientToServer) {
             return opcode switch {

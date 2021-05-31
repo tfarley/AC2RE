@@ -63,6 +63,7 @@
                     <GridView>
                         <GridViewColumn Header="Line" Width="60" DisplayMemberBinding="{Binding lineNum}"/>
                         <GridViewColumn Header="S/R" Width="40" DisplayMemberBinding="{Binding sr}"/>
+                        <GridViewColumn Header="SeqHi" Width="50" DisplayMemberBinding="{Binding seqHigh}"/>
                         <GridViewColumn Header="Seq" Width="80" DisplayMemberBinding="{Binding seq}"/>
                         <GridViewColumn Header="Pkt" Width="60" DisplayMemberBinding="{Binding packetNum}"/>
                         <GridViewColumn Header="Time (s)" Width="80" DisplayMemberBinding="{Binding time}"/>
@@ -72,6 +73,7 @@
                         <GridViewColumn Header="Queue" Width="120" DisplayMemberBinding="{Binding queue}"/>
                         <GridViewColumn Header="Error" Width="200" DisplayMemberBinding="{Binding error}"/>
                         <GridViewColumn Header="Ord" Width="30" DisplayMemberBinding="{Binding orderingType}"/>
+                        <GridViewColumn Header="OrdStmp" Width="55" DisplayMemberBinding="{Binding orderingStamp}"/>
                         <GridViewColumn Header="Eph" Width="30" DisplayMemberBinding="{Binding isEphemeral}"/>
                         <GridViewColumn Header="Cel" Width="30" DisplayMemberBinding="{Binding isCell}"/>
                         <GridViewColumn Header="Oow" Width="30" DisplayMemberBinding="{Binding isOutOfWorld}"/>

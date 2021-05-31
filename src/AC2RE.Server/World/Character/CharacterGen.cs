@@ -107,7 +107,7 @@ namespace AC2RE.Server {
                     levelCached = (uint)startingSkillProfile.level,
                     timeCached = world.serverTime.time,
                     xpAllocated = world.contentManager.getAdvancementTable(skill.advTableDid).map[startingSkillProfile.level],
-                    mask = SkillInfoMask.TRAINED,
+                    flags = SkillInfo.Flag.TRAINED,
                     skillId = startingSkillProfile.skillId,
                 };
             }

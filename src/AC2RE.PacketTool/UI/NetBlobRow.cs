@@ -9,6 +9,7 @@ namespace AC2RE.PacketTool.UI {
 
         public int lineNum { get; init; }
         public string sr { get; init; }
+        public int seqHigh { get; init; }
         public int seq { get; init; }
         public int packetNum { get; init; }
         public string time { get; init; }
@@ -18,6 +19,7 @@ namespace AC2RE.PacketTool.UI {
         public string queue { get; init; }
         public string error => netBlobRecord.messageErrorTypeOptional.ToString();
         public byte orderingType { get; init; }
+        public ushort orderingStamp { get; init; }
         public char isEphemeral { get; init; }
         public char isCell { get; init; }
         public char isOutOfWorld { get; init; }
@@ -30,6 +32,7 @@ namespace AC2RE.PacketTool.UI {
             this.lineNum = lineNum;
             this.netBlobRecord = netBlobRecord;
             sr = netBlobRecord.isClientToServer ? "S" : "R";
+            seqHigh = (int)(netBlobRecord.netBlob.blobId.sequenceId >> 48);
             seq = (int)(netBlobRecord.netBlob.blobId.sequenceId & 0xFFFFFFFF);
             packetNum = netBlobRecord.startPacketNum;
             time = $"{netBlobRecord.startTimestamp:0.00}";
@@ -50,7 +53,8 @@ namespace AC2RE.PacketTool.UI {
             }
             size = netBlobRecord.netBlob.payload != null ? netBlobRecord.netBlob.payload.Length : 0;
             queue = netBlobRecord.netBlob.queueId.ToString();
-            orderingType = netBlobRecord.netBlob.blobId.orderingType;
+            orderingType = (byte)netBlobRecord.netBlob.blobId.orderingType;
+            orderingStamp = netBlobRecord.netBlob.blobId.orderingStamp;
             isEphemeral = netBlobRecord.netBlob.blobId.isEphemeral ? 'T' : 'F';
             isCell = netBlobRecord.netBlob.blobId.isCell ? 'T' : 'F';
             isOutOfWorld = netBlobRecord.netBlob.blobId.isOutOfWorld ? 'T' : 'F';
