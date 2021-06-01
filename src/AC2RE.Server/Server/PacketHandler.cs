@@ -176,7 +176,7 @@ namespace AC2RE.Server {
 
             if (packet.frags.Count > 0) {
                 foreach (NetBlobFrag frag in packet.frags) {
-                    client.addFragment(frag);
+                    client.incomingBlobQueue.addFragment(frag);
                 }
             }
         }
@@ -189,7 +189,7 @@ namespace AC2RE.Server {
 
                 world.addPlayerIfNecessary(client, client.account);
 
-                while (client.incomingCompleteBlobs.TryDequeue(out NetBlob? blob)) {
+                while (client.incomingBlobQueue.TryDequeue(out NetBlob? blob)) {
                     using (AC2Reader data = new(new MemoryStream(blob.payload))) {
 
                         MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();

@@ -21,18 +21,17 @@ namespace AC2RE.Server {
         public readonly uint incomingSeed;
 
         public bool connected { get; private set; }
-        public ISAAC? outgoingIsaac { get; private set; }
-        public uint packetSeq;
+        private ISAAC? outgoingIsaac;
+        private uint packetSeq;
         public uint highestReceivedPacketSeq;
-        public uint highestAckedPacketSeq;
+        private uint highestAckedPacketSeq;
         public readonly List<uint> nackedSeqs = new();
-        public readonly Dictionary<OrderingType, ushort> orderingStamps = new();
-        public uint blobSeq;
-        public readonly Queue<NetBlobFrag> outgoingFragQueue = new();
-        public readonly Dictionary<NetBlobId, NetBlob> incomingBlobs = new();
-        public readonly Queue<NetBlob> incomingCompleteBlobs = new();
-        public float nextAckTime;
-        public float nextTimeSyncTime;
+        private readonly Dictionary<OrderingType, ushort> orderingStamps = new();
+        private uint blobSeq;
+        private readonly Queue<NetBlobFrag> outgoingFragQueue = new();
+        public readonly NetBlobQueue incomingBlobQueue = new();
+        private float nextAckTime;
+        private float nextTimeSyncTime;
         public float echoRequestedLocalTime = -1.0f;
         public float echoRequestedServerTime;
 
@@ -69,26 +68,6 @@ namespace AC2RE.Server {
             outgoingIsaac = new(outgoingSeed);
             packetSeq = 1;
             highestReceivedPacketSeq = 1;
-        }
-
-        public void addFragment(NetBlobFrag frag) {
-            // TODO: Need to track processed blob ids and discard if duplicate
-            // TODO: Need to handle blob ordering instead of just adding at end of queue
-            if (frag.fragCount == 1) {
-                incomingCompleteBlobs.Enqueue(new(frag));
-            } else {
-                if (!incomingBlobs.TryGetValue(frag.blobId, out NetBlob? blob)) {
-                    blob = new(frag);
-                    incomingBlobs[frag.blobId] = blob;
-                } else {
-                    blob.addFragment(frag);
-                }
-
-                if (blob.payload != null) {
-                    incomingCompleteBlobs.Enqueue(blob);
-                    incomingBlobs.Remove(blob.blobId);
-                }
-            }
         }
 
         public void enqueueBlob(NetBlobId.Flag blobFlags, NetQueue queueId, byte[] payload, OrderingType orderingType) {
