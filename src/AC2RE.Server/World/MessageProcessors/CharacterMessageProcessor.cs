@@ -48,7 +48,7 @@ namespace AC2RE.Server {
                         if (world.objectManager.tryGet(msg.characterId, out WorldObject? character)) {
                             if (world.characterManager.tryGetWithAccountAndObject(player.account.id, character.id, out Character? characterInfo)) {
                                 characterInfo.deleted = true;
-                                character.destroy();
+                                character.delete();
 
                                 send(player, new CharacterDeletionCMsg {
                                     characterId = character.id,

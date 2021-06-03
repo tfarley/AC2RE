@@ -94,9 +94,17 @@ namespace AC2RE.Server {
                 return ErrorType.SKILL_CANNOTRAISE;
             }
 
+            ulong xpCost = advancementTable.map[nextSkillLevel] - skillInfo.xpAllocated;
+
+            if (xpAvailable < (long)xpCost) {
+                return ErrorType.SKILL_NOTENOUGHEXPERIENCE;
+            }
+
             skillInfo.levelCached = (uint)nextSkillLevel;
             skillInfo.timeCached = world.serverTime.time;
-            skillInfo.xpAllocated = advancementTable.map[nextSkillLevel];
+            skillInfo.xpAllocated += xpCost;
+
+            xpAvailable -= (long)xpCost;
 
             return ErrorType.NONE;
         }

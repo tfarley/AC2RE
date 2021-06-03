@@ -1,8 +1,10 @@
 ﻿using AC2RE.Definitions;
+using AC2RE.Utils;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 
 namespace AC2RE.Server.Database {
 
@@ -110,6 +112,18 @@ namespace AC2RE.Server.Database {
         public void initWorldObject(World world, WorldObject worldObject) {
             world.objectManager.applyEntities(worldObject, worldObject.physicsEntityDid);
 
+            using (MySqlCommand cmd = new($"SELECT * FROM world_obj_character WHERE objectId = '{worldObject.id.id}';", connection)) {
+                using (MySqlDataReader reader = cmd.ExecuteReader(CommandBehavior.SingleRow)) {
+                    if (reader.Read()) {
+                        worldObject.isCharacter = true;
+                        worldObject.skillRepo.skillCredits = reader.GetUInt32("skillCredits");
+                        worldObject.skillRepo.heroSkillCredits = reader.GetUInt32("heroSkillCredits");
+                        worldObject.skillRepo.skillIdUntraining = (SkillId)reader.GetUInt32("skillIdUntraining");
+                        worldObject.skillRepo.untrainingXp = reader.GetUInt64("untrainingXp");
+                    }
+                }
+            }
+
             using (MySqlCommand cmd = new($"SELECT * FROM world_obj_phys WHERE objectId = '{worldObject.id.id}';", connection)) {
                 using (MySqlDataReader reader = cmd.ExecuteReader(CommandBehavior.SingleRow)) {
                     if (reader.Read()) {
@@ -152,6 +166,20 @@ namespace AC2RE.Server.Database {
                         }
 
                         appearanceInfos[(AppearanceKey)reader.GetUInt32("aprKey")] = reader.GetFloat("value");
+                    }
+                }
+            }
+
+            using (MySqlCommand cmd = new($"SELECT * FROM world_obj_skill WHERE objectId = '{worldObject.id.id}';", connection)) {
+                using (MySqlDataReader reader = cmd.ExecuteReader()) {
+                    while (reader.Read()) {
+                        SkillId skillId = (SkillId)reader.GetUInt32("skillId");
+                        worldObject.skillRepo.skills[skillId] = new() {
+                            skillId = skillId,
+                            flags = (SkillInfo.Flag)reader.GetUInt32("flags"),
+                            xpAllocated = reader.GetUInt64("xpAllocated"),
+                            lastUsedTime = reader.GetDouble("lastUsedTime"),
+                        };
                     }
                 }
             }
@@ -251,6 +279,8 @@ namespace AC2RE.Server.Database {
                     }
                 }
 
+                List<InstanceId> worldObjectIdsToDelete = new();
+
                 using (MySqlCommand objCmd = upsertCommand(connection, transaction, "world_obj",
                     new("id", MySqlDbType.UInt64),
                     new("entityDid", MySqlDbType.UInt32),
@@ -262,58 +292,87 @@ namespace AC2RE.Server.Database {
                         objCmd.ExecuteNonQuery();
 
                         if (worldObject.qualities.ints != null) {
+                            StringBuilder toKeep = new();
                             using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_int",
-                            new("objectId", MySqlDbType.UInt64),
-                            new("stat", MySqlDbType.UInt32),
-                            new("value", MySqlDbType.Int32))) {
+                                new("objectId", MySqlDbType.UInt64),
+                                new("stat", MySqlDbType.UInt32),
+                                new("value", MySqlDbType.Int32))) {
                                 cmd.Parameters[0].Value = worldObject.id.id;
                                 foreach ((IntStat stat, int value) in worldObject.qualities.ints) {
                                     cmd.Parameters[1].Value = (uint)stat;
                                     cmd.Parameters[2].Value = value;
                                     cmd.ExecuteNonQuery();
+
+                                    if (toKeep.Length > 0) {
+                                        toKeep.Append(',');
+                                    }
+                                    toKeep.Append((uint)stat);
                                 }
                             }
+                            deleteHard(connection, transaction, "world_obj_stat_int", $"objectId = {worldObject.id.id}{(toKeep.Length > 0 ? $" AND stat NOT IN ({toKeep})" : "")}");
                         }
                         if (worldObject.qualities.longs != null) {
+                            StringBuilder toKeep = new();
                             using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_long",
-                            new("objectId", MySqlDbType.UInt64),
-                            new("stat", MySqlDbType.UInt32),
-                            new("value", MySqlDbType.Int64))) {
+                                new("objectId", MySqlDbType.UInt64),
+                                new("stat", MySqlDbType.UInt32),
+                                new("value", MySqlDbType.Int64))) {
                                 cmd.Parameters[0].Value = worldObject.id.id;
                                 foreach ((LongIntStat stat, long value) in worldObject.qualities.longs) {
                                     cmd.Parameters[1].Value = (uint)stat;
                                     cmd.Parameters[2].Value = value;
                                     cmd.ExecuteNonQuery();
+
+                                    if (toKeep.Length > 0) {
+                                        toKeep.Append(',');
+                                    }
+                                    toKeep.Append((uint)stat);
                                 }
                             }
+                            deleteHard(connection, transaction, "world_obj_stat_long", $"objectId = {worldObject.id.id}{(toKeep.Length > 0 ? $" AND stat NOT IN ({toKeep})" : "")}");
                         }
                         if (worldObject.qualities.bools != null) {
+                            StringBuilder toKeep = new();
                             using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_bool",
-                            new("objectId", MySqlDbType.UInt64),
-                            new("stat", MySqlDbType.UInt32),
-                            new("value", MySqlDbType.Bool))) {
+                                new("objectId", MySqlDbType.UInt64),
+                                new("stat", MySqlDbType.UInt32),
+                                new("value", MySqlDbType.Bool))) {
                                 cmd.Parameters[0].Value = worldObject.id.id;
                                 foreach ((BoolStat stat, bool value) in worldObject.qualities.bools) {
                                     cmd.Parameters[1].Value = (uint)stat;
                                     cmd.Parameters[2].Value = value;
                                     cmd.ExecuteNonQuery();
+
+                                    if (toKeep.Length > 0) {
+                                        toKeep.Append(',');
+                                    }
+                                    toKeep.Append((uint)stat);
                                 }
                             }
+                            deleteHard(connection, transaction, "world_obj_stat_bool", $"objectId = {worldObject.id.id}{(toKeep.Length > 0 ? $" AND stat NOT IN ({toKeep})" : "")}");
                         }
                         if (worldObject.qualities.floats != null) {
+                            StringBuilder toKeep = new();
                             using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_float",
-                            new("objectId", MySqlDbType.UInt64),
-                            new("stat", MySqlDbType.UInt32),
-                            new("value", MySqlDbType.Float))) {
+                                new("objectId", MySqlDbType.UInt64),
+                                new("stat", MySqlDbType.UInt32),
+                                new("value", MySqlDbType.Float))) {
                                 cmd.Parameters[0].Value = worldObject.id.id;
                                 foreach ((FloatStat stat, float value) in worldObject.qualities.floats) {
                                     cmd.Parameters[1].Value = (uint)stat;
                                     cmd.Parameters[2].Value = value;
                                     cmd.ExecuteNonQuery();
+
+                                    if (toKeep.Length > 0) {
+                                        toKeep.Append(',');
+                                    }
+                                    toKeep.Append((uint)stat);
                                 }
                             }
+                            deleteHard(connection, transaction, "world_obj_stat_float", $"objectId = {worldObject.id.id}{(toKeep.Length > 0 ? $" AND stat NOT IN ({toKeep})" : "")}");
                         }
                         if (worldObject.qualities.doubles != null) {
+                            StringBuilder toKeep = new();
                             using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_double",
                                 new("objectId", MySqlDbType.UInt64),
                                 new("stat", MySqlDbType.UInt32),
@@ -323,55 +382,83 @@ namespace AC2RE.Server.Database {
                                     cmd.Parameters[1].Value = (uint)stat;
                                     cmd.Parameters[2].Value = value;
                                     cmd.ExecuteNonQuery();
+
+                                    if (toKeep.Length > 0) {
+                                        toKeep.Append(',');
+                                    }
+                                    toKeep.Append((uint)stat);
                                 }
                             }
+                            deleteHard(connection, transaction, "world_obj_stat_double", $"objectId = {worldObject.id.id}{(toKeep.Length > 0 ? $" AND stat NOT IN ({toKeep})" : "")}");
                         }
                         if (worldObject.qualities.ids != null) {
+                            StringBuilder toKeep = new();
                             using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_id",
-                            new("objectId", MySqlDbType.UInt64),
-                            new("stat", MySqlDbType.UInt32),
-                            new("value", MySqlDbType.UInt64))) {
+                                new("objectId", MySqlDbType.UInt64),
+                                new("stat", MySqlDbType.UInt32),
+                                new("value", MySqlDbType.UInt64))) {
                                 cmd.Parameters[0].Value = worldObject.id.id;
                                 foreach ((InstanceIdStat stat, InstanceId value) in worldObject.qualities.ids) {
                                     cmd.Parameters[1].Value = (uint)stat;
                                     cmd.Parameters[2].Value = value.id;
                                     cmd.ExecuteNonQuery();
+
+                                    if (toKeep.Length > 0) {
+                                        toKeep.Append(',');
+                                    }
+                                    toKeep.Append((uint)stat);
                                 }
                             }
+                            deleteHard(connection, transaction, "world_obj_stat_id", $"objectId = {worldObject.id.id}{(toKeep.Length > 0 ? $" AND stat NOT IN ({toKeep})" : "")}");
                         }
                         if (worldObject.qualities.dids != null) {
+                            StringBuilder toKeep = new();
                             using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_did",
-                            new("objectId", MySqlDbType.UInt64),
-                            new("stat", MySqlDbType.UInt32),
-                            new("value", MySqlDbType.UInt32))) {
+                                new("objectId", MySqlDbType.UInt64),
+                                new("stat", MySqlDbType.UInt32),
+                                new("value", MySqlDbType.UInt32))) {
                                 cmd.Parameters[0].Value = worldObject.id.id;
                                 foreach ((DataIdStat stat, DataId value) in worldObject.qualities.dids) {
                                     cmd.Parameters[1].Value = (uint)stat;
                                     cmd.Parameters[2].Value = value.id;
                                     cmd.ExecuteNonQuery();
+
+                                    if (toKeep.Length > 0) {
+                                        toKeep.Append(',');
+                                    }
+                                    toKeep.Append((uint)stat);
                                 }
                             }
+                            deleteHard(connection, transaction, "world_obj_stat_did", $"objectId = {worldObject.id.id}{(toKeep.Length > 0 ? $" AND stat NOT IN ({toKeep})" : "")}");
                         }
                         if (worldObject.qualities.strings != null) {
+                            StringBuilder toKeep = new();
                             using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_str",
-                            new("objectId", MySqlDbType.UInt64),
-                            new("stat", MySqlDbType.UInt32),
-                            new("value", MySqlDbType.VarString))) {
+                                new("objectId", MySqlDbType.UInt64),
+                                new("stat", MySqlDbType.UInt32),
+                                new("value", MySqlDbType.VarString))) {
                                 cmd.Parameters[0].Value = worldObject.id.id;
                                 foreach ((StringStat stat, string value) in worldObject.qualities.strings) {
                                     cmd.Parameters[1].Value = (uint)stat;
                                     cmd.Parameters[2].Value = value;
                                     cmd.ExecuteNonQuery();
+
+                                    if (toKeep.Length > 0) {
+                                        toKeep.Append(',');
+                                    }
+                                    toKeep.Append((uint)stat);
                                 }
                             }
+                            deleteHard(connection, transaction, "world_obj_stat_str", $"objectId = {worldObject.id.id}{(toKeep.Length > 0 ? $" AND stat NOT IN ({toKeep})" : "")}");
                         }
                         if (worldObject.qualities.stringInfos != null) {
+                            StringBuilder toKeep = new();
                             using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_stat_strinfo",
-                            new("objectId", MySqlDbType.UInt64),
-                            new("stat", MySqlDbType.UInt32),
-                            new("stringId", MySqlDbType.UInt32),
-                            new("tableDid", MySqlDbType.UInt32),
-                            new("literalValue", MySqlDbType.VarString))) {
+                                new("objectId", MySqlDbType.UInt64),
+                                new("stat", MySqlDbType.UInt32),
+                                new("stringId", MySqlDbType.UInt32),
+                                new("tableDid", MySqlDbType.UInt32),
+                                new("literalValue", MySqlDbType.VarString))) {
                                 cmd.Parameters[0].Value = worldObject.id.id;
                                 foreach ((StringInfoStat stat, StringInfo value) in worldObject.qualities.stringInfos) {
                                     cmd.Parameters[1].Value = (uint)stat;
@@ -379,7 +466,29 @@ namespace AC2RE.Server.Database {
                                     cmd.Parameters[3].Value = value.tableDid.id;
                                     cmd.Parameters[4].Value = value.literalValue;
                                     cmd.ExecuteNonQuery();
+
+                                    if (toKeep.Length > 0) {
+                                        toKeep.Append(',');
+                                    }
+                                    toKeep.Append((uint)stat);
                                 }
+                            }
+                            deleteHard(connection, transaction, "world_obj_stat_strinfo", $"objectId = {worldObject.id.id}{(toKeep.Length > 0 ? $" AND stat NOT IN ({toKeep})" : "")}");
+                        }
+
+                        if (worldObject.isCharacter) {
+                            using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_character",
+                                new("objectId", MySqlDbType.UInt64),
+                                new("skillCredits", MySqlDbType.UInt32),
+                                new("heroSkillCredits", MySqlDbType.UInt32),
+                                new("skillIdUntraining", MySqlDbType.UInt32),
+                                new("untrainingXp", MySqlDbType.UInt64))) {
+                                cmd.Parameters[0].Value = worldObject.id.id;
+                                cmd.Parameters[1].Value = worldObject.skillRepo.skillCredits;
+                                cmd.Parameters[2].Value = worldObject.skillRepo.heroSkillCredits;
+                                cmd.Parameters[3].Value = (uint)worldObject.skillRepo.skillIdUntraining;
+                                cmd.Parameters[4].Value = worldObject.skillRepo.untrainingXp;
+                                cmd.ExecuteNonQuery();
                             }
                         }
 
@@ -434,6 +543,7 @@ namespace AC2RE.Server.Database {
                         }
 
                         if (worldObject.globalAppearanceModifiers != null) {
+                            StringBuilder toKeep = new();
                             using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_apr",
                                 new("objectId", MySqlDbType.UInt64),
                                 new("partDid", MySqlDbType.UInt32),
@@ -446,12 +556,58 @@ namespace AC2RE.Server.Database {
                                         cmd.Parameters[2].Value = (uint)aprKey;
                                         cmd.Parameters[3].Value = value;
                                         cmd.ExecuteNonQuery();
+
+                                        if (toKeep.Length > 0) {
+                                            toKeep.Append(',');
+                                        }
+                                        toKeep.Append('\'');
+                                        toKeep.Append(partDid.id);
+                                        toKeep.Append('_');
+                                        toKeep.Append((uint)aprKey);
+                                        toKeep.Append('\'');
                                     }
                                 }
+                            }
+                            deleteHard(connection, transaction, "world_obj_apr", $"objectId = {worldObject.id.id}{(toKeep.Length > 0 ? $" AND CONCAT(partDid, '_', aprKey) NOT IN ({toKeep})" : "")}");
+                        }
+
+                        if (worldObject.globalAppearanceModifiers != null) {
+                            StringBuilder toKeep = new();
+                            using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_skill",
+                                new("objectId", MySqlDbType.UInt64),
+                                new("skillId", MySqlDbType.UInt32),
+                                new("flags", MySqlDbType.UInt32),
+                                new("xpAllocated", MySqlDbType.UInt64),
+                                new("lastUsedTime", MySqlDbType.Double))) {
+                                cmd.Parameters[0].Value = worldObject.id.id;
+                                foreach ((SkillId skillId, SkillInfo skillInfo) in worldObject.skillRepo.skills) {
+                                    cmd.Parameters[1].Value = (uint)skillId;
+                                    cmd.Parameters[2].Value = (uint)skillInfo.flags;
+                                    cmd.Parameters[3].Value = skillInfo.xpAllocated;
+                                    cmd.Parameters[4].Value = skillInfo.lastUsedTime;
+                                    cmd.ExecuteNonQuery();
+
+                                    if (toKeep.Length > 0) {
+                                        toKeep.Append(',');
+                                    }
+                                    toKeep.Append('\'');
+                                    toKeep.Append((uint)skillId);
+                                    toKeep.Append('\'');
+                                }
+                            }
+                            deleteHard(connection, transaction, "world_obj_skill", $"objectId = {worldObject.id.id}{(toKeep.Length > 0 ? $" AND skillId NOT IN ({toKeep})" : "")}");
+                        }
+
+                        if (worldObject.deleted) {
+                            worldObjectIdsToDelete.Add(worldObject.id);
+                            foreach (InstanceId containedItemId in worldObject.containedItemIdsEnumerable) {
+                                worldObjectIdsToDelete.Add(containedItemId);
                             }
                         }
                     }
                 }
+
+                StringBuilder characterIdsToDelete = new();
 
                 using (MySqlCommand cmd = upsertCommand(connection, transaction, "characters",
                     new("id", MySqlDbType.String),
@@ -459,12 +615,55 @@ namespace AC2RE.Server.Database {
                     new("accountId", MySqlDbType.String),
                     new("objectId", MySqlDbType.UInt64))) {
                     foreach (Character character in worldSave.characters) {
+                        if (character.deleted) {
+                            if (characterIdsToDelete.Length > 0) {
+                                characterIdsToDelete.Append(',');
+                            }
+                            characterIdsToDelete.Append('\'');
+                            characterIdsToDelete.Append(character.id.id);
+                            characterIdsToDelete.Append('\'');
+                            continue;
+                        }
+
                         cmd.Parameters[0].Value = character.id.id;
                         cmd.Parameters[1].Value = character.sequence;
                         cmd.Parameters[2].Value = character.accountId.id;
                         cmd.Parameters[3].Value = character.objectId.id;
                         cmd.ExecuteNonQuery();
                     }
+                }
+
+                if (characterIdsToDelete.Length > 0) {
+                    delete(connection, transaction, "characters", $"id IN ({characterIdsToDelete})");
+                }
+
+                if (worldObjectIdsToDelete.Count > 0) {
+                    worldObjectIdsToDelete.ProcessChunks(100, (worldObjectIdsToDeleteChunk) => {
+                        StringBuilder worldObjectIdsToDeleteSql = new();
+                        foreach (InstanceId worldObjectIdToDelete in worldObjectIdsToDeleteChunk) {
+                            if (worldObjectIdsToDeleteSql.Length > 0) {
+                                worldObjectIdsToDeleteSql.Append(',');
+                            }
+                            worldObjectIdsToDeleteSql.Append(worldObjectIdToDelete.id);
+                        }
+
+                        deletionTransfer(connection, transaction, "world_obj", $"id IN ({worldObjectIdsToDeleteSql})");
+                        delete(connection, transaction, "world_obj_stat_int", $"objectId IN ({worldObjectIdsToDeleteSql})");
+                        delete(connection, transaction, "world_obj_stat_long", $"objectId IN ({worldObjectIdsToDeleteSql})");
+                        delete(connection, transaction, "world_obj_stat_bool", $"objectId IN ({worldObjectIdsToDeleteSql})");
+                        delete(connection, transaction, "world_obj_stat_float", $"objectId IN ({worldObjectIdsToDeleteSql})");
+                        delete(connection, transaction, "world_obj_stat_double", $"objectId IN ({worldObjectIdsToDeleteSql})");
+                        delete(connection, transaction, "world_obj_stat_id", $"objectId IN ({worldObjectIdsToDeleteSql})");
+                        delete(connection, transaction, "world_obj_stat_did", $"objectId IN ({worldObjectIdsToDeleteSql})");
+                        delete(connection, transaction, "world_obj_stat_str", $"objectId IN ({worldObjectIdsToDeleteSql})");
+                        delete(connection, transaction, "world_obj_stat_strinfo", $"objectId IN ({worldObjectIdsToDeleteSql})");
+                        delete(connection, transaction, "world_obj_character", $"objectId IN ({worldObjectIdsToDeleteSql})");
+                        delete(connection, transaction, "world_obj_phys", $"objectId IN ({worldObjectIdsToDeleteSql})");
+                        delete(connection, transaction, "world_obj_visual", $"objectId IN ({worldObjectIdsToDeleteSql})");
+                        delete(connection, transaction, "world_obj_apr", $"objectId IN ({worldObjectIdsToDeleteSql})");
+                        delete(connection, transaction, "world_obj_skill", $"objectId IN ({worldObjectIdsToDeleteSql})");
+                        deleteHard(connection, transaction, "world_obj", $"id IN ({worldObjectIdsToDeleteSql})");
+                    });
                 }
 
                 return true;

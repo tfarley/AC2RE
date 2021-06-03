@@ -89,7 +89,18 @@ namespace AC2RE.Server.Database {
         }
 
         private int deleteInternal(MySqlConnection connection, MySqlTransaction transaction, string tableName, string whereClause) {
-            using (MySqlCommand cmd = new($"INSERT INTO {tableName}_del SELECT * FROM {tableName} WHERE {whereClause}", connection, transaction)) {
+            deletionTransfer(connection, transaction, tableName, whereClause);
+            return deleteHard(connection, transaction, tableName, whereClause);
+        }
+
+        public int deletionTransfer(MySqlConnection connection, MySqlTransaction? transaction, string tableName, string whereClause) {
+            using (MySqlCommand cmd = new($"INSERT INTO del_{tableName} SELECT * FROM {tableName} WHERE {whereClause}", connection, transaction)) {
+                return cmd.ExecuteNonQuery();
+            }
+        }
+
+        public int deleteHard(MySqlConnection connection, MySqlTransaction? transaction, string tableName, string whereClause) {
+            using (MySqlCommand cmd = new($"DELETE FROM {tableName} WHERE {whereClause}", connection, transaction)) {
                 return cmd.ExecuteNonQuery();
             }
         }

@@ -7,11 +7,13 @@ namespace AC2RE.Server {
         private World world;
 
         public readonly InstanceId id;
-        public bool destroyed { get; private set; }
+        public bool deleted { get; private set; }
 
         public bool persistent;
 
         public bool inWorld { get; private set; }
+
+        public bool isCharacter;
 
         public WorldObject(World world, InstanceId id, bool persistent) {
             this.world = world;
@@ -26,9 +28,9 @@ namespace AC2RE.Server {
             initVisual();
         }
 
-        public void destroy() {
+        public void delete() {
             leaveWorld();
-            destroyed = true;
+            deleted = true;
         }
 
         public InstanceIdWithStamp getInstanceIdWithStamp(ushort otherStamp = 0) {

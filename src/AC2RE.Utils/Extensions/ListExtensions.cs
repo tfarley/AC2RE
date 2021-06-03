@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AC2RE.Utils {
 
@@ -14,6 +15,16 @@ namespace AC2RE.Utils {
             } else {
                 list.Insert(index, item);
                 return index;
+            }
+        }
+
+        public static void ProcessChunks<T>(this List<T> list, int chunkSize, Action<List<T>> chunkProcessor) {
+            if (list.Count > chunkSize) {
+                for (int i = 0; i < list.Count; i += chunkSize) {
+                    chunkProcessor.Invoke(list.GetRange(i, Math.Min(chunkSize, list.Count - i)));
+                }
+            } else {
+                chunkProcessor.Invoke(list);
             }
         }
     }

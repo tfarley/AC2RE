@@ -72,7 +72,11 @@ namespace AC2RE.Server {
         };
 
         private static readonly Dictionary<LongIntStat, Config> LONG_INT = new() {
-
+            { LongIntStat.TOTALXP, new(SyncMode.PRIVATE, persistent: true) },
+            { LongIntStat.AVAILABLEXP, new(SyncMode.PRIVATE, persistent: true) },
+            { LongIntStat.XPTORAISEVITAE, new(SyncMode.PRIVATE, persistent: true) },
+            { LongIntStat.TOTALCRAFTXP, new(SyncMode.PRIVATE, persistent: true) },
+            { LongIntStat.AVAILABLECRAFTXP, new(SyncMode.PRIVATE, persistent: true) },
         };
 
         public static SyncMode getSyncMode(IntStat stat) => INT.TryGetValue(stat, out Config statConfig) ? statConfig.syncMode : SyncMode.NONE;

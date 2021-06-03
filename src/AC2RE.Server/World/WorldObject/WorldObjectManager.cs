@@ -48,7 +48,7 @@ namespace AC2RE.Server {
                     worldObjects[id] = worldObject;
                 }
             }
-            return (worldObject != null && !worldObject.destroyed) ? worldObject : null;
+            return (worldObject != null && !worldObject.deleted) ? worldObject : null;
         }
 
         private void loadAll() {
@@ -67,7 +67,7 @@ namespace AC2RE.Server {
             loadAll();
             List<WorldObject> resultWorldObjects = new();
             foreach (WorldObject worldObject in worldObjects.Values) {
-                if (!worldObject.destroyed) {
+                if (!worldObject.deleted) {
                     resultWorldObjects.Add(worldObject);
                 }
             }

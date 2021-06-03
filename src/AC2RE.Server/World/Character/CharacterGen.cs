@@ -52,6 +52,7 @@ namespace AC2RE.Server {
             }
 
             WorldObject character = world.objectManager.create(characterGenSystem.playerEntityDid, raceSexInfo.physObjDid, true);
+            character.isCharacter = true;
             setCharacterPhysics(character, startPos);
             setCharacterVisual(character, appProfileMap, appearanceInfos);
             setCharacterQualities(character, species, sex);
@@ -92,9 +93,9 @@ namespace AC2RE.Server {
             character.vigorMax = 100;
             character.vigorRegen = 1.0f;
             character.xp = 902;
-            character.xpAvailable = 722;
+            character.xpAvailable = 902;
             character.craftXp = 80;
-            character.craftXpAvailable = 40;
+            character.craftXpAvailable = 80;
         }
 
         private static void addStartingSkills(World world, WorldObject character, CharGenMatrix charGenMatrix, SpeciesType species) {

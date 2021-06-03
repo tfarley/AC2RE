@@ -141,6 +141,17 @@ CREATE TABLE world_obj_stat_strinfo (
 CREATE TABLE del_world_obj_stat_strinfo LIKE world_obj_stat_strinfo;
 ALTER TABLE del_world_obj_stat_strinfo ADD FOREIGN KEY (objectId) REFERENCES del_world_obj (id) ON DELETE CASCADE;
 
+CREATE TABLE world_obj_character (
+    FOREIGN KEY (objectId) REFERENCES world_obj (id) ON DELETE CASCADE,
+    objectId BIGINT UNSIGNED NOT NULL PRIMARY KEY,
+    skillCredits INT UNSIGNED NOT NULL,
+    heroSkillCredits INT UNSIGNED NOT NULL,
+    skillIdUntraining INT UNSIGNED NOT NULL,
+    untrainingXp BIGINT UNSIGNED NOT NULL
+);
+CREATE TABLE del_world_obj_character LIKE world_obj_character;
+ALTER TABLE del_world_obj_character ADD FOREIGN KEY (objectId) REFERENCES del_world_obj (id) ON DELETE CASCADE;
+
 CREATE TABLE world_obj_phys (
     FOREIGN KEY (objectId) REFERENCES world_obj (id) ON DELETE CASCADE,
     objectId BIGINT UNSIGNED NOT NULL PRIMARY KEY,
@@ -184,6 +195,18 @@ CREATE TABLE world_obj_apr (
 );
 CREATE TABLE del_world_obj_apr LIKE world_obj_apr;
 ALTER TABLE del_world_obj_apr ADD FOREIGN KEY (objectId) REFERENCES del_world_obj (id) ON DELETE CASCADE;
+
+CREATE TABLE world_obj_skill (
+    PRIMARY KEY(objectId, skillId),
+    FOREIGN KEY (objectId) REFERENCES world_obj (id) ON DELETE CASCADE,
+    objectId BIGINT UNSIGNED NOT NULL,
+    skillId INT UNSIGNED NOT NULL,
+    flags INT UNSIGNED NOT NULL,
+    xpAllocated BIGINT UNSIGNED NOT NULL,
+    lastUsedTime DOUBLE NOT NULL
+);
+CREATE TABLE del_world_obj_skill LIKE world_obj_skill;
+ALTER TABLE del_world_obj_skill ADD FOREIGN KEY (objectId) REFERENCES del_world_obj (id) ON DELETE CASCADE;
 
 CREATE TABLE characters (
     FOREIGN KEY (accountId) REFERENCES ac2re_account.account (id),

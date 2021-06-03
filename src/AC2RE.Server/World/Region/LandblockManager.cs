@@ -56,7 +56,7 @@ namespace AC2RE.Server {
                     if (world.objectManager.tryGet(objectId, out WorldObject? worldObject)) {
                         // TODO: Invoke worldObject.update(serverTime.time) or maybe pass in deltatime
 
-                        if (worldObject.inWorld && worldObject.containerId == InstanceId.NULL && !worldObject.destroyed) {
+                        if (worldObject.inWorld && worldObject.containerId == InstanceId.NULL && !worldObject.deleted) {
                             if (worldObject.landblockId != landblock.id) {
                                 removedObjectIds.Add(objectId);
                                 get(worldObject.landblockId).objectIds.Add(worldObject.id);
