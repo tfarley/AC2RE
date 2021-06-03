@@ -26,6 +26,7 @@ namespace AC2RE.Server {
                         CharacterCreateMsg msg = (CharacterCreateMsg)genericMsg;
 
                         WorldObject characterObject = CharacterGen.createCharacterObject(world, World.ARWIC_START_POS, msg.characterName, msg.species, msg.sex, msg.physiqueTypeValues);
+                        characterObject.player = player;
 
                         Character character = world.characterManager.createWithAccountAndObject(player.account.id, characterObject.id);
 
@@ -309,8 +310,8 @@ namespace AC2RE.Server {
                             }
                         }
 
-                        character.mode = ModeId.PEACE;
-                        character.velScale = 2.0f;
+                        character.doMode(ModeId.PEACE);
+                        character.setVelScale(2.0f);
 
                         character.enterWorld();
 
@@ -334,7 +335,7 @@ namespace AC2RE.Server {
                         CLookAtDirMsg msg = (CLookAtDirMsg)genericMsg;
 
                         if (tryGetCharacter(player, out WorldObject? character)) {
-                            character.lookAtDir = new(msg.x, msg.z);
+                            character.setLookAt(msg.x, msg.z);
                         }
 
                         break;
@@ -362,6 +363,7 @@ namespace AC2RE.Server {
             List<CharacterIdentity> characterIdentities = new();
             foreach (Character characterInfo in world.characterManager.getWithAccount(player.account.id)) {
                 if (world.objectManager.tryGet(characterInfo.objectId, out WorldObject? character)) {
+                    character.player = player;
                     characterIdentities.Add(new() {
                         id = character.id,
                         name = character.name!.literalValue,

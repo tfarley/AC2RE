@@ -372,9 +372,7 @@ namespace AC2RE.Server {
 
         public void broadcastUpdates() {
             foreach (WorldObject worldObject in worldObjects.Values) {
-                worldObject.broadcastPhysics(world.serverTime.time);
-                worldObject.broadcastQualities();
-                worldObject.broadcastVisualUpdate();
+                worldObject.broadcastUpdates();
             }
         }
 

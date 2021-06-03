@@ -13,7 +13,8 @@ namespace AC2RE.Server {
 
         public bool inWorld { get; private set; }
 
-        public bool isCharacter;
+        public Player? player;
+        public bool attacking { get; private set; }
 
         public WorldObject(World world, InstanceId id, bool persistent) {
             this.world = world;
@@ -49,9 +50,7 @@ namespace AC2RE.Server {
             inWorld = true;
 
             // Clear out all dirty values
-            broadcastPhysics(0.0);
-            broadcastQualities();
-            broadcastVisualUpdate();
+            broadcastUpdates();
 
             world.landblockManager.enterWorld(this);
 
@@ -68,6 +67,26 @@ namespace AC2RE.Server {
             world.landblockManager.leaveWorld(this);
 
             physics.instanceStamp++;
+        }
+
+
+        public void broadcastUpdates() {
+            broadcastPhysics();
+            broadcastQualities();
+            broadcastVisuals();
+        }
+
+        public void setAttacking(bool attacking) {
+            if (this.attacking == attacking) {
+                return;
+            }
+
+            this.attacking = attacking;
+            world.playerManager.send(player, new InterpCEventPrivateMsg {
+                netEvent = new UpdateAttackStateCEvt() {
+                    attacking = attacking,
+                }
+            }, true);
         }
     }
 }

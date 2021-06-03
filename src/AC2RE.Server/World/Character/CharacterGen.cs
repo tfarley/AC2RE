@@ -52,7 +52,6 @@ namespace AC2RE.Server {
             }
 
             WorldObject character = world.objectManager.create(characterGenSystem.playerEntityDid, raceSexInfo.physObjDid, true);
-            character.isCharacter = true;
             setCharacterPhysics(character, startPos);
             setCharacterVisual(character, appProfileMap, appearanceInfos);
             setCharacterQualities(character, species, sex);

@@ -115,7 +115,6 @@ namespace AC2RE.Server.Database {
             using (MySqlCommand cmd = new($"SELECT * FROM world_obj_character WHERE objectId = '{worldObject.id.id}';", connection)) {
                 using (MySqlDataReader reader = cmd.ExecuteReader(CommandBehavior.SingleRow)) {
                     if (reader.Read()) {
-                        worldObject.isCharacter = true;
                         worldObject.skillRepo.skillCredits = reader.GetUInt32("skillCredits");
                         worldObject.skillRepo.heroSkillCredits = reader.GetUInt32("heroSkillCredits");
                         worldObject.skillRepo.skillIdUntraining = (SkillId)reader.GetUInt32("skillIdUntraining");
@@ -476,7 +475,7 @@ namespace AC2RE.Server.Database {
                             deleteHard(connection, transaction, "world_obj_stat_strinfo", $"objectId = {worldObject.id.id}{(toKeep.Length > 0 ? $" AND stat NOT IN ({toKeep})" : "")}");
                         }
 
-                        if (worldObject.isCharacter) {
+                        if (worldObject.player != null) {
                             using (MySqlCommand cmd = upsertCommand(connection, transaction, "world_obj_character",
                                 new("objectId", MySqlDbType.UInt64),
                                 new("skillCredits", MySqlDbType.UInt32),

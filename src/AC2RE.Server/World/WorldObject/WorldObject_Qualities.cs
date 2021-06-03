@@ -408,9 +408,8 @@ namespace AC2RE.Server {
             set => setQ(BoolStat.PLAYER_ISONMOUNT, value);
         }
 
-        public void broadcastQualities() {
+        private void broadcastQualities() {
             if (inWorld) {
-                Player? owningPlayer = world.playerManager.get(id);
                 foreach (object dirtyStat in dirtyStats) {
                     switch (dirtyStat) {
                         case IntStat stat: {
@@ -418,12 +417,12 @@ namespace AC2RE.Server {
                                 if (syncMode != StatCfg.SyncMode.NONE) {
                                     int statVal = getQ(stat);
 
-                                    if (owningPlayer != null) {
-                                        world.playerManager.send(owningPlayer, new QualUpdateIntPrivateMsg(stat, statVal));
+                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                                        world.playerManager.send(player, new QualUpdateIntPrivateMsg(stat, statVal));
                                     }
 
                                     if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateIntVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                        world.playerManager.sendAllVisible(id, new QualUpdateIntVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
                                     }
                                 }
                                 break;
@@ -433,12 +432,12 @@ namespace AC2RE.Server {
                                 if (syncMode != StatCfg.SyncMode.NONE) {
                                     bool statVal = getQ(stat);
 
-                                    if (owningPlayer != null) {
-                                        world.playerManager.send(owningPlayer, new QualUpdateBoolPrivateMsg(stat, statVal));
+                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                                        world.playerManager.send(player, new QualUpdateBoolPrivateMsg(stat, statVal));
                                     }
 
                                     if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateBoolVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                        world.playerManager.sendAllVisible(id, new QualUpdateBoolVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
                                     }
                                 }
                                 break;
@@ -448,12 +447,12 @@ namespace AC2RE.Server {
                                 if (syncMode != StatCfg.SyncMode.NONE) {
                                     float statVal = getQ(stat);
 
-                                    if (owningPlayer != null) {
-                                        world.playerManager.send(owningPlayer, new QualUpdateFloatPrivateMsg(stat, statVal));
+                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                                        world.playerManager.send(player, new QualUpdateFloatPrivateMsg(stat, statVal));
                                     }
 
                                     if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateFloatVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                        world.playerManager.sendAllVisible(id, new QualUpdateFloatVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
                                     }
                                 }
                                 break;
@@ -463,12 +462,12 @@ namespace AC2RE.Server {
                                 if (syncMode != StatCfg.SyncMode.NONE) {
                                     double statVal = getQ(stat);
 
-                                    if (owningPlayer != null) {
-                                        world.playerManager.send(owningPlayer, new QualUpdateTimestampPrivateMsg(stat, statVal));
+                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                                        world.playerManager.send(player, new QualUpdateTimestampPrivateMsg(stat, statVal));
                                     }
 
                                     if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateTimestampVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                        world.playerManager.sendAllVisible(id, new QualUpdateTimestampVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
                                     }
                                 }
                                 break;
@@ -478,12 +477,12 @@ namespace AC2RE.Server {
                                 if (syncMode != StatCfg.SyncMode.NONE) {
                                     DataId statVal = getQ(stat);
 
-                                    if (owningPlayer != null) {
-                                        world.playerManager.send(owningPlayer, new QualUpdateDataIdPrivateMsg(stat, statVal));
+                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                                        world.playerManager.send(player, new QualUpdateDataIdPrivateMsg(stat, statVal));
                                     }
 
                                     if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateDataIdVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                        world.playerManager.sendAllVisible(id, new QualUpdateDataIdVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
                                     }
                                 }
                                 break;
@@ -493,12 +492,12 @@ namespace AC2RE.Server {
                                 if (syncMode != StatCfg.SyncMode.NONE) {
                                     InstanceId statVal = getQ(stat);
 
-                                    if (owningPlayer != null) {
-                                        world.playerManager.send(owningPlayer, new QualUpdateInstanceIdPrivateMsg(stat, statVal));
+                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                                        world.playerManager.send(player, new QualUpdateInstanceIdPrivateMsg(stat, statVal));
                                     }
 
                                     if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateInstanceIdVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                        world.playerManager.sendAllVisible(id, new QualUpdateInstanceIdVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
                                     }
                                 }
                                 break;
@@ -508,12 +507,12 @@ namespace AC2RE.Server {
                                 if (syncMode != StatCfg.SyncMode.NONE) {
                                     Position? statVal = getQ(stat);
 
-                                    if (owningPlayer != null) {
-                                        world.playerManager.send(owningPlayer, new QualUpdatePositionPrivateMsg(stat, statVal));
+                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                                        world.playerManager.send(player, new QualUpdatePositionPrivateMsg(stat, statVal));
                                     }
 
                                     if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdatePositionVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                        world.playerManager.sendAllVisible(id, new QualUpdatePositionVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
                                     }
                                 }
                                 break;
@@ -523,12 +522,12 @@ namespace AC2RE.Server {
                                 if (syncMode != StatCfg.SyncMode.NONE) {
                                     StringInfo? statVal = getQ(stat);
 
-                                    if (owningPlayer != null) {
-                                        world.playerManager.send(owningPlayer, new QualUpdateStringInfoPrivateMsg(stat, statVal));
+                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                                        world.playerManager.send(player, new QualUpdateStringInfoPrivateMsg(stat, statVal));
                                     }
 
                                     if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateStringInfoVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                        world.playerManager.sendAllVisible(id, new QualUpdateStringInfoVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
                                     }
                                 }
                                 break;
@@ -538,12 +537,12 @@ namespace AC2RE.Server {
                                 if (syncMode != StatCfg.SyncMode.NONE) {
                                     long statVal = getQ(stat);
 
-                                    if (owningPlayer != null) {
-                                        world.playerManager.send(owningPlayer, new QualUpdateLongIntPrivateMsg(stat, statVal));
+                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                                        world.playerManager.send(player, new QualUpdateLongIntPrivateMsg(stat, statVal));
                                     }
 
                                     if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisibleExcept(id, owningPlayer, new QualUpdateLongIntVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                                        world.playerManager.sendAllVisible(id, new QualUpdateLongIntVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
                                     }
                                 }
                                 break;

@@ -3,6 +3,7 @@
     // Const - globals
     // Dat file 23000027
     public enum BehaviorId : uint {
+        UNDEF = 0,
         STOP = 0x41000001,
         MELEE_WEAK2 = 0x41000003,
         MELEE_WEAK3 = 0x41000004,

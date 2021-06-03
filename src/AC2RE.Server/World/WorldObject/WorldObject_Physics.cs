@@ -1,5 +1,4 @@
 ﻿using AC2RE.Definitions;
-using AC2RE.Server.Database;
 using AC2RE.Utils;
 using System;
 using System.Collections.Generic;
@@ -24,11 +23,7 @@ namespace AC2RE.Server {
         public Vector3 impulseVel;
 
         private CellId lastSentCell;
-        private bool modeDirty;
-        private bool velScaleDirty;
         private bool positionDirty;
-        private bool lookAtDirty;
-        private readonly HashSet<uint> dirtySliders = new();
 
         private void initPhysics() {
             physics = new();
@@ -56,20 +51,16 @@ namespace AC2RE.Server {
             }
         }
 
-        public ModeId mode {
-            get => physics.modeId;
-            set {
-                physics.modeId = value;
-                modeDirty = true;
-            }
-        }
+        public ModeId mode => physics.modeId;
 
-        public float velScale {
-            get => physics.velScale;
-            set {
-                physics.velScale = value;
-                velScaleDirty = true;
-            }
+        public float velScale => physics.velScale;
+
+        public void setVelScale(float velScale) {
+            physics.velScale = velScale;
+            world.playerManager.sendAllVisible(id, new SetVelocityScaleMsg {
+                senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
+                velScale = physics.velScale,
+            }, true);
         }
 
         public Position pos {
@@ -93,21 +84,22 @@ namespace AC2RE.Server {
         public HoldingLocation locationId => physics.locationId;
         public Orientation orientationId => physics.orientationId;
 
-        public InstanceId lookAtId {
-            get => physics.lookAtId;
-            set {
-                physics.lookAtId = value;
-                lookAtDirty = true;
-            }
+        public void setLookAt(InstanceId lookAtId) {
+            physics.lookAtId = lookAtId;
+            world.playerManager.sendAllVisible(id, new LookAtMsg {
+                senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
+                targetId = physics.lookAtId,
+            }, true);
         }
 
-        public Vector2 lookAtDir {
-            get => new Vector2(physics.headingX, physics.headingZ);
-            set {
-                physics.headingX = value.X;
-                physics.headingZ = value.Y;
-                lookAtDirty = true;
-            }
+        public void setLookAt(float lookAtDirX, float lookAtDirZ) {
+            physics.headingX = lookAtDirX;
+            physics.headingZ = lookAtDirZ;
+            world.playerManager.sendAllVisible(id, new LookAtDirMsg {
+                senderIdWithStamp = getInstanceIdWithStamp(),
+                x = physics.headingX,
+                z = physics.headingZ,
+            }, true);
         }
 
         public PhysicsDesc.SliderData getSliderValue(uint slider) {
@@ -124,38 +116,19 @@ namespace AC2RE.Server {
                 velocity = velocity,
             };
 
-            dirtySliders.Add(slider);
+            world.playerManager.sendAllVisible(id, new DoSliderMsg {
+                senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
+                sliderId = slider,
+                newValue = value,
+                time = 0.1f, // TODO: Figure out what time means
+            }, true);
         }
 
-        public void broadcastPhysics(double time) {
-            if (modeDirty) {
-                if (inWorld) {
-                    // TODO: Should this be SetModeMsg?
-                    world.playerManager.sendAllVisible(id, new DoModeMsg {
-                        senderIdWithStamp = getInstanceIdWithStamp(),
-                        modeId = physics.modeId,
-                    });
-                }
-
-                modeDirty = false;
-            }
-
-            if (velScaleDirty) {
-                if (inWorld) {
-                    // TODO: Should this be SetModeMsg?
-                    world.playerManager.sendAllVisible(id, new SetVelocityScaleMsg {
-                        senderIdWithStamp = getInstanceIdWithStamp(),
-                        velScale = physics.velScale,
-                    });
-                }
-
-                velScaleDirty = false;
-            }
-
+        private void broadcastPhysics() {
             if (positionDirty) {
                 if (inWorld) {
                     PositionPack posPack = new() {
-                        time = time,
+                        time = world.serverTime.time,
                         offset = offset,
                         doMotion = motion,
                         heading = new(heading),
@@ -193,40 +166,6 @@ namespace AC2RE.Server {
 
                 positionDirty = false;
             }
-
-            if (lookAtDirty) {
-                if (inWorld) {
-                    if (physics.lookAtId != InstanceId.NULL) {
-                        world.playerManager.sendAllVisibleExcept(id, world.playerManager.get(id), new LookAtMsg {
-                            senderIdWithStamp = getInstanceIdWithStamp(),
-                            targetId = physics.lookAtId,
-                        });
-                    } else {
-                        world.playerManager.sendAllVisibleExcept(id, world.playerManager.get(id), new LookAtDirMsg {
-                            senderIdWithStamp = getInstanceIdWithStamp(),
-                            x = physics.headingX,
-                            z = physics.headingZ,
-                        });
-                    }
-                }
-
-                lookAtDirty = false;
-            }
-
-            if (inWorld) {
-                foreach (uint dirtySlider in dirtySliders) {
-                    PhysicsDesc.SliderData sliderValue = physics.sliders[dirtySlider];
-
-                    world.playerManager.sendAllVisible(id, new DoSliderMsg {
-                        senderIdWithStamp = getInstanceIdWithStamp(),
-                        sliderId = dirtySlider,
-                        newValue = sliderValue.value,
-                        time = 0.1f, // TODO: Figure out what time means
-                    });
-                }
-            }
-
-            dirtySliders.Clear();
         }
 
         public void setParent(WorldObject? parent, HoldingLocation holdLoc = HoldingLocation.INVALID, Orientation holdOrientation = Orientation.DEFAULT) {

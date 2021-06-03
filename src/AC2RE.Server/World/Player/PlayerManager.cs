@@ -48,42 +48,42 @@ namespace AC2RE.Server {
             _players[clientId] = new(clientId, account);
         }
 
-        public void send(Player toPlayer, INetMessage message) {
-            packetHandler.send(toPlayer.clientId, message);
+        public void send(Player toPlayer, INetMessage message, bool ordered = false) {
+            packetHandler.send(toPlayer.clientId, message, ordered);
         }
 
-        public void send(IEnumerable<Player> toPlayers, INetMessage message) {
+        public void send(IEnumerable<Player> toPlayers, INetMessage message, bool ordered = false) {
             List<ClientId> clientIds = new();
             foreach (Player player in toPlayers) {
                 clientIds.Add(player.clientId);
             }
-            packetHandler.send(clientIds, message);
+            packetHandler.send(clientIds, message, ordered);
         }
 
-        public void sendAll(INetMessage message) {
-            packetHandler.send(_players.Keys, message);
+        public void sendAll(INetMessage message, bool ordered = false) {
+            packetHandler.send(_players.Keys, message, ordered);
         }
 
-        public void sendAllVisible(InstanceId objectId, INetMessage message) {
+        public void sendAllVisible(InstanceId objectId, INetMessage message, bool ordered = false) {
             foreach (Player player in _players.Values) {
                 if (player.visibleObjectIds.Contains(objectId)) {
-                    send(player, message);
+                    send(player, message, ordered);
                 }
             }
         }
 
-        public void sendAllExcept(Player? excludePlayer, INetMessage message) {
+        public void sendAllExcept(Player? excludePlayer, INetMessage message, bool ordered = false) {
             foreach (Player player in _players.Values) {
                 if (player != excludePlayer) {
-                    send(player, message);
+                    send(player, message, ordered);
                 }
             }
         }
 
-        public void sendAllVisibleExcept(InstanceId objectId, Player? excludePlayer, INetMessage message) {
+        public void sendAllVisibleExcept(InstanceId objectId, Player? excludePlayer, INetMessage message, bool ordered = false) {
             foreach (Player player in _players.Values) {
                 if (player != excludePlayer && player.visibleObjectIds.Contains(objectId)) {
-                    send(player, message);
+                    send(player, message, ordered);
                 }
             }
         }

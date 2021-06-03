@@ -11,9 +11,18 @@
         public InstanceIdWithStamp senderIdWithStamp; // sender
         public BehaviorId behaviorId; // bvrID
 
+        public StopBehaviorMsg() {
+
+        }
+
         public StopBehaviorMsg(AC2Reader data) {
             senderIdWithStamp = data.ReadInstanceIdWithStamp();
             behaviorId = (BehaviorId)data.ReadUInt32();
+        }
+
+        public void write(AC2Writer data) {
+            data.Write(senderIdWithStamp);
+            data.Write((uint)behaviorId);
         }
     }
 }

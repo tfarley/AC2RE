@@ -83,6 +83,20 @@ namespace AC2RE.Server {
                             }
 
                             toggleCounter++;
+                        } else if (msg.netEvent.funcId == ServerEventFunctionId.Combat__DoAttack) {
+                            DoAttackSEvt sEvent = (DoAttackSEvt)msg.netEvent;
+                            if (tryGetCharacter(player, out WorldObject? character)) {
+                                character.setAttacking(true);
+                                Skill skill = world.contentManager.getSkill(sEvent.skillId);
+                                if (skill is ActiveSkill activeSkill && activeSkill.powerUpBehavior != BehaviorId.UNDEF) {
+                                    character.doMode(ModeId.COMBAT_MAGIC);
+                                    character.doBehavior(new() {
+                                        packFlags = BehaviorParams.PackFlag.BEHAVIOR_ID | BehaviorParams.PackFlag.HOLDCYLE | BehaviorParams.PackFlag.MOVETOCANCELS,
+                                        behaviorId = activeSkill.powerUpBehavior,
+                                        holdCycles = 10,
+                                    });
+                                }
+                            }
                         } else {
                             return false;
                         }

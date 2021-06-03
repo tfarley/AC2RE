@@ -29,7 +29,7 @@ namespace AC2RE.Server {
                                                 break;
                                             }
                                             if (tryGetCharacter(player, out WorldObject? character)) {
-                                                character.velScale = value;
+                                                character.setVelScale(value);
                                                 character.doFx(FxId.PORTAL_USE, 1.0f);
                                             }
                                             break;
