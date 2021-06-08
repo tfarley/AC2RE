@@ -248,7 +248,7 @@ namespace AC2RE.DatTool {
                         if (outputPath == null) {
                             break;
                         }
-                        using (Stream output = File.OpenWrite(outputPath + ".wav")) {
+                        using (Stream output = File.Open(outputPath + ".wav", FileMode.Create, FileAccess.Write, FileShare.Read)) {
                             // 4 DID + 4 file size
                             int ac2HeaderSize = sizeof(uint) + sizeof(uint);
                             datReader.readFile(did, output, ac2HeaderSize);
@@ -259,7 +259,7 @@ namespace AC2RE.DatTool {
                     readAndDump(datReader, did, outputPath, data => new CEncounterDesc(data));
                     break;
                 case DbType.ENUM_MAPPER: {
-                        using (StreamWriter? output = outputPath != null ? new(File.OpenWrite(outputPath + ".txt")) : null)
+                        using (StreamWriter? output = outputPath != null ? new(File.Open(outputPath + ".txt", FileMode.Create, FileAccess.Write, FileShare.Read)) : null)
                         using (AC2Reader data = datReader.getFileReader(did)) {
                             EnumMapper emp = new(data);
 
@@ -411,7 +411,7 @@ namespace AC2RE.DatTool {
                         if (outputPath == null) {
                             break;
                         }
-                        using (Stream output = File.OpenWrite(outputPath))
+                        using (Stream output = File.Open(outputPath, FileMode.Create, FileAccess.Write, FileShare.Read))
                         using (BinaryWriter outputWriter = new(output)) {
                             BTEntry entry = datReader.getEntry(did);
                             // 4 DID + 4 unk + 4 file size
@@ -442,14 +442,14 @@ namespace AC2RE.DatTool {
                         using (AC2Reader data = datReader.getFileReader(did)) {
                             WLib wlib = new(data);
                             if (outputPath != null) {
-                                using (StreamWriter output = new(File.OpenWrite(outputPath + ".packages.txt"))) {
+                                using (StreamWriter output = new(File.Open(outputPath + ".packages.txt", FileMode.Create, FileAccess.Write, FileShare.Read))) {
                                     Dump.dumpPackages(output, wlib.byteStream);
                                 }
                             }
 
                             Disasm disasm = new(wlib.byteStream);
                             if (outputPath != null) {
-                                using (StreamWriter output = new(File.OpenWrite(outputPath + ".disasm.txt"))) {
+                                using (StreamWriter output = new(File.Open(outputPath + ".disasm.txt", FileMode.Create, FileAccess.Write, FileShare.Read))) {
                                     disasm.write(output);
                                 }
                             }

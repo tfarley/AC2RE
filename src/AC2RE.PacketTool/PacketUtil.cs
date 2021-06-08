@@ -13,7 +13,7 @@ namespace AC2RE.PacketTool.UI {
             allPcapFileNames.AddRange(Directory.GetFiles(filePath, "*.pcapng", SearchOption.AllDirectories));
 
             foreach (string pcapFileName in allPcapFileNames) {
-                using (FileStream pcapFileStream = File.OpenRead(pcapFileName)) {
+                using (FileStream pcapFileStream = File.Open(pcapFileName, FileMode.Open, FileAccess.Read, FileShare.Read)) {
                     NetBlobCollection netBlobCollection = PcapReader.read(pcapFileStream);
                     netBlobProcessor.Invoke(pcapFileName, netBlobCollection);
                 }

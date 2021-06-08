@@ -408,6 +408,26 @@ namespace AC2RE.Server {
             set => setQ(BoolStat.PLAYER_ISONMOUNT, value);
         }
 
+        public ImplementType implementType {
+            get => (ImplementType)getQ(IntStat.IMPLEMENTTYPE);
+            set => setQ(IntStat.IMPLEMENTTYPE, (int)value);
+        }
+
+        public ModeId singleWeaponMode {
+            get => (ModeId)getQ(IntStat.WEAPON_SINGLEWEAPONSTANCE);
+            set => setQ(IntStat.WEAPON_SINGLEWEAPONSTANCE, (int)value);
+        }
+
+        public ModeId withShieldMode {
+            get => (ModeId)getQ(IntStat.WEAPON_WITHSHIELDSTANCE);
+            set => setQ(IntStat.WEAPON_WITHSHIELDSTANCE, (int)value);
+        }
+
+        public ModeId dualWieldMode {
+            get => (ModeId)getQ(IntStat.WEAPON_DUALWIELDSTANCE);
+            set => setQ(IntStat.WEAPON_DUALWIELDSTANCE, (int)value);
+        }
+
         private void broadcastQualities() {
             if (inWorld) {
                 foreach (object dirtyStat in dirtyStats) {

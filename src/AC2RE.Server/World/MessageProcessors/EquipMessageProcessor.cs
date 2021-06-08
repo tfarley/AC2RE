@@ -16,7 +16,7 @@ namespace AC2RE.Server {
                             DirectiveEquipItemSEvt sEvent = (DirectiveEquipItemSEvt)msg.netEvent;
                             if (sEvent.equipDesc.equipperId != player.characterId) {
                                 sEvent.equipDesc.error = ErrorType.ITEMNOTOWNEDBYCONTAINER;
-                            } else if (tryGetObject(sEvent.equipDesc.equipperId, out WorldObject? equipper) && tryGetObject(sEvent.equipDesc.itemId, out WorldObject? item)) {
+                            } else if (tryGetInWorld(sEvent.equipDesc.equipperId, out WorldObject? equipper) && tryGetInWorld(sEvent.equipDesc.itemId, out WorldObject? item)) {
                                 sEvent.equipDesc.error = equipper.equip(sEvent.equipDesc.location, item);
                             }
 
@@ -30,7 +30,7 @@ namespace AC2RE.Server {
                             if (sEvent.equipDesc.equipperId != player.characterId) {
                                 sEvent.equipDesc.error = ErrorType.ITEMNOTOWNEDBYCONTAINER;
                             } else {
-                                if (tryGetObject(sEvent.equipDesc.equipperId, out WorldObject? equipper) && tryGetObject(sEvent.equipDesc.itemId, out WorldObject? item)) {
+                                if (tryGetInWorld(sEvent.equipDesc.equipperId, out WorldObject? equipper) && tryGetInWorld(sEvent.equipDesc.itemId, out WorldObject? item)) {
                                     sEvent.equipDesc.error = equipper.equip(sEvent.equipDesc.location, null);
                                     if (sEvent.equipDesc.error == ErrorType.NONE) {
                                         sEvent.equipDesc.targetContainerSlot = (uint)item.setContainer(world.objectManager.get(sEvent.equipDesc.containerId), (int)sEvent.equipDesc.containerSlot);

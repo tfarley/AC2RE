@@ -88,7 +88,7 @@ namespace AC2RE.PacketTool.UI {
 
             Title = $"{originalTitle} - {Path.GetFileName(fileName)}";
 
-            using (FileStream fileStream = File.OpenRead(fileName)) {
+            using (FileStream fileStream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.Read)) {
                 NetBlobCollection netBlobCollection = PcapReader.read(fileStream);
 
                 netBlobRows.Clear();

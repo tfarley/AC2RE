@@ -25,7 +25,7 @@ namespace AC2RE.Definitions {
             }
 
             this.datFileName = datFileName;
-            data = new(File.OpenRead(datFileName));
+            data = new(File.Open(datFileName, FileMode.Open, FileAccess.Read, FileShare.Read));
             init(ref header, ref filesystemTree);
         }
 

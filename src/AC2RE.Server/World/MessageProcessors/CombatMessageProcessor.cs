@@ -89,7 +89,6 @@ namespace AC2RE.Server {
                                 character.setAttacking(true);
                                 Skill skill = world.contentManager.getSkill(sEvent.skillId);
                                 if (skill is ActiveSkill activeSkill && activeSkill.powerUpBehavior != BehaviorId.UNDEF) {
-                                    character.doMode(ModeId.COMBAT_MAGIC);
                                     character.doBehavior(new() {
                                         packFlags = BehaviorParams.PackFlag.BEHAVIOR_ID | BehaviorParams.PackFlag.HOLDCYLE | BehaviorParams.PackFlag.MOVETOCANCELS,
                                         behaviorId = activeSkill.powerUpBehavior,

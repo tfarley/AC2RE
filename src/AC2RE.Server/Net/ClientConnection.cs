@@ -53,9 +53,9 @@ namespace AC2RE.Server {
             this.account = account;
 
             Random rand = new();
-            connectionAckCookie = rand.NextULong();
-            outgoingSeed = rand.NextUInt();
-            incomingSeed = rand.NextUInt();
+            connectionAckCookie = rand.NextUlong();
+            outgoingSeed = rand.NextUint();
+            incomingSeed = rand.NextUint();
         }
 
         public void updatePort(int port) {

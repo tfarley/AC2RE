@@ -82,7 +82,7 @@ namespace AC2RE.DatTool.UI {
             if (openFileDialog.ShowDialog() == true) {
                 Title = $"{originalTitle} - {openFileDialog.SafeFileName}";
 
-                DatReader datReader = new(new AC2Reader(File.OpenRead(openFileDialog.FileName)));
+                DatReader datReader = new(new AC2Reader(File.Open(openFileDialog.FileName, FileMode.Open, FileAccess.Read, FileShare.Read)));
                 // 0x1F000023 = human male, 0x1F001110 = rabbit
                 new RenderPreviewWindow(datReader, new(0x1F000023)).Show();
             }

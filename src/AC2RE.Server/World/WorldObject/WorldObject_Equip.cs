@@ -25,6 +25,10 @@ namespace AC2RE.Server {
             }
         }
 
+        public InstanceId getEquipped(InvLoc invLoc) {
+            return invLocToEquippedItemId?.GetValueOrDefault(invLoc, InstanceId.NULL) ?? InstanceId.NULL;
+        }
+
         public bool isEquipped(InvLoc invLoc) {
             return invLocToEquippedItemId != null && invLocToEquippedItemId.ContainsKey(invLoc);
         }
@@ -69,6 +73,8 @@ namespace AC2RE.Server {
                     curItem.setParent(null);
                 }
             }
+
+            syncMode();
 
             return ErrorType.NONE;
         }

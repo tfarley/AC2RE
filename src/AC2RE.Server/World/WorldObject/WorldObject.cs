@@ -87,6 +87,8 @@ namespace AC2RE.Server {
                     attacking = attacking,
                 }
             }, true);
+
+            syncMode();
         }
     }
 }

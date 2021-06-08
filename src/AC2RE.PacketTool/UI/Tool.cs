@@ -26,7 +26,7 @@ namespace AC2RE.PacketTool.UI {
 
                 HashSet<InstanceId> processedIds = new();
 
-                using (StreamWriter csvWriter = new(File.OpenWrite(outputFileName))) {
+                using (StreamWriter csvWriter = new(File.Open(outputFileName, FileMode.Create, FileAccess.Write, FileShare.Read))) {
                     csvWriter.WriteLine("packageType,id,entityDid,landblockId,cellId,posX,posY,posZ,rotX,rotY,rotZ,rotW,scale,nameStringId,nameTableDid");
                     PacketUtil.processAllPcaps(filePath, (pcapFileName, netBlobCollection) => {
                         foreach (NetBlobRecord netBlobRecord in netBlobCollection.records) {
@@ -47,7 +47,7 @@ namespace AC2RE.PacketTool.UI {
 
                 HashSet<InstanceId> processedIds = new();
 
-                using (StreamWriter dumpWriter = new(File.OpenWrite(outputFileName))) {
+                using (StreamWriter dumpWriter = new(File.Open(outputFileName, FileMode.Create, FileAccess.Write, FileShare.Read))) {
                     PacketUtil.processAllPcaps(filePath, (pcapFileName, netBlobCollection) => {
                         foreach (NetBlobRecord netBlobRecord in netBlobCollection.records) {
                             INetMessage? genericMsg = netBlobRecord.message;
@@ -84,7 +84,7 @@ namespace AC2RE.PacketTool.UI {
                     }
                 });
 
-                using (StreamWriter csvWriter = new(File.OpenWrite("pkt_meta.txt"))) {
+                using (StreamWriter csvWriter = new(File.Open("pkt_meta.txt", FileMode.Create, FileAccess.Write, FileShare.Read))) {
                     csvWriter.WriteLine("opcode,event,queues,flags,orderingTypes");
                     foreach ((string opcodeAndEvent, Metadata metadata) in opcodeAndEventToMetadata) {
                         StringBuilder sb = new(opcodeAndEvent);

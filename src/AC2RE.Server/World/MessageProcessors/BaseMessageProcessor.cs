@@ -13,12 +13,12 @@ namespace AC2RE.Server {
 
         public abstract bool processMessage(ClientConnection client, Player player, INetMessage genericMsg);
 
-        public bool tryGetObject(InstanceId id, [MaybeNullWhen(false)] out WorldObject worldObject) {
-            return world.objectManager.tryGet(id, out worldObject) && worldObject.inWorld;
+        public bool tryGetInWorld(InstanceId id, [MaybeNullWhen(false)] out WorldObject worldObject) {
+            return world.objectManager.tryGetInWorld(id, out worldObject);
         }
 
         public bool tryGetCharacter(Player player, [MaybeNullWhen(false)] out WorldObject character) {
-            return world.objectManager.tryGet(player.characterId, out character) && character.inWorld;
+            return tryGetInWorld(player.characterId, out character);
         }
 
         protected void send(Player player, INetMessage msg) {
