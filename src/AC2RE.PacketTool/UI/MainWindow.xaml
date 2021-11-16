@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AC2RE.PacketTool.UI"
         mc:Ignorable="d"
-        Title="AC2RE Packet Tool" Height="800" Width="1700">
+        Title="AC2RE Packet Tool" Height="950" Width="1700">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">

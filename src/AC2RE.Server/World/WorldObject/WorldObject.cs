@@ -69,7 +69,6 @@ namespace AC2RE.Server {
             physics.instanceStamp++;
         }
 
-
         public void broadcastUpdates() {
             broadcastPhysics();
             broadcastQualities();

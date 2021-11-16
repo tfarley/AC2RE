@@ -30,7 +30,7 @@ namespace AC2RE.Server {
             physics.pos = new();
         }
 
-        public void recachePhysics(List<WorldObject> childWorldObjects) {
+        public void recachePhysics(IEnumerable<WorldObject> childWorldObjects) {
             if (childIds == null) {
                 childIds = new();
             }

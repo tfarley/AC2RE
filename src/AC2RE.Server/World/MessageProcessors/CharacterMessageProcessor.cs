@@ -122,13 +122,6 @@ namespace AC2RE.Server {
                             }
                         }
 
-                        List<InstanceId> contentIds = new();
-                        foreach (InstanceId contentId in character.containedItemIdsEnumerable) {
-                            if (!character.isEquipped(contentId)) {
-                                contentIds.Add(contentId);
-                            }
-                        }
-
                         send(player, new InterpCEventPrivateMsg {
                             netEvent = new HandleCharacterSessionStartCEvt {
                                 money = 12345,
@@ -298,7 +291,7 @@ namespace AC2RE.Server {
                                 containerIds = new() {
 
                                 },
-                                contentIds = contentIds,
+                                contentIds = new(character.contentsItemIdsEnumerable),
                                 localFactionStatus = FactionStatus.PEACE,
                                 serverFactionStatus = FactionStatus.UNDEF,
                             }

@@ -2,9 +2,9 @@
 
 namespace AC2RE.Server {
 
-    internal class EquipMessageProcessor : BaseMessageProcessor {
+    internal class InventoryMessageProcessor : BaseMessageProcessor {
 
-        public EquipMessageProcessor(World world) : base(world) {
+        public InventoryMessageProcessor(World world) : base(world) {
 
         }
 
@@ -42,6 +42,22 @@ namespace AC2RE.Server {
                             send(player, new InterpCEventPrivateMsg {
                                 netEvent = new UnequipItemDoneCEvt {
                                     equipDesc = sEvent.equipDesc,
+                                }
+                            });
+                        } else if (msg.netEvent.funcId == ServerEventFunctionId.Inventory__DirectiveMoveItem) {
+                            DirectiveMoveItemSEvt sEvent = (DirectiveMoveItemSEvt)msg.netEvent;
+
+                            send(player, new InterpCEventPrivateMsg {
+                                netEvent = new MoveItemDoneCEvt {
+                                    moveDesc = sEvent.moveDesc,
+                                }
+                            });
+                        } else if (msg.netEvent.funcId == ServerEventFunctionId.Inventory__DirectiveReorganizeContents) {
+                            DirectiveReorganizeContentsSEvt sEvent = (DirectiveReorganizeContentsSEvt)msg.netEvent;
+
+                            send(player, new InterpCEventPrivateMsg {
+                                netEvent = new ReorganizeContentsDoneCEvt {
+                                    moveDesc = sEvent.moveDesc,
                                 }
                             });
                         } else {

@@ -8,21 +8,27 @@ namespace AC2RE.Server {
 
     internal partial class WorldObject {
 
-        private List<InstanceId>? containedItemIds;
+        private HashSet<InstanceId>? containedItemIds;
+        private List<InstanceId>? contentsItemIds;
 
         public IEnumerable<InstanceId> containedItemIdsEnumerable => containedItemIds ?? Enumerable.Empty<InstanceId>();
+        public IEnumerable<InstanceId> contentsItemIdsEnumerable => contentsItemIds ?? Enumerable.Empty<InstanceId>();
 
         public void initContain() {
 
         }
 
-        public void recacheContain(List<WorldObject> containedItems) {
+        public void recacheContain(IEnumerable<WorldObject> containedItems) {
             if (containedItemIds == null) {
                 containedItemIds = new();
+            }
+            if (contentsItemIds == null) {
+                contentsItemIds = new();
             }
 
             foreach (WorldObject containedItem in containedItems) {
                 containedItemIds.Add(containedItem.id);
+                contentsItemIds.Add(containedItem.id);
             }
         }
 
@@ -35,26 +41,41 @@ namespace AC2RE.Server {
                 if (container.containedItemIds == null) {
                     container.containedItemIds = new();
                 }
-
-                // TODO: Hack to prevent weird case where icon wraps to next line when dragged to an empty slot
-                slot = Math.Clamp(slot, 0, Math.Max(container.containedItemIds.Count - (container.invLocToEquippedItemId?.Count ?? 0) - 2, 0));
-
-                containerId = container.id;
-
-                int curSlot = container.containedItemIds.IndexOf(id);
-                if (curSlot != -1) {
-                    if (slot != curSlot) {
-                        // TODO: Reshuffle to correct index?
-                        container.containedItemIds.RemoveAt(curSlot);
-                        return container.containedItemIds.InsertSafe(slot, id);
-                    }
-                    return curSlot;
+                if (container.contentsItemIds == null) {
+                    container.contentsItemIds = new();
                 }
 
-                return container.containedItemIds.InsertSafe(slot, id);
+                // TODO: Hack to prevent weird case where icon wraps to next line when dragged to an empty slot
+                slot = Math.Clamp(slot, 0, Math.Max(container.contentsItemIds.Count - 1, 0));
+
+                if (container.containedItemIds.Contains(id)) {
+                    int curSlot = container.contentsItemIds.IndexOf(id);
+                    if (curSlot != -1) {
+                        // Moving within contents
+                        if (curSlot < slot) {
+                            // Removal will shift everything after the current slot down by 1 - adjust so that the item is placed to the left of the blocking item
+                            slot--;
+                        }
+                        if (slot != curSlot) {
+                            container.contentsItemIds.RemoveAt(curSlot);
+                            return container.contentsItemIds.InsertSafe(slot, id);
+                        }
+                        return curSlot;
+                    } else {
+                        // Moving from equipped into contents
+                        return container.contentsItemIds.InsertSafe(slot, id);
+                    }
+                }
+
+                // Adding to container
+                containerId = container.id;
+
+                container.containedItemIds.Add(id);
+                return container.contentsItemIds.InsertSafe(slot, id);
             } else if (containerId != InstanceId.NULL) {
                 if (world.objectManager.tryGet(containerId, out WorldObject? curContainer)) {
                     curContainer.containedItemIds!.Remove(id);
+                    curContainer.contentsItemIds!.Remove(id);
 
                     world.playerManager.sendAllVisibleExcept(id, requester, new ContainMsg {
                         childIdWithPosStamp = getInstanceIdWithStamp(++physics.timestamps[(int)PhysicsTimeStamp.POSITION]),

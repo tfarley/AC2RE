@@ -15,13 +15,14 @@ namespace AC2RE.Server {
 
         }
 
-        public void recacheEquip(List<WorldObject> equippedItems) {
+        public void recacheEquip(IEnumerable<WorldObject> equippedItems) {
             if (invLocToEquippedItemId == null) {
                 invLocToEquippedItemId = new();
             }
 
             foreach (WorldObject equippedItem in equippedItems) {
                 invLocToEquippedItemId[equippedItem.equippedLocation] = equippedItem.id;
+                contentsItemIds!.Remove(equippedItem.id);
             }
         }
 
@@ -41,6 +42,8 @@ namespace AC2RE.Server {
             if (item != null) {
                 if (isEquipped(equipLoc)) {
                     return ErrorType.INVSLOTFULL;
+                } else if (!contains(item.id)) {
+                    return ErrorType.USAGE_INTERACTIONTARGETNOTCONTAINED;
                 } else if (!item.validInvLocs.HasFlag(equipLoc)) {
                     return ErrorType.WRONGINVSLOT;
                 } else if (containedItemIds == null || !containedItemIds.Contains(item.id)) {
@@ -60,6 +63,8 @@ namespace AC2RE.Server {
                 if (holdLoc != HoldingLocation.INVALID) {
                     item.setParent(this, holdLoc, item.holdOrientation);
                 }
+
+                contentsItemIds!.Remove(item.id);
             } else {
                 if (invLocToEquippedItemId != null && world.objectManager.tryGet(invLocToEquippedItemId[equipLoc], out WorldObject? curItem)) {
                     if (!invLocToEquippedItemId.TryGetValue(equipLoc, out InstanceId equippedItemId) || curItem.id != equippedItemId) {

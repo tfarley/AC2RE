@@ -47,7 +47,8 @@ namespace AC2RE.Server {
                 new CombatMessageProcessor(this),
                 new CommunicationMessageProcessor(this),
                 new DataMessageProcessor(this),
-                new EquipMessageProcessor(this),
+                new InventoryMessageProcessor(this),
+                new UsageMessageProcessor(this),
                 new ExaminationMessageProcessor(this),
                 new SkillMessageProcessor(this),
             };
