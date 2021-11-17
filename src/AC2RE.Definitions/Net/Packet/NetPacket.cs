@@ -49,12 +49,30 @@ namespace AC2RE.Definitions {
         public ushort dataLength; // datalen_
         public ushort iteration; // iteration_
 
+        private ServerSwitchHeader _serverSwitchHeader;
+        public ServerSwitchHeader serverSwitchHeader {
+            get => _serverSwitchHeader;
+            set {
+                _serverSwitchHeader = value;
+                flags |= Flag.SERVER_SWITCH;
+            }
+        }
+
         private List<uint> _nacksHeader;
         public List<uint> nacksHeader {
             get => _nacksHeader;
             set {
                 _nacksHeader = value;
                 flags |= Flag.NAK;
+            }
+        }
+
+        private List<uint> _noRetransmitHeader;
+        public List<uint> noRetransmitHeader {
+            get => _noRetransmitHeader;
+            set {
+                _noRetransmitHeader = value;
+                flags |= Flag.NO_RETRANSMIT;
             }
         }
 
@@ -76,6 +94,15 @@ namespace AC2RE.Definitions {
             }
         }
 
+        private ulong _worldLogonHeader;
+        public ulong worldLogonHeader {
+            get => _worldLogonHeader;
+            set {
+                _worldLogonHeader = value;
+                flags |= Flag.WORLD_LOGON;
+            }
+        }
+
         private ConnectHeader _connectHeader;
         public ConnectHeader connectHeader {
             get => _connectHeader;
@@ -91,6 +118,15 @@ namespace AC2RE.Definitions {
             set {
                 _connectAckHeader = value;
                 flags |= Flag.CONNECT_ACK;
+            }
+        }
+
+        private ICMDCommandHeader _icmdCommandHeader;
+        public ICMDCommandHeader icmdCommandHeader {
+            get => _icmdCommandHeader;
+            set {
+                _icmdCommandHeader = value;
+                flags |= Flag.ICMD_COMMAND;
             }
         }
 
@@ -149,12 +185,9 @@ namespace AC2RE.Definitions {
             iteration = data.ReadUInt16();
 
             if (flags.HasFlag(Flag.SERVER_SWITCH)) {
-                throw new NotImplementedException();
+                _serverSwitchHeader = new(data);
             }
             if (flags.HasFlag(Flag.LOGON_ROUTE)) {
-                throw new NotImplementedException();
-            }
-            if (flags.HasFlag(Flag.UNK_1)) {
                 throw new NotImplementedException();
             }
             if (flags.HasFlag(Flag.REFERRAL)) {
@@ -164,7 +197,7 @@ namespace AC2RE.Definitions {
                 _nacksHeader = data.ReadList(data.ReadUInt32);
             }
             if (flags.HasFlag(Flag.NO_RETRANSMIT)) {
-                throw new NotImplementedException();
+                _noRetransmitHeader = data.ReadList(data.ReadUInt32);
             }
             if (flags.HasFlag(Flag.PAK)) {
                 _ackHeader = data.ReadUInt32();
@@ -173,7 +206,7 @@ namespace AC2RE.Definitions {
                 _logonHeader = new(data);
             }
             if (flags.HasFlag(Flag.WORLD_LOGON)) {
-                throw new NotImplementedException();
+                _worldLogonHeader = data.ReadUInt64();
             }
             if (flags.HasFlag(Flag.CONNECT)) {
                 _connectHeader = new(data);
@@ -188,7 +221,7 @@ namespace AC2RE.Definitions {
                 throw new NotImplementedException();
             }
             if (flags.HasFlag(Flag.ICMD_COMMAND)) {
-                throw new NotImplementedException();
+                _icmdCommandHeader = new(data);
             }
             if (flags.HasFlag(Flag.TIME_SYNC)) {
                 _timeSyncHeader = data.ReadDouble();
@@ -227,22 +260,25 @@ namespace AC2RE.Definitions {
 
         public void writeOptionalHeaders(AC2Writer data, byte[] rawData, ref uint checksum) {
             if (flags.HasFlag(Flag.SERVER_SWITCH)) {
-                throw new NotImplementedException();
+                long dataStart = data.BaseStream.Position;
+                _serverSwitchHeader.write(data);
+                checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
             }
             if (flags.HasFlag(Flag.LOGON_ROUTE)) {
-                throw new NotImplementedException();
-            }
-            if (flags.HasFlag(Flag.UNK_1)) {
                 throw new NotImplementedException();
             }
             if (flags.HasFlag(Flag.REFERRAL)) {
                 throw new NotImplementedException();
             }
             if (flags.HasFlag(Flag.NAK)) {
-                throw new NotImplementedException();
+                long dataStart = data.BaseStream.Position;
+                data.Write(_nacksHeader, data.Write);
+                checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
             }
             if (flags.HasFlag(Flag.NO_RETRANSMIT)) {
-                throw new NotImplementedException();
+                long dataStart = data.BaseStream.Position;
+                data.Write(_noRetransmitHeader, data.Write);
+                checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
             }
             if (flags.HasFlag(Flag.PAK)) {
                 long dataStart = data.BaseStream.Position;
@@ -253,10 +289,9 @@ namespace AC2RE.Definitions {
                 throw new NotImplementedException();
             }
             if (flags.HasFlag(Flag.WORLD_LOGON)) {
-                throw new NotImplementedException();
-            }
-            if (flags.HasFlag(Flag.WORLD_LOGON)) {
-                throw new NotImplementedException();
+                long dataStart = data.BaseStream.Position;
+                data.Write(_worldLogonHeader);
+                checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
             }
             if (_connectHeader != null) {
                 long dataStart = data.BaseStream.Position;
@@ -273,7 +308,9 @@ namespace AC2RE.Definitions {
                 throw new NotImplementedException();
             }
             if (flags.HasFlag(Flag.ICMD_COMMAND)) {
-                throw new NotImplementedException();
+                long dataStart = data.BaseStream.Position;
+                _icmdCommandHeader.write(data);
+                checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
             }
             if (flags.HasFlag(Flag.TIME_SYNC)) {
                 long dataStart = data.BaseStream.Position;
