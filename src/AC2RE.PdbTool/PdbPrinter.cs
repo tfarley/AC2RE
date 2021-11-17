@@ -217,7 +217,7 @@ namespace AC2RE.PdbTool {
             }
             foreach (IDiaSymbol constantSymbol in udtInfo.constantSymbols) {
                 sb.AppendLine()
-                    .Append(dataToString(constantSymbol, "constant", indentLevel + 1));
+                    .Append(dataToString(constantSymbol, "const", indentLevel + 1));
             }
             foreach (IDiaSymbol memberSymbol in udtInfo.memberSymbols) {
                 sb.AppendLine()
@@ -281,7 +281,7 @@ namespace AC2RE.PdbTool {
             sb.Append(')');
             foreach (IDiaSymbol constantSymbol in functionInfo.constantSymbols) {
                 sb.AppendLine()
-                    .Append(dataToString(constantSymbol, "constant", indentLevel + 1));
+                    .Append(dataToString(constantSymbol, "const", indentLevel + 1));
             }
             foreach (IDiaSymbol ptrSymbol in functionInfo.ptrSymbols) {
                 sb.AppendLine()
@@ -315,23 +315,31 @@ namespace AC2RE.PdbTool {
 
         private static string dataToString(IDiaSymbol dataSymbol, string descriptor, int indentLevel) {
             StringBuilder sb = new StringBuilder()
-                .Append(' ', indentLevel * 2)
-                .Append(locationToString(dataSymbol))
-                .Append(' ');
+                .Append(' ', indentLevel * 2);
+            string locationString = locationToString(dataSymbol);
+            if (locationString.Length > 0) {
+                sb.Append(locationString)
+                    .Append(' ');
+            }
             CV_access_e access = (CV_access_e)dataSymbol.access;
             if (access != 0) {
                 sb.Append(accessToString(access))
                     .Append(' ');
             }
             if (descriptor.Length > 0) {
-                sb.Append(descriptor)
-                    .Append(" = ");
+                sb.Append('(')
+                    .Append(descriptor)
+                    .Append(") ");
             }
             if (dataSymbol.type != null) {
                 sb.Append(typeToString(dataSymbol.type))
                     .Append(' ');
             }
             sb.Append(dataSymbol.name);
+            if ((LocationType)dataSymbol.locationType == LocationType.LocIsConstant) {
+                sb.Append(" = ")
+                    .Append(dataSymbol.value);
+            }
             return sb.ToString();
         }
 
@@ -503,7 +511,6 @@ namespace AC2RE.PdbTool {
                 case LocationType.LocIsSlot:
                     return $"slot[{symbol.slot:X}]";
                 case LocationType.LocIsConstant:
-                    return $"[{symbol.value}]";
                 case LocationType.LocIsNull:
                     return "";
                 default:
