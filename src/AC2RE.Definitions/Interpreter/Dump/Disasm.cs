@@ -19,6 +19,7 @@ namespace AC2RE.Definitions {
             public bool val2IsDec;
             public long? val;
             public long? val2;
+            public string valString;
             public ExportData targetPackage;
             public ExportFunctionData targetFunc;
             public string targetString;
@@ -50,7 +51,13 @@ namespace AC2RE.Definitions {
                 }
             }
 
+            FrameDebugInfo curFrame = null;
+
             for (uint i = 0; i < byteStream.opcodeStream.opcodeBytes.Length; i += 4) {
+                if (funcLocToName.TryGetValue(i, out string functionName)) {
+                    curFrame = nameToFrame[functionName];
+                }
+
                 uint rawInstruction = BitConverter.ToUInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
                 Instruction instruction = new() {
                     offset = i,
@@ -98,6 +105,8 @@ namespace AC2RE.Definitions {
                         instruction.val = i + instruction.immediate + 4;
                         break;
                     case Opcode.LOAD:
+                        instruction.valString = getFrameMemberNameByOffset(curFrame, instruction.immediate);
+                        break;
                     case Opcode.POPN:
                     case Opcode.PUSH_FRAME:
                     case Opcode.PUSHV:
@@ -142,6 +151,15 @@ namespace AC2RE.Definitions {
                 }
                 instructions.Add(instruction);
             }
+        }
+
+        private string getFrameMemberNameByOffset(FrameDebugInfo frame, int offset) {
+            foreach (FrameMemberDebugInfo member in frame.members) {
+                if (member.offset == offset) {
+                    return $"{member.name} [{offset}]";
+                }
+            }
+            return offset.ToString();
         }
 
         private void writeFunction(StreamWriter data, string functionName, bool printStackVars) {
@@ -228,6 +246,9 @@ namespace AC2RE.Definitions {
                     FunctionId funcId = instruction.targetFunc.funcId;
                     funcId.isAbs = true;
                     data.Write($" [0x{funcId.id:X8}]");
+                }
+                if (instruction.valString != null) {
+                    data.Write($" {instruction.valString}");
                 }
                 if (instruction.targetString != null) {
                     data.Write($" \"{instruction.targetString}\"");

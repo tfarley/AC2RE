@@ -15,7 +15,7 @@ namespace AC2RE.Definitions {
                 if (frame.type == FrameDebugInfo.FrameType.PACKAGE) {
                     ExportData export = packageNameToExport[frame.name];
                     data.WriteLine();
-                    data.Write($"{export.args.packageType} package {export.args.name}");
+                    data.Write($"{(uint)export.args.packageType} {export.args.packageType} package {export.args.name}");
                     if (export.args.parentIndex != -1) {
                         data.Write($" : {export.args.baseName} - 0x{export.args.parentIndex:X8}");
                     }
