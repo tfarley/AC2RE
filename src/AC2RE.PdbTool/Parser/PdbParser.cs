@@ -23,7 +23,7 @@ namespace AC2RE.PdbTool {
                 diaSrc = new();
             } catch (COMException e) {
                 if (e.HResult == REGDB_E_CLASSNOTREG) {
-                    Console.WriteLine("ERROR: DIA dll not registered. Run as Admin:\nregsvr32 \"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\DIA SDK\\bin\\amd64\\msdia140.dll\"");
+                    Console.WriteLine("ERROR: DIA dll not registered. Run as Admin:\nregsvr32 \"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\DIA SDK\\bin\\amd64\\msdia140.dll\"");
                 }
                 throw;
             }
@@ -34,48 +34,116 @@ namespace AC2RE.PdbTool {
 
             guid = diaSession.globalScope.guid;
 
-            IDiaEnumSymbols dataSymbols = getChildSymbols(diaSession.globalScope, SymTagEnum.SymTagData);
-            foreach (IDiaSymbol dataSymbol in dataSymbols) {
-                if (!dataById.ContainsKey(dataSymbol.symIndexId)) {
-                    dataById[dataSymbol.symIndexId] = dataSymbol;
-                }
-            }
+            parseChildSymbols(diaSession.globalScope);
 
-            IDiaEnumSymbols typedefSymbols = getChildSymbols(diaSession.globalScope, SymTagEnum.SymTagTypedef);
-            foreach (IDiaSymbol typedefSymbol in typedefSymbols) {
-                if (!typedefById.ContainsKey(typedefSymbol.symIndexId)) {
-                    typedefById[typedefSymbol.symIndexId] = typedefSymbol;
-                }
-            }
-
-            IDiaEnumSymbols udtSymbols = getChildSymbols(diaSession.globalScope, SymTagEnum.SymTagUDT);
-            foreach (IDiaSymbol udtSymbol in udtSymbols) {
-                if (!udtInfoById.TryGetValue(udtSymbol.symIndexId, out UDTInfo? udtInfo)) {
-                    udtInfo = new UDTInfo(this, udtSymbol, false);
-                    udtInfoById[udtSymbol.symIndexId] = udtInfo;
-                }
-            }
-
-            IDiaEnumSymbols enumSymbols = getChildSymbols(diaSession.globalScope, SymTagEnum.SymTagEnum);
-            foreach (IDiaSymbol enumSymbol in enumSymbols) {
-                if (!udtInfoById.TryGetValue(enumSymbol.symIndexId, out UDTInfo? udtInfo)) {
-                    udtInfo = new UDTInfo(this, enumSymbol, true);
-                    udtInfoById[enumSymbol.symIndexId] = udtInfo;
-                }
-            }
-
-            IDiaEnumSymbols functionSymbols = getChildSymbols(diaSession.globalScope, SymTagEnum.SymTagFunction);
-            foreach (IDiaSymbol functionSymbol in functionSymbols) {
-                if (!functionInfoById.TryGetValue(functionSymbol.symIndexId, out FunctionInfo? functionInfo)) {
-                    functionInfo = new FunctionInfo(this, functionSymbol);
-                    functionInfoById[functionSymbol.symIndexId] = functionInfo;
+            IDiaEnumSymbols compilandSymbols = getChildSymbols(diaSession.globalScope, SymTagEnum.SymTagCompiland);
+            if (compilandSymbols != null) {
+                foreach (IDiaSymbol compilandSymbol in compilandSymbols) {
+                    parseChildSymbols(compilandSymbol);
                 }
             }
         }
 
-        public IDiaEnumSymbols getChildSymbols(IDiaSymbol parentSymbol, SymTagEnum symTag) {
+        private void parseChildSymbols(IDiaSymbol parentSymbol) {
+            IDiaEnumSymbols dataSymbols = getChildSymbols(parentSymbol, SymTagEnum.SymTagData);
+            if (dataSymbols != null) {
+                foreach (IDiaSymbol dataSymbol in dataSymbols) {
+                    if (!dataById.ContainsKey(dataSymbol.symIndexId)) {
+                        dataById[dataSymbol.symIndexId] = dataSymbol;
+                    }
+                }
+            }
+
+            IDiaEnumSymbols typedefSymbols = getChildSymbols(parentSymbol, SymTagEnum.SymTagTypedef);
+            if (typedefSymbols != null) {
+                foreach (IDiaSymbol typedefSymbol in typedefSymbols) {
+                    if (!typedefById.ContainsKey(typedefSymbol.symIndexId)) {
+                        typedefById[typedefSymbol.symIndexId] = typedefSymbol;
+                    }
+                }
+            }
+
+            IDiaEnumSymbols udtSymbols = getChildSymbols(parentSymbol, SymTagEnum.SymTagUDT);
+            if (udtSymbols != null) {
+                foreach (IDiaSymbol udtSymbol in udtSymbols) {
+                    if (!udtInfoById.ContainsKey(udtSymbol.symIndexId)) {
+                        udtInfoById[udtSymbol.symIndexId] = new UDTInfo(this, udtSymbol, false);
+                    }
+                }
+            }
+
+            IDiaEnumSymbols enumSymbols = getChildSymbols(parentSymbol, SymTagEnum.SymTagEnum);
+            if (enumSymbols != null) {
+                foreach (IDiaSymbol enumSymbol in enumSymbols) {
+                    if (!udtInfoById.ContainsKey(enumSymbol.symIndexId)) {
+                        udtInfoById[enumSymbol.symIndexId] = new UDTInfo(this, enumSymbol, true);
+                    }
+                }
+            }
+
+            IDiaEnumSymbols functionSymbols = getChildSymbols(parentSymbol, SymTagEnum.SymTagFunction);
+            if (functionSymbols != null) {
+                foreach (IDiaSymbol functionSymbol in functionSymbols) {
+                    if (!functionInfoById.ContainsKey(functionSymbol.symIndexId)) {
+                        functionInfoById[functionSymbol.symIndexId] = new FunctionInfo(this, functionSymbol);
+                    }
+                }
+            }
+        }
+
+        public IDiaEnumSymbols getChildSymbols(IDiaSymbol parentSymbol, SymTagEnum symTag = SymTagEnum.SymTagNull) {
             parentSymbol.findChildren(symTag, null, 0, out IDiaEnumSymbols symbols);
             return symbols;
+        }
+
+        private List<IDiaSymbol>? findSymbolPath(IDiaSymbol rootSymbol, Predicate<IDiaSymbol> predicate) {
+            // Iterative DFS in order to use heap memory and avoid stack overflows, but reduce memory usage by tracking the next child index and re-add/pop the parent for each child visit, instead of pushing all children onto the stack at once
+            Stack<(IDiaSymbol, int)> symbolAndNextChildIndexStack = new();
+            Dictionary<uint, int> symbolIdToChildCount = new();
+
+            symbolAndNextChildIndexStack.Push((rootSymbol, -1));
+
+            while (symbolAndNextChildIndexStack.TryPop(out (IDiaSymbol, int) symbolAndNextChildIndex)) {
+                (IDiaSymbol symbol, int childIndex) = symbolAndNextChildIndex;
+                if (childIndex == -1) {
+                    SymTagEnum symbolTag = (SymTagEnum)symbol.symTag;
+                    // Don't process these since they appear to have cyclical symbol references or something
+                    if (symbolTag == SymTagEnum.SymTagFuncDebugStart || symbolTag == SymTagEnum.SymTagFuncDebugEnd) {
+                        continue;
+                    }
+
+                    if (predicate.Invoke(symbol)) {
+                        List<IDiaSymbol> symbolPath = new();
+                        // NOTE: Stack enumerator is LIFO (reverse of List)
+                        foreach ((IDiaSymbol parentSymbol, int _) in symbolAndNextChildIndexStack) {
+                            symbolPath.Add(parentSymbol);
+                        }
+                        symbolPath.Add(symbol);
+                        return symbolPath;
+                    }
+                }
+
+                if (childIndex == -1) {
+                    symbolAndNextChildIndexStack.Push((symbol, childIndex + 1));
+                } else {
+                    IDiaEnumSymbols? childSymbols = null;
+                    if (!symbolIdToChildCount.TryGetValue(symbol.symIndexId, out int childCount)) {
+                        childSymbols = getChildSymbols(symbol);
+                        childCount = childSymbols?.count ?? 0;
+                        symbolIdToChildCount[symbol.symIndexId] = childCount;
+                    }
+                    if (childIndex < childCount) {
+                        if (childSymbols == null) {
+                            childSymbols = getChildSymbols(symbol);
+                        }
+                        symbolAndNextChildIndexStack.Push((symbol, childIndex + 1));
+                        IDiaSymbol childSymbol = childSymbols.Item((uint)childIndex);
+                        symbolAndNextChildIndexStack.Push((childSymbol, -1));
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

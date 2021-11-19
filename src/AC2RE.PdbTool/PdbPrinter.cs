@@ -171,7 +171,7 @@ namespace AC2RE.PdbTool {
             Console.WriteLine();
 
             foreach (UDTInfo udtInfo in pdbParser.udtInfoById.Values) {
-                if (udtInfo.udtSymbol.unmodifiedTypeId == 0 && udtInfo.udtSymbol.nested == 0) {
+                if (udtInfo.udtSymbol.unmodifiedTypeId == 0 && udtInfo.namePrefix.Length == 0) {
                     Console.WriteLine(udtToString(udtInfo));
                     Console.WriteLine();
                 }
