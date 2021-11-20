@@ -7,13 +7,11 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.StoreTemplate;
 
-        // WLib
+        // WLib StoreTemplate
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            HIDE_RESTRICTED = 1 << 0, // 0x00000001, StoreTemplate::HideRestricted
+            None = 0,
+            HideRestricted = 1 << 0, // HideRestricted 0x00000001
         }
 
         public List<IPackage> filters; // m_filters

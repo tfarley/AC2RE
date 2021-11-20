@@ -2,12 +2,14 @@
 
     // Dat file 23000098
     public enum FxChannel : uint {
-        GORE = 0x40000001,
+        Undef = 0,
 
-        FOOTSTEPSOUNDS = 0x40000005,
+        gore = 0x40000001, // gore
 
-        BLOODCOLOR = 0x40000007,
-        FOOTSTEPPARTICLES = 0x40000008,
-        PLAYERMUSIC = 0x40000009,
+        FootStepSounds = 0x40000005, // FootStepSounds
+
+        BloodColor = 0x40000007, // BloodColor
+        FootStepParticles = 0x40000008, // FootStepParticles
+        PlayerMusic = 0x40000009, // PlayerMusic
     }
 }

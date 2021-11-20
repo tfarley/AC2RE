@@ -36,7 +36,7 @@ namespace AC2RE.PacketTool.UI {
             };
 
             public override bool matches(NetBlobRow netBlobRow, Dictionary<string, object> matchResultValues) {
-                if (netBlobRow.opcode != MessageOpcode.Evt_Physics__CreateObject_ID) {
+                if (netBlobRow.opcode != MessageOpcode.Physics__CreateObject) {
                     return false;
                 }
 
@@ -70,7 +70,7 @@ namespace AC2RE.PacketTool.UI {
             };
 
             public override bool matches(NetBlobRow netBlobRow, Dictionary<string, object> matchResultValues) {
-                if (netBlobRow.opcode != MessageOpcode.Evt_Physics__CreateObject_ID) {
+                if (netBlobRow.opcode != MessageOpcode.Physics__CreateObject) {
                     return false;
                 }
 

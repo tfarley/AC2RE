@@ -2,14 +2,12 @@
 
 namespace AC2RE.Definitions {
 
-    // Const *_SexType
-    // Dat file 23000009
+    // Dat file 23000009 / Const *_SexType
     [Flags]
     public enum SexType : uint {
-        UNDEF = 0,
-        ALL = uint.MaxValue,
+        Undef = 0, // _ / Undef_SexType
 
-        MALE = 1 << 12, // 0x00001000
-        FEMALE = 1 << 13, // 0x00002000
+        Male = 1 << 12, // Male / Male_SexType  0x00001000
+        Female = 1 << 13, // Female / Female_SexType 0x00002000
     }
 }

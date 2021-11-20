@@ -1,17 +1,23 @@
 ﻿namespace AC2RE.Definitions {
 
-    // From RepositoryRepository::GetRawLongInt and RepositoryRepository::SetLongInt calls in wlib and WSL func gmPropertyMapper::constructor
+    // From RepositoryRepository::GetRawLongInt and gmEntity::GetLongInt calls in wlib / WSL func gmPropertyMapper::constructor
     public enum LongIntStat : uint {
-        UNDEF = 0,
+        Undef = 0,
 
-        TOTALXP = 300,
-        AVAILABLEXP = 301,
-        DEATHXP = 312,
-        XPTORAISEVITAE = 316,
-        ALLEGIANCE_XPPOOL = 501,
-        ALLEGIANCE_XPINHERITED = 503,
-        RADARCOLOR = 601,
-        TOTALCRAFTXP = 1000,
-        AVAILABLECRAFTXP = 1001,
+        TotalXP = 300, // Agent::GetTotalExperience
+        AvailableXP = 301, // Agent::GetAvailableExperience
+
+        DeathXP = 312, // _ / GameplayStatistics_DeathExperience
+
+        XPToRaiseVitae = 316, // Agent::GetExperienceNeededToRaiseVitae
+
+        AllegianceXPPool = 501, // Player::GetAllegianceXPPool
+
+        AllegianceXPInherited = 503, // Player::GetAllegianceXPInherited
+
+        RadarColor = 601, // _ / RadarColor
+
+        TotalCraftXP = 1000, // Player::GetTotalCraftExperience
+        AvailableCraftXP = 1001, // Player::GetAvailableCraftExperience
     }
 }

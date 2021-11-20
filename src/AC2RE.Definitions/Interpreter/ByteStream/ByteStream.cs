@@ -97,41 +97,41 @@ namespace AC2RE.Definitions {
                 SectionType sectionType = (SectionType)data.ReadUInt32();
                 uint sectionSize = data.ReadUInt32();
                 switch (sectionType) {
-                    case SectionType.VERSION_INFO:
+                    case SectionType.VersionInfo:
                         versionInfo = new(data);
                         break;
-                    case SectionType.OPCODE:
+                    case SectionType.Opcode:
                         opcodeStream = new(data);
                         break;
-                    case SectionType.STRING_LIT_TABLE:
+                    case SectionType.StringLitTable:
                         stringLitTable = new(data);
                         break;
-                    case SectionType.IMPORT_TABLE:
+                    case SectionType.ImportTable:
                         imports = data.ReadList(() => new ImportData(data));
                         break;
-                    case SectionType.EXPORT_TABLE:
+                    case SectionType.ExportTable:
                         exports = data.ReadList(() => new ExportData(data));
                         break;
-                    case SectionType.VTABLE_INFO:
+                    case SectionType.VTable:
                         vTable = new(data);
                         break;
-                    case SectionType.VALID_EVENT_TABLE:
+                    case SectionType.ValidEventTable:
                         validEvents = data.ReadDictionary(() => new FunctionId(data.ReadUInt32()), data.ReadUInt32);
                         break;
-                    case SectionType.FUNCTION_LOC_DEBUG:
+                    case SectionType.FunctionLocDebug:
                         funcLocs = new();
                         long startPos = data.BaseStream.Position;
                         while ((data.BaseStream.Position - startPos) < sectionSize) {
                             funcLocs.Add(new(data));
                         }
                         break;
-                    case SectionType.SOURCE_FILE_DEBUG:
+                    case SectionType.SourceFileDebug:
                         originalSourceText = data.ReadList(() => new OriginalSourceFileInfo(data));
                         break;
-                    case SectionType.LINE_NUM_DEBUG:
+                    case SectionType.LineNumDebug:
                         lineOffsets = data.ReadList(() => new PLineOffsetList(data));
                         break;
-                    case SectionType.FRAME_DEBUG_INFO:
+                    case SectionType.FrameDebugInfo:
                         frames = data.ReadList(() => new FrameDebugInfo(data));
                         break;
                     default:

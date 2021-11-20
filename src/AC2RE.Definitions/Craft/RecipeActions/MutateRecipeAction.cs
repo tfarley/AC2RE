@@ -6,14 +6,12 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.MutateRecipeAction;
 
-        // WLib
+        // WLib MutateRecipeAction
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            OBJECT_TO_MUTATE = 1 << 0, // 0x00000001, MutateRecipeAction::SetObjectToMutate
-            OBJECT_TO_MUTATE_DYNAMIC_QUALITY = 1 << 1, // 0x00000002, MutateRecipeAction::SetObjectToMutateDynamicQuality
+            None = 0,
+            HasObjectToMutate = 1 << 0, // SetObjectToMutate 0x00000001
+            HasObjectToMutateDynamicQuality = 1 << 1, // SetObjectToMutateDynamicQuality 0x00000002
         }
 
         public uint ordinal; // m_uiOrdinal

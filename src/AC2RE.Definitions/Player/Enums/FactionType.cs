@@ -2,17 +2,14 @@
 
 namespace AC2RE.Definitions {
 
-    // Const *_FactionType
-    // Dat file 230000A0
+    // Dat file 230000A0 / Const *_FactionType
     [Flags]
     public enum FactionType : uint {
-        UNDEF = 0,
-        ALL = uint.MaxValue,
+        Undef = 0, // _ / Undef_FactionType
+        Faction1 = 1 << 0, // Faction1 / Faction1_FactionType 0x00000001
+        Faction2 = 1 << 1, // Faction2 / Faction2_FactionType 0x00000002
+        Faction3 = 1 << 2, // Faction3 / Faction3_FactionType 0x00000004
 
-        FACTION_1 = 1 << 0, // 0x00000001
-        FACTION_2 = 1 << 1, // 0x00000002
-        FACTION_3 = 1 << 2, // 0x00000004
-
-        NEUTRAL = 0x80000000,
+        Neutral = 0x80000000, // Neutral / Neutral_FactionType
     }
 }

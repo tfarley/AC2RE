@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class GMRaceSexInfo : IPackage {
 
-        public NativeType nativeType => NativeType.GMRACESEXINFO;
+        public NativeType nativeType => NativeType.gmRaceSexInfo;
 
         public DataId physObjDid; // _physObjDID
         public Dictionary<uint, uint> objInLocHash; // _objInLocHash

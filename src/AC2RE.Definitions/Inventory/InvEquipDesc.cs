@@ -6,20 +6,18 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.InvEquipDesc;
 
-        // WLib
+        // WLib InvEquipDesc
         [Flags]
         public enum ControlFlag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            QUIET = 1 << 0, // 0x00000001, InvEquipDesc::IsQuiet
-            SWITCH_ANIM_MODE = 1 << 1, // 0x00000002, InvEquipDesc::ShouldDoSwitchAnimMode
-            LOCK = 1 << 2, // 0x00000004, InvEquipDesc::ShouldLock
-            PUT_IN_CONTENTS = 1 << 3, // 0x00000008, InvEquipDesc::ShouldPutInContents
-            CHECK_USAGE_PERMISSIONS = 1 << 4, // 0x00000010, InvEquipDesc::ShouldCheckUsagePerm
-            FORCED_UNEQUIP = 1 << 5, // 0x00000020, InvEquipDesc::IsForcedUnequip
-            EQUIP_ITEM_ONLY_AT_THIS_LOCATION = 1 << 6, // 0x00000040, InvEquipDesc::EquipItemOnlyAtThisLocation
-            UNEQUIP_BLOCKING_ITEMS = 1 << 7, // 0x00000080, InvEquipDesc::ShouldUnequipBlockingItems
+            None = 0,
+            IsQuiet = 1 << 0, // IsQuiet 0x00000001
+            ShouldDoSwitchAnimMode = 1 << 1, // ShouldDoSwitchAnimMode 0x00000002
+            ShouldLock = 1 << 2, // ShouldLock 0x00000004
+            ShouldPutInContents = 1 << 3, // ShouldPutInContents 0x00000008
+            ShouldCheckUsagePerm = 1 << 4, // ShouldCheckUsagePerm 0x00000010
+            IsForcedUnequip = 1 << 5, // IsForcedUnequip 0x00000020
+            EquipItemOnlyAtThisLocation = 1 << 6, // EquipItemOnlyAtThisLocation 0x00000040
+            ShouldUnequipBlockingItems = 1 << 7, // ShouldUnequipBlockingItems 0x00000080
         }
 
         public InvLoc blockingItemLocation; // m_blockingItemLocation

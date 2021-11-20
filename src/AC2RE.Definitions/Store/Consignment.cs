@@ -6,15 +6,13 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.Consignment;
 
-        // WLib
+        // WLib Consignment
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            EXPIRED = 1 << 0, // 0x00000001, Consignment::IsExpired
-            REMOVED = 1 << 1, // 0x00000002, Consignment::IsRemoved
-            DIRTY = 1 << 2, // 0x00000004, Consignment::IsDirty
+            None = 0,
+            IsExpired = 1 << 0, // IsExpired 0x00000001
+            IsRemoved = 1 << 1, // IsRemoved 0x00000002
+            IsDirty = 1 << 2, // IsDirty 0x00000004
         }
 
         public PlayerSaleProfile saleProfile; // m_profile

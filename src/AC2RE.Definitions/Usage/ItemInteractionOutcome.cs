@@ -6,14 +6,12 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.ItemInteractionOutcome;
 
-        // WLib
+        // WLib ItemInteractionOutcome
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            DESTROY_SOURCE_ITEM = 1 << 0, // 0x00000001, ItemInteractionOutcome::DestroySourceItem
-            DESTROY_TARGET_ITEM = 1 << 1, // 0x00000002, ItemInteractionOutcome::DestroyTargetItem
+            None = 0,
+            DestroySourceItem = 1 << 0, // DestroySourceItem 0x00000001
+            DestroyTargetItem = 1 << 1, // DestroyTargetItem 0x00000002
         }
 
         public StringInfo messageText; // m_siMessage

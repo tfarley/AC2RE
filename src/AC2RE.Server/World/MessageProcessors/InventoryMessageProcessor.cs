@@ -10,12 +10,12 @@ namespace AC2RE.Server {
 
         public override bool processMessage(ClientConnection client, Player player, INetMessage genericMsg) {
             switch (genericMsg.opcode) {
-                case MessageOpcode.Evt_Interp__InterpSEvent_ID: {
+                case MessageOpcode.Interp__InterpSEvent: {
                         InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
                         if (msg.netEvent.funcId == ServerEventFunctionId.Inventory__DirectiveEquipItem) {
                             DirectiveEquipItemSEvt sEvent = (DirectiveEquipItemSEvt)msg.netEvent;
                             if (sEvent.equipDesc.equipperId != player.characterId) {
-                                sEvent.equipDesc.error = ErrorType.ITEMNOTOWNEDBYCONTAINER;
+                                sEvent.equipDesc.error = ErrorType.ItemNotOwnedByContainer;
                             } else if (tryGetInWorld(sEvent.equipDesc.equipperId, out WorldObject? equipper) && tryGetInWorld(sEvent.equipDesc.itemId, out WorldObject? item)) {
                                 sEvent.equipDesc.error = equipper.equip(sEvent.equipDesc.location, item);
                             }
@@ -28,11 +28,11 @@ namespace AC2RE.Server {
                         } else if (msg.netEvent.funcId == ServerEventFunctionId.Inventory__DirectiveUnEquipItem) {
                             DirectiveUnequipItemSEvt sEvent = (DirectiveUnequipItemSEvt)msg.netEvent;
                             if (sEvent.equipDesc.equipperId != player.characterId) {
-                                sEvent.equipDesc.error = ErrorType.ITEMNOTOWNEDBYCONTAINER;
+                                sEvent.equipDesc.error = ErrorType.ItemNotOwnedByContainer;
                             } else {
                                 if (tryGetInWorld(sEvent.equipDesc.equipperId, out WorldObject? equipper) && tryGetInWorld(sEvent.equipDesc.itemId, out WorldObject? item)) {
                                     sEvent.equipDesc.error = equipper.equip(sEvent.equipDesc.location, null);
-                                    if (sEvent.equipDesc.error == ErrorType.NONE) {
+                                    if (sEvent.equipDesc.error == ErrorType.None) {
                                         sEvent.equipDesc.targetContainerSlot = (uint)item.setContainer(world.objectManager.get(sEvent.equipDesc.containerId), (int)sEvent.equipDesc.containerSlot);
                                         sEvent.equipDesc.containerSlot = sEvent.equipDesc.targetContainerSlot;
                                     }

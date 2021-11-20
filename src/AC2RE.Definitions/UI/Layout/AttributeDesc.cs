@@ -6,14 +6,14 @@ namespace AC2RE.Definitions {
 
         // Const ATTRIBUTE_*
         public enum AttributeType : uint {
-            UNDEF,
-            ID,
-            INT,
-            FLOAT,
-            BOOL,
-            ASCII,
-            STRING,
-            DATAID,
+            UNDEF, // ATTRIBUTE_UNDEF
+            ID, // ATTRIBUTE_ID
+            INT, // ATTRIBUTE_INT
+            FLOAT, // ATTRIBUTE_FLOAT
+            BOOL, // ATTRIBUTE_BOOL
+            ASCII, // ATTRIBUTE_ASCII
+            STRING, // ATTRIBUTE_STRING
+            DATAID, // ATTRIBUTE_DATAID
         }
 
         public uint id; // attributeID

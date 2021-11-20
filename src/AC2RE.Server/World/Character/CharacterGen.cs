@@ -8,11 +8,11 @@ namespace AC2RE.Server {
 
         //TODO: Not sure how this mapping is actually determined
         private static readonly Dictionary<SpeciesType, uint> SPECIES_TO_UNK_SKILLS = new() {
-            { SpeciesType.LUGIAN, (1 << 1) },
-            { SpeciesType.HUMAN, (1 << 2) },
-            { SpeciesType.TUMEROK, (1 << 3) },
-            { SpeciesType.MOSSWART, (1 << 15) },
-            { SpeciesType.EMPYREAN, (1 << 20) },
+            { SpeciesType.Lugian, (1 << 1) },
+            { SpeciesType.Human, (1 << 2) },
+            { SpeciesType.Tumerok, (1 << 3) },
+            { SpeciesType.Drudge, (1 << 15) },
+            { SpeciesType.Empyrean, (1 << 20) },
         };
 
         public static WorldObject createCharacterObject(World world, Position startPos, string name, SpeciesType species, SexType sex, Dictionary<PhysiqueType, float> physiqueTypeValues) {
@@ -73,7 +73,7 @@ namespace AC2RE.Server {
         private static void setCharacterVisual(WorldObject character, Dictionary<PhysiqueType, Dictionary<float, Tuple<AppearanceKey, DataId>>> appProfileMap, Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos) {
             character.visualScale = new(0.9107999f, 0.9107999f, 0.98999995f);
             character.globalAppearanceModifiers = new() {
-                key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
+                key = PartGroupDataDesc.PartGroupKey.EntireTree,
                 appearanceInfos = appearanceInfos,
             };
         }
@@ -107,7 +107,7 @@ namespace AC2RE.Server {
                     levelCached = (uint)startingSkillProfile.level,
                     timeCached = world.serverTime.time,
                     xpAllocated = world.contentManager.getAdvancementTable(skill.advTableDid).map[startingSkillProfile.level],
-                    flags = SkillInfo.Flag.TRAINED,
+                    flags = SkillInfo.Flag.IsTrained,
                     skillId = startingSkillProfile.skillId,
                 };
             }
@@ -127,7 +127,7 @@ namespace AC2RE.Server {
                         itemAppearanceInfos[appearanceDid] = appearances;
                     }
                     item.globalAppearanceModifiers = new() {
-                        key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
+                        key = PartGroupDataDesc.PartGroupKey.EntireTree,
                         appearanceInfos = itemAppearanceInfos,
                     };
                 }
@@ -138,6 +138,10 @@ namespace AC2RE.Server {
                     character.equip(item.preferredInvLoc, item);
                 }
             }
+
+            WorldObject mountItem = world.objectManager.create(new(0x470014CB), DataId.NULL, true);
+
+            mountItem.setContainer(character);
         }
     }
 }

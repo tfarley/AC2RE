@@ -2,14 +2,15 @@
 
     // Enum CharGenResponseEnum
     public enum CharGenResponse : uint {
-        UNDEF,
-        OK,
-        PENDING,
-        NAME_IN_USE,
-        NAME_BANNED,
-        CORRUPT,
-        DATABASE_DOWN,
-        ADMIN_PRIVILEGE_DENIED,
-        NO_MORE_SLOTS,
+        Undef, // Undef_CharGenResponse
+        Ok, // Ok_CharGenResponse
+        Pending, // Pending_CharGenResponse
+        NameInUse, // NameInUse_CharGenResponse
+        NameBanned, // NameBanned_CharGenResponse
+        Corrupt, // Corrupt_CharGenResponse
+        DatabaseDown, // DatabaseDown_CharGenResponse
+        AdminPrivilegeDenied, // AdminPrivilegeDenied_CharGenResponse
+        NoMoreSlots, // NoMoreSlots_CharGenResponse
+        Num, // Num_CharGenResponse
     }
 }

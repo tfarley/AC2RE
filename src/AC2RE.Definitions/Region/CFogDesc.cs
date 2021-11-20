@@ -6,12 +6,12 @@ namespace AC2RE.Definitions {
 
         // Enum FogCombine::FogCombineType
         public enum FogCombineType : uint {
-            MULTIPLY_COLORS,
-            ADD_COLORS,
-            USE_FIRST_COLOR,
-            USE_SECOND_COLOR,
-            USE_MAXIMUM_COLOR,
-            USE_MINIMUM_COLOR,
+            MULTIPLY_COLORS, // MULTIPLY_COLORS
+            ADD_COLORS, // ADD_COLORS
+            USE_FIRST_COLOR, // USE_FIRST_COLOR
+            USE_SECOND_COLOR, // USE_SECOND_COLOR
+            USE_MAXIMUM_COLOR, // USE_MAXIMUM_COLOR
+            USE_MINIMUM_COLOR, // USE_MINIMUM_COLOR
         }
 
         public class FogCombine {

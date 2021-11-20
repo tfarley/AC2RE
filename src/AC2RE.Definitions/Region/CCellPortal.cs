@@ -9,11 +9,9 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : ushort {
             NONE = 0,
-            ALL = ushort.MaxValue,
-
-            EXACT_MATCH = 1 << 0, // 0x00000001
-            NO_OTHER_CELL_ID = 1 << 1, // 0x00000002
-            STAB_LIST = 1 << 2, // 0x00000004
+            EXACT_MATCH = 1 << 0, // CELLPORTAL_PACK_EXACT_MATCH 0x00000001
+            NO_OTHER_CELL_ID = 1 << 1, // CELLPORTAL_PACK_NO_OTHER_CELL_ID 0x00000002
+            STAB_LIST = 1 << 2, // CELLPORTAL_PACK_STAB_LIST 0x00000004
         }
 
         public PackFlag packFlags;

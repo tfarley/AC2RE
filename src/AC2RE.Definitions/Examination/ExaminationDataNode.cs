@@ -6,20 +6,20 @@ namespace AC2RE.Definitions {
 
         // Const *_ExaminationDataType
         public enum DataType : uint {
-            UNDEF = 0,
+            Undef = 0, // Undef_ExaminationDataType
 
-            INT = 0x40000001,
-            FLOAT = 0x40000002,
-            BOOL = 0x40000003,
-            STRING = 0x40000004,
-            IMAGE = 0x40000005,
-            BREAK = 0x40000006,
-            TAB = 0x40000007,
-            COUNTDOWN = 0x40000008,
-            ICON_DESC = 0x40000009,
-            LONG_INT = 0x4000000A,
+            Int = 0x40000001, // Int_ExaminationDataType
+            Float = 0x40000002, // Float_ExaminationDataType
+            Bool = 0x40000003, // Bool_ExaminationDataType
+            String = 0x40000004, // String_ExaminationDataType
+            Image = 0x40000005, // Image_ExaminationDataType
+            Break = 0x40000006, // Break_ExaminationDataType
+            Tab = 0x40000007, // Tab_ExaminationDataType
+            Countdown = 0x40000008, // Countdown_ExaminationDataType
+            IconDesc = 0x40000009, // IconDesc_ExaminationDataType
+            LongInt = 0x4000000A, // LongInt_ExaminationDataType
 
-            EFFECT_ID = 0x4000000C,
+            EffectID = 0x4000000C, // EffectID_ExaminationDataType
         }
 
         public DataType type; // _type
@@ -42,42 +42,42 @@ namespace AC2RE.Definitions {
             type = (DataType)data.ReadUInt32();
             order = data.ReadUInt32();
             switch (type) {
-                case DataType.UNDEF:
+                case DataType.Undef:
                     break;
-                case DataType.INT:
-                case DataType.EFFECT_ID:
+                case DataType.Int:
+                case DataType.EffectID:
                     appearanceId = data.ReadUInt32();
                     valInt = data.ReadInt32();
                     break;
-                case DataType.FLOAT:
+                case DataType.Float:
                     appearanceId = data.ReadUInt32();
                     valFloat = data.ReadSingle();
                     break;
-                case DataType.BOOL:
+                case DataType.Bool:
                     appearanceId = data.ReadUInt32();
                     valBool = data.ReadBoolean();
                     break;
-                case DataType.STRING:
+                case DataType.String:
                     appearanceId = data.ReadUInt32();
                     valString = new(data);
                     break;
-                case DataType.IMAGE:
+                case DataType.Image:
                     valDataID = data.ReadDataId();
                     break;
-                case DataType.BREAK:
+                case DataType.Break:
                     break;
-                case DataType.TAB:
+                case DataType.Tab:
                     // TODO: Not sure if this is correct type
                     valInt = data.ReadInt32();
                     break;
-                case DataType.COUNTDOWN:
+                case DataType.Countdown:
                     appearanceId = data.ReadUInt32();
                     valTime = data.ReadDouble();
                     break;
-                case DataType.ICON_DESC:
+                case DataType.IconDesc:
                     valIconDesc = new(data);
                     break;
-                case DataType.LONG_INT:
+                case DataType.LongInt:
                     appearanceId = data.ReadUInt32();
                     valLongInt = data.ReadInt64();
                     break;
@@ -90,42 +90,42 @@ namespace AC2RE.Definitions {
             data.Write((uint)type);
             data.Write(order);
             switch (type) {
-                case DataType.UNDEF:
+                case DataType.Undef:
                     break;
-                case DataType.INT:
-                case DataType.EFFECT_ID:
+                case DataType.Int:
+                case DataType.EffectID:
                     data.Write(appearanceId);
                     data.Write(valInt);
                     break;
-                case DataType.FLOAT:
+                case DataType.Float:
                     data.Write(appearanceId);
                     data.Write(valFloat);
                     break;
-                case DataType.BOOL:
+                case DataType.Bool:
                     data.Write(appearanceId);
                     data.Write(valBool);
                     break;
-                case DataType.STRING:
+                case DataType.String:
                     data.Write(appearanceId);
                     valString.write(data);
                     break;
-                case DataType.IMAGE:
+                case DataType.Image:
                     data.Write(valDataID);
                     break;
-                case DataType.BREAK:
+                case DataType.Break:
                     break;
-                case DataType.TAB:
+                case DataType.Tab:
                     // TODO: Not sure if this is correct type
                     data.Write(valInt);
                     break;
-                case DataType.COUNTDOWN:
+                case DataType.Countdown:
                     data.Write(appearanceId);
                     data.Write(valTime);
                     break;
-                case DataType.ICON_DESC:
+                case DataType.IconDesc:
                     valIconDesc.write(data);
                     break;
-                case DataType.LONG_INT:
+                case DataType.LongInt:
                     data.Write(appearanceId);
                     data.Write(valLongInt);
                     break;

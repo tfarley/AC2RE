@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class LArray : List<ulong>, IPackage {
 
-        public NativeType nativeType => NativeType.LARRAY;
+        public NativeType nativeType => NativeType.LArray;
 
         public List<T> to<T>() {
             List<T> converted = new(Count);

@@ -6,7 +6,7 @@ namespace AC2RE.Definitions {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Login__CharacterSet_ID;
+        public MessageOpcode opcode => MessageOpcode.Login__CharacterSet;
 
         // CharacterSet
         public List<CharacterIdentity> characters; // set_

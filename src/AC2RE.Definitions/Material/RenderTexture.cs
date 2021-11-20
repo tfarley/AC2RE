@@ -6,10 +6,11 @@ namespace AC2RE.Definitions {
 
         // Const TEXTURETYPE_*
         public enum TextureType : uint {
-            UNDEFINED = 1,
-            TWO_D = 2,
-            THREE_D = 3,
-            CUBE = 4,
+            UNDEF = 0,
+            UNDEFINED = 1, // TEXTURETYPE_UNDEFINED
+            TWO_D = 2, // TEXTURETYPE_2D
+            THREE_D = 3, // TEXTURETYPE_3D
+            CUBE = 4, // TEXTURETYPE_CUBE
         }
 
         public DataId did; // m_DID

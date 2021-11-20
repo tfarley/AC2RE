@@ -30,36 +30,34 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
-            ALL = uint.MaxValue,
+            BEHAVIORS = 1 << 0, // BEHAVIORS 0x00000001
+            SLIDERS = 1 << 1, // SLIDERS 0x00000002
+            VELOCITY = 1 << 2, // VELOCITY 0x00000004
+            ACCELERATION = 1 << 3, // ACCELERATION 0x00000008
+            OMEGA = 1 << 4, // OMEGA 0x00000010
+            PARENT = 1 << 5, // PARENT 0x00000020
 
-            BEHAVIORS = 1 << 0, // 0x00000001
-            SLIDERS = 1 << 1, // 0x00000002
-            VELOCITY = 1 << 2, // 0x00000004
-            ACCELERATION = 1 << 3, // 0x00000008
-            OMEGA = 1 << 4, // 0x00000010
-            PARENT = 1 << 5, // 0x00000020
+            MODE = 1 << 7, // MODE 0x00000080
+            ORIENTATION = 1 << 8, // ORIENTATION 0x00000100
+            FX = 1 << 9, // FX 0x00000200
+            TARGET_ID = 1 << 10, // TARGET_ID 0x00000400
+            TARGET_POS = 1 << 11, // TARGET_POS 0x00000800
+            TARGET_OFFSET = 1 << 12, // TARGET_OFFSET 0x00001000
+            TARGET_HEIGHT = 1 << 13, // TARGET_HEIGHT 0x00002000
+            TARGET_SCALE = 1 << 14, // TARGET_SCALE 0x00004000
+            POSITION = 1 << 15, // POSITION 0x00008000
 
-            MODE = 1 << 7, // 0x00000080
-            ORIENTATION = 1 << 8, // 0x00000100
-            FX = 1 << 9, // 0x00000200
-            TARGET_ID = 1 << 10, // 0x00000400
-            TARGET_POS = 1 << 11, // 0x00000800
-            TARGET_OFFSET = 1 << 12, // 0x00001000
-            TARGET_HEIGHT = 1 << 13, // 0x00002000
-            TARGET_SCALE = 1 << 14, // 0x00004000
-            POSITION = 1 << 15, // 0x00008000
+            ANIMFRAME_ID = 1 << 17, // ANIMFRAME_ID 0x00020000
 
-            ANIMFRAME_ID = 1 << 17, // 0x00020000
+            MISSILE_MOVING = 1 << 19, // MISSILE_MOVING 0x00080000
+            MISSILE_ACTIVATED = 1 << 20, // MISSILE_ACTIVATED 0x00100000
 
-            MISSILE_MOVING = 1 << 19, // 0x00080000
-            MISSILE_ACTIVATED = 1 << 20, // 0x00100000
-
-            EXTERNAL_ACL = 1 << 22, // 0x00400000
-            VELOCITY_SCALE = 1 << 23, // 0x00800000
-            JUMP_SCALE = 1 << 24, // 0x01000000
-            LOOKAT_ID = 1 << 25, // 0x02000000
-            HEAD_X = 1 << 26, // 0x04000000
-            HEAD_Z = 1 << 27, // 0x08000000
+            EXTERNAL_ACL = 1 << 22, // EXTERNAL_ACL 0x00400000
+            VELOCITY_SCALE = 1 << 23, // VELOCITY_SCALE 0x00800000
+            JUMP_SCALE = 1 << 24, // JUMP_SCALE 0x01000000
+            LOOKAT_ID = 1 << 25, // LOOKAT_ID 0x02000000
+            HEAD_X = 1 << 26, // HEAD_X 0x04000000
+            HEAD_Z = 1 << 27, // HEAD_Z 0x08000000
         }
 
         public PackFlag packFlags; // bitfield

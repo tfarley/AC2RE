@@ -2,9 +2,9 @@
 
     // Enum DBUpdateType::Type
     public enum DbUpdateType : uint {
-        SKIP,
-        PATCH,
-        DYNAMIC,
-        ZONE,
+        Skip, // Skip + None
+        Patch, // Patch
+        Dynamic, // Dynamic
+        Zone, // Zone
     }
 }

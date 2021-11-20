@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class AList : List<uint>, IPackage {
 
-        public NativeType nativeType => NativeType.ALIST;
+        public NativeType nativeType => NativeType.AList;
 
         public List<T> to<T>() {
             List<T> converted = new(Count);

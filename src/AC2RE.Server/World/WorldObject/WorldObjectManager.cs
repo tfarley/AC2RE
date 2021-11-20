@@ -145,7 +145,7 @@ namespace AC2RE.Server {
         public void applyEntities(WorldObject worldObject, DataId physicsEntityDidOverride = default) {
             if (worldObject.entityDid != DataId.NULL) {
                 EntityDef entityDef = contentManager.getInheritedEntityDef(worldObject.entityDid);
-                if (entityDef.type != EntityType.WEENIE && entityDef.type != EntityType.ENTITY_DESC) {
+                if (entityDef.type != EntityType.Weenie && entityDef.type != EntityType.EntityDesc) {
                     throw new ArgumentException(entityDef.type.ToString());
                 }
 
@@ -369,7 +369,7 @@ namespace AC2RE.Server {
                     worldObject.visual.parentDid = worldObject.physicsEntityDid;
                 } else if (dbType == DbType.ENTITYDESC) {
                     EntityDef physicsEntityDef = contentManager.getInheritedEntityDef(worldObject.physicsEntityDid);
-                    if (physicsEntityDef.type != EntityType.PHYSICS) {
+                    if (physicsEntityDef.type != EntityType.Physics) {
                         throw new ArgumentException(physicsEntityDef.type.ToString());
                     }
 

@@ -7,29 +7,27 @@ namespace AC2RE.Definitions {
 
         public virtual PackageType packageType => PackageType.Recipe;
 
-        // WLib
+        // WLib Recipe
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
+            None = 0,
+            IsFixedCost = 1 << 0, // IsFixedCost 0x00000001
+            IsDynamicCost = 1 << 1, // IsDynamicCost 0x00000002
 
-            FIXED_COST = 1 << 0, // 0x00000001, Recipe::IsFixedCost
-            DYNAMIC_COST = 1 << 1, // 0x00000002, Recipe::IsDynamicCost
-
-            HIDDEN_WHEN_ZERO_CHARGES = 1 << 3, // 0x00000008, Recipe::IsHiddenWhenZeroCharges
-            MIN_LEVEL_RESTRICTION = 1 << 4, // 0x00000010, Recipe::InqMinLevelRestriction
-            MAX_LEVEL_RESTRICTION = 1 << 5, // 0x00000020, Recipe::InqMaxLevelRestriction
-            CHARGE_REFRESHING = 1 << 6, // 0x00000040, Recipe::IsChargeRefreshing
-            USES_SPINNER = 1 << 7, // 0x00000080, Recipe::UsesSpinner
-            FIXED_DIFFICULTY = 1 << 8, // 0x00000100, Recipe::IsFixedDifficulty
-            DYNAMIC_DIFFICULTY = 1 << 9, // 0x00000200, Recipe::IsDynamicDifficulty
-            DIFFICULTY_MINUS_SKILL_CUTOFF = 1 << 10, // 0x00000400, Recipe::HasDifficultyMinusSkillCutoff
-            FIXED_CRAFT_XP = 1 << 11, // 0x00000800, Recipe::IsFixedCraftXP
-            DYNAMIC_CRAFT_XP = 1 << 12, // 0x00001000, Recipe::IsDynamicCraftXP
-            REQUIRED_EFFECT = 1 << 13, // 0x00002000, Recipe::InqRequiredEffect
-            READ_ONLY_SPINNER = 1 << 14, // 0x00004000, Recipe::HasReadOnlySpinner
-            SKILL_CHECK_OVERRIDE = 1 << 15, // 0x00008000, Recipe::HasSkillCheckOverride
-            NAME_COLORING_TABLE = 1 << 16, // 0x00010000, Recipe::HasNameColoringTable
+            IsHiddenWhenZeroCharges = 1 << 3, // IsHiddenWhenZeroCharges 0x00000008
+            HasMinLevelRestriction = 1 << 4, // InqMinLevelRestriction 0x00000010
+            HasMaxLevelRestriction = 1 << 5, // InqMaxLevelRestriction 0x00000020
+            IsChargeRefreshing = 1 << 6, // IsChargeRefreshing 0x00000040
+            UsesSpinner = 1 << 7, // UsesSpinner 0x00000080
+            IsFixedDifficulty = 1 << 8, // IsFixedDifficulty 0x00000100
+            IsDynamicDifficulty = 1 << 9, // IsDynamicDifficulty 0x00000200
+            HasDifficultyMinusSkillCutoff = 1 << 10, // HasDifficultyMinusSkillCutoff 0x00000400
+            IsFixedCraftXP = 1 << 11, // IsFixedCraftXP 0x00000800
+            IsDynamicCraftXP = 1 << 12, // IsDynamicCraftXP 0x00001000
+            HasRequiredEffect = 1 << 13, // InqRequiredEffect 0x00002000
+            HasReadOnlySpinner = 1 << 14, // HasReadOnlySpinner 0x00004000
+            HasSkillCheckOverride = 1 << 15, // HasSkillCheckOverride 0x00008000
+            HasNameColoringTable = 1 << 16, // HasNameColoringTable 0x00010000
         }
 
         public int difficultyMinusSkillCutoff; // m_difficultyMinusSkillCutoff

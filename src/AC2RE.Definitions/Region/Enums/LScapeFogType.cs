@@ -2,7 +2,7 @@
 
     // Enum LScapeFogType
     public enum LScapeFogType : uint {
-        NO_FOG = 0,
-        LINEAR = 1,
+        NO_FOG, // LSCAPE_FOG_NO_FOG
+        LINEAR, // LSCAPE_FOG_LINEAR
     }
 }

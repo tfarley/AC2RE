@@ -7,27 +7,25 @@ namespace AC2RE.Definitions {
 
         public virtual PackageType packageType => PackageType.AttackHook;
 
-        // WLib
+        // WLib AttackHook
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            AREA_OF_EFFECT = 1 << 0, // 0x00000001, AttackHook::IsAreaOfEffect
-            INTERSECTION = 1 << 1, // 0x00000002, AttackHook::IsIntersection
-            PROJECTILE = 1 << 2, // 0x00000004, AttackHook::IsProjectile
-            DISTANCE = 1 << 3, // 0x00000008, AttackHook::IsDistance
-            REQUIRES_LOS = 1 << 4, // 0x00000010, AttackHook::RequiresLOS
-            DETONATES_ON_MISS = 1 << 5, // 0x00000020, AttackHook::DetonatesOnMiss
-            NON_DAMAGING = 1 << 6, // 0x00000040, AttackHook::IsNonDamaging
-            MISSILE_THROWN = 1 << 7, // 0x00000080, AttackHook::IsMissileThrown
-            MISSILE_CLONE = 1 << 8, // 0x00000100, AttackHook::ShouldMissileClone
-            MISSILE_ALWAYS_FIRE_TOWARDS_TARGET = 1 << 9, // 0x00000200, AttackHook::SetMissileAlwaysFireTowardsTarget
-            REQUIRES_DUAL_WIELD = 1 << 10, // 0x00000400, AttackHook::RequiresDualWield
-            DETONATION_PROXIMITY = 1 << 11, // 0x00000800, AttackHook::SetDetonationProximity
-            SECONDARY_IMPLEMENT = 1 << 12, // 0x00001000, AttackHook::IsSecondaryImplement
-            PRIMARY_IMPLEMENT = 1 << 13, // 0x00002000, AttackHook::IsPrimaryImplement
-            SHIELD_ALLOWED = 1 << 14, // 0x00004000, AttackHook::IsShieldAllowed
+            None = 0,
+            IsAreaOfEffect = 1 << 0, // IsAreaOfEffect 0x00000001
+            IsIntersection = 1 << 1, // IsIntersection 0x00000002
+            IsProjectile = 1 << 2, // IsProjectile 0x00000004
+            IsDistance = 1 << 3, // IsDistance 0x00000008
+            RequiresLOS = 1 << 4, // RequiresLOS 0x00000010
+            DetonatesOnMiss = 1 << 5, // DetonatesOnMiss 0x00000020
+            IsNonDamaging = 1 << 6, // IsNonDamaging 0x00000040
+            IsMissileThrown = 1 << 7, // IsMissileThrown 0x00000080
+            ShouldMissileClone = 1 << 8, // ShouldMissileClone 0x00000100
+            ShouldMissileAlwaysFireTowardsTarget = 1 << 9, // SetMissileAlwaysFireTowardsTarget 0x00000200
+            RequiresDualWield = 1 << 10, // RequiresDualWield 0x00000400
+            HasDetonationProximity = 1 << 11, // SetDetonationProximity 0x00000800
+            IsSecondaryImplement = 1 << 12, // IsSecondaryImplement 0x00001000
+            IsPrimaryImplement = 1 << 13, // IsPrimaryImplement 0x00002000
+            IsShieldAllowed = 1 << 14, // IsShieldAllowed 0x00004000
         }
 
         public float attackAreaRadius; // mAttackAreaRadius

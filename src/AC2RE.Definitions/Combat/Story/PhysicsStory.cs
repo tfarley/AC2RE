@@ -9,13 +9,12 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
-            ALL = uint.MaxValue,
 
-            ATTACKER_ID = 1 << 1, // 0x00000002
-            ATTACKER_BVR = 1 << 2, // 0x00000004
-            CLIENT_CONTEXT = 1 << 3, // 0x00000008
-            SKILL_ID = 1 << 4, // 0x00000010
-            BASIC_ATTACK = 1 << 5, // 0x00000020
+            ATTACKER_ID = 1 << 1, // ATTACKER_ID 0x00000002
+            ATTACKER_BVR = 1 << 2, // ATTACKER_BVR 0x00000004
+            CLIENT_CONTEXT = 1 << 3, // CLIENT_CONTEXT 0x00000008
+            SKILL_ID = 1 << 4, // SKILL_ID 0x00000010
+            BASIC_ATTACK = 1 << 5, // BASIC_ATTACK 0x00000020
         }
 
         public PackFlag packFlags;

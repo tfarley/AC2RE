@@ -1,15 +1,17 @@
 ﻿namespace AC2RE.Definitions {
 
-    // Const *_Language
-    // Dat file 23000035
+    // Dat file 23000035 / Const *_Language
     public enum Language : uint {
-        INVALID = 0,
+        Invalid = 0, // _ / Invalid_Language
 
-        CHINESE = 0x41000001,
-        ENGLISH = 0x80000001,
-        FRANCAIS = 0x81000001,
-        DEUTSCH = 0x81000003,
-        JAPANESE = 0x81000004,
-        KOREAN = 0x81000005,
+        Chinese = 0x41000001, // Chinese / Chinese_Language
+
+        English = 0x80000001, // _ / English_Language
+
+        Francais = 0x81000001, // Francais / Francais_Language
+
+        Deutsch = 0x81000003, // Deutsch / Deutsch_Language
+        Japanese = 0x81000004, // Japanese / Japanese_Language
+        Korean = 0x81000005, // Korean / Korean_Language
     }
 }

@@ -5,7 +5,7 @@ namespace AC2RE.Definitions {
 
     public class ARHash : Dictionary<uint, IPackage>, IPackage {
 
-        public NativeType nativeType => NativeType.ARHASH;
+        public NativeType nativeType => NativeType.ARHash;
 
         public Dictionary<K, V> to<K, V>() {
             return to<K, V>(v => (V)v);

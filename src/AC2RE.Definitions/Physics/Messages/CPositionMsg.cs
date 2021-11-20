@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.WEENIE;
-        public MessageOpcode opcode => MessageOpcode.Evt_Physics__CPosition_ID;
+        public MessageOpcode opcode => MessageOpcode.Physics__CPosition;
 
         // ECM_Physics::SendEvt_CPosition
         public CPositionPack posPack; // _position_pack

@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public struct Frame : IPackage {
 
-        public NativeType nativeType => NativeType.FRAME;
+        public NativeType nativeType => NativeType.Frame;
 
         public Vector3 pos;
         public Quaternion rot;

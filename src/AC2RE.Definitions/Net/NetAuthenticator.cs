@@ -8,11 +8,9 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum AuthFlag : uint {
             NONE = 0,
-            ALL = uint.MaxValue,
-
-            ENABLECRYPTO = 1 << 0, // 0x00000001
-            ADMINACCTOVERRIDE = 1 << 1, // 0x00000002
-            EXTRADATA = 1 << 2, // 0x00000004
+            ENABLECRYPTO = 1 << 0, // AUTHFLAGS_ENABLECRYPTO 0x00000001
+            ADMINACCTOVERRIDE = 1 << 1, // AUTHFLAGS_ADMINACCTOVERRIDE 0x00000002
+            EXTRADATA = 1 << 2, // AUTHFLAGS_EXTRADATA + AUTHFLAGS_LASTDEFAULT 0x00000004
         }
 
         public AuthType authType; // m_dwAuthType

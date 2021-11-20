@@ -1,13 +1,12 @@
 ﻿namespace AC2RE.Definitions {
 
-    // Const *_FactionStatus
-    // Dat file 230000AD
+    // Dat file 230000AD / Const *_FactionStatus
     public enum FactionStatus : uint {
-        UNDEF,
-        PEACE,
-        CONTROL,
-        FACTIONAL,
-        FFA,
-        KVK_ANYWHERE,
+        Undef, // _ / Undef_FactionStatus
+        Peace, // Peace / Peace_FactionStatus
+        Control, // Control / Control_FactionStatus
+        Factional, // Factional / Factional_FactionStatus
+        FFA, // FFA / FFA_FactionStatus
+        KVKAnywhere, // KVKAnywhere / _
     }
 }

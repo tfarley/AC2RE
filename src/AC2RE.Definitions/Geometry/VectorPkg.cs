@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public struct VectorPkg : IPackage {
 
-        public NativeType nativeType => NativeType.VECTOR;
+        public NativeType nativeType => NativeType.Vector;
 
         public Vector3 v;
 

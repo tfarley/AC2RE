@@ -39,11 +39,11 @@ namespace AC2RE.PacketTool.UI {
             opcode = netBlobRecord.netBlob.payload != null ? (MessageOpcode)BitConverter.ToUInt32(netBlobRecord.netBlob.payload) : MessageOpcode.UNDEF_EVENT;
             opcodeName = opcode.ToString();
             if (netBlobRecord.netBlob.payload != null) {
-                if (opcode == MessageOpcode.Evt_Interp__InterpSEvent_ID || opcode == MessageOpcode.Evt_Interp__InterpSEventEncrypt_ID) {
+                if (opcode == MessageOpcode.Interp__InterpSEvent || opcode == MessageOpcode.Interp__InterpSEventEncrypt) {
                     eventName = ((ServerEventFunctionId)BitConverter.ToUInt32(netBlobRecord.netBlob.payload, 4)).ToString();
-                } else if (opcode == MessageOpcode.Evt_Interp__InterpCEvent_Private_ID || opcode == MessageOpcode.Evt_Interp__InterpCEvent_Broadcast_ID) {
+                } else if (opcode == MessageOpcode.Interp__InterpCEvent_Private || opcode == MessageOpcode.Interp__InterpCEvent_Broadcast) {
                     eventName = ((ClientEventFunctionId)BitConverter.ToUInt32(netBlobRecord.netBlob.payload, 4)).ToString();
-                } else if (opcode == MessageOpcode.Evt_Interp__InterpCEvent_Cell_ID || opcode == MessageOpcode.Evt_Interp__InterpCEvent_Visual_ID) {
+                } else if (opcode == MessageOpcode.Interp__InterpCEvent_Cell || opcode == MessageOpcode.Interp__InterpCEvent_Visual) {
                     eventName = ((ClientEventFunctionId)BitConverter.ToUInt32(netBlobRecord.netBlob.payload, 16)).ToString();
                 } else {
                     eventName = "";

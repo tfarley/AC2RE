@@ -5,7 +5,7 @@ namespace AC2RE.Definitions {
 
     public class RArray : List<IPackage>, IPackage {
 
-        public NativeType nativeType => NativeType.RARRAY;
+        public NativeType nativeType => NativeType.RArray;
 
         public List<T> to<T>() {
             return to(v => (T)v);

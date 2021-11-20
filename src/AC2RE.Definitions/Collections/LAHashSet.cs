@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class LAHashSet : HashSet<ulong>, IPackage {
 
-        public NativeType nativeType => NativeType.LAHASHSET;
+        public NativeType nativeType => NativeType.LAHashSet;
 
         public HashSet<T> to<T>() {
             HashSet<T> converted = new(Count);

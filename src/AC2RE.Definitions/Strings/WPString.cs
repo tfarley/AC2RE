@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class WPString : IPackage {
 
-        public NativeType nativeType => NativeType.WPSTRING;
+        public NativeType nativeType => NativeType.wpstring;
 
         public string contents;
 

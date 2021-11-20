@@ -24,6 +24,15 @@ namespace AC2RE.Server {
         public readonly Dictionary<PropertyName, long> longs = new();
         public readonly Dictionary<PropertyName, Position> poss = new();
 
+        public bool usageHeroOnly => bools.GetValueOrDefault(PropertyName.Usage_HeroOnly);
+        public QuestId usageRequiredQuest => (QuestId)enums.GetValueOrDefault(PropertyName.Usage_RequiredQuest);
+        public QuestStatus usageRequiredQuestStatus => (QuestStatus)enums.GetValueOrDefault(PropertyName.Usage_RequiredQuestStatus);
+        public int usageMinLevel => ints.GetValueOrDefault(PropertyName.Usage_MinLevel);
+
+        public bool canUseWhileMoving => bools.GetValueOrDefault(PropertyName.Item_CanUseWhileMoving);
+        public UsagePermissionType usagePermission => (UsagePermissionType)enums.GetValueOrDefault(PropertyName.Item_UsagePermission);
+        public UsageActionType usageAction => (UsageActionType)enums.GetValueOrDefault(PropertyName.Item_UsageAction);
+
         public EntityDef(EntityDef entityDef) {
             type = entityDef.type;
             dataId = entityDef.dataId;
@@ -38,43 +47,43 @@ namespace AC2RE.Server {
                 foreach (PropertyGroup propertyGroup in entityDesc.properties.groups) {
                     foreach (BaseProperty property in propertyGroup.properties) {
                         switch (property.type) {
-                            case PropertyType.BOOL:
+                            case PropertyType.Bool:
                                 bools[property.name] = (bool)property.value;
                                 break;
-                            case PropertyType.INTEGER:
+                            case PropertyType.Integer:
                                 ints[property.name] = (int)property.value;
                                 break;
-                            case PropertyType.FLOAT:
+                            case PropertyType.Float:
                                 floats[property.name] = (float)property.value;
                                 break;
-                            case PropertyType.VECTOR:
+                            case PropertyType.Vector:
                                 vectors[property.name] = (Vector3)property.value;
                                 break;
-                            case PropertyType.COLOR:
+                            case PropertyType.Color:
                                 colors[property.name] = (RGBAColor)property.value;
                                 break;
-                            case PropertyType.STRING:
+                            case PropertyType.String:
                                 strings[property.name] = (string)property.value;
                                 break;
-                            case PropertyType.ENUM:
+                            case PropertyType.Enum:
                                 enums[property.name] = (uint)property.value;
                                 break;
-                            case PropertyType.DATA_FILE:
+                            case PropertyType.DataFile:
                                 dids[property.name] = (DataId)property.value;
                                 break;
-                            case PropertyType.WAVEFORM:
+                            case PropertyType.Waveform:
                                 waveforms[property.name] = (Waveform)property.value;
                                 break;
-                            case PropertyType.STRING_INFO:
+                            case PropertyType.StringInfo:
                                 stringInfos[property.name] = (StringInfo)property.value;
                                 break;
-                            case PropertyType.PACKAGE_ID:
+                            case PropertyType.PackageID:
                                 packageIds[property.name] = (PackageId)property.value;
                                 break;
-                            case PropertyType.LONG_INTEGER:
+                            case PropertyType.LongInteger:
                                 longs[property.name] = (long)property.value;
                                 break;
-                            case PropertyType.POSITION:
+                            case PropertyType.Position:
                                 poss[property.name] = (Position)property.value;
                                 break;
                             default:

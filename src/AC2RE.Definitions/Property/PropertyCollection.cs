@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class PropertyCollection : IPackage {
 
-        public NativeType nativeType => NativeType.PROPERTYCOLLECTION;
+        public NativeType nativeType => NativeType.PropertyCollection;
 
         public List<PropertyGroup> groups; // m_propertyGroup
 

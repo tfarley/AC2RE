@@ -2,7 +2,7 @@
 
     public class EntityLinkDesc : IPackage {
 
-        public NativeType nativeType => NativeType.ENTITYLINKDESC;
+        public NativeType nativeType => NativeType.EntityLinkDesc;
 
         public string name; // m_name
         public LinkDesc input; // input

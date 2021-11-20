@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class GMSceneInfoList : List<GMSceneInfo>, IPackage {
 
-        public NativeType nativeType => NativeType.GMSCENEINFOLIST;
+        public NativeType nativeType => NativeType.gmSceneInfoList;
 
         public GMSceneInfoList() {
 

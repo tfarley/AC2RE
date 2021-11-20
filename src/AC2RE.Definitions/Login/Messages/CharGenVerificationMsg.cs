@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Login__CharGenVerification_ID;
+        public MessageOpcode opcode => MessageOpcode.Login__CharGenVerification;
 
         // ECM_Login::RecvEvt_CharGenVerification
         public CharGenResponse response; // response

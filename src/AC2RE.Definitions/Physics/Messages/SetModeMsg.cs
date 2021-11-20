@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Physics__SetMode_ID;
+        public MessageOpcode opcode => MessageOpcode.Physics__SetMode;
         public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
 
         // ECM_Physics::RecvEvt_SetMode

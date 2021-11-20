@@ -2,8 +2,10 @@
 
     // Enum SortMode
     public enum SortMode : uint {
-        NONE = 1,
-        TRIANGLE = 2,
-        INVALID = 0x7FFFFFFF,
+        UNDEF = 0,
+        NONE = 1, // SORTMODE_NONE
+        TRIANGLE = 2, // SORTMODE_TRIANGLE
+
+        INVALID = 0x7FFFFFFF, // SORTMODE_INVALID
     }
 }

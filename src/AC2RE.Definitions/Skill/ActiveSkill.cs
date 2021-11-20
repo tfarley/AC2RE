@@ -7,70 +7,66 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.ActiveSkill;
 
-        // WLib
+        // WLib ActiveSkill
         [Flags]
         public new enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            USE_WHILE_MOVING = 1 << 0, // 0x00000001, ActiveSkill::GetUseWhileMoving
-            IGNORE_WEAPON_TIME = 1 << 1, // 0x00000002, ActiveSkill::GetIgnoreWeaponTime
-            IGNORE_ARMOR_DELAY = 1 << 2, // 0x00000004, ActiveSkill::GetIgnoreArmorDelay
-            IGNORE_WEAPON_OFFENSE = 1 << 3, // 0x00000008, ActiveSkill::GetIgnoreWeaponOffense
-            IGNORE_WEAPON_DEFENSE = 1 << 4, // 0x00000010, ActiveSkill::GetIgnoreWeaponDefense
-            IGNORE_WEAPON_VIGOR = 1 << 5, // 0x00000020, ActiveSkill::GetIgnoreWeaponVigor
-            IGNORE_WEAPON_DAMAGE = 1 << 6, // 0x00000040, ActiveSkill::GetIgnoreWeaponDamage
-            IGNORE_SHIELD_VIGOR = 1 << 7, // 0x00000080, ActiveSkill::GetIgnoreShieldVigor
-            IGNORE_SHIELD_DELAY = 1 << 8, // 0x00000100, ActiveSkill::GetIgnoreShieldDelay
-            NON_DAMAGING = 1 << 9, // 0x00000200, ActiveSkill::IsNonDamaging
-            HARMFUL = 1 << 10, // 0x00000400, ActiveSkill::IsHarmful
-            REQUIRES_MOVE_TO = 1 << 11, // 0x00000800, ActiveSkill::RequiresMoveTo
-            REQUIRES_TURN_TO = 1 << 12, // 0x00001000, ActiveSkill::RequiresTurnTo
-            SELF_TARGETED = 1 << 13, // 0x00002000, ActiveSkill::IsSelfTargeted
-            SUCCEED_ON_ANIMATION_FAILURE = 1 << 14, // 0x00004000, ActiveSkill::ShouldSucceedOnAnimationFailure
-            IGNORED_BY_PETS = 1 << 15, // 0x00008000, ActiveSkill::IsIgnoredByPets
-            IGNORE_WEAPON_FOCUS = 1 << 16, // 0x00010000, ActiveSkill::GetIgnoreWeaponFocus
-            IGNORE_SHIELD_FOCUS = 1 << 17, // 0x00020000, ActiveSkill::GetIgnoreShieldFocus
-            IGNORE_RESET_TIMERS = 1 << 18, // 0x00040000, ActiveSkill::GetIgnoreResetTimers
-            USES_EFFECT_REQUIRED_ARMOR_MODIFIER = 1 << 19, // 0x00080000, ActiveSkill::UsesEffectRequiredArmorModifier
-            HEAL_ONLY = 1 << 20, // 0x00100000, ActiveSkill::IsHealOnly
+            None = 0,
+            UseWhileMoving = 1 << 0, // GetUseWhileMoving 0x00000001
+            IgnoreWeaponTime = 1 << 1, // GetIgnoreWeaponTime 0x00000002
+            IgnoreArmorDelay = 1 << 2, // GetIgnoreArmorDelay 0x00000004
+            IgnoreWeaponOffense = 1 << 3, // GetIgnoreWeaponOffense 0x00000008
+            IgnoreWeaponDefense = 1 << 4, // GetIgnoreWeaponDefense 0x00000010
+            IgnoreWeaponVigor = 1 << 5, // GetIgnoreWeaponVigor 0x00000020
+            IgnoreWeaponDamage = 1 << 6, // GetIgnoreWeaponDamage 0x00000040
+            IgnoreShieldVigor = 1 << 7, // GetIgnoreShieldVigor 0x00000080
+            IgnoreShieldDelay = 1 << 8, // GetIgnoreShieldDelay 0x00000100
+            IsNonDamaging = 1 << 9, // IsNonDamaging 0x00000200
+            IsHarmful = 1 << 10, // IsHarmful 0x00000400
+            RequiresMoveTo = 1 << 11, // RequiresMoveTo 0x00000800
+            RequiresTurnTo = 1 << 12, // RequiresTurnTo 0x00001000
+            IsSelfTargeted = 1 << 13, // IsSelfTargeted 0x00002000
+            ShouldSucceedOnAnimationFailure = 1 << 14, // ShouldSucceedOnAnimationFailure 0x00004000
+            IsIgnoredByPets = 1 << 15, // IsIgnoredByPets 0x00008000
+            IgnoreWeaponFocus = 1 << 16, // GetIgnoreWeaponFocus 0x00010000
+            IgnoreShieldFocus = 1 << 17, // GetIgnoreShieldFocus 0x00020000
+            IgnoreResetTimers = 1 << 18, // GetIgnoreResetTimers 0x00040000
+            UsesEffectRequiredArmorModifier = 1 << 19, // UsesEffectRequiredArmorModifier 0x00080000
+            IsHealOnly = 1 << 20, // IsHealOnly 0x00100000
         }
 
-        // WLib
+        // WLib ActiveSkill
         [Flags]
         public enum Target : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            SELF = 1 << 0, // 0x00000001, ActiveSkill::ValidTargetSelf
-            SELF_ITEM = 1 << 1, // 0x00000002, ActiveSkill::ValidTargetSelfItem
-            EXTERNAL_ITEM = 1 << 2, // 0x00000004, ActiveSkill::ValidTargetExternalItem
-            MONSTER_ITEM = 1 << 3, // 0x00000008, ActiveSkill::ValidTargetMonsterItem
-            PLAYER_ITEM = 1 << 4, // 0x00000010, ActiveSkill::ValidTargetPlayerItem
-            PLAYER_CORPSE = 1 << 5, // 0x00000020, ActiveSkill::ValidTargetPlayerCorpse
-            MONSTER_CORPSE = 1 << 6, // 0x00000040, ActiveSkill::ValidTargetMonsterCorpse
-            MONSTER = 1 << 7, // 0x00000080, ActiveSkill::ValidTargetMonster
-            PLAYER = 1 << 8, // 0x00000100, ActiveSkill::ValidTargetPlayer
-            NPC = 1 << 9, // 0x00000200, ActiveSkill::ValidTargetNPC
-            SAME_FELLOWSHIP_ONLY = 1 << 10, // 0x00000400, ActiveSkill::ValidTargetSameFellowshipOnly
-            NOT_SAME_FELLOWSHIP_ONLY = 1 << 11, // 0x00000800, ActiveSkill::ValidTargetNotSameFellowshipOnly
-            SAME_ALLEGIANCE_ONLY = 1 << 12, // 0x00001000, ActiveSkill::ValidTargetSameAllegianceOnly
-            NOT_SAME_ALLEGIANCE_ONLY = 1 << 13, // 0x00002000, ActiveSkill::ValidTargetNotSameAllegianceOnly
-            GREATER_THAN_OR_EQUAL_TO_ALLEGIANCE_RANK = 1 << 14, // 0x00004000, ActiveSkill::ValidTargetGreaterThanOrEqualToAllegianceRank
-            SAME_FACTION_ONLY = 1 << 15, // 0x00008000, ActiveSkill::ValidTargetSameFactionOnly
-            NOT_SAME_FACTION_ONLY = 1 << 16, // 0x00010000, ActiveSkill::ValidTargetNotSameFactionOnly
-            FACTION_ONLY = 1 << 17, // 0x00020000, ActiveSkill::ValidTargetFactionOnly
-            MIN_LEVEL = 1 << 18, // 0x00040000,  ActiveSkill::ValidTargetMinLevel
-            MAX_LEVEL = 1 << 19, // 0x00080000, ActiveSkill::ValidTargetMaxLevel
-            UNOWNED_PET = 1 << 20, // 0x00100000, ActiveSkill::ValidTargetUnownedPet
-            OWNED_PET = 1 << 21, // 0x00200000, ActiveSkill::ValidTargetOwnedPet
-            PET_ONLY = 1 << 22, // 0x00400000, ActiveSkill::ValidTargetPetOnly
-            WEENIE_TYPE = 1 << 23, // 0x00800000, ActiveSkill::ValidTargetWeenieType
-            PET_SUMMONER = 1 << 24, // 0x01000000, ActiveSkill::ValidTargetPetSummoner
-            RESURRECTABLE_CORPSE = 1 << 25, // 0x02000000, ActiveSkill::ValidTargetResurrectableCorpse
-            NOT_AI_SUPER_CLASS = 1 << 26, // 0x04000000, ActiveSkill::ValidTargetNotAISuperClass
-            SKILL_TARGET_FLAGS_ONLY = 1 << 27, // 0x08000000, ActiveSkill::ValidTargetSkillTargetFlagsOnly
-            EQUIPPED_ITEM = 1 << 28, // 0x10000000, ActiveSkill::ValidTargetEquippedItem
+            None = 0,
+            Self = 1 << 0, // ValidTargetSelf 0x00000001
+            SelfItem = 1 << 1, // ValidTargetSelfItem 0x00000002
+            ExternalItem = 1 << 2, // ValidTargetExternalItem 0x00000004
+            MonsterItem = 1 << 3, // ValidTargetMonsterItem 0x00000008
+            PlayerItem = 1 << 4, // ValidTargetPlayerItem 0x00000010
+            PlayerCorpse = 1 << 5, // ValidTargetPlayerCorpse 0x00000020
+            MonsterCorpse = 1 << 6, // ValidTargetMonsterCorpse 0x00000040
+            Monster = 1 << 7, // ValidTargetMonster 0x00000080
+            Player = 1 << 8, // ValidTargetPlayer 0x00000100
+            NPC = 1 << 9, // ValidTargetNPC 0x00000200
+            SameFellowshipOnly = 1 << 10, // ValidTargetSameFellowshipOnly 0x00000400
+            NotSameFellowshipOnly = 1 << 11, // ValidTargetNotSameFellowshipOnly 0x00000800
+            SameAllegianceOnly = 1 << 12, // ValidTargetSameAllegianceOnly 0x00001000
+            NotSameAllegianceOnly = 1 << 13, // ValidTargetNotSameAllegianceOnly 0x00002000
+            GreaterThanOrEqualToAllegianceRank = 1 << 14, // ValidTargetGreaterThanOrEqualToAllegianceRank 0x00004000
+            SameFactionOnly = 1 << 15, // ValidTargetSameFactionOnly 0x00008000
+            NotSameFactionOnly = 1 << 16, // ValidTargetNotSameFactionOnly 0x00010000
+            FactionOnly = 1 << 17, // ValidTargetFactionOnly 0x00020000
+            MinLevel = 1 << 18, // ValidTargetMinLevel 0x00040000,  ActiveSkill::ValidTargetMinLevel
+            MaxLevel = 1 << 19, // ValidTargetMaxLevel 0x00080000
+            UnownedPet = 1 << 20, // ValidTargetUnownedPet 0x00100000
+            OwnedPet = 1 << 21, // ValidTargetOwnedPet 0x00200000
+            PetOnly = 1 << 22, // ValidTargetPetOnly 0x00400000
+            WeenieType = 1 << 23, // ValidTargetWeenieType 0x00800000
+            PetSummoner = 1 << 24, // ValidTargetPetSummoner 0x01000000
+            ResurrectableCorpse = 1 << 25, // ValidTargetResurrectableCorpse 0x02000000
+            NotAISuperClass = 1 << 26, // ValidTargetNotAISuperClass 0x04000000
+            SkillTargetFlagsOnly = 1 << 27, // ValidTargetSkillTargetFlagsOnly 0x08000000
+            EquippedItem = 1 << 28, // ValidTargetEquippedItem 0x10000000
         }
 
         public int maxPets; // m_MaxPets

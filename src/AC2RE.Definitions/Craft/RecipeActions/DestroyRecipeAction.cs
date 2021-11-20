@@ -6,14 +6,12 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.DestroyRecipeAction;
 
-        // WLib
+        // WLib DestroyRecipeAction
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            OBJECT_TO_DESTROY = 1 << 0, // 0x00000001, DestroyRecipeAction::SetObjectToDestroy
-            OBJECT_TO_DESTROY_DYNAMIC_QUANTITY = 1 << 1, // 0x00000002, DestroyRecipeAction::SetObjectToDestroyDynamicQuantity
+            None = 0,
+            HasObjectToDestroy = 1 << 0, // SetObjectToDestroy 0x00000001
+            HasObjectToDestroyDynamicQuantity = 1 << 1, // SetObjectToDestroyDynamicQuantity 0x00000002
         }
 
         public uint ordinal; // m_uiOrdinal

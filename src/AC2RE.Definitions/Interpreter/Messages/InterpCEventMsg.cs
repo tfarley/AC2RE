@@ -11,7 +11,7 @@ namespace AC2RE.Definitions {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Interp__InterpCEvent_Cell_ID;
+        public MessageOpcode opcode => MessageOpcode.Interp__InterpCEvent_Cell;
 
         // ECM_Interp::RecvEvt_InterpCEvent_Cell
         public InstanceIdWithStamp senderIdWithStamp; // sender
@@ -29,7 +29,7 @@ namespace AC2RE.Definitions {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Interp__InterpCEvent_Private_ID;
+        public MessageOpcode opcode => MessageOpcode.Interp__InterpCEvent_Private;
 
         // ECM_Interp::RecvEvt_InterpCEvent_Private
         public IClientEvent netEvent { get; set; }
@@ -62,7 +62,7 @@ namespace AC2RE.Definitions {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Interp__InterpCEvent_Visual_ID;
+        public MessageOpcode opcode => MessageOpcode.Interp__InterpCEvent_Visual;
         public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
 
         // ECM_Interp::RecvEvt_InterpCEvent_Visual

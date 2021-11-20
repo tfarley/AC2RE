@@ -2,8 +2,8 @@
 
     // Enum DataHistory::IterationType
     public enum DataHistoryIterationType : byte {
-        NORMAL,
-        NO_PATCH,
-        ALIAS,
+        Normal, // Normal_Iteration
+        NoPatch, // NoPatch_Iteration
+        Alias, // Alias_Iteration
     }
 }

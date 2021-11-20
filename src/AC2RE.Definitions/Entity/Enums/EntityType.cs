@@ -2,26 +2,26 @@
 
     // Const *_EntityType
     public enum EntityType : uint {
-        INVALID = 0,
+        Invalid = 0, // Invalid_EntityType
 
-        PHYSICS = 0x40000001,
-        WEENIE = 0x40000002,
-        ENTITY_GROUP = 0x40000003,
-        CELL = 0x40000004,
-        CAMERA = 0x40000005,
-        LIGHT = 0x40000006,
-        ENTITY_DESC = 0x40000007,
-        LANDBLOCK = 0x40000008,
-        VOLATILE = 0x40000009,
-        LINK = 0x4000000A,
-        AVATAR = 0x4000000B,
-        VISUAL = 0x4000000C,
-        UI_SCENE = 0x4000000D,
-        DB_OBJ = 0x4000000E,
-        PARTICLE = 0x4000000F,
-        SCENE_FILE = 0x40000010,
-        LINK_DESC = 0x40000011,
-        TELEPORT_DESTINATION = 0x40000012,
-        PATH_NODE_HINT = 0x40000013,
+        Physics = 0x40000001, // Physics_EntityType
+        Weenie = 0x40000002, // Weenie_EntityType
+        EntityGroup = 0x40000003, // EntityGroup_EntityType
+        Cell = 0x40000004, // Cell_EntityType
+        Camera = 0x40000005, // Camera_EntityType
+        Light = 0x40000006, // Light_EntityType
+        EntityDesc = 0x40000007, // EntityDesc_EntityType
+        Landblock = 0x40000008, // Landblock_EntityType
+        Volatile = 0x40000009, // Volatile_EntityType
+        Link = 0x4000000A, // Link_EntityType
+        Avatar = 0x4000000B, // Avatar_EntityType
+        Visual = 0x4000000C, // Visual_EntityType
+        UIScene = 0x4000000D, // UIScene_EntityType
+        DBObj = 0x4000000E, // DBObj_EntityType
+        Particle = 0x4000000F, // Particle_EntityType
+        SceneFile = 0x40000010, // SceneFile_EntityType
+        LinkDesc = 0x40000011, // LinkDesc_EntityType
+        TeleportDestination = 0x40000012, // TeleportDestination_EntityType
+        PathNodeHint = 0x40000013, // PathNodeHint_EntityType
     }
 }

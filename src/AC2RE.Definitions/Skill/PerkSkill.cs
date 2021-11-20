@@ -6,13 +6,11 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.PerkSkill;
 
-        // WLib
+        // WLib PerkSkill
         [Flags]
         public new enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            VITAL_CHANGE = 1 << 0, // 0x00000001, PerkSkill::IsVitalChange
+            None = 0,
+            IsVitalChange = 1 << 0, // IsVitalChange 0x00000001
         }
 
         public int priority; // m_priority

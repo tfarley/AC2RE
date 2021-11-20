@@ -4,9 +4,9 @@
 
         // Enum PropertyWeenieReportType::Type
         public enum WeenieReportType : uint {
-            REPORTABLE,
-            INQUIRABLE,
-            IGNORED,
+            Reportable, // Reportable
+            Inquirable, // Inquirable
+            Ignored, // Ignored
         }
 
         public PropertyType type; // m_type

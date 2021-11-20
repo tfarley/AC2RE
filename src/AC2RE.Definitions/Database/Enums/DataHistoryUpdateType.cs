@@ -2,8 +2,8 @@
 
     // Enum DataHistory::UpdateType
     public enum DataHistoryUpdateType : byte {
-        PATCH,
-        PURGE,
-        IGNORE,
+        Patch, // utPatch
+        Purge, // utPurge
+        Ignore, // utIgnore
     }
 }

@@ -72,17 +72,19 @@ namespace AC2RE.Definitions {
 
         // Const - globals
         public enum Flags : uint {
-            ALLOW_FREE_HEADING = 1 << 2, // 0x00000004
-            HAS_PHYSICS_BSP = 1 << 3, // 0x00000008
+            NONE = 0,
+
+            ALLOW_FREE_HEADING = 1 << 2, // ALLOW_FREE_HEADING 0x00000004
+            HAS_PHYSICS_BSP = 1 << 3, // HAS_PHYSICS_BSP 0x00000008
         }
 
         // Enum ShadowType
         public enum ShadowType : uint {
-            NONE,
-            STATIC,
-            VOLUMETRIC,
+            NONE, // SHADOWTYPE_NONE
+            STATIC, // SHADOWTYPE_STATIC
+            VOLUMETRIC, // SHADOWTYPE_VOLUMETRIC
 
-            INVALID = 0x7FFFFFFF,
+            INVALID = 0x7FFFFFFF, // SHADOWTYPE_INVALID
         }
 
         public DataId did; // m_DID

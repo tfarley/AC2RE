@@ -5,7 +5,7 @@ namespace AC2RE.Definitions {
 
     public class RList : List<IPackage>, IPackage {
 
-        public NativeType nativeType => NativeType.RLIST;
+        public NativeType nativeType => NativeType.RList;
 
         public List<T> to<T>() {
             return to(v => (T)v);

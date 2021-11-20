@@ -31,7 +31,7 @@ namespace AC2RE.Server {
                         Character character = world.characterManager.createWithAccountAndObject(player.account.id, characterObject.id);
 
                         send(player, new CharGenVerificationMsg {
-                            response = CharGenResponse.OK,
+                            response = CharGenResponse.Ok,
                             characterIdentity = new() {
                                 id = characterObject.id,
                                 name = characterObject.name!.literalValue,
@@ -43,7 +43,7 @@ namespace AC2RE.Server {
 
                         break;
                     }
-                case MessageOpcode.Evt_Login__CharacterDeletion_ID: {
+                case MessageOpcode.Login__CharacterDeletion: {
                         CharacterDeletionSMsg msg = (CharacterDeletionSMsg)genericMsg;
 
                         if (world.objectManager.tryGet(msg.characterId, out WorldObject? character)) {
@@ -114,7 +114,7 @@ namespace AC2RE.Server {
                                     if (globalAppearanceModifiers != null) {
                                         foreach ((DataId appDid, Dictionary<AppearanceKey, float> appearances) in globalAppearanceModifiers.appearanceInfos) {
                                             Dictionary<AppearanceKey, float> clonedAppearances = new(appearances);
-                                            clonedAppearances[AppearanceKey.WORN] = 1.0f;
+                                            clonedAppearances[AppearanceKey.Worn] = 1.0f;
                                             character.globalAppearanceModifiers.appearanceInfos[appDid] = clonedAppearances;
                                         }
                                     }
@@ -138,12 +138,12 @@ namespace AC2RE.Server {
                                 },
                                 quests = new() {
                                     new() {
-                                        questId = QuestId.FINDEXPLORERARWIC,
+                                        questId = QuestId.FindExplorerArwic,
                                         questName = new(new(0x250017EB), 2824895724),
                                         questDescription = new(new(0x250017EB), 1816499044),
                                         iconDid = new(0x4100034B),
                                         challengeLevel = -999,
-                                        questStatus = QuestStatus.UNDERWAY,
+                                        questStatus = QuestStatus.Underway,
                                         curPhase = 1,
                                         curJournalEntry = new(new(0x250017EB), 777789010),
                                         bestowalTime = 129500898.25912432,
@@ -167,7 +167,7 @@ namespace AC2RE.Server {
                                         | GameplayOptionsProfile.ContentFlag.CHAT_FONT_SIZES
                                         | GameplayOptionsProfile.ContentFlag.CHAT_POPUP_FLAGS
                                         | GameplayOptionsProfile.ContentFlag.WINDOW_TO_CHANNEL,
-                                    shortcutArray = Enumerable.Repeat(new ShortcutInfo { type = ShortcutType.UNDEF }, 100).ToList(),
+                                    shortcutArray = Enumerable.Repeat(new ShortcutInfo { type = ShortcutType.Undef }, 100).ToList(),
                                     whichShortcutSet = 1,
                                     damageTextRangeOther = 1.0f,
                                     savedUILocations = new(),
@@ -186,63 +186,63 @@ namespace AC2RE.Server {
                                     },*/
                                     radarMask = 0xFFFFFFFF,
                                     filters = new() {
-                                        { 1, TextType.ALL },
-                                        { 2, TextType.GENERAL },
-                                        { 3, TextType.FELLOWSHIP },
-                                        { 4, TextType.ALLEGIANCE },
+                                        { 1, TextType.All },
+                                        { 2, TextType.GeneralChannel },
+                                        { 3, TextType.Fellowship },
+                                        { 4, TextType.Allegiance },
                                     },
                                     bitfield = (GameplayOptionsProfile.Flag)0x80024FF5,
                                     version = GameplayOptionsProfile.Version.LATEST_VERSION,
                                     chatFontColors = new() {
-                                        { TextType.ERROR, 0 },
-                                        { TextType.COMBAT, 1 },
-                                        { TextType.ADMIN, 2 },
-                                        { TextType.STANDARD, 3 },
-                                        { TextType.SAY, 4 },
-                                        { TextType.TELL, 5 },
-                                        { TextType.EMOTE, 6 },
-                                        { TextType.LOG, 4 },
-                                        { TextType.BROADCAST, 9 },
-                                        { TextType.FELLOWSHIP, 7 },
-                                        { TextType.ALLEGIANCE, 8 },
-                                        { TextType.CHAT_ENTRY, 4 },
-                                        { TextType.GENERAL, 4 },
-                                        { TextType.TRADE, 4 },
-                                        { TextType.REGION, 4 },
-                                        { TextType.FACTION, 4 },
-                                        { TextType.DEVOTED, 4 },
-                                        { TextType.PK, 4 },
+                                        { TextType.Error, 0 },
+                                        { TextType.Combat, 1 },
+                                        { TextType.Admin, 2 },
+                                        { TextType.Standard, 3 },
+                                        { TextType.Say, 4 },
+                                        { TextType.Tell, 5 },
+                                        { TextType.Emote, 6 },
+                                        { TextType.Log, 4 },
+                                        { TextType.Broadcast, 9 },
+                                        { TextType.Fellowship, 7 },
+                                        { TextType.Allegiance, 8 },
+                                        { TextType.ChatEntry, 4 },
+                                        { TextType.GeneralChannel, 4 },
+                                        { TextType.TradeChannel, 4 },
+                                        { TextType.RegionChannel, 4 },
+                                        { TextType.FactionChannel, 4 },
+                                        { TextType.Devoted, 4 },
+                                        { TextType.PKChannel, 4 },
                                     },
                                     chatFontSizes = new() {
-                                        { TextType.ERROR, 0 },
-                                        { TextType.COMBAT, 0 },
-                                        { TextType.ADMIN, 0 },
-                                        { TextType.STANDARD, 0 },
-                                        { TextType.SAY, 0 },
-                                        { TextType.TELL, 0 },
-                                        { TextType.EMOTE, 0 },
-                                        { TextType.LOG, 0 },
-                                        { TextType.BROADCAST, 0 },
-                                        { TextType.FELLOWSHIP, 0 },
-                                        { TextType.ALLEGIANCE, 0 },
-                                        { TextType.CHAT_ENTRY, 0 },
-                                        { TextType.GENERAL, 0 },
-                                        { TextType.TRADE, 0 },
-                                        { TextType.REGION, 0 },
-                                        { TextType.FACTION, 0 },
-                                        { TextType.DEVOTED, 0 },
-                                        { TextType.PK, 0 },
+                                        { TextType.Error, 0 },
+                                        { TextType.Combat, 0 },
+                                        { TextType.Admin, 0 },
+                                        { TextType.Standard, 0 },
+                                        { TextType.Say, 0 },
+                                        { TextType.Tell, 0 },
+                                        { TextType.Emote, 0 },
+                                        { TextType.Log, 0 },
+                                        { TextType.Broadcast, 0 },
+                                        { TextType.Fellowship, 0 },
+                                        { TextType.Allegiance, 0 },
+                                        { TextType.ChatEntry, 0 },
+                                        { TextType.GeneralChannel, 0 },
+                                        { TextType.TradeChannel, 0 },
+                                        { TextType.RegionChannel, 0 },
+                                        { TextType.FactionChannel, 0 },
+                                        { TextType.Devoted, 0 },
+                                        { TextType.PKChannel, 0 },
                                     },
                                     windowToChannel = new() {
-                                        { 1, TextType.SAY },
-                                        { 2, TextType.GENERAL },
-                                        { 3, TextType.FELLOWSHIP },
-                                        { 4, TextType.ALLEGIANCE },
+                                        { 1, TextType.Say },
+                                        { 2, TextType.GeneralChannel },
+                                        { 3, TextType.Fellowship },
+                                        { 4, TextType.Allegiance },
                                     },
                                     chatPopupFlags = new() {
-                                        { TextType.BROADCAST, true },
-                                        { TextType.FELLOWSHIP, true },
-                                        { TextType.ALLEGIANCE, true },
+                                        { TextType.Broadcast, true },
+                                        { TextType.Fellowship, true },
+                                        { TextType.Allegiance, true },
                                     },
                                     windowOpacities = new() {
                                         { 0xA05C6B95, 0.65f },
@@ -292,8 +292,8 @@ namespace AC2RE.Server {
 
                                 },
                                 contentIds = new(character.contentsItemIdsEnumerable),
-                                localFactionStatus = FactionStatus.PEACE,
-                                serverFactionStatus = FactionStatus.UNDEF,
+                                localFactionStatus = FactionStatus.Peace,
+                                serverFactionStatus = FactionStatus.Undef,
                             }
                         });
 
@@ -303,7 +303,7 @@ namespace AC2RE.Server {
                             }
                         }
 
-                        character.doMode(ModeId.PEACE);
+                        character.doMode(ModeId.peace);
                         character.setVelScale(2.0f);
 
                         character.enterWorld();
@@ -311,7 +311,7 @@ namespace AC2RE.Server {
                         world.landblockManager.syncPlayerVisibility(player);
                         break;
                     }
-                case MessageOpcode.Evt_Login__CharExitGame_ID: {
+                case MessageOpcode.Login__CharExitGame: {
                         CharacterExitGameSMsg msg = (CharacterExitGameSMsg)genericMsg;
 
                         if (player.characterId == msg.characterId) {
@@ -324,7 +324,7 @@ namespace AC2RE.Server {
 
                         break;
                     }
-                case MessageOpcode.Evt_Physics__CLookAtDir_ID: {
+                case MessageOpcode.Physics__CLookAtDir: {
                         CLookAtDirMsg msg = (CLookAtDirMsg)genericMsg;
 
                         if (tryGetCharacter(player, out WorldObject? character)) {
@@ -333,7 +333,7 @@ namespace AC2RE.Server {
 
                         break;
                     }
-                case MessageOpcode.Evt_Physics__CPosition_ID: {
+                case MessageOpcode.Physics__CPosition: {
                         CPositionMsg msg = (CPositionMsg)genericMsg;
 
                         if (tryGetCharacter(player, out WorldObject? character)) {

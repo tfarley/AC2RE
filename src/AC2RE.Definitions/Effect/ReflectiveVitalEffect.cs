@@ -6,27 +6,25 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.ReflectiveVitalEffect;
 
-        // WLib
+        // WLib ReflectiveVitalEffect
         [Flags]
         public new enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
+            None = 0,
+            IsConstantAbsorbMagnitude = 1 << 0, // SetConstantAbsorbMagnitude 0x00000001
+            IsVariableAbsorbMagnitude = 1 << 1, // SetVariableAbsorbMagnitude 0x00000002
+            IsConstantReflectMagnitude = 1 << 2, // SetConstantReflectMagnitude 0x00000004
+            IsVariableReflectMagnitude = 1 << 3, // SetVariableReflectMagnitude 0x00000008
+            IsReflectToHealth = 1 << 4, // SetReflectToHealth 0x00000010
+            IsReflectToVigor = 1 << 5, // SetReflectToVigor 0x00000020
+            IsConstantGenerateProbability = 1 << 6, // SetConstantGenerateProbability 0x00000040
+            IsVariableGenerateProbability = 1 << 7, // SetVariableGenerateProbability 0x00000080
+            IsHealth = 1 << 8, // SetHealth 0x00000100
+            IsVigor = 1 << 9, // SetVigor 0x00000200
 
-            CONSTANT_ABSORB_MAGNITUDE = 1 << 0, // 0x00000001, ReflectiveVitalEffect::SetConstantAbsorbMagnitude
-            VARIABLE_ABSORB_MAGNITUDE = 1 << 1, // 0x00000002, ReflectiveVitalEffect::SetVariableAbsorbMagnitude
-            CONSTANT_REFLECT_MAGNITUDE = 1 << 2, // 0x00000004, ReflectiveVitalEffect::SetConstantReflectMagnitude
-            VARIABLE_REFLECT_MAGNITUDE = 1 << 3, // 0x00000008, ReflectiveVitalEffect::SetVariableReflectMagnitude
-            REFLECT_TO_HEALTH = 1 << 4, // 0x00000010, ReflectiveVitalEffect::SetReflectToHealth
-            REFLECT_TO_VIGOR = 1 << 5, // 0x00000020, ReflectiveVitalEffect::SetReflectToVigor
-            CONSTANT_GENERATE_PROBABILITY = 1 << 6, // 0x00000040, ReflectiveVitalEffect::SetConstantGenerateProbability
-            VARIABLE_GENERATE_PROBABILITY = 1 << 7, // 0x00000080, ReflectiveVitalEffect::SetVariableGenerateProbability
-            HEALTH = 1 << 8, // 0x00000100, ReflectiveVitalEffect::SetHealth
-            VIGOR = 1 << 9, // 0x00000200, ReflectiveVitalEffect::SetVigor
-
-            ADDITIVE = 1 << 12, // 0x00001000, ReflectiveVitalEffect::SetAdditive
-            MULTIPLICATIVE = 1 << 13, // 0x00002000, ReflectiveVitalEffect::SetMultiplicative
-            VITALS_ADJUSTING = 1 << 14, // 0x00004000, ReflectiveVitalEffect::SetVitalsAdjusting
-            EFFECT_VITALS_ADJUSTING = 1 << 15, // 0x00008000, ReflectiveVitalEffect::SetEffectVitalsAdjusting
+            IsAdditive = 1 << 12, // SetAdditive 0x00001000
+            IsMultiplicative = 1 << 13, // SetMultiplicative 0x00002000
+            IsVitalsAdjusting = 1 << 14, // SetVitalsAdjusting 0x00004000
+            IsEffectVitalsAdjusting = 1 << 15, // SetEffectVitalsAdjusting 0x00008000
         }
 
         public float reflectSpellcraftBegin; // m_fReflectSpellcraftBegin

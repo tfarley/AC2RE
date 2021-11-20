@@ -2,8 +2,10 @@
 
     // Enum DatFileDataID
     public enum DatFileDataId : uint {
-        FIRST = 0xFFFF0000,
-        ITERATION_LIST = 0xFFFF0001,
-        PACK_VER_LIST = 0xFFFF0002,
+        Undef = 0,
+
+        First = 0xFFFF0000, // DatFileDataID_First
+        IterationList = 0xFFFF0001, // DatFileDataID_IterationList
+        PackVerList = 0xFFFF0002, // DatFileDataID_PackVerList
     }
 }

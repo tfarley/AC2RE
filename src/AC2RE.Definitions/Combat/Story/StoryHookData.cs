@@ -6,28 +6,27 @@ namespace AC2RE.Definitions {
 
         // Const - globals
         public enum HookType : uint {
-            UNDEF,
-            DAMAGE,
-            CREATE_MISSILES,
-            FIRE_MISSILE,
+            Undef,
+            Damage, // Damage
+            CreateMissiles, // CreateMissiles
+            FireMissile, // FireMissile
         }
 
         // Const - globals
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
-            ALL = uint.MaxValue,
 
-            WEAPON_ID = 1 << 5, // 0x00000020
+            WEAPON_ID = 1 << 5, // WEAPON_ID 0x00000020
 
-            ATTACK_RESULT = 1 << 7, // 0x00000080
-            TARGET_ID = 1 << 8, // 0x00000100
-            ANIM_HOOK_NUMBER = 1 << 9, // 0x00000200
-            ATTACK_HOOK_NUMBER = 1 << 10, // 0x00000400
-            TARGET_HEALTH = 1 << 11, // 0x00000800
-            ATTACKER_HEALTH = 1 << 12, // 0x00001000
-            TARGET_PKDAMAGE = 1 << 13, // 0x00002000
-            ATTACKER_PKDAMAGE = 1 << 14, // 0x00004000
+            ATTACK_RESULT = 1 << 7, // ATTACK_RESULT 0x00000080
+            TARGET_ID = 1 << 8, // TARGET_ID 0x00000100
+            ANIM_HOOK_NUMBER = 1 << 9, // ANIM_HOOK_NUMBER 0x00000200
+            ATTACK_HOOK_NUMBER = 1 << 10, // ATTACK_HOOK_NUMBER 0x00000400
+            TARGET_HEALTH = 1 << 11, // TARGET_HEALTH 0x00000800
+            ATTACKER_HEALTH = 1 << 12, // ATTACKER_HEALTH 0x00001000
+            TARGET_PKDAMAGE = 1 << 13, // TARGET_PKDAMAGE 0x00002000
+            ATTACKER_PKDAMAGE = 1 << 14, // ATTACKER_PKDAMAGE 0x00004000
         }
 
         public PackFlag packFlags;

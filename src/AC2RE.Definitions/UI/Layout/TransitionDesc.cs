@@ -4,13 +4,13 @@ namespace AC2RE.Definitions {
 
     public class TransitionDesc {
 
-        // Const TRANS*
+        // Const TRANS_*
         public enum TransitionType : uint {
-            UNDEF,
-            MOVE,
-            RESIZE,
-            FADE,
-            ROTATE,
+            UNDEF, // TRANS_UNDEF
+            MOVE, // TRANS_MOVE
+            RESIZE, // TRANS_RESIZE
+            FADE, // TRANS_FADE
+            ROTATE, // TRANS_ROTATE
         }
 
         public class MoveResizeTransitionData : IWritable {

@@ -4,16 +4,16 @@
 
         // Enum FrameMemberType
         public enum FrameMemberType : uint {
-            UNDEF,
-            VOID,
-            INT,
-            FLOAT,
-            MIXED,
-            TIME,
-            TYPE_NAME,
-            STRING,
-            ENUM,
-            PACKAGE,
+            Undef, // fmUndef_Type
+            Void, // fmVoid_Type
+            Int, // fmInt_Type
+            Float, // fmFloat_Type
+            Mixed, // fmMixed_Type
+            Timetype, // fmTimetype_Type
+            TypeName, // fmTypeName_Type
+            String, // fmString_Type
+            Enum, // fmEnum_Type
+            Package, // fmPackage_Type
         }
 
         public int offset; // Offset

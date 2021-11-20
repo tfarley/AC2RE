@@ -2,43 +2,43 @@
 
     // Const *_PropertyGroupName
     public enum PropertyGroupName : uint {
-        INVALID = 0,
+        Invalid = 0, // Invalid_PropertyGroupName
 
-        PHYSICS = 0x40000001,
-        RENDER = 0x40000002,
-        ETHEREAL = 0x40000003,
+        Physics = 0x40000001, // Physics_PropertyGroupName
+        Render = 0x40000002, // Render_PropertyGroupName
+        Ethereal = 0x40000003, // Ethereal_PropertyGroupName
 
-        LIGHT = 0x40000006,
-        ENVIRONMENT = 0x40000007,
+        Light = 0x40000006, // Light_PropertyGroupName
+        Environment = 0x40000007, // Environment_PropertyGroupName
 
-        CLEARANCE = 0x40000009,
-        CAMERA = 0x4000000A,
-        CONTENT_DB = 0x4000000B,
-        GENERATOR = 0x4000000C,
-        PUSHERS = 0x4000000D,
+        Clearance = 0x40000009, // Clearance_PropertyGroupName
+        Camera = 0x4000000A, // Camera_PropertyGroupName
+        ContentDB = 0x4000000B, // ContentDB_PropertyGroupName
+        Generator = 0x4000000C, // Generator_PropertyGroupName
+        Pushers = 0x4000000D, // Pushers_PropertyGroupName
 
-        USAGE = 0x4000000F,
-        CELL = 0x40000010,
-        PORTAL = 0x40000011,
-        BLOCK = 0x40000012,
-        INTERIOR = 0x40000013,
+        Usage = 0x4000000F, // Usage_PropertyGroupName
+        Cell = 0x40000010, // Cell_PropertyGroupName
+        Portal = 0x40000011, // Portal_PropertyGroupName
+        Block = 0x40000012, // Block_PropertyGroupName
+        Interior = 0x40000013, // Interior_PropertyGroupName
 
-        GAMEPLAY_LOCK = 0x40000015,
-        TRIGGER_EFFECT = 0x40000016,
-        GENERIC = 0x40000017,
-        QUEST = 0x40000018,
-        AI = 0x40000019,
-        AI_COMBAT = 0x4000001A,
-        MINE = 0x4000001B,
-        CRAFT = 0x4000001C,
-        GAMEPLAY_STATISTICS = 0x4000001D,
-        MAINTENANCE = 0x4000001E,
-        FORGE = 0x4000001F,
-        WEAPON = 0x40000020,
-        TOOLS = 0x40000021,
-        PK_PERMISSION = 0x40000022,
-        BOOK = 0x40000023,
-        LINK = 0x40000024,
-        ACTIVATOR = 0x40000025,
+        GameplayLock = 0x40000015, // GameplayLock_PropertyGroupName
+        TriggerEffect = 0x40000016, // TriggerEffect_PropertyGroupName
+        Generic = 0x40000017, // Generic_PropertyGroupName
+        Quest = 0x40000018, // Quest_PropertyGroupName
+        AI = 0x40000019, // AI_PropertyGroupName
+        AICombat = 0x4000001A, // AICombat_PropertyGroupName
+        Mine = 0x4000001B, // Mine_PropertyGroupName
+        Craft = 0x4000001C, // Craft_PropertyGroupName
+        GameplayStatistics = 0x4000001D, // GameplayStatistics_PropertyGroupName
+        Maintenance = 0x4000001E, // Maintenance_PropertyGroupName
+        Forge = 0x4000001F, // Forge_PropertyGroupName
+        Weapon = 0x40000020, // Weapon_PropertyGroupName
+        Tools = 0x40000021, // Tools_PropertyGroupName
+        PKPermission = 0x40000022, // PKPermission_PropertyGroupName
+        Book = 0x40000023, // Book_PropertyGroupName
+        Link = 0x40000024, // Link_PropertyGroupName
+        Activator = 0x40000025, // Activator_PropertyGroupName
     }
 }

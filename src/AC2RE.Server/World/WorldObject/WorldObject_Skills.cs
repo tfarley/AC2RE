@@ -18,25 +18,25 @@ namespace AC2RE.Server {
         public ErrorType trainSkill(SkillId skillId) {
             Skill skill = world.contentManager.getSkill(skillId);
             if (skillRepo.skillCredits < skill.cost) {
-                return ErrorType.SKILL_NOTENOUGHCREDITS;
+                return ErrorType.Skill_NotEnoughCredits;
             }
 
-            if (skill.allowedSpecies != SpeciesType.UNDEF && !skill.allowedSpecies.HasFlag(species)) {
-                return ErrorType.SKILL_WRONGSPECIES;
+            if (skill.allowedSpecies != SpeciesType.Undef && !skill.allowedSpecies.HasFlag(species)) {
+                return ErrorType.Skill_WrongSpecies;
             }
 
-            if (skill.allowedFactions != FactionType.UNDEF && !skill.allowedFactions.HasFlag(faction)) {
-                return ErrorType.SKILL_WRONGSPECIES;
+            if (skill.allowedFactions != FactionType.Undef && !skill.allowedFactions.HasFlag(faction)) {
+                return ErrorType.Skill_WrongFaction;
             }
 
             HashSet<SkillId> trainedSkills = new();
             foreach (SkillInfo ownedSkill in skillRepo.skills.Values) {
-                if (ownedSkill.flags.HasFlag(SkillInfo.Flag.TRAINED)) {
+                if (ownedSkill.flags.HasFlag(SkillInfo.Flag.IsTrained)) {
                     if (ownedSkill.skillId == skillId) {
-                        return ErrorType.SKILL_ALREADYTRAINED;
+                        return ErrorType.Skill_AlreadyTrained;
                     }
                     if (skill.barringSkillIds != null && skill.barringSkillIds.ContainsKey(ownedSkill.skillId)) {
-                        return ErrorType.SKILL_HASBARRINGSKILLS;
+                        return ErrorType.Skill_HasBarringSkills;
                     }
                     trainedSkills.Add(ownedSkill.skillId);
                 }
@@ -45,7 +45,7 @@ namespace AC2RE.Server {
             if (skill.prereqSkillIds != null) {
                 foreach (SkillId prereqSkillId in skill.prereqSkillIds.Keys) {
                     if (!trainedSkills.Contains(prereqSkillId)) {
-                        return ErrorType.SKILL_MISSINGPREREQSKILLS;
+                        return ErrorType.Skill_MissingPrereqSkills;
                     }
                 }
             }
@@ -53,7 +53,7 @@ namespace AC2RE.Server {
             if (skill.parentSkillIds != null) {
                 foreach (SkillId parentSkillId in skill.parentSkillIds.Keys) {
                     if (!trainedSkills.Contains(parentSkillId)) {
-                        return ErrorType.SKILL_MISSINGPARENTS;
+                        return ErrorType.Skill_MissingParents;
                     }
                 }
             }
@@ -68,20 +68,20 @@ namespace AC2RE.Server {
                 skillRepo.skills[skillId] = skillInfo;
             }
 
-            skillInfo.flags |= SkillInfo.Flag.TRAINED | SkillInfo.Flag.PERSONAL_UNTRAINABLE;
+            skillInfo.flags |= SkillInfo.Flag.IsTrained | SkillInfo.Flag.IsPersonalUntrainable;
 
             skillRepo.skillCredits -= skill.cost;
 
-            return ErrorType.NONE;
+            return ErrorType.None;
         }
 
         public ErrorType raiseSkill(SkillId skillId) {
             if (skillRepo.skillIdUntraining == skillId) {
-                return ErrorType.SKILL_BEINGUNTRAINED;
+                return ErrorType.Skill_BeingUntrained;
             }
 
-            if (!skillRepo.skills.TryGetValue(skillId, out SkillInfo? skillInfo) || !skillInfo.flags.HasFlag(SkillInfo.Flag.TRAINED)) {
-                return ErrorType.SKILL_NOTTRAINED;
+            if (!skillRepo.skills.TryGetValue(skillId, out SkillInfo? skillInfo) || !skillInfo.flags.HasFlag(SkillInfo.Flag.IsTrained)) {
+                return ErrorType.Skill_NotTrained;
             }
 
             Skill skill = world.contentManager.getSkill(skillId);
@@ -91,13 +91,13 @@ namespace AC2RE.Server {
             for (nextSkillLevel = 2; nextSkillLevel < advancementTable.maxLevel && nextSkillLevel < advancementTable.map.Count && skillInfo.xpAllocated >= advancementTable.map[nextSkillLevel]; nextSkillLevel++);
 
             if (nextSkillLevel > advancementTable.maxLevel) {
-                return ErrorType.SKILL_CANNOTRAISE;
+                return ErrorType.Skill_CannotRaise;
             }
 
             ulong xpCost = advancementTable.map[nextSkillLevel] - skillInfo.xpAllocated;
 
             if (xpAvailable < (long)xpCost) {
-                return ErrorType.SKILL_NOTENOUGHEXPERIENCE;
+                return ErrorType.Skill_NotEnoughExperience;
             }
 
             skillInfo.levelCached = (uint)nextSkillLevel;
@@ -106,7 +106,7 @@ namespace AC2RE.Server {
 
             xpAvailable -= (long)xpCost;
 
-            return ErrorType.NONE;
+            return ErrorType.None;
         }
     }
 }

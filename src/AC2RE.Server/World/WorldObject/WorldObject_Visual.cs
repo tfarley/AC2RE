@@ -78,20 +78,20 @@ namespace AC2RE.Server {
         private void syncMode() {
             ModeId newMode = mode;
             if (attacking == false) {
-                newMode = ModeId.PEACE;
+                newMode = ModeId.peace;
             } else {
-                WorldObject? primaryWeapon = world.objectManager.getInWorld(getEquipped(InvLoc.PRIMARY_HAND));
-                WorldObject? secondaryWeapon = world.objectManager.getInWorld(getEquipped(InvLoc.SECONDARY_HAND));
+                WorldObject? primaryWeapon = world.objectManager.getInWorld(getEquipped(InvLoc.PrimaryHand));
+                WorldObject? secondaryWeapon = world.objectManager.getInWorld(getEquipped(InvLoc.SecondaryHand));
                 if (primaryWeapon != null && secondaryWeapon == null) {
                     newMode = primaryWeapon.singleWeaponMode;
                 } else if (primaryWeapon == null && secondaryWeapon != null) {
                     newMode = secondaryWeapon.singleWeaponMode;
                 } else if (primaryWeapon != null && secondaryWeapon != null) {
-                    newMode = secondaryWeapon.implementType == ImplementType.SHIELD
+                    newMode = secondaryWeapon.implementType == ImplementType.Shield
                         ? primaryWeapon.withShieldMode
                         : primaryWeapon.dualWieldMode;
                 } else {
-                    newMode = ModeId.COMBAT_MARTIALARTS;
+                    newMode = ModeId.combat_martialarts;
                 }
             }
 

@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.LOGON;
-        public MessageOpcode opcode => MessageOpcode.Evt_Login__CharacterDeletion_ID;
+        public MessageOpcode opcode => MessageOpcode.Login__CharacterDeletion;
 
         // ECM_Login::RecvEvt_CharacterDeletion
         public string accountName;

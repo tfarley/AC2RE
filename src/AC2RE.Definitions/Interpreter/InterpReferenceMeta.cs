@@ -6,6 +6,7 @@ namespace AC2RE.Definitions {
 
         [Flags]
         public enum Flag : uint {
+            NONE = 0,
             RECURSE = 0x04000000,
             PROCESS = 0x08000000,
             ROOT = 0x10000000,

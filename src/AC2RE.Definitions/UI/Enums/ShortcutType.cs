@@ -2,13 +2,13 @@
 
     // Const *_ShortcutType
     public enum ShortcutType : uint {
-        UNDEF = 0,
+        Undef = 0, // Undef_ShortcutType
 
-        SKILL = 0x40000001,
-        ITEM = 0x40000002,
-        ALIAS = 0x40000003,
-        RECIPE = 0x40000004,
+        Skill = 0x40000001, // Skill_ShortcutType
+        Item = 0x40000002, // Item_ShortcutType
+        Alias = 0x40000003, // Alias_ShortcutType
+        Recipe = 0x40000004, // Recipe_ShortcutType
 
-        NEW_RECIPE = 0x40000006,
+        NewRecipe = 0x40000006, // NewRecipe_ShortcutType
     }
 }

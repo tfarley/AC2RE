@@ -7,20 +7,18 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.Ingredient;
 
-        // WLib
+        // WLib Ingredient
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            FIXED_STACK_SIZE = 1 << 0, // 0x00000001, Ingredient::IsFixedStackSize
-            DYNAMIC_STACK_SIZE = 1 << 1, // 0x00000002, Ingredient::IsDynamicStackSize
-            SPINNER_RANGE = 1 << 2, // 0x00000004, Ingredient::HasSpinnerRange
-            FORCED_DESCRIPTION = 1 << 3, // 0x00000008, Ingredient::HasForcedDescription
-            FIXED_LEVEL = 1 << 4, // 0x00000010, Ingredient::IsFixedLevel
-            DYNAMIC_LEVEL = 1 << 5, // 0x00000020, Ingredient::IsDynamicLevel
-            FIXED_ARCANE_LORE = 1 << 6, // 0x00000040, Ingredient::IsFixedArcaneLore
-            DYNAMIC_ARCANE_LORE = 1 << 7, // 0x00000080, Ingredient::IsDynamicArcaneLore
+            None = 0,
+            IsFixedStackSize = 1 << 0, // IsFixedStackSize 0x00000001
+            IsDynamicStackSize = 1 << 1, // IsDynamicStackSize 0x00000002
+            HasSpinnerRange = 1 << 2, // HasSpinnerRange 0x00000004
+            HasForcedDescription = 1 << 3, // HasForcedDescription 0x00000008
+            IsFixedLevel = 1 << 4, // IsFixedLevel 0x00000010
+            IsDynamicLevel = 1 << 5, // IsDynamicLevel 0x00000020
+            IsFixedArcaneLore = 1 << 6, // IsFixedArcaneLore 0x00000040
+            IsDynamicArcaneLore = 1 << 7, // IsDynamicArcaneLore 0x00000080
         }
 
         public uint ordinal; // m_uiOrdinal

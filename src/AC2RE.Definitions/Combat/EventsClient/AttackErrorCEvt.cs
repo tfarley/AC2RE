@@ -2,7 +2,7 @@
 
     public class AttackErrorCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Combat__Combat_AttackError;
+        public ClientEventFunctionId funcId => ClientEventFunctionId.Combat__AttackError;
 
         // WM_Combat::PostCEvt_Combat_AttackError
         public SkillId skillId; // _skill

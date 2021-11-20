@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class IconDesc : IPackage {
 
-        public NativeType nativeType => NativeType.ICONDESC;
+        public NativeType nativeType => NativeType.IconDesc;
 
         public List<IconLayerDesc> layers; // m_layers
 

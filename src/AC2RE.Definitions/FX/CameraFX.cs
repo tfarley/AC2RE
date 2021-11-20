@@ -8,23 +8,21 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : ulong {
             NONE = 0,
-            ALL = ulong.MaxValue,
-
-            SHAKE = 1 << 0, // 0x00000001
-            LOOKAT = 1 << 1, // 0x00000002
-            FREE_CAMERA = 1 << 2, // 0x00000004
-            PARENT_CAMERA = 1 << 3, // 0x00000008
-            TARGET_CAMERA = 1 << 4, // 0x00000010
-            RESTORE_CAMERA = 1 << 5, // 0x00000020
-            INTENSITY = 1 << 6, // 0x00000040
-            PERIOD = 1 << 7, // 0x00000080
-            RAMP_UP = 1 << 8, // 0x00000100
-            MOTION_BLUR = 1 << 9, // 0x00000200
-            SCREEN_FLASH = 1 << 10, // 0x00000400
-            PLAYER_ONLY = 1 << 11, // 0x00000800
-            FOV = 1 << 12, // 0x00001000
-            RAMP_DOWN = 1 << 13, // 0x00002000
-            DISTANCE = 1 << 14, // 0x00004000
+            SHAKE = 1 << 0, // SHAKE 0x00000001
+            LOOKAT = 1 << 1, // LOOKAT 0x00000002
+            FREE_CAMERA = 1 << 2, // FREE_CAMERA 0x00000004
+            PARENT_CAMERA = 1 << 3, // PARENT_CAMERA 0x00000008
+            TARGET_CAMERA = 1 << 4, // TARGET_CAMERA 0x00000010
+            RESTORE_CAMERA = 1 << 5, // RESTORE_CAMERA 0x00000020
+            INTENSITY = 1 << 6, // INTENSITY 0x00000040
+            PERIOD = 1 << 7, // PERIOD 0x00000080
+            RAMP_UP = 1 << 8, // RAMP_UP 0x00000100
+            MOTION_BLUR = 1 << 9, // MOTION_BLUR 0x00000200
+            SCREEN_FLASH = 1 << 10, // SCREEN_FLASH 0x00000400
+            PLAYER_ONLY = 1 << 11, // PLAYER_ONLY 0x00000800
+            FOV = 1 << 12, // FOV 0x00001000
+            RAMP_DOWN = 1 << 13, // RAMP_DOWN 0x00002000
+            DISTANCE = 1 << 14, // DISTANCE 0x00004000
         }
 
         public PackFlag packFlags;

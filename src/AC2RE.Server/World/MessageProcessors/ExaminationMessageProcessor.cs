@@ -11,7 +11,7 @@ namespace AC2RE.Server {
 
         public override bool processMessage(ClientConnection client, Player player, INetMessage genericMsg) {
             switch (genericMsg.opcode) {
-                case MessageOpcode.Evt_Interp__InterpSEvent_ID: {
+                case MessageOpcode.Interp__InterpSEvent: {
                         InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
                         if (msg.netEvent.funcId == ServerEventFunctionId.Examination__QueryExaminationProfile) {
                             QueryExaminationProfileSEvt sEvent = (QueryExaminationProfileSEvt)msg.netEvent;
@@ -21,21 +21,21 @@ namespace AC2RE.Server {
                                     foreach ((IntStat stat, int value) in target.qualities.ints) {
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.STRING,
+                                            type = ExaminationDataNode.DataType.String,
                                             valString = new(stat.ToString()),
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.TAB,
+                                            type = ExaminationDataNode.DataType.Tab,
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.INT,
+                                            type = ExaminationDataNode.DataType.Int,
                                             valInt = value,
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.BREAK,
+                                            type = ExaminationDataNode.DataType.Break,
                                         });
                                     }
                                 }
@@ -43,21 +43,21 @@ namespace AC2RE.Server {
                                     foreach ((LongIntStat stat, long value) in target.qualities.longs) {
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.STRING,
+                                            type = ExaminationDataNode.DataType.String,
                                             valString = new(stat.ToString()),
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.TAB,
+                                            type = ExaminationDataNode.DataType.Tab,
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.LONG_INT,
+                                            type = ExaminationDataNode.DataType.LongInt,
                                             valLongInt = value,
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.BREAK,
+                                            type = ExaminationDataNode.DataType.Break,
                                         });
                                     }
                                 }
@@ -65,21 +65,21 @@ namespace AC2RE.Server {
                                     foreach ((BoolStat stat, bool value) in target.qualities.bools) {
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.STRING,
+                                            type = ExaminationDataNode.DataType.String,
                                             valString = new(stat.ToString()),
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.TAB,
+                                            type = ExaminationDataNode.DataType.Tab,
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.BOOL,
+                                            type = ExaminationDataNode.DataType.Bool,
                                             valBool = value,
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.BREAK,
+                                            type = ExaminationDataNode.DataType.Break,
                                         });
                                     }
                                 }
@@ -87,21 +87,21 @@ namespace AC2RE.Server {
                                     foreach ((FloatStat stat, float value) in target.qualities.floats) {
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.STRING,
+                                            type = ExaminationDataNode.DataType.String,
                                             valString = new(stat.ToString()),
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.TAB,
+                                            type = ExaminationDataNode.DataType.Tab,
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.FLOAT,
+                                            type = ExaminationDataNode.DataType.Float,
                                             valFloat = value,
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.BREAK,
+                                            type = ExaminationDataNode.DataType.Break,
                                         });
                                     }
                                 }
@@ -109,21 +109,21 @@ namespace AC2RE.Server {
                                     foreach ((TimestampStat stat, double value) in target.qualities.doubles) {
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.STRING,
+                                            type = ExaminationDataNode.DataType.String,
                                             valString = new(stat.ToString()),
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.TAB,
+                                            type = ExaminationDataNode.DataType.Tab,
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.COUNTDOWN,
+                                            type = ExaminationDataNode.DataType.Countdown,
                                             valTime = value,
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.BREAK,
+                                            type = ExaminationDataNode.DataType.Break,
                                         });
                                     }
                                 }
@@ -131,21 +131,21 @@ namespace AC2RE.Server {
                                     foreach ((InstanceIdStat stat, InstanceId value) in target.qualities.ids) {
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.STRING,
+                                            type = ExaminationDataNode.DataType.String,
                                             valString = new(stat.ToString()),
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.TAB,
+                                            type = ExaminationDataNode.DataType.Tab,
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.STRING,
+                                            type = ExaminationDataNode.DataType.String,
                                             valString = new(value.ToString()),
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.BREAK,
+                                            type = ExaminationDataNode.DataType.Break,
                                         });
                                     }
                                 }
@@ -153,21 +153,21 @@ namespace AC2RE.Server {
                                     foreach ((DataIdStat stat, DataId value) in target.qualities.dids) {
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.STRING,
+                                            type = ExaminationDataNode.DataType.String,
                                             valString = new(stat.ToString()),
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.TAB,
+                                            type = ExaminationDataNode.DataType.Tab,
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.STRING,
+                                            type = ExaminationDataNode.DataType.String,
                                             valString = new(value.ToString()),
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.BREAK,
+                                            type = ExaminationDataNode.DataType.Break,
                                         });
                                     }
                                 }
@@ -175,21 +175,21 @@ namespace AC2RE.Server {
                                     foreach ((StringStat stat, string value) in target.qualities.strings) {
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.STRING,
+                                            type = ExaminationDataNode.DataType.String,
                                             valString = new(stat.ToString()),
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.TAB,
+                                            type = ExaminationDataNode.DataType.Tab,
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.STRING,
+                                            type = ExaminationDataNode.DataType.String,
                                             valString = new(value),
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.BREAK,
+                                            type = ExaminationDataNode.DataType.Break,
                                         });
                                     }
                                 }
@@ -197,21 +197,21 @@ namespace AC2RE.Server {
                                     foreach ((StringInfoStat stat, Definitions.StringInfo value) in target.qualities.stringInfos) {
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.STRING,
+                                            type = ExaminationDataNode.DataType.String,
                                             valString = new(stat.ToString()),
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.TAB,
+                                            type = ExaminationDataNode.DataType.Tab,
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.STRING,
+                                            type = ExaminationDataNode.DataType.String,
                                             valString = value,
                                         });
                                         nodes.Add(new() {
                                             order = (uint)nodes.Count,
-                                            type = ExaminationDataNode.DataType.BREAK,
+                                            type = ExaminationDataNode.DataType.Break,
                                         });
                                     }
                                 }
@@ -231,7 +231,7 @@ namespace AC2RE.Server {
                                             nodes = new() {
                                                 new() {
                                                     order = 2,
-                                                    type = ExaminationDataNode.DataType.INT,
+                                                    type = ExaminationDataNode.DataType.Int,
                                                     valInt = 12345,
                                                     appearanceId = 3193660691,
                                                 }

@@ -2,18 +2,18 @@
 
     // Const *_SectionType
     public enum SectionType : uint {
-        INVALID,
-        OPCODE,
-        STRING_LIT_TABLE,
-        IMPORT_TABLE,
-        EXPORT_TABLE,
-        VERSION_INFO,
-        VTABLE_INFO,
-        VALID_EVENT_TABLE,
+        Invalid, // Invalid_SectionType
+        Opcode, // Opcode_SectionType
+        StringLitTable, // StringLitTable_SectionType
+        ImportTable, // ImportTable_SectionType
+        ExportTable, // ExportTable_SectionType
+        VersionInfo, // VersionInfo_SectionType
+        VTable, // VTable_SectionType
+        ValidEventTable, // ValidEventTable_SectionType
 
-        FUNCTION_LOC_DEBUG = 256,
-        SOURCE_FILE_DEBUG = 257,
-        LINE_NUM_DEBUG = 258,
-        FRAME_DEBUG_INFO = 259,
+        FunctionLocDebug = 256, // FunctionLocDebug_SectionType
+        SourceFileDebug = 257, // SourceFileDebug_SectionType
+        LineNumDebug = 258, // LineNumDebug_SectionType
+        FrameDebugInfo = 259, // FrameDebugInfo_SectionType
     }
 }

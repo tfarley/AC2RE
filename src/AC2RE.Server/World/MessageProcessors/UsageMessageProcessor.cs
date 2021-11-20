@@ -10,9 +10,9 @@ namespace AC2RE.Server {
 
         public override bool processMessage(ClientConnection client, Player player, INetMessage genericMsg) {
             switch (genericMsg.opcode) {
-                case MessageOpcode.Evt_Interp__InterpSEvent_ID: {
+                case MessageOpcode.Interp__InterpSEvent: {
                         InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
-                        if (msg.netEvent.funcId == ServerEventFunctionId.Usage__Usage_TryToUseItem) {
+                        if (msg.netEvent.funcId == ServerEventFunctionId.Usage__TryToUseItem) {
                             TryToUseItemSEvt sEvent = (TryToUseItemSEvt)msg.netEvent;
 
                             send(player, new InterpCEventPrivateMsg {

@@ -6,14 +6,12 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.ProduceRecipeAction;
 
-        // WLib
+        // WLib ProduceRecipeAction
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            OBJECT_TO_PRODUCE = 1 << 0, // 0x00000001, ProduceRecipeAction::SetObjectToProduce / ProduceRecipeAction::SetObjectToProduceByDID
-            OBJECT_TO_PRODUCE_DYNAMIC_QUANTITY = 1 << 1, // 0x00000002, ProduceRecipeAction::SetObjectToProduceDynamicQuantity
+            None = 0,
+            HasObjectToProduce = 1 << 0, // SetObjectToProduce + SetObjectToProduceByDID 0x00000001
+            HasObjectToProduceDynamicQuantity = 1 << 1, // SetObjectToProduceDynamicQuantity 0x00000002
         }
 
         public uint ordinal; // m_uiOrdinal

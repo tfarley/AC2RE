@@ -2,10 +2,10 @@
 
     // Const *_StackType
     public enum StackType : byte {
-        UNDEF,
-        REFERENCE,
-        INT,
-        FLOAT,
-        MIXED,
+        Undef, // Undef_StackType
+        Reference, // Reference_StackType
+        Int, // Int_StackType
+        Float, // Float_StackType
+        Mixed, // Mixed_StackType
     }
 }

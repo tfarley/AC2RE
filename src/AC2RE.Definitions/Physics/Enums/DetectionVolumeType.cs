@@ -2,13 +2,13 @@
 
     // Enum DetectionVolumeType
     public enum DetectionVolumeType : uint {
-        UNDEFINED,
-        RAY,
-        BOUND_VOLUME,
-        SPHERE_CONE,
-        SPHERE,
-        SPHERE_PLANE_CONE,
-        BOUND_BOX,
-        CYLINDER,
+        Undefined, // DetUndefined
+        Ray, // DetRay
+        BoundVolume, // DetBoundVolume
+        SphereCone, // DetSphereCone
+        Sphere, // DetSphere
+        SpherePlaneCone, // DetSpherePlaneCone
+        BoundBox, // DetBoundBox
+        Cylinder, // DetCylinder
     }
 }

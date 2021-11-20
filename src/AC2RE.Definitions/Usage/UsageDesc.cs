@@ -7,26 +7,24 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.UsageDesc;
 
-        // WLib
+        // WLib UsageDesc
         [Flags]
         public enum ControlFlag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
+            None = 0,
+            ShouldDeleteItemOnUse = 1 << 0, // ShouldDeleteItemOnUse 0x00000001
+            DeleteItemOverride = 1 << 1, // DeleteItemOverride 0x00000002
+            ShouldLockUser = 1 << 2, // ShouldLockUser 0x00000004
+            ShouldLockItem = 1 << 3, // ShouldLockItem 0x00000008
+            ShouldLockTarget = 1 << 4, // ShouldLockTarget 0x00000010
+            ShouldCheckPrereqs = 1 << 5, // ShouldCheckPrereqs 0x00000020
+            IsQuiet = 1 << 6, // IsQuiet 0x00000040
+            ShouldSupressSuccessMessage = 1 << 7, // ShouldSupressSuccessMessage 0x00000080
+            ShouldCheckPermissionsWithinPermRadius = 1 << 8, // ShouldCheckPermissionsWithinPermRadius 0x00000100
+            ShouldInterruptMovement = 1 << 9, // ShouldInterruptMovement 0x00000200
+            ShouldDelegateUsage = 1 << 10, // ShouldDelegateUsage 0x00000400
+            IsLockOverride = 1 << 11, // IsLockOverride 0x00000800
 
-            DELETE_ITEM_ON_USE = 1 << 0, // 0x00000001, UsageDesc::ShouldDeleteItemOnUse
-            DELETE_ITEM_OVERRIDE = 1 << 1, // 0x00000002, UsageDesc::DeleteItemOverride
-            LOCK_USER = 1 << 2, // 0x00000004, UsageDesc::ShouldLockUser
-            LOCK_ITEM = 1 << 3, // 0x00000008, UsageDesc::ShouldLockItem
-            LOCK_TARGET = 1 << 4, // 0x00000010, UsageDesc::ShouldLockTarget
-            CHECK_PREREQS = 1 << 5, // 0x00000020, UsageDesc::ShouldCheckPrereqs
-            QUIET = 1 << 6, // 0x00000040, UsageDesc::IsQuiet
-            SUPRESS_SUCCESS_MESSAGE = 1 << 7, // 0x00000080, UsageDesc::ShouldSupressSuccessMessage
-            CHECK_PERMISSIONS_WITHIN_PERM_RADIUS = 1 << 8, // 0x00000100, UsageDesc::ShouldCheckPermissionsWithinPermRadius
-            INTERRUPT_MOVEMENT = 1 << 9, // 0x00000200, UsageDesc::ShouldInterruptMovement
-            DELEGATE_USAGE = 1 << 10, // 0x00000400, UsageDesc::ShouldDelegateUsage
-            LOCK_OVERRIDE = 1 << 11, // 0x00000800, UsageDesc::IsLockOverride
-
-            UNLOCK_USER_FOR_USAGE_EFFECTS = 1 << 13, // 0x00002000, UsageDesc::ShouldUnlockUserForUsageEffects
+            ShouldUnlockUserForUsageEffects = 1 << 13, // ShouldUnlockUserForUsageEffects 0x00002000
         }
 
         public StringInfo successText; // m_siSuccessMessage

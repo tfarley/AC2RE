@@ -2,10 +2,10 @@
 
     // Enum TransitionState
     public enum TransitionState : uint {
-        INVALID,
-        OK,
-        COLLIDED,
-        ADJUSTED,
-        SLID,
+        INVALID, // INVALID_TS
+        OK, // OK_TS
+        COLLIDED, // COLLIDED_TS
+        ADJUSTED, // ADJUSTED_TS
+        SLID, // SLID_TS
     }
 }

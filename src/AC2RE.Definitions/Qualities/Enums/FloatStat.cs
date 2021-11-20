@@ -1,130 +1,155 @@
 ﻿namespace AC2RE.Definitions {
 
-    // Const *_FloatStat and WSL func gmPropertyMapper::constructor
+    // Const *_FloatStat / WSL func gmPropertyMapper::constructor
     public enum FloatStat : uint {
-        UNDEF = 0,
+        Undef = 0, // Undef_FloatStat
 
-        TRANSLUCENCY = 2,
-        FRICTION = 3,
-        ELASTICITY = 4,
-        MASS = 5,
-        RESETCOUNTDOWNTIME = 50,
-        HEARTBEATINTERVAL = 256,
-        HEALTH_REGENRATE = 262,
-        VIGOR_REGENRATE = 263,
-        CHARMINSAFEVEL = 264,
-        CREATUREFALLMOD = 266,
-        HEALTH_COMBATREGENRATE = 267,
-        VIGOR_COMBATREGENRATE = 268,
-        FOCUS_COSTMOD = 269,
-        RELEASEDTIMESTAMP = 270,
-        BONDEQUIPPEDTREASURE = 271,
-        CLOSESPHERERADIUS = 272,
-        MOVEITEMDISTANCE = 273,
-        BASEROTTIME = 280,
-        MAXACCELROTTIME = 281,
-        MINACCELROTTIME = 282,
-        CORPSESPAMCOUNTER = 283,
-        LOSEWIELDEDITEMSCHANCE = 284,
-        LOOTTIMER = 285,
-        CURRENTVITAE = 286,
-        PHYSICS_VELSCALE = 295,
-        PHYSICS_ACCSCALE = 296,
-        PHYSICS_COMBATANIMSCALE = 297,
-        PHYSICS_SCALE = 298,
-        PHYSICS_JUMPSCALE = 299,
-        USAGE_MINPERMISSIONCHECKDIST = 300,
-        USAGE_MINUSAGEDIST = 301,
-        USAGE_USAGEINTERVAL = 302,
-        USAGE_EFFECT1_SPELLCRAFT = 303,
-        USAGE_EFFECT2_SPELLCRAFT = 304,
-        USAGE_EFFECT3_SPELLCRAFT = 305,
-        USAGE_EFFECT4_SPELLCRAFT = 306,
-        USAGE_EFFECT5_SPELLCRAFT = 307,
-        USAGE_USERBEHAVIORTIMESCALE = 308,
-        USAGE_REQUIREDLOCATIONRADIUS = 309,
-        USAGE_REQUIREDLOCATIONCLOSEPROXIMITYMSGRADIUS = 310,
-        USAGE_REQUIREDLOCATIONMEDIUMPROXIMITYMSGRADIUS = 311,
-        USAGE_REQUIREDLOCATIONFARPROXIMITYMSGRADIUS = 312,
-        USAGE_REQUIREDLOCATIONVERYFARPROXIMITYMSGRADIUS = 313,
-        USAGE_USAGEDURATION = 314,
-        LAST_DISTANCE = 315,
-        GEN_HEARTBEATINTERVAL = 401,
-        GEN_REGENINTERVAL = 402,
-        GENERATORINITIALDELAY = 403,
-        COMBATMODEDELAY = 500,
-        COMBAT_DAMAGEMOD = 501,
-        TOTALARMORMOD = 502,
-        COMBAT_BASEDAMAGEMOD = 503,
-        ABSORPTION_CHANCE = 504,
-        BYPASSABLEARMORMOD = 505,
-        COMBATSPEEDRESISTANCE = 506,
-        NPC_ARMORTHRESHOLD = 507,
-        NPC_DAMAGETYPEMOD = 508,
-        TSYS_MUNDANEMUTATIONINTENSITY = 600,
-        WEAPON_VARIANCE = 1000,
-        CRITICALHITMOD = 1001,
-        DURABILITY_DECAYMOD = 1002,
-        ITEM_NATUREDAMAGEMOD = 1003,
-        ITEM_DECAYDAMAGEMOD = 1004,
-        ITEM_MARTIALDAMAGEMOD = 1005,
-        ITEM_ARCANEDAMAGEMOD = 1006,
-        ITEM_NATUREDAMAGEMODCAP = 1011,
-        ITEM_DECAYDAMAGEMODCAP = 1012,
-        ITEM_MARTIALDAMAGEMODCAP = 1013,
-        ITEM_ARCANEDAMAGEMODCAP = 1014,
-        ITEM_NATUREDAMAGEMODGROWTHRATE = 1015,
-        ITEM_DECAYDAMAGEMODGROWTHRATE = 1016,
-        ITEM_MARTIALDAMAGEMODGROWTHRATE = 1017,
-        ITEM_ARCANEDAMAGEMODGROWTHRATE = 1018,
-        APPEARANCEMUTATIONKEYVALUE = 1500,
-        AI_PERCEPTIONRADIUS = 2000,
-        AI_HOMESICKRADIUS = 2001,
-        AI_CLIQUEWEIGHT = 2002,
-        AI_MELEEOFFSET = 2007,
-        AI_WANDERINGRANGE = 2020,
-        AI_WANDERINGPROB = 2021,
-        AI_WANDERINGSPEED = 2022,
-        AI_CURRENTTARGETBIAS = 2040,
-        AI_LOSTARGETBIAS = 2041,
-        AI_PATHTARGETBIAS = 2042,
-        AI_PATHLENGTHTARGETBIAS = 2043,
-        AI_HIGHLEVELTARGETBIAS = 2044,
-        AI_LOWLEVELTARGETBIAS = 2045,
-        AI_DAMAGETARGETBIAS = 2046,
-        AI_LOVETARGETBIAS = 2047,
-        AI_IMPLEMENTCHOICEWINDOW = 2070,
-        AI_IMPLEMENTCHOICEBIAS = 2071,
-        AI_CLOSERANGEBIAS = 2074,
-        AI_LONGRANGEBIAS = 2075,
-        AI_HEALTHWARNINGLEVEL = 2076,
-        AI_HEALTHAGGRESSIVENESS = 2077,
-        AI_VIGORWARNINGLEVEL = 2078,
-        AI_VIGORAGGRESSIVENESS = 2079,
-        AI_NEARDEATHLEVEL = 2080,
-        AI_LOWARMORBIAS = 2081,
-        AI_HIGHARMORBIAS = 2082,
-        AI_MANYTARGETSLEVEL = 2083,
-        AI_MANYTARGETSBIAS = 2084,
-        AI_HARVESTINGVARIANCE = 2085,
-        AI_ENCHANTEDRANDOMSKEWSKILL = 2090,
-        AICOMBAT_TARGETCONSIDERINTERVAL = 2091,
-        AI_PET_MAXDEFENDDISTANCE = 2100,
-        AI_PET_COMMANDSPAMCOUNTER = 2101,
-        AI_ENCHANTEDRANDOMSKEWTARGET = 2200,
-        SKILL_RESETTIMEDURATION = 3000,
-        VENDOR_MINHOUSEKEEPTIME = 4000,
-        VENDOR_MAXHOUSEKEEPTIME = 4001,
-        VENDOR_DEFAULTREGENDELAY = 4002,
-        VENDOR_BUYMULTIPLIER = 4003,
-        VENDOR_SELLMULTIPLIER = 4004,
-        VENDOR_HOUSEKEEPVALMEAN = 4005,
-        VENDOR_HOUSEKEEPVALVARIANCE = 4006,
-        CRAFT_FORGEEFFECTRADIUS = 5000,
-        CRAFT_MINEOBJECTQUANTITYVARIANCE = 5001,
-        CRAFT_TOOLQUANTITYMOD = 5002,
-        CRAFT_TOOLXPMOD = 5003,
-        CRAFT_DYEPLANTMOD = 5004,
-        EXPERIENCE_COMBATXPMOD = 5500,
+        Translucency = 2, // Translucency_FloatStat
+        Friction = 3, // Friction_FloatStat
+        Elasticity = 4, // Elasticity_FloatStat
+        Mass = 5, // Mass_FloatStat
+
+        ResetCountdownTime = 50, // ResetCountdownTime_FloatStat
+
+        HeartbeatInterval = 256, // HeartbeatInterval_FloatStat
+
+        Health_RegenRate = 262, // Health_RegenRate_FloatStat
+        Vigor_RegenRate = 263, // Vigor_RegenRate_FloatStat
+        CharMinSafeVel = 264, // CharMinSafeVel_FloatStat
+
+        CreatureFallMod = 266, // CreatureFallMod_FloatStat
+        Health_CombatRegenRate = 267, // Health_CombatRegenRate_FloatStat
+        Vigor_CombatRegenRate = 268, // Vigor_CombatRegenRate_FloatStat
+        Focus_CostMod = 269, // Focus_CostMod_FloatStat
+        ReleasedTimestamp = 270, // ReleasedTimestamp_FloatStat
+        BondEquippedTreasure = 271, // BondEquippedTreasure_FloatStat
+        CloseSphereRadius = 272, // CloseSphereRadius_FloatStat
+        MoveItemDistance = 273, // MoveItemDistance_FloatStat
+
+        BaseRotTime = 280, // BaseRotTime_FloatStat
+        MaxAccelRotTime = 281, // MaxAccelRotTime_FloatStat
+        MinAccelRotTime = 282, // MinAccelRotTime_FloatStat
+        CorpseSpamCounter = 283, // CorpseSpamCounter_FloatStat
+        LoseWieldedItemsChance = 284, // LoseWieldedItemsChance_FloatStat
+        LootTimer = 285, // LootTimer_FloatStat
+        CurrentVitae = 286, // CurrentVitae_FloatStat
+
+        Physics_VelScale = 295, // Physics_VelScale_FloatStat
+        Physics_AccScale = 296, // Physics_AccScale_FloatStat
+        Physics_CombatAnimScale = 297, // Physics_CombatAnimScale_FloatStat
+        Physics_Scale = 298, // Physics_Scale_FloatStat
+        Physics_JumpScale = 299, // Physics_JumpScale_FloatStat
+        Usage_MinPermissionCheckDist = 300, // Usage_MinPermissionCheckDist_FloatStat
+        Usage_MinUsageDist = 301, // Usage_MinUsageDist_FloatStat
+        Usage_UsageInterval = 302, // Usage_UsageInterval_FloatStat
+        Usage_Effect1_Spellcraft = 303, // Usage_Effect1_Spellcraft_FloatStat
+        Usage_Effect2_Spellcraft = 304, // Usage_Effect2_Spellcraft_FloatStat
+        Usage_Effect3_Spellcraft = 305, // Usage_Effect3_Spellcraft_FloatStat
+        Usage_Effect4_Spellcraft = 306, // Usage_Effect4_Spellcraft_FloatStat
+        Usage_Effect5_Spellcraft = 307, // Usage_Effect5_Spellcraft_FloatStat
+        Usage_UserBehaviorTimeScale = 308, // Usage_UserBehaviorTimeScale_FloatStat
+        Usage_RequiredLocationRadius = 309, // Usage_RequiredLocationRadius_FloatStat
+        Usage_RequiredLocationCloseProximityMsgRadius = 310, // Usage_RequiredLocationCloseProximityMsgRadius_FloatStat
+        Usage_RequiredLocationMediumProximityMsgRadius = 311, // Usage_RequiredLocationMediumProximityMsgRadius_FloatStat
+        Usage_RequiredLocationFarProximityMsgRadius = 312, // Usage_RequiredLocationFarProximityMsgRadius_FloatStat
+        Usage_RequiredLocationVeryFarProximityMsgRadius = 313, // Usage_RequiredLocationVeryFarProximityMsgRadius_FloatStat
+        Usage_UsageDuration = 314, // Usage_UsageDuration_FloatStat
+        Last_Distance = 315, // Last_Distance_FloatStat
+
+        Gen_HeartbeatInterval = 401, // Gen_HeartbeatInterval_FloatStat
+        Gen_RegenInterval = 402, // Gen_RegenInterval_FloatStat
+        GeneratorInitialDelay = 403, // _ / GeneratorInitialDelay
+
+        CombatModeDelay = 500, // CombatModeDelay_FloatStat
+        Combat_DamageMod = 501, // Combat_DamageMod_FloatStat
+        TotalArmorMod = 502, // TotalArmorMod_FloatStat
+        Combat_BaseDamageMod = 503, // Combat_BaseDamageMod_FloatStat
+        Absorption_Chance = 504, // Absorption_Chance_FloatStat
+        BypassableArmorMod = 505, // BypassableArmorMod_FloatStat
+        CombatSpeedResistance = 506, // CombatSpeedResistance_FloatStat
+        NPC_ArmorThreshold = 507, // _ / NPC_ArmorThreshold
+        NPC_DamageTypeMod = 508, // _ / NPC_DamageTypeMod
+
+        TSYS_MundaneMutationIntensity = 600, // TSYS_MundaneMutationIntensity_FloatStat
+
+        Weapon_Variance = 1000, // Weapon_Variance_FloatStat
+        CriticalHitMod = 1001, // CriticalHitMod_FloatStat
+        Durability_DecayMod = 1002, // Durability_DecayMod_FloatStat
+        Item_NatureDamageMod = 1003, // _ / Item_NatureDamageMod
+        Item_DecayDamageMod = 1004, // _ / Item_DecayDamageMod
+        Item_MartialDamageMod = 1005, // _ / Item_MartialDamageMod
+        Item_ArcaneDamageMod = 1006, // _ / Item_ArcaneDamageMod
+
+        Item_NatureDamageModCap = 1011, // _ / Item_NatureDamageModCap
+        Item_DecayDamageModCap = 1012, // _ / Item_DecayDamageModCap
+        Item_MartialDamageModCap = 1013, // _ / Item_MartialDamageModCap
+        Item_ArcaneDamageModCap = 1014, // _ / Item_ArcaneDamageModCap
+        Item_NatureDamageModGrowthRate = 1015, // _ / Item_NatureDamageModGrowthRate
+        Item_DecayDamageModGrowthRate = 1016, // _ / Item_DecayDamageModGrowthRate
+        Item_MartialDamageModGrowthRate = 1017, // _ / Item_MartialDamageModGrowthRate
+        Item_ArcaneDamageModGrowthRate = 1018, // _ / Item_ArcaneDamageModGrowthRate
+
+        AppearanceMutationKeyValue = 1500, // AppearanceMutationKeyValue_FloatStat
+
+        AI_PerceptionRadius = 2000, // AI_PerceptionRadius_FloatStat
+        AI_HomesickRadius = 2001, // AI_HomesickRadius_FloatStat
+        AI_CliqueWeight = 2002, // AI_CliqueWeight_FloatStat
+
+        AI_MeleeOffset = 2007, // AI_MeleeOffset_FloatStat
+
+        AI_WanderingRange = 2020, // AI_WanderingRange_FloatStat
+        AI_WanderingProb = 2021, // AI_WanderingProb_FloatStat
+        AI_WanderingSpeed = 2022, // AI_WanderingSpeed_FloatStat
+
+        AI_CurrentTargetBias = 2040, // AI_CurrentTargetBias_FloatStat
+        AI_LOSTargetBias = 2041, // AI_LOSTargetBias_FloatStat
+        AI_PathTargetBias = 2042, // AI_PathTargetBias_FloatStat
+        AI_PathLengthTargetBias = 2043, // AI_PathLengthTargetBias_FloatStat
+        AI_HighLevelTargetBias = 2044, // AI_HighLevelTargetBias_FloatStat
+        AI_LowLevelTargetBias = 2045, // AI_LowLevelTargetBias_FloatStat
+        AI_DamageTargetBias = 2046, // AI_DamageTargetBias_FloatStat
+        AI_LoveTargetBias = 2047, // AI_LoveTargetBias_FloatStat
+
+        AI_ImplementChoiceWindow = 2070, // AI_ImplementChoiceWindow_FloatStat
+        AI_ImplementChoiceBias = 2071, // AI_ImplementChoiceBias_FloatStat
+
+        AI_CloseRangeBias = 2074, // AI_CloseRangeBias_FloatStat
+        AI_LongRangeBias = 2075, // AI_LongRangeBias_FloatStat
+        AI_HealthWarningLevel = 2076, // AI_HealthWarningLevel_FloatStat
+        AI_HealthAggressiveness = 2077, // AI_HealthAggressiveness_FloatStat
+        AI_VigorWarningLevel = 2078, // AI_VigorWarningLevel_FloatStat
+        AI_VigorAggressiveness = 2079, // AI_VigorAggressiveness_FloatStat
+        AI_NearDeathLevel = 2080, // AI_NearDeathLevel_FloatStat
+        AI_LowArmorBias = 2081, // AI_LowArmorBias_FloatStat
+        AI_HighArmorBias = 2082, // AI_HighArmorBias_FloatStat
+        AI_ManyTargetsLevel = 2083, // AI_ManyTargetsLevel_FloatStat
+        AI_ManyTargetsBias = 2084, // AI_ManyTargetsBias_FloatStat
+        AI_HarvestingVariance = 2085, // _ / AI_HarvestingVariance
+
+        AI_EnchantedRandomSkewSkill = 2090, // AI_EnchantedRandomSkewSkill_FloatStat
+        AICombat_TargetConsiderInterval = 2091, // _ / AICombat_TargetConsiderInterval
+
+        AI_Pet_MaxDefendDistance = 2100, // AI_Pet_MaxDefendDistance_FloatStat
+        AI_Pet_CommandSpamCounter = 2101, // AI_Pet_CommandSpamCounter_FloatStat
+
+        AI_EnchantedRandomSkewTarget = 2200, // AI_EnchantedRandomSkewTarget_FloatStat
+
+        Skill_ResetTimeDuration = 3000, // Skill_ResetTimeDuration_FloatStat
+
+        Vendor_MinHousekeepTime = 4000, // Vendor_MinHousekeepTime_FloatStat
+        Vendor_MaxHousekeepTime = 4001, // Vendor_MaxHousekeepTime_FloatStat
+        Vendor_DefaultRegenDelay = 4002, // Vendor_DefaultRegenDelay_FloatStat
+        Vendor_BuyMultiplier = 4003, // Vendor_BuyMultiplier_FloatStat
+        Vendor_SellMultiplier = 4004, // Vendor_SellMultiplier_FloatStat
+        Vendor_HousekeepValMean = 4005, // Vendor_HousekeepValMean_FloatStat
+        Vendor_HousekeepValVariance = 4006, // Vendor_HousekeepValVariance_FloatStat
+
+        Craft_ForgeEffectRadius = 5000, // Craft_ForgeEffectRadius_FloatStat
+        Craft_MineObjectQuantityVariance = 5001, // Craft_MineObjectQuantityVariance_FloatStat
+        Craft_ToolQuantityMod = 5002, // Craft_ToolQuantityMod_FloatStat
+        Craft_ToolXPMod = 5003, // Craft_ToolXPMod_FloatStat
+        Craft_DyePlantMod = 5004, // Craft_DyePlantMod_FloatStat
+
+        Experience_CombatXPMod = 5500, // Experience_CombatXPMod_FloatStat
     }
 }

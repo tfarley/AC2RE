@@ -4,10 +4,11 @@ namespace AC2RE.Definitions {
 
     public class FrameDebugInfo {
 
+        // Enum FrameType
         public enum FrameType : uint {
-            UNDEF,
-            FUNCTION,
-            PACKAGE,
+            Undef, // Undef_FrameType
+            Function, // Function_FrameType
+            Package, // Package_FrameType
         }
 
         public string name; // m_name

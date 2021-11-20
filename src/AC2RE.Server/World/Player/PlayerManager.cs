@@ -91,7 +91,7 @@ namespace AC2RE.Server {
         public void disconnectAll() {
             foreach (Player player in _players.Values) {
                 send(player, new DisplayStringInfoMsg {
-                    type = TextType.ADMIN,
+                    type = TextType.Admin,
                     text = new(new(0x25000626), 165844726),
                 });
                 disconnect(player);
@@ -105,7 +105,7 @@ namespace AC2RE.Server {
                     instanceStamp = 5,
                     otherStamp = 9,
                 },
-                fxId = FxId.ENTER_WORLD,
+                fxId = FxId.Enter_World,
                 scalar = 1.0f,
             });
             send(player, new InterpCEventPrivateMsg {

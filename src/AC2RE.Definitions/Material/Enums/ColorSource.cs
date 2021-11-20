@@ -2,7 +2,7 @@
 
     // Enum ColorSource
     public enum ColorSource : uint {
-        FROM_MATERIAL,
-        FROM_VERTEX,
+        FromMaterial, // FromMaterial
+        FromVertex, // FromVertex
     }
 }

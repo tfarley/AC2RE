@@ -7,9 +7,9 @@ namespace AC2RE.Definitions {
 
         // Const *_PartGroupKey
         public enum PartGroupKey : uint {
-            INVALID = 0,
-            DEFAULT_BODY = 0x40000001,
-            ENTIRE_TREE = 0x40000002,
+            Invalid = 0, // Invalid_PartGroupKey
+            DefaultBody = 0x40000001, // DefaultBody_PartGroupKey
+            EntireTree = 0x40000002, // EntireTree_PartGroupKey
             // NOTE: If MSB is set (0x80000000) then it is probably a kind of dynamic/numbered key
         }
 
@@ -17,17 +17,15 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
-            ALL = uint.MaxValue,
-
-            KEY = 1 << 0, // 0x00000001
-            PARENTKEY = 1 << 1, // 0x00000002
-            CONNECTIONPOINT = 1 << 2, // 0x00000004
-            SETUP = 1 << 3, // 0x00000008
-            ANIMMAP = 1 << 4, // 0x00000010
-            APPHASH = 1 << 5, // 0x00000020
-            FXTABLE = 1 << 6, // 0x00000040
-            STARTUPFX = 1 << 7, // 0x00000080
-            FXOVERRIDES = 1 << 8, // 0x00000100
+            KEY = 1 << 0, // KEY 0x00000001
+            PARENTKEY = 1 << 1, // PARENTKEY 0x00000002
+            CONNECTIONPOINT = 1 << 2, // CONNECTIONPOINT 0x00000004
+            SETUP = 1 << 3, // SETUP 0x00000008
+            ANIMMAP = 1 << 4, // ANIMMAP 0x00000010
+            APPHASH = 1 << 5, // APPHASH 0x00000020
+            FXTABLE = 1 << 6, // FXTABLE 0x00000040
+            STARTUPFX = 1 << 7, // STARTUPFX 0x00000080
+            FXOVERRIDES = 1 << 8, // FXOVERRIDES 0x00000100
         }
 
         public PackFlag packFlags;

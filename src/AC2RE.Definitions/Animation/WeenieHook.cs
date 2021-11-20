@@ -4,9 +4,9 @@
 
         // Const *_AnimHookType
         public enum AnimHookType : uint {
-            UNDEF = 0,
+            Undef = 0, // Undef_AnimHookType
 
-            ATTACK = 0x40000002,
+            Attack = 0x40000002, // Attack_AnimHookType
         }
 
         public AnimHookType hookType; // mHookType

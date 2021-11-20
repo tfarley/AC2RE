@@ -2,10 +2,10 @@
 
     // Enum tagFUNCKIND
     public enum FuncKind : uint {
-        VIRTUAL,
-        PUREVIRTUAL,
-        NONVIRTUAL,
-        STATIC,
-        DISPATCH,
+        VIRTUAL, // FUNC_VIRTUAL
+        PUREVIRTUAL, // FUNC_PUREVIRTUAL
+        NONVIRTUAL, // FUNC_NONVIRTUAL
+        STATIC, // FUNC_STATIC
+        DISPATCH, // FUNC_DISPATCH
     }
 }

@@ -5,23 +5,21 @@ namespace AC2RE.Definitions {
 
     public class EntityDesc : IPackage {
 
-        public NativeType nativeType => NativeType.ENTITYDESC;
+        public NativeType nativeType => NativeType.EntityDesc;
 
         // Enum EntityDescPack::Flag
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
-            ALL = uint.MaxValue,
-
-            DATABASE = 1 << 0, // 0x00000001
-            TYPE = 1 << 1, // 0x00000002
-            RUNTIMEID = 1 << 2, // 0x00000004
-            DATAID = 1 << 3, // 0x00000008
-            OFFSET = 1 << 4, // 0x00000010
-            SCALE = 1 << 5, // 0x00000020
-            VERSION = 1 << 6, // 0x00000040
-            PROPERTIES = 1 << 7, // 0x00000080
-            WBNAME = 1 << 8, // 0x00000100
+            DATABASE = 1 << 0, // DATABASE 0x00000001
+            TYPE = 1 << 1, // TYPE 0x00000002
+            RUNTIMEID = 1 << 2, // RUNTIMEID 0x00000004
+            DATAID = 1 << 3, // DATAID 0x00000008
+            OFFSET = 1 << 4, // OFFSET 0x00000010
+            SCALE = 1 << 5, // SCALE 0x00000020
+            VERSION = 1 << 6, // VERSION 0x00000040
+            PROPERTIES = 1 << 7, // PROPERTIES 0x00000080
+            WBNAME = 1 << 8, // WBNAME 0x00000100
         }
 
         public PackFlag packFlags;

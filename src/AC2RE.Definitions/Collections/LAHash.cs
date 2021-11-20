@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class LAHash : Dictionary<ulong, uint>, IPackage {
 
-        public NativeType nativeType => NativeType.LAHASH;
+        public NativeType nativeType => NativeType.LAHash;
 
         public Dictionary<K, V> to<K, V>() {
             Dictionary<K, V> converted = new(Count);

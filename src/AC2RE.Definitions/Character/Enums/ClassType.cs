@@ -2,17 +2,14 @@
 
 namespace AC2RE.Definitions {
 
-    // Const *_ClassType
-    // Dat file 23000008
+    // Dat file 23000008 / Const *_ClassType
     [Flags]
     public enum ClassType : uint {
-        UNDEF = 0,
-        ALL = uint.MaxValue,
-
-        WARRIOR = 1 << 0, // 0x00000001
-        ARCHER = 1 << 1, // 0x00000002
-        SHAMAN = 1 << 2, // 0x00000004
-        EXARCH = 1 << 3, // 0x00000008
-        FANATIC = 1 << 4, // 0x00000010
+        Undef = 0, // _ / Undef_ClassType
+        Warrior = 1 << 0, // Warrior / Warrior_ClassType 0x00000001
+        Archer = 1 << 1, // Archer / Archer_ClassType 0x00000002
+        Shaman = 1 << 2, // Shaman / Shaman_ClassType 0x00000004
+        Exarch = 1 << 3, // Exarch / _ 0x00000008
+        Fanatic = 1 << 4, // Fanatic / _ 0x00000010
     }
 }

@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class GMKeyframe : IPackage {
 
-        public NativeType nativeType => NativeType.GMKEYFRAME;
+        public NativeType nativeType => NativeType.gmKeyframe;
 
         public SceneId sceneId; // m_sceneID
         public uint frameNum; // m_uiFrameNum

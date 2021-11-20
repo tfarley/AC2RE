@@ -7,13 +7,11 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.SaleTemplate;
 
-        // WLib
+        // WLib SaleTemplate
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            TRANSITIVE = 1 << 0, // 0x00000001, SaleTemplate::IsTransitive
+            None = 0,
+            IsTransitive = 1 << 0, // IsTransitive 0x00000001
         }
 
         public uint ordinal; // m_uiOrdinal

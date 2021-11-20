@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.WEENIE;
-        public MessageOpcode opcode => MessageOpcode.Evt_Interp__InterpSEvent_ID;
+        public MessageOpcode opcode => MessageOpcode.Interp__InterpSEvent;
 
         // ECM_Interp::SendEvt_InterpSEvent
         public IServerEvent netEvent;

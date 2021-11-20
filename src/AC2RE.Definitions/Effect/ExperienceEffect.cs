@@ -6,14 +6,13 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.ExperienceEffect;
 
-        // WLib
+        // WLib ExperienceEffect
         [Flags]
         public new enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
+            None = 0,
 
-            DONT_DISTRIBUTE_THROUGH_SOCIAL_SYSTEMS = 1 << 30, // 0x40000000, ExperienceEffect::SetDontDistributeThroughSocialSystems
-            CHALLENGE_LEVEL = 1u << 31, // 0x80000000, ExperienceEffect::SetChallengeLevel
+            DontDistributeThroughSocialSystems = 1 << 30, // SetDontDistributeThroughSocialSystems 0x40000000
+            HasChallengeLevel = 1u << 31, // SetChallengeLevel 0x80000000
         }
 
         public int challengeLevel; // m_chalLvl

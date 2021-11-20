@@ -2,13 +2,14 @@
 
     // Enum PrimType
     public enum PrimType : uint {
-        POINTLIST = 1,
-        LINELIST = 2,
-        LINESTRIP = 3,
-        TRIANGLELIST = 4,
-        TRIANGLESTRIP = 5,
-        TRIANGLEFAN = 6,
+        UNDEF = 0,
+        POINTLIST = 1, // PRIMTYPE_POINTLIST
+        LINELIST = 2, // PRIMTYPE_LINELIST
+        LINESTRIP = 3, // PRIMTYPE_LINESTRIP
+        TRIANGLELIST = 4, // PRIMTYPE_TRIANGLELIST
+        TRIANGLESTRIP = 5, // PRIMTYPE_TRIANGLESTRIP
+        TRIANGLEFAN = 6, // PRIMTYPE_TRIANGLEFAN
 
-        INVALID = 0x7FFFFFFF,
+        INVALID = 0x7FFFFFFF, // PRIMTYPE_INVALID
     }
 }

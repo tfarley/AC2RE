@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.WEENIE;
-        public MessageOpcode opcode => MessageOpcode.Evt_Login__ClientSceneRenderingComplete_ID;
+        public MessageOpcode opcode => MessageOpcode.Login__ClientSceneRenderingComplete;
 
         // ECM_Login::SendEvt_ClientSceneRenderingComplete
 

@@ -2,10 +2,12 @@
 
     // Dat file 2300000D
     public enum ClothingClassType : uint {
-        HAT = 0x40000001,
-        SHIRT = 0x40000002,
-        PANT = 0x40000003,
-        SHOES = 0x40000004,
-        GLOVES = 0x40000005,
+        Undef = 0,
+
+        Hat = 0x40000001, // Hat
+        Shirt = 0x40000002, // Shirt
+        Pant = 0x40000003, // Pant
+        Shoes = 0x40000004, // Shoes
+        Gloves = 0x40000005, // Gloves
     }
 }

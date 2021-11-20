@@ -2,14 +2,14 @@
 
     // Const *_CombatResultType
     public enum CombatResultType : uint {
-        UNDEF = 0,
+        Undef = 0, // Undef_CombatResultType
 
-        FAILURE = 0x40000001,
+        Failure = 0x40000001, // Failure_CombatResultType
 
-        MISS = 0x40000007,
-        HIT = 0x40000008,
-        CRITICAL_HIT = 0x40000009,
+        Miss = 0x40000007, // Miss_CombatResultType
+        Hit = 0x40000008, // Hit_CombatResultType
+        CriticalHit = 0x40000009, // CriticalHit_CombatResultType
 
-        EVADE = 0x4000000B,
+        Evade = 0x4000000B, // Evade_CombatResultType
     }
 }

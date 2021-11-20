@@ -2,21 +2,21 @@
 
     // Const *_PropertyType
     public enum PropertyType : uint {
-        INVALID = 0,
+        Invalid = 0, // Invalid_PropertyType
 
-        BOOL = 0x40000001,
-        INTEGER = 0x40000002,
-        FLOAT = 0x40000003,
-        VECTOR = 0x40000004,
-        COLOR = 0x40000005,
-        STRING = 0x40000006,
-        ENUM = 0x40000007,
-        DATA_FILE = 0x40000008,
-        WAVEFORM = 0x40000009,
-        STRING_INFO = 0x4000000A,
-        PACKAGE_ID = 0x4000000B,
+        Bool = 0x40000001, // Bool_PropertyType
+        Integer = 0x40000002, // Integer_PropertyType
+        Float = 0x40000003, // Float_PropertyType
+        Vector = 0x40000004, // Vector_PropertyType
+        Color = 0x40000005, // Color_PropertyType
+        String = 0x40000006, // String_PropertyType
+        Enum = 0x40000007, // Enum_PropertyType
+        DataFile = 0x40000008, // DataFile_PropertyType
+        Waveform = 0x40000009, // Waveform_PropertyType
+        StringInfo = 0x4000000A, // StringInfo_PropertyType
+        PackageID = 0x4000000B, // PackageID_PropertyType
 
-        LONG_INTEGER = 0x4000000D,
-        POSITION = 0x4000000E,
+        LongInteger = 0x4000000D, // LongInteger_PropertyType
+        Position = 0x4000000E, // Position_PropertyType
     }
 }

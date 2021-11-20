@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class GMQuestInfoList : List<GMQuestInfo>, IPackage {
 
-        public NativeType nativeType => NativeType.GMQUESTINFOLIST;
+        public NativeType nativeType => NativeType.gmQuestInfoList;
 
         public GMQuestInfoList() {
 

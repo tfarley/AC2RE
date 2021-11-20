@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Qualities__UpdateLongInt_Private_ID;
+        public MessageOpcode opcode => MessageOpcode.Qualities__UpdateLongInt_Private;
 
         // ECM_Qualities::RecvEvt_UpdateLongInt_Private
         public LongIntStat type; // _stype
@@ -30,7 +30,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Qualities__UpdateLongInt_Visual_ID;
+        public MessageOpcode opcode => MessageOpcode.Qualities__UpdateLongInt_Visual;
         public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
 
         // ECM_Qualities::RecvEvt_UpdateLongInt_Visual

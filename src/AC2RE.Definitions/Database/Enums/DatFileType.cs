@@ -2,9 +2,9 @@
 
     // Enum DATFILE_TYPE
     public enum DatFileType : uint {
-        UNDEF_DISK,
-        PORTAL,
-        CELL,
-        LOCAL,
+        UNDEF_DISK, // UNDEF_DISK
+        PORTAL, // PORTAL_DATFILE
+        CELL, // CELL_DATFILE
+        LOCAL, // LOCAL_DATFILE
     }
 }

@@ -2,12 +2,13 @@
 
     // Const *_StringStat
     public enum StringStat : uint {
-        UNDEF = 0,
+        Undef = 0, // Undef_StringStat
 
-        NAM = 256,
-        PLURALNAM = 257,
-        DESCRIPTIO = 258,
-        TELEPORTDESTINATIONSTR = 400,
-        USAGE_EFFECTNAMES = 401,
+        Nam = 256, // Nam_StringStat
+        PluralNam = 257, // PluralNam_StringStat
+        Descriptio = 258, // Descriptio_StringStat
+
+        TeleportDestinationStr = 400, // TeleportDestinationStr_StringStat
+        Usage_EffectNames = 401, // Usage_EffectNames_StringStat
     }
 }

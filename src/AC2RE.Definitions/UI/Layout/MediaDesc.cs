@@ -8,17 +8,17 @@ namespace AC2RE.Definitions {
 
         // Const MEDIA_*
         public enum MediaType : uint {
-            UNDEF,
-            ANIMATION,
-            PAUSE,
-            IMAGE,
-            ALPHA,
-            SOUND,
-            JUMP,
-            MESSAGE,
-            STATE,
-            AVI,
-            CURSOR,
+            UNDEF, // MEDIA_UNDEF
+            ANIMATION, // MEDIA_ANIMATION
+            PAUSE, // MEDIA_PAUSE
+            IMAGE, // MEDIA_IMAGE
+            ALPHA, // MEDIA_ALPHA
+            SOUND, // MEDIA_SOUND
+            JUMP, // MEDIA_JUMP
+            MESSAGE, // MEDIA_MESSAGE
+            STATE, // MEDIA_STATE
+            AVI, // MEDIA_AVI
+            CURSOR, // MEDIA_CURSOR
         }
 
         public class AnimationMediaData : IWritable {

@@ -12,7 +12,7 @@ namespace AC2RE.Server {
 
         public override bool processMessage(ClientConnection client, Player player, INetMessage genericMsg) {
             switch (genericMsg.opcode) {
-                case MessageOpcode.Evt_Interp__InterpSEvent_ID: {
+                case MessageOpcode.Interp__InterpSEvent: {
                         InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
                         if (msg.netEvent.funcId == ServerEventFunctionId.Communication__Say) {
                             SaySEvt sEvent = (SaySEvt)msg.netEvent;
@@ -21,16 +21,16 @@ namespace AC2RE.Server {
                                 switch (splitText[0]) {
                                     case ".vel": {
                                             if (splitText.Length < 2) {
-                                                sendMessage(player, "Too few arguments", TextType.ERROR);
+                                                sendMessage(player, "Too few arguments", TextType.Error);
                                                 break;
                                             }
                                             if (!float.TryParse(splitText[1], out float value)) {
-                                                sendMessage(player, "Cannot parse argument", TextType.ERROR);
+                                                sendMessage(player, "Cannot parse argument", TextType.Error);
                                                 break;
                                             }
                                             if (tryGetCharacter(player, out WorldObject? character)) {
                                                 character.setVelScale(value);
-                                                character.doFx(FxId.PORTAL_USE, 1.0f);
+                                                character.doFx(FxId.Portal_Use, 1.0f);
                                             }
                                             break;
                                         }
@@ -42,25 +42,25 @@ namespace AC2RE.Server {
                                         }
                                     case ".tp": {
                                             if (splitText.Length < 2) {
-                                                sendMessage(player, "Too few arguments", TextType.ERROR);
+                                                sendMessage(player, "Too few arguments", TextType.Error);
                                                 break;
                                             }
                                             if (!uint.TryParse(splitText[1], NumberStyles.HexNumber, null, out uint cellId)) {
-                                                sendMessage(player, "Cannot parse argument", TextType.ERROR);
+                                                sendMessage(player, "Cannot parse argument", TextType.Error);
                                                 break;
                                             }
                                             Vector3 offset = new();
                                             if (splitText.Length >= 5) {
                                                 if (!float.TryParse(splitText[2], out offset.X)) {
-                                                    sendMessage(player, "Cannot parse argument", TextType.ERROR);
+                                                    sendMessage(player, "Cannot parse argument", TextType.Error);
                                                     break;
                                                 }
                                                 if (!float.TryParse(splitText[3], out offset.Y)) {
-                                                    sendMessage(player, "Cannot parse argument", TextType.ERROR);
+                                                    sendMessage(player, "Cannot parse argument", TextType.Error);
                                                     break;
                                                 }
                                                 if (!float.TryParse(splitText[4], out offset.Z)) {
-                                                    sendMessage(player, "Cannot parse argument", TextType.ERROR);
+                                                    sendMessage(player, "Cannot parse argument", TextType.Error);
                                                     break;
                                                 }
                                             }
@@ -68,7 +68,7 @@ namespace AC2RE.Server {
                                             break;
                                         }
                                     default:
-                                        sendMessage(player, "Invalid command", TextType.ERROR);
+                                        sendMessage(player, "Invalid command", TextType.Error);
                                         break;
                                 }
                             }

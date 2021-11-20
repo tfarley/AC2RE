@@ -43,32 +43,32 @@ namespace AC2RE.Definitions {
         }
 
         public int UnpackInt32() {
-            checkPackTag(PackTag.INT);
+            checkPackTag(PackTag.Int);
             return ReadInt32();
         }
 
         public uint UnpackUInt32() {
-            checkPackTag(PackTag.INT);
+            checkPackTag(PackTag.Int);
             return ReadUInt32();
         }
 
         public long UnpackInt64() {
-            checkPackTag(PackTag.LONGINT);
+            checkPackTag(PackTag.LongInt);
             return ReadInt64();
         }
 
         public ulong UnpackUInt64() {
-            checkPackTag(PackTag.LONGINT);
+            checkPackTag(PackTag.LongInt);
             return ReadUInt64();
         }
 
         public float UnpackSingle() {
-            checkPackTag(PackTag.FLOAT);
+            checkPackTag(PackTag.Float);
             return ReadSingle();
         }
 
         public double UnpackDouble() {
-            checkPackTag(PackTag.LONGFLOAT);
+            checkPackTag(PackTag.LongFloat);
             return ReadDouble();
         }
 
@@ -86,7 +86,7 @@ namespace AC2RE.Definitions {
 
         public T UnpackPackage<T>(bool skipPackTag = false) where T : IPackage {
             if (!skipPackTag) {
-                checkPackTag(PackTag.PACKAGE);
+                checkPackTag(PackTag.Package);
             }
 
             List<PackageId> packageIds = ReadList(ReadPackageId);
@@ -115,7 +115,7 @@ namespace AC2RE.Definitions {
                 uint unk1 = ReadUInt32();
                 NativeType nativeType = (NativeType)ReadUInt16();
                 PackageType packageType = (PackageType)ReadUInt16();
-                if (nativeType != NativeType.UNDEF) {
+                if (nativeType != NativeType.Undef) {
                     package = PackageManager.read(this, nativeType);
                 } else {
                     uint packageLength = ReadUInt32() * 4;
@@ -133,7 +133,7 @@ namespace AC2RE.Definitions {
 
                 // TODO: Still not sure this is the correct condition for whether there are references or not
                 // Skip over field descriptions
-                if (nativeType == NativeType.UNDEF) {
+                if (nativeType == NativeType.Undef) {
                     foreach (FieldDesc fieldDesc in InterpMeta.getFieldDescs(package.GetType())) {
                         ReadByte();
                         if (fieldDesc.numWords == 2) {

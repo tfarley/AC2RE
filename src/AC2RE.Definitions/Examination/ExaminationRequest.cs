@@ -4,24 +4,24 @@ namespace AC2RE.Definitions {
 
     public class ExaminationRequest : IPackage {
 
-        public NativeType nativeType => NativeType.EXAMINATIONREQUEST;
+        public NativeType nativeType => NativeType.ExaminationRequest;
 
         // Const *_ExaminationRequestType
         public enum RequestType : uint {
-            UNDEF = 0,
+            Undef = 0, // Undef_ExaminationRequestType
 
-            EFFECT = 0x40000001,
-            ITEM = 0x40000002,
-            SKILL = 0x40000003,
-            SKILL_PANEL = 0x40000004,
-            QUEST = 0x40000005,
-            ACT = 0x40000006,
-            RECIPE = 0x40000007,
+            Effect = 0x40000001, // Effect_ExaminationRequestType
+            Item = 0x40000002, // Item_ExaminationRequestType
+            Skill = 0x40000003, // Skill_ExaminationRequestType
+            SkillPanel = 0x40000004, // SkillPanel_ExaminationRequestType
+            Quest = 0x40000005, // Quest_ExaminationRequestType
+            Act = 0x40000006, // Act_ExaminationRequestType
+            Recipe = 0x40000007, // Recipe_ExaminationRequestType
 
-            VITAE = 0x4000000A,
-            CRAFT_SKILL = 0x4000000B,
-            CRAFT_SKILL_CATEGORY = 0x4000000C,
-            UNK1 = 0x4000000D,
+            Vitae = 0x4000000A, // Vitae_ExaminationRequestType
+            CraftSkill = 0x4000000B, // CraftSkill_ExaminationRequestType
+            CraftSkillCategory = 0x4000000C, // CraftSkillCategory_ExaminationRequestType
+            Unk1 = 0x4000000D,
         }
 
         public RequestType type; // _type
@@ -41,24 +41,24 @@ namespace AC2RE.Definitions {
             type = (RequestType)data.ReadUInt32();
             admin = data.ReadBoolean();
             switch (type) {
-                case RequestType.UNDEF:
+                case RequestType.Undef:
                     break;
-                case RequestType.EFFECT:
-                case RequestType.SKILL:
-                case RequestType.SKILL_PANEL:
-                case RequestType.QUEST:
-                case RequestType.ACT:
+                case RequestType.Effect:
+                case RequestType.Skill:
+                case RequestType.SkillPanel:
+                case RequestType.Quest:
+                case RequestType.Act:
                     dataEnum = data.ReadUInt32();
                     break;
-                case RequestType.ITEM:
+                case RequestType.Item:
                     dataId = data.ReadInstanceId();
                     unk3 = data.ReadUInt32();
                     break;
-                case RequestType.RECIPE:
-                case RequestType.CRAFT_SKILL:
+                case RequestType.Recipe:
+                case RequestType.CraftSkill:
                     dataDid = data.ReadDataId();
                     break;
-                case RequestType.UNK1:
+                case RequestType.Unk1:
                     dataId = data.ReadInstanceId();
                     unk1 = data.ReadUInt32();
                     unk2 = data.ReadUInt32();
@@ -73,24 +73,24 @@ namespace AC2RE.Definitions {
             data.Write((uint)type);
             data.Write(admin);
             switch (type) {
-                case RequestType.UNDEF:
+                case RequestType.Undef:
                     break;
-                case RequestType.EFFECT:
-                case RequestType.SKILL:
-                case RequestType.SKILL_PANEL:
-                case RequestType.QUEST:
-                case RequestType.ACT:
+                case RequestType.Effect:
+                case RequestType.Skill:
+                case RequestType.SkillPanel:
+                case RequestType.Quest:
+                case RequestType.Act:
                     data.Write(dataEnum);
                     break;
-                case RequestType.ITEM:
+                case RequestType.Item:
                     data.Write(dataId);
                     data.Write(unk3);
                     break;
-                case RequestType.RECIPE:
-                case RequestType.CRAFT_SKILL:
+                case RequestType.Recipe:
+                case RequestType.CraftSkill:
                     data.Write(dataDid);
                     break;
-                case RequestType.UNK1:
+                case RequestType.Unk1:
                     data.Write(dataId);
                     data.Write(unk1);
                     data.Write(unk2);

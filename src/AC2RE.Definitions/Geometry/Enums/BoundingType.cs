@@ -2,8 +2,8 @@
 
     // Enum BoundingType
     public enum BoundingType : uint {
-        OUTSIDE,
-        PARTIALLY_INSIDE,
-        ENTIRELY_INSIDE,
+        OUTSIDE, // OUTSIDE
+        PARTIALLY_INSIDE, // PARTIALLY_INSIDE
+        ENTIRELY_INSIDE, // ENTIRELY_INSIDE
     }
 }

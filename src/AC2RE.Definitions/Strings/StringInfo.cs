@@ -5,7 +5,7 @@ namespace AC2RE.Definitions {
 
     public class StringInfo : IPackage {
 
-        public NativeType nativeType => NativeType.STRINGINFO;
+        public NativeType nativeType => NativeType.StringInfo;
 
         public uint stringId; // m_stringID
         public DataId tableDid; // m_tableID

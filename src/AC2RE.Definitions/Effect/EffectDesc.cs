@@ -7,23 +7,21 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.EffectDesc;
 
-        // WLib
+        // WLib EffectDesc
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            CONSIDERING = 1 << 0, // 0x00000001, EffectDesc::IsConsidering
-            IGNORE_PROBABILITY = 1 << 1, // 0x00000002, EffectDesc::IsIgnoreProbability
-            IGNORE_CONSIDERATION = 1 << 2, // 0x00000004, EffectDesc::IsIgnoreConsideration
-            INFINITE_TIMEOUT = 1 << 3, // 0x00000008, EffectDesc::IsInfiniteTimeout
-            NORMAL_TIMEOUT = 1 << 4, // 0x00000010, EffectDesc::IsNormalTimeout
-            SPECIFIED_TIMEOUT = 1 << 5, // 0x00000020, EffectDesc::IsSpecifiedTimeout
-            REMOVE_ON_LOGOUT = 1 << 6, // 0x00000040, EffectDesc::IsRemoveOnLogout
-            EQUIPPER = 1 << 7, // 0x00000080, EffectDesc::IsEquipperEffect
-            TOGGLED = 1 << 8, // 0x00000100, EffectDesc::IsToggled
-            PULSED = 1 << 9, // 0x00000200, EffectDesc::IsPulsed
-            CLIENT_NO_UI = 1 << 10, // 0x00000400, EffectDesc::IsClientNoUI
+            None = 0,
+            IsConsidering = 1 << 0, // IsConsidering 0x00000001
+            IsIgnoreProbability = 1 << 1, // IsIgnoreProbability 0x00000002
+            IsIgnoreConsideration = 1 << 2, // IsIgnoreConsideration 0x00000004
+            IsInfiniteTimeout = 1 << 3, // IsInfiniteTimeout 0x00000008
+            IsNormalTimeout = 1 << 4, // IsNormalTimeout 0x00000010
+            IsSpecifiedTimeout = 1 << 5, // IsSpecifiedTimeout 0x00000020
+            IsRemoveOnLogout = 1 << 6, // IsRemoveOnLogout 0x00000040
+            IsEquipperEffect = 1 << 7, // IsEquipperEffect 0x00000080
+            IsToggled = 1 << 8, // IsToggled 0x00000100
+            IsPulsed = 1 << 9, // IsPulsed 0x00000200
+            IsClientNoUI = 1 << 10, // IsClientNoUI 0x00000400
         }
 
         public Dictionary<uint, IPackage> considerationHash; // m_hashConsideration

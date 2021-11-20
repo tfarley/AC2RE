@@ -6,7 +6,7 @@ namespace AC2RE.Definitions {
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Physics__DoFX_Private_ID;
+        public MessageOpcode opcode => MessageOpcode.Physics__DoFX_Private;
 
         // ECM_Physics::RecvEvt_DoFX_Private
         public List<FxId> fxIds; // _fxIDs

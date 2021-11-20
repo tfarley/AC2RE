@@ -6,38 +6,36 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.DefaultPermissionBlob;
 
-        // WLib
+        // WLib DefaultPermissionBlob
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            MIN_LEVEL = 1 << 0, // 0x00000001, DefaultPermissionBlob::HasMinLevel
-            MAX_LEVEL = 1 << 1, // 0x00000002, DefaultPermissionBlob::HasMaxLevel
-            FACTION_REQUIRED = 1 << 2, // 0x00000004, DefaultPermissionBlob::HasFactionRequired
-            REQUIRED_SKILL_1 = 1 << 3, // 0x00000008, DefaultPermissionBlob::HasRequiredSkill1
-            REQUIRED_SKILL_2 = 1 << 4, // 0x00000010, DefaultPermissionBlob::HasRequiredSkill2
-            RESTRICTED_SKILL_1 = 1 << 5, // 0x00000020, DefaultPermissionBlob::HasRestrictedSkill1
-            RESTRICTED_SKILL_2 = 1 << 6, // 0x00000040, DefaultPermissionBlob::HasRestrictedSkill2
-            REQUIRED_RACE = 1 << 7, // 0x00000080, DefaultPermissionBlob::HasRequiredRace
-            REQUIRED_QUEST = 1 << 8, // 0x00000100, DefaultPermissionBlob::HasRequiredQuest
-            REQUIRED_QUEST_STATUS = 1 << 9, // 0x00000200, DefaultPermissionBlob::HasRequiredQuestStatus
-            LANDBLOCK_FACTION = 1 << 10, // 0x00000400, DefaultPermissionBlob::HasLandblockFaction
-            MIN_RANK = 1 << 11, // 0x00000800, DefaultPermissionBlob::HasMinRank
-            MAX_RANK = 1 << 12, // 0x00001000, DefaultPermissionBlob::HasMaxRank
-            NON_ALLEGIANCE_ONLY = 1 << 13, // 0x00002000, DefaultPermissionBlob::HasNonAllegianceOnly
-            MONARCH_ONLY = 1 << 14, // 0x00004000, DefaultPermissionBlob::HasMonarchOnly
-            REQUIRED_SKILL_1_RATING = 1 << 15, // 0x00008000, DefaultPermissionBlob::HasRequiredSkill1Rating
-            REQUIRED_SKILL_2_RATING = 1 << 16, // 0x00010000, DefaultPermissionBlob::HasRequiredSkill2Rating
-            CRAFTER_ONLY = 1 << 17, // 0x00020000, DefaultPermissionBlob::HasCrafterOnly
-            HERO_ONLY = 1 << 18, // 0x00040000, DefaultPermissionBlob::HasHeroOnly
-            REQUIRED_ARCANE_LORE = 1 << 19, // 0x00080000, DefaultPermissionBlob::HasRequiredArcaneLore
-            REQUIRED_LOCATION = 1 << 20, // 0x00100000, DefaultPermissionBlob::HasRequiredLocation
-            USE_WHILE_MOVING = 1 << 21, // 0x00200000, DefaultPermissionBlob::HasUseWhileMoving
-            SUMMONER_ONLY = 1 << 22, // 0x00400000, DefaultPermissionBlob::HasSummonerOnly
-            REQUIRED_CRAFT_SKILL = 1 << 23, // 0x00800000, DefaultPermissionBlob::HasRequiredCraftSkill
-            LEGIONS_EXPANSION_ONLY = 1 << 24, // 0x01000000, DefaultPermissionBlob::HasLegionsExpansionOnly
-            BOUND = 1 << 25, // 0x02000000, DefaultPermissionBlob::IsBound
+            None = 0,
+            HasMinLevel = 1 << 0, // HasMinLevel 0x00000001
+            HasMaxLevel = 1 << 1, // HasMaxLevel 0x00000002
+            HasFactionRequired = 1 << 2, // HasFactionRequired 0x00000004
+            HasRequiredSkill1 = 1 << 3, // HasRequiredSkill1 0x00000008
+            HasRequiredSkill2 = 1 << 4, // HasRequiredSkill2 0x00000010
+            HasRestrictedSkill1 = 1 << 5, // HasRestrictedSkill1 0x00000020
+            HasRestrictedSkill2 = 1 << 6, // HasRestrictedSkill2 0x00000040
+            HasRequiredRace = 1 << 7, // HasRequiredRace 0x00000080
+            HasRequiredQuest = 1 << 8, // HasRequiredQuest 0x00000100
+            HasRequiredQuestStatus = 1 << 9, // HasRequiredQuestStatus 0x00000200
+            HasLandblockFaction = 1 << 10, // HasLandblockFaction 0x00000400
+            HasMinRank = 1 << 11, // HasMinRank 0x00000800
+            HasMaxRank = 1 << 12, // HasMaxRank 0x00001000
+            HasNonAllegianceOnly = 1 << 13, // HasNonAllegianceOnly 0x00002000
+            HasMonarchOnly = 1 << 14, // HasMonarchOnly 0x00004000
+            HasRequiredSkill1Rating = 1 << 15, // HasRequiredSkill1Rating 0x00008000
+            HasRequiredSkill2Rating = 1 << 16, // HasRequiredSkill2Rating 0x00010000
+            HasCrafterOnly = 1 << 17, // HasCrafterOnly 0x00020000
+            HasHeroOnly = 1 << 18, // HasHeroOnly 0x00040000
+            HasRequiredArcaneLore = 1 << 19, // HasRequiredArcaneLore 0x00080000
+            HasRequiredLocation = 1 << 20, // HasRequiredLocation 0x00100000
+            HasUseWhileMoving = 1 << 21, // HasUseWhileMoving 0x00200000
+            HasSummonerOnly = 1 << 22, // HasSummonerOnly 0x00400000
+            HasRequiredCraftSkill = 1 << 23, // HasRequiredCraftSkill 0x00800000
+            HasLegionsExpansionOnly = 1 << 24, // HasLegionsExpansionOnly 0x01000000
+            IsBound = 1 << 25, // IsBound 0x02000000
         }
 
         public DataId stringTableForErrorsDid; // m_didStringTableForErrors

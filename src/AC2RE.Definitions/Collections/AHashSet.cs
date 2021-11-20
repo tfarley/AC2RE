@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class AHashSet : HashSet<uint>, IPackage {
 
-        public NativeType nativeType => NativeType.AHASHSET;
+        public NativeType nativeType => NativeType.AHashSet;
 
         public HashSet<T> to<T>() {
             HashSet<T> converted = new(Count);

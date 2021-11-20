@@ -7,17 +7,15 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.Fellow;
 
-        // WLib
+        // WLib Fellowship
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            SOCIAL = 1 << 0, // 0x00000001, Fellowship::IsSocial
-            LOOT_SHARING = 1 << 1, // 0x00000002, Fellowship::IsLootSharing
-            LOOT_ROTATING = 1 << 2, // 0x00000004, Fellowship::IsLootRotating
-            LOOT_GROUP_ROTATING = 1 << 3, // 0x00000008, Fellowship::IsLootGroupRotating
-            LOOT_RANDOM = 1 << 4, // 0x00000010, Fellowship::IsLootRandom
+            None = 0,
+            IsSocial = 1 << 0, // IsSocial 0x00000001
+            IsLootSharing = 1 << 1, // IsLootSharing 0x00000002
+            IsLootRotating = 1 << 2, // IsLootRotating 0x00000004
+            IsLootGroupRotating = 1 << 3, // IsLootGroupRotating 0x00000008
+            IsLootRandom = 1 << 4, // IsLootRandom 0x00000010
         }
 
         public InstanceId lastClaimantId; // m_lastClaimant

@@ -2,6 +2,6 @@
 
     // Const *_RegionID
     public enum RegionID : uint {
-        UNDEF = 0,
+        Undef, // Undef_RegionID
     }
 }

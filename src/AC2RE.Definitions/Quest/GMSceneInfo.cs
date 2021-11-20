@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class GMSceneInfo : IPackage {
 
-        public NativeType nativeType => NativeType.GMSCENEINFO;
+        public NativeType nativeType => NativeType.gmSceneInfo;
 
         public SceneId id; // _ID
         public StringInfo name; // _siName

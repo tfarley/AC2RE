@@ -46,9 +46,9 @@ namespace AC2RE.DatTool {
                                         string? description = null;
                                         foreach (PropertyGroup propertyGroup in entityDesc.properties.groups) {
                                             foreach (BaseProperty property in propertyGroup.properties) {
-                                                if (property.name == PropertyName.NAME) {
+                                                if (property.name == PropertyName.Name) {
                                                     name = readString(localDatReader, (StringInfo)property.value);
-                                                } else if (property.name == PropertyName.DESCRIPTION) {
+                                                } else if (property.name == PropertyName.Description) {
                                                     description = readString(localDatReader, (StringInfo)property.value);
                                                 }
                                             }
@@ -230,7 +230,7 @@ namespace AC2RE.DatTool {
                         DatFileDataId datFileDataId = (DatFileDataId)did.id;
 
                         switch (datFileDataId) {
-                            case DatFileDataId.ITERATION_LIST:
+                            case DatFileDataId.IterationList:
                                 readAndDump(datReader, did, outputPath, data => new CMostlyConsecutiveIntSet(data));
                                 break;
                             default:

@@ -6,8 +6,8 @@ namespace AC2RE.Definitions {
 
         // Enum Slider::Controller
         public enum SliderController : uint {
-            CLIENT_CONTROLLED,
-            WEENIE_CONTROLLED,
+            CLIENT_CONTROLLED, // CLIENT_CONTROLLED
+            WEENIE_CONTROLLED, // WEENIE_CONTROLLED
         }
 
         public DataId did; // m_DID

@@ -2,7 +2,7 @@
 
     public class GMQuestInfo : IPackage {
 
-        public NativeType nativeType => NativeType.GMQUESTINFO;
+        public NativeType nativeType => NativeType.gmQuestInfo;
 
         public QuestId questId; // _questID
         public StringInfo questName; // _strQuestName

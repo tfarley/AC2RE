@@ -44,278 +44,278 @@ namespace AC2RE.Server {
         }
 
         public StringInfo? name {
-            get => getQ(StringInfoStat.NAME);
+            get => getQ(StringInfoStat.Name);
             set {
-                setQ(StringInfoStat.NAME, value);
+                setQ(StringInfoStat.Name, value);
                 qualities.weenieDesc.name = value;
             }
         }
 
         public StringInfo? pluralName {
-            get => getQ(StringInfoStat.PLURALNAME);
+            get => getQ(StringInfoStat.PluralName);
             set {
-                setQ(StringInfoStat.PLURALNAME, value);
+                setQ(StringInfoStat.PluralName, value);
                 qualities.weenieDesc.pluralName = value;
             }
         }
 
         public DataId iconDid {
-            get => getQ(DataIdStat.ICONID);
+            get => getQ(DataIdStat.IconID);
             set {
-                setQ(DataIdStat.ICONID, value);
+                setQ(DataIdStat.IconID, value);
                 qualities.weenieDesc.iconDid = value;
             }
         }
 
         public InstanceId containerId {
-            get => getQ(InstanceIdStat.CONTAINER);
+            get => getQ(InstanceIdStat.Container);
             set {
-                setQ(InstanceIdStat.CONTAINER, value);
+                setQ(InstanceIdStat.Container, value);
                 qualities.weenieDesc.containerId = value;
             }
         }
 
         public InstanceId equipperId {
-            get => getQ(InstanceIdStat.EQUIPPER);
+            get => getQ(InstanceIdStat.Equipper);
             set {
-                setQ(InstanceIdStat.EQUIPPER, value);
+                setQ(InstanceIdStat.Equipper, value);
                 qualities.weenieDesc.wielderId = value;
             }
         }
 
         public InvLoc equippedLocation {
-            get => (InvLoc)getQ(IntStat.CURRENTEQUIPPEDLOCATION);
-            set => setQ(IntStat.CURRENTEQUIPPEDLOCATION, (int)value);
+            get => (InvLoc)getQ(IntStat.CurrentEquippedLocation);
+            set => setQ(IntStat.CurrentEquippedLocation, (int)value);
         }
 
         public InstanceId monarchId {
-            get => getQ(InstanceIdStat.ALLEGIANCE_MONARCH);
+            get => getQ(InstanceIdStat.Allegiance_Monarch);
             set {
-                setQ(InstanceIdStat.ALLEGIANCE_MONARCH, value);
+                setQ(InstanceIdStat.Allegiance_Monarch, value);
                 qualities.weenieDesc.monarchId = value;
             }
         }
 
         public InstanceId originatorId {
-            get => getQ(InstanceIdStat.ORIGINATOR);
+            get => getQ(InstanceIdStat.Originator);
             set {
-                setQ(InstanceIdStat.ORIGINATOR, value);
+                setQ(InstanceIdStat.Originator, value);
                 qualities.weenieDesc.originatorId = value;
             }
         }
 
         public InstanceId claimantId {
-            get => getQ(InstanceIdStat.CLAIMANT);
+            get => getQ(InstanceIdStat.Claimant);
             set {
-                setQ(InstanceIdStat.CLAIMANT, value);
+                setQ(InstanceIdStat.Claimant, value);
                 qualities.weenieDesc.claimantId = value;
             }
         }
 
         public InstanceId killerId {
-            get => getQ(InstanceIdStat.PLUNDERER);
+            get => getQ(InstanceIdStat.Plunderer);
             set {
-                setQ(InstanceIdStat.PLUNDERER, value);
+                setQ(InstanceIdStat.Plunderer, value);
                 qualities.weenieDesc.killerId = value;
             }
         }
 
         public InstanceId summonerId {
-            get => getQ(InstanceIdStat.AI_PETSUMMONER);
+            get => getQ(InstanceIdStat.AI_PetSummoner);
             set {
-                setQ(InstanceIdStat.AI_PETSUMMONER, value);
+                setQ(InstanceIdStat.AI_PetSummoner, value);
                 qualities.weenieDesc.petSummonerId = value;
             }
         }
 
         public int quantity {
-            get => getQ(IntStat.QUANTITY);
+            get => getQ(IntStat.Quantity);
             set {
-                setQ(IntStat.QUANTITY, value);
+                setQ(IntStat.Quantity, value);
                 qualities.weenieDesc.quantity = value;
             }
         }
 
         public int value {
-            get => getQ(IntStat.VALUE);
+            get => getQ(IntStat.Value);
             set {
-                setQ(IntStat.VALUE, value);
+                setQ(IntStat.Value, value);
                 qualities.weenieDesc.value = value;
             }
         }
 
         public FactionType faction {
-            get => (FactionType)getQ(IntStat.FACTION_MEMBERSHIP);
+            get => (FactionType)getQ(IntStat.Faction_Membership);
             set {
-                setQ(IntStat.FACTION_MEMBERSHIP, (int)value);
+                setQ(IntStat.Faction_Membership, (int)value);
                 qualities.weenieDesc.factionType = value;
             }
         }
 
         public int pkAlwaysTruePermissions {
-            get => getQ(IntStat.PK_ALWAYSTRUEPERMISSIONS);
+            get => getQ(IntStat.PK_AlwaysTruePermissions);
             set {
-                setQ(IntStat.PK_ALWAYSTRUEPERMISSIONS, value);
+                setQ(IntStat.PK_AlwaysTruePermissions, value);
                 qualities.weenieDesc.pkAlwaysTruePermissions = value;
             }
         }
 
         public int pkAlwaysFalsePermissions {
-            get => getQ(IntStat.PK_ALWAYSFALSEPERMISSIONS);
+            get => getQ(IntStat.PK_AlwaysFalsePermissions);
             set {
-                setQ(IntStat.PK_ALWAYSFALSEPERMISSIONS, value);
+                setQ(IntStat.PK_AlwaysFalsePermissions, value);
                 qualities.weenieDesc.pkAlwaysFalsePermissions = value;
             }
         }
 
         public int physicsTypeLow {
-            get => getQ(IntStat.ETHEREALPHYSICSTYPELOW);
+            get => getQ(IntStat.EtherealPhysicsTypeLow);
             set {
-                setQ(IntStat.ETHEREALPHYSICSTYPELOW, value);
+                setQ(IntStat.EtherealPhysicsTypeLow, value);
                 qualities.weenieDesc.physicsTypeLow = value;
             }
         }
 
         public int physicsTypeHigh {
-            get => getQ(IntStat.ETHEREALPHYSICSTYPEHIGH);
+            get => getQ(IntStat.EtherealPhysicsTypeHigh);
             set {
-                setQ(IntStat.ETHEREALPHYSICSTYPEHIGH, value);
+                setQ(IntStat.EtherealPhysicsTypeHigh, value);
                 qualities.weenieDesc.physicsTypeHigh = value;
             }
         }
 
         public int movementEtherealLow {
-            get => getQ(IntStat.ETHEREALMOVEMENTTYPELOW);
+            get => getQ(IntStat.EtherealMovementTypeLow);
             set {
-                setQ(IntStat.ETHEREALMOVEMENTTYPELOW, value);
+                setQ(IntStat.EtherealMovementTypeLow, value);
                 qualities.weenieDesc.movementEtherealLow = value;
             }
         }
 
         public int movementEtherealHigh {
-            get => getQ(IntStat.ETHEREALMOVEMENTTYPEHIGH);
+            get => getQ(IntStat.EtherealMovementTypeHigh);
             set {
-                setQ(IntStat.ETHEREALMOVEMENTTYPEHIGH, value);
+                setQ(IntStat.EtherealMovementTypeHigh, value);
                 qualities.weenieDesc.movementEtherealHigh = value;
             }
         }
 
         public int placementEtherealLow {
-            get => getQ(IntStat.ETHEREALPLACEMENTTYPELOW);
+            get => getQ(IntStat.EtherealPlacementTypeLow);
             set {
-                setQ(IntStat.ETHEREALPLACEMENTTYPELOW, value);
+                setQ(IntStat.EtherealPlacementTypeLow, value);
                 qualities.weenieDesc.placementEtherealLow = value;
             }
         }
 
         public int placementEtherealHigh {
-            get => getQ(IntStat.ETHEREALPLACEMENTTYPEHIGH);
+            get => getQ(IntStat.EtherealPlacementTypeHigh);
             set {
-                setQ(IntStat.ETHEREALPLACEMENTTYPEHIGH, value);
+                setQ(IntStat.EtherealPlacementTypeHigh, value);
                 qualities.weenieDesc.placementEtherealHigh = value;
             }
         }
 
         public int durability {
-            get => getQ(IntStat.DURABILITY_CURRENTLEVEL);
+            get => getQ(IntStat.Durability_CurrentLevel);
             set {
-                setQ(IntStat.DURABILITY_CURRENTLEVEL, value);
+                setQ(IntStat.Durability_CurrentLevel, value);
                 qualities.weenieDesc.durabilityCurrentLevel = value;
             }
         }
 
         public int durabilityMax {
-            get => getQ(IntStat.DURABILITY_MAXLEVEL);
+            get => getQ(IntStat.Durability_MaxLevel);
             set {
-                setQ(IntStat.DURABILITY_MAXLEVEL, value);
+                setQ(IntStat.Durability_MaxLevel, value);
                 qualities.weenieDesc.durabilityMaxLevel = value;
             }
         }
 
         public float scale {
-            get => getQ(FloatStat.PHYSICS_SCALE);
+            get => getQ(FloatStat.Physics_Scale);
             set {
-                setQ(FloatStat.PHYSICS_SCALE, value);
+                setQ(FloatStat.Physics_Scale, value);
                 qualities.weenieDesc.scale = value;
             }
         }
 
         public bool open {
-            get => getQ(BoolStat.OPEN);
+            get => getQ(BoolStat.Open);
             set {
-                setQ(BoolStat.OPEN, value);
+                setQ(BoolStat.Open, value);
                 if (value) {
-                    qualities.weenieDesc.packFlags |= WeenieDesc.PackFlag.OPEN;
+                    qualities.weenieDesc.packFlags |= WeenieDesc.PackFlag.Open;
                 } else {
-                    qualities.weenieDesc.packFlags &= ~WeenieDesc.PackFlag.OPEN;
+                    qualities.weenieDesc.packFlags &= ~WeenieDesc.PackFlag.Open;
                 }
             }
         }
 
         public bool dead {
-            get => getQ(BoolStat.DEAD);
+            get => getQ(BoolStat.Dead);
             set {
-                setQ(BoolStat.DEAD, value);
+                setQ(BoolStat.Dead, value);
                 if (value) {
-                    qualities.weenieDesc.packFlags |= WeenieDesc.PackFlag.DEAD;
+                    qualities.weenieDesc.packFlags |= WeenieDesc.PackFlag.Dead;
                 } else {
-                    qualities.weenieDesc.packFlags &= ~WeenieDesc.PackFlag.DEAD;
+                    qualities.weenieDesc.packFlags &= ~WeenieDesc.PackFlag.Dead;
                 }
             }
         }
 
         public bool selectable {
-            get => getQ(BoolStat.ISSELECTABLE);
+            get => getQ(BoolStat.IsSelectable);
             set {
-                setQ(BoolStat.ISSELECTABLE, value);
+                setQ(BoolStat.IsSelectable, value);
                 if (value) {
-                    qualities.weenieDesc.packFlags |= WeenieDesc.PackFlag.SELECTABLE;
+                    qualities.weenieDesc.packFlags |= WeenieDesc.PackFlag.Selectable;
                 } else {
-                    qualities.weenieDesc.packFlags &= ~WeenieDesc.PackFlag.SELECTABLE;
+                    qualities.weenieDesc.packFlags &= ~WeenieDesc.PackFlag.Selectable;
                 }
             }
         }
 
         public bool noDraw {
-            get => getQ(BoolStat.NODRAW);
+            get => getQ(BoolStat.NoDraw);
             set {
-                setQ(BoolStat.NODRAW, value);
+                setQ(BoolStat.NoDraw, value);
                 if (value) {
-                    qualities.weenieDesc.packFlags |= WeenieDesc.PackFlag.NO_DRAW;
+                    qualities.weenieDesc.packFlags |= WeenieDesc.PackFlag.NoDraw;
                 } else {
-                    qualities.weenieDesc.packFlags &= ~WeenieDesc.PackFlag.NO_DRAW;
+                    qualities.weenieDesc.packFlags &= ~WeenieDesc.PackFlag.NoDraw;
                 }
             }
         }
 
         public SpeciesType species {
-            get => (SpeciesType)getQ(IntStat.SPECIES);
-            set => setQ(IntStat.SPECIES, (int)value);
+            get => (SpeciesType)getQ(IntStat.Species);
+            set => setQ(IntStat.Species, (int)value);
         }
 
         public SexType sex {
-            get => (SexType)getQ(IntStat.SEX);
-            set => setQ(IntStat.SEX, (int)value);
+            get => (SexType)getQ(IntStat.Sex);
+            set => setQ(IntStat.Sex, (int)value);
         }
 
         public InvLoc preferredInvLoc {
-            get => (InvLoc)getQ(IntStat.PREFERREDINVENTORYLOCATION);
-            set => setQ(IntStat.PREFERREDINVENTORYLOCATION, (int)value);
+            get => (InvLoc)getQ(IntStat.PreferredInventoryLocation);
+            set => setQ(IntStat.PreferredInventoryLocation, (int)value);
         }
 
         public InvLoc validInvLocs {
-            get => (InvLoc)getQ(IntStat.VALIDINVENTORYLOCATIONS);
-            set => qualities.ints[IntStat.VALIDINVENTORYLOCATIONS] = (int)value;
+            get => (InvLoc)getQ(IntStat.ValidInventoryLocations);
+            set => qualities.ints[IntStat.ValidInventoryLocations] = (int)value;
         }
 
         public HoldingLocation primaryHoldLoc {
-            get => (HoldingLocation)getQ(IntStat.INV_PRIMARYPARENTINGLOCATION);
-            set => qualities.ints[IntStat.INV_PRIMARYPARENTINGLOCATION] = (int)value;
+            get => (HoldingLocation)getQ(IntStat.Inv_PrimaryParentingLocation);
+            set => qualities.ints[IntStat.Inv_PrimaryParentingLocation] = (int)value;
         }
 
         public Orientation holdOrientation {
-            get => (Orientation)getQ(IntStat.PLACEMENTPOSITION);
-            set => setQ(IntStat.PLACEMENTPOSITION, (int)value);
+            get => (Orientation)getQ(IntStat.PlacementPosition);
+            set => setQ(IntStat.PlacementPosition, (int)value);
         }
 
         public DataId entityDid {
@@ -329,103 +329,103 @@ namespace AC2RE.Server {
         }
 
         public DataId physicsEntityDid {
-            get => getQ(DataIdStat.PHYSOBJ);
-            set => setQ(DataIdStat.PHYSOBJ, value);
+            get => getQ(DataIdStat.PhysObj);
+            set => setQ(DataIdStat.PhysObj, value);
         }
 
         public int health {
-            get => getQ(IntStat.HEALTH_CURRENTLEVEL);
-            set => setQ(IntStat.HEALTH_CURRENTLEVEL, value);
+            get => getQ(IntStat.Health_CurrentLevel);
+            set => setQ(IntStat.Health_CurrentLevel, value);
         }
 
         public int healthMax {
-            get => getQ(IntStat.HEALTH_CACHEDMAX);
-            set => setQ(IntStat.HEALTH_CACHEDMAX, value);
+            get => getQ(IntStat.Health_CachedMax);
+            set => setQ(IntStat.Health_CachedMax, value);
         }
 
         public float healthRegen {
-            get => getQ(FloatStat.HEALTH_REGENRATE);
-            set => setQ(FloatStat.HEALTH_REGENRATE, value);
+            get => getQ(FloatStat.Health_RegenRate);
+            set => setQ(FloatStat.Health_RegenRate, value);
         }
 
         public int vigor {
-            get => getQ(IntStat.VIGOR_CURRENTLEVEL);
-            set => setQ(IntStat.VIGOR_CURRENTLEVEL, value);
+            get => getQ(IntStat.Vigor_CurrentLevel);
+            set => setQ(IntStat.Vigor_CurrentLevel, value);
         }
 
         public int vigorMax {
-            get => getQ(IntStat.VIGOR_CACHEDMAX);
-            set => setQ(IntStat.VIGOR_CACHEDMAX, value);
+            get => getQ(IntStat.Vigor_CachedMax);
+            set => setQ(IntStat.Vigor_CachedMax, value);
         }
 
         public float vigorRegen {
-            get => getQ(FloatStat.VIGOR_REGENRATE);
-            set => setQ(FloatStat.VIGOR_REGENRATE, value);
+            get => getQ(FloatStat.Vigor_RegenRate);
+            set => setQ(FloatStat.Vigor_RegenRate, value);
         }
 
         public int capacity {
-            get => getQ(IntStat.CONTAINERMAXCAPACITY);
-            set => setQ(IntStat.CONTAINERMAXCAPACITY, value);
+            get => getQ(IntStat.ContainerMaxCapacity);
+            set => setQ(IntStat.ContainerMaxCapacity, value);
         }
 
         public int playerClass {
-            get => getQ(IntStat.CLASS);
-            set => setQ(IntStat.CLASS, value);
+            get => getQ(IntStat.Class);
+            set => setQ(IntStat.Class, value);
         }
 
         public int level {
-            get => getQ(IntStat.LEVEL);
-            set => setQ(IntStat.LEVEL, value);
+            get => getQ(IntStat.Level);
+            set => setQ(IntStat.Level, value);
         }
 
         public long xp {
-            get => getQ(LongIntStat.TOTALXP);
-            set => setQ(LongIntStat.TOTALXP, value);
+            get => getQ(LongIntStat.TotalXP);
+            set => setQ(LongIntStat.TotalXP, value);
         }
 
         public long xpAvailable {
-            get => getQ(LongIntStat.AVAILABLEXP);
-            set => setQ(LongIntStat.AVAILABLEXP, value);
+            get => getQ(LongIntStat.AvailableXP);
+            set => setQ(LongIntStat.AvailableXP, value);
         }
 
         public long craftXp {
-            get => getQ(LongIntStat.TOTALCRAFTXP);
-            set => setQ(LongIntStat.TOTALCRAFTXP, value);
+            get => getQ(LongIntStat.TotalCraftXP);
+            set => setQ(LongIntStat.TotalCraftXP, value);
         }
 
         public long craftXpAvailable {
-            get => getQ(LongIntStat.AVAILABLECRAFTXP);
-            set => setQ(LongIntStat.AVAILABLECRAFTXP, value);
+            get => getQ(LongIntStat.AvailableCraftXP);
+            set => setQ(LongIntStat.AvailableCraftXP, value);
         }
 
         public int money {
-            get => getQ(IntStat.MONEY);
-            set => setQ(IntStat.MONEY, value);
+            get => getQ(IntStat.Money);
+            set => setQ(IntStat.Money, value);
         }
 
         public bool mounted {
-            get => getQ(BoolStat.PLAYER_ISONMOUNT);
-            set => setQ(BoolStat.PLAYER_ISONMOUNT, value);
+            get => getQ(BoolStat.Player_IsOnMount);
+            set => setQ(BoolStat.Player_IsOnMount, value);
         }
 
         public ImplementType implementType {
-            get => (ImplementType)getQ(IntStat.IMPLEMENTTYPE);
-            set => setQ(IntStat.IMPLEMENTTYPE, (int)value);
+            get => (ImplementType)getQ(IntStat.ImplementType);
+            set => setQ(IntStat.ImplementType, (int)value);
         }
 
         public ModeId singleWeaponMode {
-            get => (ModeId)getQ(IntStat.WEAPON_SINGLEWEAPONSTANCE);
-            set => setQ(IntStat.WEAPON_SINGLEWEAPONSTANCE, (int)value);
+            get => (ModeId)getQ(IntStat.Weapon_SingleWeaponStance);
+            set => setQ(IntStat.Weapon_SingleWeaponStance, (int)value);
         }
 
         public ModeId withShieldMode {
-            get => (ModeId)getQ(IntStat.WEAPON_WITHSHIELDSTANCE);
-            set => setQ(IntStat.WEAPON_WITHSHIELDSTANCE, (int)value);
+            get => (ModeId)getQ(IntStat.Weapon_WithShieldStance);
+            set => setQ(IntStat.Weapon_WithShieldStance, (int)value);
         }
 
         public ModeId dualWieldMode {
-            get => (ModeId)getQ(IntStat.WEAPON_DUALWIELDSTANCE);
-            set => setQ(IntStat.WEAPON_DUALWIELDSTANCE, (int)value);
+            get => (ModeId)getQ(IntStat.Weapon_DualWieldStance);
+            set => setQ(IntStat.Weapon_DualWieldStance, (int)value);
         }
 
         private void broadcastQualities() {

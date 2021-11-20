@@ -72,12 +72,12 @@ namespace AC2RE.Definitions {
                         }
                     }
 
-                    StackType stackType = StackType.UNDEF;
+                    StackType stackType = StackType.Undef;
                     bool isPackageType = false;
                     foreach (Type packageType in PACKAGE_TYPES) {
                         if (packageType.IsAssignableFrom(fieldType)) {
                             fieldType = typeof(IPackage);
-                            stackType = StackType.REFERENCE;
+                            stackType = StackType.Reference;
                             isPackageType = true;
                             break;
                         }
@@ -86,7 +86,7 @@ namespace AC2RE.Definitions {
                         if (typeof(Enum).IsAssignableFrom(fieldType)) {
                             fieldType = Enum.GetUnderlyingType(fieldType);
                         }
-                        stackType = StackType.UNDEF;
+                        stackType = StackType.Undef;
                     }
                     fieldDescs[i] = new(stackType, TYPE_TO_NUM_WORDS[fieldType]);
                 }

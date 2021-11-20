@@ -2,10 +2,10 @@
 
     // Const - globals
     public enum LootingMethod : uint {
-        NONE,
-        SHARING,
-        ROTATING,
-        ROTATINGGROUP,
-        RANDOM,
+        UNDEF,
+        SHARING, // SHARING
+        ROTATING, // ROTATING
+        ROTATINGGROUP, // ROTATINGGROUP
+        RANDOM, // RANDOM
     }
 }

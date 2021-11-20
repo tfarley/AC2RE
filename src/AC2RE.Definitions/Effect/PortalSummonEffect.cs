@@ -6,13 +6,12 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.PortalSummonEffect;
 
-        // WLib
+        // WLib PortalSummonEffect
         [Flags]
         public new enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
+            None = 0,
 
-            IGNORE_PORTAL_FLAGS = 1 << 9, // 0x00000200, PortalSummonEffect::IsIgnorePortalFlags
+            IsIgnorePortalFlags = 1 << 9, // IsIgnorePortalFlags 0x00000200
         }
 
         public uint portalLink; // m_link

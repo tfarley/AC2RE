@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Login__CharacterDeletion_ID;
+        public MessageOpcode opcode => MessageOpcode.Login__CharacterDeletion;
 
         // ECM_Login::RecvEvt_CharacterDeletion
         public InstanceId characterId; // id

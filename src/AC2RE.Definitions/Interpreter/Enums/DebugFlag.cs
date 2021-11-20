@@ -5,21 +5,19 @@ namespace AC2RE.Definitions {
     // Enum DebugFlagBits
     [Flags]
     public enum DebugFlag : uint {
-        NONE = 0,
-        ALL = uint.MaxValue,
-
-        OUTPUT_TO_DEBUGGER = 1 << 0, // 0x00000001
-        OUTPUT_TO_FILE = 1 << 1, // 0x00000002
-        OUTPUT_TO_USER = 1 << 2, // 0x00000004
-        OUTPUT_ASSERT_DIALOGS = 1 << 3, // 0x00000008
-        PRINTF_ENABLED = 1 << 4, // 0x00000010
-        DBG_ASSERTS_ASSERT = 1 << 5, // 0x00000020
-        ASSERTS_ASSERT = 1 << 6, // 0x00000040
-        WSL_ASSERTS_ASSERT = 1 << 7, // 0x00000080
-        PERF_ASSERTS_ASSERT = 1 << 8, // 0x00000100
-        ENABLE_EXCEPTION_HANDLER = 1 << 9, // 0x00000200
-        ENABLE_FLOATING_POINT_EXCEPTIONS = 1 << 10, // 0x00000400
-        PLACE_LOGS_IN_APP_DIR = 1 << 11, // 0x00000800
-        NO_AUTOMATIC_STACK_TRACE = 1 << 12, // 0x00001000
+        None = 0,
+        DbgOutputToDebugger = 1 << 0, // DbgOutputToDebugger 0x00000001
+        DbgOutputToFile = 1 << 1, // DbgOutputToFile 0x00000002
+        DbgOutputToUser = 1 << 2, // DbgOutputToUser 0x00000004
+        DbgOutputAssertDlgs = 1 << 3, // DbgOutputAssertDlgs 0x00000008
+        DbgPrintfEnabled = 1 << 4, // DbgPrintfEnabled 0x00000010
+        DbgDbgAssertsAssert = 1 << 5, // DbgDbgAssertsAssert 0x00000020
+        DbgAssertsAssert = 1 << 6, // DbgAssertsAssert 0x00000040
+        DbgWslAssertsAssert = 1 << 7, // DbgWslAssertsAssert 0x00000080
+        DbgPerfAssertsAssert = 1 << 8, // DbgPerfAssertsAssert 0x00000100
+        DbgEnableExceptionHandler = 1 << 9, // DbgEnableExceptionHandler 0x00000200
+        DbgEnableFloatingPointExceptions = 1 << 10, // DbgEnableFloatingPointExceptions 0x00000400
+        DbgPlaceLogsInAppDir = 1 << 11, // DbgPlaceLogsInAppDir 0x00000800
+        DbgNoAutomaticStackTrace = 1 << 12, // DbgNoAutomaticStackTrace 0x00001000
     }
 }

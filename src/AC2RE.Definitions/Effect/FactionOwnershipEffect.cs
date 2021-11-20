@@ -6,15 +6,13 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.FactionOwnershipEffect;
 
-        // WLib
+        // WLib FactionOwnershipEffect
         [Flags]
         public new enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            FROM_CASTER = 1 << 0, // 0x00000001, FactionOwnershipEffect::FromCaster
-            FROM_TARGET = 1 << 1, // 0x00000002, FactionOwnershipEffect::FromTarget
-            FACTION = 1 << 2, // 0x00000004, FactionOwnershipEffect::SetFaction
+            None = 0,
+            FromCaster = 1 << 0, // FromCaster 0x00000001
+            FromTarget = 1 << 1, // FromTarget 0x00000002
+            HasFaction = 1 << 2, // SetFaction 0x00000004
         }
 
         public Flag factionOwnershipFlags => (Flag)flags;

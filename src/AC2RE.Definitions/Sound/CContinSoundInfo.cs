@@ -7,14 +7,12 @@ namespace AC2RE.Definitions {
         // Enum CContinSoundInfo::CContinSound_Flag
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            SOUNDINFO = 1 << 0, // 0x00000001
-            MUSICINFO = 1 << 1, // 0x00000002
-            DOMINANT = 1 << 2, // 0x00000004
-            SELFSTOP = 1 << 3, // 0x00000008
-            COMPLEX = 1 << 4, // 0x00000010
+            NONE = 0, // CSF_NONE
+            SOUNDINFO = 1 << 0, // CSF_SOUNDINFO 0x00000001
+            MUSICINFO = 1 << 1, // CSF_MUSICINFO 0x00000002
+            DOMINANT = 1 << 2, // CSF_DOMINANT 0x00000004
+            SELFSTOP = 1 << 3, // CSF_SELFSTOP 0x00000008
+            COMPLEX = 1 << 4, // CSF_COMPLEX 0x00000010
         }
 
         public Flag bitfield; // m_bitField

@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class UISaveLocations : Dictionary<uint, Dictionary<uint, UILocationData>>, IPackage {
 
-        public NativeType nativeType => NativeType.UISAVELOCATIONS;
+        public NativeType nativeType => NativeType.UISaveLocations;
 
         public UISaveLocations() {
 

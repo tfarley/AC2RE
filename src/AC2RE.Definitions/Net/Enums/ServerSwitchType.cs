@@ -2,7 +2,7 @@
 
     // Enum ServerSwitchType
     public enum ServerSwitchType : uint {
-        WORLD_SWITCH,
-        LOGON_SWITCH,
+        WorldSwitch, // ssWorldSwitch
+        LogonSwitch, // ssLogonSwitch
     }
 }

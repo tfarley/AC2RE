@@ -2,9 +2,10 @@
 
     // Enum PhysicsTimeStamps::StampID
     public enum PhysicsTimeStamp : uint {
-        POSITION,
-        TELEPORT,
-        FORCE_POSITION,
-        MOVE_TO,
+        POSITION, // POSITION
+        TELEPORT, // TELEPORT
+        FORCE_POSITION, // FORCE_POSITION
+        MOVE_TO, // MOVE_TO
+        NUM, // NUM
     }
 }

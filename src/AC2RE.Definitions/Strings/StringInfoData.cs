@@ -6,18 +6,20 @@ namespace AC2RE.Definitions {
 
         // Const SID_Type_*
         public enum DataType : uint {
-            INT = 2,
-            FORMATTED_INT = 3,
-            FLOAT = 4,
-            FORMATTED_FLOAT = 5,
-            UINT = 6,
-            FORMATTED_UINT = 7,
+            Undef = 0,
 
-            STRING_INFO = 9,
-            LINT = 10,
-            FORMATTED_LINT = 11,
-            ULINT = 12,
-            FORMATTED_ULINT = 13,
+            Int = 2, // SID_Type_Int
+            FormattedInt = 3, // SID_Type_FormattedInt
+            Float = 4, // SID_Type_Float
+            FormattedFloat = 5, // SID_Type_FormattedFloat
+            UInt = 6, // SID_Type_UInt
+            FormattedUInt = 7, // SID_Type_FormattedUInt
+
+            StringInfo = 9, // SID_Type_StringInfo
+            LInt = 10, // SID_Type_LInt
+            FormattedLInt = 11, // SID_Type_FormattedLInt
+            ULInt = 12, // SID_Type_ULInt
+            FormattedULInt = 13, // SID_Type_FormattedULInt
         }
 
         public DataType type; // type
@@ -35,11 +37,11 @@ namespace AC2RE.Definitions {
         }
 
         public StringInfoData(StringInfo value) {
-            type = DataType.STRING_INFO;
+            type = DataType.StringInfo;
             valString = value;
         }
 
-        public StringInfoData(int value, DataType type = DataType.INT) {
+        public StringInfoData(int value, DataType type = DataType.Int) {
             this.type = type;
             valInt = value;
         }
@@ -49,24 +51,24 @@ namespace AC2RE.Definitions {
             type = (DataType)data.ReadUInt16();
             data.Align(4);
             switch (type) {
-                case DataType.INT:
+                case DataType.Int:
                     valInt = data.ReadInt32();
                     break;
-                case DataType.FLOAT:
+                case DataType.Float:
                     valDouble = data.ReadDouble();
                     valDoublePrecision = data.ReadUInt16();
                     data.Align(4);
                     break;
-                case DataType.UINT:
+                case DataType.UInt:
                     valUInt = data.ReadUInt32();
                     break;
-                case DataType.STRING_INFO:
+                case DataType.StringInfo:
                     valString = new(data);
                     break;
-                case DataType.LINT:
+                case DataType.LInt:
                     valLong = data.ReadInt64();
                     break;
-                case DataType.ULINT:
+                case DataType.ULInt:
                     valULong = data.ReadUInt64();
                     break;
                 default:
@@ -79,24 +81,24 @@ namespace AC2RE.Definitions {
             data.Write((ushort)type);
             data.Align(4);
             switch (type) {
-                case DataType.INT:
+                case DataType.Int:
                     data.Write(valInt);
                     break;
-                case DataType.FLOAT:
+                case DataType.Float:
                     data.Write(valDouble);
                     data.Write(valDoublePrecision);
                     data.Align(4);
                     break;
-                case DataType.UINT:
+                case DataType.UInt:
                     data.Write(valUInt);
                     break;
-                case DataType.STRING_INFO:
+                case DataType.StringInfo:
                     valString.write(data);
                     break;
-                case DataType.LINT:
+                case DataType.LInt:
                     data.Write(valLong);
                     break;
-                case DataType.ULINT:
+                case DataType.ULInt:
                     data.Write(valULong);
                     break;
                 default:

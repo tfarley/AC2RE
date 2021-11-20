@@ -7,13 +7,11 @@ namespace AC2RE.Definitions {
         // Enum CIntermitSoundInfo::CIntermitSound_Flag
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            SOUNDINFO = 1 << 0, // 0x00000001
-            MUSICINFO = 1 << 1, // 0x00000002
-            DOMINANT = 1 << 2, // 0x00000004
-            SELFSTOP = 1 << 3, // 0x00000008
+            NONE = 0, // ISF_NONE
+            SOUNDINFO = 1 << 0, // ISF_SOUNDINFO 0x00000001
+            MUSICINFO = 1 << 1, // ISF_MUSICINFO 0x00000002
+            DOMINANT = 1 << 2, // ISF_DOMINANT 0x00000004
+            SELFSTOP = 1 << 3, // ISF_SELFSTOP 0x00000008
         }
 
         public Flag bitfield; // m_bitField

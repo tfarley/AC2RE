@@ -7,20 +7,18 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.ParameterizedNumericEffect;
 
-        // WLib
+        // WLib ParameterizedNumericEffect
         [Flags]
         public new enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
+            None = 0,
+            IsConstantMagnitude = 1 << 0, // IsConstantMagnitude 0x00000001
+            IsVariableMagnitude = 1 << 1, // IsVariableMagnitude 0x00000002
+            IsAdditive = 1 << 2, // IsAdditive 0x00000004
+            IsMultiplicative = 1 << 3, // IsMultiplicative 0x00000008
+            IsOverriding = 1 << 4, // IsOverriding 0x00000010
 
-            CONSTANT_MAGNITUDE = 1 << 0, // 0x00000001, ParameterizedNumericEffect::IsConstantMagnitude
-            VARIABLE_MAGNITUDE = 1 << 1, // 0x00000002, ParameterizedNumericEffect::IsVariableMagnitude
-            ADDITIVE = 1 << 2, // 0x00000004, ParameterizedNumericEffect::IsAdditive
-            MULTIPLICATIVE = 1 << 3, // 0x00000008, ParameterizedNumericEffect::IsMultiplicative
-            OVERRIDING = 1 << 4, // 0x00000010, ParameterizedNumericEffect::IsOverriding
-
-            CLASS_PRIORITY_IS_MAGNITUDE = 1 << 17, // 0x00020000, ParameterizedNumericEffect::SetClassPriorityIsMagnitude
-            CLASS_PRIORITY_IS_INVERSE_OF_MAGNITUDE = 1 << 18, // 0x00040000, ParameterizedNumericEffect::SetClassPriorityIsInverseOfMagnitude
+            ClassPriorityIsMagnitude = 1 << 17, // SetClassPriorityIsMagnitude 0x00020000
+            ClassPriorityIsInverseOfMagnitude = 1 << 18, // SetClassPriorityIsInverseOfMagnitude 0x00040000
         }
 
         public float numericVariance; // m_fVariance

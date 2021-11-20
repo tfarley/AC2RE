@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.WEENIE;
-        public MessageOpcode opcode => MessageOpcode.Evt_Physics__CForceCreate_ID;
+        public MessageOpcode opcode => MessageOpcode.Physics__CForceCreate;
 
         // ECM_Physics::SendEvt_CForceCreate
         public InstanceId id; // _object_id

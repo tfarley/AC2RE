@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.WEENIE;
-        public MessageOpcode opcode => MessageOpcode.Evt_Physics__CLookAtDir_ID;
+        public MessageOpcode opcode => MessageOpcode.Physics__CLookAtDir;
 
         // ECM_Physics::SendEvt_CLookAtDir
         public float x; // _x

@@ -168,7 +168,7 @@ namespace AC2RE.Server {
             }
         }
 
-        public void setParent(WorldObject? parent, HoldingLocation holdLoc = HoldingLocation.INVALID, Orientation holdOrientation = Orientation.DEFAULT) {
+        public void setParent(WorldObject? parent, HoldingLocation holdLoc = HoldingLocation.Invalid, Orientation holdOrientation = Orientation.Default) {
             if (parent != null) {
                 if (physics.parentId != parent.id) {
                     if (world.objectManager.tryGet(physics.parentId, out WorldObject? curParent)) {
@@ -212,9 +212,9 @@ namespace AC2RE.Server {
                 }
 
                 physics.parentId = InstanceId.NULL;
-                physics.locationId = HoldingLocation.INVALID;
+                physics.locationId = HoldingLocation.Invalid;
                 physics.parentInstanceStamp = 0;
-                physics.orientationId = Orientation.DEFAULT;
+                physics.orientationId = Orientation.Default;
 
                 world.landblockManager.syncObjectVisibility(this);
             }

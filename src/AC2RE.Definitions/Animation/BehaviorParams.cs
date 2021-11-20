@@ -6,38 +6,36 @@ namespace AC2RE.Definitions {
 
     public class BehaviorParams : IPackage {
 
-        public NativeType nativeType => NativeType.BEHAVIORPARAMS;
+        public NativeType nativeType => NativeType.BehaviorParams;
 
-        // Const - globals
+        // Enum BehaviorRepPack::Flags
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
-            ALL = uint.MaxValue,
-
-            BEHAVIOR_ID = 1 << 0, // 0x00000001
-            MODE_ID = 1 << 1, // 0x00000002
-            TIME_SCALE = 1 << 2, // 0x00000004
-            EARLYCALLBACK = 1 << 3, // 0x00000008
-            HOLDCYLE = 1 << 4, // 0x00000010
-            MOVETOCANCELS = 1 << 5, // 0x00000020
-            TARGETED_CAMERA = 1 << 6, // 0x00000040
-            PARENTED_CAMERA = 1 << 7, // 0x00000080
-            FADE_CHILDREN = 1 << 8, // 0x00000100
-            SEND_EVENT = 1 << 9, // 0x00000200
-            PROPAGATE = 1 << 10, // 0x00000400
-            LOCKACTIONS = 1 << 11, // 0x00000800
-            FXSCRIPT = 1 << 12, // 0x00001000
-            TARGET = 1 << 13, // 0x00002000
-            IMPULSE = 1 << 14, // 0x00004000
-            SELF_DESTRUCT = 1 << 15, // 0x00008000
-            VDESC = 1 << 16, // 0x00010000
-            LEAVE_IDLE = 1 << 17, // 0x00020000
-            HOLD_CAMERA = 1 << 18, // 0x00040000
-            RESTORE_CAMERA = 1 << 19, // 0x00080000
-            FXTODO = 1 << 20, // 0x00100000
-            NEW_CAMERA_OBJ = 1 << 21, // 0x00200000
-            CONTEXTID = 1 << 22, // 0x00400000
-            WEENIE_EMOTE_ID = 1 << 23, // 0x00800000
+            BEHAVIOR_ID = 1 << 0, // BEHAVIOR_ID 0x00000001
+            MODE_ID = 1 << 1, // MODE_ID 0x00000002
+            TIME_SCALE = 1 << 2, // TIME_SCALE 0x00000004
+            EARLYCALLBACK = 1 << 3, // EARLYCALLBACK 0x00000008
+            HOLDCYLE = 1 << 4, // HOLDCYLE 0x00000010
+            MOVETOCANCELS = 1 << 5, // MOVETOCANCELS 0x00000020
+            TARGETED_CAMERA = 1 << 6, // TARGETED_CAMERA 0x00000040
+            PARENTED_CAMERA = 1 << 7, // PARENTED_CAMERA 0x00000080
+            FADE_CHILDREN = 1 << 8, // FADE_CHILDREN 0x00000100
+            SEND_EVENT = 1 << 9, // SEND_EVENT 0x00000200
+            PROPAGATE = 1 << 10, // PROPAGATE 0x00000400
+            LOCKACTIONS = 1 << 11, // LOCKACTIONS 0x00000800
+            FXSCRIPT = 1 << 12, // FXSCRIPT 0x00001000
+            TARGET = 1 << 13, // TARGET 0x00002000
+            IMPULSE = 1 << 14, // IMPULSE 0x00004000
+            SELF_DESTRUCT = 1 << 15, // SELF_DESTRUCT 0x00008000
+            VDESC = 1 << 16, // VDESC 0x00010000
+            LEAVE_IDLE = 1 << 17, // LEAVE_IDLE 0x00020000
+            HOLD_CAMERA = 1 << 18, // HOLD_CAMERA 0x00040000
+            RESTORE_CAMERA = 1 << 19, // RESTORE_CAMERA 0x00080000
+            FXTODO = 1 << 20, // FXTODO 0x00100000
+            NEW_CAMERA_OBJ = 1 << 21, // NEW_CAMERA_OBJ 0x00200000
+            CONTEXTID = 1 << 22, // CONTEXTID 0x00400000
+            WEENIE_EMOTE_ID = 1 << 23, // WEENIE_EMOTE_ID 0x00800000
         }
 
         public PackFlag packFlags;

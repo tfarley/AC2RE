@@ -2,9 +2,9 @@
 
     // Enum Sidedness
     public enum Sidedness : uint {
-        POSITIVE,
-        NEGATIVE,
-        IN_PLANE,
-        CROSSING,
+        POSITIVE, // POSITIVE
+        NEGATIVE, // NEGATIVE
+        IN_PLANE, // IN_PLANE
+        CROSSING, // CROSSING
     }
 }

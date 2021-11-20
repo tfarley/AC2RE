@@ -6,14 +6,12 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.ItemEffectRecipeAction;
 
-        // WLib
+        // WLib ItemEffectRecipeAction
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            EFFECT = 1 << 0, // 0x00000001, ItemEffectRecipeAction::Set*EffectByName
-            EFFECT_DYNAMIC_SPELLCRAFT = 1 << 1, // 0x00000002, ItemEffectRecipeAction::Set*EffectByNameDynamicSpellcraft
+            None = 0,
+            HasEffect = 1 << 0, // Set*EffectByName 0x00000001
+            HasEffectDynamicSpellcraft = 1 << 1, // Set*EffectByNameDynamicSpellcraft 0x00000002
         }
 
         public uint ordinal; // m_uiOrdinal

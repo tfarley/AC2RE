@@ -6,26 +6,24 @@ namespace AC2RE.Definitions {
 
     public class GameplayOptionsProfile : IPackage {
 
-        public NativeType nativeType => NativeType.GAMEPLAYOPTIONSPROFILE;
+        public NativeType nativeType => NativeType.GameplayOptionsProfile;
 
         // Const - globals
         [Flags]
         public enum ContentFlag : uint {
             NONE = 0,
-            ALL = uint.MaxValue,
-
-            ALIAS_TABLE = 1 << 0, // 0x00000001
-            SHORTCUT_ARRAY = 1 << 1, // 0x00000002
-            SHORTCUT_SET = 1 << 2, // 0x00000004
-            SHOW_RANGE_DAMAGE_OTHER = 1 << 3, // 0x00000008
-            SAVED_UI_LOCATIONS = 1 << 4, // 0x00000010
-            RADAR_MASK = 1 << 5, // 0x00000020
-            FILTER_HASH = 1 << 6, // 0x00000040
-            BIT_FIELD = 1 << 7, // 0x00000080
-            CHAT_FONT_COLORS = 1 << 8, // 0x00000100
-            CHAT_FONT_SIZES = 1 << 9, // 0x00000200
-            CHAT_POPUP_FLAGS = 1 << 10, // 0x00000400
-            WINDOW_OPACITIES = 1 << 11, // 0x00000800
+            ALIAS_TABLE = 1 << 0, // ALIAS_TABLE 0x00000001
+            SHORTCUT_ARRAY = 1 << 1, // SHORTCUT_ARRAY 0x00000002
+            SHORTCUT_SET = 1 << 2, // SHORTCUT_SET 0x00000004
+            SHOW_RANGE_DAMAGE_OTHER = 1 << 3, // SHOW_RANGE_DAMAGE_OTHER 0x00000008
+            SAVED_UI_LOCATIONS = 1 << 4, // SAVED_UI_LOCATIONS 0x00000010
+            RADAR_MASK = 1 << 5, // RADAR_MASK 0x00000020
+            FILTER_HASH = 1 << 6, // FILTER_HASH 0x00000040
+            BIT_FIELD = 1 << 7, // BIT_FIELD 0x00000080
+            CHAT_FONT_COLORS = 1 << 8, // CHAT_FONT_COLORS 0x00000100
+            CHAT_FONT_SIZES = 1 << 9, // CHAT_FONT_SIZES 0x00000200
+            CHAT_POPUP_FLAGS = 1 << 10, // CHAT_POPUP_FLAGS 0x00000400
+            WINDOW_OPACITIES = 1 << 11, // WINDOW_OPACITIES 0x00000800
             UNK1 = 1 << 12, // 0x00001000
             WINDOW_TO_CHANNEL = 1 << 13, // 0x00002000
         }
@@ -33,34 +31,33 @@ namespace AC2RE.Definitions {
         // Enum GameplayOptionsProfile::GameplayOptionsProfile_Flags
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
+            NONE = 0, // GOP_NONE
+            SHOW_SHORTCUT_NUMBERS = 1 << 0, // GOP_SHOW_SHORTCUT_NUMBERS 0x00000001
 
-            SHOW_SHORTCUT_NUMBERS = 1 << 0, // 0x00000001
-            SHOW_DAMAGE_TEXT = 1 << 1, // 0x00000002
-            SHOW_DAMAGE_OTHER = 1 << 2, // 0x00000004
-            SHOW_RADAR_COORDS = 1 << 3, // 0x00000008
-            AUTO_TARGET = 1 << 4, // 0x00000010
-            ACCEPT_ALLEGIENCE = 1 << 5, // 0x00000020
-            ACCEPT_FELLOWSHIP = 1 << 6, // 0x00000040
-            ACCEPT_TRADE = 1 << 7, // 0x00000080
-            SHOW_OBJECT_NAMES = 1 << 8, // 0x00000100
-            BYPASS_GOLDMELT_CONFIRMATION = 1 << 9, // 0x00000200
-            SHORTCUT_LOCKED = 1 << 10, // 0x00000400
-            SHOW_PK_DAMAGE = 1 << 11, // 0x00000800
-            SHORTCUT_INSTASCROLL = 1 << 12, // 0x00001000
-            LATENCY_INDICATOR_GRAPH = 1 << 13, // 0x00002000
+            SHOW_DAMAGE_TEXT = 1 << 2, // GOP_SHOW_DAMAGE_TEXT 0x00000004
+            SHOW_DAMAGE_OTHER = 1 << 3, // GOP_SHOW_DAMAGE_OTHER 0x00000008
+            SHOW_RADAR_COORDS = 1 << 4, // GOP_SHOW_RADAR_COORDS 0x00000010
+            AUTO_TARGET = 1 << 5, // GOP_AUTO_TARGET 0x00000020
+            ACCEPT_ALLEGIENCE = 1 << 6, // GOP_ACCEPT_ALLEGIENCE 0x00000040
+            ACCEPT_FELLOWSHIP = 1 << 7, // GOP_ACCEPT_FELLOWSHIP 0x00000080
+            ACCEPT_TRADE = 1 << 8, // GOP_ACCEPT_TRADE 0x00000100
+            SHOW_OBJECT_NAMES = 1 << 9, // GOP_SHOW_OBJECT_NAMES 0x00000200
+            BYPASS_GOLDMELT_CONFIRMATION = 1 << 10, // GOP_BYPASS_GOLDMELT_CONFIRMATION 0x00000400
+            SHORTCUT_LOCKED = 1 << 11, // GOP_SHORTCUT_LOCKED 0x00000800
+            SHOW_PK_DAMAGE = 1 << 12, // GOP_SHOW_PK_DAMAGE 0x00001000
+            SHORTCUT_INSTASCROLL = 1 << 13, // GOP_SHORTCUT_INSTASCROLL 0x00002000
+            LATENCY_INDICATOR_GRAPH = 1 << 14, // GOP_LATENCY_INDICATOR_GRAPH 0x00004000
 
-            HAS_BEEN_VERSIONED = 1u << 31, // 0x80000000
+            HAS_BEEN_VERSIONED = 1u << 31, // GOP_HAS_BEEN_VERSIONED 0x80000000
         }
 
         // Enum GameplayOptionsProfile::GameplayOptionsProfile_Version
         public enum Version : uint {
-            UNDEFINED_VERSION,
-            CHAT_FONT_VERSION,
-            WINDOW_OPACITIES_VERSION,
-            BROADCAST_TEXTTYPE_VERSION,
-            BROADCAST_FILTERFIX_VERSION,
+            UNDEFINED_VERSION, // GOV_UNDEFINED_VERSION
+            CHAT_FONT_VERSION, // GOV_CHAT_FONT_VERSION
+            WINDOW_OPACITIES_VERSION, // GOV_WINDOW_OPACITIES_VERSION
+            BROADCAST_TEXTTYPE_VERSION, // GOV_BROADCAST_TEXTTYPE_VERSION
+            BROADCAST_FILTERFIX_VERSION, // GOV_BROADCAST_FILTERFIX_VERSION + GOV_LATEST_VERSION
             UNK1,
             UNK2,
             LATEST_VERSION = UNK2,

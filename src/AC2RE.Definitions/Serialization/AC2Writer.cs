@@ -38,32 +38,32 @@ namespace AC2RE.Definitions {
         }
 
         public void Pack(int value) {
-            WritePackTag(PackTag.INT);
+            WritePackTag(PackTag.Int);
             Write(value);
         }
 
         public void Pack(uint value) {
-            WritePackTag(PackTag.INT);
+            WritePackTag(PackTag.Int);
             Write(value);
         }
 
         public void Pack(long value) {
-            WritePackTag(PackTag.LONGINT);
+            WritePackTag(PackTag.LongInt);
             Write(value);
         }
 
         public void Pack(ulong value) {
-            WritePackTag(PackTag.LONGINT);
+            WritePackTag(PackTag.LongInt);
             Write(value);
         }
 
         public void Pack(float value) {
-            WritePackTag(PackTag.FLOAT);
+            WritePackTag(PackTag.Float);
             Write(value);
         }
 
         public void Pack(double value) {
-            WritePackTag(PackTag.LONGFLOAT);
+            WritePackTag(PackTag.LongFloat);
             Write(value);
         }
 
@@ -98,7 +98,7 @@ namespace AC2RE.Definitions {
                 }
             }
 
-            WritePackTag(PackTag.PACKAGE);
+            WritePackTag(PackTag.Package);
             Write(packageRegistry.references, v => Write(packageRegistry.getId(v)));
             Write(buffer.ToArray());
 
@@ -115,8 +115,8 @@ namespace AC2RE.Definitions {
             } else {
                 data.Write((uint)0);
                 data.Write((ushort)value.nativeType);
-                data.Write(value.nativeType != NativeType.UNDEF ? (ushort)0xFFFF : (ushort)value.packageType);
-                if (value.nativeType != NativeType.UNDEF) {
+                data.Write(value.nativeType != NativeType.Undef ? (ushort)0xFFFF : (ushort)value.packageType);
+                if (value.nativeType != NativeType.Undef) {
                     value.write(data);
                 } else {
                     // Placeholder for length
@@ -133,7 +133,7 @@ namespace AC2RE.Definitions {
 
                 // TODO: Still not sure this is the correct condition for whether there are references or not
                 // Write out field descriptions
-                if (value.nativeType == NativeType.UNDEF) {
+                if (value.nativeType == NativeType.Undef) {
                     foreach (FieldDesc fieldDesc in InterpMeta.getFieldDescs(value.GetType())) {
                         data.Write((byte)fieldDesc.fieldType);
                         if (fieldDesc.numWords == 2) {

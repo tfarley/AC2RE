@@ -73,11 +73,11 @@ namespace AC2RE.Server.Database {
         }
 
         public List<WorldObject> getWorldObjectsWithContainerId(World world, InstanceId containerId) {
-            return getWorldObjectsWhere(world, $"JOIN world_obj_stat_id ON objectId = id AND stat = {(uint)InstanceIdStat.CONTAINER} AND value = {containerId.id}");
+            return getWorldObjectsWhere(world, $"JOIN world_obj_stat_id ON objectId = id AND stat = {(uint)InstanceIdStat.Container} AND value = {containerId.id}");
         }
 
         public List<WorldObject> getWorldObjectsWithEquipperId(World world, InstanceId equipperId) {
-            return getWorldObjectsWhere(world, $"JOIN world_obj_stat_id ON objectId = id AND stat = {(uint)InstanceIdStat.EQUIPPER} AND value = {equipperId.id}");
+            return getWorldObjectsWhere(world, $"JOIN world_obj_stat_id ON objectId = id AND stat = {(uint)InstanceIdStat.Equipper} AND value = {equipperId.id}");
         }
 
         public List<WorldObject> getWorldObjectsWithParentId(World world, InstanceId parentId) {
@@ -151,7 +151,7 @@ namespace AC2RE.Server.Database {
                     while (reader.Read()) {
                         if (worldObject.globalAppearanceModifiers == null) {
                             worldObject.globalAppearanceModifiers = new();
-                            worldObject.globalAppearanceModifiers.key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE;
+                            worldObject.globalAppearanceModifiers.key = PartGroupDataDesc.PartGroupKey.EntireTree;
                         }
 
                         if (worldObject.globalAppearanceModifiers.appearanceInfos == null) {

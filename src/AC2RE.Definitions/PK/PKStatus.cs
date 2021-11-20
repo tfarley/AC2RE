@@ -6,26 +6,22 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.PKStatus;
 
-        // WLib
+        // WLib PKStatus
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            AGENT_DEAD = 1 << 0, // 0x00000001, PKStatus::IsAgentDead
+            None = 0,
+            IsAgentDead = 1 << 0, // IsAgentDead 0x00000001
         }
 
-        // WLib
+        // WLib PKStatus
         [Flags]
         public enum Type : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            PLAYER = 1 << 0, // 0x00000001, PKStatus::IsPlayer
-            ADMIN = 1 << 1, // 0x00000002, PKStatus::IsAdmin
-            CREATURE = 1 << 2, // 0x00000004, PKStatus::IsCreature
-            NPC = 1 << 3, // 0x00000008, PKStatus::IsNPC
-            ITEM = 1 << 4, // 0x00000010, PKStatus::IsItem
+            None = 0,
+            IsPlayer = 1 << 0, // IsPlayer 0x00000001
+            IsAdmin = 1 << 1, // IsAdmin 0x00000002
+            IsCreature = 1 << 2, // IsCreature 0x00000004
+            IsNPC = 1 << 3, // IsNPC 0x00000008
+            IsItem = 1 << 4, // IsItem 0x00000010
         }
 
         public FactionStatus factionStatus; // m_factionStatus

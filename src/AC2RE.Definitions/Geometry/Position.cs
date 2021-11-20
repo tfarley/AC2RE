@@ -2,7 +2,7 @@
 
     public class Position : IPackage {
 
-        public NativeType nativeType => NativeType.POSITION;
+        public NativeType nativeType => NativeType.Position;
 
         public CellId cell; // objcell_id
         public Frame frame; // frame

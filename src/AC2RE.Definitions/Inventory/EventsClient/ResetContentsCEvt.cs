@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class ResetContentsCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Inventory__Inventory_ResetContents;
+        public ClientEventFunctionId funcId => ClientEventFunctionId.Inventory__ResetContents;
 
         // WM_Inventory::PostCEvt_Inventory_ResetContents
         public List<ContainerSegmentDescriptor> containerSegments; // _containerSegments

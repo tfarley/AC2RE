@@ -2,12 +2,12 @@
 
     public class Heading : IPackage {
 
-        public NativeType nativeType => NativeType.HEADING;
+        public NativeType nativeType => NativeType.Heading;
 
         // Enum Heading::unit_type
         public enum Unit : uint {
-            DEGREES,
-            RADIANS,
+            DEGREES, // DEGREES
+            RADIANS, // RADIANS
         }
 
         public float rotDegrees;

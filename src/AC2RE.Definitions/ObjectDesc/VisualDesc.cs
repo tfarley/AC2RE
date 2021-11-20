@@ -8,38 +8,36 @@ namespace AC2RE.Definitions {
 
         // Dat file 70000390
         public static readonly Dictionary<PhysiqueType, AppearanceKey> PHYSIQUE_TO_APPEARANCE = new() {
-            { PhysiqueType.SKIN_TONE, AppearanceKey.SKINCOLOR },
-            { PhysiqueType.SKIN_DETAIL, AppearanceKey.SKINTEXTURE },
-            { PhysiqueType.HEAD_DETAIL, AppearanceKey.HEADMESH },
-            { PhysiqueType.HEAD_FRILL, AppearanceKey.BEARDMESH },
-            { PhysiqueType.FRILL_COLOR, AppearanceKey.HEADCOLOR },
-            { PhysiqueType.SPECIAL, AppearanceKey.SPECIAL },
-            { PhysiqueType.SHIRT_CLOTHING_COLOR, AppearanceKey.CLOTHINGCOLOR },
-            { PhysiqueType.PANTS_CLOTHING_COLOR, AppearanceKey.CLOTHINGCOLOR },
-            { PhysiqueType.BOOTS_CLOTHING_COLOR, AppearanceKey.CLOTHINGCOLOR },
-            { PhysiqueType.FACE_DETAIL, AppearanceKey.FACETEXTURE },
-            { PhysiqueType.EYE_COLOR, AppearanceKey.EYES },
+            { PhysiqueType.SkinTone, AppearanceKey.SkinColor },
+            { PhysiqueType.SkinDetail, AppearanceKey.SkinTexture },
+            { PhysiqueType.HeadDetail, AppearanceKey.HeadMesh },
+            { PhysiqueType.HeadFrill, AppearanceKey.BeardMesh },
+            { PhysiqueType.FrillColor, AppearanceKey.HeadColor },
+            { PhysiqueType.Special, AppearanceKey.Special },
+            { PhysiqueType.ShirtClothingColor, AppearanceKey.ClothingColor },
+            { PhysiqueType.PantsClothingColor, AppearanceKey.ClothingColor },
+            { PhysiqueType.BootsClothingColor, AppearanceKey.ClothingColor },
+            { PhysiqueType.FaceDetail, AppearanceKey.FaceTexture },
+            { PhysiqueType.EyeColor, AppearanceKey.eyes },
         };
 
-        public NativeType nativeType => NativeType.VISUALDESC;
+        public NativeType nativeType => NativeType.VisualDesc;
 
         // Enum VisualDescPack::Flag
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
-            ALL = uint.MaxValue,
-
-            DATABASE = 1 << 0, // 0x00000001
-            PARENT = 1 << 1, // 0x00000002
-            MIDESC = 1 << 2, // 0x00000004
-            BEHAVIOR = 1 << 3, // 0x00000008
-            MODES = 1 << 4, // 0x00000010
-            SCALE = 1 << 5, // 0x00000020
-            CHILDSCALE = 1 << 6, // 0x00000040
-            ICONDESC = 1 << 7, // 0x00000080
-            GLOBALMOD = 1 << 8, // 0x00000100
-            PGDTABLE = 1 << 9, // 0x00000200
-            PARTICLESCALE = 1 << 10, // 0x00000400
+            DATABASE = 1 << 0, // DATABASE 0x00000001
+            PARENT = 1 << 1, // PARENT 0x00000002
+            MIDESC = 1 << 2, // MIDESC 0x00000004
+            BEHAVIOR = 1 << 3, // BEHAVIOR 0x00000008
+            MODES = 1 << 4, // MODES 0x00000010
+            SCALE = 1 << 5, // SCALE 0x00000020
+            CHILDSCALE = 1 << 6, // CHILDSCALE 0x00000040
+            ICONDESC = 1 << 7, // ICONDESC 0x00000080
+            GLOBALMOD = 1 << 8, // GLOBALMOD 0x00000100
+            PGDTABLE = 1 << 9, // PGDTABLE 0x00000200
+            PARTICLESCALE = 1 << 10, // PARTICLESCALE 0x00000400
         }
 
         public PackFlag packFlags;

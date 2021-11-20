@@ -113,7 +113,7 @@ namespace AC2RE.Server {
                 parentDefs.Add(entityDef);
                 EntityType entityType = entityDef.type;
                 DataId parentDid = entityDef.dataId;
-                while (entityType == EntityType.ENTITY_DESC && parentDid != DataId.NULL) {
+                while (entityType == EntityType.EntityDesc && parentDid != DataId.NULL) {
                     EntityDef parentEntityDef = getEntityDef(parentDid);
                     parentDefs.Add(parentEntityDef);
                     entityType = parentEntityDef.type;
@@ -230,7 +230,7 @@ namespace AC2RE.Server {
             if (parentVisualDesc.globalAppearanceModifiers != null) {
                 if (childVisualDesc.globalAppearanceModifiers == null) {
                     childVisualDesc.globalAppearanceModifiers = new() {
-                        key = PartGroupDataDesc.PartGroupKey.ENTIRE_TREE,
+                        key = PartGroupDataDesc.PartGroupKey.EntireTree,
                         appearanceInfos = new(),
                     };
                 }

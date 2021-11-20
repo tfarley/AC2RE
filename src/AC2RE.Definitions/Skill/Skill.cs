@@ -7,19 +7,17 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.Skill;
 
-        // WLib
+        // WLib Skill
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            UNTRAINABLE = 1 << 0, // 0x00000001, Skill::GetUntrainable
-            HIDDEN = 1 << 1, // 0x00000002, Skill::GetHidden
-            CANNOT_RAISE = 1 << 2, // 0x00000004, Skill::IsCannotRaise
-            NOT_TRAINABLE_BY_PLAYER = 1 << 3, // 0x00000008, Skill::IsNotTrainableByPlayer
-            HERO_SKILL = 1 << 4, // 0x00000010, Skill::IsHeroSkill
-            TOGGLED = 1 << 5, // 0x00000020, Skill::IsToggleSkill
-            ZERO_VIGOR_PENALTY = 1 << 6, // 0x00000040, Skill::HasZeroVigorPenalty
+            None = 0,
+            IsUntrainable = 1 << 0, // GetUntrainable 0x00000001
+            IsHidden = 1 << 1, // GetHidden 0x00000002
+            CannotRaise = 1 << 2, // IsCannotRaise 0x00000004
+            IsNotTrainableByPlayer = 1 << 3, // IsNotTrainableByPlayer 0x00000008
+            IsHeroSkill = 1 << 4, // IsHeroSkill 0x00000010
+            IsToggleSkill = 1 << 5, // IsToggleSkill 0x00000020
+            HasZeroVigorPenalty = 1 << 6, // HasZeroVigorPenalty 0x00000040
         }
 
         public StringInfo lore; // mLore

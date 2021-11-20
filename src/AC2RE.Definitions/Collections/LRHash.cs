@@ -5,7 +5,7 @@ namespace AC2RE.Definitions {
 
     public class LRHash : Dictionary<ulong, IPackage>, IPackage {
 
-        public NativeType nativeType => NativeType.LRHASH;
+        public NativeType nativeType => NativeType.LRHash;
 
         public Dictionary<K, V> to<K, V>() {
             return to<K, V>(v => (V)v);

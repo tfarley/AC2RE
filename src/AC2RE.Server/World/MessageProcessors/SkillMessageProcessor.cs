@@ -10,37 +10,37 @@ namespace AC2RE.Server {
 
         public override bool processMessage(ClientConnection client, Player player, INetMessage genericMsg) {
             switch (genericMsg.opcode) {
-                case MessageOpcode.Evt_Interp__InterpSEvent_ID: {
+                case MessageOpcode.Interp__InterpSEvent: {
                         InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
                         if (msg.netEvent.funcId == ServerEventFunctionId.Skill__RequestTrainSkill) {
                             RequestTrainSkillSEvt sEvent = (RequestTrainSkillSEvt)msg.netEvent;
                             if (tryGetCharacter(player, out WorldObject? character)) {
                                 ErrorType trainSkillError = character.trainSkill(sEvent.skillId);
-                                if (trainSkillError == ErrorType.NONE) {
+                                if (trainSkillError == ErrorType.None) {
                                     sendUpdateSkillRepo(player, character);
                                     sendUpdateSkillInfo(player, character, sEvent.skillId);
                                     Skill skill = world.contentManager.getSkill(sEvent.skillId);
                                     sendMessage(player, new StringInfo(new(0x250004AA), 1533416325, new() {
-                                        { StringVariable.SKILL_NAME, new(skill.name) },
+                                        { StringVariable.SkillName, new(skill.name) },
                                     }));
                                 } else {
-                                    sendMessage(player, trainSkillError.ToString(), TextType.ERROR);
+                                    sendMessage(player, trainSkillError.ToString(), TextType.Error);
                                 }
                             }
                         } else if (msg.netEvent.funcId == ServerEventFunctionId.Skill__RequestRaiseSkill) {
                             RequestRaiseSkillSEvt sEvent = (RequestRaiseSkillSEvt)msg.netEvent;
                             if (tryGetCharacter(player, out WorldObject? character)) {
                                 ErrorType raiseSkillError = character.raiseSkill(sEvent.skillId);
-                                if (raiseSkillError == ErrorType.NONE) {
+                                if (raiseSkillError == ErrorType.None) {
                                     sendUpdateSkillRepo(player, character);
                                     sendUpdateSkillInfo(player, character, sEvent.skillId);
                                     Skill skill = world.contentManager.getSkill(sEvent.skillId);
                                     sendMessage(player, new StringInfo(new(0x250004AA), 2419982329, new() {
-                                        { StringVariable.SKILL_NAME, new(skill.name) },
-                                        { StringVariable.SKILL_LEVEL, new((int)character.skillRepo.skills[sEvent.skillId].levelCached) },
+                                        { StringVariable.SkillName, new(skill.name) },
+                                        { StringVariable.SkillLevel, new((int)character.skillRepo.skills[sEvent.skillId].levelCached) },
                                     }));
                                 } else {
-                                    sendMessage(player, raiseSkillError.ToString(), TextType.ERROR);
+                                    sendMessage(player, raiseSkillError.ToString(), TextType.Error);
                                 }
                             }
                         } else {

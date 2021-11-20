@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class SkillUINode : IPackage {
 
-        public NativeType nativeType => NativeType.SKILLUINODE;
+        public NativeType nativeType => NativeType.SkillUINode;
 
         public SkillId skillId; // mEnum
         public uint type; // mType

@@ -2,8 +2,8 @@
 
     // Const *_ReferenceType
     public enum ReferenceType : byte {
-        UNDEF,
-        HEAPOBJECT,
-        RELATIVE,
+        Undef, // Undef_ReferenceType
+        HeapObject, // HeapObject_ReferenceType
+        Relative, // Relative_ReferenceType
     }
 }

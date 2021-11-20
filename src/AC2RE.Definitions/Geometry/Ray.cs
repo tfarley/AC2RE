@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class Ray : IPackage {
 
-        public NativeType nativeType => NativeType.RAY;
+        public NativeType nativeType => NativeType.Ray;
 
         public Vector3 origin; // pt
         public Vector3 direction; // dir

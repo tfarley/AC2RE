@@ -2,7 +2,8 @@
 
     // Dat file 2300000C
     public enum ClothingType : uint {
-        MUUMUU = 0x40000001,
-        TRUCK = 0x40000002,
+        Undef = 0,
+
+        Muumuu = 0x40000001, // Muumuu
     }
 }

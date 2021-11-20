@@ -7,17 +7,16 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum Flag : ulong {
             NONE = 0,
-            ALL = ulong.MaxValue,
 
-            OUT_OF_WORLD = 0x2000000000000000,
-            CELL = 0x4000000000000000,
-            EPHEMERAL = 0x8000000000000000,
+            OUT_OF_WORLD = 0x2000000000000000, // OUT_OF_WORLD
+            CELL = 0x4000000000000000, // CELL
+            EPHEMERAL = 0x8000000000000000, // EPHEMERAL
         }
 
         private static readonly ulong FLAGS_MASK = 0xE000000000000000;
-        private static readonly ulong ORDERING_TYPE_MASK = 0x1F00000000000000;
-        private static readonly ulong ORDERING_STAMP_MASK = 0x0000FFFF00000000;
-        private static readonly ulong SEQUENCE_ID_MASK = 0x00FF0000FFFFFFFF;
+        private static readonly ulong ORDERING_TYPE_MASK = 0x1F00000000000000; // ORDERING_TYPE_MASK
+        private static readonly ulong ORDERING_STAMP_MASK = 0x0000FFFF00000000; // ORDERING_STAMP_MASK
+        private static readonly ulong SEQUENCE_ID_MASK = 0x00FF0000FFFFFFFF; // SEQUENCE_ID_MASK
 
         public ulong id;
 

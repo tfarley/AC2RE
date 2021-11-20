@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class ExaminationProfile : IPackage {
 
-        public NativeType nativeType => NativeType.EXAMINATIONPROFILE;
+        public NativeType nativeType => NativeType.ExaminationProfile;
 
         public ExaminationRequest request; // _request
         public List<ExaminationDataNode> nodes; // _nodeList

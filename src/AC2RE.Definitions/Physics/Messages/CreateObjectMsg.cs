@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Physics__CreateObject_ID;
+        public MessageOpcode opcode => MessageOpcode.Physics__CreateObject;
 
         // CM_Physics::RecvEvt_CreateObject
         public InstanceId id; // objectID

@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class LAMultiHash : Dictionary<ulong, List<uint>>, IPackage {
 
-        public NativeType nativeType => NativeType.LAMULTIHASH;
+        public NativeType nativeType => NativeType.LAMultiHash;
 
         public Dictionary<K, List<V>> to<K, V>() {
             Dictionary<K, List<V>> converted = new(Count);

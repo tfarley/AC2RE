@@ -6,16 +6,14 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.TextEffect;
 
-        // WLib
+        // WLib TextEffect
         [Flags]
         public new enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            CHAT_SPEW = 1 << 0, // 0x00000001, TextEffect::IsChatSpew
-            LOCAL_BROADCAST = 1 << 1, // 0x00000002, TextEffect::IsLocalBroadcast
-            GLOBAL_BROADCAST = 1 << 2, // 0x00000004, TextEffect::IsGlobalBroadcast
-            POPUP = 1 << 3, // 0x00000008, TextEffect::IsPopup
+            None = 0,
+            IsChatSpew = 1 << 0, // IsChatSpew 0x00000001
+            IsLocalBroadcast = 1 << 1, // IsLocalBroadcast 0x00000002
+            IsGlobalBroadcast = 1 << 2, // IsGlobalBroadcast 0x00000004
+            IsPopup = 1 << 3, // IsPopup 0x00000008
         }
 
         public StringInfo broadcastText; // m_siBroadcast

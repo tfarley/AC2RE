@@ -6,16 +6,14 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.AITauntDetauntEffect;
 
-        // WLib
+        // WLib AITauntDetauntEffect
         [Flags]
         public new enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            TAUNT_ADJUSTMENT = 1 << 0, // 0x00000001, AITauntDetauntEffect::SetTauntAdjustment
-            TAUNT_ADJUSTMENT_AS_FRACTION_OF_MONSTER_HEALTH = 1 << 1, // 0x00000002, AITauntDetauntEffect::SetTauntAdjustmentAsFractionOfMonsterHealth
-            // NOTE: AITauntDetauntEffect::SetDetauntAdjustment == 3, possibly a bug
-            DETAUNT_ADJUSTMENT_AS_FRACTION_OF_MONSTER_HEALTH = 1 << 2, // 0x00000004, AITauntDetauntEffect::SetDetauntAdjustmentAsFractionOfMonsterHealth
+            None = 0,
+            HasTauntAdjustment = 1 << 0, // SetTauntAdjustment 0x00000001
+            HasAdjustmentAsFractionOfMonsterHealth = 1 << 1, // SetTauntAdjustmentAsFractionOfMonsterHealth 0x00000002
+            // NOTE: AITauntDetauntEffect::SetDetauntAdjustment == 3, possibly a bug in WLib itself?
+            HasDetauntAdjustmentAsFractionOfMonsterHealth = 1 << 2, // SetDetauntAdjustmentAsFractionOfMonsterHealth 0x00000004
         }
 
         public int minSpellcraft; // m_nMinSpellcraft

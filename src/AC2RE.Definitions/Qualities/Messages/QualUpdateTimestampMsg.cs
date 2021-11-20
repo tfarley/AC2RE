@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Qualities__UpdateTimestamp_Private_ID;
+        public MessageOpcode opcode => MessageOpcode.Qualities__UpdateTimestamp_Private;
 
         // ECM_Qualities::RecvEvt_UpdateTimestamp_Private
         public TimestampStat type; // _stype
@@ -30,7 +30,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Qualities__UpdateTimestamp_Visual_ID;
+        public MessageOpcode opcode => MessageOpcode.Qualities__UpdateTimestamp_Visual;
         public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
 
         // ECM_Qualities::RecvEvt_UpdateTimestamp_Visual

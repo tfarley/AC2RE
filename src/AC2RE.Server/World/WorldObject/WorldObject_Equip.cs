@@ -41,13 +41,13 @@ namespace AC2RE.Server {
         public ErrorType equip(InvLoc equipLoc, WorldObject? item) {
             if (item != null) {
                 if (isEquipped(equipLoc)) {
-                    return ErrorType.INVSLOTFULL;
+                    return ErrorType.InvSlotFull;
                 } else if (!contains(item.id)) {
-                    return ErrorType.USAGE_INTERACTIONTARGETNOTCONTAINED;
+                    return ErrorType.Usage_InteractionTargetNotContained;
                 } else if (!item.validInvLocs.HasFlag(equipLoc)) {
-                    return ErrorType.WRONGINVSLOT;
+                    return ErrorType.WrongInvSlot;
                 } else if (containedItemIds == null || !containedItemIds.Contains(item.id)) {
-                    return ErrorType.CONTAINERDOESNOTCONTAINITEM;
+                    return ErrorType.ContainerDoesNotContainItem;
                 }
 
                 if (invLocToEquippedItemId == null) {
@@ -60,7 +60,7 @@ namespace AC2RE.Server {
                 item.equippedLocation = equipLoc;
 
                 HoldingLocation holdLoc = item.primaryHoldLoc;
-                if (holdLoc != HoldingLocation.INVALID) {
+                if (holdLoc != HoldingLocation.Invalid) {
                     item.setParent(this, holdLoc, item.holdOrientation);
                 }
 
@@ -68,9 +68,9 @@ namespace AC2RE.Server {
             } else {
                 if (invLocToEquippedItemId != null && world.objectManager.tryGet(invLocToEquippedItemId[equipLoc], out WorldObject? curItem)) {
                     if (!invLocToEquippedItemId.TryGetValue(equipLoc, out InstanceId equippedItemId) || curItem.id != equippedItemId) {
-                        return ErrorType.NOTEQUIPPED;
+                        return ErrorType.NotEquipped;
                     } else if (containedItemIds == null || !containedItemIds.Contains(curItem.id)) {
-                        return ErrorType.CONTAINERDOESNOTCONTAINITEM;
+                        return ErrorType.ContainerDoesNotContainItem;
                     }
 
                     invLocToEquippedItemId.Remove(equipLoc);
@@ -81,7 +81,7 @@ namespace AC2RE.Server {
 
             syncMode();
 
-            return ErrorType.NONE;
+            return ErrorType.None;
         }
     }
 }

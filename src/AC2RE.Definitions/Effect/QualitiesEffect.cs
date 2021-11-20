@@ -6,15 +6,14 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.QualitiesEffect;
 
-        // WLib
+        // WLib QualitiesEffect
         [Flags]
         public new enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
+            None = 0,
 
-            POSITIVE_ONLY = 1 << 5, // 0x00000020, QualitiesEffect::SetPositiveOnly
-            NEGATIVE_ONLY = 1 << 6, // 0x00000040, QualitiesEffect::SetNegativeOnly
-            NON_ZERO_ONLY = 1 << 7, // 0x00000080, QualitiesEffect::SetPositiveNonZeroOnly
+            IsPositiveOnly = 1 << 5, // SetPositiveOnly 0x00000020
+            IsNegativeOnly = 1 << 6, // SetNegativeOnly 0x00000040
+            IsPositiveNonZeroOnly = 1 << 7, // SetPositiveNonZeroOnly 0x00000080
         }
 
         public float minChange; // m_fMinChange

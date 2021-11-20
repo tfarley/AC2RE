@@ -8,16 +8,18 @@ namespace AC2RE.Definitions {
 
         // Const - globals
         public enum AnimatorType : uint {
-            ASSET = 0x40000001,
-            CUBE = 0x40000002,
-            HUMAN = 0x40000003,
+            undef = 0,
 
-            LOOK = 0x40000005,
-            AXIS = 0x40000006,
-            RANDOM = 0x40000007,
-            SWITCH_ME = 0x40000008,
+            asset = 0x40000001, // asset
+            cube = 0x40000002, // cube
+            human = 0x40000003, // human
 
-            ANGLE = 0x4000000A,
+            look = 0x40000005, // look
+            axis = 0x40000006, // axis
+            random = 0x40000007, // random
+            switchME = 0x40000008, // switchME
+
+            angle = 0x4000000A, // angle
         }
 
         public class AnimAsset : IWritable {
@@ -321,9 +323,9 @@ namespace AC2RE.Definitions {
 
             // Enum AMSwitchME::SwitchType
             public enum SwitchType : uint {
-                MODE,
-                ELEMENT,
-                TERRAIN,
+                mode, // mode
+                element, // element
+                terrain, // terrain
             }
 
             public SwitchType switchType; // mSwitchType
@@ -411,27 +413,27 @@ namespace AC2RE.Definitions {
             did = data.ReadDataId();
             type = (AnimatorType)data.ReadUInt32();
             switch (type) {
-                case AnimatorType.ASSET:
+                case AnimatorType.asset:
                     animatorData = new AnimAsset(data);
                     break;
-                case AnimatorType.CUBE:
+                case AnimatorType.cube:
                     animatorData = new AnimCube(data);
                     break;
-                case AnimatorType.HUMAN:
+                case AnimatorType.human:
                     animatorData = new AMHuman(data);
                     break;
-                case AnimatorType.LOOK:
+                case AnimatorType.look:
                     break;
-                case AnimatorType.AXIS:
+                case AnimatorType.axis:
                     animatorData = new AxisCube(data);
                     break;
-                case AnimatorType.RANDOM:
+                case AnimatorType.random:
                     animatorData = new AMRandom(data);
                     break;
-                case AnimatorType.SWITCH_ME:
+                case AnimatorType.switchME:
                     animatorData = new AMSwitchME(data);
                     break;
-                case AnimatorType.ANGLE:
+                case AnimatorType.angle:
                     animatorData = new AMAngle(data);
                     break;
                 default:

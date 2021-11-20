@@ -2,13 +2,13 @@
 
     public class SelectionInfo : IPackage {
 
-        public NativeType nativeType => NativeType.SELECTIONINFO;
+        public NativeType nativeType => NativeType.SelectionInfo;
 
         // Const *_SelectionInfoType
         public enum InfoType : uint {
-            UNDEF = 0,
+            Undef = 0, // Undef_SelectionInfoType
 
-            AGENT = 0x40000001,
+            Agent = 0x40000001, // Agent_SelectionInfoType
         }
 
         public InfoType type; // m_type
@@ -25,7 +25,7 @@
 
         public SelectionInfo(AC2Reader data) {
             type = (InfoType)data.ReadUInt32();
-            if (type == InfoType.AGENT) {
+            if (type == InfoType.Agent) {
                 curHealth = data.ReadInt32();
                 pkDamage = data.ReadInt32();
                 maxHealth = data.ReadInt32();
@@ -37,7 +37,7 @@
 
         public void write(AC2Writer data) {
             data.Write((uint)type);
-            if (type == InfoType.AGENT) {
+            if (type == InfoType.Agent) {
                 data.Write(curHealth);
                 data.Write(pkDamage);
                 data.Write(maxHealth);

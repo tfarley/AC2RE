@@ -25,11 +25,11 @@ namespace AC2RE.Server {
             world.playerManager.send(player, msg);
         }
 
-        protected void sendMessage(Player player, string text, TextType type = TextType.STANDARD) {
+        protected void sendMessage(Player player, string text, TextType type = TextType.Standard) {
             sendMessage(player, new StringInfo(text), type);
         }
 
-        protected void sendMessage(Player player, StringInfo text, TextType type = TextType.STANDARD) {
+        protected void sendMessage(Player player, StringInfo text, TextType type = TextType.Standard) {
             world.playerManager.send(player, new DisplayStringInfoMsg {
                 text = text,
                 type = type,

@@ -2,154 +2,182 @@
 
     // Const *_NativeType, updated with gmCNativeFactory::GetNativeTypeName
     public enum NativeType : uint {
-        UNDEF = 0,
-        AAHASH = 0x00000001,
-        AAHASHITER = 0x00000002,
-        AAMULTIHASH = 0x00000003,
-        AAMULTIHASHITER = 0x00000004,
-        AARRAY = 0x00000005,
-        AHASHSET = 0x00000006,
-        AHASHSETITER = 0x00000007,
-        ALHASH = 0x00000008,
-        ALHASHITER = 0x00000009,
-        ALIST = 0x0000000A,
-        ALISTITER = 0x0000000B,
-        ALMULTIHASH = 0x0000000C,
-        ALMULTIHASHITER = 0x0000000D,
-        APPEARANCETABLEADAPTOR = 0x0000000E,
-        APPINFOHASH = 0x0000000F,
-        APPLIEDAPPEARANCEKEY = 0x00000010,
-        ARHASH = 0x00000011,
-        ARHASHITER = 0x00000012,
-        ARMULTIHASH = 0x00000013,
-        ARMULTIHASHITER = 0x00000014,
-        BASEPROPERTY = 0x00000016,
-        BEHAVIORPARAMS = 0x00000017,
-        CDBFORM = 0x00000018,
-        COLLIDEPROPERTY = 0x00000019,
-        COLLISIONPARAMETERS = 0x0000001A,
-        COLLISIONPROFILE = 0x0000001B,
-        DETECTIONPARAMETERS = 0x0000001D,
-        DETECTIONPROFILE = 0x0000001E,
-        DETECTIONREPORTTYPE = 0x0000001F,
-        ENTITYDESC = 0x00000022,
-        ETHEREALPHYSICSTYPE = 0x00000024,
-        ETHEREALWEENIETYPE = 0x00000025,
-        PFILENODE = 0x00000028,
-        PFILEPARSER = 0x00000029,
-        FRAME = 0x0000002A,
-        FXANDBEHAVIORINFO = 0x0000002B,
-        GAMETIME = 0x0000002C,
-        HEADING = 0x0000002D,
-        ICONDESC = 0x0000002E,
-        LAHASH = 0x00000032,
-        LAHASHITER = 0x00000033,
-        LAMULTIHASH = 0x00000034,
-        LAMULTIHASHITER = 0x00000035,
-        LARRAY = 0x00000037,
-        LINKREQUIREMENTS = 0x00000038,
-        LLHASH = 0x00000039,
-        LLHASHITER = 0x0000003A,
-        LLIST = 0x0000003B,
-        LLISTITER = 0x0000003C,
-        LLMULTIHASH = 0x0000003D,
-        LLMULTIHASHITER = 0x0000003E,
-        LOSPARAMETERS = 0x0000003F,
-        LRHASH = 0x00000040,
-        LRHASHITER = 0x00000041,
-        LRMULTIHASH = 0x00000042,
-        LRMULTIHASHITER = 0x00000043,
-        MISSILEINFO = 0x00000045,
-        MISSILEPARAMETERS = 0x00000046,
-        MISSILETARGETINGPARAMETERS = 0x00000047,
-        MOTIONVALUES = 0x00000048,
-        MOVEMENTPARAMETERS = 0x00000049,
-        MOVEMENTRETURN = 0x0000004A,
-        NAHASH = 0x0000004B,
-        NAHASHITER = 0x0000004C,
-        NRHASH = 0x0000004D,
-        NRHASHITER = 0x0000004E,
-        OBJCOLLISIONPROFILE = 0x0000004F,
-        PACKBUFFER = 0x00000050,
-        PATH = 0x00000051,
-        PATHFINDER = 0x00000052,
-        PATHFINDER_NORMAL = 0x00000053,
-        PATHNODEDATA = 0x00000054,
-        PHYSICSSTORY = 0x00000057,
-        PLACESTABLE = 0x00000058,
-        PLANE = 0x00000059,
-        POSITION = 0x0000005A,
-        PROPERTYCOLLECTION = 0x0000005B,
-        PROPERTYGROUP = 0x0000005C,
-        QUALIFIEDDATAIDARRAY = 0x0000005E,
-        RANDOMSELECTIONTABLE_INT = 0x00000060,
-        RARRAY = 0x00000061,
-        RAY = 0x00000062,
-        RGBACOLOR = 0x00000064,
-        RLIST = 0x00000065,
-        RLISTITER = 0x00000066,
-        SETPOSITIONSTRUCT = 0x00000067,
-        SPHERE = 0x00000068,
-        STORYHOOKDATA = 0x00000069,
-        STRINGINFO = 0x0000006A,
-        TABOOTABLEADAPTOR = 0x0000006B,
-        UISAVELOCATIONS = 0x0000006F,
-        VECTOR = 0x00000070,
-        VISUALDESC = 0x00000071,
-        VMDATA = 0x00000073,
-        WPSTRING = 0x00000076,
-        WSTATE = 0x00000077,
-        CRSDATA = 0x00000078,
-        PATHPLANMANAGER = 0x00000079,
-        WBOOKKEEPER = 0x0000007D,
-        WDISTRIBUTOR = 0x0000007E,
-        WINTERFACE = 0x0000007F,
-        WPHYSICSOBJECT = 0x00000080,
-        WREPOSITORY = 0x00000081,
-        ALLEGIANCEDATAADAPTOR = 0x00000082,
-        ALLEGIANCEPROFILEADAPTOR = 0x00000083,
-        FELLOWADAPTOR = 0x00000093,
-        FELLOWSHIPADAPTOR = 0x00000094,
-        DAMAGETEXTBLOB = 0x00000097,
-        EFFECTUINODE = 0x00000098,
-        EXAMINATIONPROFILE = 0x00000099,
-        EXAMINATIONREQUEST = 0x0000009A,
-        GAMEPLAYOPTIONSPROFILE = 0x0000009B,
-        GMACTINFO = 0x0000009C,
-        GMACTINFOLIST = 0x0000009D,
-        GMCHARGENRESULT = 0x0000009E,
-        GMKEYFRAME = 0x0000009F,
-        GMQUESTINFO = 0x000000A0,
-        GMQUESTINFOLIST = 0x000000A1,
-        GMRACESEXINFO = 0x000000A2,
-        GMSCENEINFO = 0x000000A3,
-        GMSCENEINFOLIST = 0x000000A4,
-        INGREDIENTADAPTOR = 0x000000A5,
-        RECIPEADAPTOR = 0x000000AA,
-        SELECTIONINFO = 0x000000AB,
-        SHORTCUTINFO = 0x000000AC,
-        SKILLUINODE = 0x000000AE,
-        TURBINEUSERSTATUS = 0x000000AF,
-        CLIQUECONSTRAINTS = 0x000000B1,
-        CLIQUEMANAGER = 0x000000B2,
-        GMWINTERFACE = 0x000000B4,
-        DBCACHE = 0x00001AC0,
-        CRSDATABASE = 0x00001AC2,
-        AAMULTIMAP = 0x00001AC3,
-        AAMULTIMAPITER = 0x00001AC4,
-        ALMULTIMAP = 0x00001AC5,
-        ALMULTIMAPITER = 0x00001AC6,
-        ENTITYLINKDESC = 0x00001AC7,
-        LAHASHSET = 0x00001AC8,
-        LAHASHSETITER = 0x00001AC9,
-        LAMULTIMAP = 0x00001ACA,
-        LAMULTIMAPITER = 0x00001ACB,
-        LLMULTIMAP = 0x00001ACC,
-        LLMULTIMAPITER = 0x00001ACD,
-        CASEINSENSITIVEWPSTRING = 0x00001ACF,
-        CRAFTSKILLADAPTOR = 0x00001AD4,
-        UISHOP = 0x00001AD6,
-        UISHOPSALE = 0x00001AD7,
-        GRSMANAGER = 0x00003376,
+        Undef = 0, // Undef_NativeType
+        AAHash = 1, // AAHash_NativeType
+        AAHashIter = 2, // AAHashIter_NativeType
+        AAMultiHash = 3, // AAMultiHash_NativeType
+        AAMultiHashIter = 4, // AAMultiHashIter_NativeType
+        AArray = 5, // AArray_NativeType
+        AHashSet = 6, // AHashSet_NativeType
+        AHashSetIter = 7, // AHashSetIter_NativeType
+        ALHash = 8, // ALHash_NativeType
+        ALHashIter = 9, // ALHashIter_NativeType
+        AList = 10, // AList_NativeType
+        AListIter = 11, // AListIter_NativeType
+        ALMultiHash = 12, // ALMultiHash_NativeType
+        ALMultiHashIter = 13, // ALMultiHashIter_NativeType
+        AppearanceTableAdaptor = 14, // AppearanceTableAdaptor_NativeType
+        AppInfoHash = 15, // AppInfoHash_NativeType
+        AppliedAppearanceKey = 16, // AppliedAppearanceKey_NativeType
+        ARHash = 17, // ARHash_NativeType
+        ARHashIter = 18, // ARHashIter_NativeType
+        ARMultiHash = 19, // ARMultiHash_NativeType
+        ARMultiHashIter = 20, // ARMultiHashIter_NativeType
+
+        BaseProperty = 22, // BaseProperty_NativeType
+        BehaviorParams = 23, // BehaviorParams_NativeType
+        CDBForm = 24, // CDBForm_NativeType
+        CollideProperty = 25, // CollideProperty_NativeType
+        CollisionParameters = 26, // CollisionParameters_NativeType
+        CollisionProfile = 27, // CollisionProfile_NativeType
+
+        DetectionParameters = 29, // DetectionParameters_NativeType
+        DetectionProfile = 30, // DetectionProfile_NativeType
+        DetectionReportType = 31, // DetectionReportType_NativeType
+
+        EntityDesc = 34, // EntityDesc_NativeType
+
+        EtherealPhysicsType = 36, // EtherealPhysicsType_NativeType
+        EtherealWeenieType = 37, // EtherealWeenieType_NativeType
+
+        PFileNode = 40, // PFileNode_NativeType
+        PFileParser = 41, // PFileParser_NativeType
+        Frame = 42, // Frame_NativeType
+        FXAndBehaviorInfo = 43, // FXAndBehaviorInfo_NativeType
+        GameTime = 44, // GameTime_NativeType
+        Heading = 45, // Heading_NativeType
+        IconDesc = 46, // IconDesc_NativeType
+
+        LAHash = 50, // LAHash_NativeType
+        LAHashIter = 51, // LAHashIter_NativeType
+        LAMultiHash = 52, // LAMultiHash_NativeType
+        LAMultiHashIter = 53, // LAMultiHashIter_NativeType
+
+        LArray = 55, // LArray_NativeType
+        LinkRequirements = 56, // LinkRequirements_NativeType
+        LLHash = 57, // LLHash_NativeType
+        LLHashIter = 58, // LLHashIter_NativeType
+        LList = 59, // LList_NativeType
+        LListIter = 60, // LListIter_NativeType
+        LLMultiHash = 61, // LLMultiHash_NativeType
+        LLMultiHashIter = 62, // LLMultiHashIter_NativeType
+        LOSParameters = 63, // LOSParameters_NativeType
+        LRHash = 64, // LRHash_NativeType
+        LRHashIter = 65, // LRHashIter_NativeType
+        LRMultiHash = 66, // LRMultiHash_NativeType
+        LRMultiHashIter = 67, // LRMultiHashIter_NativeType
+
+        MissileInfo = 69, // MissileInfo_NativeType
+        MissileParameters = 70, // MissileParameters_NativeType
+        MissileTargetingParameters = 71, // MissileTargetingParameters_NativeType
+        MotionValues = 72, // MotionValues_NativeType
+        MovementParameters = 73, // MovementParameters_NativeType
+        MovementReturn = 74, // MovementReturn_NativeType
+        NAHash = 75, // NAHash_NativeType
+        NAHashIter = 76, // NAHashIter_NativeType
+        NRHash = 77, // NRHash_NativeType
+        NRHashIter = 78, // NRHashIter_NativeType
+        ObjCollisionProfile = 79, // ObjCollisionProfile_NativeType
+        PackBuffer = 80, // PackBuffer_NativeType
+        Path = 81, // Path_NativeType
+        PathFinder = 82, // PathFinder_NativeType
+        PathFinder_Normal = 83, // PathFinder_Normal_NativeType
+        PathNodeData = 84, // PathNodeData_NativeType
+
+        PhysicsStory = 87, // PhysicsStory_NativeType
+        PlacesTable = 88, // PlacesTable_NativeType
+        Plane = 89, // Plane_NativeType
+        Position = 90, // Position_NativeType
+        PropertyCollection = 91, // PropertyCollection_NativeType
+        PropertyGroup = 92, // PropertyGroup_NativeType
+
+        QualifiedDataIDArray = 94, // QualifiedDataIDArray_NativeType
+
+        RandomSelectionTable_Int = 96, // RandomSelectionTable_Int_NativeType
+        RArray = 97, // RArray_NativeType
+        Ray = 98, // Ray_NativeType
+
+        RGBAColor = 100, // RGBAColor_NativeType
+        RList = 101, // RList_NativeType
+        RListIter = 102, // RListIter_NativeType
+        SetPositionStruct = 103, // SetPositionStruct_NativeType
+        Sphere = 104, // Sphere_NativeType
+        StoryHookData = 105, // StoryHookData_NativeType
+        StringInfo = 106, // StringInfo_NativeType
+        TabooTableAdaptor = 107, // TabooTableAdaptor_NativeType
+
+        UISaveLocations = 111, // UISaveLocations_NativeType
+        Vector = 112, // Vector_NativeType
+        VisualDesc = 113, // VisualDesc_NativeType
+
+        VMData = 115, // VMData_NativeType
+
+        wpstring = 118, // wpstring_NativeType
+        WState = 119, // WState_NativeType
+        CRSData = 120, // CRSData_NativeType
+        PathPlanManager = 121, // PathPlanManager_NativeType
+
+        WBookKeeper = 125, // WBookKeeper_NativeType
+        WDistributor = 126, // WDistributor_NativeType
+        WInterface = 127, // WInterface_NativeType
+        WPhysicsObject = 128, // WPhysicsObject_NativeType
+        WRepository = 129, // WRepository_NativeType
+        AllegianceDataAdaptor = 130, // AllegianceDataAdaptor_NativeType
+        AllegianceProfileAdaptor = 131, // AllegianceProfileAdaptor_NativeType
+
+        FellowAdaptor = 147, // FellowAdaptor_NativeType
+        FellowshipAdaptor = 148, // FellowshipAdaptor_NativeType
+
+        DamageTextBlob = 151, // DamageTextBlob_NativeType
+        EffectUINode = 152, // EffectUINode_NativeType
+        ExaminationProfile = 153, // ExaminationProfile_NativeType
+        ExaminationRequest = 154, // ExaminationRequest_NativeType
+        GameplayOptionsProfile = 155, // GameplayOptionsProfile_NativeType
+        gmActInfo = 156, // gmActInfo_NativeType
+        gmActInfoList = 157, // gmActInfoList_NativeType
+        gmCharGenResult = 158, // gmCharGenResult_NativeType
+        gmKeyframe = 159, // gmKeyframe_NativeType
+        gmQuestInfo = 160, // gmQuestInfo_NativeType
+        gmQuestInfoList = 161, // gmQuestInfoList_NativeType
+        gmRaceSexInfo = 162, // gmRaceSexInfo_NativeType
+        gmSceneInfo = 163, // gmSceneInfo_NativeType
+        gmSceneInfoList = 164, // gmSceneInfoList_NativeType
+        IngredientAdaptor = 165, // IngredientAdaptor_NativeType
+
+        RecipeAdaptor = 170, // RecipeAdaptor_NativeType
+        SelectionInfo = 171, // SelectionInfo_NativeType
+        ShortcutInfo = 172, // ShortcutInfo_NativeType
+
+        SkillUINode = 174, // SkillUINode_NativeType
+        TurbineUserStatus = 175, // TurbineUserStatus_NativeType
+
+        CliqueConstraints = 177, // CliqueConstraints_NativeType
+        CliqueManager = 178, // CliqueManager_NativeType
+
+        gmWInterface = 180, // gmWInterface_NativeType
+
+        DBCache = 6848, // DBCache_NativeType
+
+        CRSDataBase = 6850, // CRSDataBase_NativeType
+        AAMultiMap = 6851, // AAMultiMap_NativeType was 13969
+        AAMultiMapIter = 6852, // AAMultiMapIter_NativeType was 13970
+        ALMultiMap = 6853, // ALMultiMap_NativeType was 13971
+        ALMultiMapIter = 6854, // ALMultiMapIter_NativeType was 13972
+        EntityLinkDesc = 6855, // EntityLinkDesc_NativeType was 14240
+        LAHashSet = 6856, // LAHashSet_NativeType was 11787
+        LAHashSetIter = 6857, // LAHashSetIter_NativeType was 11788
+        LAMultiMap = 6858, // LAMultiMap_NativeType was 13973
+        LAMultiMapIter = 6859, // LAMultiMapIter_NativeType was 13974
+        LLMultiMap = 6860, // LLMultiMap_NativeType was 13975
+        LLMultiMapIter = 6861, // LLMultiMapIter_NativeType was 13976
+
+        CaseInsensitiveWPString = 6863, // CaseInsensitiveWPString_NativeType was 13631
+
+        CraftSkillAdaptor = 6868, // CraftSkillAdaptor_NativeType was 13221
+
+        UIShop = 6870, // UIShop_NativeType was 14346
+        UIShopSale = 6871, // UIShopSale_NativeType was 14347
+
+        GRSManager = 13174, // GRSManager_NativeType
     }
 }

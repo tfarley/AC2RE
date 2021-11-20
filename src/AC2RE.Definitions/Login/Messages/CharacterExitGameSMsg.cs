@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Login__CharExitGame_ID;
+        public MessageOpcode opcode => MessageOpcode.Login__CharExitGame;
 
         // ECM_Login::RecvEvt_CharExitGame
         public InstanceId characterId;

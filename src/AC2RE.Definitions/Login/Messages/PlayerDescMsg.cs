@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Login__PlayerDesc_ID;
+        public MessageOpcode opcode => MessageOpcode.Login__PlayerDesc;
 
         // ECM_Login::RecvEvt_PlayerDesc
         public CBaseQualities qualities; // _q

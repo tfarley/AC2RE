@@ -7,15 +7,13 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.ComboEffect;
 
-        // WLib
+        // WLib ComboEffect
         [Flags]
         public new enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            REMOVE_OLD_EFFECT_IF_PRESENT = 1 << 1, // 0x00000001, ComboEffect::SetRemoveOldEffectIfPresent
-            REMOVE_ALL_OLD_EFFECTS_IF_PRESENT = 1 << 2, // 0x00000002, ComboEffect::SetRemoveAllOldEffectsIfPresent
-            IGNORE_CONSIDERATION = 1 << 3, // 0x00000004, ComboEffect::IsIgnoreConsideration
+            None = 0,
+            IsRemoveOldEffectIfPresent = 1 << 0, // SetRemoveOldEffectIfPresent 0x00000001
+            IsRemoveAllOldEffectsIfPresent = 1 << 1, // SetRemoveAllOldEffectsIfPresent 0x00000002
+            IsIgnoreConsideration = 1 << 2, // IsIgnoreConsideration 0x00000004
         }
 
         public SingletonPkg<Effect> effectToGiveBackIfNotPresent; // m_effToGiveBackIfNotPresent

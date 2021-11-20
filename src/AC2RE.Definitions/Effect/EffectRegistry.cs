@@ -7,16 +7,14 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.EffectRegistry;
 
-        // WLib
+        // WLib EffectRegistry
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            ACQUIRE_EFFECTS_APPLIED_ONLY_ONCE = 1 << 0, // 0x00000001, EffectRegistry::AreAcquireEffectsAppliedOnlyOnce
-            APPLIED_ACQUIRE_EFFECTS_AT_LEAST_ONCE = 1 << 1, // 0x00000002, EffectRegistry::HaveAppliedAcquireEffectsAtLeastOnce
-            HEARTBEAT_EFFECTS = 1 << 2, // 0x00000004, EffectRegistry::HasHeartbeatEffects
-            PULSE_EFFECTS = 1 << 3, // 0x00000008, EffectRegistry::HasPulseEffects
+            None = 0,
+            AreAcquireEffectsAppliedOnlyOnce = 1 << 0, // AreAcquireEffectsAppliedOnlyOnce 0x00000001
+            AppliedAcquireEffectsAtLeastOnce = 1 << 1, // HaveAppliedAcquireEffectsAtLeastOnce 0x00000002
+            HasHeartbeatEffects = 1 << 2, // HasHeartbeatEffects 0x00000004
+            HasPulseEffects = 1 << 3, // HasPulseEffects 0x00000008
         }
 
         public Dictionary<uint, uint> qualitiesModifiedCount; // m_qualitiesModifiedCount

@@ -1,27 +1,31 @@
 ﻿namespace AC2RE.Definitions {
 
-    // Const *_DIDStat and WSL func gmPropertyMapper::constructor
+    // Const *_DIDStat / WSL func gmPropertyMapper::constructor
     public enum DataIdStat : uint {
-        UNDEF = 0,
-        PHYSOBJ = 1,
-        MOTIONTABLE = 2,
-        SOUNDTABLE = 3,
-        PHYSICSEFFECTTABLE = 4,
-        QUALITYFILTER = 256,
-        ICONID = 257,
-        CLOAKINGAPPEARANCEID = 258,
-        PILEAPPEARANCEID = 259,
-        USAGE_ERRORMESSAGESTABLEID = 260,
-        USAGE_ITEMINTERACTIONTABLEID = 261,
-        MINEREQUIREDEFFECT = 300,
-        CRAFTSKILL = 301,
-        MINEOBJECT = 302,
-        BUTCHERYPROFILE = 304,
-        CRAFT_FORGEEFFECT = 310,
-        USAGE_REQUIREDCRAFTSKILL = 311,
-        STORETEMPLATE = 312,
-        BOOK_IMAGE = 313,
-        STOREGROUP = 314,
-        NPC_CORPSEOVERRIDEENTITY = 315,
+        Undef = 0, // Undef_DIDStat
+        PhysObj = 1, // PhysObj_DIDStat
+        MotionTable = 2, // MotionTable_DIDStat
+        SoundTable = 3, // SoundTable_DIDStat
+        PhysicsEffectTable = 4, // PhysicsEffectTable_DIDStat
+
+        QualityFilter = 256, // QualityFilter_DIDStat
+        IconID = 257, // IconID_DIDStat
+        CloakingAppearanceID = 258, // CloakingAppearanceID_DIDStat
+        PileAppearanceID = 259, // PileAppearanceID_DIDStat
+        Usage_ErrorMessagesTableID = 260, // Usage_ErrorMessagesTableID_DIDStat
+        Usage_ItemInteractionTableID = 261, // Usage_ItemInteractionTableID_DIDStat
+
+        MineRequiredEffect = 300, // MineRequiredEffect_DIDStat
+        CraftSkill = 301, // CraftSkill_DIDStat
+        MineObject = 302, // MineObject_DIDStat
+
+        ButcheryProfile = 304, // ButcheryProfile_DIDStat
+
+        Craft_ForgeEffect = 310, // Craft_ForgeEffect_DIDStat
+        Usage_RequiredCraftSkill = 311, // Usage_RequiredCraftSkill_DIDStat
+        StoreTemplate = 312, // StoreTemplate_DIDStat
+        Book_Image = 313, // Book_Image_DIDStat
+        StoreGroup = 314, // StoreGroup_DIDStat
+        NPC_CorpseOverrideEntity = 315, // _ / NPC_CorpseOverrideEntity
     }
 }

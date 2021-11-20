@@ -2,14 +2,14 @@
 
     // Dat file 230000FD
     public enum UsagePermissionType : uint {
+        Undef = 0,
+        Closed = 1, // ClosedUsagePermission
+        Corpse = 2, // CorpseUsagePermission
+        Default = 3, // DefaultUsagePermission
+        Equippable = 4, // EquippableUsagePermission
+        Open = 5, // OpenUsagePermission
 
-        CLOSED = 1,
-        CORPSE = 2,
-        DEFAULT = 3,
-        EQUIPPABLE = 4,
-        OPEN = 5,
-
-        HEROSKILLCREDITTOKEN = 7,
-        TOOL = 8,
+        HeroSkillCreditToken = 7, // HeroSkillCreditTokenUsagePermission
+        Tool = 8, // ToolUsagePermission
     }
 }

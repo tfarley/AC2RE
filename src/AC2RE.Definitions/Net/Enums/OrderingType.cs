@@ -2,8 +2,9 @@
 
     // Const - globals
     public enum OrderingType : byte {
-        PRIVATE_ORDERED = 1,
-        VISUAL_ORDERED = 2,
-        UNORDERED = 3,
+        UNDEF = 0,
+        PRIVATE_ORDERED = 1, // PRIVATE_ORDERED
+        VISUAL_ORDERED = 2, // VISUAL_ORDERED
+        UNORDERED = 3, // UNORDERED
     }
 }

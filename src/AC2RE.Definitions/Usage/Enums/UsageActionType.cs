@@ -2,36 +2,37 @@
 
     // Dat file 230000FC
     public enum UsageActionType : uint {
+        Undef = 0,
 
-        COIN = 29,
-        CONTAINER = 30,
-        DONOTHING = 31,
-        DOOR = 32,
-        EQUIPPABLE = 33,
-        EXAMINE = 34,
-        KEY = 35,
-        LIFESTONE = 36,
-        MINE = 37,
-        MONSTER = 38,
+        Coin = 29, // CoinUsageAction
+        Container = 30, // ContainerUsageAction
+        DoNothing = 31, // DoNothingUsageAction
+        Door = 32, // DoorUsageAction
+        Equippable = 33, // EquippableUsageAction
+        Examine = 34, // ExamineUsageAction
+        Key = 35, // KeyUsageAction
+        Lifestone = 36, // LifestoneUsageAction
+        Mine = 37, // MineUsageAction
+        Monster = 38, // MonsterUsageAction
 
-        NPC = 40,
-        PKRANKBOARD = 41,
-        PORTAL = 42,
-        POTION = 43,
-        SHARD = 44,
-        VAULT = 45,
-        VENDOR = 46,
-        WEAPON = 47,
-        SADDLE = 48,
-        INSCRIPTIONCONTROLLEDPORTAL = 49,
-        ALLEGIANCEHALLBINDINGSTONE = 50,
-        BALL = 51,
-        ITEMINTERACTION = 52,
-        BOOK = 53,
-        BUTCHERYTOOL = 54,
-        TOTEM = 55,
-        ACTIVATOR = 56,
-        PORTALDOOR = 57,
-        HEROSKILLCREDITTOKEN = 58,
+        NPC = 40, // NPCUsageAction
+        PKRankBoard = 41, // PKRankBoardUsageAction
+        Portal = 42, // PortalUsageAction
+        Potion = 43, // PotionUsageAction
+        Shard = 44, // ShardUsageAction
+        Vault = 45, // VaultUsageAction
+        Vendor = 46, // VendorUsageAction
+        Weapon = 47, // WeaponUsageAction
+        Saddle = 48, // SaddleUsageAction
+        InscriptionControlledPortal = 49, // InscriptionControlledPortalUsageAction
+        AllegianceHallBindingStone = 50, // AllegianceHallBindingStoneUsageAction
+        Ball = 51, // BallUsageAction
+        ItemInteraction = 52, // ItemInteractionUsageAction
+        Book = 53, // BookUsageAction
+        ButcheryTool = 54, // ButcheryToolUsageAction
+        Totem = 55, // TotemUsageAction
+        Activator = 56, // ActivatorUsageAction
+        PortalDoor = 57, // PortalDoorUsageAction
+        HeroSkillCreditToken = 58, // HeroSkillCreditTokenUsageAction
     }
 }

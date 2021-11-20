@@ -41,16 +41,16 @@ namespace AC2RE.Definitions {
 
         public override string ToString() {
             StringBuilder sb = new StringBuilder();
-            if (physique != PhysiqueType.UNDEF) {
+            if (physique != PhysiqueType.Undef) {
                 sb.Append(physique);
             }
-            if (species != SpeciesType.UNDEF) {
+            if (species != SpeciesType.Undef) {
                 if (sb.Length > 0) {
                     sb.Append('|');
                 }
                 sb.Append(species);
             }
-            if (sex != SexType.UNDEF) {
+            if (sex != SexType.Undef) {
                 if (sb.Length > 0) {
                     sb.Append('|');
                 }

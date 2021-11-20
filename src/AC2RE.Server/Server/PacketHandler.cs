@@ -10,7 +10,7 @@ namespace AC2RE.Server {
     internal class PacketHandler {
 
         private readonly List<Language> SUPPORTED_LANGUAGES = new() {
-            Language.ENGLISH,
+            Language.English,
         };
 
         private readonly AccountManager accountManager;
@@ -158,7 +158,7 @@ namespace AC2RE.Server {
                     });
                     send(client.id, new CliDatInterrogationMsg {
                         regionId = (RegionID)1,
-                        nameRuleLanguage = Language.ENGLISH,
+                        nameRuleLanguage = Language.English,
                         supportedLanguages = SUPPORTED_LANGUAGES,
                     });
                 } else {
@@ -196,7 +196,7 @@ namespace AC2RE.Server {
                         INetMessage genericMsg = INetMessage.read(opcode, data, true);
 
                         StringBuilder msgString = new(genericMsg.GetType().Name);
-                        if (opcode == MessageOpcode.Evt_Interp__InterpSEvent_ID) {
+                        if (opcode == MessageOpcode.Interp__InterpSEvent) {
                             InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
                             msgString.Append($" {msg.netEvent.funcId}");
                         }

@@ -6,18 +6,17 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.GenesisEffect;
 
-        // WLib
+        // WLib GenesisEffect
         [Flags]
         public new enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
+            None = 0,
 
-            PERMANENT_SUMMON_DURATION = 1 << 5, // 0x00000020, GenesisEffect::SetPermanentSummonDuration
-            PLACE_ITEM_INTERNAL = 1 << 6, // 0x00000040, GenesisEffect::PlaceItemInternal
-            PLACE_ITEM_EXTERNAL = 1 << 7, // 0x00000080, GenesisEffect::PlaceItemExternal
-            EXCLUSIVE = 1 << 8, // 0x00000100, GenesisEffect::SetExclusive
-            EXCLUSIVE_FAKE_SUCCESS = 1 << 9, // 0x00000200, GenesisEffect::SetExclusiveFakeSuccess
-            EXTERNAL_NO_CHECKPOINT = 1 << 10, // 0x00000400, GenesisEffect::SetExternalNoCheckpoint
+            IsPermanentSummonDuration = 1 << 5, // SetPermanentSummonDuration 0x00000020
+            IsPlaceItemInternal = 1 << 6, // PlaceItemInternal 0x00000040
+            IsPlaceItemExternal = 1 << 7, // PlaceItemExternal 0x00000080
+            IsExclusive = 1 << 8, // SetExclusive 0x00000100
+            IsExclusiveFakeSuccess = 1 << 9, // SetExclusiveFakeSuccess 0x00000200
+            IsExternalNoCheckpoint = 1 << 10, // SetExternalNoCheckpoint 0x00000400
         }
 
         public Flag genesisFlags => (Flag)flags;

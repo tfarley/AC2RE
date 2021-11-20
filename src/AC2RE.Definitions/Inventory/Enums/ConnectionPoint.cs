@@ -1,8 +1,7 @@
 ﻿namespace AC2RE.Definitions {
 
-    // Const *_ConnPt
-    // Dat file 23000017
+    // Dat file 23000017 / Const *_ConnPt
     public enum ConnectionPoint : uint {
-        INVALID,
+        Invalid, // _ / Invalid_ConnPt
     }
 }

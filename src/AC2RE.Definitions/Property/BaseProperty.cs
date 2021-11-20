@@ -5,7 +5,7 @@ namespace AC2RE.Definitions {
 
     public class BaseProperty : IPackage {
 
-        public NativeType nativeType => NativeType.BASEPROPERTY;
+        public NativeType nativeType => NativeType.BaseProperty;
 
         public PropertyName name; // m_propertyName
         public PropertyType type; // m_propertyType
@@ -22,19 +22,19 @@ namespace AC2RE.Definitions {
             type = propertyDesc.type;
             group = propertyDesc.group;
             value = type switch {
-                PropertyType.BOOL => data.ReadBoolean(),
-                PropertyType.INTEGER => data.ReadInt32(),
-                PropertyType.FLOAT => data.ReadSingle(),
-                PropertyType.VECTOR => data.ReadVector(),
-                PropertyType.COLOR => data.ReadRGBAColor(),
-                PropertyType.STRING => data.ReadString(),
-                PropertyType.ENUM => data.ReadUInt32(),
-                PropertyType.DATA_FILE => data.ReadDataId(),
-                PropertyType.WAVEFORM => new Waveform(data),
-                PropertyType.STRING_INFO => new StringInfo(data),
-                PropertyType.PACKAGE_ID => (PackageType)data.ReadUInt32(),
-                PropertyType.LONG_INTEGER => data.ReadInt64(),
-                PropertyType.POSITION => new Position(data),
+                PropertyType.Bool => data.ReadBoolean(),
+                PropertyType.Integer => data.ReadInt32(),
+                PropertyType.Float => data.ReadSingle(),
+                PropertyType.Vector => data.ReadVector(),
+                PropertyType.Color => data.ReadRGBAColor(),
+                PropertyType.String => data.ReadString(),
+                PropertyType.Enum => data.ReadUInt32(),
+                PropertyType.DataFile => data.ReadDataId(),
+                PropertyType.Waveform => new Waveform(data),
+                PropertyType.StringInfo => new StringInfo(data),
+                PropertyType.PackageID => (PackageType)data.ReadUInt32(),
+                PropertyType.LongInteger => data.ReadInt64(),
+                PropertyType.Position => new Position(data),
                 _ => throw new InvalidDataException(type.ToString()),
             };
         }
@@ -42,43 +42,43 @@ namespace AC2RE.Definitions {
         public void write(AC2Writer data) {
             data.Write((uint)name);
             switch (type) {
-                case PropertyType.BOOL:
+                case PropertyType.Bool:
                     data.Write((bool)value);
                     break;
-                case PropertyType.INTEGER:
+                case PropertyType.Integer:
                     data.Write((int)value);
                     break;
-                case PropertyType.FLOAT:
+                case PropertyType.Float:
                     data.Write((float)value);
                     break;
-                case PropertyType.VECTOR:
+                case PropertyType.Vector:
                     data.Write((Vector3)value);
                     break;
-                case PropertyType.COLOR:
+                case PropertyType.Color:
                     data.Write((RGBAColor)value);
                     break;
-                case PropertyType.STRING:
+                case PropertyType.String:
                     data.Write((string)value);
                     break;
-                case PropertyType.ENUM:
+                case PropertyType.Enum:
                     data.Write((uint)value);
                     break;
-                case PropertyType.DATA_FILE:
+                case PropertyType.DataFile:
                     data.Write((DataId)value);
                     break;
-                case PropertyType.WAVEFORM:
+                case PropertyType.Waveform:
                     ((Waveform)value).write(data);
                     break;
-                case PropertyType.STRING_INFO:
+                case PropertyType.StringInfo:
                     ((StringInfo)value).write(data);
                     break;
-                case PropertyType.PACKAGE_ID:
+                case PropertyType.PackageID:
                     data.Write((uint)value);
                     break;
-                case PropertyType.LONG_INTEGER:
+                case PropertyType.LongInteger:
                     data.Write((long)value);
                     break;
-                case PropertyType.POSITION:
+                case PropertyType.Position:
                     ((Position)value).write(data);
                     break;
                 default:

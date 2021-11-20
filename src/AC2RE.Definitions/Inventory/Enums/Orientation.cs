@@ -1,9 +1,8 @@
 ﻿namespace AC2RE.Definitions {
 
-    // Const *_OrientationID
-    // Dat file 2300004D
+    // Dat file 2300004D / Const *_OrientationID
     public enum Orientation : uint {
-        DEFAULT,
-        REST_BONE,
+        Default, // Default / Default_OrientationID
+        RestBone, // RestBone / RestBone_OrientationID
     }
 }

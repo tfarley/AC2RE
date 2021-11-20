@@ -2,28 +2,38 @@
 
     // Enum LandDefs::TerrainType
     public enum TerrainType : uint {
-        BARREN_ROCK,
-        GRASSLAND,
-        ICE,
-        LUSH_GRASS,
-        MARSH_SPARSE_SWAMP,
-        MUD_RICH_DIRT,
-        OBSIDIAN_PLAIN,
-        PACKED_DIRT,
-        PATCHY_DIRT,
-        PATCHY_GRASSLAND,
-        SAND_YELLOW,
-        SAND_GREY,
-        SAND_ROCK_STREWN,
-        SEDIMENTARY_ROCK,
-        SEMI_BARREN_ROCK,
-        SNOW,
-        WATER_RUNNING,
-        WATER_STANDING_FRESH,
-        WATER_SHALLOW_SEA,
-        WATER_SHALLOW_STILL_SEA,
-        WATER_DEEP_SEA,
-
-        ROAD_TYPE = 32,
+        BarrenRock, // BarrenRock
+        Grassland, // Grassland
+        Ice, // Ice
+        LushGrass, // LushGrass
+        MarshSparseSwamp, // MarshSparseSwamp
+        MudRichDirt, // MudRichDirt
+        ObsidianPlain, // ObsidianPlain
+        PackedDirt, // PackedDirt
+        PatchyDirt, // PatchyDirt
+        PatchyGrassland, // PatchyGrassland
+        SandYellow, // SandYellow
+        SandGrey, // SandGrey
+        SandRockStrewn, // SandRockStrewn
+        SedimentaryRock, // SedimentaryRock
+        SemiBarrenRock, // SemiBarrenRock
+        Snow, // Snow
+        WaterRunning, // WaterRunning
+        WaterStandingFresh, // WaterStandingFresh
+        WaterShallowSea, // WaterShallowSea
+        WaterShallowStillSea, // WaterShallowStillSea
+        WaterDeepSea, // WaterDeepSea
+        Reserved21, // Reserved21
+        Reserved22, // Reserved22
+        Reserved23, // Reserved23
+        Reserved24, // Reserved24
+        Reserved25, // Reserved25
+        Reserved26, // Reserved26
+        Reserved27, // Reserved27
+        Reserved28, // Reserved28
+        Reserved29, // Reserved29
+        Reserved30, // Reserved30
+        Reserved31, // Reserved31
+        RoadType, // RoadType
     }
 }

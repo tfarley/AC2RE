@@ -7,18 +7,16 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.ReflectiveEffect;
 
-        // WLib
+        // WLib ReflectiveEffect
         [Flags]
         public new enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
-
-            CONSTANT_ABSORB_PROBABILITY = 1 << 0, // 0x00000001, ReflectiveEffect::SetConstantAbsorbProbability
-            VARIABLE_ABSORB_PROBABILITY = 1 << 1, // 0x00000002, ReflectiveEffect::SetVariableAbsorbProbability
-            CONSTANT_REFLECT_PROBABILITY = 1 << 2, // 0x00000004, ReflectiveEffect::SetConstantReflectProbability
-            VARIABLE_REFLECT_PROBABILITY = 1 << 3, // 0x00000008, ReflectiveEffect::SetVariableReflectProbability
-            CONSTANT_GENERATE_PROBABILITY = 1 << 4, // 0x00000010, ReflectiveEffect::SetConstantGenerateProbability
-            VARIABLE_GENERATE_PROBABILITY = 1 << 5, // 0x00000020, ReflectiveEffect::SetVariableGenerateProbability
+            None = 0,
+            IsConstantAbsorbProbability = 1 << 0, // SetConstantAbsorbProbability 0x00000001
+            IsVariableAbsorbProbability = 1 << 1, // SetVariableAbsorbProbability 0x00000002
+            IsConstantReflectProbability = 1 << 2, // SetConstantReflectProbability 0x00000004
+            IsVariableReflectProbability = 1 << 3, // SetVariableReflectProbability 0x00000008
+            IsConstantGenerateProbability = 1 << 4, // SetConstantGenerateProbability 0x00000010
+            IsVariableGenerateProbability = 1 << 5, // SetVariableGenerateProbability 0x00000020
         }
 
         public float reflectProbEnd; // m_fReflectProbEnd

@@ -9,11 +9,10 @@ namespace AC2RE.Definitions {
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
-            ALL = uint.MaxValue,
 
-            JUMP = 1 << 1, // 0x00000002
-            CONTACT = 1 << 2, // 0x00000004
-            IMPULSE = 1 << 3, // 0x00000008
+            JUMP = 1 << 1, // PF_JUMP 0x00000002
+            CONTACT = 1 << 2, // PF_CONTACT 0x00000004
+            IMPULSE = 1 << 3, // PF_IMPULSE 0x00000008
         }
 
         public double time; // m_time

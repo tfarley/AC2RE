@@ -6,24 +6,22 @@ namespace AC2RE.Definitions {
 
         public PackageType packageType => PackageType.EffectRecord;
 
-        // WLib
+        // WLib EffectRecord
         [Flags]
         public enum Flag : uint {
-            NONE = 0,
-            ALL = uint.MaxValue,
+            None = 0,
+            IsInfiniteTimeout = 1 << 0, // IsInfiniteTimeout 0x00000001
+            IsNormalTimeout = 1 << 1, // IsNormalTimeout 0x00000002
+            IsSpecifiedTimeout = 1 << 2, // IsSpecifiedTimeout 0x00000004
 
-            INFINITE_TIMEOUT = 1 << 0, // 0x00000001, EffectRecord::IsInfiniteTimeout
-            NORMAL_TIMEOUT = 1 << 1, // 0x00000002, EffectRecord::IsNormalTimeout
-            SPECIFIED_TIMEOUT = 1 << 2, // 0x00000004, EffectRecord::IsSpecifiedTimeout
-
-            REMOVE_ON_LOGOUT = 1 << 4, // 0x00000010, EffectRecord::IsRemoveOnLogout
-            PERMANENT = 1 << 5, // 0x00000020, EffectRecord::IsPermanentEffect
-            TRANSIENT = 1 << 6, // 0x00000040, EffectRecord::IsTransientEffect
-            EQUIPPER = 1 << 7, // 0x00000080, EffectRecord::IsEquipperEffect
-            EXTRACTABLE = 1 << 8, // 0x00000100, EffectRecord::IsExtractable
-            TOGGLED = 1 << 9, // 0x00000200, EffectRecord::IsToggled
-            PULSED = 1 << 10, // 0x00000400, EffectRecord::IsPulsed
-            CLIENT_NO_UI = 1 << 11, // 0x00000800, EffectRecord::IsClientNoUI
+            IsRemoveOnLogout = 1 << 4, // IsRemoveOnLogout 0x00000010
+            IsPermanentEffect = 1 << 5, // IsPermanentEffect 0x00000020
+            IsTransientEffect = 1 << 6, // IsTransientEffect 0x00000040
+            IsEquipperEffect = 1 << 7, // IsEquipperEffect 0x00000080
+            IsExtractable = 1 << 8, // IsExtractable 0x00000100
+            IsToggled = 1 << 9, // IsToggled 0x00000200
+            IsPulsed = 1 << 10, // IsPulsed 0x00000400
+            IsClientNoUI = 1 << 11, // IsClientNoUI 0x00000800
         }
 
         public double timeDemotedFromTopLevel; // m_timeDemotedFromTopLevel

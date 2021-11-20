@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.EPHEMERAL;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Physics__LeaveWorld_ID;
+        public MessageOpcode opcode => MessageOpcode.Physics__LeaveWorld;
 
         // ECM_Physics::RecvEvt_LeaveWorld
         public InstanceIdWithStamp senderIdWithStamp; // sender

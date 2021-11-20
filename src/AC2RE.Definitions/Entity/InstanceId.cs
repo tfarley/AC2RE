@@ -8,13 +8,13 @@ namespace AC2RE.Definitions {
 
         // Enum IIDUtils::IDType
         public enum IdType : uint {
-            UNKNOWN,
-            UI,
-            CAMERA,
-            TEMPORARY,
-            PLAYER,
-            STATIC,
-            DYNAMIC,
+            Unknown, // Unknown_IDType
+            UI, // UI_IDType
+            Camera, // Camera_IDType
+            Temporary, // Temporary_IDType
+            Player, // Player_IDType
+            Static, // Static_IDType
+            Dynamic, // Dynamic_IDType
         }
 
         public readonly ulong id;

@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class AArray : List<uint>, IPackage {
 
-        public NativeType nativeType => NativeType.AARRAY;
+        public NativeType nativeType => NativeType.AArray;
 
         public List<T> to<T>() {
             List<T> converted = new(Count);

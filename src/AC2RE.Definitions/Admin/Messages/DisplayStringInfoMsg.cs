@@ -4,7 +4,7 @@
 
         public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
         public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Evt_Admin__DisplayStringInfo_ID;
+        public MessageOpcode opcode => MessageOpcode.Admin__DisplayStringInfo;
 
         // ECM_Admin::RecvEvt_DisplayStringInfo
         public TextType type; // type

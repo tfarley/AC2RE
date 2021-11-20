@@ -2,18 +2,20 @@
 
     // Const *_MusicType
     public enum MusicType : uint {
-        ENC_WAV = 0x40000001,
-        SCRIPT = 0x40000002,
+        Undef = 0, // Undef_MusicType
 
-        SEGMENT = 0x80000001,
-        STYLE = 0x80000002,
-        CHORD_MAP = 0x80000003,
-        BAND = 0x80000004,
-        TEMPLATE = 0x80000005,
-        DLS = 0x80000006,
-        FILE_NAME = 0x80000007,
-        MOTIF = 0x80000008,
-        WAV = 0x80000009,
-        AUDIO_PATH = 0x8000000A,
+        EncWav = 0x40000001, // EncWav_MusicType
+        Script = 0x40000002, // Script_MusicType
+
+        Segment = 0x80000001, // Segment_MusicType
+        Style = 0x80000002, // Style_MusicType
+        ChordMap = 0x80000003, // ChordMap_MusicType
+        Band = 0x80000004, // Band_MusicType
+        Template = 0x80000005, // Template_MusicType
+        DLS = 0x80000006, // DLS_MusicType
+        Filename = 0x80000007, // Filename_MusicType
+        Motif = 0x80000008, // Motif_MusicType
+        Wav = 0x80000009, // Wav_MusicType
+        AudioPath = 0x8000000A, // AudioPath_MusicType
     }
 }

@@ -2,10 +2,12 @@
 
     // Dat file 230000AF
     public enum AIMovementType : uint {
-        STATIONARY = 0x40000001,
-        TURN_ONLY = 0x40000002,
-        CONSTRAINED_TO_HOME = 0x40000003,
-        CONSTRAINED_TO_MASTER = 0x40000004,
-        FREE_RANGE = 0x40000005,
+        Undef = 0,
+
+        Stationary = 0x40000001, // Stationary
+        TurnOnly = 0x40000002, // TurnOnly
+        ConstrainedToHome = 0x40000003, // ConstrainedToHome
+        ConstrainedToMaster = 0x40000004, // ConstrainedToMaster
+        FreeRange = 0x40000005, // FreeRange
     }
 }

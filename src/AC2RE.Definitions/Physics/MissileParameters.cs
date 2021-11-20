@@ -4,34 +4,32 @@ namespace AC2RE.Definitions {
 
     public class MissileParameters : IPackage {
 
-        public NativeType nativeType => NativeType.MISSILEPARAMETERS;
+        public NativeType nativeType => NativeType.MissileParameters;
 
         // Enum MissileParameters::MissileParameterInfo
         [Flags]
         public enum PackFlag : uint {
             NONE = 0,
-            ALL = uint.MaxValue,
+            SPEED_LIMITS = 1 << 0, // SPEED_LIMITS 0x00000001
+            MAX_ACCEL = 1 << 1, // MAX_ACCEL 0x00000002
+            FUEL = 1 << 2, // FUEL 0x00000004
+            LIFESPAN = 1 << 3, // LIFESPAN 0x00000008
+            DRAG = 1 << 4, // DRAG 0x00000010
+            AFFECTED_GRAVITY = 1 << 5, // AFFECTED_GRAVITY 0x00000020
+            AFFECTED_WIND = 1 << 6, // AFFECTED_WIND 0x00000040
+            FOLLOW_GROUND = 1 << 7, // FOLLOW_GROUND 0x00000080
 
-            SPEED_LIMITS = 1 << 0, // 0x00000001
-            MAX_ACCEL = 1 << 1, // 0x00000002
-            FUEL = 1 << 2, // 0x00000004
-            LIFESPAN = 1 << 3, // 0x00000008
-            DRAG = 1 << 4, // 0x00000010
-            AFFECTED_GRAVITY = 1 << 5, // 0x00000020
-            AFFECTED_WIND = 1 << 6, // 0x00000040
-            FOLLOW_GROUND = 1 << 7, // 0x00000080
-
-            MAINT_DIST = 1 << 9, // 0x00000200
-            MISSILE_REACTION = 1 << 10, // 0x00000400
-            TURN_METHOD = 1 << 11, // 0x00000800
-            // NOTE: Duplicate - not a typo; probably a mistake in client code
-            CONSERVE_FUEL = 1 << 12, // 0x00001000
-            ENV_MAX_VELOCITY = 1 << 12, // 0x00001000
-            ALIGN_TYPE = 1 << 13, // 0x00002000
-            STICKY = 1 << 14, // 0x00004000
-            CAN_LAND = 1 << 15, // 0x00008000
-            DETONATES_ON_MISS = 1 << 16, // 0x00010000
-            DETONATES_ON_PROXIMITY = 1 << 17, // 0x00020000
+            MAINT_DIST = 1 << 9, // MAINT_DIST 0x00000200
+            MISSILE_REACTION = 1 << 10, // MISSILE_REACTION 0x00000400
+            TURN_METHOD = 1 << 11, // TURN_METHOD 0x00000800
+            // NOTE: Duplicate - not a typo; probably a mistake in client code where CONSERVE_FUEL should be 1 << 8
+            CONSERVE_FUEL = 1 << 12, // CONSERVE_FUEL 0x00001000
+            ENV_MAX_VELOCITY = 1 << 12, // ENV_MAX_VELOCITY 0x00001000
+            ALIGN_TYPE = 1 << 13, // ALIGN_TYPE 0x00002000
+            STICKY = 1 << 14, // STICKY 0x00004000
+            CAN_LAND = 1 << 15, // CAN_LAND 0x00008000
+            DETONATES_ON_MISS = 1 << 16, // DETONATES_ON_MISS 0x00010000
+            DETONATES_ON_PROXIMITY = 1 << 17, // DETONATES_ON_PROXIMITY 0x00020000
         }
 
         public PackFlag bitfield; // m_bitfield

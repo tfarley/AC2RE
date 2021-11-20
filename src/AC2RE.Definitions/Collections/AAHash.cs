@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class AAHash : Dictionary<uint, uint>, IPackage {
 
-        public NativeType nativeType => NativeType.AAHASH;
+        public NativeType nativeType => NativeType.AAHash;
 
         public Dictionary<K, V> to<K, V>() {
             Dictionary<K, V> converted = new(Count);

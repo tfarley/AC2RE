@@ -4,7 +4,7 @@ namespace AC2RE.Definitions {
 
     public class RandomSelectionTable : IPackage {
 
-        public NativeType nativeType => NativeType.RANDOMSELECTIONTABLE_INT;
+        public NativeType nativeType => NativeType.RandomSelectionTable_Int;
 
         public class ElementStruct {
 

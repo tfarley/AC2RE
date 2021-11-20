@@ -4,16 +4,17 @@
 
         // Enum WaveformType
         public enum WaveformType : uint {
-            INVALID,
-            NONE,
-            SPEED,
-            NOISE,
-            SINE,
-            SQUARE,
-            BOUNCE,
-            PERLIN,
-            FRACTAL,
-            FRAMELOOP,
+            INVALID, // WAVEFORM_INVALID
+            NONE, // WAVEFORM_NONE
+            SPEED, // WAVEFORM_SPEED
+            NOISE, // WAVEFORM_NOISE
+            SINE, // WAVEFORM_SINE
+            SQUARE, // WAVEFORM_SQUARE
+            BOUNCE, // WAVEFORM_BOUNCE
+            PERLIN, // WAVEFORM_PERLIN
+            FRACTAL, // WAVEFORM_FRACTAL
+            FRAMELOOP, // WAVEFORM_FRAMELOOP
+            NUM, // NUM_WAVEFORMS
         }
 
         public WaveformType type; // type

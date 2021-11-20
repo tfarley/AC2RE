@@ -2,40 +2,49 @@
 
     // Const *_IIDStat
     public enum InstanceIdStat : uint {
-        UNDEF = 0,
-        WB_RUNTIMEID = 1,
-        OWNER = 256,
-        VIEWER = 257,
-        CONTAINER = 258,
-        BONDED = 259,
-        FREEZER = 260,
-        EQUIPPER = 261,
-        VIEWING = 262,
-        ATTUNED = 263,
-        AUTHOR = 264,
-        VENDOR_CURRENT = 275,
-        EXPERIENCE_FORWHOM = 280,
-        GEN_MANAGER = 300,
-        GEN_PERSONALIZATIONTARGET = 301,
-        CRAFTER = 302,
-        PLUNDERER = 320,
-        ORIGINATOR = 321,
-        CLAIMANT = 322,
-        LAST_USER = 323,
-        FELLOWSHIP_RECRUITER = 400,
-        ALLEGIANCE_VASSAL = 450,
-        ALLEGIANCE_PATRON = 451,
-        ALLEGIANCE_MONARCH = 452,
-        ALLEGIANCE_PROFILETARGET = 453,
-        AI_MASTER = 500,
-        AI_PETMASTER = 501,
-        AI_PETTARGET = 502,
-        AI_FELLOWSHIP = 503,
-        AI_ALLEGIANCE = 504,
-        AI_PETSUMMONER = 505,
-        AI_PETFELLOWSHIPLEADER = 506,
-        CURRENTNPCBEINGUSED = 507,
-        EFFECT_SUMMONER = 600,
-        EFFECT_SUMMONERTARGET = 601,
+        Undef = 0, // Undef_IIDStat
+        WB_RuntimeID = 1, // WB_RuntimeID_IIDStat
+
+        Owner = 256, // Owner_IIDStat
+        Viewer = 257, // Viewer_IIDStat
+        Container = 258, // Container_IIDStat
+        Bonded = 259, // Bonded_IIDStat
+        Freezer = 260, // Freezer_IIDStat
+        Equipper = 261, // Equipper_IIDStat
+        Viewing = 262, // Viewing_IIDStat
+        Attuned = 263, // Attuned_IIDStat
+        Author = 264, // Author_IIDStat
+
+        Vendor_Current = 275, // Vendor_Current_IIDStat
+
+        Experience_ForWhom = 280, // Experience_ForWhom_IIDStat
+
+        Gen_Manager = 300, // Gen_Manager_IIDStat
+        Gen_PersonalizationTarget = 301, // Gen_PersonalizationTarget_IIDStat
+        Crafter = 302, // Crafter_IIDStat
+
+        Plunderer = 320, // Plunderer_IIDStat
+        Originator = 321, // Originator_IIDStat
+        Claimant = 322, // Claimant_IIDStat
+        Last_User = 323, // Last_User_IIDStat
+
+        Fellowship_Recruiter = 400, // Fellowship_Recruiter_IIDStat
+
+        Allegiance_Vassal = 450, // Allegiance_Vassal_IIDStat
+        Allegiance_Patron = 451, // Allegiance_Patron_IIDStat
+        Allegiance_Monarch = 452, // Allegiance_Monarch_IIDStat
+        Allegiance_ProfileTarget = 453, // Allegiance_ProfileTarget_IIDStat
+
+        AI_Master = 500, // AI_Master_IIDStat
+        AI_PetMaster = 501, // AI_PetMaster_IIDStat
+        AI_PetTarget = 502, // AI_PetTarget_IIDStat
+        AI_Fellowship = 503, // AI_Fellowship_IIDStat
+        AI_Allegiance = 504, // AI_Allegiance_IIDStat
+        AI_PetSummoner = 505, // AI_PetSummoner_IIDStat
+        AI_PetFellowshipLeader = 506, // AI_PetFellowshipLeader_IIDStat
+        CurrentNPCBeingUsed = 507, // CurrentNPCBeingUsed_IIDStat
+
+        Effect_Summoner = 600, // Effect_Summoner_IIDStat
+        Effect_SummonerTarget = 601, // Effect_SummonerTarget_IIDStat
     }
 }

@@ -12,7 +12,7 @@ namespace AC2RE.Definitions {
                 packageNameToExport.Add(export.args.name, export);
             }
             foreach (FrameDebugInfo frame in byteStream.frames) {
-                if (frame.type == FrameDebugInfo.FrameType.PACKAGE) {
+                if (frame.type == FrameDebugInfo.FrameType.Package) {
                     ExportData export = packageNameToExport[frame.name];
                     data.WriteLine();
                     data.Write($"{(uint)export.args.packageType} {export.args.packageType} package {export.args.name}");

@@ -13,7 +13,7 @@ namespace AC2RE.Server {
 
         public override bool processMessage(ClientConnection client, Player player, INetMessage genericMsg) {
             switch (genericMsg.opcode) {
-                case MessageOpcode.Evt_Interp__InterpSEvent_ID: {
+                case MessageOpcode.Interp__InterpSEvent: {
                         InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
                         // TODO: Just for testing - when pressing the attack mode button, toggle Refining effect UI image
                         if (msg.netEvent.funcId == ServerEventFunctionId.Combat__StartAttack) {
@@ -38,7 +38,7 @@ namespace AC2RE.Server {
                                             actingForWhomId = default,
                                             skillDid = default,
                                             fromItemId = player.characterId,
-                                            flags = EffectRecord.Flag.INFINITE_TIMEOUT | EffectRecord.Flag.REMOVE_ON_LOGOUT | EffectRecord.Flag.TRANSIENT,
+                                            flags = EffectRecord.Flag.IsInfiniteTimeout | EffectRecord.Flag.IsRemoveOnLogout | EffectRecord.Flag.IsTransientEffect,
                                             durabilityLevel = 0,
                                             relatedEffectId = EffectId.NULL,
                                             effectId = EffectId.NULL,
@@ -79,7 +79,7 @@ namespace AC2RE.Server {
                             if (tryGetCharacter(player, out WorldObject? character)) {
                                 character.health = toggleCounter;
 
-                                character.doFx(FxId.PORTAL_USE, 1.0f);
+                                character.doFx(FxId.Portal_Use, 1.0f);
                             }
 
                             toggleCounter++;
@@ -88,7 +88,7 @@ namespace AC2RE.Server {
                             if (tryGetCharacter(player, out WorldObject? character)) {
                                 character.setAttacking(true);
                                 Skill skill = world.contentManager.getSkill(sEvent.skillId);
-                                if (skill is ActiveSkill activeSkill && activeSkill.powerUpBehavior != BehaviorId.UNDEF) {
+                                if (skill is ActiveSkill activeSkill && activeSkill.powerUpBehavior != BehaviorId.Undef) {
                                     character.doBehavior(new() {
                                         packFlags = BehaviorParams.PackFlag.BEHAVIOR_ID | BehaviorParams.PackFlag.HOLDCYLE | BehaviorParams.PackFlag.MOVETOCANCELS,
                                         behaviorId = activeSkill.powerUpBehavior,

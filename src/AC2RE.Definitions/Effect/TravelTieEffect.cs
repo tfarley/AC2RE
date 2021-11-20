@@ -6,13 +6,12 @@ namespace AC2RE.Definitions {
 
         public override PackageType packageType => PackageType.TravelTieEffect;
 
-        // WLib
+        // WLib TravelTieEffectFlag
         [Flags]
         public new enum Flag : uint {
             NONE = 0,
-            ALL = uint.MaxValue,
 
-            IGNORE_PORTAL_FLAGS = 1 << 9, // 0x00000200, TravelTieEffectFlag::IsIgnorePortalFlags
+            IsIgnorePortalFlags = 1 << 9, // IsIgnorePortalFlags 0x00000200
         }
 
         public WeenieType weenieType; // m_wtype
