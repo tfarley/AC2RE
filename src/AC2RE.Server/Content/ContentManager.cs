@@ -1,6 +1,7 @@
 ﻿using AC2RE.Definitions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace AC2RE.Server {
@@ -9,6 +10,7 @@ namespace AC2RE.Server {
 
         private readonly DatReader portalDatReader;
         private readonly DatReader cell1DatReader;
+        private readonly DatReader localDatReader;
         private CharacterGenSystem? characterGenSystem;
         private CharGenMatrix? charGenMatrix;
         private LevelTable? levelTable;
@@ -21,10 +23,13 @@ namespace AC2RE.Server {
         private readonly Dictionary<DataId, VisualDesc> visualDescCache = new();
         private readonly Dictionary<DataId, VisualDesc> inheritedVisualDescCache = new();
         private readonly Dictionary<DataId, CEnvCell> envCellCache = new();
+        private readonly Dictionary<DataId, EnumIDMap> idMapCache = new();
+        private readonly Dictionary<DataId, StringTable> stringTableCache = new();
 
         public ContentManager() {
             portalDatReader = new("G:\\Asheron's Call 2\\portal.dat_server");
             cell1DatReader = new("G:\\Asheron's Call 2\\cell_1.dat_server");
+            localDatReader = new("G:\\Asheron's Call 2\\local_English.dat_server");
 
             MasterProperty.loadMasterProperties(portalDatReader);
             PackageManager.loadPackageTypes(portalDatReader);
@@ -255,6 +260,46 @@ namespace AC2RE.Server {
                 }
             }
             return envCell;
+        }
+
+        public EnumIDMap getIdMap(DataId did) {
+            if (!idMapCache.TryGetValue(did, out EnumIDMap? idMap)) {
+                using (AC2Reader data = portalDatReader.getFileReader(did)) {
+                    idMap = new(data);
+                    idMapCache[did] = idMap;
+                }
+            }
+            return idMap;
+        }
+
+        public StringTable getStringTable(DataId did) {
+            if (!stringTableCache.TryGetValue(did, out StringTable? stringTable)) {
+                using (AC2Reader data = localDatReader.getFileReader(did)) {
+                    stringTable = new(data);
+                    stringTableCache[did] = stringTable;
+                }
+            }
+            return stringTable;
+        }
+
+        public string getString(StringInfo stringInfo) {
+            if (stringInfo.tableDid == DataId.NULL || stringInfo.stringId == 0) {
+                return "";
+            }
+
+            StringTable stringTable = getStringTable(stringInfo.tableDid);
+            return stringTable.strings[stringInfo.stringId].strings[0];
+        }
+
+        public string translateNetError(NetError netError) {
+            if (netError.tableId.id == 0 || netError.stringId == 0) {
+                return "";
+            }
+
+            EnumIDMap idMap = getIdMap(new(0x28000005));
+            DataId tableDid = idMap.enumToId[netError.tableId];
+            StringInfo stringInfo = new(tableDid, netError.stringId);
+            return getString(stringInfo);
         }
     }
 }

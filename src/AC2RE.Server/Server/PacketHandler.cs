@@ -16,11 +16,13 @@ namespace AC2RE.Server {
         private readonly AccountManager accountManager;
         private readonly ClientManager clientManager;
         private readonly ServerTime serverTime;
+        private readonly ContentManager contentManager;
 
-        public PacketHandler(AccountManager accountManager, ClientManager clientManager, ServerTime serverTime) {
+        public PacketHandler(AccountManager accountManager, ClientManager clientManager, ServerTime serverTime, ContentManager contentManager) {
             this.accountManager = accountManager;
             this.clientManager = clientManager;
             this.serverTime = serverTime;
+            this.contentManager = contentManager;
         }
 
         public void processReceive(NetInterface netInterface, byte[] rawData, int dataLen, IPEndPoint receiveEndpoint) {
@@ -46,6 +48,10 @@ namespace AC2RE.Server {
 
         public bool processLogonPacket(NetInterface netInterface, IPEndPoint receiveEndpoint, NetPacket packet) {
             if (packet.logonHeader == null) {
+                if (packet.icmdCommandHeader != null) {
+                    // TODO: If cmd is EchoRequest, send EchoReply?
+                    return true;
+                }
                 return false;
             }
 
@@ -112,11 +118,25 @@ namespace AC2RE.Server {
                 }
             }
 
-            if (packet.flags.HasFlag(NetPacket.Flag.LOGOFF)) {
+            if (packet.disconnectErrorHeader != null) {
                 Logs.NET.info($"Client disconnected",
+                    "client", client,
+                    "error", contentManager.translateNetError(packet.disconnectErrorHeader));
+                clientManager.removeClient(new(packet.recipientId));
+                return;
+            }
+
+            if (packet.flags.HasFlag(NetPacket.Flag.LOGOFF)) {
+                Logs.NET.info($"Client logged off",
                     "client", client);
                 clientManager.removeClient(new(packet.recipientId));
                 return;
+            }
+
+            if (packet.connectionErrorHeader != null) {
+                Logs.NET.warn($"Client connection error",
+                    "client", client,
+                    "error", contentManager.translateNetError(packet.connectionErrorHeader));
             }
 
             // TODO: Need to handle client acking the re-sent (nacked) packets
@@ -124,14 +144,14 @@ namespace AC2RE.Server {
                 client.ackPacket(packet.ackHeader);
             }
 
-            if (packet.flags.HasFlag(NetPacket.Flag.NAK)) {
+            if (packet.nacksHeader != null) {
                 foreach (uint seq in packet.nacksHeader) {
                     client.nackPacket(seq);
                 }
             }
 
             if (client.connected && packet.seq <= client.highestReceivedPacketSeq) {
-                if (!packet.flags.HasFlag(NetPacket.Flag.PAK) && !packet.flags.HasFlag(NetPacket.Flag.NAK)) {
+                if (!packet.flags.HasFlag(NetPacket.Flag.PAK) && packet.nacksHeader == null) {
                     Logs.NET.debug("Got dupe packet",
                         "client", client,
                         "seq", packet.seq,
@@ -148,7 +168,7 @@ namespace AC2RE.Server {
             }
             client.highestReceivedPacketSeq = packet.seq;
 
-            if (packet.connectAckHeader != 0) {
+            if (packet.flags.HasFlag(NetPacket.Flag.CONNECT_ACK)) {
                 if (packet.connectAckHeader == client.connectionAckCookie) {
                     Logs.NET.info("Client connected",
                         "client", client);
@@ -169,7 +189,7 @@ namespace AC2RE.Server {
                 }
             }
 
-            if (packet.flags.HasFlag(NetPacket.Flag.ECHO_REQUEST)) {
+            if (packet.echoRequestHeader != null) {
                 client.echoRequestedLocalTime = packet.echoRequestHeader.localTime;
                 client.echoRequestedServerTime = serverTime.elapsedTime;
             }

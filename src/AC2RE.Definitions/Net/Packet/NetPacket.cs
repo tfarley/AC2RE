@@ -119,6 +119,24 @@ namespace AC2RE.Definitions {
             }
         }
 
+        private NetError _connectionErrorHeader;
+        public NetError connectionErrorHeader {
+            get => _connectionErrorHeader;
+            set {
+                _connectionErrorHeader = value;
+                flags |= Flag.CONNECTION_ERROR;
+            }
+        }
+
+        private NetError _disconnectErrorHeader;
+        public NetError disconnectErrorHeader {
+            get => _disconnectErrorHeader;
+            set {
+                _disconnectErrorHeader = value;
+                flags |= Flag.DISCONNECT;
+            }
+        }
+
         private ICMDCommandHeader _icmdCommandHeader;
         public ICMDCommandHeader icmdCommandHeader {
             get => _icmdCommandHeader;
@@ -213,10 +231,10 @@ namespace AC2RE.Definitions {
                 _connectAckHeader = data.ReadUInt64();
             }
             if (flags.HasFlag(Flag.CONNECTION_ERROR)) {
-                throw new NotImplementedException();
+                _connectionErrorHeader = new(data);
             }
             if (flags.HasFlag(Flag.DISCONNECT)) {
-                throw new NotImplementedException();
+                _disconnectErrorHeader = new(data);
             }
             if (flags.HasFlag(Flag.ICMD_COMMAND)) {
                 _icmdCommandHeader = new(data);
@@ -297,13 +315,19 @@ namespace AC2RE.Definitions {
                 checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
             }
             if (flags.HasFlag(Flag.CONNECT_ACK)) {
-                throw new NotImplementedException();
+                long dataStart = data.BaseStream.Position;
+                data.Write(_connectAckHeader);
+                checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
             }
             if (flags.HasFlag(Flag.CONNECTION_ERROR)) {
-                throw new NotImplementedException();
+                long dataStart = data.BaseStream.Position;
+                _connectionErrorHeader.write(data);
+                checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
             }
             if (flags.HasFlag(Flag.DISCONNECT)) {
-                throw new NotImplementedException();
+                long dataStart = data.BaseStream.Position;
+                _disconnectErrorHeader.write(data);
+                checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
             }
             if (flags.HasFlag(Flag.ICMD_COMMAND)) {
                 long dataStart = data.BaseStream.Position;

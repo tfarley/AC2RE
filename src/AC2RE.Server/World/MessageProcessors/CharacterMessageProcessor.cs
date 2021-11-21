@@ -105,20 +105,6 @@ namespace AC2RE.Server {
                                 }
                                 inventoryByLocationTable[(uint)equipLoc] = profile;
                                 inventoryByIdTable[item.id] = profile;
-
-                                DataId weenieStateDid = new(0x71000000 + item.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
-                                WState clothingWeenieState = world.contentManager.getWeenieState(weenieStateDid);
-                                if (clothingWeenieState.package is Clothing clothing) {
-                                    // TODO: contentManager.getInheritedVisualDesc(item.visual)? But it seems wrong, since the topmost parent of human starter pants is 0x1F00003E which is actually overriding skin color which doesn't make sense - not sure if that's a special override that just needs to be blocked or if inheritance isn't the correct thing to do...
-                                    PartGroupDataDesc? globalAppearanceModifiers = item.globalAppearanceModifiers;
-                                    if (globalAppearanceModifiers != null) {
-                                        foreach ((DataId appDid, Dictionary<AppearanceKey, float> appearances) in globalAppearanceModifiers.appearanceInfos) {
-                                            Dictionary<AppearanceKey, float> clonedAppearances = new(appearances);
-                                            clonedAppearances[AppearanceKey.Worn] = 1.0f;
-                                            character.globalAppearanceModifiers.appearanceInfos[appDid] = clonedAppearances;
-                                        }
-                                    }
-                                }
                             }
                         }
 

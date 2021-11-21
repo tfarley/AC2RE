@@ -28,6 +28,8 @@ namespace AC2RE.Server {
         private void initPhysics() {
             physics = new();
             physics.pos = new();
+            physics.timestamps[(int)PhysicsTimeStamp.POSITION] = 1;
+            physics.visualOrderStamp = 1;
         }
 
         public void recachePhysics(IEnumerable<WorldObject> childWorldObjects) {

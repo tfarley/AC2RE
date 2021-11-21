@@ -69,7 +69,7 @@ namespace AC2RE.Server {
             contentManager = new();
 
             Logs.STATUS.info("Initializing packet handler...");
-            packetHandler = new(accountManager, clientManager, time);
+            packetHandler = new(accountManager, clientManager, time, contentManager);
 
             Logs.STATUS.info("Initializing world...");
             world = new(mapDb, worldDb, time, packetHandler, contentManager);

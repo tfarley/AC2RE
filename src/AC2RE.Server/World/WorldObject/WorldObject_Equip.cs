@@ -65,6 +65,8 @@ namespace AC2RE.Server {
                 }
 
                 contentsItemIds!.Remove(item.id);
+
+                setItemVisualApplied(item, true);
             } else {
                 if (invLocToEquippedItemId != null && world.objectManager.tryGet(invLocToEquippedItemId[equipLoc], out WorldObject? curItem)) {
                     if (!invLocToEquippedItemId.TryGetValue(equipLoc, out InstanceId equippedItemId) || curItem.id != equippedItemId) {
@@ -76,12 +78,35 @@ namespace AC2RE.Server {
                     invLocToEquippedItemId.Remove(equipLoc);
 
                     curItem.setParent(null);
+
+                    setItemVisualApplied(curItem, false);
                 }
             }
 
             syncMode();
 
             return ErrorType.None;
+        }
+
+        private void setItemVisualApplied(WorldObject item, bool applied) {
+            DataId weenieStateDid = new(0x71000000 + item.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
+            WState clothingWeenieState = world.contentManager.getWeenieState(weenieStateDid);
+            if (clothingWeenieState.package is Clothing clothing) {
+                // TODO: contentManager.getInheritedVisualDesc(item.visual)? But it seems wrong, since the topmost parent of human starter pants is 0x1F00003E which is actually overriding skin color which doesn't make sense - not sure if that's a special override that just needs to be blocked or if inheritance isn't the correct thing to do...
+                PartGroupDataDesc? itemGlobalAppearanceModifiers = item.globalAppearanceModifiers;
+                if (itemGlobalAppearanceModifiers != null) {
+                    foreach ((DataId appDid, Dictionary<AppearanceKey, float> appearances) in itemGlobalAppearanceModifiers.appearanceInfos) {
+                        if (applied) {
+                            Dictionary<AppearanceKey, float> clonedAppearances = new(appearances);
+                            clonedAppearances[AppearanceKey.Worn] = 1.0f;
+                            globalAppearanceModifiers.appearanceInfos[appDid] = clonedAppearances;
+                        } else {
+                            globalAppearanceModifiers.appearanceInfos.Remove(appDid);
+                        }
+                        visualDirty = true;
+                    }
+                }
+            }
         }
     }
 }

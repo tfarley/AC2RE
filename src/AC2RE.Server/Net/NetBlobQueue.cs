@@ -1,5 +1,4 @@
 ﻿using AC2RE.Definitions;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
@@ -8,11 +7,8 @@ namespace AC2RE.Server {
     internal class NetBlobQueue {
 
         private readonly Dictionary<NetBlobId, NetBlob> partialBlobs = new();
-        private readonly Queue<NetBlob> completeUnorderedBlobs = new();
-        // TODO: Use PriorityQueue instead of sorting a list
-        private readonly List<NetBlob> completePrivateOrderedBlobs = new();
-        private bool privateOrderedBlobsSorted;
-        private uint nextStamp = 1;
+        private readonly PriorityQueue<NetBlob, ulong> completeBlobs = new();
+        private uint nextSeq;
 
         public void addFragment(NetBlobFrag frag) {
             // TODO: Need to track processed blob ids and discard if duplicate
@@ -34,43 +30,22 @@ namespace AC2RE.Server {
         }
 
         private void finishBlob(NetBlob blob) {
-            OrderingType orderingType = blob.blobId.orderingType;
-            switch (orderingType) {
-                case OrderingType.UNORDERED:
-                    completeUnorderedBlobs.Enqueue(blob);
-                    break;
-                case OrderingType.VISUAL_ORDERED:
-                    Logs.NET.warn("Visual ordering of blobs from client not implemented, treating as unordered");
-                    completeUnorderedBlobs.Enqueue(blob);
-                    break;
-                case OrderingType.PRIVATE_ORDERED:
-                    completePrivateOrderedBlobs.Add(blob);
-                    privateOrderedBlobsSorted = false;
-                    break;
-                default:
-                    throw new NotImplementedException(orderingType.ToString());
-            }
+            // TODO: May need to do something with orderingStamp and orderingType, for now just requiring all to be ordered
+            completeBlobs.Enqueue(blob, blob.blobId.sequenceId);
         }
 
         public bool TryDequeue([MaybeNullWhen(false)] out NetBlob result) {
             // TODO: May need to do something if queue gets blocked for too long
-            if (completeUnorderedBlobs.TryDequeue(out result)) {
-                return true;
-            }
-            if (!privateOrderedBlobsSorted) {
-                completePrivateOrderedBlobs.Sort((NetBlob a, NetBlob b) => b.blobId.orderingStamp.CompareTo(a.blobId.orderingStamp));
-                privateOrderedBlobsSorted = true;
-            }
-            if (completePrivateOrderedBlobs.Count > 0) {
-                int lastIndex = completePrivateOrderedBlobs.Count - 1;
-                NetBlob nextBlob = completePrivateOrderedBlobs[lastIndex];
-                if (nextBlob.blobId.orderingStamp == nextStamp) {
+            if (completeBlobs.Count > 0) {
+                NetBlob nextBlob = completeBlobs.Peek();
+                if (nextBlob.blobId.sequenceId == nextSeq) {
                     result = nextBlob;
-                    completePrivateOrderedBlobs.RemoveAt(lastIndex);
-                    nextStamp++;
+                    completeBlobs.Dequeue();
+                    nextSeq++;
                     return true;
                 }
             }
+            result = null;
             return false;
         }
     }
