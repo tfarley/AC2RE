@@ -1,7 +1,7 @@
 ﻿using AC2RE.Definitions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Numerics;
 
 namespace AC2RE.Server {
@@ -38,8 +38,8 @@ namespace AC2RE.Server {
                 DbType dbType = DbTypeDef.getType(DbTypeDef.DatType.PORTAL, did);
 
                 if (dbType == DbType.WSTATE) {
-                    WState wstate = getWeenieState(did);
-                    if (PackageManager.isPackageType(wstate.packageType, PackageType.Skill)) {
+                    if (PackageManager.isPackageType(getWeenieStatePackageType(did), PackageType.Skill)) {
+                        WState wstate = getWeenieState(did);
                         Skill skill = (Skill)wstate.package;
                         skillCache[(SkillId)skill.enumVal] = skill;
                     }
@@ -194,6 +194,18 @@ namespace AC2RE.Server {
                 }
             }
             return weenieState;
+        }
+
+        public WState getWeenieStateFromEntityDid(DataId entityDid) {
+            DataId weenieStateDid = new(0x71000000 + entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
+            return getWeenieState(weenieStateDid);
+        }
+
+        public PackageType getWeenieStatePackageType(DataId did) {
+            using (AC2Reader data = portalDatReader.getFileReader(did)) {
+                data.BaseStream.Seek(-4, SeekOrigin.End);
+                return (PackageType)data.ReadUInt32();
+            }
         }
 
         private VisualDesc getVisualDesc(DataId did) {

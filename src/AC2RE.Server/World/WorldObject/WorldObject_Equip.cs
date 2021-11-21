@@ -89,22 +89,23 @@ namespace AC2RE.Server {
         }
 
         private void setItemVisualApplied(WorldObject item, bool applied) {
-            DataId weenieStateDid = new(0x71000000 + item.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
-            WState clothingWeenieState = world.contentManager.getWeenieState(weenieStateDid);
+            WState clothingWeenieState = world.contentManager.getWeenieStateFromEntityDid(item.entityDid);
             if (clothingWeenieState.package is Clothing clothing) {
-                // TODO: contentManager.getInheritedVisualDesc(item.visual)? But it seems wrong, since the topmost parent of human starter pants is 0x1F00003E which is actually overriding skin color which doesn't make sense - not sure if that's a special override that just needs to be blocked or if inheritance isn't the correct thing to do...
-                PartGroupDataDesc? itemGlobalAppearanceModifiers = item.globalAppearanceModifiers;
-                if (itemGlobalAppearanceModifiers != null) {
-                    foreach ((DataId appDid, Dictionary<AppearanceKey, float> appearances) in itemGlobalAppearanceModifiers.appearanceInfos) {
-                        if (applied) {
-                            Dictionary<AppearanceKey, float> clonedAppearances = new(appearances);
-                            clonedAppearances[AppearanceKey.Worn] = 1.0f;
-                            globalAppearanceModifiers.appearanceInfos[appDid] = clonedAppearances;
+                PhysiqueSpeciesSexId speciesSexKey = new(species, sex);
+                if (clothing.wornAppearanceDidHash.TryGetValue(speciesSexKey, out DataId appearanceDid)) {
+                    if (applied) {
+                        // TODO: contentManager.getInheritedVisualDesc(item.visual)? But it seems wrong, since the topmost parent of human starter pants is 0x1F00003E which is actually overriding skin color which doesn't make sense - not sure if that's a special override that just needs to be blocked or if inheritance isn't the correct thing to do...
+                        if (item.globalAppearanceModifiers?.appearanceInfos?.TryGetValue(appearanceDid, out Dictionary<AppearanceKey, float>? appearanceModifiers) ?? false) {
+                            appearanceModifiers = new(appearanceModifiers);
                         } else {
-                            globalAppearanceModifiers.appearanceInfos.Remove(appDid);
+                            appearanceModifiers = new();
                         }
-                        visualDirty = true;
+                        appearanceModifiers[AppearanceKey.Worn] = 1.0f;
+                        globalAppearanceModifiers.appearanceInfos[appearanceDid] = appearanceModifiers;
+                    } else {
+                        globalAppearanceModifiers.appearanceInfos.Remove(appearanceDid);
                     }
+                    visualDirty = true;
                 }
             }
         }

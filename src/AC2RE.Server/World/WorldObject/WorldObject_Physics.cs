@@ -126,6 +126,22 @@ namespace AC2RE.Server {
             }, true);
         }
 
+        public void moveTo(InstanceId targetId, float desiredDist, float successDist, float desiredVel = 1.0f, bool toward = true) {
+            world.playerManager.sendAllVisible(id, new MoveToMsg {
+                senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
+                movementParams = new() {
+                    packFlags = (toward ? MovementParameters.PackFlag.MOVE : MovementParameters.PackFlag.AWAY) | MovementParameters.PackFlag.OBJECT | MovementParameters.PackFlag.USE_CYL,
+                    desiredVel = desiredVel,
+                    failDist = float.MaxValue,
+                    desiredDist = desiredDist,
+                    maxSuccessDist = successDist,
+                    minSuccessDist = successDist,
+                    targetId = targetId,
+                },
+                movetoStamp = ++physics.timestamps[(int)PhysicsTimeStamp.MOVE_TO],
+            }, true);
+        }
+
         private void broadcastPhysics() {
             if (positionDirty) {
                 if (inWorld) {

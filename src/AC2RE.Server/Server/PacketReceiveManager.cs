@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AC2RE.Server {
 
-    internal class PacketHandler {
+    internal class PacketReceiveManager {
 
         private readonly List<Language> SUPPORTED_LANGUAGES = new() {
             Language.English,
@@ -16,13 +16,13 @@ namespace AC2RE.Server {
         private readonly AccountManager accountManager;
         private readonly ClientManager clientManager;
         private readonly ServerTime serverTime;
-        private readonly ContentManager contentManager;
+        private readonly World world;
 
-        public PacketHandler(AccountManager accountManager, ClientManager clientManager, ServerTime serverTime, ContentManager contentManager) {
+        public PacketReceiveManager(AccountManager accountManager, ClientManager clientManager, ServerTime serverTime, World world) {
             this.accountManager = accountManager;
             this.clientManager = clientManager;
             this.serverTime = serverTime;
-            this.contentManager = contentManager;
+            this.world = world;
         }
 
         public void processReceive(NetInterface netInterface, byte[] rawData, int dataLen, IPEndPoint receiveEndpoint) {
@@ -88,6 +88,8 @@ namespace AC2RE.Server {
             ClientId clientId = clientManager.addClient(packet.logonHeader.netAuth.connectionSeq, receiveEndpoint, account);
 
             clientManager.processClient(clientId, client => {
+                world.addPlayer(client, account);
+
                 client.sendPacket(netInterface, 0.0f, 0.0f, new() {
                     connectHeader = new() {
                         connectionAckCookie = client.connectionAckCookie,
@@ -121,7 +123,8 @@ namespace AC2RE.Server {
             if (packet.disconnectErrorHeader != null) {
                 Logs.NET.info($"Client disconnected",
                     "client", client,
-                    "error", contentManager.translateNetError(packet.disconnectErrorHeader));
+                    "error", world.contentManager.translateNetError(packet.disconnectErrorHeader));
+                world.removePlayer(client);
                 clientManager.removeClient(new(packet.recipientId));
                 return;
             }
@@ -129,6 +132,7 @@ namespace AC2RE.Server {
             if (packet.flags.HasFlag(NetPacket.Flag.LOGOFF)) {
                 Logs.NET.info($"Client logged off",
                     "client", client);
+                world.removePlayer(client);
                 clientManager.removeClient(new(packet.recipientId));
                 return;
             }
@@ -136,7 +140,7 @@ namespace AC2RE.Server {
             if (packet.connectionErrorHeader != null) {
                 Logs.NET.warn($"Client connection error",
                     "client", client,
-                    "error", contentManager.translateNetError(packet.connectionErrorHeader));
+                    "error", world.contentManager.translateNetError(packet.connectionErrorHeader));
             }
 
             // TODO: Need to handle client acking the re-sent (nacked) packets
@@ -201,13 +205,11 @@ namespace AC2RE.Server {
             }
         }
 
-        public void processNetBlobs(World world) {
+        public void processNetBlobs() {
             clientManager.processClients(client => {
                 if (!client.connected) {
                     return;
                 }
-
-                world.addPlayerIfNecessary(client, client.account);
 
                 while (client.incomingBlobQueue.TryDequeue(out NetBlob? blob)) {
                     using (AC2Reader data = new(new MemoryStream(blob.payload))) {

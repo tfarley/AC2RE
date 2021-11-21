@@ -118,18 +118,16 @@ namespace AC2RE.Server {
             foreach (StartInvData startInvItem in startInvItems) {
                 WorldObject item = world.objectManager.create(startInvItem.entityDid, DataId.NULL, true);
 
-                DataId weenieStateDid = new(0x71000000 + item.entityDid.id - DbTypeDef.TYPE_TO_DEF[DbType.ENTITYDESC].baseDid.id);
-                WState clothingWeenieState = world.contentManager.getWeenieState(weenieStateDid);
+                WState clothingWeenieState = world.contentManager.getWeenieStateFromEntityDid(item.entityDid);
                 if (clothingWeenieState.package is Clothing clothing) {
-                    DataId appearanceDid = clothing.wornAppearanceDidHash[new(character.species!, character.sex!)];
-                    Dictionary<DataId, Dictionary<AppearanceKey, float>> itemAppearanceInfos = new();
-                    if (appearanceInfos.TryGetValue(appearanceDid, out Dictionary<AppearanceKey, float>? appearances)) {
-                        itemAppearanceInfos[appearanceDid] = appearances;
+                    foreach (DataId appearanceDid in clothing.wornAppearanceDidHash.Values) {
+                        if (appearanceInfos.TryGetValue(appearanceDid, out Dictionary<AppearanceKey, float>? appearanceModifiers)) {
+                            item.globalAppearanceModifiers = new() {
+                                key = PartGroupDataDesc.PartGroupKey.EntireTree,
+                                appearanceInfos = new() { { appearanceDid, new(appearanceModifiers) } },
+                            };
+                        }
                     }
-                    item.globalAppearanceModifiers = new() {
-                        key = PartGroupDataDesc.PartGroupKey.EntireTree,
-                        appearanceInfos = itemAppearanceInfos,
-                    };
                 }
 
                 item.setContainer(character);

@@ -3,7 +3,6 @@ using AC2RE.Server.Database;
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
-using System.Text;
 
 namespace AC2RE.Server {
 
@@ -24,7 +23,6 @@ namespace AC2RE.Server {
         public readonly IMapDatabase mapDb;
         public readonly IWorldDatabase worldDb;
         public readonly ServerTime serverTime;
-        private readonly PacketHandler packetHandler;
         public readonly ContentManager contentManager;
 
         public readonly PlayerManager playerManager;
@@ -32,13 +30,12 @@ namespace AC2RE.Server {
         public readonly WorldObjectManager objectManager;
         public readonly LandblockManager landblockManager;
 
-        public World(IMapDatabase mapDb, IWorldDatabase worldDb, ServerTime serverTime, PacketHandler packetHandler, ContentManager contentManager) {
+        public World(IMapDatabase mapDb, IWorldDatabase worldDb, ServerTime serverTime, ContentManager contentManager, PlayerManager playerManager) {
             this.mapDb = mapDb;
             this.worldDb = worldDb;
             this.serverTime = serverTime;
-            this.packetHandler = packetHandler;
             this.contentManager = contentManager;
-            playerManager = new(packetHandler);
+            this.playerManager = playerManager;
             characterManager = new(this);
             objectManager = new(this, contentManager);
             landblockManager = new(this);
@@ -54,10 +51,12 @@ namespace AC2RE.Server {
             };
         }
 
-        public void addPlayerIfNecessary(ClientConnection client, Account account) {
-            if (!playerManager.exists(client.id)) {
-                playerManager.add(client.id, account);
-            }
+        public void addPlayer(ClientConnection client, Account account) {
+            playerManager.add(client.id, account);
+        }
+
+        public void removePlayer(ClientConnection client) {
+            playerManager.remove(client.id);
         }
 
         public bool processMessage(ClientConnection client, INetMessage genericMsg) {
@@ -77,8 +76,6 @@ namespace AC2RE.Server {
         }
 
         public void tick() {
-            packetHandler.processNetBlobs(this);
-
             landblockManager.update();
 
             objectManager.broadcastUpdates();

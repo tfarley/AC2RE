@@ -20,13 +20,15 @@ namespace AC2RE.Server {
         private IWorldDatabase? worldDb;
 
         private MigrationManager? migrationManager;
+
         private AccountManager? accountManager;
         private ClientManager? clientManager;
         private ContentManager? contentManager;
-
-        private PacketHandler? packetHandler;
+        private PlayerManager? playerManager;
 
         private World? world;
+
+        private PacketReceiveManager? packetReceiveManager;
 
         private NetInterface? logonNetInterface;
         private NetInterface? gameNetInterface;
@@ -68,17 +70,20 @@ namespace AC2RE.Server {
             Logs.STATUS.info("Initializing content manager...");
             contentManager = new();
 
-            Logs.STATUS.info("Initializing packet handler...");
-            packetHandler = new(accountManager, clientManager, time, contentManager);
+            Logs.STATUS.info("Initializing player manager...");
+            playerManager = new(clientManager);
 
             Logs.STATUS.info("Initializing world...");
-            world = new(mapDb, worldDb, time, packetHandler, contentManager);
+            world = new(mapDb, worldDb, time, contentManager, playerManager);
+
+            Logs.STATUS.info("Initializing packet receive manager...");
+            packetReceiveManager = new(accountManager, clientManager, time, world);
 
             Logs.STATUS.info("Initializing network...");
             logonNetInterface = new(port);
             gameNetInterface = new(logonNetInterface.port + 1);
-            serverListeners.Add(new(logonNetInterface, packetHandler.processReceive));
-            serverListeners.Add(new(gameNetInterface, packetHandler.processReceive));
+            serverListeners.Add(new(logonNetInterface, packetReceiveManager.processReceive));
+            serverListeners.Add(new(gameNetInterface, packetReceiveManager.processReceive));
 
             Logs.STATUS.info("Server initialization complete.");
 
@@ -105,22 +110,27 @@ namespace AC2RE.Server {
             logonNetInterface!.close();
             gameNetInterface!.close();
 
-            world = null;
+            contentManager!.Dispose();
 
-            packetHandler = null;
+            migrationManager = null;
 
             accountManager = null;
             clientManager = null;
-            contentManager!.Dispose();
             contentManager = null;
+            playerManager = null;
+
+            world = null;
+
+            packetReceiveManager = null;
 
             migrationDb!.Dispose();
-            migrationDb = null;
             accountDb!.Dispose();
-            accountDb = null;
             mapDb!.Dispose();
-            mapDb = null;
             worldDb!.Dispose();
+
+            migrationDb = null;
+            accountDb = null;
+            mapDb = null;
             worldDb = null;
 
             active = false;
@@ -135,6 +145,8 @@ namespace AC2RE.Server {
             time.beginFrame();
 
             while (time.tryTick()) {
+                packetReceiveManager!.processNetBlobs();
+
                 world!.tick();
 
                 clientManager!.processClients(client => client.flushSend(gameNetInterface!, time.time, time.elapsedTime));

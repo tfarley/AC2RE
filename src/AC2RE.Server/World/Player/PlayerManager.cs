@@ -6,13 +6,13 @@ namespace AC2RE.Server {
 
     internal class PlayerManager {
 
-        private readonly PacketHandler packetHandler;
+        private readonly ClientManager clientManager;
 
         private readonly Dictionary<ClientId, Player> _players = new();
         public IEnumerable<Player> players => _players.Values;
 
-        public PlayerManager(PacketHandler packetHandler) {
-            this.packetHandler = packetHandler;
+        public PlayerManager(ClientManager clientManager) {
+            this.clientManager = clientManager;
         }
 
         public bool tryGet(InstanceId characterId, [MaybeNullWhen(false)] out Player player) {
@@ -48,8 +48,12 @@ namespace AC2RE.Server {
             _players[clientId] = new(clientId, account);
         }
 
+        public void remove(ClientId clientId) {
+            _players.Remove(clientId);
+        }
+
         public void send(Player toPlayer, INetMessage message, bool ordered = false) {
-            packetHandler.send(toPlayer.clientId, message, ordered);
+            clientManager.send(toPlayer.clientId, message, ordered);
         }
 
         public void send(IEnumerable<Player> toPlayers, INetMessage message, bool ordered = false) {
@@ -57,11 +61,11 @@ namespace AC2RE.Server {
             foreach (Player player in toPlayers) {
                 clientIds.Add(player.clientId);
             }
-            packetHandler.send(clientIds, message, ordered);
+            clientManager.send(clientIds, message, ordered);
         }
 
         public void sendAll(INetMessage message, bool ordered = false) {
-            packetHandler.send(_players.Keys, message, ordered);
+            clientManager.send(_players.Keys, message, ordered);
         }
 
         public void sendAllVisible(InstanceId objectId, INetMessage message, bool ordered = false) {
