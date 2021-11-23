@@ -31,7 +31,7 @@ namespace AC2RE.Definitions {
         public uint quantity; // quantity
         public bool generatorRequest; // generatorRequestFlag
         public InstanceId splitItemId; // splitItemID
-        public Dictionary<uint, uint> itemAppearances; // m_itemAppKeyHash
+        public Dictionary<AppearanceKey, float> itemAppearances; // m_itemAppKeyHash
         public bool noAnim; // noAnimFlag
         public InstanceId mergeContainerId; // mergeContainerID
         public bool usedOverflowSlot; // bUsedOverflowSlot
@@ -80,7 +80,7 @@ namespace AC2RE.Definitions {
             quantity = data.ReadUInt32();
             generatorRequest = data.ReadBoolean();
             splitItemId = data.ReadInstanceId();
-            data.ReadPkg<AAHash>(v => itemAppearances = v);
+            data.ReadPkg<AAHash>(v => itemAppearances = v.to<AppearanceKey, float>());
             noAnim = data.ReadBoolean();
             mergeContainerId = data.ReadInstanceId();
             usedOverflowSlot = data.ReadBoolean();
