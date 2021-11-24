@@ -14,7 +14,7 @@ namespace AC2RE.Definitions {
         public SkillRepository skills; // _skills
         public EffectRegistry effectRegistry; // _regEffect
         public InvLoc filledInventoryLocations; // _filledInvLocs
-        public Dictionary<uint, InventProfile> inventoryByLocationTable; // _invByLocTable
+        public Dictionary<InvLoc, InventProfile> inventoryByLocationTable; // _invByLocTable
         public Dictionary<InstanceId, InventProfile> inventoryByIdTable; // _invByIIDTable
         public List<ContainerSegmentDescriptor> containerSegments; // _ContainerSegments
         public List<InstanceId> containerIds; // _Containers
@@ -34,7 +34,7 @@ namespace AC2RE.Definitions {
             skills = data.UnpackPackage<SkillRepository>();
             effectRegistry = data.UnpackPackage<EffectRegistry>();
             filledInventoryLocations = (InvLoc)data.UnpackUInt32();
-            inventoryByLocationTable = data.UnpackPackage<ARHash>().to<uint, InventProfile>();
+            inventoryByLocationTable = data.UnpackPackage<ARHash>().to<InvLoc, InventProfile>();
             inventoryByIdTable = data.UnpackPackage<LRHash>().to<InstanceId, InventProfile>();
             containerSegments = data.UnpackPackage<RList>().to<ContainerSegmentDescriptor>();
             containerIds = data.UnpackPackage<LList>().to<InstanceId>();

@@ -45,8 +45,7 @@ namespace AC2RE.Server {
                     container.contentsItemIds = new();
                 }
 
-                // TODO: Hack to prevent weird case where icon wraps to next line when dragged to an empty slot
-                slot = Math.Clamp(slot, 0, Math.Max(container.contentsItemIds.Count - 1, 0));
+                slot = Math.Min(slot, container.capacity - 1);
 
                 if (container.containedItemIds.Contains(id)) {
                     int curSlot = container.contentsItemIds.IndexOf(id);

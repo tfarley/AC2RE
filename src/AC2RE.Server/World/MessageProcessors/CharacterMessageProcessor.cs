@@ -82,7 +82,8 @@ namespace AC2RE.Server {
                             qualities = character.qualities,
                         });
 
-                        Dictionary<uint, InventProfile> inventoryByLocationTable = new();
+                        InvLoc filledInventoryLocations = InvLoc.None;
+                        Dictionary<InvLoc, InventProfile> inventoryByLocationTable = new();
                         Dictionary<InstanceId, InventProfile> inventoryByIdTable = new();
 
                         foreach ((InvLoc equipLoc, InstanceId itemId) in character.invLocToEquippedItemIdEnumerable) {
@@ -103,7 +104,8 @@ namespace AC2RE.Server {
                                         profile.visualDescInfo.appInfoHash[partDid] = appearanceInfos;
                                     }
                                 }
-                                inventoryByLocationTable[(uint)equipLoc] = profile;
+                                filledInventoryLocations |= equipLoc;
+                                inventoryByLocationTable[equipLoc] = profile;
                                 inventoryByIdTable[item.id] = profile;
                             }
                         }
@@ -253,25 +255,25 @@ namespace AC2RE.Server {
                                     effectCategorizationTable = null,
                                     appliedAppearances = new(),
                                 },
-                                filledInventoryLocations = (InvLoc)1531,
+                                filledInventoryLocations = filledInventoryLocations,
                                 inventoryByLocationTable = inventoryByLocationTable,
                                 inventoryByIdTable = inventoryByIdTable,
                                 containerSegments = new() {
                                     new() {
-                                        segmentMaxSize = 12,
-                                        segmentSize = 8,
-                                    },
-                                    new() {
-                                        segmentMaxSize = 12,
-                                        segmentSize = 12,
-                                    },
-                                    new() {
-                                        segmentMaxSize = 12,
-                                        segmentSize = 11,
-                                    },
-                                    new() {
                                         segmentMaxSize = 42,
-                                        segmentSize = 30,
+                                        segmentSize = (uint)character.contentsItemIdsEnumerable.Count(),
+                                    },
+                                    new() {
+                                        segmentMaxSize = 12,
+                                        segmentSize = 0,
+                                    },
+                                    new() {
+                                        segmentMaxSize = 12,
+                                        segmentSize = 0,
+                                    },
+                                    new() {
+                                        segmentMaxSize = 12,
+                                        segmentSize = 0,
                                     },
                                 },
                                 containerIds = new() {

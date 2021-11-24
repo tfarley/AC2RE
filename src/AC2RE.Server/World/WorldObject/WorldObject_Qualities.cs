@@ -432,146 +432,173 @@ namespace AC2RE.Server {
             if (inWorld) {
                 foreach (object dirtyStat in dirtyStats) {
                     switch (dirtyStat) {
-                        case IntStat stat: {
-                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
-                                if (syncMode != StatCfg.SyncMode.NONE) {
-                                    int statVal = getQ(stat);
-
-                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
-                                        world.playerManager.send(player, new QualUpdateIntPrivateMsg(stat, statVal));
-                                    }
-
-                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisible(id, new QualUpdateIntVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
-                                    }
-                                }
-                                break;
-                            }
-                        case BoolStat stat: {
-                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
-                                if (syncMode != StatCfg.SyncMode.NONE) {
-                                    bool statVal = getQ(stat);
-
-                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
-                                        world.playerManager.send(player, new QualUpdateBoolPrivateMsg(stat, statVal));
-                                    }
-
-                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisible(id, new QualUpdateBoolVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
-                                    }
-                                }
-                                break;
-                            }
-                        case FloatStat stat: {
-                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
-                                if (syncMode != StatCfg.SyncMode.NONE) {
-                                    float statVal = getQ(stat);
-
-                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
-                                        world.playerManager.send(player, new QualUpdateFloatPrivateMsg(stat, statVal));
-                                    }
-
-                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisible(id, new QualUpdateFloatVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
-                                    }
-                                }
-                                break;
-                            }
-                        case TimestampStat stat: {
-                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
-                                if (syncMode != StatCfg.SyncMode.NONE) {
-                                    double statVal = getQ(stat);
-
-                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
-                                        world.playerManager.send(player, new QualUpdateTimestampPrivateMsg(stat, statVal));
-                                    }
-
-                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisible(id, new QualUpdateTimestampVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
-                                    }
-                                }
-                                break;
-                            }
-                        case DataIdStat stat: {
-                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
-                                if (syncMode != StatCfg.SyncMode.NONE) {
-                                    DataId statVal = getQ(stat);
-
-                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
-                                        world.playerManager.send(player, new QualUpdateDataIdPrivateMsg(stat, statVal));
-                                    }
-
-                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisible(id, new QualUpdateDataIdVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
-                                    }
-                                }
-                                break;
-                            }
-                        case InstanceIdStat stat: {
-                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
-                                if (syncMode != StatCfg.SyncMode.NONE) {
-                                    InstanceId statVal = getQ(stat);
-
-                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
-                                        world.playerManager.send(player, new QualUpdateInstanceIdPrivateMsg(stat, statVal));
-                                    }
-
-                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisible(id, new QualUpdateInstanceIdVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
-                                    }
-                                }
-                                break;
-                            }
-                        case PositionStat stat: {
-                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
-                                if (syncMode != StatCfg.SyncMode.NONE) {
-                                    Position? statVal = getQ(stat);
-
-                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
-                                        world.playerManager.send(player, new QualUpdatePositionPrivateMsg(stat, statVal));
-                                    }
-
-                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisible(id, new QualUpdatePositionVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
-                                    }
-                                }
-                                break;
-                            }
-                        case StringInfoStat stat: {
-                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
-                                if (syncMode != StatCfg.SyncMode.NONE) {
-                                    StringInfo? statVal = getQ(stat);
-
-                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
-                                        world.playerManager.send(player, new QualUpdateStringInfoPrivateMsg(stat, statVal));
-                                    }
-
-                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisible(id, new QualUpdateStringInfoVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
-                                    }
-                                }
-                                break;
-                            }
-                        case LongIntStat stat: {
-                                StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
-                                if (syncMode != StatCfg.SyncMode.NONE) {
-                                    long statVal = getQ(stat);
-
-                                    if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
-                                        world.playerManager.send(player, new QualUpdateLongIntPrivateMsg(stat, statVal));
-                                    }
-
-                                    if (syncMode == StatCfg.SyncMode.VISUAL) {
-                                        world.playerManager.sendAllVisible(id, new QualUpdateLongIntVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
-                                    }
-                                }
-                                break;
-                            }
+                        case IntStat stat:
+                            broadcastStat(stat);
+                            break;
+                        case BoolStat stat:
+                            broadcastStat(stat);
+                            break;
+                        case FloatStat stat:
+                            broadcastStat(stat);
+                            break;
+                        case TimestampStat stat:
+                            broadcastStat(stat);
+                            break;
+                        case DataIdStat stat:
+                            broadcastStat(stat);
+                            break;
+                        case InstanceIdStat stat:
+                            broadcastStat(stat);
+                            break;
+                        case PositionStat stat:
+                            broadcastStat(stat);
+                            break;
+                        case StringInfoStat stat:
+                            broadcastStat(stat);
+                            break;
+                        case LongIntStat stat:
+                            broadcastStat(stat);
+                            break;
                     }
                 }
             }
 
             dirtyStats.Clear();
+        }
+
+        private void broadcastStat(IntStat stat) {
+            StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+            if (syncMode != StatCfg.SyncMode.NONE) {
+                int statVal = getQ(stat);
+
+                if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                    world.playerManager.send(player, new QualUpdateIntPrivateMsg(stat, statVal));
+                }
+
+                if (syncMode == StatCfg.SyncMode.VISUAL) {
+                    world.playerManager.sendAllVisible(id, new QualUpdateIntVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                }
+            }
+        }
+
+        private void broadcastStat(BoolStat stat) {
+            StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+            if (syncMode != StatCfg.SyncMode.NONE) {
+                bool statVal = getQ(stat);
+
+                if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                    world.playerManager.send(player, new QualUpdateBoolPrivateMsg(stat, statVal));
+                }
+
+                if (syncMode == StatCfg.SyncMode.VISUAL) {
+                    world.playerManager.sendAllVisible(id, new QualUpdateBoolVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                }
+            }
+        }
+
+        private void broadcastStat(FloatStat stat) {
+            StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+            if (syncMode != StatCfg.SyncMode.NONE) {
+                float statVal = getQ(stat);
+
+                if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                    world.playerManager.send(player, new QualUpdateFloatPrivateMsg(stat, statVal));
+                }
+
+                if (syncMode == StatCfg.SyncMode.VISUAL) {
+                    world.playerManager.sendAllVisible(id, new QualUpdateFloatVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                }
+            }
+        }
+
+        private void broadcastStat(TimestampStat stat) {
+            StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+            if (syncMode != StatCfg.SyncMode.NONE) {
+                double statVal = getQ(stat);
+
+                if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                    world.playerManager.send(player, new QualUpdateTimestampPrivateMsg(stat, statVal));
+                }
+
+                if (syncMode == StatCfg.SyncMode.VISUAL) {
+                    world.playerManager.sendAllVisible(id, new QualUpdateTimestampVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                }
+            }
+        }
+
+        private void broadcastStat(DataIdStat stat) {
+            StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+            if (syncMode != StatCfg.SyncMode.NONE) {
+                DataId statVal = getQ(stat);
+
+                if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                    world.playerManager.send(player, new QualUpdateDataIdPrivateMsg(stat, statVal));
+                }
+
+                if (syncMode == StatCfg.SyncMode.VISUAL) {
+                    world.playerManager.sendAllVisible(id, new QualUpdateDataIdVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                }
+            }
+        }
+
+        private void broadcastStat(InstanceIdStat stat) {
+            StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+            if (syncMode != StatCfg.SyncMode.NONE) {
+                InstanceId statVal = getQ(stat);
+
+                if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                    world.playerManager.send(player, new QualUpdateInstanceIdPrivateMsg(stat, statVal));
+                }
+
+                if (syncMode == StatCfg.SyncMode.VISUAL) {
+                    world.playerManager.sendAllVisible(id, new QualUpdateInstanceIdVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                }
+            }
+        }
+
+        private void broadcastStat(PositionStat stat) {
+            StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+            if (syncMode != StatCfg.SyncMode.NONE) {
+                Position? statVal = getQ(stat);
+
+                if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                    world.playerManager.send(player, new QualUpdatePositionPrivateMsg(stat, statVal));
+                }
+
+                if (syncMode == StatCfg.SyncMode.VISUAL) {
+                    world.playerManager.sendAllVisible(id, new QualUpdatePositionVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                }
+            }
+        }
+
+        private void broadcastStat(StringInfoStat stat) {
+            StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+            if (syncMode != StatCfg.SyncMode.NONE) {
+                StringInfo? statVal = getQ(stat);
+
+                if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                    world.playerManager.send(player, new QualUpdateStringInfoPrivateMsg(stat, statVal));
+                }
+
+                if (syncMode == StatCfg.SyncMode.VISUAL) {
+                    world.playerManager.sendAllVisible(id, new QualUpdateStringInfoVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                }
+            }
+        }
+
+        private void broadcastStat(LongIntStat stat) {
+            StatCfg.SyncMode syncMode = StatCfg.getSyncMode(stat);
+            if (syncMode != StatCfg.SyncMode.NONE) {
+                long statVal = getQ(stat);
+
+                if (player != null && syncMode == StatCfg.SyncMode.PRIVATE) {
+                    world.playerManager.send(player, new QualUpdateLongIntPrivateMsg(stat, statVal));
+                }
+
+                if (syncMode == StatCfg.SyncMode.VISUAL) {
+                    world.playerManager.sendAllVisible(id, new QualUpdateLongIntVisualMsg(getInstanceIdWithStamp(++physics.visualOrderStamp), stat, statVal));
+                }
+            }
         }
 
         public int getQ(IntStat stat) => qualities.ints?.GetValueOrDefault(stat) ?? default;
