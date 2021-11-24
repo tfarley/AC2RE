@@ -27,6 +27,8 @@ namespace AC2RE.PacketTool.UI {
 
         public NetBlobRecord netBlobRecord;
         public MessageOpcode opcode;
+        public ServerEventFunctionId serverEvent;
+        public ClientEventFunctionId clientEvent;
 
         public NetBlobRow(int lineNum, NetBlobRecord netBlobRecord) {
             this.lineNum = lineNum;
@@ -40,11 +42,14 @@ namespace AC2RE.PacketTool.UI {
             opcodeName = opcode.ToString();
             if (netBlobRecord.netBlob.payload != null) {
                 if (opcode == MessageOpcode.Interp__InterpSEvent || opcode == MessageOpcode.Interp__InterpSEventEncrypt) {
-                    eventName = ((ServerEventFunctionId)BitConverter.ToUInt32(netBlobRecord.netBlob.payload, 4)).ToString();
+                    serverEvent = (ServerEventFunctionId)BitConverter.ToUInt32(netBlobRecord.netBlob.payload, 4);
+                    eventName = serverEvent.ToString();
                 } else if (opcode == MessageOpcode.Interp__InterpCEvent_Private || opcode == MessageOpcode.Interp__InterpCEvent_Broadcast) {
-                    eventName = ((ClientEventFunctionId)BitConverter.ToUInt32(netBlobRecord.netBlob.payload, 4)).ToString();
+                    clientEvent = (ClientEventFunctionId)BitConverter.ToUInt32(netBlobRecord.netBlob.payload, 4);
+                    eventName = clientEvent.ToString();
                 } else if (opcode == MessageOpcode.Interp__InterpCEvent_Cell || opcode == MessageOpcode.Interp__InterpCEvent_Visual) {
-                    eventName = ((ClientEventFunctionId)BitConverter.ToUInt32(netBlobRecord.netBlob.payload, 16)).ToString();
+                    clientEvent = (ClientEventFunctionId)BitConverter.ToUInt32(netBlobRecord.netBlob.payload, 16);
+                    eventName = clientEvent.ToString();
                 } else {
                     eventName = "";
                 }

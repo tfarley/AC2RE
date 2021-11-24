@@ -38,54 +38,113 @@ namespace AC2RE.Server {
             return invLocToEquippedItemId != null && invLocToEquippedItemId.ContainsValue(itemId);
         }
 
-        public ErrorType equip(InvLoc equipLoc, WorldObject? item) {
-            if (item != null) {
-                if (isEquipped(equipLoc)) {
-                    return ErrorType.InvSlotFull;
-                } else if (!contains(item.id)) {
-                    return ErrorType.Usage_InteractionTargetNotContained;
-                } else if (!item.validInvLocs.HasFlag(equipLoc)) {
-                    return ErrorType.WrongInvSlot;
-                } else if (containedItemIds == null || !containedItemIds.Contains(item.id)) {
-                    return ErrorType.ContainerDoesNotContainItem;
+        public static void toggleAutoEquip(World world, WorldObject equipper, WorldObject item, Player? requester = null) {
+            if (item.equipperId != equipper.id) {
+                autoEquip(world, equipper, item, requester);
+            } else {
+                autoUnequip(world, equipper, item, requester);
+            }
+        }
+
+        public static void autoEquip(World world, WorldObject equipper, WorldObject item, Player? requester = null) {
+            if (item.equipperId != equipper.id) {
+                equip(world, new InvEquipDesc() {
+                    itemId = item.id,
+                    location = item.preferredInvLoc,
+                    equipperId = equipper.id,
+                    containerId = item.containerId,
+                }, requester);
+            }
+        }
+
+        public static void autoUnequip(World world, WorldObject equipper, WorldObject item, Player? requester = null) {
+            if (item.equipperId == equipper.id) {
+                unequip(world, new InvEquipDesc() {
+                    itemId = item.id,
+                    location = item.equippedLocation,
+                    equipperId = equipper.id,
+                    containerId = item.containerId,
+                }, requester);
+            }
+        }
+
+        public static void equip(World world, InvEquipDesc equipDesc, Player? requester = null) {
+            if (!world.objectManager.tryGet(equipDesc.equipperId, out WorldObject? equipper) || !world.objectManager.tryGet(equipDesc.itemId, out WorldObject? item)) {
+                equipDesc.error = ErrorType.GeneralInventoryFailure;
+            } else if (requester != null && requester != equipper.player) {
+                equipDesc.error = ErrorType.Usage_NoPermission;
+            } else if (equipper.isEquipped(equipDesc.location)) {
+                equipDesc.error = ErrorType.InvSlotFull;
+            } else if (!equipper.contains(equipDesc.itemId)) {
+                equipDesc.error = ErrorType.Usage_InteractionTargetNotContained;
+            } else if (!item.validInvLocs.HasFlag(equipDesc.location)) {
+                equipDesc.error = ErrorType.WrongInvSlot;
+            } else if (equipper.containedItemIds == null || !equipper.containedItemIds.Contains(item.id)) {
+                equipDesc.error = ErrorType.ContainerDoesNotContainItem;
+            } else {
+                if (equipper.invLocToEquippedItemId == null) {
+                    equipper.invLocToEquippedItemId = new();
                 }
 
-                if (invLocToEquippedItemId == null) {
-                    invLocToEquippedItemId = new();
-                }
+                equipDesc.actualLocation = equipDesc.location;
+                equipper.invLocToEquippedItemId[equipDesc.actualLocation] = item.id;
 
-                invLocToEquippedItemId[equipLoc] = item.id;
-
-                item.equipperId = id;
-                item.equippedLocation = equipLoc;
+                item.equipperId = equipper.id;
+                item.equippedLocation = equipDesc.actualLocation;
 
                 HoldingLocation holdLoc = item.primaryHoldLoc;
                 if (holdLoc != HoldingLocation.Invalid) {
-                    item.setParent(this, holdLoc, item.holdOrientation);
+                    item.setParent(equipper, holdLoc, item.holdOrientation);
                 }
 
-                contentsItemIds!.Remove(item.id);
+                // Remove from contents, but stay contained
+                equipDesc.containerSlot = item.setContainer(equipper, -2);
 
-                setItemVisualApplied(item, true);
-            } else {
-                if (invLocToEquippedItemId != null && world.objectManager.tryGet(invLocToEquippedItemId[equipLoc], out WorldObject? curItem)) {
-                    if (!invLocToEquippedItemId.TryGetValue(equipLoc, out InstanceId equippedItemId) || curItem.id != equippedItemId) {
-                        return ErrorType.NotEquipped;
-                    } else if (containedItemIds == null || !containedItemIds.Contains(curItem.id)) {
-                        return ErrorType.ContainerDoesNotContainItem;
-                    }
-
-                    invLocToEquippedItemId.Remove(equipLoc);
-
-                    curItem.setParent(null);
-
-                    setItemVisualApplied(curItem, false);
-                }
+                equipper.setItemVisualApplied(item, true);
+                equipper.syncMode();
             }
 
-            syncMode();
+            if (world.objectManager.tryGet(equipDesc.equipperId, out equipper) && equipper.player != null) {
+                world.playerManager.send(equipper.player, new InterpCEventPrivateMsg {
+                    netEvent = new EquipItemDoneCEvt {
+                        equipDesc = equipDesc,
+                    }
+                });
+            }
+        }
 
-            return ErrorType.None;
+        public static void unequip(World world, InvEquipDesc equipDesc, Player? requester = null) {
+            if (!world.objectManager.tryGet(equipDesc.equipperId, out WorldObject? equipper) || !world.objectManager.tryGet(equipDesc.itemId, out WorldObject? item)) {
+                equipDesc.error = ErrorType.GeneralInventoryFailure;
+            } else if (equipper.invLocToEquippedItemId == null || !equipper.invLocToEquippedItemId.TryGetValue(equipDesc.location, out InstanceId equippedItemId) || item.id != equippedItemId || item.equippedLocation != equipDesc.location || item.equipperId != equipDesc.equipperId) {
+                equipDesc.error = ErrorType.NotEquipped;
+            } else if (requester != null && requester != equipper.player) {
+                equipDesc.error = ErrorType.Usage_NoPermission;
+            } else if (equipper.containedItemIds == null || !equipper.containedItemIds.Contains(item.id)) {
+                equipDesc.error = ErrorType.ContainerDoesNotContainItem;
+            } else {
+                equipper.invLocToEquippedItemId.Remove(equipDesc.location);
+
+                equipDesc.takenSlots = item.equippedLocation;
+
+                item.equipperId = InstanceId.NULL;
+                item.equippedLocation = InvLoc.None;
+
+                item.setParent(null);
+
+                equipDesc.containerSlot = item.setContainer(equipper, equipDesc.targetContainerSlot);
+
+                equipper.setItemVisualApplied(item, false);
+                equipper.syncMode();
+            }
+
+            if (world.objectManager.tryGet(equipDesc.equipperId, out equipper) && equipper.player != null) {
+                world.playerManager.send(equipper.player, new InterpCEventPrivateMsg {
+                    netEvent = new UnequipItemDoneCEvt {
+                        equipDesc = equipDesc,
+                    }
+                });
+            }
         }
 
         private void setItemVisualApplied(WorldObject item, bool applied) {

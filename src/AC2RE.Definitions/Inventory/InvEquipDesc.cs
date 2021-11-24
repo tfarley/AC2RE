@@ -25,7 +25,7 @@ namespace AC2RE.Definitions {
         public uint quantity; // m_quantity
         public InstanceId itemId; // m_itemID
         public InvLoc precludedSlots; // m_precludedSlots
-        public uint targetContainerSlot; // m_targetContainerSlot
+        public int targetContainerSlot; // m_targetContainerSlot
         public InvLoc location; // m_location
         public InstanceId equipperId; // m_equipperID
         public InstanceId containerId; // m_containerID
@@ -34,7 +34,7 @@ namespace AC2RE.Definitions {
         public InvLoc takenSlots; // m_takenSlots
         public InvLoc actualLocation; // m_actualLocation
         public InstanceId blockingItemId; // m_blockingItemID
-        public uint containerSlot; // m_containerSlot
+        public int containerSlot; // m_containerSlot
 
         public InvEquipDesc() {
 
@@ -46,7 +46,7 @@ namespace AC2RE.Definitions {
             quantity = data.ReadUInt32();
             itemId = data.ReadInstanceId();
             precludedSlots = (InvLoc)data.ReadUInt32();
-            targetContainerSlot = data.ReadUInt32();
+            targetContainerSlot = data.ReadInt32();
             location = (InvLoc)data.ReadUInt32();
             equipperId = data.ReadInstanceId();
             containerId = data.ReadInstanceId();
@@ -55,7 +55,7 @@ namespace AC2RE.Definitions {
             takenSlots = (InvLoc)data.ReadUInt32();
             actualLocation = (InvLoc)data.ReadUInt32();
             blockingItemId = data.ReadInstanceId();
-            containerSlot = data.ReadUInt32();
+            containerSlot = data.ReadInt32();
         }
 
         public void write(AC2Writer data) {

@@ -51,16 +51,6 @@ namespace AC2RE.Server {
             return (worldObject != null && !worldObject.deleted) ? worldObject : null;
         }
 
-        public bool tryGetInWorld(InstanceId id, [MaybeNullWhen(false)] out WorldObject worldObject) {
-            worldObject = getInWorld(id);
-            return worldObject != null;
-        }
-
-        public WorldObject? getInWorld(InstanceId id) {
-            WorldObject? worldObject = get(id);
-            return (worldObject != null && worldObject.inWorld) ? worldObject : null;
-        }
-
         private void loadAll() {
             if (!loadedWorld) {
                 loadedWorld = true;

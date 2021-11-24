@@ -7,7 +7,7 @@ namespace AC2RE.Definitions {
         public PackageType packageType => PackageType.InvMoveDesc;
 
         public bool merge; // mergeFlag
-        public uint actualFromSlot; // actualFromSlot
+        public int actualFromSlot; // actualFromSlot
         public InstanceId targetId; // targetID
         public bool itemIsContainer; // itemIsContainerFlag
         public bool ignoreAttunement; // bIgnoreAttunement
@@ -15,8 +15,8 @@ namespace AC2RE.Definitions {
         public bool noCheck; // noCheckFlag
         public InstanceId actualTargetContainerId; // actualTargetContainer
         public bool shouldUnlock; // bShouldUnlock
-        public uint targetSlot; // targetSlot
-        public uint moveType; // moveType
+        public int targetSlot; // targetSlot
+        public uint moveType; // moveType TODO: See InventorySystem::DetermineMoveType
         public bool checkTakePerm; // checkTakePermFlag
         public bool hidden; // bHidden
         public WeenieType targetWeenieType; // targetWeenieType
@@ -26,7 +26,7 @@ namespace AC2RE.Definitions {
         public bool noRollback; // noRollbackFlag
         public DataId splitItemEntityDid; // splitItemEntityDID
         public bool allItemUnitsTaken; // allItemUnitsTakenFlag
-        public uint actualTargetSlot; // actualTargetSlot
+        public int actualTargetSlot; // actualTargetSlot
         public uint quantityLeftToContain; // quantityLeftToContain
         public uint quantity; // quantity
         public bool generatorRequest; // generatorRequestFlag
@@ -38,7 +38,7 @@ namespace AC2RE.Definitions {
         public bool grabItem; // grabItem
         public InstanceId actualFromContainerId; // actualFromContainer
         public DataId itemVisualDescDid; // itemVDescID
-        public uint fromSlot; // fromSlot
+        public int fromSlot; // fromSlot
         public ErrorType error; // status
         public bool playedAnim; // playedAnim
         public bool quiet; // bQuiet
@@ -48,7 +48,7 @@ namespace AC2RE.Definitions {
         public bool doContain; // doContainFlag
         public uint splitItemQuantity; // splitItemQty
         public bool autoMerge; // autoMergeFlag
-        public uint mergeSlot; // mergeSlot
+        public int mergeSlot; // mergeSlot
 
         public InvMoveDesc() {
 
@@ -56,7 +56,7 @@ namespace AC2RE.Definitions {
 
         public InvMoveDesc(AC2Reader data) {
             merge = data.ReadBoolean();
-            actualFromSlot = data.ReadUInt32();
+            actualFromSlot = data.ReadInt32();
             targetId = data.ReadInstanceId();
             itemIsContainer = data.ReadBoolean();
             ignoreAttunement = data.ReadBoolean();
@@ -64,7 +64,7 @@ namespace AC2RE.Definitions {
             noCheck = data.ReadBoolean();
             actualTargetContainerId = data.ReadInstanceId();
             shouldUnlock = data.ReadBoolean();
-            targetSlot = data.ReadUInt32();
+            targetSlot = data.ReadInt32();
             moveType = data.ReadUInt32();
             checkTakePerm = data.ReadBoolean();
             hidden = data.ReadBoolean();
@@ -75,7 +75,7 @@ namespace AC2RE.Definitions {
             noRollback = data.ReadBoolean();
             splitItemEntityDid = data.ReadDataId();
             allItemUnitsTaken = data.ReadBoolean();
-            actualTargetSlot = data.ReadUInt32();
+            actualTargetSlot = data.ReadInt32();
             quantityLeftToContain = data.ReadUInt32();
             quantity = data.ReadUInt32();
             generatorRequest = data.ReadBoolean();
@@ -87,7 +87,7 @@ namespace AC2RE.Definitions {
             grabItem = data.ReadBoolean();
             actualFromContainerId = data.ReadInstanceId();
             itemVisualDescDid = data.ReadDataId();
-            fromSlot = data.ReadUInt32();
+            fromSlot = data.ReadInt32();
             error = (ErrorType)data.ReadUInt32();
             playedAnim = data.ReadBoolean();
             quiet = data.ReadBoolean();
@@ -97,7 +97,7 @@ namespace AC2RE.Definitions {
             doContain = data.ReadBoolean();
             splitItemQuantity = data.ReadUInt32();
             autoMerge = data.ReadBoolean();
-            mergeSlot = data.ReadUInt32();
+            mergeSlot = data.ReadInt32();
         }
 
         public void write(AC2Writer data) {

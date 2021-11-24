@@ -133,7 +133,7 @@ namespace AC2RE.Server {
                 item.setContainer(character);
 
                 if (startInvItem.equipped) {
-                    character.equip(item.preferredInvLoc, item);
+                    WorldObject.autoEquip(world, character, item);
                 }
             }
 

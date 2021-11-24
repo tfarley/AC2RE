@@ -276,6 +276,11 @@ namespace AC2RE.Server {
             }
         }
 
+        public bool takeable {
+            get => getQ(BoolStat.IsTakeable);
+            set => setQ(BoolStat.IsTakeable, value);
+        }
+
         public bool noDraw {
             get => getQ(BoolStat.NoDraw);
             set {
@@ -331,6 +336,11 @@ namespace AC2RE.Server {
         public DataId physicsEntityDid {
             get => getQ(DataIdStat.PhysObj);
             set => setQ(DataIdStat.PhysObj, value);
+        }
+
+        public DataId pileAppearanceDid {
+            get => getQ(DataIdStat.PileAppearanceID);
+            set => setQ(DataIdStat.PileAppearanceID, value);
         }
 
         public int health {

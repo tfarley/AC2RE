@@ -80,8 +80,8 @@ namespace AC2RE.Server {
             if (attacking == false) {
                 newMode = ModeId.peace;
             } else {
-                WorldObject? primaryWeapon = world.objectManager.getInWorld(getEquipped(InvLoc.PrimaryHand));
-                WorldObject? secondaryWeapon = world.objectManager.getInWorld(getEquipped(InvLoc.SecondaryHand));
+                WorldObject? primaryWeapon = world.objectManager.get(getEquipped(InvLoc.PrimaryHand));
+                WorldObject? secondaryWeapon = world.objectManager.get(getEquipped(InvLoc.SecondaryHand));
                 if (primaryWeapon != null && secondaryWeapon == null) {
                     newMode = primaryWeapon.singleWeaponMode;
                 } else if (primaryWeapon == null && secondaryWeapon != null) {

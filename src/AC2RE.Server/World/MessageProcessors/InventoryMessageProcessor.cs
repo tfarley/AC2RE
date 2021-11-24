@@ -14,52 +14,20 @@ namespace AC2RE.Server {
                         InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
                         if (msg.netEvent.funcId == ServerEventFunctionId.Inventory__DirectiveEquipItem) {
                             DirectiveEquipItemSEvt sEvent = (DirectiveEquipItemSEvt)msg.netEvent;
-                            if (sEvent.equipDesc.equipperId != player.characterId) {
-                                sEvent.equipDesc.error = ErrorType.ItemNotOwnedByContainer;
-                            } else if (tryGetInWorld(sEvent.equipDesc.equipperId, out WorldObject? equipper) && tryGetInWorld(sEvent.equipDesc.itemId, out WorldObject? item)) {
-                                sEvent.equipDesc.error = equipper.equip(sEvent.equipDesc.location, item);
-                            }
 
-                            send(player, new InterpCEventPrivateMsg {
-                                netEvent = new EquipItemDoneCEvt {
-                                    equipDesc = sEvent.equipDesc,
-                                }
-                            });
+                            WorldObject.equip(world, sEvent.equipDesc, player);
                         } else if (msg.netEvent.funcId == ServerEventFunctionId.Inventory__DirectiveUnEquipItem) {
                             DirectiveUnequipItemSEvt sEvent = (DirectiveUnequipItemSEvt)msg.netEvent;
-                            if (sEvent.equipDesc.equipperId != player.characterId) {
-                                sEvent.equipDesc.error = ErrorType.ItemNotOwnedByContainer;
-                            } else {
-                                if (tryGetInWorld(sEvent.equipDesc.equipperId, out WorldObject? equipper) && tryGetInWorld(sEvent.equipDesc.itemId, out WorldObject? item)) {
-                                    sEvent.equipDesc.error = equipper.equip(sEvent.equipDesc.location, null);
-                                    if (sEvent.equipDesc.error == ErrorType.None) {
-                                        sEvent.equipDesc.targetContainerSlot = (uint)item.setContainer(world.objectManager.get(sEvent.equipDesc.containerId), (int)sEvent.equipDesc.containerSlot);
-                                        sEvent.equipDesc.containerSlot = sEvent.equipDesc.targetContainerSlot;
-                                    }
-                                }
-                            }
-
-                            send(player, new InterpCEventPrivateMsg {
-                                netEvent = new UnequipItemDoneCEvt {
-                                    equipDesc = sEvent.equipDesc,
-                                }
-                            });
+                            
+                            WorldObject.unequip(world, sEvent.equipDesc, player);
                         } else if (msg.netEvent.funcId == ServerEventFunctionId.Inventory__DirectiveMoveItem) {
                             DirectiveMoveItemSEvt sEvent = (DirectiveMoveItemSEvt)msg.netEvent;
 
-                            send(player, new InterpCEventPrivateMsg {
-                                netEvent = new MoveItemDoneCEvt {
-                                    moveDesc = sEvent.moveDesc,
-                                }
-                            });
+                            WorldObject.moveItem(world, sEvent.moveDesc, player);
                         } else if (msg.netEvent.funcId == ServerEventFunctionId.Inventory__DirectiveReorganizeContents) {
                             DirectiveReorganizeContentsSEvt sEvent = (DirectiveReorganizeContentsSEvt)msg.netEvent;
 
-                            send(player, new InterpCEventPrivateMsg {
-                                netEvent = new ReorganizeContentsDoneCEvt {
-                                    moveDesc = sEvent.moveDesc,
-                                }
-                            });
+                            WorldObject.moveItem(world, sEvent.moveDesc, player);
                         } else {
                             return false;
                         }
