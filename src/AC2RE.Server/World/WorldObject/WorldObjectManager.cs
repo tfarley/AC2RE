@@ -28,7 +28,7 @@ namespace AC2RE.Server {
                 return worldObject.getInstanceIdWithStamp(otherStamp);
             }
 
-            return new InstanceIdWithStamp {
+            return new() {
                 id = id,
                 instanceStamp = 0,
                 otherStamp = otherStamp,

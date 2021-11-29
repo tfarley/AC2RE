@@ -75,7 +75,7 @@ namespace AC2RE.Server {
         }
 
         public PositionOffset offset {
-            get => new PositionOffset(physics.pos.cell, physics.pos.frame.pos);
+            get => new(physics.pos.cell, physics.pos.frame.pos);
             set {
                 physics.pos.cell = value.cell;
                 physics.pos.frame.pos = value.offset;

@@ -47,20 +47,20 @@ namespace AC2RE.PdbTool {
                         break;
                     case SymTagEnum.SymTagFunction:
                         if (!pdbParser.functionInfoById.TryGetValue(childSymbol.symIndexId, out FunctionInfo? functionInfo)) {
-                            functionInfo = new FunctionInfo(pdbParser, childSymbol);
+                            functionInfo = new(pdbParser, childSymbol);
                             pdbParser.functionInfoById[childSymbol.symIndexId] = functionInfo;
                         }
                         functionInfos.Add(functionInfo);
                         break;
                     case SymTagEnum.SymTagUDT:
                         if (!pdbParser.udtInfoById.TryGetValue(childSymbol.symIndexId, out UDTInfo? udtInfo)) {
-                            udtInfo = new UDTInfo(pdbParser, childSymbol, false, namePrefix + udtSymbol.name + "::");
+                            udtInfo = new(pdbParser, childSymbol, false, namePrefix + udtSymbol.name + "::");
                             pdbParser.udtInfoById[childSymbol.symIndexId] = udtInfo;
                         }
                         nestedUdtInfos.Add(udtInfo);
                         break;
                     case SymTagEnum.SymTagEnum:
-                        nestedUdtInfos.Add(new UDTInfo(pdbParser, childSymbol, true, namePrefix + udtSymbol.name + "::"));
+                        nestedUdtInfos.Add(new(pdbParser, childSymbol, true, namePrefix + udtSymbol.name + "::"));
                         break;
                     case SymTagEnum.SymTagVTable:
                         // TODO: Implement

@@ -16,7 +16,7 @@ namespace AC2RE.Server.Database {
                     while (reader.Read()) {
                         Position position = mapPosition(reader);
                         StringInfo? nameStringInfo = !reader.IsDBNull("nameStringId")
-                            ? new StringInfo(new(reader.GetUInt32("nameTableDid")), reader.GetUInt32("nameStringId"))
+                            ? new(new(reader.GetUInt32("nameTableDid")), reader.GetUInt32("nameStringId"))
                             : null;
                         mapObjects.Add(new(new(reader.GetUInt64("id")), new(reader.GetUInt32("entityDid")), position, reader.GetFloat("scale"), nameStringInfo));
                     }

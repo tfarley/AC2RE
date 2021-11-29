@@ -40,7 +40,7 @@ namespace AC2RE.Definitions {
         public override int GetHashCode() => id.GetHashCode();
 
         public override string ToString() {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             if (physique != PhysiqueType.Undef) {
                 sb.Append(physique);
             }

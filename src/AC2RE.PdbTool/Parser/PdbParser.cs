@@ -67,7 +67,7 @@ namespace AC2RE.PdbTool {
             if (udtSymbols != null) {
                 foreach (IDiaSymbol udtSymbol in udtSymbols) {
                     if (!udtInfoById.ContainsKey(udtSymbol.symIndexId)) {
-                        udtInfoById[udtSymbol.symIndexId] = new UDTInfo(this, udtSymbol, false);
+                        udtInfoById[udtSymbol.symIndexId] = new(this, udtSymbol, false);
                     }
                 }
             }
@@ -76,7 +76,7 @@ namespace AC2RE.PdbTool {
             if (enumSymbols != null) {
                 foreach (IDiaSymbol enumSymbol in enumSymbols) {
                     if (!udtInfoById.ContainsKey(enumSymbol.symIndexId)) {
-                        udtInfoById[enumSymbol.symIndexId] = new UDTInfo(this, enumSymbol, true);
+                        udtInfoById[enumSymbol.symIndexId] = new(this, enumSymbol, true);
                     }
                 }
             }
@@ -85,7 +85,7 @@ namespace AC2RE.PdbTool {
             if (functionSymbols != null) {
                 foreach (IDiaSymbol functionSymbol in functionSymbols) {
                     if (!functionInfoById.ContainsKey(functionSymbol.symIndexId)) {
-                        functionInfoById[functionSymbol.symIndexId] = new FunctionInfo(this, functionSymbol);
+                        functionInfoById[functionSymbol.symIndexId] = new(this, functionSymbol);
                     }
                 }
             }
