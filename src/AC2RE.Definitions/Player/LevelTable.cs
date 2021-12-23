@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 
-namespace AC2RE.Definitions {
+namespace AC2RE.Definitions;
 
-    public class LevelTable : IPackage {
+public class LevelTable : IPackage {
 
-        public PackageType packageType => PackageType.LevelTable;
+    public PackageType packageType => PackageType.LevelTable;
 
-        public List<LevelData> map; // mMap
-        public uint maxLevel; // mMaxLevel
+    public List<LevelData> map; // mMap
+    public uint maxLevel; // mMaxLevel
 
-        public LevelTable(AC2Reader data) {
-            data.ReadPkg<RArray>(v => map = v.to<LevelData>());
-            maxLevel = data.ReadUInt32();
-        }
+    public LevelTable(AC2Reader data) {
+        data.ReadPkg<RArray>(v => map = v.to<LevelData>());
+        maxLevel = data.ReadUInt32();
     }
 }

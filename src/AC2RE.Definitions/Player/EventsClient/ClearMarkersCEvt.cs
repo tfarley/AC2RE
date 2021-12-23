@@ -1,22 +1,21 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class ClearMarkersCEvt : IClientEvent {
+public class ClearMarkersCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Player__ClearMarkers;
+    public ClientEventFunctionId funcId => ClientEventFunctionId.Player__ClearMarkers;
 
-        // WM_Player::RecvCEvt_ClearMarkers
-        public uint type; // type
+    // WM_Player::RecvCEvt_ClearMarkers
+    public uint type; // type
 
-        public ClearMarkersCEvt() {
+    public ClearMarkersCEvt() {
 
-        }
+    }
 
-        public ClearMarkersCEvt(AC2Reader data) {
-            type = data.UnpackUInt32();
-        }
+    public ClearMarkersCEvt(AC2Reader data) {
+        type = data.UnpackUInt32();
+    }
 
-        public void write(AC2Writer data) {
-            data.Pack(type);
-        }
+    public void write(AC2Writer data) {
+        data.Pack(type);
     }
 }

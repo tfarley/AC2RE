@@ -1,15 +1,14 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class GenericMsg : INetMessage {
+public class GenericMsg : INetMessage {
 
-        public NetBlobId.Flag blobFlags { get; set; }
-        public NetQueue queueId { get; set; }
-        public MessageOpcode opcode { get; set; }
+    public NetBlobId.Flag blobFlags { get; set; }
+    public NetQueue queueId { get; set; }
+    public MessageOpcode opcode { get; set; }
 
-        public byte[] payload;
+    public byte[] payload;
 
-        public void write(AC2Writer data) {
-            data.Write(payload);
-        }
+    public void write(AC2Writer data) {
+        data.Write(payload);
     }
 }

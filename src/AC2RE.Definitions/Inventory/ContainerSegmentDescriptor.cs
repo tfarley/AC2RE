@@ -1,24 +1,23 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class ContainerSegmentDescriptor : IPackage {
+public class ContainerSegmentDescriptor : IPackage {
 
-        public PackageType packageType => PackageType.ContainerSegmentDescriptor;
+    public PackageType packageType => PackageType.ContainerSegmentDescriptor;
 
-        public uint segmentMaxSize; // mSegmentMaxSize
-        public uint segmentSize; // mSegmentSize
+    public uint segmentMaxSize; // mSegmentMaxSize
+    public uint segmentSize; // mSegmentSize
 
-        public ContainerSegmentDescriptor() {
+    public ContainerSegmentDescriptor() {
 
-        }
+    }
 
-        public ContainerSegmentDescriptor(AC2Reader data) {
-            segmentMaxSize = data.ReadUInt32();
-            segmentSize = data.ReadUInt32();
-        }
+    public ContainerSegmentDescriptor(AC2Reader data) {
+        segmentMaxSize = data.ReadUInt32();
+        segmentSize = data.ReadUInt32();
+    }
 
-        public void write(AC2Writer data) {
-            data.Write(segmentMaxSize);
-            data.Write(segmentSize);
-        }
+    public void write(AC2Writer data) {
+        data.Write(segmentMaxSize);
+        data.Write(segmentSize);
     }
 }

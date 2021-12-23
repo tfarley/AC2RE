@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class RequestTrainSkillSEvt : IServerEvent {
+public class RequestTrainSkillSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Skill__RequestTrainSkill;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Skill__RequestTrainSkill;
 
-        // WM_Skill::SendSEvt_RequestTrainSkill
-        public SkillId skillId; // _skillType
+    // WM_Skill::SendSEvt_RequestTrainSkill
+    public SkillId skillId; // _skillType
 
-        public RequestTrainSkillSEvt(AC2Reader data) {
-            skillId = (SkillId)data.UnpackUInt32();
-        }
+    public RequestTrainSkillSEvt(AC2Reader data) {
+        skillId = (SkillId)data.UnpackUInt32();
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace AC2RE.Server {
+﻿namespace AC2RE.Server;
 
-    internal interface IIdGenerator<T> {
+internal interface IIdGenerator<T> {
 
-        public T next();
-    }
+    public T next();
 }

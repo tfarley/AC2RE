@@ -1,22 +1,21 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class ReorganizeContentsDoneCEvt : IClientEvent {
+public class ReorganizeContentsDoneCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Inventory__ReorganizeContents_Done;
+    public ClientEventFunctionId funcId => ClientEventFunctionId.Inventory__ReorganizeContents_Done;
 
-        // WM_Inventory::PostCEvt_ReorganizeContents_Done
-        public InvMoveDesc moveDesc; // _iDesc
+    // WM_Inventory::PostCEvt_ReorganizeContents_Done
+    public InvMoveDesc moveDesc; // _iDesc
 
-        public ReorganizeContentsDoneCEvt() {
+    public ReorganizeContentsDoneCEvt() {
 
-        }
+    }
 
-        public ReorganizeContentsDoneCEvt(AC2Reader data) {
-            moveDesc = data.UnpackPackage<InvMoveDesc>();
-        }
+    public ReorganizeContentsDoneCEvt(AC2Reader data) {
+        moveDesc = data.UnpackPackage<InvMoveDesc>();
+    }
 
-        public void write(AC2Writer data) {
-            data.Pack(moveDesc);
-        }
+    public void write(AC2Writer data) {
+        data.Pack(moveDesc);
     }
 }

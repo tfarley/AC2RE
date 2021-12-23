@@ -1,22 +1,21 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class StoreRequestDoneCEvt : IClientEvent {
+public class StoreRequestDoneCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Store__Request_Done;
+    public ClientEventFunctionId funcId => ClientEventFunctionId.Store__Request_Done;
 
-        // WM_Store::PostCEvt_Store_Request_Done
-        public ErrorType error; // _err
+    // WM_Store::PostCEvt_Store_Request_Done
+    public ErrorType error; // _err
 
-        public StoreRequestDoneCEvt() {
+    public StoreRequestDoneCEvt() {
 
-        }
+    }
 
-        public StoreRequestDoneCEvt(AC2Reader data) {
-            error = (ErrorType)data.UnpackUInt32();
-        }
+    public StoreRequestDoneCEvt(AC2Reader data) {
+        error = (ErrorType)data.UnpackUInt32();
+    }
 
-        public void write(AC2Writer data) {
-            data.Pack((uint)error);
-        }
+    public void write(AC2Writer data) {
+        data.Pack((uint)error);
     }
 }

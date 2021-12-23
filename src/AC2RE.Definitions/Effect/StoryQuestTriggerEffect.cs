@@ -1,13 +1,12 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class StoryQuestTriggerEffect : Effect {
+public class StoryQuestTriggerEffect : Effect {
 
-        public override PackageType packageType => PackageType.StoryQuestTriggerEffect;
+    public override PackageType packageType => PackageType.StoryQuestTriggerEffect;
 
-        public SceneId sceneId; // m_sceneID
+    public SceneId sceneId; // m_sceneID
 
-        public StoryQuestTriggerEffect(AC2Reader data) : base(data) {
-            sceneId = (SceneId)data.ReadUInt32();
-        }
+    public StoryQuestTriggerEffect(AC2Reader data) : base(data) {
+        sceneId = (SceneId)data.ReadUInt32();
     }
 }

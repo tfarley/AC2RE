@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace AC2RE.Definitions {
+namespace AC2RE.Definitions;
 
-    public class PackageIgnoreAttribute : Attribute {
+public class PackageIgnoreAttribute : Attribute {
 
-    }
 }

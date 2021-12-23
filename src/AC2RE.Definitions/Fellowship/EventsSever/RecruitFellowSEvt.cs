@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class RecruitFellowSEvt : IServerEvent {
+public class RecruitFellowSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Fellowship__RecruitFellow;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Fellowship__RecruitFellow;
 
-        // WM_Fellowship::SendSEvt_RecruitFellow
-        public InstanceId fellowId; // _fellow
+    // WM_Fellowship::SendSEvt_RecruitFellow
+    public InstanceId fellowId; // _fellow
 
-        public RecruitFellowSEvt(AC2Reader data) {
-            fellowId = data.UnpackInstanceId();
-        }
+    public RecruitFellowSEvt(AC2Reader data) {
+        fellowId = data.UnpackInstanceId();
     }
 }

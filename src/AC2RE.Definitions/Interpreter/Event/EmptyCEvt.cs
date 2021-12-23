@@ -1,15 +1,14 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class EmptyCEvt : IClientEvent {
+public class EmptyCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId { get; init; }
+    public ClientEventFunctionId funcId { get; init; }
 
-        public EmptyCEvt(ClientEventFunctionId funcId) {
-            this.funcId = funcId;
-        }
+    public EmptyCEvt(ClientEventFunctionId funcId) {
+        this.funcId = funcId;
+    }
 
-        public void write(AC2Writer data) {
+    public void write(AC2Writer data) {
 
-        }
     }
 }

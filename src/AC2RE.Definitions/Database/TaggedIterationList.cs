@@ -1,16 +1,15 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class TaggedIterationList {
+public class TaggedIterationList {
 
-        // CAllIterationList::PTaggedIterationList
-        public uint datName; // idDatFile
-        public DatFileType datType; // idDatFile
-        public CMostlyConsecutiveIntSet iterationList; // List
+    // CAllIterationList::PTaggedIterationList
+    public uint datName; // idDatFile
+    public DatFileType datType; // idDatFile
+    public CMostlyConsecutiveIntSet iterationList; // List
 
-        public TaggedIterationList(AC2Reader data) {
-            datName = data.ReadUInt32();
-            datType = (DatFileType)data.ReadUInt32();
-            iterationList = new(data);
-        }
+    public TaggedIterationList(AC2Reader data) {
+        datName = data.ReadUInt32();
+        datType = (DatFileType)data.ReadUInt32();
+        iterationList = new(data);
     }
 }

@@ -1,23 +1,22 @@
 ﻿using System.Collections.Generic;
 
-namespace AC2RE.Definitions {
+namespace AC2RE.Definitions;
 
-    public class PropertyCollection : IPackage {
+public class PropertyCollection : IPackage {
 
-        public NativeType nativeType => NativeType.PropertyCollection;
+    public NativeType nativeType => NativeType.PropertyCollection;
 
-        public List<PropertyGroup> groups; // m_propertyGroup
+    public List<PropertyGroup> groups; // m_propertyGroup
 
-        public PropertyCollection() {
+    public PropertyCollection() {
 
-        }
+    }
 
-        public PropertyCollection(AC2Reader data) {
-            groups = data.ReadList(() => new PropertyGroup(data));
-        }
+    public PropertyCollection(AC2Reader data) {
+        groups = data.ReadList(() => new PropertyGroup(data));
+    }
 
-        public void write(AC2Writer data) {
-            data.Write(groups, v => v.write(data));
-        }
+    public void write(AC2Writer data) {
+        data.Write(groups, v => v.write(data));
     }
 }

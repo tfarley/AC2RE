@@ -1,22 +1,21 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class SkillUpdateEverythingCEvt : IClientEvent {
+public class SkillUpdateEverythingCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Skill__UpdateEverything;
+    public ClientEventFunctionId funcId => ClientEventFunctionId.Skill__UpdateEverything;
 
-        // WM_Skill::PostCEvt_Skill_UpdateEverything
-        public SkillRepository skillRepository; // _rep
+    // WM_Skill::PostCEvt_Skill_UpdateEverything
+    public SkillRepository skillRepository; // _rep
 
-        public SkillUpdateEverythingCEvt() {
+    public SkillUpdateEverythingCEvt() {
 
-        }
+    }
 
-        public SkillUpdateEverythingCEvt(AC2Reader data) {
-            skillRepository = data.UnpackPackage<SkillRepository>();
-        }
+    public SkillUpdateEverythingCEvt(AC2Reader data) {
+        skillRepository = data.UnpackPackage<SkillRepository>();
+    }
 
-        public void write(AC2Writer data) {
-            data.Pack(skillRepository);
-        }
+    public void write(AC2Writer data) {
+        data.Pack(skillRepository);
     }
 }

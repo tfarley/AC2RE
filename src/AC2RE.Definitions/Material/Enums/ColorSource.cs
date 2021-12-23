@@ -1,8 +1,7 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    // Enum ColorSource
-    public enum ColorSource : uint {
-        FromMaterial, // FromMaterial
-        FromVertex, // FromVertex
-    }
+// Enum ColorSource
+public enum ColorSource : uint {
+    FromMaterial, // FromMaterial
+    FromVertex, // FromVertex
 }

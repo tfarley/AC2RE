@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class StopAttackingSEvt : IServerEvent {
+public class StopAttackingSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Combat__StopAttacking;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Combat__StopAttacking;
 
-        // WM_Combat::SendSEvt_StopAttacking
-        public InstanceId targetId; // _target
+    // WM_Combat::SendSEvt_StopAttacking
+    public InstanceId targetId; // _target
 
-        public StopAttackingSEvt(AC2Reader data) {
-            targetId = data.UnpackInstanceId();
-        }
+    public StopAttackingSEvt(AC2Reader data) {
+        targetId = data.UnpackInstanceId();
     }
 }

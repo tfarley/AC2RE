@@ -1,15 +1,14 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class CharacterGenSystem : IPackage {
+public class CharacterGenSystem : IPackage {
 
-        public PackageType packageType => PackageType.CharacterGenSystem;
+    public PackageType packageType => PackageType.CharacterGenSystem;
 
-        public DataId playerEntityDid; // m_playerEntityDID
-        public DataId adminEntityDid; // m_adminEntityDID
+    public DataId playerEntityDid; // m_playerEntityDID
+    public DataId adminEntityDid; // m_adminEntityDID
 
-        public CharacterGenSystem(AC2Reader data) {
-            playerEntityDid = data.ReadDataId();
-            adminEntityDid = data.ReadDataId();
-        }
+    public CharacterGenSystem(AC2Reader data) {
+        playerEntityDid = data.ReadDataId();
+        adminEntityDid = data.ReadDataId();
     }
 }

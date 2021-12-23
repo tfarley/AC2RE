@@ -2,10 +2,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace AC2RE.Server.Database {
+namespace AC2RE.Server.Database;
 
-    internal interface IMapDatabase : IDisposable {
+internal interface IMapDatabase : IDisposable {
 
-        public List<MapObject> getMapObjectsInLandblock(LandblockId landblockId);
-    }
+    public List<MapObject> getMapObjectsInLandblock(LandblockId landblockId);
 }

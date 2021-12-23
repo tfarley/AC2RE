@@ -1,22 +1,21 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class DiscreteDestroyContainedItemCEvt : IClientEvent {
+public class DiscreteDestroyContainedItemCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Inventory__DiscreteDestroyContainedItem;
+    public ClientEventFunctionId funcId => ClientEventFunctionId.Inventory__DiscreteDestroyContainedItem;
 
-        // WM_Inventory::PostCEvt_DiscreteDestroyContainedItem
-        public InstanceId itemId; // _itemID
+    // WM_Inventory::PostCEvt_DiscreteDestroyContainedItem
+    public InstanceId itemId; // _itemID
 
-        public DiscreteDestroyContainedItemCEvt() {
+    public DiscreteDestroyContainedItemCEvt() {
 
-        }
+    }
 
-        public DiscreteDestroyContainedItemCEvt(AC2Reader data) {
-            itemId = data.UnpackInstanceId();
-        }
+    public DiscreteDestroyContainedItemCEvt(AC2Reader data) {
+        itemId = data.UnpackInstanceId();
+    }
 
-        public void write(AC2Writer data) {
-            data.Pack(itemId);
-        }
+    public void write(AC2Writer data) {
+        data.Pack(itemId);
     }
 }

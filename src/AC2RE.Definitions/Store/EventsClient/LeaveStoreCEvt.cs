@@ -1,22 +1,21 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class LeaveStoreCEvt : IClientEvent {
+public class LeaveStoreCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Store__LeaveStore;
+    public ClientEventFunctionId funcId => ClientEventFunctionId.Store__LeaveStore;
 
-        // WM_Store::PostCEvt_Store_LeaveStore
-        public InstanceId storekeeperId; // _iidStorekeeper
+    // WM_Store::PostCEvt_Store_LeaveStore
+    public InstanceId storekeeperId; // _iidStorekeeper
 
-        public LeaveStoreCEvt() {
+    public LeaveStoreCEvt() {
 
-        }
+    }
 
-        public LeaveStoreCEvt(AC2Reader data) {
-            storekeeperId = data.UnpackInstanceId();
-        }
+    public LeaveStoreCEvt(AC2Reader data) {
+        storekeeperId = data.UnpackInstanceId();
+    }
 
-        public void write(AC2Writer data) {
-            data.Pack(storekeeperId);
-        }
+    public void write(AC2Writer data) {
+        data.Pack(storekeeperId);
     }
 }

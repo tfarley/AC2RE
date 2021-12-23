@@ -1,22 +1,21 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class RemoveSkillInfoCEvt : IClientEvent {
+public class RemoveSkillInfoCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Skill__RemoveInfo;
+    public ClientEventFunctionId funcId => ClientEventFunctionId.Skill__RemoveInfo;
 
-        // WM_Skill::PostCEvt_Skill_RemoveInfo
-        public SkillId skillId; // _skillType
+    // WM_Skill::PostCEvt_Skill_RemoveInfo
+    public SkillId skillId; // _skillType
 
-        public RemoveSkillInfoCEvt() {
+    public RemoveSkillInfoCEvt() {
 
-        }
+    }
 
-        public RemoveSkillInfoCEvt(AC2Reader data) {
-            skillId = (SkillId)data.UnpackUInt32();
-        }
+    public RemoveSkillInfoCEvt(AC2Reader data) {
+        skillId = (SkillId)data.UnpackUInt32();
+    }
 
-        public void write(AC2Writer data) {
-            data.Pack((uint)skillId);
-        }
+    public void write(AC2Writer data) {
+        data.Pack((uint)skillId);
     }
 }

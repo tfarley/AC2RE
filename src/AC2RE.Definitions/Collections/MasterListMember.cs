@@ -1,13 +1,12 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class MasterListMember : IPackage {
+public class MasterListMember : IPackage {
 
-        public virtual PackageType packageType => PackageType.MasterListMember;
+    public virtual PackageType packageType => PackageType.MasterListMember;
 
-        public uint enumVal; // mEnum
+    public uint enumVal; // mEnum
 
-        public MasterListMember(AC2Reader data) {
-            enumVal = data.ReadUInt32();
-        }
+    public MasterListMember(AC2Reader data) {
+        enumVal = data.ReadUInt32();
     }
 }

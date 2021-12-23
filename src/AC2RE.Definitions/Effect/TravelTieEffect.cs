@@ -1,26 +1,25 @@
 ﻿using System;
 
-namespace AC2RE.Definitions {
+namespace AC2RE.Definitions;
 
-    public class TravelTieEffect : Effect {
+public class TravelTieEffect : Effect {
 
-        public override PackageType packageType => PackageType.TravelTieEffect;
+    public override PackageType packageType => PackageType.TravelTieEffect;
 
-        // WLib TravelTieEffectFlag
-        [Flags]
-        public new enum Flag : uint {
-            NONE = 0,
+    // WLib TravelTieEffectFlag
+    [Flags]
+    public new enum Flag : uint {
+        NONE = 0,
 
-            IsIgnorePortalFlags = 1 << 9, // IsIgnorePortalFlags 0x00000200
-        }
+        IsIgnorePortalFlags = 1 << 9, // IsIgnorePortalFlags 0x00000200
+    }
 
-        public WeenieType weenieType; // m_wtype
-        public uint portalLink; // m_link
-        public Flag travelTieFlags => (Flag)flags;
+    public WeenieType weenieType; // m_wtype
+    public uint portalLink; // m_link
+    public Flag travelTieFlags => (Flag)flags;
 
-        public TravelTieEffect(AC2Reader data) : base(data) {
-            weenieType = (WeenieType)data.ReadUInt32();
-            portalLink = data.ReadUInt32();
-        }
+    public TravelTieEffect(AC2Reader data) : base(data) {
+        weenieType = (WeenieType)data.ReadUInt32();
+        portalLink = data.ReadUInt32();
     }
 }

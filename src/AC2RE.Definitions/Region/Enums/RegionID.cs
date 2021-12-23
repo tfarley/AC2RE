@@ -1,7 +1,6 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    // Const *_RegionID
-    public enum RegionID : uint {
-        Undef, // Undef_RegionID
-    }
+// Const *_RegionID
+public enum RegionID : uint {
+    Undef, // Undef_RegionID
 }

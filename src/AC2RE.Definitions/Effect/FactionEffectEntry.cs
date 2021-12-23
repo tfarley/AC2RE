@@ -1,15 +1,14 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class FactionEffectEntry : IPackage {
+public class FactionEffectEntry : IPackage {
 
-        public PackageType packageType => PackageType.FactionEffectEntry;
+    public PackageType packageType => PackageType.FactionEffectEntry;
 
-        public SingletonPkg<Effect> effect; // m_eff
-        public uint rating; // m_rating
+    public SingletonPkg<Effect> effect; // m_eff
+    public uint rating; // m_rating
 
-        public FactionEffectEntry(AC2Reader data) {
-            data.ReadPkg<Effect>(v => effect = v);
-            rating = data.ReadUInt32();
-        }
+    public FactionEffectEntry(AC2Reader data) {
+        data.ReadPkg<Effect>(v => effect = v);
+        rating = data.ReadUInt32();
     }
 }

@@ -1,28 +1,27 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class UpdateFellowHealthCEvt : IClientEvent {
+public class UpdateFellowHealthCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Fellowship__UpdateFellowHealth;
+    public ClientEventFunctionId funcId => ClientEventFunctionId.Fellowship__UpdateFellowHealth;
 
-        // WM_Fellowship::PostCEvt_UpdateFellowHealth
-        public uint healthPk; // _valuePK
-        public uint health; // _value
-        public InstanceId fellowId; // _fid
+    // WM_Fellowship::PostCEvt_UpdateFellowHealth
+    public uint healthPk; // _valuePK
+    public uint health; // _value
+    public InstanceId fellowId; // _fid
 
-        public UpdateFellowHealthCEvt() {
+    public UpdateFellowHealthCEvt() {
 
-        }
+    }
 
-        public UpdateFellowHealthCEvt(AC2Reader data) {
-            healthPk = data.UnpackUInt32();
-            health = data.UnpackUInt32();
-            fellowId = data.UnpackInstanceId();
-        }
+    public UpdateFellowHealthCEvt(AC2Reader data) {
+        healthPk = data.UnpackUInt32();
+        health = data.UnpackUInt32();
+        fellowId = data.UnpackInstanceId();
+    }
 
-        public void write(AC2Writer data) {
-            data.Pack(healthPk);
-            data.Pack(health);
-            data.Pack(fellowId);
-        }
+    public void write(AC2Writer data) {
+        data.Pack(healthPk);
+        data.Pack(health);
+        data.Pack(fellowId);
     }
 }

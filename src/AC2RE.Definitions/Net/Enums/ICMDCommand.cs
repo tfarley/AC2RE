@@ -1,11 +1,10 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    // Enum ICMDCommandEnum
-    public enum ICMDCommand : uint {
-        Undef = 0,
-        NOP = 1, // cmdNOP
+// Enum ICMDCommandEnum
+public enum ICMDCommand : uint {
+    Undef = 0,
+    NOP = 1, // cmdNOP
 
-        EchoRequest = 0x71655245, // cmdEchoRequest
-        EchoReply = 0x6C705245, // cmdEchoReply
-    }
+    EchoRequest = 0x71655245, // cmdEchoRequest
+    EchoReply = 0x6C705245, // cmdEchoReply
 }

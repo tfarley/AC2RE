@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class QueryExaminationProfileSEvt : IServerEvent {
+public class QueryExaminationProfileSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Examination__QueryExaminationProfile;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Examination__QueryExaminationProfile;
 
-        // WM_Examination::SendSEvt_QueryExaminationProfile
-        public ExaminationRequest request; // _inRequest
+    // WM_Examination::SendSEvt_QueryExaminationProfile
+    public ExaminationRequest request; // _inRequest
 
-        public QueryExaminationProfileSEvt(AC2Reader data) {
-            request = data.UnpackPackage<ExaminationRequest>();
-        }
+    public QueryExaminationProfileSEvt(AC2Reader data) {
+        request = data.UnpackPackage<ExaminationRequest>();
     }
 }

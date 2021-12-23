@@ -1,28 +1,27 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class DoBehaviorMsg : INetMessage {
+public class DoBehaviorMsg : INetMessage {
 
-        public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-        public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Physics__DoBehavior;
-        public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+    public NetQueue queueId => NetQueue.EVENT;
+    public MessageOpcode opcode => MessageOpcode.Physics__DoBehavior;
+    public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
 
-        // ECM_Physics::RecvEvt_DoBehavior
-        public InstanceIdWithStamp senderIdWithStamp; // sender
-        public BehaviorParams behaviorParams; // _params
+    // ECM_Physics::RecvEvt_DoBehavior
+    public InstanceIdWithStamp senderIdWithStamp; // sender
+    public BehaviorParams behaviorParams; // _params
 
-        public DoBehaviorMsg() {
+    public DoBehaviorMsg() {
 
-        }
+    }
 
-        public DoBehaviorMsg(AC2Reader data) {
-            senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            behaviorParams = new(data);
-        }
+    public DoBehaviorMsg(AC2Reader data) {
+        senderIdWithStamp = data.ReadInstanceIdWithStamp();
+        behaviorParams = new(data);
+    }
 
-        public void write(AC2Writer data) {
-            data.Write(senderIdWithStamp);
-            behaviorParams.write(data);
-        }
+    public void write(AC2Writer data) {
+        data.Write(senderIdWithStamp);
+        behaviorParams.write(data);
     }
 }

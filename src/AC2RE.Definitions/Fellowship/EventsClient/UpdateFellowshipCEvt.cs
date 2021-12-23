@@ -1,22 +1,21 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class UpdateFellowshipCEvt : IClientEvent {
+public class UpdateFellowshipCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Fellowship__UpdateFellowship;
+    public ClientEventFunctionId funcId => ClientEventFunctionId.Fellowship__UpdateFellowship;
 
-        // WM_Fellowship::PostCEvt_UpdateFellowship
-        public Fellowship fellowship; // _fellowship
+    // WM_Fellowship::PostCEvt_UpdateFellowship
+    public Fellowship fellowship; // _fellowship
 
-        public UpdateFellowshipCEvt() {
+    public UpdateFellowshipCEvt() {
 
-        }
+    }
 
-        public UpdateFellowshipCEvt(AC2Reader data) {
-            fellowship = data.UnpackPackage<Fellowship>();
-        }
+    public UpdateFellowshipCEvt(AC2Reader data) {
+        fellowship = data.UnpackPackage<Fellowship>();
+    }
 
-        public void write(AC2Writer data) {
-            data.Pack(fellowship);
-        }
+    public void write(AC2Writer data) {
+        data.Pack(fellowship);
     }
 }

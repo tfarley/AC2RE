@@ -1,11 +1,10 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class Eff_HealthArchon2 : MinMaxEffect {
+public class Eff_HealthArchon2 : MinMaxEffect {
 
-        public override PackageType packageType => PackageType.Eff_HealthArchon2;
+    public override PackageType packageType => PackageType.Eff_HealthArchon2;
 
-        public Eff_HealthArchon2(AC2Reader data) : base(data) {
+    public Eff_HealthArchon2(AC2Reader data) : base(data) {
 
-        }
     }
 }

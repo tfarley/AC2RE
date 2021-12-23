@@ -1,22 +1,21 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class CraftRefreshCEvt : IClientEvent {
+public class CraftRefreshCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Craft__CraftRefresh;
+    public ClientEventFunctionId funcId => ClientEventFunctionId.Craft__CraftRefresh;
 
-        // WM_Craft::PostCEvt_CraftRefresh
-        public CraftRegistry craftRegistry; // _craftReg
+    // WM_Craft::PostCEvt_CraftRefresh
+    public CraftRegistry craftRegistry; // _craftReg
 
-        public CraftRefreshCEvt() {
+    public CraftRefreshCEvt() {
 
-        }
+    }
 
-        public CraftRefreshCEvt(AC2Reader data) {
-            craftRegistry = data.UnpackPackage<CraftRegistry>();
-        }
+    public CraftRefreshCEvt(AC2Reader data) {
+        craftRegistry = data.UnpackPackage<CraftRegistry>();
+    }
 
-        public void write(AC2Writer data) {
-            data.Pack(craftRegistry);
-        }
+    public void write(AC2Writer data) {
+        data.Pack(craftRegistry);
     }
 }

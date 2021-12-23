@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class CloseContainerSEvt : IServerEvent {
+public class CloseContainerSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Inventory__CloseContainer;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Inventory__CloseContainer;
 
-        // WM_Inventory::SendSEvt_CloseContainer
-        public InstanceId containerId; // _container_iid
+    // WM_Inventory::SendSEvt_CloseContainer
+    public InstanceId containerId; // _container_iid
 
-        public CloseContainerSEvt(AC2Reader data) {
-            containerId = data.UnpackInstanceId();
-        }
+    public CloseContainerSEvt(AC2Reader data) {
+        containerId = data.UnpackInstanceId();
     }
 }

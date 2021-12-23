@@ -1,7 +1,6 @@
-﻿namespace AC2RE.Utils {
+﻿namespace AC2RE.Utils;
 
-    public interface IDelegateToString {
+public interface IDelegateToString {
 
-        object delegatedToStringObject { get; }
-    }
+    object delegatedToStringObject { get; }
 }

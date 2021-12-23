@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class AcceptRecruitmentSEvt : IServerEvent {
+public class AcceptRecruitmentSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Fellowship__AcceptRecruitment;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Fellowship__AcceptRecruitment;
 
-        // WM_Fellowship::SendSEvt_AcceptRecruitment
-        public InstanceId leaderId; // _leader
+    // WM_Fellowship::SendSEvt_AcceptRecruitment
+    public InstanceId leaderId; // _leader
 
-        public AcceptRecruitmentSEvt(AC2Reader data) {
-            leaderId = data.UnpackInstanceId();
-        }
+    public AcceptRecruitmentSEvt(AC2Reader data) {
+        leaderId = data.UnpackInstanceId();
     }
 }

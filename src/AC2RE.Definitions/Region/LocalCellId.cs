@@ -1,30 +1,29 @@
 ﻿using System;
 
-namespace AC2RE.Definitions {
+namespace AC2RE.Definitions;
 
-    public readonly struct LocalCellId : IEquatable<LocalCellId> {
+public readonly struct LocalCellId : IEquatable<LocalCellId> {
 
-        public readonly ushort id;
+    public readonly ushort id;
 
-        public byte indoorCellId => (byte)((id >> 8) & 0xFF);
-        public byte outdoorCellId => (byte)(id & 0xFF);
+    public byte indoorCellId => (byte)((id >> 8) & 0xFF);
+    public byte outdoorCellId => (byte)(id & 0xFF);
 
-        public LocalCellId(ushort id) {
-            this.id = id;
-        }
+    public LocalCellId(ushort id) {
+        this.id = id;
+    }
 
-        public LocalCellId(byte indoorCellId, byte outdoorCellId) {
-            id = (ushort)(((uint)indoorCellId << 8) | outdoorCellId);
-        }
+    public LocalCellId(byte indoorCellId, byte outdoorCellId) {
+        id = (ushort)(((uint)indoorCellId << 8) | outdoorCellId);
+    }
 
-        public static bool operator ==(LocalCellId lhs, LocalCellId rhs) => lhs.id == rhs.id;
-        public static bool operator !=(LocalCellId lhs, LocalCellId rhs) => lhs.id != rhs.id;
-        public bool Equals(LocalCellId other) => id == other.id;
-        public override bool Equals(object obj) => obj is LocalCellId castObj && id == castObj.id;
-        public override int GetHashCode() => id.GetHashCode();
+    public static bool operator ==(LocalCellId lhs, LocalCellId rhs) => lhs.id == rhs.id;
+    public static bool operator !=(LocalCellId lhs, LocalCellId rhs) => lhs.id != rhs.id;
+    public bool Equals(LocalCellId other) => id == other.id;
+    public override bool Equals(object obj) => obj is LocalCellId castObj && id == castObj.id;
+    public override int GetHashCode() => id.GetHashCode();
 
-        public override string ToString() {
-            return $"[{indoorCellId:X2} {outdoorCellId:X2}]";
-        }
+    public override string ToString() {
+        return $"[{indoorCellId:X2} {outdoorCellId:X2}]";
     }
 }

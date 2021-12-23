@@ -1,21 +1,20 @@
 ﻿using System.Collections.Generic;
 
-namespace AC2RE.Definitions {
+namespace AC2RE.Definitions;
 
-    public class GMSceneInfoList : List<GMSceneInfo>, IPackage {
+public class GMSceneInfoList : List<GMSceneInfo>, IPackage {
 
-        public NativeType nativeType => NativeType.gmSceneInfoList;
+    public NativeType nativeType => NativeType.gmSceneInfoList;
 
-        public GMSceneInfoList() {
+    public GMSceneInfoList() {
 
-        }
+    }
 
-        public GMSceneInfoList(AC2Reader data) {
-            data.ReadList(this, () => new GMSceneInfo(data));
-        }
+    public GMSceneInfoList(AC2Reader data) {
+        data.ReadList(this, () => new GMSceneInfo(data));
+    }
 
-        public void write(AC2Writer data) {
-            data.Write(this, v => v.write(data));
-        }
+    public void write(AC2Writer data) {
+        data.Write(this, v => v.write(data));
     }
 }

@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class QueryAllegianceProfileSEvt : IServerEvent {
+public class QueryAllegianceProfileSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Allegiance__QueryAllegianceProfile;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Allegiance__QueryAllegianceProfile;
 
-        // WM_Allegiance::SendSEvt_QueryAllegianceProfile
-        public InstanceId targetId; // _trg
+    // WM_Allegiance::SendSEvt_QueryAllegianceProfile
+    public InstanceId targetId; // _trg
 
-        public QueryAllegianceProfileSEvt(AC2Reader data) {
-            targetId = data.UnpackInstanceId();
-        }
+    public QueryAllegianceProfileSEvt(AC2Reader data) {
+        targetId = data.UnpackInstanceId();
     }
 }

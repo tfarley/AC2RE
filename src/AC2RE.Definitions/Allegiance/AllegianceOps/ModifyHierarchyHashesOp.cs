@@ -1,19 +1,18 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class ModifyHierarchyHashesOp : IPackage {
+public class ModifyHierarchyHashesOp : IPackage {
 
-        public PackageType packageType => PackageType.ModifyHierarchyHashesOp;
+    public PackageType packageType => PackageType.ModifyHierarchyHashesOp;
 
-        public AllegianceHierarchy hierarchy; // m_hier
-        public uint nodesSeen; // m_cNodesSeen
-        public bool removeFromHashes; // m_fRemoveFromHashes
-        public bool addToHashes; // m_fAddToHashes
+    public AllegianceHierarchy hierarchy; // m_hier
+    public uint nodesSeen; // m_cNodesSeen
+    public bool removeFromHashes; // m_fRemoveFromHashes
+    public bool addToHashes; // m_fAddToHashes
 
-        public ModifyHierarchyHashesOp(AC2Reader data) {
-            data.ReadPkg<AllegianceHierarchy>(v => hierarchy = v);
-            nodesSeen = data.ReadUInt32();
-            removeFromHashes = data.ReadBoolean();
-            addToHashes = data.ReadBoolean();
-        }
+    public ModifyHierarchyHashesOp(AC2Reader data) {
+        data.ReadPkg<AllegianceHierarchy>(v => hierarchy = v);
+        nodesSeen = data.ReadUInt32();
+        removeFromHashes = data.ReadBoolean();
+        addToHashes = data.ReadBoolean();
     }
 }

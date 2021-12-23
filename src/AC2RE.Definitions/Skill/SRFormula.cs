@@ -1,11 +1,10 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class SRFormula : IPackage {
+public class SRFormula : IPackage {
 
-        public PackageType packageType => PackageType.SRFormula;
+    public PackageType packageType => PackageType.SRFormula;
 
-        public SRFormula(AC2Reader data) {
+    public SRFormula(AC2Reader data) {
 
-        }
     }
 }

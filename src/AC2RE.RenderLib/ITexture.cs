@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace AC2RE.RenderLib {
+namespace AC2RE.RenderLib;
 
-    public interface ITexture : IDisposable {
+public interface ITexture : IDisposable {
 
-    }
 }

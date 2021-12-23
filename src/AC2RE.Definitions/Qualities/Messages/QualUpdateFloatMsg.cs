@@ -1,59 +1,58 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class QualUpdateFloatPrivateMsg : INetMessage {
+public class QualUpdateFloatPrivateMsg : INetMessage {
 
-        public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-        public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Qualities__UpdateFloat_Private;
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+    public NetQueue queueId => NetQueue.EVENT;
+    public MessageOpcode opcode => MessageOpcode.Qualities__UpdateFloat_Private;
 
-        // ECM_Qualities::RecvEvt_UpdateFloat_Private
-        public FloatStat type; // _stype
-        public float value; // _data
+    // ECM_Qualities::RecvEvt_UpdateFloat_Private
+    public FloatStat type; // _stype
+    public float value; // _data
 
-        public QualUpdateFloatPrivateMsg(FloatStat type, float value) {
-            this.type = type;
-            this.value = value;
-        }
-
-        public QualUpdateFloatPrivateMsg(AC2Reader data) {
-            type = (FloatStat)data.ReadUInt32();
-            value = data.ReadSingle();
-        }
-
-        public void write(AC2Writer data) {
-            data.Write((uint)type);
-            data.Write(value);
-        }
+    public QualUpdateFloatPrivateMsg(FloatStat type, float value) {
+        this.type = type;
+        this.value = value;
     }
 
-    public class QualUpdateFloatVisualMsg : INetMessage {
+    public QualUpdateFloatPrivateMsg(AC2Reader data) {
+        type = (FloatStat)data.ReadUInt32();
+        value = data.ReadSingle();
+    }
 
-        public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-        public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Qualities__UpdateFloat_Visual;
-        public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
+    public void write(AC2Writer data) {
+        data.Write((uint)type);
+        data.Write(value);
+    }
+}
 
-        // ECM_Qualities::RecvEvt_UpdateFloat_Visual
-        public InstanceIdWithStamp senderIdWithStamp; // sender
-        public FloatStat type; // _stype
-        public float value; // _data
+public class QualUpdateFloatVisualMsg : INetMessage {
 
-        public QualUpdateFloatVisualMsg(InstanceIdWithStamp senderIdWithStamp, FloatStat type, float value) {
-            this.senderIdWithStamp = senderIdWithStamp;
-            this.type = type;
-            this.value = value;
-        }
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+    public NetQueue queueId => NetQueue.EVENT;
+    public MessageOpcode opcode => MessageOpcode.Qualities__UpdateFloat_Visual;
+    public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
 
-        public QualUpdateFloatVisualMsg(AC2Reader data) {
-            senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            type = (FloatStat)data.ReadUInt32();
-            value = data.ReadSingle();
-        }
+    // ECM_Qualities::RecvEvt_UpdateFloat_Visual
+    public InstanceIdWithStamp senderIdWithStamp; // sender
+    public FloatStat type; // _stype
+    public float value; // _data
 
-        public void write(AC2Writer data) {
-            data.Write(senderIdWithStamp);
-            data.Write((uint)type);
-            data.Write(value);
-        }
+    public QualUpdateFloatVisualMsg(InstanceIdWithStamp senderIdWithStamp, FloatStat type, float value) {
+        this.senderIdWithStamp = senderIdWithStamp;
+        this.type = type;
+        this.value = value;
+    }
+
+    public QualUpdateFloatVisualMsg(AC2Reader data) {
+        senderIdWithStamp = data.ReadInstanceIdWithStamp();
+        type = (FloatStat)data.ReadUInt32();
+        value = data.ReadSingle();
+    }
+
+    public void write(AC2Writer data) {
+        data.Write(senderIdWithStamp);
+        data.Write((uint)type);
+        data.Write(value);
     }
 }

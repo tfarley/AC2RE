@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class RequestLeaveCatalogSEvt : IServerEvent {
+public class RequestLeaveCatalogSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Store__RequestLeaveCatalog;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Store__RequestLeaveCatalog;
 
-        // WM_Store::SendSEvt_Store_RequestLeaveCatalog
-        public InstanceId storekeeperId; // _iidStorekeeper
+    // WM_Store::SendSEvt_Store_RequestLeaveCatalog
+    public InstanceId storekeeperId; // _iidStorekeeper
 
-        public RequestLeaveCatalogSEvt(AC2Reader data) {
-            storekeeperId = data.UnpackInstanceId();
-        }
+    public RequestLeaveCatalogSEvt(AC2Reader data) {
+        storekeeperId = data.UnpackInstanceId();
     }
 }

@@ -1,10 +1,9 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    // Enum DBUpdateType::Type
-    public enum DbUpdateType : uint {
-        Skip, // Skip + None
-        Patch, // Patch
-        Dynamic, // Dynamic
-        Zone, // Zone
-    }
+// Enum DBUpdateType::Type
+public enum DbUpdateType : uint {
+    Skip, // Skip + None
+    Patch, // Patch
+    Dynamic, // Dynamic
+    Zone, // Zone
 }

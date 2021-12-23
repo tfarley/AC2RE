@@ -1,9 +1,8 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    // Enum DataHistory::IterationType
-    public enum DataHistoryIterationType : byte {
-        Normal, // Normal_Iteration
-        NoPatch, // NoPatch_Iteration
-        Alias, // Alias_Iteration
-    }
+// Enum DataHistory::IterationType
+public enum DataHistoryIterationType : byte {
+    Normal, // Normal_Iteration
+    NoPatch, // NoPatch_Iteration
+    Alias, // Alias_Iteration
 }

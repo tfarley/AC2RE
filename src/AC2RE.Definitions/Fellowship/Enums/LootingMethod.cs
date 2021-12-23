@@ -1,11 +1,10 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    // Const - globals
-    public enum LootingMethod : uint {
-        UNDEF,
-        SHARING, // SHARING
-        ROTATING, // ROTATING
-        ROTATINGGROUP, // ROTATINGGROUP
-        RANDOM, // RANDOM
-    }
+// Const - globals
+public enum LootingMethod : uint {
+    UNDEF,
+    SHARING, // SHARING
+    ROTATING, // ROTATING
+    ROTATINGGROUP, // ROTATINGGROUP
+    RANDOM, // RANDOM
 }

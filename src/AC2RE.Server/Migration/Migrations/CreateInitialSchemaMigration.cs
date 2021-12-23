@@ -1,8 +1,8 @@
-﻿namespace AC2RE.Server.Migration {
+﻿namespace AC2RE.Server.Migration;
 
-    internal class CreateInitialSchemaMigration : SqlMigration {
+internal class CreateInitialSchemaMigration : SqlMigration {
 
-        protected override string statement => @"CREATE DATABASE ac2re_account;
+    protected override string statement => @"CREATE DATABASE ac2re_account;
 USE ac2re_account;
 
 CREATE TABLE account (
@@ -220,5 +220,4 @@ CREATE TABLE del_characters LIKE characters;
 ALTER TABLE del_characters ADD FOREIGN KEY (accountId) REFERENCES ac2re_account.account (id) ON DELETE CASCADE;
 ALTER TABLE characters ADD UNIQUE (accountId, sequence);";
 
-    }
 }

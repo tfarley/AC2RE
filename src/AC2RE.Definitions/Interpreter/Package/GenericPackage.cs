@@ -1,16 +1,15 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class GenericPackage : IPackage {
+public class GenericPackage : IPackage {
 
-        public NativeType nativeType { get; init; }
-        public PackageType packageType { get; init; }
+    public NativeType nativeType { get; init; }
+    public PackageType packageType { get; init; }
 
-        public GenericPackage(NativeType nativeType) {
-            this.nativeType = nativeType;
-        }
+    public GenericPackage(NativeType nativeType) {
+        this.nativeType = nativeType;
+    }
 
-        public GenericPackage(PackageType packageType) {
-            this.packageType = packageType;
-        }
+    public GenericPackage(PackageType packageType) {
+        this.packageType = packageType;
     }
 }

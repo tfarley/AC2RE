@@ -1,17 +1,16 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class MinMaxEffect : Effect {
+public class MinMaxEffect : Effect {
 
-        public float maxSpellcraft; // m_fMaxSpellcraft
-        public float maxMod; // m_fMaxMod
-        public float minMod; // m_fMinMod
-        public float minSpellcraft; // m_fMinSpellcraft
+    public float maxSpellcraft; // m_fMaxSpellcraft
+    public float maxMod; // m_fMaxMod
+    public float minMod; // m_fMinMod
+    public float minSpellcraft; // m_fMinSpellcraft
 
-        public MinMaxEffect(AC2Reader data) : base(data) {
-            maxSpellcraft = data.ReadSingle();
-            maxMod = data.ReadSingle();
-            minMod = data.ReadSingle();
-            minSpellcraft = data.ReadSingle();
-        }
+    public MinMaxEffect(AC2Reader data) : base(data) {
+        maxSpellcraft = data.ReadSingle();
+        maxMod = data.ReadSingle();
+        minMod = data.ReadSingle();
+        minSpellcraft = data.ReadSingle();
     }
 }

@@ -1,59 +1,58 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class QualUpdateInstanceIdPrivateMsg : INetMessage {
+public class QualUpdateInstanceIdPrivateMsg : INetMessage {
 
-        public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-        public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Qualities__UpdateInstanceID_Private;
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+    public NetQueue queueId => NetQueue.EVENT;
+    public MessageOpcode opcode => MessageOpcode.Qualities__UpdateInstanceID_Private;
 
-        // ECM_Qualities::RecvEvt_UpdateInstanceID_Private
-        public InstanceIdStat type; // _stype
-        public InstanceId value; // _data
+    // ECM_Qualities::RecvEvt_UpdateInstanceID_Private
+    public InstanceIdStat type; // _stype
+    public InstanceId value; // _data
 
-        public QualUpdateInstanceIdPrivateMsg(InstanceIdStat type, InstanceId value) {
-            this.type = type;
-            this.value = value;
-        }
-
-        public QualUpdateInstanceIdPrivateMsg(AC2Reader data) {
-            type = (InstanceIdStat)data.ReadUInt32();
-            value = data.ReadInstanceId();
-        }
-
-        public void write(AC2Writer data) {
-            data.Write((uint)type);
-            data.Write(value);
-        }
+    public QualUpdateInstanceIdPrivateMsg(InstanceIdStat type, InstanceId value) {
+        this.type = type;
+        this.value = value;
     }
 
-    public class QualUpdateInstanceIdVisualMsg : INetMessage {
+    public QualUpdateInstanceIdPrivateMsg(AC2Reader data) {
+        type = (InstanceIdStat)data.ReadUInt32();
+        value = data.ReadInstanceId();
+    }
 
-        public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-        public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Qualities__UpdateInstanceID_Visual;
-        public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
+    public void write(AC2Writer data) {
+        data.Write((uint)type);
+        data.Write(value);
+    }
+}
 
-        // ECM_Qualities::RecvEvt_UpdateInstanceID_Visual
-        public InstanceIdWithStamp senderIdWithStamp; // sender
-        public InstanceIdStat type; // _stype
-        public InstanceId value; // _data
+public class QualUpdateInstanceIdVisualMsg : INetMessage {
 
-        public QualUpdateInstanceIdVisualMsg(InstanceIdWithStamp senderIdWithStamp, InstanceIdStat type, InstanceId value) {
-            this.senderIdWithStamp = senderIdWithStamp;
-            this.type = type;
-            this.value = value;
-        }
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+    public NetQueue queueId => NetQueue.EVENT;
+    public MessageOpcode opcode => MessageOpcode.Qualities__UpdateInstanceID_Visual;
+    public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
 
-        public QualUpdateInstanceIdVisualMsg(AC2Reader data) {
-            senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            type = (InstanceIdStat)data.ReadUInt32();
-            value = data.ReadInstanceId();
-        }
+    // ECM_Qualities::RecvEvt_UpdateInstanceID_Visual
+    public InstanceIdWithStamp senderIdWithStamp; // sender
+    public InstanceIdStat type; // _stype
+    public InstanceId value; // _data
 
-        public void write(AC2Writer data) {
-            data.Write(senderIdWithStamp);
-            data.Write((uint)type);
-            data.Write(value);
-        }
+    public QualUpdateInstanceIdVisualMsg(InstanceIdWithStamp senderIdWithStamp, InstanceIdStat type, InstanceId value) {
+        this.senderIdWithStamp = senderIdWithStamp;
+        this.type = type;
+        this.value = value;
+    }
+
+    public QualUpdateInstanceIdVisualMsg(AC2Reader data) {
+        senderIdWithStamp = data.ReadInstanceIdWithStamp();
+        type = (InstanceIdStat)data.ReadUInt32();
+        value = data.ReadInstanceId();
+    }
+
+    public void write(AC2Writer data) {
+        data.Write(senderIdWithStamp);
+        data.Write((uint)type);
+        data.Write(value);
     }
 }

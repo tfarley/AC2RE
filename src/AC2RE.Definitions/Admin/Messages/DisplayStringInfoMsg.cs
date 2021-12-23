@@ -1,27 +1,26 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class DisplayStringInfoMsg : INetMessage {
+public class DisplayStringInfoMsg : INetMessage {
 
-        public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-        public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Admin__DisplayStringInfo;
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+    public NetQueue queueId => NetQueue.EVENT;
+    public MessageOpcode opcode => MessageOpcode.Admin__DisplayStringInfo;
 
-        // ECM_Admin::RecvEvt_DisplayStringInfo
-        public TextType type; // type
-        public StringInfo text; // _si
+    // ECM_Admin::RecvEvt_DisplayStringInfo
+    public TextType type; // type
+    public StringInfo text; // _si
 
-        public DisplayStringInfoMsg() {
+    public DisplayStringInfoMsg() {
 
-        }
+    }
 
-        public DisplayStringInfoMsg(AC2Reader data) {
-            type = (TextType)data.ReadUInt32();
-            text = new(data);
-        }
+    public DisplayStringInfoMsg(AC2Reader data) {
+        type = (TextType)data.ReadUInt32();
+        text = new(data);
+    }
 
-        public void write(AC2Writer data) {
-            data.Write((uint)type);
-            text.write(data);
-        }
+    public void write(AC2Writer data) {
+        data.Write((uint)type);
+        text.write(data);
     }
 }

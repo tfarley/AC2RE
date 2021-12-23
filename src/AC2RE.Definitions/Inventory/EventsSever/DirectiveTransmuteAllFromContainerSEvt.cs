@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class DirectiveTransmuteAllFromContainerSEvt : IServerEvent {
+public class DirectiveTransmuteAllFromContainerSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Inventory__DirectiveTransmuteAllFromContainer;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Inventory__DirectiveTransmuteAllFromContainer;
 
-        // WM_Inventory::SendSEvt_DirectiveTransmuteAllFromContainer
-        public InvTransmuteAllDesc transmuteDesc; // _iDesc
+    // WM_Inventory::SendSEvt_DirectiveTransmuteAllFromContainer
+    public InvTransmuteAllDesc transmuteDesc; // _iDesc
 
-        public DirectiveTransmuteAllFromContainerSEvt(AC2Reader data) {
-            transmuteDesc = data.UnpackPackage<InvTransmuteAllDesc>();
-        }
+    public DirectiveTransmuteAllFromContainerSEvt(AC2Reader data) {
+        transmuteDesc = data.UnpackPackage<InvTransmuteAllDesc>();
     }
 }

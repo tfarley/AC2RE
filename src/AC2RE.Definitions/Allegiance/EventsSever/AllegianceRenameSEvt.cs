@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class AllegianceRenameSEvt : IServerEvent {
+public class AllegianceRenameSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Allegiance__AllegianceRename;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Allegiance__AllegianceRename;
 
-        // WM_Allegiance::SendSEvt_AllegianceRename
-        public WPString name; // _name
+    // WM_Allegiance::SendSEvt_AllegianceRename
+    public WPString name; // _name
 
-        public AllegianceRenameSEvt(AC2Reader data) {
-            name = data.UnpackPackage<WPString>();
-        }
+    public AllegianceRenameSEvt(AC2Reader data) {
+        name = data.UnpackPackage<WPString>();
     }
 }

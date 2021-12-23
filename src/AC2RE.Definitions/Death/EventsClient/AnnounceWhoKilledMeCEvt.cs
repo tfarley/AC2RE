@@ -1,25 +1,24 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class AnnounceWhoKilledMeCEvt : IClientEvent {
+public class AnnounceWhoKilledMeCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Death__AnnounceWhoKilledMe;
+    public ClientEventFunctionId funcId => ClientEventFunctionId.Death__AnnounceWhoKilledMe;
 
-        // WM_Death::PostCEvt_Death_AnnounceWhoKilledMe
-        public StringInfo killerName; // _siKiller
-        public InstanceId killerId; // _iidKiller
+    // WM_Death::PostCEvt_Death_AnnounceWhoKilledMe
+    public StringInfo killerName; // _siKiller
+    public InstanceId killerId; // _iidKiller
 
-        public AnnounceWhoKilledMeCEvt() {
+    public AnnounceWhoKilledMeCEvt() {
 
-        }
+    }
 
-        public AnnounceWhoKilledMeCEvt(AC2Reader data) {
-            killerName = data.UnpackPackage<StringInfo>();
-            killerId = data.UnpackInstanceId();
-        }
+    public AnnounceWhoKilledMeCEvt(AC2Reader data) {
+        killerName = data.UnpackPackage<StringInfo>();
+        killerId = data.UnpackInstanceId();
+    }
 
-        public void write(AC2Writer data) {
-            data.Pack(killerName);
-            data.Pack(killerId);
-        }
+    public void write(AC2Writer data) {
+        data.Pack(killerName);
+        data.Pack(killerId);
     }
 }

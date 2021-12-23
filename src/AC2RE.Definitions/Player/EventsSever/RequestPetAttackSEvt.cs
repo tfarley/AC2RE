@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class RequestPetAttackSEvt : IServerEvent {
+public class RequestPetAttackSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Player__RequestPetAttack;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Player__RequestPetAttack;
 
-        // WM_Player::SendSEvt_RequestPetAttack
-        public InstanceId targetId; // _targetID
+    // WM_Player::SendSEvt_RequestPetAttack
+    public InstanceId targetId; // _targetID
 
-        public RequestPetAttackSEvt(AC2Reader data) {
-            targetId = data.UnpackInstanceId();
-        }
+    public RequestPetAttackSEvt(AC2Reader data) {
+        targetId = data.UnpackInstanceId();
     }
 }

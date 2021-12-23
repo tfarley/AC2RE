@@ -1,9 +1,8 @@
 ﻿using AC2RE.Definitions;
 
-namespace AC2RE.Server {
+namespace AC2RE.Server;
 
-    internal interface IMessageProcessor {
+internal interface IMessageProcessor {
 
-        public bool processMessage(ClientConnection client, Player player, INetMessage genericMsg);
-    }
+    public bool processMessage(ClientConnection client, Player player, INetMessage genericMsg);
 }

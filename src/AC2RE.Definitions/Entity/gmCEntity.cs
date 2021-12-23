@@ -1,13 +1,12 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class gmCEntity : gmEntity {
+public class gmCEntity : gmEntity {
 
-        public override PackageType packageType => PackageType.gmCEntity;
+    public override PackageType packageType => PackageType.gmCEntity;
 
-        public ExaminationProfile lastExaminationProfile; // m_lastExaminationProfile
+    public ExaminationProfile lastExaminationProfile; // m_lastExaminationProfile
 
-        public gmCEntity(AC2Reader data) : base(data) {
-            data.ReadPkg<ExaminationProfile>(v => lastExaminationProfile = v);
-        }
+    public gmCEntity(AC2Reader data) : base(data) {
+        data.ReadPkg<ExaminationProfile>(v => lastExaminationProfile = v);
     }
 }

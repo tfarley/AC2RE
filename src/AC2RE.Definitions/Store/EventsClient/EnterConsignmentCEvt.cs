@@ -1,27 +1,26 @@
 ﻿using System.Collections.Generic;
 
-namespace AC2RE.Definitions {
+namespace AC2RE.Definitions;
 
-    public class EnterConsignmentCEvt : IClientEvent {
+public class EnterConsignmentCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Store__EnterConsignment;
+    public ClientEventFunctionId funcId => ClientEventFunctionId.Store__EnterConsignment;
 
-        // WM_Store::PostCEvt_Store_EnterConsignment
-        public List<Consignment> consignments; // _consignments
-        public InstanceId storekeeperId; // _iidStorekeeper
+    // WM_Store::PostCEvt_Store_EnterConsignment
+    public List<Consignment> consignments; // _consignments
+    public InstanceId storekeeperId; // _iidStorekeeper
 
-        public EnterConsignmentCEvt() {
+    public EnterConsignmentCEvt() {
 
-        }
+    }
 
-        public EnterConsignmentCEvt(AC2Reader data) {
-            consignments = data.UnpackPackage<RList>().to<Consignment>();
-            storekeeperId = data.UnpackInstanceId();
-        }
+    public EnterConsignmentCEvt(AC2Reader data) {
+        consignments = data.UnpackPackage<RList>().to<Consignment>();
+        storekeeperId = data.UnpackInstanceId();
+    }
 
-        public void write(AC2Writer data) {
-            data.Pack(RList.from(consignments));
-            data.Pack(storekeeperId);
-        }
+    public void write(AC2Writer data) {
+        data.Pack(RList.from(consignments));
+        data.Pack(storekeeperId);
     }
 }

@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class SwearAllegianceSEvt : IServerEvent {
+public class SwearAllegianceSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Allegiance__SwearAllegiance;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Allegiance__SwearAllegiance;
 
-        // WM_Allegiance::SendSEvt_SwearAllegiance
-        public InstanceId targetId; // _trg
+    // WM_Allegiance::SendSEvt_SwearAllegiance
+    public InstanceId targetId; // _trg
 
-        public SwearAllegianceSEvt(AC2Reader data) {
-            targetId = data.UnpackInstanceId();
-        }
+    public SwearAllegianceSEvt(AC2Reader data) {
+        targetId = data.UnpackInstanceId();
     }
 }

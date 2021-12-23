@@ -1,8 +1,7 @@
 ﻿using System.Windows;
 
-namespace AC2RE.DatTool {
+namespace AC2RE.DatTool;
 
-    public partial class App : Application {
+public partial class App : Application {
 
-    }
 }

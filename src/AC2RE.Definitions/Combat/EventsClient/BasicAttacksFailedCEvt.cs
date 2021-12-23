@@ -1,22 +1,21 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class BasicAttacksFailedCEvt : IClientEvent {
+public class BasicAttacksFailedCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Combat__BasicAttacksFailed;
+    public ClientEventFunctionId funcId => ClientEventFunctionId.Combat__BasicAttacksFailed;
 
-        // WM_Combat::PostCEvt_Combat_BasicAttacksFailed
-        public ErrorType error; // _err
+    // WM_Combat::PostCEvt_Combat_BasicAttacksFailed
+    public ErrorType error; // _err
 
-        public BasicAttacksFailedCEvt() {
+    public BasicAttacksFailedCEvt() {
 
-        }
+    }
 
-        public BasicAttacksFailedCEvt(AC2Reader data) {
-            error = (ErrorType)data.UnpackUInt32();
-        }
+    public BasicAttacksFailedCEvt(AC2Reader data) {
+        error = (ErrorType)data.UnpackUInt32();
+    }
 
-        public void write(AC2Writer data) {
-            data.Pack((uint)error);
-        }
+    public void write(AC2Writer data) {
+        data.Pack((uint)error);
     }
 }

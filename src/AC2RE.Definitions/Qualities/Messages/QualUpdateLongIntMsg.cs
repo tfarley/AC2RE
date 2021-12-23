@@ -1,59 +1,58 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class QualUpdateLongIntPrivateMsg : INetMessage {
+public class QualUpdateLongIntPrivateMsg : INetMessage {
 
-        public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-        public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Qualities__UpdateLongInt_Private;
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+    public NetQueue queueId => NetQueue.EVENT;
+    public MessageOpcode opcode => MessageOpcode.Qualities__UpdateLongInt_Private;
 
-        // ECM_Qualities::RecvEvt_UpdateLongInt_Private
-        public LongIntStat type; // _stype
-        public long value; // _data
+    // ECM_Qualities::RecvEvt_UpdateLongInt_Private
+    public LongIntStat type; // _stype
+    public long value; // _data
 
-        public QualUpdateLongIntPrivateMsg(LongIntStat type, long value) {
-            this.type = type;
-            this.value = value;
-        }
-
-        public QualUpdateLongIntPrivateMsg(AC2Reader data) {
-            type = (LongIntStat)data.ReadUInt32();
-            value = data.ReadInt64();
-        }
-
-        public void write(AC2Writer data) {
-            data.Write((uint)type);
-            data.Write(value);
-        }
+    public QualUpdateLongIntPrivateMsg(LongIntStat type, long value) {
+        this.type = type;
+        this.value = value;
     }
 
-    public class QualUpdateLongIntVisualMsg : INetMessage {
+    public QualUpdateLongIntPrivateMsg(AC2Reader data) {
+        type = (LongIntStat)data.ReadUInt32();
+        value = data.ReadInt64();
+    }
 
-        public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-        public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Qualities__UpdateLongInt_Visual;
-        public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
+    public void write(AC2Writer data) {
+        data.Write((uint)type);
+        data.Write(value);
+    }
+}
 
-        // ECM_Qualities::RecvEvt_UpdateLongInt_Visual
-        public InstanceIdWithStamp senderIdWithStamp; // sender
-        public LongIntStat type; // _stype
-        public long value; // _data
+public class QualUpdateLongIntVisualMsg : INetMessage {
 
-        public QualUpdateLongIntVisualMsg(InstanceIdWithStamp senderIdWithStamp, LongIntStat type, long value) {
-            this.senderIdWithStamp = senderIdWithStamp;
-            this.type = type;
-            this.value = value;
-        }
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+    public NetQueue queueId => NetQueue.EVENT;
+    public MessageOpcode opcode => MessageOpcode.Qualities__UpdateLongInt_Visual;
+    public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
 
-        public QualUpdateLongIntVisualMsg(AC2Reader data) {
-            senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            type = (LongIntStat)data.ReadUInt32();
-            value = data.ReadInt64();
-        }
+    // ECM_Qualities::RecvEvt_UpdateLongInt_Visual
+    public InstanceIdWithStamp senderIdWithStamp; // sender
+    public LongIntStat type; // _stype
+    public long value; // _data
 
-        public void write(AC2Writer data) {
-            data.Write(senderIdWithStamp);
-            data.Write((uint)type);
-            data.Write(value);
-        }
+    public QualUpdateLongIntVisualMsg(InstanceIdWithStamp senderIdWithStamp, LongIntStat type, long value) {
+        this.senderIdWithStamp = senderIdWithStamp;
+        this.type = type;
+        this.value = value;
+    }
+
+    public QualUpdateLongIntVisualMsg(AC2Reader data) {
+        senderIdWithStamp = data.ReadInstanceIdWithStamp();
+        type = (LongIntStat)data.ReadUInt32();
+        value = data.ReadInt64();
+    }
+
+    public void write(AC2Writer data) {
+        data.Write(senderIdWithStamp);
+        data.Write((uint)type);
+        data.Write(value);
     }
 }

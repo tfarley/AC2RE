@@ -1,15 +1,14 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class DiskHeaderBlock {
+public class DiskHeaderBlock {
 
-        public byte[] acVersionString; // acVersionStr_
-        public DiskTransactInfo transactInfo; // TransactInfo_
-        public DiskFileInfo fileInfo; // FileInfo_
+    public byte[] acVersionString; // acVersionStr_
+    public DiskTransactInfo transactInfo; // TransactInfo_
+    public DiskFileInfo fileInfo; // FileInfo_
 
-        public DiskHeaderBlock(AC2Reader data) {
-            acVersionString = data.ReadBytes(256);
-            transactInfo = new(data);
-            fileInfo = new(data);
-        }
+    public DiskHeaderBlock(AC2Reader data) {
+        acVersionString = data.ReadBytes(256);
+        transactInfo = new(data);
+        fileInfo = new(data);
     }
 }

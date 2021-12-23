@@ -1,8 +1,7 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public interface IPackage : IWritable {
+public interface IPackage : IWritable {
 
-        NativeType nativeType => NativeType.Undef;
-        PackageType packageType => PackageType.Undef;
-    }
+    NativeType nativeType => NativeType.Undef;
+    PackageType packageType => PackageType.Undef;
 }

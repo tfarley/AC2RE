@@ -1,59 +1,58 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class QualUpdateTimestampPrivateMsg : INetMessage {
+public class QualUpdateTimestampPrivateMsg : INetMessage {
 
-        public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-        public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Qualities__UpdateTimestamp_Private;
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+    public NetQueue queueId => NetQueue.EVENT;
+    public MessageOpcode opcode => MessageOpcode.Qualities__UpdateTimestamp_Private;
 
-        // ECM_Qualities::RecvEvt_UpdateTimestamp_Private
-        public TimestampStat type; // _stype
-        public double value; // _data
+    // ECM_Qualities::RecvEvt_UpdateTimestamp_Private
+    public TimestampStat type; // _stype
+    public double value; // _data
 
-        public QualUpdateTimestampPrivateMsg(TimestampStat type, double value) {
-            this.type = type;
-            this.value = value;
-        }
-
-        public QualUpdateTimestampPrivateMsg(AC2Reader data) {
-            type = (TimestampStat)data.ReadUInt32();
-            value = data.ReadDouble();
-        }
-
-        public void write(AC2Writer data) {
-            data.Write((uint)type);
-            data.Write(value);
-        }
+    public QualUpdateTimestampPrivateMsg(TimestampStat type, double value) {
+        this.type = type;
+        this.value = value;
     }
 
-    public class QualUpdateTimestampVisualMsg : INetMessage {
+    public QualUpdateTimestampPrivateMsg(AC2Reader data) {
+        type = (TimestampStat)data.ReadUInt32();
+        value = data.ReadDouble();
+    }
 
-        public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-        public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Qualities__UpdateTimestamp_Visual;
-        public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
+    public void write(AC2Writer data) {
+        data.Write((uint)type);
+        data.Write(value);
+    }
+}
 
-        // ECM_Qualities::RecvEvt_UpdateTimestamp_Visual
-        public InstanceIdWithStamp senderIdWithStamp; // sender
-        public TimestampStat type; // _stype
-        public double value; // _data
+public class QualUpdateTimestampVisualMsg : INetMessage {
 
-        public QualUpdateTimestampVisualMsg(InstanceIdWithStamp senderIdWithStamp, TimestampStat type, double value) {
-            this.senderIdWithStamp = senderIdWithStamp;
-            this.type = type;
-            this.value = value;
-        }
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+    public NetQueue queueId => NetQueue.EVENT;
+    public MessageOpcode opcode => MessageOpcode.Qualities__UpdateTimestamp_Visual;
+    public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
 
-        public QualUpdateTimestampVisualMsg(AC2Reader data) {
-            senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            type = (TimestampStat)data.ReadUInt32();
-            value = data.ReadDouble();
-        }
+    // ECM_Qualities::RecvEvt_UpdateTimestamp_Visual
+    public InstanceIdWithStamp senderIdWithStamp; // sender
+    public TimestampStat type; // _stype
+    public double value; // _data
 
-        public void write(AC2Writer data) {
-            data.Write(senderIdWithStamp);
-            data.Write((uint)type);
-            data.Write(value);
-        }
+    public QualUpdateTimestampVisualMsg(InstanceIdWithStamp senderIdWithStamp, TimestampStat type, double value) {
+        this.senderIdWithStamp = senderIdWithStamp;
+        this.type = type;
+        this.value = value;
+    }
+
+    public QualUpdateTimestampVisualMsg(AC2Reader data) {
+        senderIdWithStamp = data.ReadInstanceIdWithStamp();
+        type = (TimestampStat)data.ReadUInt32();
+        value = data.ReadDouble();
+    }
+
+    public void write(AC2Writer data) {
+        data.Write(senderIdWithStamp);
+        data.Write((uint)type);
+        data.Write(value);
     }
 }

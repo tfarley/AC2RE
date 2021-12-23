@@ -1,23 +1,22 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class ServerSwitchHeader {
+public class ServerSwitchHeader {
 
-        // CServerSwitchStruct
-        public uint seq; // dwSeqNo
-        public ServerSwitchType switchType; // Type
+    // CServerSwitchStruct
+    public uint seq; // dwSeqNo
+    public ServerSwitchType switchType; // Type
 
-        public ServerSwitchHeader() {
+    public ServerSwitchHeader() {
 
-        }
+    }
 
-        public ServerSwitchHeader(AC2Reader data) {
-            seq = data.ReadUInt32();
-            switchType = (ServerSwitchType)data.ReadUInt32();
-        }
+    public ServerSwitchHeader(AC2Reader data) {
+        seq = data.ReadUInt32();
+        switchType = (ServerSwitchType)data.ReadUInt32();
+    }
 
-        public void write(AC2Writer data) {
-            data.Write(seq);
-            data.Write((uint)switchType);
-        }
+    public void write(AC2Writer data) {
+        data.Write(seq);
+        data.Write((uint)switchType);
     }
 }

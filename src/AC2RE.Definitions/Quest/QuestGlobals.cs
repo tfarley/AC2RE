@@ -1,13 +1,12 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class QuestGlobals : IPackage {
+public class QuestGlobals : IPackage {
 
-        public PackageType packageType => PackageType.QuestGlobals;
+    public PackageType packageType => PackageType.QuestGlobals;
 
-        public uint notApplicable; // m_uintNotApplicable
+    public uint notApplicable; // m_uintNotApplicable
 
-        public QuestGlobals(AC2Reader data) {
-            notApplicable = data.ReadUInt32();
-        }
+    public QuestGlobals(AC2Reader data) {
+        notApplicable = data.ReadUInt32();
     }
 }

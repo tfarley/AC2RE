@@ -1,20 +1,19 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class UploadGameOptionsSEvt : IServerEvent {
+public class UploadGameOptionsSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Player__SetShortcut;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Player__SetShortcut;
 
-        // WM_Player::SendSEvt_UploadGameOptions
-        public uint optionsBitfield; // _optionsBitfield
-        public uint radarMask; // _radarMask
-        public int shortcutHeight; // _shortcutHeight
-        public float damageTextRange; // _damagTextRange
+    // WM_Player::SendSEvt_UploadGameOptions
+    public uint optionsBitfield; // _optionsBitfield
+    public uint radarMask; // _radarMask
+    public int shortcutHeight; // _shortcutHeight
+    public float damageTextRange; // _damagTextRange
 
-        public UploadGameOptionsSEvt(AC2Reader data) {
-            optionsBitfield = data.UnpackUInt32();
-            radarMask = data.UnpackUInt32();
-            shortcutHeight = data.UnpackInt32();
-            damageTextRange = data.UnpackSingle();
-        }
+    public UploadGameOptionsSEvt(AC2Reader data) {
+        optionsBitfield = data.UnpackUInt32();
+        radarMask = data.UnpackUInt32();
+        shortcutHeight = data.UnpackInt32();
+        damageTextRange = data.UnpackSingle();
     }
 }

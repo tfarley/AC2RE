@@ -1,13 +1,12 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class WeaponTemplate : gmCEntity {
+public class WeaponTemplate : gmCEntity {
 
-        public override PackageType packageType => PackageType.WeaponTemplate;
+    public override PackageType packageType => PackageType.WeaponTemplate;
 
-        public int balanceLevel; // _balanceLevel
+    public int balanceLevel; // _balanceLevel
 
-        public WeaponTemplate(AC2Reader data) : base(data) {
-            balanceLevel = data.ReadInt32();
-        }
+    public WeaponTemplate(AC2Reader data) : base(data) {
+        balanceLevel = data.ReadInt32();
     }
 }

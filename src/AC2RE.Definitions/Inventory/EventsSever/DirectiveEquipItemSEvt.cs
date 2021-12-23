@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class DirectiveEquipItemSEvt : IServerEvent {
+public class DirectiveEquipItemSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Inventory__DirectiveEquipItem;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Inventory__DirectiveEquipItem;
 
-        // WM_Inventory::SendSEvt_DirectiveEquipItem
-        public InvEquipDesc equipDesc; // _eDesc
+    // WM_Inventory::SendSEvt_DirectiveEquipItem
+    public InvEquipDesc equipDesc; // _eDesc
 
-        public DirectiveEquipItemSEvt(AC2Reader data) {
-            equipDesc = data.UnpackPackage<InvEquipDesc>();
-        }
+    public DirectiveEquipItemSEvt(AC2Reader data) {
+        equipDesc = data.UnpackPackage<InvEquipDesc>();
     }
 }

@@ -1,17 +1,16 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public struct QualifiedDataId {
+public struct QualifiedDataId {
 
-        public DbType dbType; // Type
-        public DataId did; // ID
+    public DbType dbType; // Type
+    public DataId did; // ID
 
-        public QualifiedDataId(DbType dbType, DataId did) {
-            this.dbType = dbType;
-            this.did = did;
-        }
+    public QualifiedDataId(DbType dbType, DataId did) {
+        this.dbType = dbType;
+        this.did = did;
+    }
 
-        public override string ToString() {
-            return $"{dbType}.{did}";
-        }
+    public override string ToString() {
+        return $"{dbType}.{did}";
     }
 }

@@ -1,13 +1,12 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class GrantRecipeEffect : Effect {
+public class GrantRecipeEffect : Effect {
 
-        public override PackageType packageType => PackageType.GrantRecipeEffect;
+    public override PackageType packageType => PackageType.GrantRecipeEffect;
 
-        public DataId recipeDid; // m_didRecipe
+    public DataId recipeDid; // m_didRecipe
 
-        public GrantRecipeEffect(AC2Reader data) : base(data) {
-            recipeDid = data.ReadDataId();
-        }
+    public GrantRecipeEffect(AC2Reader data) : base(data) {
+        recipeDid = data.ReadDataId();
     }
 }

@@ -1,23 +1,22 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class Heading : IPackage {
+public class Heading : IPackage {
 
-        public NativeType nativeType => NativeType.Heading;
+    public NativeType nativeType => NativeType.Heading;
 
-        // Enum Heading::unit_type
-        public enum Unit : uint {
-            DEGREES, // DEGREES
-            RADIANS, // RADIANS
-        }
+    // Enum Heading::unit_type
+    public enum Unit : uint {
+        DEGREES, // DEGREES
+        RADIANS, // RADIANS
+    }
 
-        public float rotDegrees;
+    public float rotDegrees;
 
-        public Heading(float rotDegrees) {
-            this.rotDegrees = rotDegrees;
-        }
+    public Heading(float rotDegrees) {
+        this.rotDegrees = rotDegrees;
+    }
 
-        public override string ToString() {
-            return rotDegrees.ToString();
-        }
+    public override string ToString() {
+        return rotDegrees.ToString();
     }
 }

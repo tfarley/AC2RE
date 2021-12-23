@@ -1,13 +1,12 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class Operation : IPackage {
+public class Operation : IPackage {
 
-        public PackageType packageType => PackageType.Operation;
+    public PackageType packageType => PackageType.Operation;
 
-        public float operand; // m_operand
+    public float operand; // m_operand
 
-        public Operation(AC2Reader data) {
-            operand = data.ReadSingle();
-        }
+    public Operation(AC2Reader data) {
+        operand = data.ReadSingle();
     }
 }

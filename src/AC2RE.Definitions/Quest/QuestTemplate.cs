@@ -1,13 +1,12 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class QuestTemplate : Quest {
+public class QuestTemplate : Quest {
 
-        public override PackageType packageType => PackageType.QuestTemplate;
+    public override PackageType packageType => PackageType.QuestTemplate;
 
-        public SingletonPkg<QuestGlobals> questGlobals; // questGlobals
+    public SingletonPkg<QuestGlobals> questGlobals; // questGlobals
 
-        public QuestTemplate(AC2Reader data) : base(data) {
-            data.ReadPkg<QuestGlobals>(v => questGlobals = v);
-        }
+    public QuestTemplate(AC2Reader data) : base(data) {
+        data.ReadPkg<QuestGlobals>(v => questGlobals = v);
     }
 }

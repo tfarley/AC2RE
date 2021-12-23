@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class PrefabEmoteSEvt : IServerEvent {
+public class PrefabEmoteSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Communication__PrefabEmote;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Communication__PrefabEmote;
 
-        // WM_Communication::SendSEvt_PrefabEmote
-        public uint emoteId; // _emoteID
+    // WM_Communication::SendSEvt_PrefabEmote
+    public uint emoteId; // _emoteID
 
-        public PrefabEmoteSEvt(AC2Reader data) {
-            emoteId = data.UnpackUInt32();
-        }
+    public PrefabEmoteSEvt(AC2Reader data) {
+        emoteId = data.UnpackUInt32();
     }
 }

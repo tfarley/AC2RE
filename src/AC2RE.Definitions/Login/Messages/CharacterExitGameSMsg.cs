@@ -1,16 +1,15 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class CharacterExitGameSMsg : INetMessage {
+public class CharacterExitGameSMsg : INetMessage {
 
-        public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-        public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Login__CharExitGame;
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+    public NetQueue queueId => NetQueue.EVENT;
+    public MessageOpcode opcode => MessageOpcode.Login__CharExitGame;
 
-        // ECM_Login::RecvEvt_CharExitGame
-        public InstanceId characterId;
+    // ECM_Login::RecvEvt_CharExitGame
+    public InstanceId characterId;
 
-        public CharacterExitGameSMsg(AC2Reader data) {
-            characterId = data.ReadInstanceId();
-        }
+    public CharacterExitGameSMsg(AC2Reader data) {
+        characterId = data.ReadInstanceId();
     }
 }

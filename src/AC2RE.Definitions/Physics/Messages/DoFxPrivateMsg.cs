@@ -1,26 +1,25 @@
 ﻿using System.Collections.Generic;
 
-namespace AC2RE.Definitions {
+namespace AC2RE.Definitions;
 
-    public class DoFxPrivateMsg : INetMessage {
+public class DoFxPrivateMsg : INetMessage {
 
-        public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-        public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Physics__DoFX_Private;
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+    public NetQueue queueId => NetQueue.EVENT;
+    public MessageOpcode opcode => MessageOpcode.Physics__DoFX_Private;
 
-        // ECM_Physics::RecvEvt_DoFX_Private
-        public List<FxId> fxIds; // _fxIDs
+    // ECM_Physics::RecvEvt_DoFX_Private
+    public List<FxId> fxIds; // _fxIDs
 
-        public DoFxPrivateMsg() {
+    public DoFxPrivateMsg() {
 
-        }
+    }
 
-        public DoFxPrivateMsg(AC2Reader data) {
-            fxIds = data.ReadList(() => (FxId)data.ReadUInt32());
-        }
+    public DoFxPrivateMsg(AC2Reader data) {
+        fxIds = data.ReadList(() => (FxId)data.ReadUInt32());
+    }
 
-        public void write(AC2Writer data) {
-            data.Write(fxIds, v => data.Write((uint)v));
-        }
+    public void write(AC2Writer data) {
+        data.Write(fxIds, v => data.Write((uint)v));
     }
 }

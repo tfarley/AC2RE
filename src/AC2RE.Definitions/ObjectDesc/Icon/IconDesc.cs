@@ -1,19 +1,18 @@
 ﻿using System.Collections.Generic;
 
-namespace AC2RE.Definitions {
+namespace AC2RE.Definitions;
 
-    public class IconDesc : IPackage {
+public class IconDesc : IPackage {
 
-        public NativeType nativeType => NativeType.IconDesc;
+    public NativeType nativeType => NativeType.IconDesc;
 
-        public List<IconLayerDesc> layers; // m_layers
+    public List<IconLayerDesc> layers; // m_layers
 
-        public IconDesc(AC2Reader data) {
-            layers = data.ReadList(() => new IconLayerDesc(data));
-        }
+    public IconDesc(AC2Reader data) {
+        layers = data.ReadList(() => new IconLayerDesc(data));
+    }
 
-        public void write(AC2Writer data) {
-            data.Write(layers, v => v.write(data));
-        }
+    public void write(AC2Writer data) {
+        data.Write(layers, v => v.write(data));
     }
 }

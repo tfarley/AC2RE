@@ -1,22 +1,21 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class UpdateAllegianceProfileCEvt : IClientEvent {
+public class UpdateAllegianceProfileCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Allegiance__UpdateAllegianceProfile;
+    public ClientEventFunctionId funcId => ClientEventFunctionId.Allegiance__UpdateAllegianceProfile;
 
-        // WM_Allegiance::PostCEvt_UpdateAllegianceProfile
-        public AllegianceProfile profile; // _prof
+    // WM_Allegiance::PostCEvt_UpdateAllegianceProfile
+    public AllegianceProfile profile; // _prof
 
-        public UpdateAllegianceProfileCEvt() {
+    public UpdateAllegianceProfileCEvt() {
 
-        }
+    }
 
-        public UpdateAllegianceProfileCEvt(AC2Reader data) {
-            profile = data.UnpackPackage<AllegianceProfile>();
-        }
+    public UpdateAllegianceProfileCEvt(AC2Reader data) {
+        profile = data.UnpackPackage<AllegianceProfile>();
+    }
 
-        public void write(AC2Writer data) {
-            data.Pack(profile);
-        }
+    public void write(AC2Writer data) {
+        data.Pack(profile);
     }
 }

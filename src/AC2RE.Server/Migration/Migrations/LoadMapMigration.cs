@@ -1,8 +1,8 @@
-﻿namespace AC2RE.Server.Migration {
+﻿namespace AC2RE.Server.Migration;
 
-    internal class LoadMapMigration : SqlMigration {
+internal class LoadMapMigration : SqlMigration {
 
-        protected override string statement => @"USE ac2re_map;
+    protected override string statement => @"USE ac2re_map;
 
 LOAD DATA INFILE './map_obj.csv' INTO TABLE map_obj
 FIELDS TERMINATED BY ','
@@ -12,5 +12,4 @@ IGNORE 1 LINES
 SET nameStringId = if(@nameStringId = 'NULL', NULL, @nameStringId),
 nameTableDid = if(@nameTableDid = 'NULL', NULL, @nameTableDid);";
 
-    }
 }

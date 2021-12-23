@@ -1,59 +1,58 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class QualUpdatePositionPrivateMsg : INetMessage {
+public class QualUpdatePositionPrivateMsg : INetMessage {
 
-        public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-        public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Qualities__UpdatePosition_Private;
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+    public NetQueue queueId => NetQueue.EVENT;
+    public MessageOpcode opcode => MessageOpcode.Qualities__UpdatePosition_Private;
 
-        // ECM_Qualities::RecvEvt_UpdatePosition_Private
-        public PositionStat type; // _stype
-        public Position value; // _data
+    // ECM_Qualities::RecvEvt_UpdatePosition_Private
+    public PositionStat type; // _stype
+    public Position value; // _data
 
-        public QualUpdatePositionPrivateMsg(PositionStat type, Position value) {
-            this.type = type;
-            this.value = value;
-        }
-
-        public QualUpdatePositionPrivateMsg(AC2Reader data) {
-            type = (PositionStat)data.ReadUInt32();
-            value = new(data);
-        }
-
-        public void write(AC2Writer data) {
-            data.Write((uint)type);
-            value.write(data);
-        }
+    public QualUpdatePositionPrivateMsg(PositionStat type, Position value) {
+        this.type = type;
+        this.value = value;
     }
 
-    public class QualUpdatePositionVisualMsg : INetMessage {
+    public QualUpdatePositionPrivateMsg(AC2Reader data) {
+        type = (PositionStat)data.ReadUInt32();
+        value = new(data);
+    }
 
-        public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
-        public NetQueue queueId => NetQueue.EVENT;
-        public MessageOpcode opcode => MessageOpcode.Qualities__UpdatePosition_Visual;
-        public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
+    public void write(AC2Writer data) {
+        data.Write((uint)type);
+        value.write(data);
+    }
+}
 
-        // ECM_Qualities::RecvEvt_UpdatePosition_Visual
-        public InstanceIdWithStamp senderIdWithStamp; // sender
-        public PositionStat type; // _stype
-        public Position value; // _data
+public class QualUpdatePositionVisualMsg : INetMessage {
 
-        public QualUpdatePositionVisualMsg(InstanceIdWithStamp senderIdWithStamp, PositionStat type, Position value) {
-            this.senderIdWithStamp = senderIdWithStamp;
-            this.type = type;
-            this.value = value;
-        }
+    public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
+    public NetQueue queueId => NetQueue.EVENT;
+    public MessageOpcode opcode => MessageOpcode.Qualities__UpdatePosition_Visual;
+    public OrderingType orderingType => OrderingType.VISUAL_ORDERED;
 
-        public QualUpdatePositionVisualMsg(AC2Reader data) {
-            senderIdWithStamp = data.ReadInstanceIdWithStamp();
-            type = (PositionStat)data.ReadUInt32();
-            value = new(data);
-        }
+    // ECM_Qualities::RecvEvt_UpdatePosition_Visual
+    public InstanceIdWithStamp senderIdWithStamp; // sender
+    public PositionStat type; // _stype
+    public Position value; // _data
 
-        public void write(AC2Writer data) {
-            data.Write(senderIdWithStamp);
-            data.Write((uint)type);
-            value.write(data);
-        }
+    public QualUpdatePositionVisualMsg(InstanceIdWithStamp senderIdWithStamp, PositionStat type, Position value) {
+        this.senderIdWithStamp = senderIdWithStamp;
+        this.type = type;
+        this.value = value;
+    }
+
+    public QualUpdatePositionVisualMsg(AC2Reader data) {
+        senderIdWithStamp = data.ReadInstanceIdWithStamp();
+        type = (PositionStat)data.ReadUInt32();
+        value = new(data);
+    }
+
+    public void write(AC2Writer data) {
+        data.Write(senderIdWithStamp);
+        data.Write((uint)type);
+        value.write(data);
     }
 }

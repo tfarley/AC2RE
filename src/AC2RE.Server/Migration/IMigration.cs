@@ -1,7 +1,6 @@
-﻿namespace AC2RE.Server.Migration {
+﻿namespace AC2RE.Server.Migration;
 
-    internal interface IMigration {
+internal interface IMigration {
 
-        public void execute();
-    }
+    public void execute();
 }

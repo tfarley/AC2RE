@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class FollowSEvt : IServerEvent {
+public class FollowSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Player__Follow;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Player__Follow;
 
-        // WM_Player::SendSEvt_Follow
-        public InstanceId targetId; // _target
+    // WM_Player::SendSEvt_Follow
+    public InstanceId targetId; // _target
 
-        public FollowSEvt(AC2Reader data) {
-            targetId = data.UnpackInstanceId();
-        }
+    public FollowSEvt(AC2Reader data) {
+        targetId = data.UnpackInstanceId();
     }
 }

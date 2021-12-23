@@ -1,22 +1,21 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class AddRecipeDoneCEvt : IClientEvent {
+public class AddRecipeDoneCEvt : IClientEvent {
 
-        public ClientEventFunctionId funcId => ClientEventFunctionId.Craft__AddRecipe_Done;
+    public ClientEventFunctionId funcId => ClientEventFunctionId.Craft__AddRecipe_Done;
 
-        // CPlayer::RecvCEvt_AddRecipe_Done
-        public DataId recipeDid; // didRecipe
+    // CPlayer::RecvCEvt_AddRecipe_Done
+    public DataId recipeDid; // didRecipe
 
-        public AddRecipeDoneCEvt() {
+    public AddRecipeDoneCEvt() {
 
-        }
+    }
 
-        public AddRecipeDoneCEvt(AC2Reader data) {
-            recipeDid = data.UnpackDataId();
-        }
+    public AddRecipeDoneCEvt(AC2Reader data) {
+        recipeDid = data.UnpackDataId();
+    }
 
-        public void write(AC2Writer data) {
-            data.Pack(recipeDid);
-        }
+    public void write(AC2Writer data) {
+        data.Pack(recipeDid);
     }
 }

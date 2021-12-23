@@ -1,14 +1,13 @@
-﻿namespace AC2RE.Definitions {
+﻿namespace AC2RE.Definitions;
 
-    public class CustomEmoteSEvt : IServerEvent {
+public class CustomEmoteSEvt : IServerEvent {
 
-        public ServerEventFunctionId funcId => ServerEventFunctionId.Communication__CustomEmote;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Communication__CustomEmote;
 
-        // WM_Communication::SendSEvt_CustomEmote
-        public WPString text; // _text
+    // WM_Communication::SendSEvt_CustomEmote
+    public WPString text; // _text
 
-        public CustomEmoteSEvt(AC2Reader data) {
-            text = data.UnpackPackage<WPString>();
-        }
+    public CustomEmoteSEvt(AC2Reader data) {
+        text = data.UnpackPackage<WPString>();
     }
 }
