@@ -9,25 +9,27 @@ public class CharacterCreateMsg : INetMessage {
     public NetQueue queueId => NetQueue.LOGON;
     public MessageOpcode opcode => MessageOpcode.CHARACTER_CREATE_EVENT;
 
-    public string accountName;
-    public string characterName;
-    public DataId entityDid;
-    public uint unk1;
-    public SpeciesType species;
-    public SexType sex;
-    public uint unk2;
-    public uint unk3;
-    public Dictionary<PhysiqueType, float> physiqueTypeValues;
+    // accountID
+    public string accountName; // account
+    // gmCharGenResult
+    public string characterName; // m_name
+    public DataId entityDid; // m_entityDID
+    public uint startArea; // m_startArea
+    public SpeciesType species; // m_race
+    public SexType sex; // m_sex
+    public ClassType classType; // m_class
+    public ImplementType implement; // m_implement
+    public Dictionary<PhysiqueType, float> physiqueTypeValues; // m_ptValues
 
     public CharacterCreateMsg(AC2Reader data) {
         accountName = data.ReadString();
         characterName = data.ReadString(Encoding.Unicode);
         entityDid = data.ReadDataId();
-        unk1 = data.ReadUInt32();
+        startArea = data.ReadUInt32();
         species = (SpeciesType)data.ReadUInt32();
         sex = (SexType)data.ReadUInt32();
-        unk2 = data.ReadUInt32();
-        unk3 = data.ReadUInt32();
+        classType = (ClassType)data.ReadUInt32();
+        implement = (ImplementType)data.ReadUInt32();
         physiqueTypeValues = data.ReadDictionary(() => (PhysiqueType)data.ReadUInt32(), data.ReadSingle);
     }
 }

@@ -75,7 +75,6 @@ public class ByteStream {
     }
 
     public byte[] magic;
-    public ushort unk1;
     public uint byteStreamVersion;
     public VersionTable versionInfo; // m_version
     public OpcodeStream opcodeStream; // m_opcodeStream
@@ -91,7 +90,7 @@ public class ByteStream {
 
     public ByteStream(AC2Reader data) {
         magic = data.ReadBytes(2);
-        unk1 = data.ReadUInt16();
+        data.Align(4);
         byteStreamVersion = data.ReadUInt32();
         while (data.BaseStream.Position < data.BaseStream.Length) {
             SectionType sectionType = (SectionType)data.ReadUInt32();

@@ -67,7 +67,7 @@ public class Disasm {
                 tag = (byte)((rawInstruction & 0xFF00) >> 8),
                 immediate = (short)((rawInstruction & 0xFFFF0000) >> 16),
             };
-            // TODO: Decode more opcodes - some may be multi-word like the ones below, and may be some with embedded immediates
+            // TODO: Decode more opcodes via Interp::Handle* - some may have embedded immediates
             switch (instruction.opcode) {
                 case Opcode.PUSH:
                     instruction.valIsDec = true;
@@ -99,6 +99,17 @@ public class Disasm {
                     KeyValuePair<ExportData, ExportFunctionData> target = addrToTarget.GetValueOrDefault(new(targetFuncId.funcAddr), new());
                     instruction.targetPackage = target.Key;
                     instruction.targetFunc = target.Value;
+                    break;
+                case Opcode.OPTIMIZED_THIS_CALL:
+                case Opcode.OPTIMIZED_THIS_CALLEFUN:
+                case Opcode.OPTIMIZED_LOAD_CALL:
+                case Opcode.OPTIMIZED_LOAD_CALLEFUN:
+                case Opcode.OPTIMIZED_RLOAD_CALL:
+                case Opcode.OPTIMIZED_RLOAD_CALLEFUN:
+                case Opcode.OPTIMIZED_THIS_RLOAD:
+                case Opcode.CALLSTATIC:
+                    i += 4;
+                    // TODO: Parse
                     break;
                 case Opcode.IF:
                 case Opcode.RJMP:

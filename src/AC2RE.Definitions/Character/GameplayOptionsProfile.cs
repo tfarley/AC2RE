@@ -24,7 +24,7 @@ public class GameplayOptionsProfile : IPackage {
         CHAT_FONT_SIZES = 1 << 9, // CHAT_FONT_SIZES 0x00000200
         CHAT_POPUP_FLAGS = 1 << 10, // CHAT_POPUP_FLAGS 0x00000400
         WINDOW_OPACITIES = 1 << 11, // WINDOW_OPACITIES 0x00000800
-        UNK1 = 1 << 12, // 0x00001000
+        SHORTCUT_HEIGHT = 1 << 12, // 0x00001000
         WINDOW_TO_CHANNEL = 1 << 13, // 0x00002000
     }
 
@@ -58,9 +58,9 @@ public class GameplayOptionsProfile : IPackage {
         WINDOW_OPACITIES_VERSION, // GOV_WINDOW_OPACITIES_VERSION
         BROADCAST_TEXTTYPE_VERSION, // GOV_BROADCAST_TEXTTYPE_VERSION
         BROADCAST_FILTERFIX_VERSION, // GOV_BROADCAST_FILTERFIX_VERSION + GOV_LATEST_VERSION
+        SHORTCUT_HEIGHT_VERSION, // GOV_SHORTCUT_HEIGHT_VERSION
         UNK1,
-        UNK2,
-        LATEST_VERSION = UNK2,
+        LATEST_VERSION = UNK1,
     }
 
     public ContentFlag contentFlags; // contentFlags
@@ -78,7 +78,7 @@ public class GameplayOptionsProfile : IPackage {
     public Dictionary<uint, TextType> windowToChannel; // windowToChannel
     public Dictionary<TextType, bool> chatPopupFlags; // m_chatPopupFlags
     public Dictionary<uint, float> windowOpacities; // m_windowOpacities
-    public uint unk1;
+    public int shortcutHeight; // m_iShortcutHeight
 
     public GameplayOptionsProfile() {
 
@@ -95,8 +95,8 @@ public class GameplayOptionsProfile : IPackage {
         if (contentFlags.HasFlag(ContentFlag.SHORTCUT_SET)) {
             whichShortcutSet = data.ReadUInt32();
         }
-        if (contentFlags.HasFlag(ContentFlag.UNK1)) {
-            unk1 = data.ReadUInt32();
+        if (contentFlags.HasFlag(ContentFlag.SHORTCUT_HEIGHT)) {
+            shortcutHeight = data.ReadInt32();
         }
         if (contentFlags.HasFlag(ContentFlag.SHOW_RANGE_DAMAGE_OTHER)) {
             damageTextRangeOther = data.ReadSingle();
@@ -142,8 +142,8 @@ public class GameplayOptionsProfile : IPackage {
         if (contentFlags.HasFlag(ContentFlag.SHORTCUT_SET)) {
             data.Write(whichShortcutSet);
         }
-        if (contentFlags.HasFlag(ContentFlag.UNK1)) {
-            data.Write(unk1);
+        if (contentFlags.HasFlag(ContentFlag.SHORTCUT_HEIGHT)) {
+            data.Write(shortcutHeight);
         }
         if (contentFlags.HasFlag(ContentFlag.SHOW_RANGE_DAMAGE_OTHER)) {
             data.Write(damageTextRangeOther);

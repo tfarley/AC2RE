@@ -459,7 +459,7 @@ public static class PdbPrinter {
                         sb.Append("long");
                         break;
                     case BasicType.btBool:
-                        sb.Append("boo");
+                        sb.Append("bool");
                         break;
                     case BasicType.btChar:
                         sb.Append("char");

@@ -27,10 +27,11 @@ public class CLightInfo {
 
         public LightCellInfo(AC2Reader data) {
             cellId = data.ReadCellId();
-            uint unk1 = data.ReadUInt32();
-            if (unk1 > 0) {
+            int totalIndices = data.ReadInt32();
+            if (totalIndices > 0) {
+                indices = new(totalIndices);
+                // TODO: This is wrong, these are actually RLE encoded - more RE needed
                 int numIndices = (int)(data.ReadUInt32() / sizeof(ushort));
-                indices = new(numIndices);
                 for (int i = 0; i < numIndices; i++) {
                     indices.Add(data.ReadUInt16());
                 }

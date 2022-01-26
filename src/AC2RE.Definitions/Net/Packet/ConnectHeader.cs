@@ -19,7 +19,7 @@ public class ConnectHeader {
         netId = data.ReadUInt32();
         outgoingSeed = data.ReadUInt32();
         incomingSeed = data.ReadUInt32();
-        // TODO: Unknown value - padding?
+        // Padding (fixed size buffer of 32 bytes)
         data.ReadUInt32();
     }
 
@@ -29,7 +29,7 @@ public class ConnectHeader {
         data.Write(netId);
         data.Write(outgoingSeed);
         data.Write(incomingSeed);
-        // TODO: Unknown value - padding?
+        // Padding (fixed size buffer of 32 bytes)
         data.Write((uint)0);
     }
 }

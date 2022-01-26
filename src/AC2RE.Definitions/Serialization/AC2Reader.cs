@@ -112,7 +112,7 @@ public class AC2Reader : BinaryReader {
                 did = ReadDataId(),
             };
         } else {
-            uint unk1 = ReadUInt32();
+            uint stateId = ReadUInt32(); // m_pkgStateID
             NativeType nativeType = (NativeType)ReadUInt16();
             PackageType packageType = (PackageType)ReadUInt16();
             if (nativeType != NativeType.Undef) {

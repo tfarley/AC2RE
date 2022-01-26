@@ -25,8 +25,13 @@ public class NetAuthenticator {
         authType = (AuthType)data.ReadUInt32();
         authFlags = (AuthFlag)data.ReadUInt32();
         connectionSeq = data.ReadUInt32();
-        // TODO: Might need to check the auth type before reading this
         accountName = data.ReadString();
-        // TODO: Read rest of fields
+        if (authFlags.HasFlag(AuthFlag.ADMINACCTOVERRIDE)) {
+            accountToLogonAs = data.ReadString();
+        }
+        int cryptoDataLength = data.ReadInt32();
+        cryptoData = data.ReadBytes(cryptoDataLength);
+        int extraDataLength = data.ReadInt32();
+        extraData = data.ReadBytes(extraDataLength);
     }
 }

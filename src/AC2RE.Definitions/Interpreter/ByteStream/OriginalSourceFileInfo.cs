@@ -2,12 +2,11 @@
 
 public class OriginalSourceFileInfo {
 
-    public uint fileNameIndex; // FilenameIdx
+    public string fileName; // Filename
     public string text; // Text
 
     public OriginalSourceFileInfo(AC2Reader data) {
-        // TODO: fileName and text might be swapped
-        fileNameIndex = data.ReadUInt32();
-        text = data.ReadNullTermString();
+        fileName = data.ReadString();
+        text = data.ReadString();
     }
 }
