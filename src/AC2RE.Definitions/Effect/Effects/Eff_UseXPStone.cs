@@ -8,7 +8,7 @@ public class Eff_UseXPStone : Effect {
     public SingletonPkg<Effect> bestowEffect; // m_effBestow
 
     public Eff_UseXPStone(AC2Reader data) : base(data) {
-        data.ReadPkg<Effect>(v => completeEffect = v);
-        data.ReadPkg<Effect>(v => bestowEffect = v);
+        data.ReadHO<Effect>(v => completeEffect = v);
+        data.ReadHO<Effect>(v => bestowEffect = v);
     }
 }

@@ -16,13 +16,13 @@ public class Eff_Tsys_SoulDefractor : GenesisEffect {
     public int meleeDefense; // m_meleeDefense
     public int vigor; // m_vigor
     public FxId fx; // m_fx
-    public IPackage loveTable; // m_loveTable
+    public IHeapObject loveTable; // m_loveTable
     public int armor; // m_armor
     public int magicAttack; // m_magicAttack
     public uint petFlags; // m_petFlags
     public int missileDefense; // m_missileDefense
     public int missileAttack; // m_missileAttack
-    public SingletonPkg<IPackage> npcTable; // m_npcTable
+    public SingletonPkg<IHeapObject> npcTable; // m_npcTable
     public StringInfo subName; // m_name
 
     public Eff_Tsys_SoulDefractor(AC2Reader data) : base(data) {
@@ -38,13 +38,13 @@ public class Eff_Tsys_SoulDefractor : GenesisEffect {
         meleeDefense = data.ReadInt32();
         vigor = data.ReadInt32();
         fx = (FxId)data.ReadUInt32();
-        data.ReadPkg<IPackage>(v => loveTable = v); // TODO: AILoveTable, possibly singleton too
+        data.ReadHO<IHeapObject>(v => loveTable = v); // TODO: AILoveTable, possibly singleton too
         armor = data.ReadInt32();
         magicAttack = data.ReadInt32();
         petFlags = data.ReadUInt32();
         missileDefense = data.ReadInt32();
         missileAttack = data.ReadInt32();
-        data.ReadPkg<IPackage>(v => npcTable = v); // TODO: NPCTable
-        data.ReadPkg<StringInfo>(v => subName = v);
+        data.ReadHO<IHeapObject>(v => npcTable = v); // TODO: NPCTable
+        data.ReadHO<StringInfo>(v => subName = v);
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class AppearanceProfile : IPackage {
+public class AppearanceProfile : IHeapObject {
 
     public PackageType packageType => PackageType.AppearanceProfile;
 

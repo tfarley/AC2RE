@@ -16,6 +16,7 @@ public class AttributeDesc {
         DATAID, // ATTRIBUTE_DATAID
     }
 
+    // AttributeDesc
     public uint id; // attributeID
     public AttributeType type; // type
     public uint valStringId; // val_strID

@@ -8,6 +8,6 @@ public class DirectiveReorganizeContentsSEvt : IServerEvent {
     public InvMoveDesc moveDesc; // _iDesc
 
     public DirectiveReorganizeContentsSEvt(AC2Reader data) {
-        moveDesc = data.UnpackPackage<InvMoveDesc>();
+        moveDesc = data.UnpackHeapObject<InvMoveDesc>();
     }
 }

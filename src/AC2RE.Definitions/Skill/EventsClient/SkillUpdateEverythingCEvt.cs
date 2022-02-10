@@ -12,7 +12,7 @@ public class SkillUpdateEverythingCEvt : IClientEvent {
     }
 
     public SkillUpdateEverythingCEvt(AC2Reader data) {
-        skillRepository = data.UnpackPackage<SkillRepository>();
+        skillRepository = data.UnpackHeapObject<SkillRepository>();
     }
 
     public void write(AC2Writer data) {

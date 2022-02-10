@@ -22,6 +22,7 @@ public class StringInfoData {
         FormattedULInt = 13, // SID_Type_FormattedULInt
     }
 
+    // StringInfoData
     public DataType type; // type
 
     public int valInt;

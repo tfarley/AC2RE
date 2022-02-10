@@ -15,7 +15,7 @@ public class EnterConsignmentCEvt : IClientEvent {
     }
 
     public EnterConsignmentCEvt(AC2Reader data) {
-        consignments = data.UnpackPackage<RList>().to<Consignment>();
+        consignments = data.UnpackHeapObject<RList>().to<Consignment>();
         storekeeperId = data.UnpackInstanceId();
     }
 

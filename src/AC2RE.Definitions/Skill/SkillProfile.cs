@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class SkillProfile : IPackage {
+public class SkillProfile : IHeapObject {
 
     public PackageType packageType => PackageType.SkillProfile;
 

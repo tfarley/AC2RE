@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class TransactInfo : IPackage {
+public class TransactInfo : IHeapObject {
 
     public PackageType packageType => PackageType.TransactInfo;
 
@@ -22,15 +22,15 @@ public class TransactInfo : IPackage {
     public TransactInfo(AC2Reader data) {
         playerMoneyAdd = data.ReadUInt32();
         hasLock = data.ReadBoolean();
-        data.ReadPkg<LAHash>(v => hashForSale = v.to<InstanceId, uint>());
-        data.ReadPkg<LAHash>(v => hashToBuy = v.to<InstanceId, uint>());
+        data.ReadHO<LAHash>(v => hashForSale = v.to<InstanceId, uint>());
+        data.ReadHO<LAHash>(v => hashToBuy = v.to<InstanceId, uint>());
         playerMoneySubtract = data.ReadUInt32();
         customerMoney = data.ReadUInt32();
-        data.ReadPkg<RList>(v => saleItemProfiles = v.to<ItemProfile>());
-        data.ReadPkg<LAHash>(v => hashToBuyErrors = v.to<InstanceId, uint>());
+        data.ReadHO<RList>(v => saleItemProfiles = v.to<ItemProfile>());
+        data.ReadHO<LAHash>(v => hashToBuyErrors = v.to<InstanceId, uint>());
         error = (ErrorType)data.ReadUInt32();
         customerId = data.ReadInstanceId();
-        data.ReadPkg<LAHash>(v => hashForSaleErrors = v.to<InstanceId, uint>());
+        data.ReadHO<LAHash>(v => hashForSaleErrors = v.to<InstanceId, uint>());
         vendorId = data.ReadInstanceId();
     }
 }

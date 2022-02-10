@@ -15,6 +15,7 @@ public class CContinSoundInfo {
         COMPLEX = 1 << 4, // CSF_COMPLEX 0x00000010
     }
 
+    // CContinSoundInfo
     public Flag bitfield; // m_bitField
     public DataId objDid; // m_obj_did
     public float volume; // m_volume

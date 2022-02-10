@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class Consignment : IPackage {
+public class Consignment : IHeapObject {
 
     public PackageType packageType => PackageType.Consignment;
 
@@ -28,7 +28,7 @@ public class Consignment : IPackage {
     }
 
     public Consignment(AC2Reader data) {
-        data.ReadPkg<PlayerSaleProfile>(v => saleProfile = v);
+        data.ReadHO<PlayerSaleProfile>(v => saleProfile = v);
         ownerId = data.ReadInstanceId();
         saleId = data.ReadUInt32();
         quantityOffered = data.ReadInt32();
@@ -38,7 +38,7 @@ public class Consignment : IPackage {
     }
 
     public void write(AC2Writer data) {
-        data.WritePkg(saleProfile);
+        data.WriteHO(saleProfile);
         data.Write(ownerId);
         data.Write(saleId);
         data.Write(quantityOffered);

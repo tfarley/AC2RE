@@ -9,14 +9,14 @@ namespace AC2RE.Definitions;
 
 public class AC2Reader : BinaryReader {
 
-    public readonly PackageRegistry packageRegistry;
+    public readonly HeapObjectRegistry heapObjectRegistry;
 
     public AC2Reader(Stream input) : base(input) {
-        packageRegistry = new();
+        heapObjectRegistry = new();
     }
 
-    public AC2Reader(Stream input, PackageRegistry packageRegistry) : base(input) {
-        this.packageRegistry = packageRegistry;
+    public AC2Reader(Stream input, HeapObjectRegistry heapObjectRegistry) : base(input) {
+        this.heapObjectRegistry = heapObjectRegistry;
     }
 
     public override string ReadString() {
@@ -84,95 +84,92 @@ public class AC2Reader : BinaryReader {
         return new(UnpackUInt32());
     }
 
-    public T UnpackPackage<T>(bool skipPackTag = false) where T : IPackage {
+    public T UnpackHeapObject<T>(bool skipPackTag = false) where T : IHeapObject {
         if (!skipPackTag) {
             checkPackTag(PackTag.Package);
         }
 
-        List<PackageId> packageIds = ReadList(ReadPackageId);
+        List<ReferenceId> referenceIds = ReadList(ReadReferenceId);
 
-        T rootPackage = readPackage<T>(packageIds[0]);
+        T rootHeapObject = readHeapObject<T>(referenceIds[0]);
 
-        for (int i = 1; i < packageIds.Count; i++) {
-            readPackage<IPackage>(packageIds[i]);
+        for (int i = 1; i < referenceIds.Count; i++) {
+            readHeapObject<IHeapObject>(referenceIds[i]);
         }
 
-        packageRegistry.executeResolvers();
+        heapObjectRegistry.executeResolvers();
 
-        return rootPackage;
+        return rootHeapObject;
     }
 
-    private T readPackage<T>(PackageId packageId) {
-        InterpReferenceMeta referenceMeta = new(ReadUInt32());
+    private T readHeapObject<T>(ReferenceId referenceId) {
+        ReferenceEntry referenceEntry = new(ReadUInt32());
 
-        IPackage package;
+        IHeapObject heapObject = null;
 
-        if (referenceMeta.isSingleton) {
-            package = new SingletonPkg<IPackage> {
-                did = ReadDataId(),
+        if (referenceEntry.referenceType != ReferenceType.HeapObject) {
+            throw new NotImplementedException(referenceEntry.referenceType.ToString());
+        } else if (referenceEntry.isSingleton) {
+            heapObject = new SingletonPkg<IHeapObject> {
+                wstateDid = ReadDataId(),
             };
-        } else {
+        } else if (!referenceEntry.isFiller || referenceEntry.isRoot) {
             uint stateId = ReadUInt32(); // m_pkgStateID
             NativeType nativeType = (NativeType)ReadUInt16();
             PackageType packageType = (PackageType)ReadUInt16();
+
             if (nativeType != NativeType.Undef) {
-                package = PackageManager.read(this, nativeType);
-            } else {
-                uint packageLength = ReadUInt32() * 4;
-                if (packageLength == 0) {
-                    package = new GenericPackage(packageType);
+                heapObject = HeapObjectManager.read(this, nativeType);
+            }
+
+            uint size = ReadUInt32();
+
+            if (nativeType == NativeType.Undef) {
+                if (size == 0) {
+                    heapObject = new GenericHeapObject(packageType);
                 } else {
                     long startPos = BaseStream.Position;
-                    package = PackageManager.read(this, packageType);
+                    heapObject = HeapObjectManager.read(this, packageType);
                     uint readLength = (uint)(BaseStream.Position - startPos);
-                    if (readLength != packageLength) {
-                        throw new InvalidDataException(((int)(readLength - packageLength)).ToString());
+                    uint byteSize = size * sizeof(uint);
+                    if (readLength != byteSize) {
+                        throw new InvalidDataException(((int)(readLength - byteSize)).ToString());
                     }
                 }
             }
 
-            // TODO: Still not sure this is the correct condition for whether there are references or not
-            // Skip over field descriptions
-            if (nativeType == NativeType.Undef) {
-                foreach (FieldDesc fieldDesc in InterpMeta.getFieldDescs(package.GetType())) {
-                    ReadByte();
-                    if (fieldDesc.numWords == 2) {
-                        ReadByte();
-                    }
-                }
-                // TODO: Should this align occur even if there are no references?
-                Align(4);
-            } else {
-                // TODO: Is this needed/correct?
-                ReadUInt32();
-            }
+            // Skip over tags
+            ReadBytes((int)size);
+            Align(4);
+        } else {
+            throw new InvalidDataException(referenceEntry.blob.ToString());
         }
 
-        packageRegistry.register(packageId, package, referenceMeta);
+        heapObjectRegistry.register(referenceId, heapObject, referenceEntry);
 
-        return (T)package;
+        return (T)heapObject;
     }
 
-    public PackageId ReadPkg<T>(Action<T> assigner) where T : IPackage {
-        PackageId packageId = ReadPackageId();
-        if (packageId != PackageId.NULL) {
-            packageRegistry.addResolver(() => assigner.Invoke(packageRegistry.get<T>(packageId)));
+    public ReferenceId ReadHO<T>(Action<T> assigner) where T : IHeapObject {
+        ReferenceId referenceId = ReadReferenceId();
+        if (referenceId != ReferenceId.NULL) {
+            heapObjectRegistry.addResolver(() => assigner.Invoke(heapObjectRegistry.get<T>(referenceId)));
         }
-        return packageId;
+        return referenceId;
     }
 
-    public PackageId ReadPkg<T>(Action<SingletonPkg<T>> assigner) where T : class, IPackage {
-        PackageId packageId = ReadPackageId();
-        if (packageId != PackageId.NULL) {
-            packageRegistry.addResolver(() => assigner.Invoke(SingletonPkg<T>.cast(packageRegistry.get<IPackage>(packageId))));
+    public ReferenceId ReadHO<T>(Action<SingletonPkg<T>> assigner) where T : class, IHeapObject {
+        ReferenceId referenceId = ReadReferenceId();
+        if (referenceId != ReferenceId.NULL) {
+            heapObjectRegistry.addResolver(() => assigner.Invoke(SingletonPkg<T>.cast(heapObjectRegistry.get<IHeapObject>(referenceId))));
         }
-        return packageId;
+        return referenceId;
     }
 
     public string ReadNullTermString(Encoding encoding = null) {
         encoding ??= Encoding.ASCII;
         MemoryStream buffer = new();
-        using (AC2Writer data = new(buffer, packageRegistry)) {
+        using (AC2Writer data = new(buffer, heapObjectRegistry)) {
             byte val;
             do {
                 val = ReadByte();
@@ -278,12 +275,12 @@ public class AC2Reader : BinaryReader {
         }
     }
 
-    public PackageId ReadPackageId() {
+    public ReferenceId ReadReferenceId() {
         return new(ReadUInt32());
     }
 
-    public PackageId ReadPackageFullRef() {
-        return new ReferenceId(this).id;
+    public ReferenceId ReadHOFullRef() {
+        return new ReferenceIdWrapper(this).id;
     }
 
     public InstanceId ReadInstanceId() {

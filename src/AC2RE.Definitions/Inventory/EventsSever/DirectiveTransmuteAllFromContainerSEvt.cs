@@ -8,6 +8,6 @@ public class DirectiveTransmuteAllFromContainerSEvt : IServerEvent {
     public InvTransmuteAllDesc transmuteDesc; // _iDesc
 
     public DirectiveTransmuteAllFromContainerSEvt(AC2Reader data) {
-        transmuteDesc = data.UnpackPackage<InvTransmuteAllDesc>();
+        transmuteDesc = data.UnpackHeapObject<InvTransmuteAllDesc>();
     }
 }

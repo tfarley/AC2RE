@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class MeshGeometry {
 
+    // MeshGeometry
     public uint meshType; // mesh_type
     public readonly List<ushort> indices = new();
 

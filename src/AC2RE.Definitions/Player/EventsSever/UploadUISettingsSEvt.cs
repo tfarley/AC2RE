@@ -11,7 +11,7 @@ public class UploadUISettingsSEvt : IServerEvent {
     public UISaveLocations locations; // _locations
 
     public UploadUISettingsSEvt(AC2Reader data) {
-        opacities = data.UnpackPackage<AAHash>();
-        locations = data.UnpackPackage<UISaveLocations>();
+        opacities = data.UnpackHeapObject<AAHash>();
+        locations = data.UnpackHeapObject<UISaveLocations>();
     }
 }

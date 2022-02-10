@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class SRFormula : IPackage {
+public class SRFormula : IHeapObject {
 
     public PackageType packageType => PackageType.SRFormula;
 

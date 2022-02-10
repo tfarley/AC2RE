@@ -12,7 +12,7 @@ public class DisplayKillingMessageCEvt : IClientEvent {
     }
 
     public DisplayKillingMessageCEvt(AC2Reader data) {
-        defenderName = data.UnpackPackage<StringInfo>();
+        defenderName = data.UnpackHeapObject<StringInfo>();
     }
 
     public void write(AC2Writer data) {

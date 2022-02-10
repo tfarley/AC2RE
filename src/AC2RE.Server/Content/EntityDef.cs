@@ -20,7 +20,7 @@ public class EntityDef {
     public readonly Dictionary<PropertyName, DataId> dids = new();
     public readonly Dictionary<PropertyName, Waveform> waveforms = new();
     public readonly Dictionary<PropertyName, StringInfo> stringInfos = new();
-    public readonly Dictionary<PropertyName, PackageId> packageIds = new();
+    public readonly Dictionary<PropertyName, ReferenceId> packageIds = new();
     public readonly Dictionary<PropertyName, long> longs = new();
     public readonly Dictionary<PropertyName, Position> poss = new();
 
@@ -78,7 +78,7 @@ public class EntityDef {
                             stringInfos[property.name] = (StringInfo)property.value;
                             break;
                         case PropertyType.PackageID:
-                            packageIds[property.name] = (PackageId)property.value;
+                            packageIds[property.name] = (ReferenceId)property.value;
                             break;
                         case PropertyType.LongInteger:
                             longs[property.name] = (long)property.value;

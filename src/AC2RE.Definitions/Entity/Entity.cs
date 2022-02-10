@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class Entity : IPackage {
+public class Entity : IHeapObject {
 
     public virtual PackageType packageType => PackageType.Entity;
 
@@ -14,11 +14,11 @@ public class Entity : IPackage {
     public Dictionary<uint, uint> hashLock; // m_hashLock
 
     public Entity(AC2Reader data) {
-        data.ReadPkg<LAMultiHash>(v => hashLockTakenOnOther = v);
+        data.ReadHO<LAMultiHash>(v => hashLockTakenOnOther = v);
         movementFrozenCounter = data.ReadInt32();
-        data.ReadPkg<LogInfo>(v => logInfo = v);
+        data.ReadHO<LogInfo>(v => logInfo = v);
         undetectableCounter = data.ReadInt32();
         animationFrozenCounter = data.ReadInt32();
-        data.ReadPkg<AAHash>(v => hashLock = v);
+        data.ReadHO<AAHash>(v => hashLock = v);
     }
 }

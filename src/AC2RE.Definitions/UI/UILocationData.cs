@@ -2,6 +2,7 @@
 
 public class UILocationData {
 
+    // UILocationData
     public float x0; // m_x0
     public float y0; // m_y0
     public float x1; // m_x1

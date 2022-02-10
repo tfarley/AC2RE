@@ -2,6 +2,7 @@
 
 public class SoundInfo {
 
+    // SoundInfo
     public DataId did; // m_DID
     public uint bitfield; // m_bitField
     public float randFreqTop; // m_randFreqTop

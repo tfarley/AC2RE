@@ -51,6 +51,7 @@ public class WeenieDesc {
         Dead = 1 << 3, // Dead_BitfieldIndex 0x00000008
     }
 
+    // WeenieDesc
     public Bitfield bitfield; // _bitfield
     public PackageType packageType; // _my_pkgid
     public DataId entityDid; // m_entityDID

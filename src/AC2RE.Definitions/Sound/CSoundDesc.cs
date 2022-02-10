@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class CSoundDesc {
 
+    // CSoundDesc
     public DataId did; // m_DID
     public uint version; // m_version
     public List<CAmbientSoundInfo> sounds; // m_sounds

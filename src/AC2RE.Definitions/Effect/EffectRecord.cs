@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class EffectRecord : IPackage {
+public class EffectRecord : IHeapObject {
 
     public PackageType packageType => PackageType.EffectRecord;
 
@@ -32,7 +32,7 @@ public class EffectRecord : IPackage {
     public float spellcraft; // m_fSpellcraft
     public int appInt; // m_iApp
     public bool pk; // m_bPK
-    public IPackage appPackage; // m_rApp
+    public IHeapObject appPackage; // m_rApp
     public double timePromotedToTopLevel; // m_timePromotedToTopLevel
     public SingletonPkg<Effect> effect; // m_effect
     public InstanceId actingForWhomId; // m_iidActingForWhom
@@ -58,9 +58,9 @@ public class EffectRecord : IPackage {
         spellcraft = data.ReadSingle();
         appInt = data.ReadInt32();
         pk = data.ReadBoolean();
-        data.ReadPkg<IPackage>(v => appPackage = v);
+        data.ReadHO<IHeapObject>(v => appPackage = v);
         timePromotedToTopLevel = data.ReadDouble();
-        data.ReadPkg<Effect>(v => effect = v);
+        data.ReadHO<Effect>(v => effect = v);
         actingForWhomId = data.ReadInstanceId();
         skillDid = data.ReadDataId();
         fromItemId = data.ReadInstanceId();
@@ -81,9 +81,9 @@ public class EffectRecord : IPackage {
         data.Write(spellcraft);
         data.Write(appInt);
         data.Write(pk);
-        data.WritePkg(appPackage);
+        data.WriteHO(appPackage);
         data.Write(timePromotedToTopLevel);
-        data.WritePkg(effect);
+        data.WriteHO(effect);
         data.Write(actingForWhomId);
         data.Write(skillDid);
         data.Write(fromItemId);

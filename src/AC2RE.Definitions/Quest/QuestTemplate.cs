@@ -7,6 +7,6 @@ public class QuestTemplate : Quest {
     public SingletonPkg<QuestGlobals> questGlobals; // questGlobals
 
     public QuestTemplate(AC2Reader data) : base(data) {
-        data.ReadPkg<QuestGlobals>(v => questGlobals = v);
+        data.ReadHO<QuestGlobals>(v => questGlobals = v);
     }
 }

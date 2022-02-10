@@ -103,6 +103,7 @@ public class TransitionDesc {
         }
     }
 
+    // TransitionDesc
     public TransitionType type; // type
     public uint when; // when
     public uint state; // state

@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class TransactionBlob : IPackage {
+public class TransactionBlob : IHeapObject {
 
     public PackageType packageType => PackageType.TransactionBlob;
 
@@ -20,7 +20,7 @@ public class TransactionBlob : IPackage {
 
     public TransactionBlob(AC2Reader data) {
         itemId = data.ReadInstanceId();
-        data.ReadPkg<LList>(v => tradeItemIds = v.to<InstanceId>());
+        data.ReadHO<LList>(v => tradeItemIds = v.to<InstanceId>());
         shopperId = data.ReadInstanceId();
         quantity = data.ReadUInt32();
         storekeeperId = data.ReadInstanceId();
@@ -30,7 +30,7 @@ public class TransactionBlob : IPackage {
 
     public void write(AC2Writer data) {
         data.Write(itemId);
-        data.WritePkg(LList.from(tradeItemIds));
+        data.WriteHO(LList.from(tradeItemIds));
         data.Write(shopperId);
         data.Write(quantity);
         data.Write(storekeeperId);

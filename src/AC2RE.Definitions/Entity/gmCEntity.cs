@@ -7,6 +7,6 @@ public class gmCEntity : gmEntity {
     public ExaminationProfile lastExaminationProfile; // m_lastExaminationProfile
 
     public gmCEntity(AC2Reader data) : base(data) {
-        data.ReadPkg<ExaminationProfile>(v => lastExaminationProfile = v);
+        data.ReadHO<ExaminationProfile>(v => lastExaminationProfile = v);
     }
 }

@@ -13,16 +13,16 @@ public class gmEntity : Entity {
     public SingletonPkg<MasterListMember> usageAction; // m_usage_usageAction
     public EffectRegistry effectRegistry; // m_regEffect
     public List<uint> thresholdList; // m_thresholdList
-    public SingletonPkg<IPackage> usageTakePermission; // m_usage_takePermission
+    public SingletonPkg<IHeapObject> usageTakePermission; // m_usage_takePermission
 
     public gmEntity(AC2Reader data) : base(data) {
-        data.ReadPkg<VisualDescInfo>(v => pileVisualDesc = v);
-        data.ReadPkg<AAHash>(v => appearanceMutationHash = v);
-        data.ReadPkg<MasterListMember>(v => usagePermission = v);
-        data.ReadPkg<BiasProfile>(v => biasProfile = v);
-        data.ReadPkg<MasterListMember>(v => usageAction = v);
-        data.ReadPkg<EffectRegistry>(v => effectRegistry = v);
-        data.ReadPkg<AList>(v => thresholdList = v);
-        data.ReadPkg<IPackage>(v => usageTakePermission = v);
+        data.ReadHO<VisualDescInfo>(v => pileVisualDesc = v);
+        data.ReadHO<AAHash>(v => appearanceMutationHash = v);
+        data.ReadHO<MasterListMember>(v => usagePermission = v);
+        data.ReadHO<BiasProfile>(v => biasProfile = v);
+        data.ReadHO<MasterListMember>(v => usageAction = v);
+        data.ReadHO<EffectRegistry>(v => effectRegistry = v);
+        data.ReadHO<AList>(v => thresholdList = v);
+        data.ReadHO<IHeapObject>(v => usageTakePermission = v);
     }
 }

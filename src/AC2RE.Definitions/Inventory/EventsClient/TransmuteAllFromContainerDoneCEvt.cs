@@ -12,7 +12,7 @@ public class TransmuteAllFromContainerDoneCEvt : IClientEvent {
     }
 
     public TransmuteAllFromContainerDoneCEvt(AC2Reader data) {
-        transmuteDesc = data.UnpackPackage<InvTransmuteAllDesc>();
+        transmuteDesc = data.UnpackHeapObject<InvTransmuteAllDesc>();
     }
 
     public void write(AC2Writer data) {

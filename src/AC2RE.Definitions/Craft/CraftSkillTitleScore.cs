@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class CraftSkillTitleScore : IPackage {
+public class CraftSkillTitleScore : IHeapObject {
 
     public PackageType packageType => PackageType.CraftSkillTitleScore;
 

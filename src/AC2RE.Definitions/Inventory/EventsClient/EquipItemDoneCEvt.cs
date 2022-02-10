@@ -12,7 +12,7 @@ public class EquipItemDoneCEvt : IClientEvent {
     }
 
     public EquipItemDoneCEvt(AC2Reader data) {
-        equipDesc = data.UnpackPackage<InvEquipDesc>();
+        equipDesc = data.UnpackHeapObject<InvEquipDesc>();
     }
 
     public void write(AC2Writer data) {

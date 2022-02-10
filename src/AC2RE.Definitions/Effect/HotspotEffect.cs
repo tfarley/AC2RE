@@ -8,7 +8,7 @@ public class HotspotEffect : VitalOverTimeEffect {
     public float radius; // m_fRadius
 
     public HotspotEffect(AC2Reader data) : base(data) {
-        data.ReadPkg<Position>(v => staticPos = v);
+        data.ReadHO<Position>(v => staticPos = v);
         radius = data.ReadSingle();
     }
 }

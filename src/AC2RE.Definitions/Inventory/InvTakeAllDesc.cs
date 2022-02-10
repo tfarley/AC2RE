@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class InvTakeAllDesc : IPackage {
+public class InvTakeAllDesc : IHeapObject {
 
     public PackageType packageType => PackageType.InvTakeAllDesc;
 
@@ -31,10 +31,10 @@ public class InvTakeAllDesc : IPackage {
         noAnim = data.ReadBoolean();
         error = (ErrorType)data.ReadUInt32();
         fromContainerId = data.ReadInstanceId();
-        data.ReadPkg<LList>(v => itemsNotTakenIds = v.to<InstanceId>());
+        data.ReadHO<LList>(v => itemsNotTakenIds = v.to<InstanceId>());
         playedAnim = data.ReadBoolean();
         noMove = data.ReadBoolean();
-        data.ReadPkg<LList>(v => itemsTakenIds = v.to<InstanceId>());
+        data.ReadHO<LList>(v => itemsTakenIds = v.to<InstanceId>());
         targetPlayerId = data.ReadInstanceId();
     }
 
@@ -46,10 +46,10 @@ public class InvTakeAllDesc : IPackage {
         data.Write(noAnim);
         data.Write((uint)error);
         data.Write(fromContainerId);
-        data.WritePkg(LList.from(itemsNotTakenIds));
+        data.WriteHO(LList.from(itemsNotTakenIds));
         data.Write(playedAnim);
         data.Write(noMove);
-        data.WritePkg(LList.from(itemsTakenIds));
+        data.WriteHO(LList.from(itemsTakenIds));
         data.Write(targetPlayerId);
     }
 }

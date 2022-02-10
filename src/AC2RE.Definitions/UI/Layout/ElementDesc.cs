@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class ElementDesc {
 
+    // ElementDesc
     public uint id; // elementID
     public uint type; // type
     public uint defaultState; // defaultState

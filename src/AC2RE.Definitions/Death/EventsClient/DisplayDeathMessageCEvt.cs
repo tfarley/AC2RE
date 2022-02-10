@@ -12,7 +12,7 @@ public class DisplayDeathMessageCEvt : IClientEvent {
     }
 
     public DisplayDeathMessageCEvt(AC2Reader data) {
-        lastAttackerName = data.UnpackPackage<StringInfo>();
+        lastAttackerName = data.UnpackHeapObject<StringInfo>();
     }
 
     public void write(AC2Writer data) {

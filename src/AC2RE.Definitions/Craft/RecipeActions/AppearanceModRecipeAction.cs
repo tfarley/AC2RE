@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class AppearanceModRecipeAction : IPackage {
+public class AppearanceModRecipeAction : IHeapObject {
 
     public PackageType packageType => PackageType.AppearanceModRecipeAction;
 

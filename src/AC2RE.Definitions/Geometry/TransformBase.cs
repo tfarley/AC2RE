@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class TransformBase {
 
+    // TransformBase
     public Vector3 offset; // offset
     public Vector3 scale; // scale
     public Quaternion rot; // qt

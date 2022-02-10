@@ -16,7 +16,7 @@ public class UpdateCatalogCEvt : IClientEvent {
     }
 
     public UpdateCatalogCEvt(AC2Reader data) {
-        view = data.UnpackPackage<AAHash>().to<DataId, uint>();
+        view = data.UnpackHeapObject<AAHash>().to<DataId, uint>();
         catalogDid = data.UnpackDataId();
         storekeeperId = data.UnpackInstanceId();
     }

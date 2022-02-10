@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class EnumMapper {
 
+    // EnumMapper
     public DataId did; // m_DID
     public DataId baseEnumMapperDid; // m_base_emp_did
     public Dictionary<uint, string> idToString; // m_id_to_string_map

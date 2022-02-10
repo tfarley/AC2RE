@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class LAHash : Dictionary<ulong, uint>, IPackage {
+public class LAHash : Dictionary<ulong, uint>, IHeapObject {
 
     public NativeType nativeType => NativeType.LAHash;
 

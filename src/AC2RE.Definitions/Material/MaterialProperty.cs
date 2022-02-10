@@ -5,6 +5,7 @@ namespace AC2RE.Definitions;
 
 public class MaterialProperty {
 
+    // MaterialProperty
     public uint nameId; // nameID
     public RMDataType dataType; // dataType
     // data

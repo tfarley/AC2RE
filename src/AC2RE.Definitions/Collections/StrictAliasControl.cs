@@ -2,13 +2,13 @@
 
 namespace AC2RE.Definitions;
 
-public class StrictAliasControl : IPackage {
+public class StrictAliasControl : IHeapObject {
 
     public PackageType packageType => PackageType.StrictAliasControl;
 
-    public Dictionary<IPackage, IPackage> strictAliasTable; // m_strictAliasTable
+    public Dictionary<IHeapObject, IHeapObject> strictAliasTable; // m_strictAliasTable
 
     public StrictAliasControl(AC2Reader data) {
-        data.ReadPkg<NRHash>(v => strictAliasTable = v);
+        data.ReadHO<NRHash>(v => strictAliasTable = v);
     }
 }

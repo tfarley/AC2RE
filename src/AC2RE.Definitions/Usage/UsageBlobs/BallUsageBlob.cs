@@ -11,11 +11,11 @@ public class BallUsageBlob : UsageBlob {
     }
 
     public BallUsageBlob(AC2Reader data) : base(data) {
-        data.ReadPkg<Position>(v => userPos = v);
+        data.ReadHO<Position>(v => userPos = v);
     }
 
     public override void write(AC2Writer data) {
         base.write(data);
-        data.WritePkg(userPos);
+        data.WriteHO(userPos);
     }
 }

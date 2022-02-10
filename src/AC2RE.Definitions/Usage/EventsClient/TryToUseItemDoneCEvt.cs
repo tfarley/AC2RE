@@ -12,7 +12,7 @@ public class TryToUseItemDoneCEvt : IClientEvent {
     }
 
     public TryToUseItemDoneCEvt(AC2Reader data) {
-        usageDesc = data.UnpackPackage<UsageDesc>();
+        usageDesc = data.UnpackHeapObject<UsageDesc>();
     }
 
     public void write(AC2Writer data) {

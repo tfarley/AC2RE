@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class ImpulseTrigger {
 
+    // ImpulseTrigger
     public Vector3 impulse; // mImpulse
     public bool jump; // mJump
     public uint impulseNum; // mImpulseNum

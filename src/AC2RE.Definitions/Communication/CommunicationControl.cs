@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class CommunicationControl : IPackage {
+public class CommunicationControl : IHeapObject {
 
     public PackageType packageType => PackageType.CommunicationControl;
 
@@ -16,7 +16,7 @@ public class CommunicationControl : IPackage {
         pad1 = data.ReadUInt32();
         pad2 = data.ReadUInt32();
         m_setupOK = data.ReadBoolean();
-        data.ReadPkg<ARHash>(v => textTypeHash = v.to<uint, StringInfo>());
+        data.ReadHO<ARHash>(v => textTypeHash = v.to<uint, StringInfo>());
         pad3 = data.ReadUInt32();
     }
 }

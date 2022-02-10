@@ -6,6 +6,7 @@ public class CSurfaceDesc {
 
     public class LScapeVertexColorDesc {
 
+        // LScapeVertexColorDesc
         public RGBAColor farVertexColor; // far_vertex_color
         public RGBAColor vertexColor; // vertex_color
         public float minHue; // min_hue
@@ -37,6 +38,7 @@ public class CSurfaceDesc {
 
     public class LScapeMaterialDesc {
 
+        // LScapeMaterialDesc
         public DataId materialDid; // material_id
         public float frequency; // frequency
         public float tileWidth; // tile_width
@@ -50,6 +52,7 @@ public class CSurfaceDesc {
 
     public class LScapeAlphaDesc {
 
+        // LScapeAlphaDesc
         public DataId textureDid; // texture_id
         public float frequency; // frequency
         public float tileWidth; // tile_width
@@ -63,6 +66,7 @@ public class CSurfaceDesc {
 
     public class MaterialGroup {
 
+        // MaterialGroup
         public float minPitch; // min_pitch
         public float maxPitch; // max_pitch
         public float colorDistance; // color_distance
@@ -114,6 +118,7 @@ public class CSurfaceDesc {
 
     public class LScapeSurfaceType {
 
+        // LScapeSurfaceType
         public uint surfIndex; // surf_index
         public bool emptyRoad; // empty_road
         public List<MaterialGroup> terrainMaterials; // terrain_materials
@@ -125,6 +130,7 @@ public class CSurfaceDesc {
         }
     }
 
+    // CSurfaceDesc
     public DataId did; // m_DID
     public uint version; // version
     public DataId farTextureDid; // m_FarTextureID

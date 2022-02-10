@@ -6,6 +6,7 @@ public class MotionInterpDesc {
 
     public struct TerrainList {
 
+        // TerrainList
         public Dictionary<uint, MotionValues> modifierHash; // mTerrainModifierHash
         public MotionValues defaultValues; // mDefault
 
@@ -17,6 +18,7 @@ public class MotionInterpDesc {
 
     public struct MSList {
 
+        // MSList
         public MotionValues defaultValues; // mDefault
         public Dictionary<uint, TerrainList> terrainHash; // mTerrainHash
         public Dictionary<uint, MotionValues> modifierHash; // mModifierHash
@@ -28,6 +30,7 @@ public class MotionInterpDesc {
         }
     }
 
+    // MotionInterpDesc
     public DataId did; // m_DID
     public Dictionary<ModeStateKey, uint> motionValues; // mMotionValues
     public List<MSList> valueArray; // mValueArray

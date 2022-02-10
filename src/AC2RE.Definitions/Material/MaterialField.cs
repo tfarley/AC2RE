@@ -2,6 +2,7 @@
 
 public class MaterialField {
 
+    // MaterialField
     public RMFieldType fieldType; // fieldType
     public RMDataType dataType; // dataType
     public uint layerIndex; // layerIndex

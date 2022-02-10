@@ -15,9 +15,9 @@ public class PetAddCEvt : IClientEvent {
     }
 
     public PetAddCEvt(AC2Reader data) {
-        petData = data.UnpackPackage<PetData>();
+        petData = data.UnpackHeapObject<PetData>();
         iconDid = data.UnpackDataId();
-        name = data.UnpackPackage<StringInfo>();
+        name = data.UnpackHeapObject<StringInfo>();
         petId = data.UnpackInstanceId();
     }
 

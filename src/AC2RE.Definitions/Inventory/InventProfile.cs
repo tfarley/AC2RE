@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class InventProfile : IPackage {
+public class InventProfile : IHeapObject {
 
     public PackageType packageType => PackageType.InventProfile;
 
@@ -15,7 +15,7 @@ public class InventProfile : IPackage {
     }
 
     public InventProfile(AC2Reader data) {
-        data.ReadPkg<VisualDescInfo>(v => visualDescInfo = v);
+        data.ReadHO<VisualDescInfo>(v => visualDescInfo = v);
         slotsTaken = (InvLoc)data.ReadUInt32();
         location = (InvLoc)data.ReadUInt32();
         it = data.ReadInt32();
@@ -23,7 +23,7 @@ public class InventProfile : IPackage {
     }
 
     public void write(AC2Writer data) {
-        data.WritePkg(visualDescInfo);
+        data.WriteHO(visualDescInfo);
         data.Write((uint)slotsTaken);
         data.Write((uint)location);
         data.Write(it);

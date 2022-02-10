@@ -14,6 +14,7 @@ public class CIntermitSoundInfo {
         SELFSTOP = 1 << 3, // ISF_SELFSTOP 0x00000008
     }
 
+    // CIntermitSoundInfo
     public Flag bitfield; // m_bitField
     public DataId objDid; // m_obj_did
     public float volume; // m_volume

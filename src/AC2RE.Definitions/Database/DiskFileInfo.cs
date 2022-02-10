@@ -2,6 +2,7 @@
 
 public class DiskFileInfo {
 
+    // DiskFileInfo
     public uint magic; // magic_
     public uint blockSize; // iBlockSize_
     public uint fileSize; // fileSize_

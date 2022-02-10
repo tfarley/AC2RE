@@ -12,7 +12,7 @@ public class UpdateRecipeDoneCEvt : IClientEvent {
     }
 
     public UpdateRecipeDoneCEvt(AC2Reader data) {
-        recipeRecord = data.UnpackPackage<RecipeRecord>();
+        recipeRecord = data.UnpackHeapObject<RecipeRecord>();
     }
 
     public void write(AC2Writer data) {

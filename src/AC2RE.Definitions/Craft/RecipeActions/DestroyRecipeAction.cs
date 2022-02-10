@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class DestroyRecipeAction : IPackage {
+public class DestroyRecipeAction : IHeapObject {
 
     public PackageType packageType => PackageType.DestroyRecipeAction;
 

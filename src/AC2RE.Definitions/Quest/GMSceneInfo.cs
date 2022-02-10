@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class GMSceneInfo : IPackage {
+public class GMSceneInfo : IHeapObject {
 
     public NativeType nativeType => NativeType.gmSceneInfo;
 

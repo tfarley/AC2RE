@@ -13,7 +13,7 @@ public class RequestVassalCEvt : IClientEvent {
     }
 
     public RequestVassalCEvt(AC2Reader data) {
-        vassalName = data.UnpackPackage<StringInfo>();
+        vassalName = data.UnpackHeapObject<StringInfo>();
         vassalId = data.UnpackInstanceId();
     }
 

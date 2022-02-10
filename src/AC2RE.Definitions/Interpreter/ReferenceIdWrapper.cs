@@ -1,24 +1,24 @@
 ﻿namespace AC2RE.Definitions;
 
-public class ReferenceId {
+public class ReferenceIdWrapper {
 
     // ReferenceIDWrapper
-    public PackageId id; // m_id
+    public ReferenceId id; // m_id
     public uint cachedHashValue; // m_CachedHashValue
     public bool useCache; // m_bUseCache
 
-    public ReferenceId(PackageId id) {
+    public ReferenceIdWrapper(ReferenceId id) {
         this.id = id;
     }
 
-    public ReferenceId(AC2Reader data) {
-        id = data.ReadPackageId();
+    public ReferenceIdWrapper(AC2Reader data) {
+        id = data.ReadReferenceId();
         cachedHashValue = data.ReadUInt32();
         useCache = data.ReadBoolean();
     }
 
     public void write(AC2Writer data) {
-        data.WritePkg(data.packageRegistry.get<IPackage>(id));
+        data.WriteHO(data.heapObjectRegistry.get<IHeapObject>(id));
         data.Write(cachedHashValue);
         data.Write(useCache);
     }

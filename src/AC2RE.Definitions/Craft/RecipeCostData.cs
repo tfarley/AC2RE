@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class RecipeCostData : IPackage {
+public class RecipeCostData : IHeapObject {
 
     public PackageType packageType => PackageType.RecipeCostData;
 

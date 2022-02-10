@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class AAHash : Dictionary<uint, uint>, IPackage {
+public class AAHash : Dictionary<uint, uint>, IHeapObject {
 
     public NativeType nativeType => NativeType.AAHash;
 

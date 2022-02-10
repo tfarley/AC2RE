@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AC2RE.Definitions;
 
-public class AttackHook : IPackage {
+public class AttackHook : IHeapObject {
 
     public virtual PackageType packageType => PackageType.AttackHook;
 
@@ -44,7 +44,7 @@ public class AttackHook : IPackage {
     public uint animHookIndex; // m_animHookIndex
     public BehaviorId targetBehaviorMiss; // mTargetBehaviorMiss
     public FxId targetFxHit; // mTargetFXHit
-    public VectorPkg missileSourceOffsetVector; // m_missileSourceOffsetVector
+    public VectorHeapObject missileSourceOffsetVector; // m_missileSourceOffsetVector
     public uint missileHoldingLocation; // m_missileHoldingLocation
     public FxId attackerFxHit; // mAttackerFXHit
     public Flag flags; // m_flags
@@ -71,21 +71,21 @@ public class AttackHook : IPackage {
         weaponBehaviorHit = (BehaviorId)data.ReadUInt32();
         targetBehaviorCrit = (BehaviorId)data.ReadUInt32();
         weaponFxMiss = (FxId)data.ReadUInt32();
-        data.ReadPkg<Effect>(v => requiredEffect = v);
+        data.ReadHO<Effect>(v => requiredEffect = v);
         missileSourceOffset = data.ReadSingle();
-        data.ReadPkg<RList>(v => userEffects = v.to(SingletonPkg<Effect>.cast));
+        data.ReadHO<RList>(v => userEffects = v.to(SingletonPkg<Effect>.cast));
         animHookIndex = data.ReadUInt32();
         targetBehaviorMiss = (BehaviorId)data.ReadUInt32();
         targetFxHit = (FxId)data.ReadUInt32();
-        data.ReadPkg<VectorPkg>(v => missileSourceOffsetVector = v);
+        data.ReadHO<VectorHeapObject>(v => missileSourceOffsetVector = v);
         missileHoldingLocation = data.ReadUInt32();
         attackerFxHit = (FxId)data.ReadUInt32();
         flags = (Flag)data.ReadUInt32();
         targetFxMiss = (FxId)data.ReadUInt32();
-        data.ReadPkg<MissileParameters>(v => missileParams = v);
+        data.ReadHO<MissileParameters>(v => missileParams = v);
         requiredEffectWeight = data.ReadSingle();
         missileInitialSpeed = data.ReadSingle();
-        data.ReadPkg<RList>(v => targetEffects = v.to(SingletonPkg<Effect>.cast));
+        data.ReadHO<RList>(v => targetEffects = v.to(SingletonPkg<Effect>.cast));
         weaponBehaviorCrit = (BehaviorId)data.ReadUInt32();
         weaponBehaviorMiss = (BehaviorId)data.ReadUInt32();
         weaponFxHit = (FxId)data.ReadUInt32();

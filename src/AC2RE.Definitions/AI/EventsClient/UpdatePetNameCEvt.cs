@@ -13,7 +13,7 @@ public class UpdatePetNameCEvt : IClientEvent {
     }
 
     public UpdatePetNameCEvt(AC2Reader data) {
-        petName = data.UnpackPackage<StringInfo>();
+        petName = data.UnpackHeapObject<StringInfo>();
         petId = data.UnpackInstanceId();
     }
 

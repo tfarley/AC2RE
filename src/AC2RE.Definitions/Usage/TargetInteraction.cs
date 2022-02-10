@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class TargetInteraction : IPackage {
+public class TargetInteraction : IHeapObject {
 
     public PackageType packageType => PackageType.TargetInteraction;
 
@@ -24,18 +24,18 @@ public class TargetInteraction : IPackage {
     public bool validTargetUsable; // m_bValidTargetUsable
 
     public TargetInteraction(AC2Reader data) {
-        data.ReadPkg<RList>(v => successOutcomes = v.to<ItemInteractionOutcome>());
+        data.ReadHO<RList>(v => successOutcomes = v.to<ItemInteractionOutcome>());
         validTargetExternal = data.ReadBoolean();
         iidModRequiredResult = data.ReadInt32();
-        data.ReadPkg<AHashSet>(v => validTargetClasses = v);
-        data.ReadPkg<RList>(v => failureOutcomes = v.to<ItemInteractionOutcome>());
+        data.ReadHO<AHashSet>(v => validTargetClasses = v);
+        data.ReadHO<RList>(v => failureOutcomes = v.to<ItemInteractionOutcome>());
         userAnimRepeatCount = data.ReadUInt32();
         craftSkillDid = data.ReadDataId();
         anim = (BehaviorId)data.ReadUInt32();
         externalTargetMaxDistance = data.ReadSingle();
         validTargetPet = data.ReadBoolean();
         userAnimTimeScale = data.ReadSingle();
-        data.ReadPkg<AHashSet>(v => validTargets = v.to<DataId>());
+        data.ReadHO<AHashSet>(v => validTargets = v.to<DataId>());
         iidMod = data.ReadInt32();
         difficulty = data.ReadUInt32();
         userAnimFadeChildren = data.ReadBoolean();

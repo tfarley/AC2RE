@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class PublicVendorProfile : IPackage {
+public class PublicVendorProfile : IHeapObject {
 
     public PackageType packageType => PackageType.PublicVendorProfile;
 
@@ -10,7 +10,7 @@ public class PublicVendorProfile : IPackage {
     public uint maxBuyValue; // m_uiMaxBuyValue
     public float sellMult; // m_fSellMult
     public InstanceId resellId; // m_iidResell
-    public List<IPackage> invNames; // m_listInvNames
+    public List<IHeapObject> invNames; // m_listInvNames
     public bool purchasesMagic; // m_bPurchasesMagic
     public InstanceId vendorId; // m_iidVendor
     public uint minBuyValue; // m_uiMinBuyValue
@@ -22,11 +22,11 @@ public class PublicVendorProfile : IPackage {
         maxBuyValue = data.ReadUInt32();
         sellMult = data.ReadSingle();
         resellId = data.ReadInstanceId();
-        data.ReadPkg<RList>(v => invNames = v);
+        data.ReadHO<RList>(v => invNames = v);
         purchasesMagic = data.ReadBoolean();
         vendorId = data.ReadInstanceId();
         minBuyValue = data.ReadUInt32();
-        data.ReadPkg<LList>(v => invIds = v.to<InstanceId>());
+        data.ReadHO<LList>(v => invIds = v.to<InstanceId>());
         buyMult = data.ReadSingle();
     }
 }

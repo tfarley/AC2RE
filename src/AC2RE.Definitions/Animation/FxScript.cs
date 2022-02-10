@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class FxScript {
 
+    // FxScript
     public DataId did; // m_DID
     public List<Trigger> fxTriggers; // mEffectsTriggers
     public List<ImpulseTrigger> impulseTriggers; // mImpulseTriggers

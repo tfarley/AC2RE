@@ -2,13 +2,13 @@
 
 namespace AC2RE.Definitions;
 
-public class FineItemClassFilter : IPackage {
+public class FineItemClassFilter : IHeapObject {
 
     public PackageType packageType => PackageType.FineItemClassFilter;
 
     public List<uint> itemClasses; // m_itemClasses
 
     public FineItemClassFilter(AC2Reader data) {
-        data.ReadPkg<AList>(v => itemClasses = v);
+        data.ReadHO<AList>(v => itemClasses = v);
     }
 }

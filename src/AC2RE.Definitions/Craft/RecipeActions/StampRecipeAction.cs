@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class StampRecipeAction : IPackage {
+public class StampRecipeAction : IHeapObject {
 
     public PackageType packageType => PackageType.StampRecipeAction;
 

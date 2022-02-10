@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class RecipeNameColoringTable : IPackage {
+public class RecipeNameColoringTable : IHeapObject {
 
     public PackageType packageType => PackageType.RecipeNameColoringTable;
 
@@ -11,7 +11,7 @@ public class RecipeNameColoringTable : IPackage {
     public int minDiff; // m_minDiff
 
     public RecipeNameColoringTable(AC2Reader data) {
-        data.ReadPkg<AArray>(v => map = v);
+        data.ReadHO<AArray>(v => map = v);
         maxDiff = data.ReadInt32();
         minDiff = data.ReadInt32();
     }

@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class AList : List<uint>, IPackage {
+public class AList : List<uint>, IHeapObject {
 
     public NativeType nativeType => NativeType.AList;
 

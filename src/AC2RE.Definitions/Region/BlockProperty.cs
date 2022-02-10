@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class BlockProperty {
 
+    // BlockProperty
     public uint pName; // pname
     public DataId blockMapDid; // block_map
     public bool discreteBlockProperty; // discrete_block_property

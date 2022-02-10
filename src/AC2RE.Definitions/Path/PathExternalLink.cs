@@ -2,6 +2,7 @@
 
 public class PathExternalLink {
 
+    // PathExternalLink
     public uint portalId; // m_portal_id
     public uint otherCellId; // m_other_cell_id
     public uint otherPortalId; // m_other_portal_id

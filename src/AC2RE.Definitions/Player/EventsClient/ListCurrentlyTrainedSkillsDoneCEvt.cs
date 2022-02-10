@@ -14,7 +14,7 @@ public class ListCurrentlyTrainedSkillsDoneCEvt : IClientEvent {
     }
 
     public ListCurrentlyTrainedSkillsDoneCEvt(AC2Reader data) {
-        skillNames = data.UnpackPackage<RList>().to<StringInfo>();
+        skillNames = data.UnpackHeapObject<RList>().to<StringInfo>();
     }
 
     public void write(AC2Writer data) {

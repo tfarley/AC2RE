@@ -17,13 +17,13 @@ public class PotionUsageBlob : UsageBlob {
     public PotionUsageBlob(AC2Reader data) : base(data) {
         itemAprDid = data.ReadDataId();
         itemVisualDescDid = data.ReadDataId();
-        data.ReadPkg<AAHash>(v => itemAppKeyHash = v);
+        data.ReadHO<AAHash>(v => itemAppKeyHash = v);
     }
 
     public override void write(AC2Writer data) {
         base.write(data);
         data.Write(itemAprDid);
         data.Write(itemVisualDescDid);
-        data.WritePkg(AAHash.from(itemAppKeyHash));
+        data.WriteHO(AAHash.from(itemAppKeyHash));
     }
 }

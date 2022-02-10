@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class InvTransmuteAllDesc : IPackage {
+public class InvTransmuteAllDesc : IHeapObject {
 
     public PackageType packageType => PackageType.InvTransmuteAllDesc;
 
@@ -27,14 +27,14 @@ public class InvTransmuteAllDesc : IPackage {
     public InvTransmuteAllDesc(AC2Reader data) {
         lastError = (ErrorType)data.ReadUInt32();
         ignoreAttunement = data.ReadBoolean();
-        data.ReadPkg<LList>(v => transmutedItemIds = v.to<InstanceId>());
+        data.ReadHO<LList>(v => transmutedItemIds = v.to<InstanceId>());
         checkTakePerm = data.ReadBoolean();
         moneyEarned = data.ReadUInt32();
         quiet = data.ReadBoolean();
         noAnim = data.ReadBoolean();
         error = (ErrorType)data.ReadUInt32();
         fromContainerId = data.ReadInstanceId();
-        data.ReadPkg<LList>(v => notTransmutedItemIds = v.to<InstanceId>());
+        data.ReadHO<LList>(v => notTransmutedItemIds = v.to<InstanceId>());
         playedAnim = data.ReadBoolean();
         noMove = data.ReadBoolean();
         targetPlayerId = data.ReadInstanceId();
@@ -43,14 +43,14 @@ public class InvTransmuteAllDesc : IPackage {
     public void write(AC2Writer data) {
         data.Write((uint)lastError);
         data.Write(ignoreAttunement);
-        data.WritePkg(LList.from(transmutedItemIds));
+        data.WriteHO(LList.from(transmutedItemIds));
         data.Write(checkTakePerm);
         data.Write(moneyEarned);
         data.Write(quiet);
         data.Write(noAnim);
         data.Write((uint)error);
         data.Write(fromContainerId);
-        data.WritePkg(LList.from(notTransmutedItemIds));
+        data.WriteHO(LList.from(notTransmutedItemIds));
         data.Write(playedAnim);
         data.Write(noMove);
         data.Write(targetPlayerId);

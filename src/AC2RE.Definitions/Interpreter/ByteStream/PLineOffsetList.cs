@@ -6,6 +6,7 @@ public class PLineOffsetList {
 
     public class PLineOffsetInfo {
 
+        // PLineOffsetInfo
         public uint offset; // Offset
         public uint lineNum; // LineNum
 
@@ -15,6 +16,7 @@ public class PLineOffsetList {
         }
     }
 
+    // PLineOffsetList
     public string sourceFileName; // SourceFilename
     public List<PLineOffsetInfo> lineOffsets;
 

@@ -8,6 +8,6 @@ public class PurchaseItemFromStoreSEvt : IServerEvent {
     public TransactionBlob transactionBlob; // _blob
 
     public PurchaseItemFromStoreSEvt(AC2Reader data) {
-        transactionBlob = data.UnpackPackage<TransactionBlob>();
+        transactionBlob = data.UnpackHeapObject<TransactionBlob>();
     }
 }

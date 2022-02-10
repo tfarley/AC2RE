@@ -13,7 +13,7 @@ public class UpdateSelectionInfoCEvt : IClientEvent {
     }
 
     public UpdateSelectionInfoCEvt(AC2Reader data) {
-        info = data.UnpackPackage<SelectionInfo>();
+        info = data.UnpackHeapObject<SelectionInfo>();
         selectionId = data.UnpackInstanceId();
     }
 

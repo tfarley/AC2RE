@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AC2RE.Definitions;
 
-public class Fellowship : IPackage {
+public class Fellowship : IHeapObject {
 
     public PackageType packageType => PackageType.Fellow;
 
@@ -33,17 +33,17 @@ public class Fellowship : IPackage {
         lastClaimantId = data.ReadInstanceId();
         flags = (Flag)data.ReadUInt32();
         chatRoomId = data.ReadUInt32();
-        data.ReadPkg<LRHash>(v => fellowTable = v.to<InstanceId, Fellow>());
+        data.ReadHO<LRHash>(v => fellowTable = v.to<InstanceId, Fellow>());
         leaderId = data.ReadInstanceId();
-        data.ReadPkg<WPString>(v => name = v);
+        data.ReadHO<WPString>(v => name = v);
     }
 
     public void write(AC2Writer data) {
         data.Write(lastClaimantId);
         data.Write((uint)flags);
         data.Write(chatRoomId);
-        data.WritePkg(LRHash.from(fellowTable));
+        data.WriteHO(LRHash.from(fellowTable));
         data.Write(leaderId);
-        data.WritePkg(name);
+        data.WriteHO(name);
     }
 }

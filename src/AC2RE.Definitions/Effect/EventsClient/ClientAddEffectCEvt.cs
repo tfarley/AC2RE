@@ -13,7 +13,7 @@ public class ClientAddEffectCEvt : IClientEvent {
     }
 
     public ClientAddEffectCEvt(AC2Reader data) {
-        effectRecord = data.UnpackPackage<EffectRecord>();
+        effectRecord = data.UnpackHeapObject<EffectRecord>();
         effectId = data.UnpackEffectId();
     }
 

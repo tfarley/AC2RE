@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class StartInvData : IPackage {
+public class StartInvData : IHeapObject {
 
     public PackageType packageType => PackageType.StartInvData;
 
@@ -17,7 +17,7 @@ public class StartInvData : IPackage {
         equipped = data.ReadBoolean();
         modifier = data.ReadSingle();
         appKey = (AppearanceKey)data.ReadUInt32();
-        data.ReadPkg<WPString>(v => entityName = v);
+        data.ReadHO<WPString>(v => entityName = v);
         quantity = data.ReadInt32();
         entityDid = data.ReadDataId();
     }

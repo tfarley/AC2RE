@@ -15,13 +15,13 @@ public class Quest : MasterDIDListMember {
     public Dictionary<uint, List<EffectRecord>> questUpdateEffects; // m_questUpdateEffects
 
     public Quest(AC2Reader data) : base(data) {
-        data.ReadPkg<StringInfo>(v => longName = v);
-        data.ReadPkg<StringInfo>(v => name = v);
+        data.ReadHO<StringInfo>(v => longName = v);
+        data.ReadHO<StringInfo>(v => name = v);
         iconDid = data.ReadDataId();
-        data.ReadPkg<ARHash>(v => questPhaseInfo = v.to<uint, PhaseInfo>());
-        data.ReadPkg<StringInfo>(v => description = v);
+        data.ReadHO<ARHash>(v => questPhaseInfo = v.to<uint, PhaseInfo>());
+        data.ReadHO<StringInfo>(v => description = v);
         playFxOnUpdate = data.ReadBoolean();
-        data.ReadPkg<ARHash>(v => questUpdateEffects = v.to<uint, List<EffectRecord>>(
+        data.ReadHO<ARHash>(v => questUpdateEffects = v.to<uint, List<EffectRecord>>(
             v => (v as RList).to<EffectRecord>()));
     }
 }

@@ -12,7 +12,7 @@ public class UpdateExaminationProfileCEvt : IClientEvent {
     }
 
     public UpdateExaminationProfileCEvt(AC2Reader data) {
-        profile = data.UnpackPackage<ExaminationProfile>();
+        profile = data.UnpackHeapObject<ExaminationProfile>();
     }
 
     public void write(AC2Writer data) {

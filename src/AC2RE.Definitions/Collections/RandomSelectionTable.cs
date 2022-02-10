@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class RandomSelectionTable : IPackage {
+public class RandomSelectionTable : IHeapObject {
 
     public NativeType nativeType => NativeType.RandomSelectionTable_Int;
 

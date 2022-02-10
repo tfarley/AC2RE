@@ -12,7 +12,7 @@ public class MoveItemDoneCEvt : IClientEvent {
     }
 
     public MoveItemDoneCEvt(AC2Reader data) {
-        moveDesc = data.UnpackPackage<InvMoveDesc>();
+        moveDesc = data.UnpackHeapObject<InvMoveDesc>();
     }
 
     public void write(AC2Writer data) {

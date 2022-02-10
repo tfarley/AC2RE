@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class GMQuestInfo : IPackage {
+public class GMQuestInfo : IHeapObject {
 
     public NativeType nativeType => NativeType.gmQuestInfo;
 

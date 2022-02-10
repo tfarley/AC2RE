@@ -1,15 +1,15 @@
 ﻿namespace AC2RE.Definitions;
 
-public class GenericPackage : IPackage {
+public class GenericHeapObject : IHeapObject {
 
     public NativeType nativeType { get; init; }
     public PackageType packageType { get; init; }
 
-    public GenericPackage(NativeType nativeType) {
+    public GenericHeapObject(NativeType nativeType) {
         this.nativeType = nativeType;
     }
 
-    public GenericPackage(PackageType packageType) {
+    public GenericHeapObject(PackageType packageType) {
         this.packageType = packageType;
     }
 }

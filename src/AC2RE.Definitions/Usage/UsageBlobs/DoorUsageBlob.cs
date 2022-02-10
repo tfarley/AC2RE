@@ -15,13 +15,13 @@ public class DoorUsageBlob : UsageBlob {
     public DoorUsageBlob(AC2Reader data) : base(data) {
         isAI = data.ReadBoolean();
         canUseDoors = data.ReadBoolean();
-        data.ReadPkg<Position>(v => userPos = v);
+        data.ReadHO<Position>(v => userPos = v);
     }
 
     public override void write(AC2Writer data) {
         base.write(data);
         data.Write(isAI);
         data.Write(canUseDoors);
-        data.WritePkg(userPos);
+        data.WriteHO(userPos);
     }
 }

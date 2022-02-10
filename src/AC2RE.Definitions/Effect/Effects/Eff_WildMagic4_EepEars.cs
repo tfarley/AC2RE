@@ -7,6 +7,6 @@ public class Eff_WildMagic4_EepEars : Effect {
     public RandomSelectionTable randomEffects; // m_randomEffects
 
     public Eff_WildMagic4_EepEars(AC2Reader data) : base(data) {
-        data.ReadPkg<RandomSelectionTable>(v => randomEffects = v);
+        data.ReadHO<RandomSelectionTable>(v => randomEffects = v);
     }
 }

@@ -15,7 +15,7 @@ public class UpdateQuestCEvt : IClientEvent {
 
     public UpdateQuestCEvt(AC2Reader data) {
         error = (ErrorType)data.UnpackUInt32();
-        questInfo = data.UnpackPackage<GMQuestInfo>();
+        questInfo = data.UnpackHeapObject<GMQuestInfo>();
         questUpdateType = new(data.UnpackUInt32());
     }
 

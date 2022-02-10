@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AC2RE.Definitions;
 
-public class EffectDesc : IPackage {
+public class EffectDesc : IHeapObject {
 
     public PackageType packageType => PackageType.EffectDesc;
 
@@ -24,7 +24,7 @@ public class EffectDesc : IPackage {
         IsClientNoUI = 1 << 10, // IsClientNoUI 0x00000400
     }
 
-    public Dictionary<uint, IPackage> considerationHash; // m_hashConsideration
+    public Dictionary<uint, IHeapObject> considerationHash; // m_hashConsideration
     public uint eid; // m_eid
     public int projectedTargetHealthChange; // m_iProjectedTargetHealthChange
     public int sourceVigorChange; // m_iSourceVigorChange
@@ -42,7 +42,7 @@ public class EffectDesc : IPackage {
     public int targetVigor; // m_iTargetVigor
     public Flag flags; // m_flags
     public uint durabilityLevel; // m_uiDurabilityLevel
-    public List<IPackage> sourceEffects; // m_listSourceEffect
+    public List<IHeapObject> sourceEffects; // m_listSourceEffect
     public int targetFocus; // m_iTargetFocus
     public InstanceId targetId; // m_iidTarget
     public uint result; // m_result
@@ -53,7 +53,7 @@ public class EffectDesc : IPackage {
     public DataId skillFromDid; // m_didSkillFrom
 
     public EffectDesc(AC2Reader data) {
-        data.ReadPkg<ARHash>(v => considerationHash = v);
+        data.ReadHO<ARHash>(v => considerationHash = v);
         eid = data.ReadUInt32();
         projectedTargetHealthChange = data.ReadInt32();
         sourceVigorChange = data.ReadInt32();
@@ -67,11 +67,11 @@ public class EffectDesc : IPackage {
         casterLevel = data.ReadInt32();
         targetHealth = data.ReadInt32();
         sourceHealthChange = data.ReadInt32();
-        data.ReadPkg<Effect>(v => effect = v);
+        data.ReadHO<Effect>(v => effect = v);
         targetVigor = data.ReadInt32();
         flags = (Flag)data.ReadUInt32();
         durabilityLevel = data.ReadUInt32();
-        data.ReadPkg<RList>(v => sourceEffects = v);
+        data.ReadHO<RList>(v => sourceEffects = v);
         targetFocus = data.ReadInt32();
         targetId = data.ReadInstanceId();
         result = data.ReadUInt32();

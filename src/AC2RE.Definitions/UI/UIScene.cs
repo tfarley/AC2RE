@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class UIScene {
 
+    // UIScene
     public DataId did; // m_DID
     public List<EntityDesc> entityDescs; // m_EntityDescs
     public bool wantFog; // m_bWantFog

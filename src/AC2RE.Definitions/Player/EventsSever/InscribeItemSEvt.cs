@@ -9,7 +9,7 @@ public class InscribeItemSEvt : IServerEvent {
     public InstanceId targetId; // _iidTarget
 
     public InscribeItemSEvt(AC2Reader data) {
-        inscriptionText = data.UnpackPackage<StringInfo>();
+        inscriptionText = data.UnpackHeapObject<StringInfo>();
         targetId = data.UnpackInstanceId();
     }
 }

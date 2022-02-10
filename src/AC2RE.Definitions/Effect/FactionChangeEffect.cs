@@ -11,6 +11,6 @@ public class FactionChangeEffect : Effect {
 
     public FactionChangeEffect(AC2Reader data) : base(data) {
         newFactionType = (FactionType)data.ReadUInt32();
-        data.ReadPkg<RList>(v => factionEffects = v.to<FactionEffectEntry>());
+        data.ReadHO<RList>(v => factionEffects = v.to<FactionEffectEntry>());
     }
 }

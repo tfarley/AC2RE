@@ -6,6 +6,7 @@ public class CMapNoteDesc {
 
     public class CMapNoteRow {
 
+        // CMapNoteRow
         public uint stringId; // _stringID
         public DataId iconDid; // _iconDID
         public uint x; // _x0
@@ -19,6 +20,7 @@ public class CMapNoteDesc {
         }
     }
 
+    // CMapNoteDesc
     public DataId did; // m_DID
     public DataId stringTableDid; // _stringTableDID
     public List<CMapNoteRow> rows; // _rows

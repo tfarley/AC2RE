@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class Fellow : IPackage {
+public class Fellow : IHeapObject {
 
     public PackageType packageType => PackageType.Fellow;
 
@@ -16,14 +16,14 @@ public class Fellow : IPackage {
     public Fellow(AC2Reader data) {
         joinTime = data.ReadDouble();
         level = data.ReadUInt32();
-        data.ReadPkg<FellowVitals>(v => vitals = v);
-        data.ReadPkg<StringInfo>(v => name = v);
+        data.ReadHO<FellowVitals>(v => vitals = v);
+        data.ReadHO<StringInfo>(v => name = v);
     }
 
     public void write(AC2Writer data) {
         data.Write(joinTime);
         data.Write(level);
-        data.WritePkg(vitals);
-        data.WritePkg(name);
+        data.WriteHO(vitals);
+        data.WriteHO(name);
     }
 }

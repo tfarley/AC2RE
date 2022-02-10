@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public struct Frame : IPackage {
+public struct Frame : IHeapObject {
 
     public NativeType nativeType => NativeType.Frame;
 

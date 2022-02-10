@@ -16,9 +16,9 @@ public class ResetContentsCEvt : IClientEvent {
     }
 
     public ResetContentsCEvt(AC2Reader data) {
-        containerSegments = data.UnpackPackage<RList>().to<ContainerSegmentDescriptor>();
-        containerIds = data.UnpackPackage<LList>().to<InstanceId>();
-        contentIds = data.UnpackPackage<LList>().to<InstanceId>();
+        containerSegments = data.UnpackHeapObject<RList>().to<ContainerSegmentDescriptor>();
+        containerIds = data.UnpackHeapObject<LList>().to<InstanceId>();
+        contentIds = data.UnpackHeapObject<LList>().to<InstanceId>();
     }
 
     public void write(AC2Writer data) {

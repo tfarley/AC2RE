@@ -8,7 +8,7 @@ public class Eff_Popup_FirstCharacterSession : TextEffect {
     public StringInfo drudgeAlternateText; // m_DrudgeAlternateText
 
     public Eff_Popup_FirstCharacterSession(AC2Reader data) : base(data) {
-        data.ReadPkg<StringInfo>(v => empyreanAlternateText = v);
-        data.ReadPkg<StringInfo>(v => drudgeAlternateText = v);
+        data.ReadHO<StringInfo>(v => empyreanAlternateText = v);
+        data.ReadHO<StringInfo>(v => drudgeAlternateText = v);
     }
 }

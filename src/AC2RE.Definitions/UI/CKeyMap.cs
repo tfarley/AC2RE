@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class CKeyMap {
 
+    // CKeyMap
     public DataId did; // m_DID
     public GUID guid; // mapguid
     public string name; // name

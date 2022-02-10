@@ -2,8 +2,9 @@
 
 public struct VTableId {
 
-    private static readonly uint PACKAGE_NUM_MASK = 0xFFFF0000;
-    private static readonly uint FUNC_NUM_MASK = 0x0000FFFF;
+    // VTableID
+    private static readonly uint PACKAGE_NUM_MASK = 0xFFFF0000; // pkgNum
+    private static readonly uint FUNC_NUM_MASK = 0x0000FFFF; // funcNum
 
     public uint id;
 

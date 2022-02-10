@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class ExportToXMLCleanupOp : IPackage {
+public class ExportToXMLCleanupOp : IHeapObject {
 
     public PackageType packageType => PackageType.ExportToXMLCleanupOp;
 
@@ -8,7 +8,7 @@ public class ExportToXMLCleanupOp : IPackage {
     public WPString fileName; // m_file
 
     public ExportToXMLCleanupOp(AC2Reader data) {
-        data.ReadPkg<ExportToXMLOp>(v => exportOp = v);
-        data.ReadPkg<WPString>(v => fileName = v);
+        data.ReadHO<ExportToXMLOp>(v => exportOp = v);
+        data.ReadHO<WPString>(v => fileName = v);
     }
 }

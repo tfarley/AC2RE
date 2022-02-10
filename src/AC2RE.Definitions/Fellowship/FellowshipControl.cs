@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class FellowshipControl : IPackage {
+public class FellowshipControl : IHeapObject {
 
     public PackageType packageType => PackageType.FellowshipControl;
 

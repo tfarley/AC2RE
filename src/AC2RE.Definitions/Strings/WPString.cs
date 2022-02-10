@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class WPString : IPackage {
+public class WPString : IHeapObject {
 
     public NativeType nativeType => NativeType.wpstring;
 

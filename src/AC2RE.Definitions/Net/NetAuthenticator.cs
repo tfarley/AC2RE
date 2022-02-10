@@ -13,6 +13,7 @@ public class NetAuthenticator {
         EXTRADATA = 1 << 2, // AUTHFLAGS_EXTRADATA + AUTHFLAGS_LASTDEFAULT 0x00000004
     }
 
+    // NetAuthenticator
     public AuthType authType; // m_dwAuthType
     public AuthFlag authFlags; // m_dwAuthFlags
     public uint connectionSeq; // m_dwConnectionSequenceNumber

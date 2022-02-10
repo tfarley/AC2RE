@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class TradeSystem : IPackage {
+public class TradeSystem : IHeapObject {
 
     public PackageType packageType => PackageType.TradeSystem;
 

@@ -35,6 +35,6 @@ public class Eff_Mn_Golem_Clone : GenesisEffect {
         missileDefense = data.ReadSingle();
         missileAttack = data.ReadSingle();
         deathXp = data.ReadSingle();
-        data.ReadPkg<StringInfo>(v => subName = v);
+        data.ReadHO<StringInfo>(v => subName = v);
     }
 }

@@ -5,6 +5,7 @@ namespace AC2RE.Definitions;
 
 public struct UndersideInfo {
 
+    // UndersideInfo
     public int minX; // m_min_x
     public int minY; // m_min_y
     public int maxX; // m_max_x

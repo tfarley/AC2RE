@@ -2,13 +2,13 @@
 
 namespace AC2RE.Definitions;
 
-public class InteractionTable : IPackage {
+public class InteractionTable : IHeapObject {
 
     public PackageType packageType => PackageType.InteractionTable;
 
     public List<TargetInteraction> targetInteractions; // m_listTargetInteractions
 
     public InteractionTable(AC2Reader data) {
-        data.ReadPkg<RList>(v => targetInteractions = v.to<TargetInteraction>());
+        data.ReadHO<RList>(v => targetInteractions = v.to<TargetInteraction>());
     }
 }

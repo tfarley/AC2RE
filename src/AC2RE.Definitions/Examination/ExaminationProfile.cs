@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class ExaminationProfile : IPackage {
+public class ExaminationProfile : IHeapObject {
 
     public NativeType nativeType => NativeType.ExaminationProfile;
 

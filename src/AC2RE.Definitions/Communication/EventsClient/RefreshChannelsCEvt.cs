@@ -14,7 +14,7 @@ public class RefreshChannelsCEvt : IClientEvent {
     }
 
     public RefreshChannelsCEvt(AC2Reader data) {
-        channels = data.UnpackPackage<ARHash>().to<uint, ChannelData>();
+        channels = data.UnpackHeapObject<ARHash>().to<uint, ChannelData>();
     }
 
     public void write(AC2Writer data) {

@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class RecipeCostTable : IPackage {
+public class RecipeCostTable : IHeapObject {
 
     public PackageType packageType => PackageType.RecipeCostTable;
 
@@ -11,6 +11,6 @@ public class RecipeCostTable : IPackage {
 
     public RecipeCostTable(AC2Reader data) {
         maxLevel = data.ReadUInt32();
-        data.ReadPkg<ARHash>(v => map = v.to<uint, RecipeCostData>());
+        data.ReadHO<ARHash>(v => map = v.to<uint, RecipeCostData>());
     }
 }

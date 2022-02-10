@@ -14,7 +14,7 @@ public class UpdateRecipesDoneCEvt : IClientEvent {
     }
 
     public UpdateRecipesDoneCEvt(AC2Reader data) {
-        recipeRecords = data.UnpackPackage<RList>().to<RecipeRecord>();
+        recipeRecords = data.UnpackHeapObject<RList>().to<RecipeRecord>();
     }
 
     public void write(AC2Writer data) {

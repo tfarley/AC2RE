@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class RecipeDifficultyTable : IPackage {
+public class RecipeDifficultyTable : IHeapObject {
 
     public PackageType packageType => PackageType.RecipeDifficultyTable;
 
@@ -11,7 +11,7 @@ public class RecipeDifficultyTable : IPackage {
     public int minDiff; // m_minDiff
 
     public RecipeDifficultyTable(AC2Reader data) {
-        data.ReadPkg<AArray>(v => map = v);
+        data.ReadHO<AArray>(v => map = v);
         maxDiff = data.ReadInt32();
         minDiff = data.ReadInt32();
     }

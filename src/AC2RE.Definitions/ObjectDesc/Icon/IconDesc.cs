@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class IconDesc : IPackage {
+public class IconDesc : IHeapObject {
 
     public NativeType nativeType => NativeType.IconDesc;
 

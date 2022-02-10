@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AC2RE.Definitions;
 
-public class Recipe : IPackage {
+public class Recipe : IHeapObject {
 
     public virtual PackageType packageType => PackageType.Recipe;
 
@@ -70,41 +70,41 @@ public class Recipe : IPackage {
 
     public Recipe(AC2Reader data) {
         difficultyMinusSkillCutoff = data.ReadInt32();
-        data.ReadPkg<LevelMappingTable>(v => costMappingTable = v);
-        data.ReadPkg<ARHash>(v => craftMessageOverrides = v.to<uint, StringInfo>());
-        data.ReadPkg<LevelMappingTable>(v => m_difficultyMappingTable = v);
+        data.ReadHO<LevelMappingTable>(v => costMappingTable = v);
+        data.ReadHO<ARHash>(v => craftMessageOverrides = v.to<uint, StringInfo>());
+        data.ReadHO<LevelMappingTable>(v => m_difficultyMappingTable = v);
         iconDid = data.ReadDataId();
-        data.ReadPkg<ARHash>(v => craftCheckEntries = v.to<uint, CraftCheckEntry>());
+        data.ReadHO<ARHash>(v => craftCheckEntries = v.to<uint, CraftCheckEntry>());
         craftSkillCategory = data.ReadUInt32();
-        data.ReadPkg<RList>(v => ingredients = v.to<Ingredient>());
-        data.ReadPkg<StringInfo>(v => name = v);
-        data.ReadPkg<StringInfo>(v => description = v);
+        data.ReadHO<RList>(v => ingredients = v.to<Ingredient>());
+        data.ReadHO<StringInfo>(v => name = v);
+        data.ReadHO<StringInfo>(v => description = v);
         maxLevel = data.ReadUInt32();
         craftSkillDid = data.ReadDataId();
         maxNumIngredients = data.ReadUInt32();
         minSpinnerVal = data.ReadUInt32();
         bonus = data.ReadSingle();
         charges = data.ReadInt32();
-        data.ReadPkg<RecipeNameColoringTable>(v => nameColoringTable = v);
+        data.ReadHO<RecipeNameColoringTable>(v => nameColoringTable = v);
         chargeRefreshPeriod = data.ReadInt32();
         numAnimCycles = data.ReadUInt32();
-        data.ReadPkg<AList>(v => craftThresholds = v);
+        data.ReadHO<AList>(v => craftThresholds = v);
         flags = (Flag)data.ReadUInt32();
         maxSpinnerVal = data.ReadUInt32();
         minLevel = data.ReadUInt32();
         lastProductOrdinal = data.ReadUInt32();
-        data.ReadPkg<LevelMappingTable>(v => craftXpMappingTable = v);
-        data.ReadPkg<CraftRandomEntry>(v => curRandEntry = v);
-        data.ReadPkg<AAHash>(v => targetsHash = v);
+        data.ReadHO<LevelMappingTable>(v => craftXpMappingTable = v);
+        data.ReadHO<CraftRandomEntry>(v => curRandEntry = v);
+        data.ReadHO<AAHash>(v => targetsHash = v);
         craftXp = data.ReadUInt32();
         requiresTarget = data.ReadBoolean();
         difficulty = data.ReadUInt32();
-        data.ReadPkg<SkillCheck>(v => skillCheckOverride = v);
-        data.ReadPkg<Effect>(v => requiredEffect = v);
+        data.ReadHO<SkillCheck>(v => skillCheckOverride = v);
+        data.ReadHO<Effect>(v => requiredEffect = v);
         animation = data.ReadUInt32();
         recoveryTime = data.ReadSingle();
         cost = data.ReadInt32();
-        data.ReadPkg<CraftCheckEntry>(v => curCraftCheckEntry = v);
+        data.ReadHO<CraftCheckEntry>(v => curCraftCheckEntry = v);
         hasAutoPopulatingIngredients = data.ReadBoolean();
     }
 }

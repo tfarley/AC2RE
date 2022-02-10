@@ -2,10 +2,11 @@
 
 public struct RGBAColor {
 
-    public float r;
-    public float g;
-    public float b;
-    public float a;
+    // RGBAColor
+    public float r; // r
+    public float g; // g
+    public float b; // b
+    public float a; // a
 
     public RGBAColor(float r, float g, float b, float a) {
         this.r = r;

@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class StoreGlobals : IPackage {
+public class StoreGlobals : IHeapObject {
 
     public PackageType packageType => PackageType.StoreGlobals;
 

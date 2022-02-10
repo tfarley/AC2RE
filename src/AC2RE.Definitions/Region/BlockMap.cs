@@ -28,6 +28,7 @@ public class BlockMap {
         }
     }
 
+    // BlockMap
     public DataId did; // m_DID
     public uint height; // height
     public uint width; // width

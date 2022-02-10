@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class PetData : IPackage {
+public class PetData : IHeapObject {
 
     public PackageType packageType => PackageType.PetData;
 

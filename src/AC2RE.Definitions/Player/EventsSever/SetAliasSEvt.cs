@@ -11,7 +11,7 @@ public class SetAliasSEvt : IServerEvent {
 
     public SetAliasSEvt(AC2Reader data) {
         add = data.UnpackBoolean();
-        text = data.UnpackPackage<WPString>();
-        alias = data.UnpackPackage<WPString>();
+        text = data.UnpackHeapObject<WPString>();
+        alias = data.UnpackHeapObject<WPString>();
     }
 }

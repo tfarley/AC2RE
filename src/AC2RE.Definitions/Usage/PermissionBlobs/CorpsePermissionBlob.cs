@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class CorpsePermissionBlob : IPackage {
+public class CorpsePermissionBlob : IHeapObject {
 
     public PackageType packageType => PackageType.CorpsePermissionBlob;
 

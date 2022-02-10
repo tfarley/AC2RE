@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace AC2RE.Definitions;
 
-public class BehaviorParams : IPackage {
+public class BehaviorParams : IHeapObject {
 
     public NativeType nativeType => NativeType.BehaviorParams;
 

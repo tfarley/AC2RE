@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class LArray : List<ulong>, IPackage {
+public class LArray : List<ulong>, IHeapObject {
 
     public NativeType nativeType => NativeType.LArray;
 

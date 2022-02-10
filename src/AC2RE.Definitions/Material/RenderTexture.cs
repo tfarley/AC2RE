@@ -13,6 +13,7 @@ public class RenderTexture {
         CUBE = 4, // TEXTURETYPE_CUBE
     }
 
+    // RenderTexture
     public DataId did; // m_DID
     public TextureType textureType; // m_SourceTextureType
     public List<DataId> levelSurfaceDids; // m_SourceLevels

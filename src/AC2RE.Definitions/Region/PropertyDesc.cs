@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class PropertyDesc {
 
+    // PropertyDesc
     public DataId did; // m_DID
     public uint version; // version
     public List<BlockProperty> blockProps; // block_props

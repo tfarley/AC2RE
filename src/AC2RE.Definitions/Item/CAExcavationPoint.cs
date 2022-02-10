@@ -9,8 +9,8 @@ public class CAExcavationPoint : Container {
     public StringInfo lootText; // m_loottext
 
     public CAExcavationPoint(AC2Reader data) : base(data) {
-        data.ReadPkg<StringInfo>(v => breakText = v);
-        data.ReadPkg<StringInfo>(v => noHandsText = v);
-        data.ReadPkg<StringInfo>(v => lootText = v);
+        data.ReadHO<StringInfo>(v => breakText = v);
+        data.ReadHO<StringInfo>(v => noHandsText = v);
+        data.ReadHO<StringInfo>(v => lootText = v);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class MasterDIDList : IPackage {
+public class MasterDIDList : IHeapObject {
 
     public PackageType packageType => PackageType.MasterDIDList;
 
@@ -11,6 +11,6 @@ public class MasterDIDList : IPackage {
 
     public MasterDIDList(AC2Reader data) {
         emapperId = data.ReadEnumId();
-        data.ReadPkg<AAHash>(v => map = v.to<uint, DataId>());
+        data.ReadHO<AAHash>(v => map = v.to<uint, DataId>());
     }
 }

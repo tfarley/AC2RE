@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class LAHashSet : HashSet<ulong>, IPackage {
+public class LAHashSet : HashSet<ulong>, IHeapObject {
 
     public NativeType nativeType => NativeType.LAHashSet;
 

@@ -14,8 +14,8 @@ public class RequestRecruitmentCEvt : IClientEvent {
     }
 
     public RequestRecruitmentCEvt(AC2Reader data) {
-        fellowshipName = data.UnpackPackage<StringInfo>();
-        leaderName = data.UnpackPackage<StringInfo>();
+        fellowshipName = data.UnpackHeapObject<StringInfo>();
+        leaderName = data.UnpackHeapObject<StringInfo>();
         leaderId = data.UnpackInstanceId();
     }
 

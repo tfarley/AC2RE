@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class CustomSuccessRecipeAction : IPackage {
+public class CustomSuccessRecipeAction : IHeapObject {
 
     public PackageType packageType => PackageType.CustomSuccessRecipeAction;
 

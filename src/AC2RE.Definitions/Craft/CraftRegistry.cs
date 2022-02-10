@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class CraftRegistry : IPackage {
+public class CraftRegistry : IHeapObject {
 
     public PackageType packageType => PackageType.CraftRegistry;
 
@@ -18,20 +18,20 @@ public class CraftRegistry : IPackage {
     }
 
     public CraftRegistry(AC2Reader data) {
-        data.ReadPkg<ARHash>(v => recipeRecords = v.to<uint, RecipeRecord>());
+        data.ReadHO<ARHash>(v => recipeRecords = v.to<uint, RecipeRecord>());
         craftSkillScore = data.ReadSingle();
         craftSkillTitle = data.ReadUInt32();
         usageResetTime = data.ReadDouble();
-        data.ReadPkg<ARHash>(v => craftSkillRecords = v.to<DataId, CraftSkillRecord>());
-        data.ReadPkg<ARHash>(v => recipeRecords2 = v.to<DataId, RecipeRecord>());
+        data.ReadHO<ARHash>(v => craftSkillRecords = v.to<DataId, CraftSkillRecord>());
+        data.ReadHO<ARHash>(v => recipeRecords2 = v.to<DataId, RecipeRecord>());
     }
 
     public void write(AC2Writer data) {
-        data.WritePkg(ARHash.from(recipeRecords));
+        data.WriteHO(ARHash.from(recipeRecords));
         data.Write(craftSkillScore);
         data.Write(craftSkillTitle);
         data.Write(usageResetTime);
-        data.WritePkg(ARHash.from(craftSkillRecords));
-        data.WritePkg(ARHash.from(recipeRecords2));
+        data.WriteHO(ARHash.from(craftSkillRecords));
+        data.WriteHO(ARHash.from(recipeRecords2));
     }
 }

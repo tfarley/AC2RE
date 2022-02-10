@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class AdvancementTable : IPackage {
+public class AdvancementTable : IHeapObject {
 
     public PackageType packageType => PackageType.AdvancementTable;
 
@@ -11,8 +11,8 @@ public class AdvancementTable : IPackage {
     public WPString name; // mName
 
     public AdvancementTable(AC2Reader data) {
-        data.ReadPkg<LArray>(v => map = v);
+        data.ReadHO<LArray>(v => map = v);
         maxLevel = data.ReadInt32();
-        data.ReadPkg<WPString>(v => name = v);
+        data.ReadHO<WPString>(v => name = v);
     }
 }

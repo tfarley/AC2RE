@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class FloatScaleDuple : IPackage {
+public class FloatScaleDuple : IHeapObject {
 
     public PackageType packageType => PackageType.FloatScaleDuple;
 

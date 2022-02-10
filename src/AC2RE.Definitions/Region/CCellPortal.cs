@@ -14,6 +14,7 @@ public class CCellPortal {
         STAB_LIST = 1 << 2, // CELLPORTAL_PACK_STAB_LIST 0x00000004
     }
 
+    // CCellPortal
     public PackFlag packFlags;
     public ushort portalIndex; // portal_index
     public LocalCellId otherCellId; // other_cell_id

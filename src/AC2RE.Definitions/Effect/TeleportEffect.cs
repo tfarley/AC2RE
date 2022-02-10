@@ -8,7 +8,7 @@ public class TeleportEffect : Effect {
     public Position toLocation; // m_toLocation
 
     public TeleportEffect(AC2Reader data) : base(data) {
-        data.ReadPkg<Position>(v => fromLocation = v);
-        data.ReadPkg<Position>(v => toLocation = v);
+        data.ReadHO<Position>(v => fromLocation = v);
+        data.ReadHO<Position>(v => toLocation = v);
     }
 }

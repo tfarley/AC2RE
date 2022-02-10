@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class GMRaceSexInfo : IPackage {
+public class GMRaceSexInfo : IHeapObject {
 
     public NativeType nativeType => NativeType.gmRaceSexInfo;
 

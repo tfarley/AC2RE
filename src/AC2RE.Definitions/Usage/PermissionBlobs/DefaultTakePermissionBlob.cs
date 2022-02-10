@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class DefaultTakePermissionBlob : IPackage {
+public class DefaultTakePermissionBlob : IHeapObject {
 
     public PackageType packageType => PackageType.DefaultTakePermissionBlob;
 

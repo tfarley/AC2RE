@@ -2,6 +2,7 @@
 
 public class CMostlyConsecutiveIntSet {
 
+    // CMostlyConsecutiveIntSet
     public int[] ints; // m_Ints
 
     public CMostlyConsecutiveIntSet(AC2Reader data) {

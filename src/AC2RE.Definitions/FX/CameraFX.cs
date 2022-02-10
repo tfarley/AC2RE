@@ -25,6 +25,7 @@ public class CameraFX {
         DISTANCE = 1 << 14, // DISTANCE 0x00004000
     }
 
+    // CameraFX
     public PackFlag packFlags;
     public DataId did; // m_DID
     public float intensity; // mIntensity

@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class ProduceRecipeAction : IPackage {
+public class ProduceRecipeAction : IHeapObject {
 
     public PackageType packageType => PackageType.ProduceRecipeAction;
 

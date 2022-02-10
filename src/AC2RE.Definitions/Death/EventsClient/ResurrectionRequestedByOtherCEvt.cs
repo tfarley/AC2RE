@@ -12,7 +12,7 @@ public class ResurrectionRequestedByOtherCEvt : IClientEvent {
     }
 
     public ResurrectionRequestedByOtherCEvt(AC2Reader data) {
-        rezRequest = data.UnpackPackage<ResurrectionRequest>();
+        rezRequest = data.UnpackHeapObject<ResurrectionRequest>();
     }
 
     public void write(AC2Writer data) {

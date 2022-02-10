@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class DecalFX {
 
+    // DecalFX
     public DataId materialDid; // m_MaterialDID
     public Vector3 origin; // m_vOrigin
     public float lifetime; // m_fLifespan

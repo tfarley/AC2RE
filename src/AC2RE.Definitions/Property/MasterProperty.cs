@@ -14,6 +14,7 @@ public class MasterProperty {
         }
     }
 
+    // MasterProperty
     public DataId did; // m_DID
     public EnumMapper enumMapper; // m_emapper
     public Dictionary<PropertyName, BasePropertyDesc> properties; // m_properties

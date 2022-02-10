@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class HarmonizeRecipeAction : IPackage {
+public class HarmonizeRecipeAction : IHeapObject {
 
     public PackageType packageType => PackageType.HarmonizeRecipeAction;
 

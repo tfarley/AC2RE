@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class PhaseInfo : IPackage {
+public class PhaseInfo : IHeapObject {
 
     public PackageType packageType => PackageType.PhaseInfo;
 
@@ -12,9 +12,9 @@ public class PhaseInfo : IPackage {
     public StringInfo journalEntry; // m_siJournalEntry
 
     public PhaseInfo(AC2Reader data) {
-        data.ReadPkg<AList>(v => subquests = v.to<QuestId>());
+        data.ReadHO<AList>(v => subquests = v.to<QuestId>());
         phaseRange = data.ReadUInt32();
         subquestAny = data.ReadBoolean();
-        data.ReadPkg<StringInfo>(v => journalEntry = v);
+        data.ReadHO<StringInfo>(v => journalEntry = v);
     }
 }

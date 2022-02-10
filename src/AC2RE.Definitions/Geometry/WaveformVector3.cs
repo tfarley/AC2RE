@@ -2,9 +2,10 @@
 
 public class WaveformVector3 {
 
-    public Waveform x;
-    public Waveform y;
-    public Waveform z;
+    // WaveformVector3
+    public Waveform x; // x
+    public Waveform y; // y
+    public Waveform z; // z
 
     public WaveformVector3() {
 

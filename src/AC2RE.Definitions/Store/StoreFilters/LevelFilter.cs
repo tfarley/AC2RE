@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class LevelFilter : IPackage {
+public class LevelFilter : IHeapObject {
 
     public PackageType packageType => PackageType.LevelFilter;
 

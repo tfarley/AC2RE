@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class StringState {
 
+    // StringState
     public uint version; // version
     public ushort numberBase; // base
     public ushort numDecimalDigits; // numDecimalDigits

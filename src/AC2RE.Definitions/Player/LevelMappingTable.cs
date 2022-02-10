@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class LevelMappingTable : IPackage {
+public class LevelMappingTable : IHeapObject {
 
     public PackageType packageType => PackageType.LevelMappingTable;
 
@@ -15,8 +15,8 @@ public class LevelMappingTable : IPackage {
     public LevelMappingTable(AC2Reader data) {
         nonContiguous = data.ReadBoolean();
         maxLevel = data.ReadUInt32();
-        data.ReadPkg<LArray>(v => map = v);
-        data.ReadPkg<WPString>(v => name = v);
+        data.ReadHO<LArray>(v => map = v);
+        data.ReadHO<WPString>(v => name = v);
         minLevel = data.ReadUInt32();
     }
 }

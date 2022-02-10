@@ -13,7 +13,7 @@ public class UpdateFellowCEvt : IClientEvent {
     }
 
     public UpdateFellowCEvt(AC2Reader data) {
-        fellow = data.UnpackPackage<Fellow>();
+        fellow = data.UnpackHeapObject<Fellow>();
         fellowId = data.UnpackInstanceId();
     }
 

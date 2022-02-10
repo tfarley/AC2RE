@@ -3,7 +3,7 @@ using System.Text;
 
 namespace AC2RE.Definitions;
 
-public class StringInfo : IPackage {
+public class StringInfo : IHeapObject {
 
     public NativeType nativeType => NativeType.StringInfo;
 

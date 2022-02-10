@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class CustomFailureRecipeAction : IPackage {
+public class CustomFailureRecipeAction : IHeapObject {
 
     public PackageType packageType => PackageType.CustomFailureRecipeAction;
 

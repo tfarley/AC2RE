@@ -45,16 +45,16 @@ public class Skill : MasterListMember {
     public Flag flags; // m_skillFlags
 
     public Skill(AC2Reader data) : base(data) {
-        data.ReadPkg<StringInfo>(v => lore = v);
+        data.ReadHO<StringInfo>(v => lore = v);
         allowedSpecies = (SpeciesType)data.ReadUInt32();
         minCharLevel = data.ReadUInt32();
-        data.ReadPkg<AAHash>(v => barringSkillIds = v.to<SkillId, uint>());
+        data.ReadHO<AAHash>(v => barringSkillIds = v.to<SkillId, uint>());
         levelWhenTrained = data.ReadInt32();
-        data.ReadPkg<AAHash>(v => parentSkillIds = v.to<SkillId, uint>());
+        data.ReadHO<AAHash>(v => parentSkillIds = v.to<SkillId, uint>());
         combatSpeedModifier = data.ReadSingle();
         reqQuestId = (QuestId)data.ReadUInt32();
         allowedClasses = data.ReadInt32();
-        data.ReadPkg<AAHash>(v => prereqSkillIds = v.to<SkillId, uint>());
+        data.ReadHO<AAHash>(v => prereqSkillIds = v.to<SkillId, uint>());
         advMod = data.ReadSingle();
         minPkRating = data.ReadInt32();
         shouldStartTimerOnEffectFailure = data.ReadBoolean();
@@ -63,10 +63,10 @@ public class Skill : MasterListMember {
         heroCost = data.ReadUInt32();
         advCap = data.ReadInt32();
         allowedFactions = (FactionType)data.ReadUInt32();
-        data.ReadPkg<StringInfo>(v => description = v);
+        data.ReadHO<StringInfo>(v => description = v);
         cost = data.ReadUInt32();
         iconDid = data.ReadDataId();
-        data.ReadPkg<StringInfo>(v => name = v);
+        data.ReadHO<StringInfo>(v => name = v);
         flags = (Flag)data.ReadUInt32();
     }
 }

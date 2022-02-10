@@ -2,6 +2,7 @@
 
 public class CVertexArray {
 
+    // CVertexArray
     public BBox bbox; // bbox
     public VertexFormatInfo vertexFormat; // vertexFormat
     public byte[] vertexData; // numVertices + vertices

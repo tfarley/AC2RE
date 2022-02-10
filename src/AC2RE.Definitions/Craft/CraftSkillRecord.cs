@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class CraftSkillRecord : IPackage {
+public class CraftSkillRecord : IHeapObject {
 
     public PackageType packageType => PackageType.CraftSkillRecord;
 

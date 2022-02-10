@@ -14,7 +14,7 @@ public class DoSayCEvt : IClientEvent {
 
     public DoSayCEvt(AC2Reader data) {
         weenieChatFlags = data.UnpackUInt32();
-        text = data.UnpackPackage<StringInfo>();
+        text = data.UnpackHeapObject<StringInfo>();
     }
 
     public void write(AC2Writer data) {

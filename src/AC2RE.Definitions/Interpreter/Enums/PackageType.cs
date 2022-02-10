@@ -1,21 +1,166 @@
 ﻿namespace AC2RE.Definitions;
 
 // Dat file 56000005
+// Const *_NativeType, updated with gmCNativeFactory::GetNativeTypeName
 public enum PackageType : uint {
     Undef = 0,
-
+    AAHash = NativeType.AAHash,
+    AAHashIter = NativeType.AAHashIter,
+    AAMultiHash = NativeType.AAMultiHash,
+    AAMultiHashIter = NativeType.AAMultiHashIter,
+    AArray = NativeType.AArray,
+    AHashSet = NativeType.AHashSet,
+    AHashSetIter = NativeType.AHashSetIter,
+    ALHash = NativeType.ALHash,
+    ALHashIter = NativeType.ALHashIter,
+    AList = NativeType.AList,
+    AListIter = NativeType.AListIter,
+    ALMultiHash = NativeType.ALMultiHash,
+    ALMultiHashIter = NativeType.ALMultiHashIter,
+    AppearanceTableAdaptor = NativeType.AppearanceTableAdaptor,
+    AppInfoHash = NativeType.AppInfoHash,
+    AppliedAppearanceKey = NativeType.AppliedAppearanceKey,
+    ARHash = NativeType.ARHash,
+    ARHashIter = NativeType.ARHashIter,
+    ARMultiHash = NativeType.ARMultiHash,
+    ARMultiHashIter = NativeType.ARMultiHashIter,
     BalanceExceptionList = 21, // BalanceExceptionList
+    BaseProperty = NativeType.BaseProperty,
+    BehaviorParams = NativeType.BehaviorParams,
+    CDBForm = NativeType.CDBForm,
+    CollideProperty = NativeType.CollideProperty,
+    CollisionParameters = NativeType.CollisionParameters,
+    CollisionProfile = NativeType.CollisionProfile,
+
+    DetectionParameters = NativeType.DetectionParameters,
+    DetectionProfile = NativeType.DetectionProfile,
+    DetectionReportType = NativeType.DetectionReportType,
+
+    EntityDesc = NativeType.EntityDesc,
+
+    EtherealPhysicsType = NativeType.EtherealPhysicsType,
+    EtherealWeenieType = NativeType.EtherealWeenieType,
+
+    PFileNode = NativeType.PFileNode,
+    PFileParser = NativeType.PFileParser,
+    Frame = NativeType.Frame,
+    FXAndBehaviorInfo = NativeType.FXAndBehaviorInfo,
+    GameTime = NativeType.GameTime,
+    Heading = NativeType.Heading,
+    IconDesc = NativeType.IconDesc,
 
     IPreproc = 49, // IPreproc
+    LAHash = NativeType.LAHash,
+    LAHashIter = NativeType.LAHashIter,
+    LAMultiHash = NativeType.LAMultiHash,
+    LAMultiHashIter = NativeType.LAMultiHashIter,
+
+    LArray = NativeType.LArray,
+    LinkRequirements = NativeType.LinkRequirements,
+    LLHash = NativeType.LLHash,
+    LLHashIter = NativeType.LLHashIter,
+    LList = NativeType.LList,
+    LListIter = NativeType.LListIter,
+    LLMultiHash = NativeType.LLMultiHash,
+    LLMultiHashIter = NativeType.LLMultiHashIter,
+    LOSParameters = NativeType.LOSParameters,
+    LRHash = NativeType.LRHash,
+    LRHashIter = NativeType.LRHashIter,
+    LRMultiHash = NativeType.LRMultiHash,
+    LRMultiHashIter = NativeType.LRMultiHashIter,
+
+    MissileInfo = NativeType.MissileInfo,
+    MissileParameters = NativeType.MissileParameters,
+    MissileTargetingParameters = NativeType.MissileTargetingParameters,
+    MotionValues = NativeType.MotionValues,
+    MovementParameters = NativeType.MovementParameters,
+    MovementReturn = NativeType.MovementReturn,
+    NAHash = NativeType.NAHash,
+    NAHashIter = NativeType.NAHashIter,
+    NRHash = NativeType.NRHash,
+    NRHashIter = NativeType.NRHashIter,
+    ObjCollisionProfile = NativeType.ObjCollisionProfile,
+    PackBuffer = NativeType.PackBuffer,
+    Path = NativeType.Path,
+    PathFinder = NativeType.PathFinder,
+    PathFinder_Normal = NativeType.PathFinder_Normal,
+    PathNodeData = NativeType.PathNodeData,
+
+    PhysicsStory = NativeType.PhysicsStory,
+    PlacesTable = NativeType.PlacesTable,
+    Plane = NativeType.Plane,
+    Position = NativeType.Position,
+    PropertyCollection = NativeType.PropertyCollection,
+    PropertyGroup = NativeType.PropertyGroup,
+
+    QualifiedDataIDArray = NativeType.QualifiedDataIDArray,
+
+    RandomSelectionTable_Int = NativeType.RandomSelectionTable_Int,
+    RArray = NativeType.RArray,
+    Ray = NativeType.Ray,
+
+    RGBAColor = NativeType.RGBAColor,
+    RList = NativeType.RList,
+    RListIter = NativeType.RListIter,
+    SetPositionStruct = NativeType.SetPositionStruct,
+    Sphere = NativeType.Sphere,
+    StoryHookData = NativeType.StoryHookData,
+    StringInfo = NativeType.StringInfo,
+    TabooTableAdaptor = NativeType.TabooTableAdaptor,
+
+    UISaveLocations = NativeType.UISaveLocations,
+    Vector = NativeType.Vector,
+    VisualDesc = NativeType.VisualDesc,
+
+    VMData = NativeType.VMData,
+
+    wpstring = NativeType.wpstring,
+    WState = NativeType.WState,
+    CRSData = NativeType.CRSData,
+    PathPlanManager = NativeType.PathPlanManager,
+
+    WBookKeeper = NativeType.WBookKeeper,
+    WDistributor = NativeType.WDistributor,
+    WInterface = NativeType.WInterface,
+    WPhysicsObject = NativeType.WPhysicsObject,
+    WRepository = NativeType.WRepository,
+    AllegianceDataAdaptor = NativeType.AllegianceDataAdaptor,
+    AllegianceProfileAdaptor = NativeType.AllegianceProfileAdaptor,
+
+    FellowAdaptor = NativeType.FellowAdaptor,
+    FellowshipAdaptor = NativeType.FellowshipAdaptor,
 
     CharacterGenSystem = 150, // CharacterGenSystem
-
+    DamageTextBlob = NativeType.DamageTextBlob,
+    EffectUINode = NativeType.EffectUINode,
+    ExaminationProfile = NativeType.ExaminationProfile,
+    ExaminationRequest = NativeType.ExaminationRequest,
+    GameplayOptionsProfile = NativeType.GameplayOptionsProfile,
+    gmActInfo = NativeType.gmActInfo,
+    gmActInfoList = NativeType.gmActInfoList,
+    gmCharGenResult = NativeType.gmCharGenResult,
+    gmKeyframe = NativeType.gmKeyframe,
+    gmQuestInfo = NativeType.gmQuestInfo,
+    gmQuestInfoList = NativeType.gmQuestInfoList,
+    gmRaceSexInfo = NativeType.gmRaceSexInfo,
+    gmSceneInfo = NativeType.gmSceneInfo,
+    gmSceneInfoList = NativeType.gmSceneInfoList,
+    IngredientAdaptor = NativeType.IngredientAdaptor,
     InventoryGlobals = 166, // InventoryGlobals
 
     QuestGlobals = 168, // QuestGlobals
     RadarControl = 169, // RadarControl
-
+    RecipeAdaptor = NativeType.RecipeAdaptor,
+    SelectionInfo = NativeType.SelectionInfo,
+    ShortcutInfo = NativeType.ShortcutInfo,
     SkillPanelManager = 173, // SkillPanelManager
+    SkillUINode = NativeType.SkillUINode,
+    TurbineUserStatus = NativeType.TurbineUserStatus,
+
+    CliqueConstraints = NativeType.CliqueConstraints,
+    CliqueManager = NativeType.CliqueManager,
+
+    gmWInterface = NativeType.gmWInterface,
 
     Agent = 183, // Agent
 
@@ -4130,7 +4275,27 @@ public enum PackageType : uint {
     StrictAliasControl = 6845, // StrictAliasControl
     UIDamageControl = 6846, // UIDamageControl
     CEntity = 6847, // CEntity
+    DBCache = NativeType.DBCache,
 
+    CRSDataBase = NativeType.CRSDataBase,
+    AAMultiMap = NativeType.AAMultiMap,
+    AAMultiMapIter = NativeType.AAMultiMapIter,
+    ALMultiMap = NativeType.ALMultiMap,
+    ALMultiMapIter = NativeType.ALMultiMapIter,
+    EntityLinkDesc = NativeType.EntityLinkDesc,
+    LAHashSet = NativeType.LAHashSet,
+    LAHashSetIter = NativeType.LAHashSetIter,
+    LAMultiMap = NativeType.LAMultiMap,
+    LAMultiMapIter = NativeType.LAMultiMapIter,
+    LLMultiMap = NativeType.LLMultiMap,
+    LLMultiMapIter = NativeType.LLMultiMapIter,
+
+    CaseInsensitiveWPString = NativeType.CaseInsensitiveWPString,
+
+    CraftSkillAdaptor = NativeType.CraftSkillAdaptor,
+
+    UIShop = NativeType.UIShop,
+    UIShopSale = NativeType.UIShopSale,
     Monster = 6872, // Monster
 
     PetGenesisInfo = 6897, // PetGenesisInfo
@@ -8903,6 +9068,7 @@ public enum PackageType : uint {
     Emp_Me_Templar_AutoAttack_CourageInArms4 = 13172, // Emp_Me_Templar_AutoAttack_CourageInArms4
     Emp_Me_Templar_AutoAttack_CourageInArms5 = 13173, // Emp_Me_Templar_AutoAttack_CourageInArms5
     Emp_Me_Templar_Hero_AttrDamage = 13174, // Emp_Me_Templar_Hero_AttrDamage
+    GRSManager = NativeType.GRSManager, // NOTE: Duplicate
     Emp_Me_Templar_Hero_AttrFocus = 13175, // Emp_Me_Templar_Hero_AttrFocus
     Emp_Me_Templar_Hero_AttrHealth = 13176, // Emp_Me_Templar_Hero_AttrHealth
     Emp_Me_Templar_Hero_AttrLore = 13177, // Emp_Me_Templar_Hero_AttrLore

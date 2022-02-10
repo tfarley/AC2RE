@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class Operation : IPackage {
+public class Operation : IHeapObject {
 
     public PackageType packageType => PackageType.Operation;
 

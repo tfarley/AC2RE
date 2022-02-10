@@ -9,7 +9,7 @@ public class RequestSetPetNameSEvt : IServerEvent {
     public InstanceId petId; // _iidPet
 
     public RequestSetPetNameSEvt(AC2Reader data) {
-        petName = data.UnpackPackage<WPString>();
+        petName = data.UnpackHeapObject<WPString>();
         petId = data.UnpackInstanceId();
     }
 }

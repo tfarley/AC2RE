@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class ItemInteractionOutcome : IPackage {
+public class ItemInteractionOutcome : IHeapObject {
 
     public PackageType packageType => PackageType.ItemInteractionOutcome;
 
@@ -18,7 +18,7 @@ public class ItemInteractionOutcome : IPackage {
     public Flag flags; // m_uiFlags
 
     public ItemInteractionOutcome(AC2Reader data) {
-        data.ReadPkg<StringInfo>(v => messageText = v);
+        data.ReadHO<StringInfo>(v => messageText = v);
         flags = (Flag)data.ReadUInt32();
     }
 }

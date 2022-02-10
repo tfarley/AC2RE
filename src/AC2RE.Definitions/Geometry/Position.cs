@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class Position : IPackage {
+public class Position : IHeapObject {
 
     public NativeType nativeType => NativeType.Position;
 

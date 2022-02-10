@@ -41,7 +41,7 @@ internal class DatParse {
                         if (relatedDbType == DbType.ENTITYDESC) {
                             using (AC2Reader relatedData = portalDatReader.getFileReader(entityDesc.dataId)) {
                                 EntityDesc relatedEntityDesc = new(relatedData);
-                                if (PackageManager.isPackageType(relatedEntityDesc.packageType, PackageType.MonsterTemplate) && entityDesc.properties != null) {
+                                if (PackageTypes.isPackageType(relatedEntityDesc.packageType, PackageType.MonsterTemplate) && entityDesc.properties != null) {
                                     string? name = null;
                                     string? description = null;
                                     foreach (PropertyGroup propertyGroup in entityDesc.properties.groups) {
@@ -72,7 +72,7 @@ internal class DatParse {
             if (dbType == DbType.WSTATE) {
                 using (AC2Reader data = portalDatReader.getFileReader(did)) {
                     WState wstate = new(data);
-                    if (PackageManager.isPackageType(wstate.packageType, PackageType.Skill)) {
+                    if (PackageTypes.isPackageType(wstate.packageType, PackageType.Skill)) {
                         Skill skill = (Skill)wstate.package;
                         SkillId skillId = (SkillId)skill.enumVal;
                         skillIdToDid[skillId] = did;
@@ -92,7 +92,7 @@ internal class DatParse {
             if (dbType == DbType.WSTATE) {
                 using (AC2Reader data = portalDatReader.getFileReader(did)) {
                     WState wstate = new(data);
-                    if (PackageManager.isPackageType(wstate.packageType, PackageType.Effect)) {
+                    if (PackageTypes.isPackageType(wstate.packageType, PackageType.Effect)) {
                         didToEffect[did] = (Effect)wstate.package;
                     }
                 }
@@ -127,7 +127,7 @@ internal class DatParse {
         if (datType == DbTypeDef.DatType.PORTAL) {
             // Parse data in first pass that is required for second pass
             MasterProperty.loadMasterProperties(datReader);
-            PackageManager.loadPackageTypes(datReader);
+            PackageTypes.loadPackageTypes(datReader);
         }
 
         int numFiles = 0;
@@ -295,7 +295,7 @@ internal class DatParse {
                 readAndDump(datReader, did, outputPath, data => new GameTime(data));
                 break;
             case DbType.INPUTMAPPER:
-                readAndDump(datReader, did, outputPath, data => new EnumIDMap(data));
+                readAndDump(datReader, did, outputPath, data => new EnumIdMap(data));
                 break;
             case DbType.KEYMAP:
                 readAndDump(datReader, did, outputPath, data => new CKeyMap(data));

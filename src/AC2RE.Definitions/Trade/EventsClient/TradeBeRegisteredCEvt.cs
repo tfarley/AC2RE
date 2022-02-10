@@ -14,7 +14,7 @@ public class TradeBeRegisteredCEvt : IClientEvent {
     }
 
     public TradeBeRegisteredCEvt(AC2Reader data) {
-        partnerName = data.UnpackPackage<StringInfo>();
+        partnerName = data.UnpackHeapObject<StringInfo>();
         slaveId = data.UnpackInstanceId();
         masterId = data.UnpackInstanceId();
     }

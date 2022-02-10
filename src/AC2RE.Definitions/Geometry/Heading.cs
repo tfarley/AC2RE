@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class Heading : IPackage {
+public class Heading : IHeapObject {
 
     public NativeType nativeType => NativeType.Heading;
 

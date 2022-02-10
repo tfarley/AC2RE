@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class StartArea : IPackage {
+public class StartArea : IHeapObject {
 
     public PackageType packageType => PackageType.StartArea;
 
@@ -12,7 +12,7 @@ public class StartArea : IPackage {
 
     public StartArea(AC2Reader data) {
         startingLocType = data.ReadUInt32();
-        data.ReadPkg<RList>(v => positions = v.to<Position>());
-        data.ReadPkg<WPString>(v => description = v);
+        data.ReadHO<RList>(v => positions = v.to<Position>());
+        data.ReadHO<WPString>(v => description = v);
     }
 }

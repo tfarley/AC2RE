@@ -8,6 +8,6 @@ public class AcceptTradeSEvt : IServerEvent {
     public Trade trade; // _stuff
 
     public AcceptTradeSEvt(AC2Reader data) {
-        trade = data.UnpackPackage<Trade>();
+        trade = data.UnpackHeapObject<Trade>();
     }
 }

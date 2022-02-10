@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class ConsignerDesc : IPackage {
+public class ConsignerDesc : IHeapObject {
 
     public PackageType packageType => PackageType.ConsignerDesc;
 
@@ -15,14 +15,14 @@ public class ConsignerDesc : IPackage {
     }
 
     public ConsignerDesc(AC2Reader data) {
-        data.ReadPkg<StringInfo>(v => locationName = v);
-        data.ReadPkg<RList>(v => consignments = v.to<Consignment>());
+        data.ReadHO<StringInfo>(v => locationName = v);
+        data.ReadHO<RList>(v => consignments = v.to<Consignment>());
         catalogDid = data.ReadDataId();
     }
 
     public void write(AC2Writer data) {
-        data.WritePkg(locationName);
-        data.WritePkg(RList.from(consignments));
+        data.WriteHO(locationName);
+        data.WriteHO(RList.from(consignments));
         data.Write(catalogDid);
     }
 }

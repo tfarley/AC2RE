@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public struct PositionOffset {
 
+    // PositionOffset
     public CellId cell; // m_cid
     public Vector3 offset; // m_offset
 

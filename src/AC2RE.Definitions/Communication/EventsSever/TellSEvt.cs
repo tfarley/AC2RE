@@ -11,7 +11,7 @@ public class TellSEvt : IServerEvent {
 
     public TellSEvt(AC2Reader data) {
         weenieChatFlags = data.UnpackUInt32();
-        text = data.UnpackPackage<StringInfo>();
-        telleeName = data.UnpackPackage<StringInfo>();
+        text = data.UnpackHeapObject<StringInfo>();
+        telleeName = data.UnpackHeapObject<StringInfo>();
     }
 }

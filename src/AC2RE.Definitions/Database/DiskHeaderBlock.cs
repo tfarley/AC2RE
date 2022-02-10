@@ -2,6 +2,7 @@
 
 public class DiskHeaderBlock {
 
+    // DiskHeaderBlock_t
     public byte[] acVersionString; // acVersionStr_
     public DiskTransactInfo transactInfo; // TransactInfo_
     public DiskFileInfo fileInfo; // FileInfo_

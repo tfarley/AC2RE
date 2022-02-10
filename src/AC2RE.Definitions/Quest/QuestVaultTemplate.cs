@@ -7,6 +7,6 @@ public class QuestVaultTemplate : QuestTemplate {
     public WPString stringTableName; // m_stringTableName
 
     public QuestVaultTemplate(AC2Reader data) : base(data) {
-        data.ReadPkg<WPString>(v => stringTableName = v);
+        data.ReadHO<WPString>(v => stringTableName = v);
     }
 }

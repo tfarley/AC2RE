@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class PropertyCollection : IPackage {
+public class PropertyCollection : IHeapObject {
 
     public NativeType nativeType => NativeType.PropertyCollection;
 

@@ -34,11 +34,11 @@ public class InstantVitalEffect : Effect {
     public Flag instantVitalFlags => (Flag)flags;
 
     public InstantVitalEffect(AC2Reader data) : base(data) {
-        data.ReadPkg<RArray>(v => lowBounds = v.to<FloatScaleDuple>());
-        data.ReadPkg<Effect>(v => hateComboEffect = v);
-        data.ReadPkg<RArray>(v => changeData = v.to<FloatScaleDuple>());
+        data.ReadHO<RArray>(v => lowBounds = v.to<FloatScaleDuple>());
+        data.ReadHO<Effect>(v => hateComboEffect = v);
+        data.ReadHO<RArray>(v => changeData = v.to<FloatScaleDuple>());
         initialChangeVar = data.ReadSingle();
-        data.ReadPkg<RArray>(v => highBounds = v.to<FloatScaleDuple>());
-        data.ReadPkg<Effect>(v => hateLinkerEffect = v);
+        data.ReadHO<RArray>(v => highBounds = v.to<FloatScaleDuple>());
+        data.ReadHO<Effect>(v => hateLinkerEffect = v);
     }
 }

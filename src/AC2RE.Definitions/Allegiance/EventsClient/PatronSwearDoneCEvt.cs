@@ -15,7 +15,7 @@ public class PatronSwearDoneCEvt : IClientEvent {
 
     public PatronSwearDoneCEvt(AC2Reader data) {
         error = (ErrorType)data.UnpackUInt32();
-        vassalName = data.UnpackPackage<StringInfo>();
+        vassalName = data.UnpackHeapObject<StringInfo>();
         vassalId = data.UnpackInstanceId();
     }
 

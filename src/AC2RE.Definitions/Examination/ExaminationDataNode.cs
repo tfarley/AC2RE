@@ -22,6 +22,7 @@ public class ExaminationDataNode {
         EffectID = 0x4000000C, // EffectID_ExaminationDataType
     }
 
+    // ExaminationDataNode
     public DataType type; // _type
     public uint order; // _order
     public int valInt; // valInt

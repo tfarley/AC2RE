@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AC2RE.Definitions;
 
-public class EffectRegistry : IPackage {
+public class EffectRegistry : IHeapObject {
 
     public PackageType packageType => PackageType.EffectRegistry;
 
@@ -36,34 +36,34 @@ public class EffectRegistry : IPackage {
     }
 
     public EffectRegistry(AC2Reader data) {
-        data.ReadPkg<AAHash>(v => qualitiesModifiedCount = v);
-        data.ReadPkg<AAHash>(v => appliedFx = v.to<FxId, uint>());
-        data.ReadPkg<EffectRegistry>(v => baseEffectRegistry = v);
+        data.ReadHO<AAHash>(v => qualitiesModifiedCount = v);
+        data.ReadHO<AAHash>(v => appliedFx = v.to<FxId, uint>());
+        data.ReadHO<EffectRegistry>(v => baseEffectRegistry = v);
         effectIdCounter = data.ReadUInt32();
-        data.ReadPkg<ARHash>(v => effectInfo = v.to<EffectId, EffectRecord>());
+        data.ReadHO<ARHash>(v => effectInfo = v.to<EffectId, EffectRecord>());
         lastPulseTime = data.ReadDouble();
-        data.ReadPkg<AList>(v => equipperEffectIds = v.to<EffectId>());
-        data.ReadPkg<AList>(v => acquirerEffectIds = v.to<EffectId>());
+        data.ReadHO<AList>(v => equipperEffectIds = v.to<EffectId>());
+        data.ReadHO<AList>(v => acquirerEffectIds = v.to<EffectId>());
         flags = (Flag)data.ReadUInt32();
-        data.ReadPkg<AHashSet>(v => trackedEffects = v);
-        data.ReadPkg<AAHash>(v => topEffects = v.to<uint, EffectId>());
-        data.ReadPkg<AAMultiHash>(v => effectCategorizationTable = v.to<uint, EffectId>());
-        data.ReadPkg<AAHash>(v => appliedAppearances = v);
+        data.ReadHO<AHashSet>(v => trackedEffects = v);
+        data.ReadHO<AAHash>(v => topEffects = v.to<uint, EffectId>());
+        data.ReadHO<AAMultiHash>(v => effectCategorizationTable = v.to<uint, EffectId>());
+        data.ReadHO<AAHash>(v => appliedAppearances = v);
     }
 
     public void write(AC2Writer data) {
-        data.WritePkg(AAHash.from(qualitiesModifiedCount));
-        data.WritePkg(AAHash.from(appliedFx));
-        data.WritePkg(baseEffectRegistry);
+        data.WriteHO(AAHash.from(qualitiesModifiedCount));
+        data.WriteHO(AAHash.from(appliedFx));
+        data.WriteHO(baseEffectRegistry);
         data.Write(effectIdCounter);
-        data.WritePkg(ARHash.from(effectInfo));
+        data.WriteHO(ARHash.from(effectInfo));
         data.Write(lastPulseTime);
-        data.WritePkg(AList.from(equipperEffectIds));
-        data.WritePkg(AList.from(acquirerEffectIds));
+        data.WriteHO(AList.from(equipperEffectIds));
+        data.WriteHO(AList.from(acquirerEffectIds));
         data.Write((uint)flags);
-        data.WritePkg(AHashSet.from(trackedEffects));
-        data.WritePkg(AAHash.from(topEffects));
-        data.WritePkg(AAMultiHash.from(effectCategorizationTable));
-        data.WritePkg(AAHash.from(appliedAppearances));
+        data.WriteHO(AHashSet.from(trackedEffects));
+        data.WriteHO(AAHash.from(topEffects));
+        data.WriteHO(AAMultiHash.from(effectCategorizationTable));
+        data.WriteHO(AAHash.from(appliedAppearances));
     }
 }

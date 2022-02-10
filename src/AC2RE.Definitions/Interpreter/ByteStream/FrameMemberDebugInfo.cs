@@ -16,6 +16,7 @@ public class FrameMemberDebugInfo {
         Package, // fmPackage_Type
     }
 
+    // FrameMemberDebugInfo
     public int offset; // Offset
     public FrameMemberType type; // Type
     public VarFlag flags; // Flags

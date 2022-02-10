@@ -9,7 +9,7 @@ public class BookEffect : ParameterizedNumericEffect {
     public DataId imageDid; // m_didImage
 
     public BookEffect(AC2Reader data) : base(data) {
-        data.ReadPkg<StringInfo>(v => bookSource = v);
+        data.ReadHO<StringInfo>(v => bookSource = v);
         controls = data.ReadBoolean();
         imageDid = data.ReadDataId();
     }

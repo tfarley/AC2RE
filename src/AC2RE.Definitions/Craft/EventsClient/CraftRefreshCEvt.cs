@@ -12,7 +12,7 @@ public class CraftRefreshCEvt : IClientEvent {
     }
 
     public CraftRefreshCEvt(AC2Reader data) {
-        craftRegistry = data.UnpackPackage<CraftRegistry>();
+        craftRegistry = data.UnpackHeapObject<CraftRegistry>();
     }
 
     public void write(AC2Writer data) {

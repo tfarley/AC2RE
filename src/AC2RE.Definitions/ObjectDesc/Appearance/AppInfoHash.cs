@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class AppInfoHash : Dictionary<DataId, Dictionary<AppearanceKey, float>>, IPackage {
+public class AppInfoHash : Dictionary<DataId, Dictionary<AppearanceKey, float>>, IHeapObject {
 
     public NativeType nativeType => NativeType.AppInfoHash;
 

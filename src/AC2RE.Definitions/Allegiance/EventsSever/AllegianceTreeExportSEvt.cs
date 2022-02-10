@@ -8,6 +8,6 @@ public class AllegianceTreeExportSEvt : IServerEvent {
     public WPString fileName; // _filename
 
     public AllegianceTreeExportSEvt(AC2Reader data) {
-        fileName = data.UnpackPackage<WPString>();
+        fileName = data.UnpackHeapObject<WPString>();
     }
 }

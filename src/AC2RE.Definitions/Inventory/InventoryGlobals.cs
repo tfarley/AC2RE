@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class InventoryGlobals : IPackage {
+public class InventoryGlobals : IHeapObject {
 
     public PackageType packageType => PackageType.InventoryGlobals;
 

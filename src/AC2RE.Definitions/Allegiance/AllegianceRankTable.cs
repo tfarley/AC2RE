@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class AllegianceRankTable : IPackage {
+public class AllegianceRankTable : IHeapObject {
 
     public PackageType packageType => PackageType.AllegianceRankTable;
 
@@ -11,6 +11,6 @@ public class AllegianceRankTable : IPackage {
 
     public AllegianceRankTable(AC2Reader data) {
         setupOK = data.ReadBoolean();
-        data.ReadPkg<ARHash>(v => rankHash = v.to<uint, StringInfo>());
+        data.ReadHO<ARHash>(v => rankHash = v.to<uint, StringInfo>());
     }
 }

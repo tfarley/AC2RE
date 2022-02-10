@@ -10,7 +10,7 @@ public class SlayerEffect : Effect {
     public float slayerVariance; // m_fVariance
 
     public SlayerEffect(AC2Reader data) : base(data) {
-        data.ReadPkg<AAHash>(v => slayerHash = v);
+        data.ReadHO<AAHash>(v => slayerHash = v);
         slayerVariance = data.ReadSingle();
     }
 }

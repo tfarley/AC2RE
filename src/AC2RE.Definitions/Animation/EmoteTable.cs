@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class EmoteTable : IPackage {
+public class EmoteTable : IHeapObject {
 
     public PackageType packageType => PackageType.EmoteTable;
 
@@ -10,7 +10,7 @@ public class EmoteTable : IPackage {
     public bool setupOK; // _setupOK
 
     public EmoteTable(AC2Reader data) {
-        data.ReadPkg<ARHash>(v => emoteHash = v.to<uint, EmoteInfo>());
+        data.ReadHO<ARHash>(v => emoteHash = v.to<uint, EmoteInfo>());
         setupOK = data.ReadBoolean();
     }
 }

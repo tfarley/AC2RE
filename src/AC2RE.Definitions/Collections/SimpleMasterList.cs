@@ -3,13 +3,13 @@
 namespace AC2RE.Definitions;
 
 // TODO: Make this generic for the ARHash?
-public class SimpleMasterList : IPackage {
+public class SimpleMasterList : IHeapObject {
 
     public virtual PackageType packageType => PackageType.SimpleMasterList;
 
-    public Dictionary<uint, IPackage> map; // mMap
+    public Dictionary<uint, IHeapObject> map; // mMap
 
     public SimpleMasterList(AC2Reader data) {
-        data.ReadPkg<ARHash>(v => map = v);
+        data.ReadHO<ARHash>(v => map = v);
     }
 }

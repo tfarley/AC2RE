@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class InvMoveDesc : IPackage {
+public class InvMoveDesc : IHeapObject {
 
     public PackageType packageType => PackageType.InvMoveDesc;
 
@@ -80,7 +80,7 @@ public class InvMoveDesc : IPackage {
         quantity = data.ReadUInt32();
         generatorRequest = data.ReadBoolean();
         splitItemId = data.ReadInstanceId();
-        data.ReadPkg<AAHash>(v => itemAppearances = v.to<AppearanceKey, float>());
+        data.ReadHO<AAHash>(v => itemAppearances = v.to<AppearanceKey, float>());
         noAnim = data.ReadBoolean();
         mergeContainerId = data.ReadInstanceId();
         usedOverflowSlot = data.ReadBoolean();
@@ -126,7 +126,7 @@ public class InvMoveDesc : IPackage {
         data.Write(quantity);
         data.Write(generatorRequest);
         data.Write(splitItemId);
-        data.WritePkg(AAHash.from(itemAppearances));
+        data.WriteHO(AAHash.from(itemAppearances));
         data.Write(noAnim);
         data.Write(mergeContainerId);
         data.Write(usedOverflowSlot);

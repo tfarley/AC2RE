@@ -6,6 +6,7 @@ public class CSetup {
 
     public class BoneInfo {
 
+        // BoneInfo
         public uint id; // id
         public uint parentIndex; // parent_index
 
@@ -17,6 +18,7 @@ public class CSetup {
 
     public class PlacementFrame {
 
+        // PlacementFrame
         public uint id; // id (HashBaseData)
         public List<TransformBase> keyframes; // keyFrame
 
@@ -28,6 +30,7 @@ public class CSetup {
 
     public class LocationType {
 
+        // LocationType
         public uint id; // id (HashBaseData)
         public uint boneIndex; // bone_index
         public TransformBase transform; // transform
@@ -43,6 +46,7 @@ public class CSetup {
 
         public class DLDegradeInfo {
 
+            // DLDegradeInfo
             public float visibleDistance; // m_fVisibleDistance
             public float nearDegradeDistance; // m_fNearDegradeDistance
             public float idealDegradeDistance; // m_fIdealDegradeDistance
@@ -60,6 +64,7 @@ public class CSetup {
             }
         }
 
+        // DegradeInfo
         public DLDegradeInfo[] degradeInfos; // m_DLDegradeInfo
 
         public DegradeInfo(AC2Reader data) {
@@ -87,6 +92,7 @@ public class CSetup {
         INVALID = 0x7FFFFFFF, // SHADOWTYPE_INVALID
     }
 
+    // CSetup
     public DataId did; // m_DID
     public List<DataId> meshes; // num_mesh + mesh_info
     public List<BoneInfo> bones; // num_bones + bone_info

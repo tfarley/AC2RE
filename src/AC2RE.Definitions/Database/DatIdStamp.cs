@@ -2,6 +2,7 @@
 
 public class DatIdStamp {
 
+    // DatIdStamp
     public GUID majorVersion; // _maj_vnum
     public uint minorVersion; // _min_vnum
 

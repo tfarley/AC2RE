@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class ItemEffectRecipeAction : IPackage {
+public class ItemEffectRecipeAction : IHeapObject {
 
     public PackageType packageType => PackageType.ItemEffectRecipeAction;
 
@@ -28,7 +28,7 @@ public class ItemEffectRecipeAction : IPackage {
         ordinal = data.ReadUInt32();
         timeout = data.ReadSingle();
         spellcraft = data.ReadSingle();
-        data.ReadPkg<Effect>(v => effect = v);
+        data.ReadHO<Effect>(v => effect = v);
         effectKind = data.ReadInt32();
         flags = (Flag)data.ReadUInt32();
         mappingTableDid = data.ReadDataId();

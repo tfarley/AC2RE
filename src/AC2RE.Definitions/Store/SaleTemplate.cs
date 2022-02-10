@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AC2RE.Definitions;
 
-public class SaleTemplate : IPackage {
+public class SaleTemplate : IHeapObject {
 
     public PackageType packageType => PackageType.SaleTemplate;
 
@@ -26,7 +26,7 @@ public class SaleTemplate : IPackage {
     public SaleTemplate(AC2Reader data) {
         ordinal = data.ReadUInt32();
         productDid = data.ReadDataId();
-        data.ReadPkg<AAHash>(v => requiredQuests = v.to<QuestId, uint>());
+        data.ReadHO<AAHash>(v => requiredQuests = v.to<QuestId, uint>());
         cost = data.ReadSingle();
         race = (SpeciesType)data.ReadUInt32();
         tradeDid = data.ReadDataId();

@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class Ray : IPackage {
+public class Ray : IHeapObject {
 
     public NativeType nativeType => NativeType.Ray;
 

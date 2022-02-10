@@ -18,8 +18,8 @@ public class OpenContainerDoneCEvt : IClientEvent {
 
     public OpenContainerDoneCEvt(AC2Reader data) {
         status = (ErrorType)data.UnpackUInt32();
-        containerIds = data.UnpackPackage<LList>().to<InstanceId>();
-        contentIds = data.UnpackPackage<LList>().to<InstanceId>();
+        containerIds = data.UnpackHeapObject<LList>().to<InstanceId>();
+        contentIds = data.UnpackHeapObject<LList>().to<InstanceId>();
         containerId = data.UnpackInstanceId();
     }
 

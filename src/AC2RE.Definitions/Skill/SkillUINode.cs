@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class SkillUINode : IPackage {
+public class SkillUINode : IHeapObject {
 
     public NativeType nativeType => NativeType.SkillUINode;
 

@@ -27,13 +27,13 @@ public class ComboEffect : Effect {
     public Flag comboFlags => (Flag)flags;
 
     public ComboEffect(AC2Reader data) : base(data) {
-        data.ReadPkg<Effect>(v => effectToGiveBackIfNotPresent = v);
-        data.ReadPkg<Effect>(v => effectToGiveBackIfPresent = v);
-        data.ReadPkg<Effect>(v => effectToAddIfPresent = v);
-        data.ReadPkg<AList>(v => effectPresentByClass = v);
-        data.ReadPkg<AList>(v => effectPresentByType = v);
+        data.ReadHO<Effect>(v => effectToGiveBackIfNotPresent = v);
+        data.ReadHO<Effect>(v => effectToGiveBackIfPresent = v);
+        data.ReadHO<Effect>(v => effectToAddIfPresent = v);
+        data.ReadHO<AList>(v => effectPresentByClass = v);
+        data.ReadHO<AList>(v => effectPresentByType = v);
         spellcraftAdjustmentIfNotPresent = data.ReadInt32();
         spellcraftAdjustmentIfPresent = data.ReadInt32();
-        data.ReadPkg<Effect>(v => effectToAddIfNotPresent = v);
+        data.ReadHO<Effect>(v => effectToAddIfNotPresent = v);
     }
 }

@@ -225,6 +225,7 @@ public class MediaDesc {
         }
     }
 
+    // MediaDesc
     public MediaType type; // m_type
     public IWritable mediaData;
 

@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class Sphere {
 
+    // Sphere
     public Vector3 center; // center
     public float radius; // radius
 

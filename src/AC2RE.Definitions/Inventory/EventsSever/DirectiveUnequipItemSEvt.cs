@@ -8,6 +8,6 @@ public class DirectiveUnequipItemSEvt : IServerEvent {
     public InvEquipDesc equipDesc; // _eDesc
 
     public DirectiveUnequipItemSEvt(AC2Reader data) {
-        equipDesc = data.UnpackPackage<InvEquipDesc>();
+        equipDesc = data.UnpackHeapObject<InvEquipDesc>();
     }
 }

@@ -12,7 +12,7 @@ public class UpdateCraftSkillDoneCEvt : IClientEvent {
     }
 
     public UpdateCraftSkillDoneCEvt(AC2Reader data) {
-        craftSkillRecord = data.UnpackPackage<CraftSkillRecord>();
+        craftSkillRecord = data.UnpackHeapObject<CraftSkillRecord>();
     }
 
     public void write(AC2Writer data) {

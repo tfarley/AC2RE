@@ -267,7 +267,14 @@ public static class PdbPrinter {
             sb.Append(accessToString(access))
                 .Append(' ');
         }
-        sb.Append(functionInfo.functionSymbol.name)
+        if (functionInfo.functionSymbol.type != null && functionInfo.functionSymbol.type.typeId != 0) {
+            sb.Append(typeToString(functionInfo.functionSymbol.type.type));
+        } else {
+            // TODO: Figure out how to get correct type
+            sb.Append("ERROR_UNKTYPE");
+        }
+        sb.Append(' ')
+            .Append(functionInfo.functionSymbol.name)
             .Append('(');
         for (int i = 0; i < functionInfo.argSymbols.Count; i++) {
             IDiaSymbol argSymbol = functionInfo.argSymbols[i];

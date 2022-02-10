@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AC2RE.Definitions;
 
-public class RList : List<IPackage>, IPackage {
+public class RList : List<IHeapObject>, IHeapObject {
 
     public NativeType nativeType => NativeType.RList;
 
@@ -11,7 +11,7 @@ public class RList : List<IPackage>, IPackage {
         return to(v => (T)v);
     }
 
-    public List<T> to<T>(Func<IPackage, T> elementConversion) {
+    public List<T> to<T>(Func<IHeapObject, T> elementConversion) {
         List<T> converted = new(Count);
         foreach (var element in this) {
             converted.Add(elementConversion.Invoke(element));
@@ -19,11 +19,11 @@ public class RList : List<IPackage>, IPackage {
         return converted;
     }
 
-    public static RList from<T>(List<T> source) where T : IPackage {
+    public static RList from<T>(List<T> source) where T : IHeapObject {
         return from(source, v => v);
     }
 
-    public static RList from<T>(List<T> source, Func<T, IPackage> elementConversion) {
+    public static RList from<T>(List<T> source, Func<T, IHeapObject> elementConversion) {
         if (source == null) {
             return null;
         }
@@ -40,12 +40,12 @@ public class RList : List<IPackage>, IPackage {
     }
 
     public RList(AC2Reader data) {
-        foreach (var element in data.ReadList(data.ReadPackageId)) {
-            data.packageRegistry.addResolver(() => this.Add(data.packageRegistry.get<IPackage>(element)));
+        foreach (var element in data.ReadList(data.ReadReferenceId)) {
+            data.heapObjectRegistry.addResolver(() => this.Add(data.heapObjectRegistry.get<IHeapObject>(element)));
         }
     }
 
     public void write(AC2Writer data) {
-        data.Write(this, data.WritePkg);
+        data.Write(this, data.WriteHO);
     }
 }

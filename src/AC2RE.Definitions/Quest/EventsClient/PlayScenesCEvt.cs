@@ -12,7 +12,7 @@ public class PlayScenesCEvt : IClientEvent {
     }
 
     public PlayScenesCEvt(AC2Reader data) {
-        scenes = data.UnpackPackage<GMSceneInfoList>();
+        scenes = data.UnpackHeapObject<GMSceneInfoList>();
     }
 
     public void write(AC2Writer data) {

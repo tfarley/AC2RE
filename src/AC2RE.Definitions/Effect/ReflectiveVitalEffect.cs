@@ -59,7 +59,7 @@ public class ReflectiveVitalEffect : Effect {
         absorbMagEnd = data.ReadSingle();
         reflectVar = data.ReadSingle();
         generateSpellcraftEnd = data.ReadSingle();
-        data.ReadPkg<Effect>(v => effGenerate = v);
+        data.ReadHO<Effect>(v => effGenerate = v);
         reflectPKMod = data.ReadSingle();
         absorbVar = data.ReadSingle();
         generateSpellcraftBegin = data.ReadSingle();

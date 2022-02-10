@@ -8,6 +8,6 @@ public class TryToUseItemSEvt : IServerEvent {
     public UsageDesc usageDesc; // _uDesc
 
     public TryToUseItemSEvt(AC2Reader data) {
-        usageDesc = data.UnpackPackage<UsageDesc>();
+        usageDesc = data.UnpackHeapObject<UsageDesc>();
     }
 }

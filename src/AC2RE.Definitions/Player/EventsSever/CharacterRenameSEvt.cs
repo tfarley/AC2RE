@@ -8,6 +8,6 @@ public class CharacterRenameSEvt : IServerEvent {
     public WPString name; // _name
 
     public CharacterRenameSEvt(AC2Reader data) {
-        name = data.UnpackPackage<WPString>();
+        name = data.UnpackHeapObject<WPString>();
     }
 }

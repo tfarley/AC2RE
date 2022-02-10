@@ -7,6 +7,7 @@ public class CEncounterDesc {
 
     public class EncounterExcept {
 
+        // EncounterExcept
         public uint index; // m_index
         public uint encounterId; // m_encount_id
 
@@ -17,6 +18,7 @@ public class CEncounterDesc {
 
     public class EncounterElem {
 
+        // EncounterElem
         public uint index; // m_index
         public uint encounterId; // m_encount_id
         public float adjustChance; // m_adjust_chance
@@ -31,6 +33,7 @@ public class CEncounterDesc {
 
     public class EncounterRow {
 
+        // EncounterRow
         public uint rowIndex; // m_row_index
         public string encounterName; // m_encounter_name
         public List<EncounterElem> encounters; // m_encounters
@@ -40,6 +43,7 @@ public class CEncounterDesc {
         }
     }
 
+    // CEncounterDesc
     public DataId did; // m_DID
     public uint version; // version
     public uint blockEncounterMap; // m_block_encounter_map

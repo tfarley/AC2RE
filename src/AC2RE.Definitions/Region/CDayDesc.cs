@@ -6,6 +6,7 @@ public class CDayDesc {
 
     public class LensFlarePoint {
 
+        // LensFlarePoint
         public float axisPos; // m_fAxisPos
         public DataId textureDid; // m_TextureID
         public float size; // m_fSize
@@ -19,6 +20,7 @@ public class CDayDesc {
 
     public class LensFlareEffect {
 
+        // LensFlareEffect
         public float fadeSpeed; // m_fFadeSpeed
         public List<LensFlarePoint> pointList; // m_PointList
         public float opacity; // m_fOpacity
@@ -34,6 +36,7 @@ public class CDayDesc {
 
     public class SkyObject {
 
+        // SkyObject
         public uint objName; // obj_name
         public uint defaultGfx; // default_gfx
         public float beginTime; // begin_time
@@ -73,6 +76,7 @@ public class CDayDesc {
 
     public class SkyObjectReplace {
 
+        // SkyObjectReplace
         public uint objName; // obj_name
         public uint replaceGfx; // replace_gfx
         public float headingOffset; // heading_offset
@@ -90,6 +94,7 @@ public class CDayDesc {
 
     public class SkyTimeOfDay {
 
+        // SkyTimeOfDay
         public float beginTime; // m_nBeginTime
         public RGBAColor fogColor; // m_fogColor
         public float fogMinDist; // m_nFogMinDist
@@ -128,6 +133,7 @@ public class CDayDesc {
         }
     }
 
+    // CDayDesc
     public DataId did; // m_DID
     public uint version; // version
     public List<SkyTimeOfDay> hours; // hours

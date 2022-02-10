@@ -19,7 +19,7 @@ internal class CombatMessageProcessor : BaseMessageProcessor {
                     if (msg.netEvent.funcId == ServerEventFunctionId.Combat__StartAttack) {
                         if (toggleCounter % 2 == 0) {
                             SingletonPkg<Effect> refiningEffect = new() {
-                                did = new(0x6F0011ED),
+                                wstateDid = new(0x6F0011ED),
                             };
                             send(player, new InterpCEventPrivateMsg {
                                 netEvent = new ClientAddEffectCEvt {

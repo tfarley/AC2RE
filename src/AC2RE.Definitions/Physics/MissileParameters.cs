@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class MissileParameters : IPackage {
+public class MissileParameters : IHeapObject {
 
     public NativeType nativeType => NativeType.MissileParameters;
 

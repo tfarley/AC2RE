@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class TransactResult : IPackage {
+public class TransactResult : IHeapObject {
 
     public PackageType packageType => PackageType.TransactResult;
 
@@ -14,8 +14,8 @@ public class TransactResult : IPackage {
 
     public TransactResult(AC2Reader data) {
         playerMoneyAdd = data.ReadUInt32();
-        data.ReadPkg<LAHash>(v => saleErrors = v.to<InstanceId, uint>());
-        data.ReadPkg<LAHash>(v => buyErrors = v.to<InstanceId, uint>());
+        data.ReadHO<LAHash>(v => saleErrors = v.to<InstanceId, uint>());
+        data.ReadHO<LAHash>(v => buyErrors = v.to<InstanceId, uint>());
         playerMoneySubtract = data.ReadUInt32();
         error = (ErrorType)data.ReadUInt32();
     }

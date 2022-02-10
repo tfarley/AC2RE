@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class BindRecipeAction : IPackage {
+public class BindRecipeAction : IHeapObject {
 
     public PackageType packageType => PackageType.BindRecipeAction;
 

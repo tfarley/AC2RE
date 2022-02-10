@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class AllegianceControl : IPackage {
+public class AllegianceControl : IHeapObject {
 
     public PackageType packageType => PackageType.AllegianceControl;
 

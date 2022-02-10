@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class SkillCheck : IPackage {
+public class SkillCheck : IHeapObject {
 
     public PackageType packageType => PackageType.SkillCheck;
 
@@ -15,7 +15,7 @@ public class SkillCheck : IPackage {
 
     public SkillCheck(AC2Reader data) {
         maxSr = data.ReadSingle();
-        data.ReadPkg<SRFormula>(v => srFormula = v);
+        data.ReadHO<SRFormula>(v => srFormula = v);
         seeded = data.ReadBoolean();
         luckMod = data.ReadSingle();
         slopeMod = data.ReadSingle();

@@ -6,6 +6,7 @@ public class ExportPackageArgs {
 
     public class CheckpointExportData {
 
+        // CheckpointExportData
         public uint offset; // m_offset
         public uint tag; // m_tag
 
@@ -15,11 +16,12 @@ public class ExportPackageArgs {
         }
     }
 
+    // ExportPackageArgs
     public string name; // m_name
     public string baseName; // m_base_name
-    public uint checksum; // m_checksum
-    public uint size; // m_size
     public TypeFlag flags; // m_flags
+    public uint size; // m_size
+    public uint checksum; // m_checksum
     public PackageType packageType; // m_pkg_id
     public int parentIndex; // m_parent_index
     public Dictionary<string, CheckpointExportData> checkpoints; // m_checkpoint
@@ -27,9 +29,9 @@ public class ExportPackageArgs {
     public ExportPackageArgs(AC2Reader data) {
         name = data.ReadString();
         baseName = data.ReadString();
-        checksum = data.ReadUInt32();
-        size = data.ReadUInt32();
         flags = (TypeFlag)data.ReadUInt32();
+        size = data.ReadUInt32();
+        checksum = data.ReadUInt32();
         packageType = (PackageType)data.ReadUInt32();
         parentIndex = data.ReadInt32();
         checkpoints = data.ReadDictionary(data.ReadString, () => new CheckpointExportData(data));

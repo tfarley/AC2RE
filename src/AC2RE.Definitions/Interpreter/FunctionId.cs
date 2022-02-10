@@ -2,9 +2,10 @@
 
 public struct FunctionId {
 
-    private static readonly uint ABS_FLAG_MASK = 0x80000000;
-    private static readonly uint PACKAGE_NUM_MASK = 0x7FFF0000;
-    private static readonly uint FUNC_NUM_MASK = 0x0000FFFF;
+    // FunctionID
+    private static readonly uint ABS_FLAG_MASK = 0x80000000; // absFlag
+    private static readonly uint PACKAGE_NUM_MASK = 0x7FFF0000; // pkgNum
+    private static readonly uint FUNC_NUM_MASK = 0x0000FFFF; // funcNum
 
     public uint id;
 

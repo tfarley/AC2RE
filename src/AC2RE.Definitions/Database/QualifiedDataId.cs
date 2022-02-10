@@ -2,6 +2,7 @@
 
 public struct QualifiedDataId {
 
+    // QualifiedDataID
     public DbType dbType; // Type
     public DataId did; // ID
 

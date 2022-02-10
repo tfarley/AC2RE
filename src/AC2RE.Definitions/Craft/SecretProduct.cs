@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class SecretProduct : IPackage {
+public class SecretProduct : IHeapObject {
 
     public PackageType packageType => PackageType.SecretProduct;
 
@@ -11,7 +11,7 @@ public class SecretProduct : IPackage {
     public uint quantity; // productQty
 
     public SecretProduct(AC2Reader data) {
-        data.ReadPkg<AList>(v => ingredients = v);
+        data.ReadHO<AList>(v => ingredients = v);
         productDid = data.ReadDataId();
         quantity = data.ReadUInt32();
     }

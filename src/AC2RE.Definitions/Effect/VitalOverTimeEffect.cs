@@ -35,9 +35,9 @@ public class VitalOverTimeEffect : Effect {
 
     public VitalOverTimeEffect(AC2Reader data) : base(data) {
         changePerSecVar = data.ReadSingle();
-        data.ReadPkg<RArray>(v => lowBounds = v.to<FloatScaleDuple>());
-        data.ReadPkg<RArray>(v => changeData = v.to<FloatScaleDuple>());
-        data.ReadPkg<RArray>(v => highBounds = v.to<FloatScaleDuple>());
-        data.ReadPkg<AArray>(v => tickFx = v);
+        data.ReadHO<RArray>(v => lowBounds = v.to<FloatScaleDuple>());
+        data.ReadHO<RArray>(v => changeData = v.to<FloatScaleDuple>());
+        data.ReadHO<RArray>(v => highBounds = v.to<FloatScaleDuple>());
+        data.ReadHO<AArray>(v => tickFx = v);
     }
 }

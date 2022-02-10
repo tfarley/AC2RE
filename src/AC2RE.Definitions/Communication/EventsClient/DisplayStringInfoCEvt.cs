@@ -13,7 +13,7 @@ public class DisplayStringInfoCEvt : IClientEvent {
     }
 
     public DisplayStringInfoCEvt(AC2Reader data) {
-        text = data.UnpackPackage<StringInfo>();
+        text = data.UnpackHeapObject<StringInfo>();
         type = (TextType)data.UnpackUInt32();
     }
 

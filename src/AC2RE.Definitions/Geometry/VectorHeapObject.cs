@@ -2,13 +2,13 @@
 
 namespace AC2RE.Definitions;
 
-public struct VectorPkg : IPackage {
+public struct VectorHeapObject : IHeapObject {
 
     public NativeType nativeType => NativeType.Vector;
 
     public Vector3 v;
 
-    public VectorPkg(Vector3 v) {
+    public VectorHeapObject(Vector3 v) {
         this.v = v;
     }
 

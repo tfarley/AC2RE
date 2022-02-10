@@ -8,6 +8,6 @@ public class CustomEmoteSEvt : IServerEvent {
     public WPString text; // _text
 
     public CustomEmoteSEvt(AC2Reader data) {
-        text = data.UnpackPackage<WPString>();
+        text = data.UnpackHeapObject<WPString>();
     }
 }

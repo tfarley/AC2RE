@@ -10,6 +10,7 @@ public class ByteStream {
 
     public class VersionTable {
 
+        // VersionTable
         public List<uint> versions; // m_versions
 
         public VersionTable(AC2Reader data) {
@@ -19,6 +20,7 @@ public class ByteStream {
 
     public class OpcodeStream {
 
+        // OpcodeStream
         public uint size; // m_size
         public byte[] opcodeBytes; // m_pOpcodeBytes
 
@@ -30,6 +32,7 @@ public class ByteStream {
 
     public class StringLitTable {
 
+        // StringLitTable
         public List<string> strings; // m_strtbl
         public List<List<uint>> offsets; // m_offsets
 
@@ -41,6 +44,7 @@ public class ByteStream {
 
     public class ImportData {
 
+        // ImportData
         public string packageName; // m_pkgName
         public List<ImportSymbolInfo> symbols; // m_syms
         public List<uint> packageOffsets; // m_pkgOffsets
@@ -54,6 +58,7 @@ public class ByteStream {
 
     public class ExportData {
 
+        // ExportData
         public ExportPackageArgs args; // m_args
         public List<ExportFunctionData> funcs; // m_funcs
 
@@ -65,6 +70,7 @@ public class ByteStream {
 
     public class FunctionLocationInfo {
 
+        // FunctionLocationInfo
         public string functionName; // FunctionName
         public uint offset; // Offset
 
@@ -84,7 +90,7 @@ public class ByteStream {
     public VTableSection vTable; // m_vtbl
     public Dictionary<FunctionId, uint> validEvents; // m_validEvents
     public List<FunctionLocationInfo> funcLocs; // m_functionLocs
-    public List<OriginalSourceFileInfo> originalSourceText; // m_originalSourceText
+    public List<POriginalSourceFileInfo> originalSourceText; // m_originalSourceText
     public List<PLineOffsetList> lineOffsets; // m_lineOffsets
     public List<FrameDebugInfo> frames; // m_frames
 
@@ -125,7 +131,7 @@ public class ByteStream {
                     }
                     break;
                 case SectionType.SourceFileDebug:
-                    originalSourceText = data.ReadList(() => new OriginalSourceFileInfo(data));
+                    originalSourceText = data.ReadList(() => new POriginalSourceFileInfo(data));
                     break;
                 case SectionType.LineNumDebug:
                     lineOffsets = data.ReadList(() => new PLineOffsetList(data));
@@ -136,6 +142,7 @@ public class ByteStream {
                 default:
                     throw new InvalidDataException(sectionType.ToString());
             }
+            data.Align(4);
         }
     }
 }

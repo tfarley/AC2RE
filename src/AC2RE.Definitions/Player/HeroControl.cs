@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class HeroControl : IPackage {
+public class HeroControl : IHeapObject {
 
     public PackageType packageType => PackageType.HeroControl;
 

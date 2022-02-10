@@ -8,11 +8,11 @@ public class Act : MasterListMember {
 
     public StringInfo longName; // m_siLongName
     public bool isCompletable; // m_bIsCompletable
-    public List<IPackage> completionEffects; // m_actCompletionEffects
+    public List<IHeapObject> completionEffects; // m_actCompletionEffects
     public bool isVisible; // m_bIsVisible
     public DataId iconDid; // m_didIcon
     public StringInfo description; // m_siDescription
-    public Dictionary<uint, IPackage> sceneExaminationInfo; // m_sceneExaminationInfo
+    public Dictionary<uint, IHeapObject> sceneExaminationInfo; // m_sceneExaminationInfo
     public uint numToComplete; // m_uiNumToComplete
     public Dictionary<SceneId, GMSceneInfo> sceneTable; // m_sceneTable
     public bool isActive; // m_bIsActive
@@ -20,17 +20,17 @@ public class Act : MasterListMember {
     public StringInfo name; // m_strName
 
     public Act(AC2Reader data) : base(data) {
-        data.ReadPkg<StringInfo>(v => longName = v);
+        data.ReadHO<StringInfo>(v => longName = v);
         isCompletable = data.ReadBoolean();
-        data.ReadPkg<RList>(v => completionEffects = v);
+        data.ReadHO<RList>(v => completionEffects = v);
         isVisible = data.ReadBoolean();
         iconDid = data.ReadDataId();
-        data.ReadPkg<StringInfo>(v => description = v);
-        data.ReadPkg<ARHash>(v => sceneExaminationInfo = v);
+        data.ReadHO<StringInfo>(v => description = v);
+        data.ReadHO<ARHash>(v => sceneExaminationInfo = v);
         numToComplete = data.ReadUInt32();
-        data.ReadPkg<ARHash>(v => sceneTable = v.to<SceneId, GMSceneInfo>());
+        data.ReadHO<ARHash>(v => sceneTable = v.to<SceneId, GMSceneInfo>());
         isActive = data.ReadBoolean();
         actNum = data.ReadUInt32();
-        data.ReadPkg<StringInfo>(v => name = v);
+        data.ReadHO<StringInfo>(v => name = v);
     }
 }

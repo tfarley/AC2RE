@@ -10,8 +10,8 @@ public class Player : Agent {
     public InstanceId selectionId; // m_selectionID
     public Fellowship fellowship; // m_fellowship
     public ExaminationRequest examinationRequest; // m_examinationRequest
-    public Dictionary<ulong, IPackage> saleReminders; // m_saleReminders
-    public Dictionary<uint, IPackage> channels; // m_channels
+    public Dictionary<ulong, IHeapObject> saleReminders; // m_saleReminders
+    public Dictionary<uint, IHeapObject> channels; // m_channels
     public bool isAttacking; // m_isAttacking
     public CraftRegistry craftRegistry; // m_craftRegistry
     public GameplayOptionsProfile currentOptionsProfile; // m_currentOptionsProfile
@@ -21,18 +21,18 @@ public class Player : Agent {
     public ActRegistry acts; // m_Acts
 
     public Player(AC2Reader data) : base(data) {
-        data.ReadPkg<StringInfo>(v => vassalName = v);
+        data.ReadHO<StringInfo>(v => vassalName = v);
         selectionId = data.ReadInstanceId();
-        data.ReadPkg<Fellowship>(v => fellowship = v);
-        data.ReadPkg<ExaminationRequest>(v => examinationRequest = v);
-        data.ReadPkg<LRHash>(v => saleReminders = v);
-        data.ReadPkg<ARHash>(v => channels = v);
+        data.ReadHO<Fellowship>(v => fellowship = v);
+        data.ReadHO<ExaminationRequest>(v => examinationRequest = v);
+        data.ReadHO<LRHash>(v => saleReminders = v);
+        data.ReadHO<ARHash>(v => channels = v);
         isAttacking = data.ReadBoolean();
-        data.ReadPkg<CraftRegistry>(v => craftRegistry = v);
-        data.ReadPkg<GameplayOptionsProfile>(v => currentOptionsProfile = v);
+        data.ReadHO<CraftRegistry>(v => craftRegistry = v);
+        data.ReadHO<GameplayOptionsProfile>(v => currentOptionsProfile = v);
         logoffOK = data.ReadBoolean();
-        data.ReadPkg<ResurrectionRequest>(v => rezRequest = v);
-        data.ReadPkg<Trade>(v => trade = v);
-        data.ReadPkg<ActRegistry>(v => acts = v);
+        data.ReadHO<ResurrectionRequest>(v => rezRequest = v);
+        data.ReadHO<Trade>(v => trade = v);
+        data.ReadHO<ActRegistry>(v => acts = v);
     }
 }

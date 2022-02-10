@@ -1,12 +1,12 @@
 ﻿namespace AC2RE.Definitions;
 
-public class LogSystem : IPackage {
+public class LogSystem : IHeapObject {
 
     public PackageType packageType => PackageType.LogSystem;
 
     public LogInfo logInfo; // m_logInfo
 
     public LogSystem(AC2Reader data) {
-        data.ReadPkg<LogInfo>(v => logInfo = v);
+        data.ReadHO<LogInfo>(v => logInfo = v);
     }
 }

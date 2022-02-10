@@ -17,6 +17,7 @@ public class PhysicsStory {
         BASIC_ATTACK = 1 << 5, // BASIC_ATTACK 0x00000020
     }
 
+    // PhysicsStory
     public PackFlag packFlags;
     public InstanceId attackerId; // m_attacker_id
     public BehaviorParams attackerBehavior; // m_attacker_behavior

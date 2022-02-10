@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class ChannelData : IPackage {
+public class ChannelData : IHeapObject {
 
     public PackageType packageType => PackageType.ChannelData;
 
@@ -23,7 +23,7 @@ public class ChannelData : IPackage {
         roomId = data.ReadUInt32();
         available = data.ReadBoolean();
         factionType = (FactionType)data.ReadUInt32();
-        data.ReadPkg<WPString>(v => name = v);
+        data.ReadHO<WPString>(v => name = v);
     }
 
     public void write(AC2Writer data) {
@@ -33,6 +33,6 @@ public class ChannelData : IPackage {
         data.Write(roomId);
         data.Write(available);
         data.Write((uint)factionType);
-        data.WritePkg(name);
+        data.WriteHO(name);
     }
 }

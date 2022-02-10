@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class EntityGroupDesc {
 
+    // EntityGroupDesc
     public List<EntityDesc> entities; // m_entities
     public List<EntityLinkDesc> links; // m_links
 

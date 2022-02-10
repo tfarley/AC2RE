@@ -13,8 +13,8 @@ public class HandleAllegianceHierarchyForExportCEvt : IClientEvent {
     }
 
     public HandleAllegianceHierarchyForExportCEvt(AC2Reader data) {
-        fileName = data.UnpackPackage<WPString>();
-        hierarchy = data.UnpackPackage<AllegianceHierarchy>();
+        fileName = data.UnpackHeapObject<WPString>();
+        hierarchy = data.UnpackHeapObject<AllegianceHierarchy>();
     }
 
     public void write(AC2Writer data) {

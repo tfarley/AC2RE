@@ -11,6 +11,7 @@ public class FrameDebugInfo {
         Package, // Package_FrameType
     }
 
+    // FrameDebugInfo
     public string name; // m_name
     public FrameType type; // m_type
     public uint size; // m_size

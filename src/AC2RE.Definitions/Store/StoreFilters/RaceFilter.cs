@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class RaceFilter : IPackage {
+public class RaceFilter : IHeapObject {
 
     public PackageType packageType => PackageType.RaceFilter;
 

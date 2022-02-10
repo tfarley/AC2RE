@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class GMKeyframe : IPackage {
+public class GMKeyframe : IHeapObject {
 
     public NativeType nativeType => NativeType.gmKeyframe;
 

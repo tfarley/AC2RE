@@ -23,6 +23,7 @@ public class VertexFormatInfo {
         { 2048, 5 },
     };
 
+    // VertexFormatInfo
     public uint format; // format
     public bool hasOrigin;
     public uint numWeights; // numWeights

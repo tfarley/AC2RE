@@ -23,7 +23,7 @@ internal class ContentManager : IDisposable {
     private readonly Dictionary<DataId, VisualDesc> visualDescCache = new();
     private readonly Dictionary<DataId, VisualDesc> inheritedVisualDescCache = new();
     private readonly Dictionary<DataId, CEnvCell> envCellCache = new();
-    private readonly Dictionary<DataId, EnumIDMap> idMapCache = new();
+    private readonly Dictionary<DataId, EnumIdMap> idMapCache = new();
     private readonly Dictionary<DataId, StringTable> stringTableCache = new();
 
     public ContentManager() {
@@ -32,13 +32,13 @@ internal class ContentManager : IDisposable {
         localDatReader = new("G:\\Asheron's Call 2\\local_English.dat_server");
 
         MasterProperty.loadMasterProperties(portalDatReader);
-        PackageManager.loadPackageTypes(portalDatReader);
+        PackageTypes.loadPackageTypes(portalDatReader);
 
         foreach (DataId did in portalDatReader.dids) {
             DbType dbType = DbTypeDef.getType(DbTypeDef.DatType.PORTAL, did);
 
             if (dbType == DbType.WSTATE) {
-                if (PackageManager.isPackageType(getWeenieStatePackageType(did), PackageType.Skill)) {
+                if (PackageTypes.isPackageType(getWeenieStatePackageType(did), PackageType.Skill)) {
                     WState wstate = getWeenieState(did);
                     Skill skill = (Skill)wstate.package;
                     skillCache[(SkillId)skill.enumVal] = skill;
@@ -58,8 +58,8 @@ internal class ContentManager : IDisposable {
     public CharacterGenSystem getCharacterGenSystem() {
         if (characterGenSystem == null) {
             using (AC2Reader data = portalDatReader.getFileReader(new(0x70000096))) {
-                WState wState = new(data);
-                characterGenSystem = (CharacterGenSystem)wState.package;
+                WState wstate = new(data);
+                characterGenSystem = (CharacterGenSystem)wstate.package;
             }
         }
 
@@ -69,8 +69,8 @@ internal class ContentManager : IDisposable {
     public CharGenMatrix getCharGenMatrix() {
         if (charGenMatrix == null) {
             using (AC2Reader data = portalDatReader.getFileReader(new(0x70000390))) {
-                WState wState = new(data);
-                charGenMatrix = (CharGenMatrix)wState.package;
+                WState wstate = new(data);
+                charGenMatrix = (CharGenMatrix)wstate.package;
             }
         }
 
@@ -80,8 +80,8 @@ internal class ContentManager : IDisposable {
     public LevelTable getLevelTable() {
         if (levelTable == null) {
             using (AC2Reader data = portalDatReader.getFileReader(new(0x70000380))) {
-                WState wState = new(data);
-                levelTable = (LevelTable)wState.package;
+                WState wstate = new(data);
+                levelTable = (LevelTable)wstate.package;
             }
         }
 
@@ -165,7 +165,7 @@ internal class ContentManager : IDisposable {
         foreach ((PropertyName prop, StringInfo value) in parentEntityDef.stringInfos) {
             childEntityDef.stringInfos[prop] = value;
         }
-        foreach ((PropertyName prop, PackageId value) in parentEntityDef.packageIds) {
+        foreach ((PropertyName prop, ReferenceId value) in parentEntityDef.packageIds) {
             childEntityDef.packageIds[prop] = value;
         }
         foreach ((PropertyName prop, long value) in parentEntityDef.longs) {
@@ -274,8 +274,8 @@ internal class ContentManager : IDisposable {
         return envCell;
     }
 
-    public EnumIDMap getIdMap(DataId did) {
-        if (!idMapCache.TryGetValue(did, out EnumIDMap? idMap)) {
+    public EnumIdMap getIdMap(DataId did) {
+        if (!idMapCache.TryGetValue(did, out EnumIdMap? idMap)) {
             using (AC2Reader data = portalDatReader.getFileReader(did)) {
                 idMap = new(data);
                 idMapCache[did] = idMap;
@@ -308,7 +308,7 @@ internal class ContentManager : IDisposable {
             return "";
         }
 
-        EnumIDMap idMap = getIdMap(new(0x28000005));
+        EnumIdMap idMap = getIdMap(new(0x28000005));
         DataId tableDid = idMap.enumToId[netError.tableId];
         StringInfo stringInfo = new(tableDid, netError.stringId);
         return getString(stringInfo);

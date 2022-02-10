@@ -23,6 +23,7 @@ public class CBaseQualities {
         LongIntHashTable = 1 << 11, // Packed_LongIntHashTable 0x00000800
     }
 
+    // CBaseQualities
     public PackFlag packFlags;
     public DataId did; // via DBObj::Pack_Type
     public WeenieDesc weenieDesc; // m_wdesc
@@ -36,7 +37,7 @@ public class CBaseQualities {
     public Dictionary<InstanceIdStat, InstanceId> ids; // m_iid_table
     public Dictionary<PositionStat, Position> poss; // m_pos_table
     public Dictionary<StringInfoStat, StringInfo> stringInfos; // m_si_table
-    public Dictionary<uint, PackageId> packageIds; // m_pid_table
+    public Dictionary<uint, ReferenceId> packageIds; // m_pid_table
 
     public CBaseQualities() {
 
@@ -76,7 +77,7 @@ public class CBaseQualities {
             stringInfos = data.ReadDictionary(() => (StringInfoStat)data.ReadUInt32(), () => new StringInfo(data));
         }
         if (packFlags.HasFlag(PackFlag.PackageIDHashTable)) {
-            packageIds = data.ReadDictionary(data.ReadUInt32, data.ReadPackageId);
+            packageIds = data.ReadDictionary(data.ReadUInt32, data.ReadReferenceId);
         }
         if (packFlags.HasFlag(PackFlag.LongIntHashTable)) {
             longs = data.ReadDictionary(() => (LongIntStat)data.ReadUInt32(), data.ReadInt64);

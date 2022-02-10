@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AC2RE.Definitions;
 
-public class StoreTemplate : IPackage {
+public class StoreTemplate : IHeapObject {
 
     public PackageType packageType => PackageType.StoreTemplate;
 
@@ -14,7 +14,7 @@ public class StoreTemplate : IPackage {
         HideRestricted = 1 << 0, // HideRestricted 0x00000001
     }
 
-    public List<IPackage> filters; // m_filters
+    public List<IHeapObject> filters; // m_filters
     public SingletonPkg<StoreSorter> sorter; // m_sorter
     public StringInfo name; // m_siName
     public StringInfo description; // m_siDesc
@@ -25,12 +25,12 @@ public class StoreTemplate : IPackage {
     public Flag flags; // m_uiFlags
 
     public StoreTemplate(AC2Reader data) {
-        data.ReadPkg<RList>(v => filters = v);
-        data.ReadPkg<StoreSorter>(v => sorter = v);
-        data.ReadPkg<StringInfo>(v => name = v);
-        data.ReadPkg<StringInfo>(v => description = v);
+        data.ReadHO<RList>(v => filters = v);
+        data.ReadHO<StoreSorter>(v => sorter = v);
+        data.ReadHO<StringInfo>(v => name = v);
+        data.ReadHO<StringInfo>(v => description = v);
         totalSales = data.ReadInt32();
-        data.ReadPkg<RArray>(v => sales = v.to<SaleTemplate>());
+        data.ReadHO<RArray>(v => sales = v.to<SaleTemplate>());
         portraitDid = data.ReadDataId();
         version = data.ReadInt32();
         flags = (Flag)data.ReadUInt32();

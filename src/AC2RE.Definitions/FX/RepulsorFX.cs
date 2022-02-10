@@ -2,6 +2,7 @@
 
 public class RepulsorFX {
 
+    // RepulsorFX
     public float accel; // m_fAcceleration
     public float range; // m_fRange
     public float lifetime; // m_fLifetime

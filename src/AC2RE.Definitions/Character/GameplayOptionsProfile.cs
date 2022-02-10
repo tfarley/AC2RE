@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AC2RE.Definitions;
 
-public class GameplayOptionsProfile : IPackage {
+public class GameplayOptionsProfile : IHeapObject {
 
     public NativeType nativeType => NativeType.GameplayOptionsProfile;
 

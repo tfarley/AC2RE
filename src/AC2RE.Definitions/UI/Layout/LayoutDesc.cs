@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class LayoutDesc {
 
+    // LayoutDesc
     public DataId did; // m_DID
     public DataId stringTableDid; // stringTableID
     public ushort displayWidth; // displayWidth

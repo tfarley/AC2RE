@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace AC2RE.Definitions;
 
-public class EntityDesc : IPackage {
+public class EntityDesc : IHeapObject {
 
     public NativeType nativeType => NativeType.EntityDesc;
 

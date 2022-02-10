@@ -10,6 +10,7 @@ public class CharTemplate {
         WEENIE_CONTROLLED, // WEENIE_CONTROLLED
     }
 
+    // CharTemplate
     public DataId did; // m_DID
     public Dictionary<uint, ulong> behaviorFlags; // behaviors
     public Dictionary<uint, SliderController> sliderControllers; // sliders

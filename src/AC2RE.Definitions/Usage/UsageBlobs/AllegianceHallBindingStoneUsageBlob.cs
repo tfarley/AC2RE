@@ -11,11 +11,11 @@ public class AllegianceHallBindingStoneUsageBlob : UsageBlob {
     }
 
     public AllegianceHallBindingStoneUsageBlob(AC2Reader data) : base(data) {
-        data.ReadPkg<WPString>(v => dest = v);
+        data.ReadHO<WPString>(v => dest = v);
     }
 
     public override void write(AC2Writer data) {
         base.write(data);
-        data.WritePkg(dest);
+        data.WriteHO(dest);
     }
 }

@@ -35,11 +35,11 @@ internal class UsageMessageProcessor : BaseMessageProcessor {
                             } else {
                                 WState weenieState = world.contentManager.getWeenieStateFromEntityDid(item.entityDid);
                                 if (weenieState.package is gmEntity entity) {
-                                    DataId usageActionDid = entity.usageAction?.did ?? DataId.NULL;
+                                    DataId usageActionDid = entity.usageAction?.wstateDid ?? DataId.NULL;
                                     if (usageActionDid != DataId.NULL) {
                                         WState usageActionWeenieState = world.contentManager.getWeenieState(usageActionDid);
 
-                                        if (PackageManager.isPackageType(usageActionWeenieState.packageType, PackageType.EquippableUsageAction) && item.containerId == character.id) {
+                                        if (PackageTypes.isPackageType(usageActionWeenieState.packageType, PackageType.EquippableUsageAction) && item.containerId == character.id) {
                                             WorldObject.toggleAutoEquip(world, character, item, player);
                                         } else if (usageActionWeenieState.packageType == PackageType.PortalUsageAction || usageActionWeenieState.packageType == PackageType.LifestoneUsageAction || usageActionWeenieState.packageType == PackageType.NPCUsageAction) {
                                             character.moveTo(sEvent.usageDesc.itemId, 1.0f, 1.0f);

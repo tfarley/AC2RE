@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class MaterialModifier {
 
+    // MaterialModifier
     public DataId did; // m_DID
     public List<MaterialProperty> properties; // properties
 

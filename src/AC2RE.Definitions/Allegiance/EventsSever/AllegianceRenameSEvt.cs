@@ -8,6 +8,6 @@ public class AllegianceRenameSEvt : IServerEvent {
     public WPString name; // _name
 
     public AllegianceRenameSEvt(AC2Reader data) {
-        name = data.UnpackPackage<WPString>();
+        name = data.UnpackHeapObject<WPString>();
     }
 }

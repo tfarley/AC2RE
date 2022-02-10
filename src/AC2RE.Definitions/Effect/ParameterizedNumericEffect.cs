@@ -27,6 +27,6 @@ public class ParameterizedNumericEffect : Effect {
 
     public ParameterizedNumericEffect(AC2Reader data) : base(data) {
         numericVariance = data.ReadSingle();
-        data.ReadPkg<RArray>(v => magData = v.to<FloatScaleDuple>());
+        data.ReadHO<RArray>(v => magData = v.to<FloatScaleDuple>());
     }
 }

@@ -29,6 +29,7 @@ public class StoryHookData {
         ATTACKER_PKDAMAGE = 1 << 14, // ATTACKER_PKDAMAGE 0x00004000
     }
 
+    // StoryHookData
     public PackFlag packFlags;
     public HookType type; // m_type
     public InstanceId targetId; // m_target_id

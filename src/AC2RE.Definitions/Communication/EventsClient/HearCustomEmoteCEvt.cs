@@ -14,8 +14,8 @@ public class HearCustomEmoteCEvt : IClientEvent {
     }
 
     public HearCustomEmoteCEvt(AC2Reader data) {
-        text = data.UnpackPackage<WPString>();
-        senderName = data.UnpackPackage<WPString>();
+        text = data.UnpackHeapObject<WPString>();
+        senderName = data.UnpackHeapObject<WPString>();
         senderId = data.UnpackInstanceId();
     }
 

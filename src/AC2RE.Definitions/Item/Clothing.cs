@@ -9,6 +9,6 @@ public class Clothing : gmCEntity {
     public Dictionary<PhysiqueSpeciesSexId, DataId> wornAppearanceDidHash; // m_hashWornAppearanceDID
 
     public Clothing(AC2Reader data) : base(data) {
-        data.ReadPkg<AAHash>(v => wornAppearanceDidHash = v.to<PhysiqueSpeciesSexId, DataId>());
+        data.ReadHO<AAHash>(v => wornAppearanceDidHash = v.to<PhysiqueSpeciesSexId, DataId>());
     }
 }

@@ -11,6 +11,6 @@ public class RankBoard : gmCEntity {
     public RankBoard(AC2Reader data) : base(data) {
         startAtBack = data.ReadBoolean();
         numVisibleEntries = data.ReadInt32();
-        data.ReadPkg<WPString>(v => key = v);
+        data.ReadHO<WPString>(v => key = v);
     }
 }

@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class FXData {
 
+    // FXData
     public FXNode defaultNode; // m_default
     public Dictionary<uint, FXNode> terrainData; // m_terrainData
 

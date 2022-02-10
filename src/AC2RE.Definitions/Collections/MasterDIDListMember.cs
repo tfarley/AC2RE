@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class MasterDIDListMember : IPackage {
+public class MasterDIDListMember : IHeapObject {
 
     public virtual PackageType packageType => PackageType.MasterDIDListMember;
 

@@ -13,14 +13,14 @@ public class BookUsageBlob : UsageBlob {
     }
 
     public BookUsageBlob(AC2Reader data) : base(data) {
-        data.ReadPkg<StringInfo>(v => bookSource = v);
+        data.ReadHO<StringInfo>(v => bookSource = v);
         controls = data.ReadBoolean();
         imageDid = data.ReadDataId();
     }
 
     public override void write(AC2Writer data) {
         base.write(data);
-        data.WritePkg(bookSource);
+        data.WriteHO(bookSource);
         data.Write(controls);
         data.Write(imageDid);
     }

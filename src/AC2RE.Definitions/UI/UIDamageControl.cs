@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class UIDamageControl : IPackage {
+public class UIDamageControl : IHeapObject {
 
     public PackageType packageType => PackageType.UIDamageControl;
 

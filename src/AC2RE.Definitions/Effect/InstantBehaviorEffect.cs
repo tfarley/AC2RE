@@ -7,6 +7,6 @@ public class InstantBehaviorEffect : Effect {
     public BehaviorParams behaviorParams; // m_bp
 
     public InstantBehaviorEffect(AC2Reader data) : base(data) {
-        data.ReadPkg<BehaviorParams>(v => behaviorParams = v);
+        data.ReadHO<BehaviorParams>(v => behaviorParams = v);
     }
 }

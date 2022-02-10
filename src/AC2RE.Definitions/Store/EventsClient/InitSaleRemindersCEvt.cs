@@ -13,7 +13,7 @@ public class InitSaleRemindersCEvt : IClientEvent {
     }
 
     public InitSaleRemindersCEvt(AC2Reader data) {
-        consignerDesc = data.UnpackPackage<ConsignerDesc>();
+        consignerDesc = data.UnpackHeapObject<ConsignerDesc>();
         storekeeperId = data.UnpackInstanceId();
     }
 

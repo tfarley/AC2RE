@@ -13,7 +13,7 @@ public class AnnounceWhoKilledMeCEvt : IClientEvent {
     }
 
     public AnnounceWhoKilledMeCEvt(AC2Reader data) {
-        killerName = data.UnpackPackage<StringInfo>();
+        killerName = data.UnpackHeapObject<StringInfo>();
         killerId = data.UnpackInstanceId();
     }
 

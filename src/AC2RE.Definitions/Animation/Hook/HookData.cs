@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class HookData : IPackage {
+public class HookData : IHeapObject {
 
     public virtual PackageType packageType => PackageType.HookData;
 

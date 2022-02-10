@@ -2,6 +2,7 @@
 
 public class LinkDesc {
 
+    // LinkDesc
     public InstanceId id; // m_id
     public uint type; // m_type
 

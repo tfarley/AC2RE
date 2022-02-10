@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class StringTable {
 
+    // StringTable
     public DataId did; // m_DID
     public uint currentStateId; // currentStateID
     public ushort baseVal; // m_base

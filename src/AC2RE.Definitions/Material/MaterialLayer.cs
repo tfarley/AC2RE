@@ -2,6 +2,7 @@
 
 public class MaterialLayer {
 
+    // MaterialLayer
     public uint trueFlags; // trueFlags
     public uint falseFlags; // falseFlags
     //public List<LayerStage> stages; // stages

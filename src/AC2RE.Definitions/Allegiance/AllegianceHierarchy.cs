@@ -2,11 +2,11 @@
 
 namespace AC2RE.Definitions;
 
-public class AllegianceHierarchy : IPackage {
+public class AllegianceHierarchy : IHeapObject {
 
     public PackageType packageType => PackageType.AllegianceHierarchy;
 
-    public class AllegianceNode : IPackage {
+    public class AllegianceNode : IHeapObject {
 
         public PackageType packageType => PackageType.AllegianceNode;
 
@@ -21,19 +21,19 @@ public class AllegianceHierarchy : IPackage {
         }
 
         public AllegianceNode(AC2Reader data) {
-            data.ReadPkg<RList>(v => vassals = v.to<AllegianceNode>());
-            data.ReadPkg<AllegianceNode>(v => patron = v);
-            data.ReadPkg<AllegianceData>(v => allegianceData = v);
-            data.ReadPkg<AllegianceNode>(v => vassal = v);
-            data.ReadPkg<AllegianceNode>(v => peer = v);
+            data.ReadHO<RList>(v => vassals = v.to<AllegianceNode>());
+            data.ReadHO<AllegianceNode>(v => patron = v);
+            data.ReadHO<AllegianceData>(v => allegianceData = v);
+            data.ReadHO<AllegianceNode>(v => vassal = v);
+            data.ReadHO<AllegianceNode>(v => peer = v);
         }
 
         public void write(AC2Writer data) {
-            data.WritePkg(RList.from(vassals));
-            data.WritePkg(patron);
-            data.WritePkg(allegianceData);
-            data.WritePkg(vassal);
-            data.WritePkg(peer);
+            data.WriteHO(RList.from(vassals));
+            data.WriteHO(patron);
+            data.WriteHO(allegianceData);
+            data.WriteHO(vassal);
+            data.WriteHO(peer);
         }
     }
 
@@ -60,39 +60,39 @@ public class AllegianceHierarchy : IPackage {
 
     public AllegianceHierarchy(AC2Reader data) {
         removalRoomId = data.ReadUInt32();
-        data.ReadPkg<StringInfo>(v => allegianceName = v);
-        data.ReadPkg<WPString>(v => recallLocation = v);
-        data.ReadPkg<AllegianceNode>(v => monarch = v);
+        data.ReadHO<StringInfo>(v => allegianceName = v);
+        data.ReadHO<WPString>(v => recallLocation = v);
+        data.ReadHO<AllegianceNode>(v => monarch = v);
         realTimeLastRename = data.ReadInt32();
-        data.ReadPkg<WPString>(v => roomName = v);
+        data.ReadHO<WPString>(v => roomName = v);
         chatRoomCreationInProgress = data.ReadBoolean();
         factionKingdomRestrictionsOn = data.ReadBoolean();
-        data.ReadPkg<NRHash>(v => nameToNode = v.to<WPString, AllegianceNode>());
-        data.ReadPkg<LRHash>(v => idToNode = v.to<InstanceId, AllegianceNode>());
-        data.ReadPkg<StringInfo>(v => motd = v);
+        data.ReadHO<NRHash>(v => nameToNode = v.to<WPString, AllegianceNode>());
+        data.ReadHO<LRHash>(v => idToNode = v.to<InstanceId, AllegianceNode>());
+        data.ReadHO<StringInfo>(v => motd = v);
         chatActive = data.ReadBoolean();
         allowNeutralsToBypassKingdomRestrictions = data.ReadBoolean();
         factionType = (FactionType)data.ReadUInt32();
         total = data.ReadUInt32();
-        data.ReadPkg<LAHashSet>(v => officerIds = v);
+        data.ReadHO<LAHashSet>(v => officerIds = v);
     }
 
     public void write(AC2Writer data) {
         data.Write(removalRoomId);
-        data.WritePkg(allegianceName);
-        data.WritePkg(recallLocation);
-        data.WritePkg(monarch);
+        data.WriteHO(allegianceName);
+        data.WriteHO(recallLocation);
+        data.WriteHO(monarch);
         data.Write(realTimeLastRename);
-        data.WritePkg(roomName);
+        data.WriteHO(roomName);
         data.Write(chatRoomCreationInProgress);
         data.Write(factionKingdomRestrictionsOn);
-        data.WritePkg(NRHash.from(nameToNode));
-        data.WritePkg(LRHash.from(idToNode));
-        data.WritePkg(motd);
+        data.WriteHO(NRHash.from(nameToNode));
+        data.WriteHO(LRHash.from(idToNode));
+        data.WriteHO(motd);
         data.Write(chatActive);
         data.Write(allowNeutralsToBypassKingdomRestrictions);
         data.Write((uint)factionType);
         data.Write(total);
-        data.WritePkg(LAHashSet.from(officerIds));
+        data.WriteHO(LAHashSet.from(officerIds));
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class AttuneRecipeAction : IPackage {
+public class AttuneRecipeAction : IHeapObject {
 
     public PackageType packageType => PackageType.AttuneRecipeAction;
 

@@ -12,7 +12,7 @@ public class TakeAllFromContainerDoneCEvt : IClientEvent {
     }
 
     public TakeAllFromContainerDoneCEvt(AC2Reader data) {
-        takeAllDesc = data.UnpackPackage<InvTakeAllDesc>();
+        takeAllDesc = data.UnpackHeapObject<InvTakeAllDesc>();
     }
 
     public void write(AC2Writer data) {

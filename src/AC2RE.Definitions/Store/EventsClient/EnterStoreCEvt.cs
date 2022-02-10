@@ -13,7 +13,7 @@ public class EnterStoreCEvt : IClientEvent {
     }
 
     public EnterStoreCEvt(AC2Reader data) {
-        view = data.UnpackPackage<StoreView>();
+        view = data.UnpackHeapObject<StoreView>();
         storekeeperId = data.UnpackInstanceId();
     }
 

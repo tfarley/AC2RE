@@ -14,7 +14,7 @@ public class EffectPulseMissedCEvt : IClientEvent {
     }
 
     public EffectPulseMissedCEvt(AC2Reader data) {
-        effectIds = data.UnpackPackage<AList>().to<EffectId>();
+        effectIds = data.UnpackHeapObject<AList>().to<EffectId>();
     }
 
     public void write(AC2Writer data) {

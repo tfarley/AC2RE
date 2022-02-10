@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class FactionGlobals : IPackage {
+public class FactionGlobals : IHeapObject {
 
     public PackageType packageType => PackageType.FactionGlobals;
 

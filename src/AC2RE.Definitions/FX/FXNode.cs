@@ -52,6 +52,7 @@ public class FXNode {
         MUSIC_LIST = 1ul << 39, // MUSIC_LIST 0x0000008000000000
     }
 
+    // FXNode
     public PackFlag packFlags;
     public bool dayTime; // m_day_time
     public bool nightTime; // m_night_time

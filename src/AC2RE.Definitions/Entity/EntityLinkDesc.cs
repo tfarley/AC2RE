@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class EntityLinkDesc : IPackage {
+public class EntityLinkDesc : IHeapObject {
 
     public NativeType nativeType => NativeType.EntityLinkDesc;
 

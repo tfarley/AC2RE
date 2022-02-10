@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class PropertyMapper : IPackage {
+public class PropertyMapper : IHeapObject {
 
     // Property stat mappings from WSL func gmPropertyMapper::constructor
     public static readonly Dictionary<PropertyName, BoolStat> PROPERTY_NAME_TO_BOOL_STAT = new() {
@@ -312,7 +312,7 @@ public class PropertyMapper : IPackage {
     public Dictionary<PropertyName, uint> propClient; // m_hashPropClient
 
     public PropertyMapper(AC2Reader data) {
-        data.ReadPkg<AAHash>(v => propServer = v.to<PropertyName, uint>());
-        data.ReadPkg<AAHash>(v => propClient = v.to<PropertyName, uint>());
+        data.ReadHO<AAHash>(v => propServer = v.to<PropertyName, uint>());
+        data.ReadHO<AAHash>(v => propClient = v.to<PropertyName, uint>());
     }
 }

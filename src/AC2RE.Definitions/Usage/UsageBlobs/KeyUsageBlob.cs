@@ -12,13 +12,13 @@ public class KeyUsageBlob : UsageBlob {
     }
 
     public KeyUsageBlob(AC2Reader data) : base(data) {
-        data.ReadPkg<StringInfo>(v => itemName = v);
+        data.ReadHO<StringInfo>(v => itemName = v);
         keyId = data.ReadUInt32();
     }
 
     public override void write(AC2Writer data) {
         base.write(data);
-        data.WritePkg(itemName);
+        data.WriteHO(itemName);
         data.Write(keyId);
     }
 }

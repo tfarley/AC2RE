@@ -2,6 +2,7 @@
 
 public class LightSourceFX {
 
+    // LightSourceFX
     public EntityDesc lightEntityDesc; // m_LightEntityDesc
     public float lifetime; // m_fLifespan
     public float fadeTime; // m_fFadeTime

@@ -2,6 +2,7 @@
 
 public class ActionMapping {
 
+    // ActionMapping
     public uint action; // act
     public uint semantic; // semantic
     public string name; // name

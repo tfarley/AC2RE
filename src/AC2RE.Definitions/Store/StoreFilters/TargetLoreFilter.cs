@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class TargetLoreFilter : IPackage {
+public class TargetLoreFilter : IHeapObject {
 
     public PackageType packageType => PackageType.TargetLoreFilter;
 

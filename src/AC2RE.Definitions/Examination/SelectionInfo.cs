@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class SelectionInfo : IPackage {
+public class SelectionInfo : IHeapObject {
 
     public NativeType nativeType => NativeType.SelectionInfo;
 

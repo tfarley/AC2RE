@@ -9,6 +9,6 @@ public class RandomRecallEffect : Effect {
     public List<WPString> destinations; // m_destinationArray
 
     public RandomRecallEffect(AC2Reader data) : base(data) {
-        data.ReadPkg<RArray>(v => destinations = v.to<WPString>());
+        data.ReadHO<RArray>(v => destinations = v.to<WPString>());
     }
 }

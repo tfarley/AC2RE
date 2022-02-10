@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class CLandBlockData {
 
+    // CLandBlockData
     public DataId did; // m_DID
     public List<byte> heights; // height
     public List<uint> cellInfos; // m_cellinfo

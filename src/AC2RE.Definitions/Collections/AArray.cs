@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class AArray : List<uint>, IPackage {
+public class AArray : List<uint>, IHeapObject {
 
     public NativeType nativeType => NativeType.AArray;
 

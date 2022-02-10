@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class CShopperContext : IPackage {
+public class CShopperContext : IHeapObject {
 
     public PackageType packageType => PackageType.CShopperContext;
 
@@ -11,8 +11,8 @@ public class CShopperContext : IPackage {
 
     public CShopperContext(AC2Reader data) {
         catalogDid = data.ReadDataId();
-        data.ReadPkg<StoreView>(v => view = v);
+        data.ReadHO<StoreView>(v => view = v);
         storekeeperId = data.ReadInstanceId();
-        data.ReadPkg<TransactionBlob>(v => pendingTransaction = v);
+        data.ReadHO<TransactionBlob>(v => pendingTransaction = v);
     }
 }

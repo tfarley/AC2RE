@@ -6,6 +6,7 @@ public class DBFile2IDTable {
 
     public class TFileEntry : IWritable {
 
+        // TFileEntry
         public string path; // m_pPath
         public string fileName; // m_pFileName
 
@@ -17,6 +18,7 @@ public class DBFile2IDTable {
 
     public class TDBTypeEntry : IWritable {
 
+        // TDBTypeEntry
         public string unk1;
         public Dictionary<DataId, TFileEntry> didToEntry; // DIDs
 
@@ -26,6 +28,7 @@ public class DBFile2IDTable {
         }
     }
 
+    // DBFile2IDTable
     public DataId did; // m_DID
     public Dictionary<uint, TDBTypeEntry> cacheByDid; // m_CacheByDID
 

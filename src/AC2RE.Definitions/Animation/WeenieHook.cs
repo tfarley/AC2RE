@@ -9,6 +9,7 @@ public class WeenieHook {
         Attack = 0x40000002, // Attack_AnimHookType
     }
 
+    // WeenieHook
     public AnimHookType hookType; // mHookType
     public uint hookNum; // mHookNum
     public uint hookData; // mData

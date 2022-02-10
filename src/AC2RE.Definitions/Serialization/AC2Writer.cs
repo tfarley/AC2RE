@@ -10,14 +10,14 @@ public class AC2Writer : BinaryWriter {
 
     private static readonly byte UNINITIALIZED_DATA = 0xCD;
 
-    public readonly PackageRegistry packageRegistry;
+    public readonly HeapObjectRegistry heapObjectRegistry;
 
     public AC2Writer(Stream output) : base(output) {
-        packageRegistry = new();
+        heapObjectRegistry = new();
     }
 
-    public AC2Writer(Stream output, PackageRegistry packageRegistry) : base(output) {
-        this.packageRegistry = packageRegistry;
+    public AC2Writer(Stream output, HeapObjectRegistry heapObjectRegistry) : base(output) {
+        this.heapObjectRegistry = heapObjectRegistry;
     }
 
     public override void Write(string value) {
@@ -79,91 +79,91 @@ public class AC2Writer : BinaryWriter {
         Pack(value.id);
     }
 
-    public void Pack(IPackage value) {
-        packageRegistry.references.Add(value);
+    public void Pack(IHeapObject value) {
+        heapObjectRegistry.references.Add(value);
 
         MemoryStream buffer = new();
-        using (AC2Writer data = new(buffer, packageRegistry)) {
-            for (int i = 0; i < packageRegistry.references.Count; i++) {
-                IPackage referencedPackage = packageRegistry.references[i];
-                if (referencedPackage != null) {
-                    writePackage(data, referencedPackage);
+        using (AC2Writer data = new(buffer, heapObjectRegistry)) {
+            for (int i = 0; i < heapObjectRegistry.references.Count; i++) {
+                IHeapObject referencedHeapObject = heapObjectRegistry.references[i];
+                if (referencedHeapObject != null) {
+                    writeHeapObject(data, referencedHeapObject);
                 }
             }
         }
 
-        for (int i = packageRegistry.references.Count - 1; i >= 0; i--) {
-            if (packageRegistry.references[i] == null) {
-                packageRegistry.references.RemoveAt(i);
+        for (int i = heapObjectRegistry.references.Count - 1; i >= 0; i--) {
+            if (heapObjectRegistry.references[i] == null) {
+                heapObjectRegistry.references.RemoveAt(i);
             }
         }
 
         WritePackTag(PackTag.Package);
-        Write(packageRegistry.references, v => Write(packageRegistry.getId(v)));
+        Write(heapObjectRegistry.references, v => Write(heapObjectRegistry.getId(v)));
         Write(buffer.ToArray());
 
-        packageRegistry.references.Clear();
+        heapObjectRegistry.references.Clear();
     }
 
-    private void writePackage(AC2Writer data, IPackage value) {
-        InterpReferenceMeta referenceMeta = packageRegistry.getMeta(value).referenceMeta;
+    private void writeHeapObject(AC2Writer data, IHeapObject value) {
+        ReferenceEntry referenceEntry = heapObjectRegistry.getMeta(value).referenceEntry;
 
-        data.Write(referenceMeta.id);
+        data.Write(referenceEntry.blob & 0xFFFFFF00);
 
-        if (referenceMeta.isSingleton) {
-            value.write(data);
-        } else {
-            data.Write((uint)0);
-            data.Write((ushort)value.nativeType);
-            data.Write(value.nativeType != NativeType.Undef ? (ushort)0xFFFF : (ushort)value.packageType);
-            if (value.nativeType != NativeType.Undef) {
+        if (referenceEntry.referenceType == ReferenceType.HeapObject) {
+            if (referenceEntry.isSingleton) {
                 value.write(data);
-            } else {
-                // Placeholder for length
+            } else if (!referenceEntry.isFiller || referenceEntry.isRoot) {
                 data.Write((uint)0);
+                data.Write((ushort)value.nativeType);
+                data.Write(value.nativeType != NativeType.Undef ? (ushort)0xFFFF : (ushort)value.packageType);
 
-                long contentStart = data.BaseStream.Position;
-                value.write(data);
-                long contentEnd = data.BaseStream.Position;
-                long contentLength = contentEnd - contentStart;
-                data.BaseStream.Seek(-contentLength - sizeof(uint), SeekOrigin.Current);
-                data.Write((uint)contentLength / sizeof(uint));
-                data.BaseStream.Seek(contentEnd, SeekOrigin.Begin);
-            }
+                if (value.nativeType != NativeType.Undef) {
+                    value.write(data);
+                }
 
-            // TODO: Still not sure this is the correct condition for whether there are references or not
-            // Write out field descriptions
-            if (value.nativeType == NativeType.Undef) {
-                foreach (FieldDesc fieldDesc in InterpMeta.getFieldDescs(value.GetType())) {
-                    data.Write((byte)fieldDesc.fieldType);
-                    if (fieldDesc.numWords == 2) {
-                        data.Write(UNINITIALIZED_DATA);
+                uint size = value.packageType != PackageType.Undef
+                    ? InterpMeta.getSize(value.GetType())
+                    : 0;
+                data.Write(size);
+
+                if (value.nativeType == NativeType.Undef) {
+                    value.write(data);
+                }
+
+                // Write out tags
+                if (size > 0) {
+                    foreach (FieldDesc fieldDesc in InterpMeta.getFieldDescs(value.GetType())) {
+                        data.Write((byte)fieldDesc.fieldType);
+                        if (fieldDesc.numWords == 2) {
+                            data.Write(UNINITIALIZED_DATA);
+                        }
                     }
                 }
-                // TODO: Should this align occur even if there are no references?
                 data.Align(4);
             } else {
-                // TODO: Is this needed/correct?
-                data.Write((uint)0);
+                throw new InvalidDataException(referenceEntry.blob.ToString());
             }
+        } else {
+            throw new NotImplementedException(referenceEntry.referenceType.ToString());
         }
     }
 
-    public void WritePkg<T>(T value) where T : IPackage {
+    public void WriteHO<T>(T value) where T : IHeapObject {
         if (value != null) {
-            Write(packageRegistry.getId(value));
-            packageRegistry.references.Add(value);
+            Write(heapObjectRegistry.getId(value));
+            heapObjectRegistry.references.Add(value);
         } else {
-            Write(PackageId.NULL);
+            Write(ReferenceId.NULL);
         }
     }
 
-    public void WritePkgFullRef<T>(T value) where T : IPackage {
+    public void WriteHOFullRef<T>(T value) where T : IHeapObject {
         if (value != null) {
-            new ReferenceId(packageRegistry.getId(value)).write(this);
-            packageRegistry.references.Add(value);
+            new ReferenceIdWrapper(heapObjectRegistry.getId(value)).write(this);
+            heapObjectRegistry.references.Add(value);
         } else {
-            new ReferenceId(PackageId.NULL).write(this);
+            new ReferenceIdWrapper(ReferenceId.NULL).write(this);
         }
     }
 
@@ -248,7 +248,7 @@ public class AC2Writer : BinaryWriter {
         }
     }
 
-    public void Write(PackageId value) {
+    public void Write(ReferenceId value) {
         Write(value.id);
     }
 

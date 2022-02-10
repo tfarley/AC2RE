@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class AllegianceProfile : IPackage {
+public class AllegianceProfile : IHeapObject {
 
     public PackageType packageType => PackageType.AllegianceProfile;
 
@@ -25,34 +25,34 @@ public class AllegianceProfile : IPackage {
     }
 
     public AllegianceProfile(AC2Reader data) {
-        data.ReadPkg<StringInfo>(v => allegianceName = v);
-        data.ReadPkg<AllegianceData>(v => patron = v);
-        data.ReadPkg<AllegianceData>(v => member = v);
-        data.ReadPkg<AllegianceData>(v => monarch = v);
+        data.ReadHO<StringInfo>(v => allegianceName = v);
+        data.ReadHO<AllegianceData>(v => patron = v);
+        data.ReadHO<AllegianceData>(v => member = v);
+        data.ReadHO<AllegianceData>(v => monarch = v);
         memberOnline = data.ReadBoolean();
         patronOnline = data.ReadBoolean();
-        data.ReadPkg<RList>(v => vassals = v.to<AllegianceData>());
-        data.ReadPkg<AList>(v => vassalsOnline = v.to<bool>());
-        data.ReadPkg<StringInfo>(v => motd = v);
+        data.ReadHO<RList>(v => vassals = v.to<AllegianceData>());
+        data.ReadHO<AList>(v => vassalsOnline = v.to<bool>());
+        data.ReadHO<StringInfo>(v => motd = v);
         monarchOnline = data.ReadBoolean();
         factionType = (FactionType)data.ReadUInt32();
         total = data.ReadUInt32();
-        data.ReadPkg<LAHashSet>(v => officerIds = v.to<InstanceId>());
+        data.ReadHO<LAHashSet>(v => officerIds = v.to<InstanceId>());
     }
 
     public void write(AC2Writer data) {
-        data.WritePkg(allegianceName);
-        data.WritePkg(patron);
-        data.WritePkg(member);
-        data.WritePkg(monarch);
+        data.WriteHO(allegianceName);
+        data.WriteHO(patron);
+        data.WriteHO(member);
+        data.WriteHO(monarch);
         data.Write(memberOnline);
         data.Write(patronOnline);
-        data.WritePkg(RList.from(vassals));
-        data.WritePkg(AList.from(vassalsOnline));
-        data.WritePkg(motd);
+        data.WriteHO(RList.from(vassals));
+        data.WriteHO(AList.from(vassalsOnline));
+        data.WriteHO(motd);
         data.Write(monarchOnline);
         data.Write((uint)factionType);
         data.Write(total);
-        data.WritePkg(LAHashSet.from(officerIds));
+        data.WriteHO(LAHashSet.from(officerIds));
     }
 }

@@ -7,6 +7,6 @@ public class Agent : Inventory {
     public SkillRepository skillRepository; // m_skill_rep
 
     public Agent(AC2Reader data) : base(data) {
-        data.ReadPkg<SkillRepository>(v => skillRepository = v);
+        data.ReadHO<SkillRepository>(v => skillRepository = v);
     }
 }

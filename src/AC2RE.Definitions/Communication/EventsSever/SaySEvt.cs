@@ -10,6 +10,6 @@ public class SaySEvt : IServerEvent {
 
     public SaySEvt(AC2Reader data) {
         weenieChatFlags = data.UnpackUInt32();
-        text = data.UnpackPackage<StringInfo>();
+        text = data.UnpackHeapObject<StringInfo>();
     }
 }

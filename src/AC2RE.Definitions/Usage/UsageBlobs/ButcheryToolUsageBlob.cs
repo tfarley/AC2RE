@@ -18,22 +18,22 @@ public class ButcheryToolUsageBlob : UsageBlob {
 
     public ButcheryToolUsageBlob(AC2Reader data) : base(data) {
         toolQuantityMod = data.ReadSingle();
-        data.ReadPkg<StringInfo>(v => corpseName = v);
+        data.ReadHO<StringInfo>(v => corpseName = v);
         profileDid = data.ReadDataId();
         craftSkillDid = data.ReadDataId();
-        data.ReadPkg<StringInfo>(v => playerName = v);
+        data.ReadHO<StringInfo>(v => playerName = v);
         toolXpMod = data.ReadSingle();
-        data.ReadPkg<CorpsePermissionBlob>(v => blob = v);
+        data.ReadHO<CorpsePermissionBlob>(v => blob = v);
     }
 
     public override void write(AC2Writer data) {
         base.write(data);
         data.Write(toolQuantityMod);
-        data.WritePkg(corpseName);
+        data.WriteHO(corpseName);
         data.Write(profileDid);
         data.Write(craftSkillDid);
-        data.WritePkg(playerName);
+        data.WriteHO(playerName);
         data.Write(toolXpMod);
-        data.WritePkg(blob);
+        data.WriteHO(blob);
     }
 }

@@ -16,6 +16,7 @@ public class CFogDesc {
 
     public class FogCombine {
 
+        // FogCombine
         public FogCombineType combineType; // combine_type
         public float colorMultFirst; // color_mult_first
         public float colorMultSecond; // color_mult_second
@@ -31,6 +32,7 @@ public class CFogDesc {
 
     public class FogInfo {
 
+        // FogInfo
         public float fogMin; // fog_min
         public float fogMax; // fog_max
         public float fogSky; // fog_sky
@@ -50,6 +52,7 @@ public class CFogDesc {
 
     public class LightInfo {
 
+        // LightInfo
         public float ambientBrightness; // amb_bright
         public RGBAColor ambientColor; // amb_color
         public float directionalBrightness; // dir_bright
@@ -66,6 +69,7 @@ public class CFogDesc {
 
     public class LightFogInfo {
 
+        // LightFogInfo
         public FogCombine combineAmbientBrightness; // m_combineAmbientBrightness
         public FogCombine combineAmbientColor; // m_combineAmbientColor
         public FogCombine combineDirectBrightness; // m_combineDirectBrightness
@@ -98,6 +102,7 @@ public class CFogDesc {
 
     public class FogType {
 
+        // FogType
         public uint index; // index
         public LightFogInfo fogLighting; // fog_lighting
 
@@ -107,6 +112,7 @@ public class CFogDesc {
         }
     }
 
+    // CFogDesc
     public DataId did; // m_DID
     public uint version; // version
     public DataId distanceFogMapDid; // distance_fog_map

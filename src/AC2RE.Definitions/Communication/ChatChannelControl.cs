@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class ChatChannelControl : IPackage {
+public class ChatChannelControl : IHeapObject {
 
     public PackageType packageType => PackageType.ChatChannelControl;
 
@@ -12,7 +12,7 @@ public class ChatChannelControl : IPackage {
 
     public ChatChannelControl(AC2Reader data) {
         pad1 = data.ReadUInt32();
-        data.ReadPkg<ARHash>(v => regionNameTable = v.to<uint, StringInfo>());
+        data.ReadHO<ARHash>(v => regionNameTable = v.to<uint, StringInfo>());
         pad2 = data.ReadUInt32();
     }
 }

@@ -6,6 +6,7 @@ public class GameTime {
 
     public class TimeOfDay {
 
+        // TimeOfDay
         public float begin; // begin
         public bool isNight; // is_night
         public uint timeOfDayToken; // time_of_day_token
@@ -19,6 +20,7 @@ public class GameTime {
 
     public class Season {
 
+        // Season
         public uint seasonToken; // season_token
         public uint begin; // begin
 
@@ -28,6 +30,7 @@ public class GameTime {
         }
     }
 
+    // GameTime
     public DataId did; // m_DID
     public float dayLength; // day_length
     public uint daysPerYear; // days_per_year

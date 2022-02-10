@@ -9,6 +9,7 @@ namespace AC2RE.Definitions;
 public static class InterpMeta {
 
     private static readonly Dictionary<Type, FieldDesc[]> fieldDescCache = new();
+    private static readonly Dictionary<Type, uint> sizeCache = new();
 
     private static readonly Dictionary<Type, Type> TYPE_REPLACEMENTS = new() {
         { typeof(DataId), typeof(uint) },
@@ -20,8 +21,8 @@ public static class InterpMeta {
         { typeof(InstanceId), typeof(ulong) },
     };
 
-    private static readonly HashSet<Type> PACKAGE_TYPES = new() {
-        typeof(IPackage),
+    private static readonly HashSet<Type> HEAP_OBJECT_TYPES = new() {
+        typeof(IHeapObject),
         typeof(IEnumerable),
         typeof(Vector3),
     };
@@ -34,7 +35,7 @@ public static class InterpMeta {
         { typeof(int), 1 },
         { typeof(uint), 1 },
         { typeof(float), 1 },
-        { typeof(IPackage), 1 },
+        { typeof(IHeapObject), 1 },
 
         { typeof(long), 2 },
         { typeof(ulong), 2 },
@@ -50,7 +51,7 @@ public static class InterpMeta {
         // Undocumented way to sort in declaration order
         Array.Sort(fieldInfos, (f1, f2) => f1.MetadataToken.CompareTo(f2.MetadataToken));
         foreach (FieldInfo fieldInfo in fieldInfos) {
-            if (fieldInfo.GetCustomAttribute<PackageIgnoreAttribute>() != null) {
+            if (fieldInfo.GetCustomAttribute<HeapObjectIgnoreAttribute>() != null) {
                 continue;
             }
             orderedFieldInfos.Add(fieldInfo);
@@ -62,6 +63,7 @@ public static class InterpMeta {
             List<FieldInfo> orderedFieldInfos = new();
             addFieldsInOrder(type, orderedFieldInfos);
             fieldDescs = new FieldDesc[orderedFieldInfos.Count];
+            uint totalSize = 0;
             for (int i = 0; i < orderedFieldInfos.Count; i++) {
                 FieldInfo fieldInfo = orderedFieldInfos[i];
                 Type fieldType = fieldInfo.FieldType;
@@ -73,25 +75,33 @@ public static class InterpMeta {
                 }
 
                 StackType stackType = StackType.Undef;
-                bool isPackageType = false;
-                foreach (Type packageType in PACKAGE_TYPES) {
-                    if (packageType.IsAssignableFrom(fieldType)) {
-                        fieldType = typeof(IPackage);
+                bool isHeapObjectType = false;
+                foreach (Type heapObjectType in HEAP_OBJECT_TYPES) {
+                    if (heapObjectType.IsAssignableFrom(fieldType)) {
+                        fieldType = typeof(IHeapObject);
                         stackType = StackType.Reference;
-                        isPackageType = true;
+                        isHeapObjectType = true;
                         break;
                     }
                 }
-                if (!isPackageType) {
+                if (!isHeapObjectType) {
                     if (typeof(Enum).IsAssignableFrom(fieldType)) {
                         fieldType = Enum.GetUnderlyingType(fieldType);
                     }
                     stackType = StackType.Undef;
                 }
-                fieldDescs[i] = new(stackType, TYPE_TO_NUM_WORDS[fieldType]);
+                uint size = TYPE_TO_NUM_WORDS[fieldType];
+                totalSize += size;
+                fieldDescs[i] = new(stackType, size);
             }
             fieldDescCache[type] = fieldDescs;
+            sizeCache[type] = totalSize;
         }
         return fieldDescs;
+    }
+
+    public static uint getSize(Type type) {
+        FieldDesc[] _ = getFieldDescs(type);
+        return sizeCache[type];
     }
 }

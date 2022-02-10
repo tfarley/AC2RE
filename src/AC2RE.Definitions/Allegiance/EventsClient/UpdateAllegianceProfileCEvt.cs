@@ -12,7 +12,7 @@ public class UpdateAllegianceProfileCEvt : IClientEvent {
     }
 
     public UpdateAllegianceProfileCEvt(AC2Reader data) {
-        profile = data.UnpackPackage<AllegianceProfile>();
+        profile = data.UnpackHeapObject<AllegianceProfile>();
     }
 
     public void write(AC2Writer data) {

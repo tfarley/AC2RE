@@ -42,18 +42,18 @@ public class ReflectiveEffect : Effect {
 
     public ReflectiveEffect(AC2Reader data) : base(data) {
         reflectProbEnd = data.ReadSingle();
-        data.ReadPkg<AList>(v => reflectClasses = v);
+        data.ReadHO<AList>(v => reflectClasses = v);
         reflectSpellcraftBegin = data.ReadSingle();
         absorbProbEnd = data.ReadSingle();
         absorbSpellcraftEnd = data.ReadSingle();
-        data.ReadPkg<AList>(v => absorbClasses = v);
+        data.ReadHO<AList>(v => absorbClasses = v);
         generateVar = data.ReadSingle();
         absorbProbBegin = data.ReadSingle();
         reflectSpellcraftEnd = data.ReadSingle();
         reflectVar = data.ReadSingle();
-        data.ReadPkg<AList>(v => generateClasses = v);
+        data.ReadHO<AList>(v => generateClasses = v);
         generateSpellcraftEnd = data.ReadSingle();
-        data.ReadPkg<Effect>(v => generateEffect = v);
+        data.ReadHO<Effect>(v => generateEffect = v);
         absorbVar = data.ReadSingle();
         generateSpellcraftBegin = data.ReadSingle();
         generateProbBegin = data.ReadSingle();

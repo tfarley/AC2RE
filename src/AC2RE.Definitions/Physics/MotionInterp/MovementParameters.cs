@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace AC2RE.Definitions;
 
-public class MovementParameters : IPackage {
+public class MovementParameters : IHeapObject {
 
     public NativeType nativeType => NativeType.MovementParameters;
 

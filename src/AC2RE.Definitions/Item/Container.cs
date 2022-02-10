@@ -8,15 +8,15 @@ public class Container : gmCEntity {
 
     public List<InstanceId> contents; // mContents
     public InstanceId transactionOnBehalfOfId; // m_transactionOnBehalfOfID
-    public List<IPackage> segments; // mSegments
+    public List<IHeapObject> segments; // mSegments
     public List<InstanceId> containers; // mContainers
     public bool hasBeenOpened; // mHasBeenOpened
 
     public Container(AC2Reader data) : base(data) {
-        data.ReadPkg<LList>(v => contents = v.to<InstanceId>());
+        data.ReadHO<LList>(v => contents = v.to<InstanceId>());
         transactionOnBehalfOfId = data.ReadInstanceId();
-        data.ReadPkg<RList>(v => segments = v);
-        data.ReadPkg<LList>(v => containers = v.to<InstanceId>());
+        data.ReadHO<RList>(v => segments = v);
+        data.ReadHO<LList>(v => containers = v.to<InstanceId>());
         hasBeenOpened = data.ReadBoolean();
     }
 }

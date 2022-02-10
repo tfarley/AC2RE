@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class UsageBlob : IPackage {
+public class UsageBlob : IHeapObject {
 
     public virtual PackageType packageType => PackageType.UsageBlob;
 
@@ -16,8 +16,8 @@ public class UsageBlob : IPackage {
     }
 
     public UsageBlob(AC2Reader data) {
-        data.ReadPkg<StringInfo>(v => criticalSuccessText = v);
-        data.ReadPkg<StringInfo>(v => successText = v);
+        data.ReadHO<StringInfo>(v => criticalSuccessText = v);
+        data.ReadHO<StringInfo>(v => successText = v);
         userBehaviorRepeatCount = data.ReadUInt32();
         userBehaviorTimeScale = data.ReadSingle();
         userBehavior = (BehaviorId)data.ReadUInt32();
@@ -25,8 +25,8 @@ public class UsageBlob : IPackage {
     }
 
     public virtual void write(AC2Writer data) {
-        data.WritePkg(criticalSuccessText);
-        data.WritePkg(successText);
+        data.WriteHO(criticalSuccessText);
+        data.WriteHO(successText);
         data.Write(userBehaviorRepeatCount);
         data.Write(userBehaviorTimeScale);
         data.Write((uint)userBehavior);

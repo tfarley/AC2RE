@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class ResurrectionRequest : IPackage {
+public class ResurrectionRequest : IHeapObject {
 
     public PackageType packageType => PackageType.ResurrectionRequest;
 
@@ -15,14 +15,14 @@ public class ResurrectionRequest : IPackage {
 
     public ResurrectionRequest(AC2Reader data) {
         rezzerId = data.ReadInstanceId();
-        data.ReadPkg<StringInfo>(v => rezzerName = v);
+        data.ReadHO<StringInfo>(v => rezzerName = v);
         focusLossMod = data.ReadSingle();
         fx = (FxId)data.ReadUInt32();
     }
 
     public void write(AC2Writer data) {
         data.Write(rezzerId);
-        data.WritePkg(rezzerName);
+        data.WriteHO(rezzerName);
         data.Write(focusLossMod);
         data.Write((uint)fx);
     }

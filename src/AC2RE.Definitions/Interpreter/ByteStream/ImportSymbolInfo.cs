@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class ImportSymbolInfo {
 
+    // ImportSymbolInfo
     public string name; // m_name
     public List<uint> offsets; // m_offsets
     public int fromAddr; // m_from_addr

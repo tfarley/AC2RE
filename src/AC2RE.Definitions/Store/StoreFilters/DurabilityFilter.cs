@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class DurabilityFilter : IPackage {
+public class DurabilityFilter : IHeapObject {
 
     public PackageType packageType => PackageType.DurabilityFilter;
 

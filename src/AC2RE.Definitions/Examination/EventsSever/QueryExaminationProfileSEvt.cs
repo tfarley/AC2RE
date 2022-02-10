@@ -8,6 +8,6 @@ public class QueryExaminationProfileSEvt : IServerEvent {
     public ExaminationRequest request; // _inRequest
 
     public QueryExaminationProfileSEvt(AC2Reader data) {
-        request = data.UnpackPackage<ExaminationRequest>();
+        request = data.UnpackHeapObject<ExaminationRequest>();
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class FlagRecipeAction : IPackage {
+public class FlagRecipeAction : IHeapObject {
 
     public PackageType packageType => PackageType.FlagRecipeAction;
 

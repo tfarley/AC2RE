@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace AC2RE.Definitions;
 
-public class VisualDesc : IPackage {
+public class VisualDesc : IHeapObject {
 
     // Dat file 70000390
     public static readonly Dictionary<PhysiqueType, AppearanceKey> PHYSIQUE_TO_APPEARANCE = new() {
@@ -40,6 +40,7 @@ public class VisualDesc : IPackage {
         PARTICLESCALE = 1 << 10, // PARTICLESCALE 0x00000400
     }
 
+    // VisualDesc
     public PackFlag packFlags;
     public DataId did; // m_DID
     public DataId parentDid; // m_parent_did

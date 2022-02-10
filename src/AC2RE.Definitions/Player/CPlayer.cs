@@ -10,7 +10,7 @@ public class CPlayer : Player {
     public WPString logFile; // m_logFile
     public uint curSpecialAttackId; // m_curr_special_attack_id
     public CShopperContext shopperContext; // m_shopperContext
-    public List<IPackage> friendList; // m_friendList
+    public List<IHeapObject> friendList; // m_friendList
     public SelectionInfo selectionInfo; // m_selectionInfo
     public uint curWarmupBehavior; // m_currentWarmupBehavior
     public HistoryList replyHistoryList; // m_replyHistoryList
@@ -20,7 +20,7 @@ public class CPlayer : Player {
     public CPetState clientPetState; // m_clientPetState
     public StringInfo motd; // m_motd
     public GMQuestInfoList quests; // m_Quests
-    public List<IPackage> squelchList; // m_squelchList
+    public List<IHeapObject> squelchList; // m_squelchList
     public HistoryList retellHistoryList; // m_retellHistoryList
     public bool isExamining; // m_isExamining
     public PublicVendorProfile curVendor; // m_pvpCurrentVendor
@@ -28,23 +28,23 @@ public class CPlayer : Player {
 
     public CPlayer(AC2Reader data) : base(data) {
         lastSelectionId = data.ReadInstanceId();
-        data.ReadPkg<WPString>(v => logFile = v);
+        data.ReadHO<WPString>(v => logFile = v);
         curSpecialAttackId = data.ReadUInt32();
-        data.ReadPkg<CShopperContext>(v => shopperContext = v);
-        data.ReadPkg<RList>(v => friendList = v);
-        data.ReadPkg<SelectionInfo>(v => selectionInfo = v);
+        data.ReadHO<CShopperContext>(v => shopperContext = v);
+        data.ReadHO<RList>(v => friendList = v);
+        data.ReadHO<SelectionInfo>(v => selectionInfo = v);
         curWarmupBehavior = data.ReadUInt32();
-        data.ReadPkg<HistoryList>(v => replyHistoryList = v);
-        data.ReadPkg<StringInfo>(v => lastTellee = v);
-        data.ReadPkg<StringInfo>(v => lastTeller = v);
+        data.ReadHO<HistoryList>(v => replyHistoryList = v);
+        data.ReadHO<StringInfo>(v => lastTellee = v);
+        data.ReadHO<StringInfo>(v => lastTeller = v);
         allegianceRoomId = data.ReadUInt32();
-        data.ReadPkg<CPetState>(v => clientPetState = v);
-        data.ReadPkg<StringInfo>(v => motd = v);
-        data.ReadPkg<GMQuestInfoList>(v => quests = v);
-        data.ReadPkg<RList>(v => squelchList = v);
-        data.ReadPkg<HistoryList>(v => retellHistoryList = v);
+        data.ReadHO<CPetState>(v => clientPetState = v);
+        data.ReadHO<StringInfo>(v => motd = v);
+        data.ReadHO<GMQuestInfoList>(v => quests = v);
+        data.ReadHO<RList>(v => squelchList = v);
+        data.ReadHO<HistoryList>(v => retellHistoryList = v);
         isExamining = data.ReadBoolean();
-        data.ReadPkg<PublicVendorProfile>(v => curVendor = v);
+        data.ReadHO<PublicVendorProfile>(v => curVendor = v);
         selectionInfoTarget = data.ReadInstanceId();
     }
 }

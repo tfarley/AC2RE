@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class ToolPermissionBlob : IPackage {
+public class ToolPermissionBlob : IHeapObject {
 
     public PackageType packageType => PackageType.ToolPermissionBlob;
 
@@ -10,7 +10,7 @@ public class ToolPermissionBlob : IPackage {
     public uint skillLevel; // m_uiSkillLevel
 
     public ToolPermissionBlob(AC2Reader data) {
-        data.ReadPkg<AList>(v => requiredSkillIds = v.to<SkillId>());
+        data.ReadHO<AList>(v => requiredSkillIds = v.to<SkillId>());
         skillLevel = data.ReadUInt32();
     }
 }

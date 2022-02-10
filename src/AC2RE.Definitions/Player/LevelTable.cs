@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class LevelTable : IPackage {
+public class LevelTable : IHeapObject {
 
     public PackageType packageType => PackageType.LevelTable;
 
@@ -10,7 +10,7 @@ public class LevelTable : IPackage {
     public uint maxLevel; // mMaxLevel
 
     public LevelTable(AC2Reader data) {
-        data.ReadPkg<RArray>(v => map = v.to<LevelData>());
+        data.ReadHO<RArray>(v => map = v.to<LevelData>());
         maxLevel = data.ReadUInt32();
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class ModifyHierarchyHashesOp : IPackage {
+public class ModifyHierarchyHashesOp : IHeapObject {
 
     public PackageType packageType => PackageType.ModifyHierarchyHashesOp;
 
@@ -10,7 +10,7 @@ public class ModifyHierarchyHashesOp : IPackage {
     public bool addToHashes; // m_fAddToHashes
 
     public ModifyHierarchyHashesOp(AC2Reader data) {
-        data.ReadPkg<AllegianceHierarchy>(v => hierarchy = v);
+        data.ReadHO<AllegianceHierarchy>(v => hierarchy = v);
         nodesSeen = data.ReadUInt32();
         removeFromHashes = data.ReadBoolean();
         addToHashes = data.ReadBoolean();

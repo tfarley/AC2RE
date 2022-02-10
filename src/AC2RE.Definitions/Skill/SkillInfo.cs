@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class SkillInfo : IPackage {
+public class SkillInfo : IHeapObject {
 
     public PackageType packageType => PackageType.SkillInfo;
 

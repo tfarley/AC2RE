@@ -9,6 +9,7 @@ public class BasePropertyDesc {
         Ignored, // Ignored
     }
 
+    // BasePropertyDesc
     public PropertyType type; // m_type
     public PropertyGroupName group; // m_group
     public uint propData; // m_data

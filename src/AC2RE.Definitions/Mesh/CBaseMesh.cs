@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class CBaseMesh {
 
+    // CBaseMesh
     public CVertexArray vertexArray; // m_pVertexArray
     public Sphere boundingSphere; // m_BoundingSphere
     public bool usesDynamicVertices; // m_bUsesDynamicVertices

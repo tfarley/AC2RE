@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class ContainerSegmentDescriptor : IPackage {
+public class ContainerSegmentDescriptor : IHeapObject {
 
     public PackageType packageType => PackageType.ContainerSegmentDescriptor;
 

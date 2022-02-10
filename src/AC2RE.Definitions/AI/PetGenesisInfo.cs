@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class PetGenesisInfo : IPackage {
+public class PetGenesisInfo : IHeapObject {
 
     public PackageType packageType => PackageType.PetGenesisInfo;
 
@@ -14,11 +14,11 @@ public class PetGenesisInfo : IPackage {
     public InstanceId petId; // m_iidPet
 
     public PetGenesisInfo(AC2Reader data) {
-        data.ReadPkg<LList>(v => pets = v);
-        data.ReadPkg<ALHash>(v => relevantPerks = v);
+        data.ReadHO<LList>(v => pets = v);
+        data.ReadHO<ALHash>(v => relevantPerks = v);
         leaderId = data.ReadInstanceId();
         flags = data.ReadUInt32();
-        data.ReadPkg<PKStatus>(v => status = v);
+        data.ReadHO<PKStatus>(v => status = v);
         petId = data.ReadInstanceId();
     }
 }

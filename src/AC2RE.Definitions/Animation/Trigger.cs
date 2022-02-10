@@ -2,6 +2,7 @@
 
 public class Trigger {
 
+    // Trigger
     public uint name; // mName
     public bool stop; // mStop
     public float time; // mTime

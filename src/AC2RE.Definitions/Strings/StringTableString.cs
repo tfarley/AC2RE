@@ -5,6 +5,7 @@ namespace AC2RE.Definitions;
 
 public class StringTableString {
 
+    // StringTableString
     public uint table; // table
     public List<string> strings; // strings
     public List<uint> variables; // variables

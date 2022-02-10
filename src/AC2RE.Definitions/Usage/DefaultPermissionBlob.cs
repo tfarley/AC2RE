@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class DefaultPermissionBlob : IPackage {
+public class DefaultPermissionBlob : IHeapObject {
 
     public PackageType packageType => PackageType.DefaultPermissionBlob;
 
@@ -94,7 +94,7 @@ public class DefaultPermissionBlob : IPackage {
         closeProximityMsgRadius = data.ReadSingle();
         requiredArcaneLore = data.ReadInt32();
         heroOnly = data.ReadBoolean();
-        data.ReadPkg<Position>(v => positionRequired = v);
+        data.ReadHO<Position>(v => positionRequired = v);
         questStatusRequired = (QuestStatus)data.ReadUInt32();
         veryFarProximityMsgRadius = data.ReadSingle();
         minRank = data.ReadInt32();
@@ -102,7 +102,7 @@ public class DefaultPermissionBlob : IPackage {
         skillIdRequired2 = (SkillId)data.ReadUInt32();
         questRequired = (QuestId)data.ReadUInt32();
         speciesRequired = (SpeciesType)data.ReadUInt32();
-        data.ReadPkg<Position>(v => lastPosition = v);
+        data.ReadHO<Position>(v => lastPosition = v);
         requiredCraftSkillRating = data.ReadInt32();
         stRequired2Rating = data.ReadUInt32();
         minLevel = data.ReadInt32();

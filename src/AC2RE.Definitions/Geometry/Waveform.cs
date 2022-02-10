@@ -17,6 +17,7 @@ public class Waveform {
         NUM, // NUM_WAVEFORMS
     }
 
+    // Waveform
     public WaveformType type; // type
     public float baseValue; // base
     public float baseVel; // base_vel

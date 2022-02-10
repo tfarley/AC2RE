@@ -12,7 +12,7 @@ public class UpdateFellowshipCEvt : IClientEvent {
     }
 
     public UpdateFellowshipCEvt(AC2Reader data) {
-        fellowship = data.UnpackPackage<Fellowship>();
+        fellowship = data.UnpackHeapObject<Fellowship>();
     }
 
     public void write(AC2Writer data) {

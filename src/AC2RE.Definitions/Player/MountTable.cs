@@ -2,13 +2,13 @@
 
 namespace AC2RE.Definitions;
 
-public class MountTable : IPackage {
+public class MountTable : IHeapObject {
 
     public PackageType packageType => PackageType.MountTable;
 
-    public Dictionary<uint, Dictionary<uint, IPackage>> mountTable; // mMountTable
+    public Dictionary<uint, Dictionary<uint, IHeapObject>> mountTable; // mMountTable
 
     public MountTable(AC2Reader data) {
-        data.ReadPkg<ARHash>(v => mountTable = v.to<uint, Dictionary<uint, IPackage>>());
+        data.ReadHO<ARHash>(v => mountTable = v.to<uint, Dictionary<uint, IHeapObject>>());
     }
 }

@@ -20,15 +20,15 @@ public class CraftSkill : MasterDIDListMember {
 
     public CraftSkill(AC2Reader data) : base(data) {
         advancementCap = data.ReadUInt32();
-        data.ReadPkg<StringInfo>(v => name = v);
-        data.ReadPkg<AAHash>(v => titleHash = v);
-        data.ReadPkg<StringInfo>(v => description = v);
+        data.ReadHO<StringInfo>(v => name = v);
+        data.ReadHO<AAHash>(v => titleHash = v);
+        data.ReadHO<StringInfo>(v => description = v);
         advancementTableDid = data.ReadDataId();
         iconDid = data.ReadDataId();
         dailyXpTableDid = data.ReadDataId();
         genericXpMod = data.ReadSingle();
         cannotRaise = data.ReadBoolean();
-        data.ReadPkg<StringInfo>(v => commonName = v);
+        data.ReadHO<StringInfo>(v => commonName = v);
         defaultXpTableDid = data.ReadDataId();
     }
 }

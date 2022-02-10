@@ -309,7 +309,7 @@ internal class WorldObjectManager {
                 }
             }
             if (baseQualities.packageIds != null) {
-                foreach ((uint stat, PackageId value) in baseQualities.packageIds) {
+                foreach ((uint stat, ReferenceId value) in baseQualities.packageIds) {
                     if (worldObject.qualities.packageIds == null) {
                         worldObject.qualities.packageIds = new();
                     }

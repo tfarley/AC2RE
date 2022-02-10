@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AC2RE.Definitions;
 
-public class NRHash : Dictionary<IPackage, IPackage>, IPackage {
+public class NRHash : Dictionary<IHeapObject, IHeapObject>, IHeapObject {
 
     public NativeType nativeType => NativeType.NRHash;
 
@@ -11,7 +11,7 @@ public class NRHash : Dictionary<IPackage, IPackage>, IPackage {
         return to(k => (K)k, v => (V)v);
     }
 
-    public Dictionary<K, V> to<K, V>(Func<IPackage, K> keyConversion, Func<IPackage, V> valueConversion) {
+    public Dictionary<K, V> to<K, V>(Func<IHeapObject, K> keyConversion, Func<IHeapObject, V> valueConversion) {
         Dictionary<K, V> converted = new(Count);
         foreach ((var key, var value) in this) {
             converted[keyConversion.Invoke(key)] = valueConversion.Invoke(value);
@@ -19,11 +19,11 @@ public class NRHash : Dictionary<IPackage, IPackage>, IPackage {
         return converted;
     }
 
-    public static NRHash from<K, V>(Dictionary<K, V> source) where K : IPackage where V : IPackage {
+    public static NRHash from<K, V>(Dictionary<K, V> source) where K : IHeapObject where V : IHeapObject {
         return from(source, k => k, v => v);
     }
 
-    public static NRHash from<K, V>(Dictionary<K, V> source, Func<K, IPackage> keyConversion, Func<V, IPackage> valueConversion) {
+    public static NRHash from<K, V>(Dictionary<K, V> source, Func<K, IHeapObject> keyConversion, Func<V, IHeapObject> valueConversion) {
         if (source == null) {
             return null;
         }
@@ -40,12 +40,12 @@ public class NRHash : Dictionary<IPackage, IPackage>, IPackage {
     }
 
     public NRHash(AC2Reader data) {
-        foreach ((var key, var value) in data.ReadDictionary(data.ReadPackageFullRef, data.ReadPackageId)) {
-            data.packageRegistry.addResolver(() => this[data.packageRegistry.get<IPackage>(key)] = data.packageRegistry.get<IPackage>(value));
+        foreach ((var key, var value) in data.ReadDictionary(data.ReadHOFullRef, data.ReadReferenceId)) {
+            data.heapObjectRegistry.addResolver(() => this[data.heapObjectRegistry.get<IHeapObject>(key)] = data.heapObjectRegistry.get<IHeapObject>(value));
         }
     }
 
     public void write(AC2Writer data) {
-        data.Write(this, data.WritePkgFullRef, data.WritePkg);
+        data.Write(this, data.WriteHOFullRef, data.WriteHO);
     }
 }

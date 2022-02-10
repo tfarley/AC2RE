@@ -9,7 +9,7 @@ public class SetShortcutSEvt : IServerEvent {
     public uint index; // _index
 
     public SetShortcutSEvt(AC2Reader data) {
-        shortcut = data.UnpackPackage<ShortcutInfo>();
+        shortcut = data.UnpackHeapObject<ShortcutInfo>();
         index = data.UnpackUInt32();
     }
 }

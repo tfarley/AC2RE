@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AC2RE.Definitions;
 
-public class Effect : IPackage {
+public class Effect : IHeapObject {
 
     public virtual PackageType packageType => PackageType.Effect;
 
@@ -95,7 +95,7 @@ public class Effect : IPackage {
     public uint eqClass; // m_eqClass
 
     public Effect(AC2Reader data) {
-        data.ReadPkg<RArray>(v => durationData = v.to<FloatScaleDuple>());
+        data.ReadHO<RArray>(v => durationData = v.to<FloatScaleDuple>());
         fxId = (FxId)data.ReadUInt32();
         appValue = data.ReadSingle();
         flags = (Flag)data.ReadUInt32();
@@ -104,13 +104,13 @@ public class Effect : IPackage {
         minTsysSpellcraft = data.ReadSingle();
         internalFlags = (InternalFlag)data.ReadUInt64();
         probVariance = data.ReadSingle();
-        data.ReadPkg<StringInfo>(v => tsysItemName = v);
-        data.ReadPkg<StringInfo>(v => description = v);
+        data.ReadHO<StringInfo>(v => tsysItemName = v);
+        data.ReadHO<StringInfo>(v => description = v);
         appKey = (AppearanceKey)data.ReadUInt32();
-        data.ReadPkg<RArray>(v => forceData = v.to<FloatScaleDuple>());
+        data.ReadHO<RArray>(v => forceData = v.to<FloatScaleDuple>());
         examinationFlags = data.ReadUInt32();
         variance = data.ReadSingle();
-        data.ReadPkg<DefaultPermissionBlob>(v => usagePermissions = v);
+        data.ReadHO<DefaultPermissionBlob>(v => usagePermissions = v);
         removeOnLogout = data.ReadBoolean();
         removeOnTeleport = data.ReadBoolean();
         iconDid = data.ReadDataId();
@@ -122,10 +122,10 @@ public class Effect : IPackage {
         tsysAppValue = data.ReadSingle();
         endingFxId = data.ReadUInt32();
         clearOnUse = data.ReadBoolean();
-        data.ReadPkg<RArray>(v => priData = v.to<FloatScaleDuple>());
-        data.ReadPkg<StringInfo>(v => name = v);
-        data.ReadPkg<AList>(v => statList = v);
-        data.ReadPkg<RArray>(v => probData = v.to<FloatScaleDuple>());
+        data.ReadHO<RArray>(v => priData = v.to<FloatScaleDuple>());
+        data.ReadHO<StringInfo>(v => name = v);
+        data.ReadHO<AList>(v => statList = v);
+        data.ReadHO<RArray>(v => probData = v.to<FloatScaleDuple>());
         tsysAppKey = (AppearanceKey)data.ReadUInt32();
         selfTargetedSpellcraftCap = data.ReadSingle();
         eqClass = data.ReadUInt32();

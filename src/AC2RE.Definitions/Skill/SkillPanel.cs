@@ -14,9 +14,9 @@ public class SkillPanel : MasterListMember {
 
     public SkillPanel(AC2Reader data) : base(data) {
         backgroundDid = data.ReadDataId();
-        data.ReadPkg<ARHash>(v => nodeHash = v.to<uint, SkillUINode>());
-        data.ReadPkg<StringInfo>(v => description = v);
+        data.ReadHO<ARHash>(v => nodeHash = v.to<uint, SkillUINode>());
+        data.ReadHO<StringInfo>(v => description = v);
         iconDid = data.ReadDataId();
-        data.ReadPkg<StringInfo>(v => name = v);
+        data.ReadHO<StringInfo>(v => name = v);
     }
 }

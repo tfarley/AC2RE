@@ -8,7 +8,7 @@ public class ApplyEffect : Effect {
     public uint effectCategory; // m_effectCategory
 
     public ApplyEffect(AC2Reader data) : base(data) {
-        data.ReadPkg<Effect>(v => effect = v);
+        data.ReadHO<Effect>(v => effect = v);
         effectCategory = data.ReadUInt32();
     }
 }

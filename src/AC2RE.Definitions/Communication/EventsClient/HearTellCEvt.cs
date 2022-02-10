@@ -16,8 +16,8 @@ public class HearTellCEvt : IClientEvent {
 
     public HearTellCEvt(AC2Reader data) {
         weenieChatFlags = data.UnpackUInt32();
-        text = data.UnpackPackage<StringInfo>();
-        tellerName = data.UnpackPackage<StringInfo>();
+        text = data.UnpackHeapObject<StringInfo>();
+        tellerName = data.UnpackHeapObject<StringInfo>();
         tellerId = data.UnpackInstanceId();
     }
 

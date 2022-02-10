@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class InvEquipDesc : IPackage {
+public class InvEquipDesc : IHeapObject {
 
     public PackageType packageType => PackageType.InvEquipDesc;
 
@@ -42,7 +42,7 @@ public class InvEquipDesc : IPackage {
 
     public InvEquipDesc(AC2Reader data) {
         blockingItemLocation = (InvLoc)data.ReadUInt32();
-        data.ReadPkg<EquipItemProfile>(v => equipProfile = v);
+        data.ReadHO<EquipItemProfile>(v => equipProfile = v);
         quantity = data.ReadUInt32();
         itemId = data.ReadInstanceId();
         precludedSlots = (InvLoc)data.ReadUInt32();
@@ -60,7 +60,7 @@ public class InvEquipDesc : IPackage {
 
     public void write(AC2Writer data) {
         data.Write((uint)blockingItemLocation);
-        data.WritePkg(equipProfile);
+        data.WriteHO(equipProfile);
         data.Write(quantity);
         data.Write(itemId);
         data.Write((uint)precludedSlots);

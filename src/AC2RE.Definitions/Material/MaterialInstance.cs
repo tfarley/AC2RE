@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class MaterialInstance {
 
+    // MaterialInstance
     public DataId did; // m_DID
     public DataId materialDid; // m_materialID
     public uint materialType; // m_materialType

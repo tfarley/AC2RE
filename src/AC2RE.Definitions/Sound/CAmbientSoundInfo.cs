@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class CAmbientSoundInfo {
 
+    // CAmbientSoundInfo
     public uint soundType; // m_sound_type
     public DataId envDid; // m_env_did
     public List<CContinSoundInfo> continuousSounds; // m_contin_sounds

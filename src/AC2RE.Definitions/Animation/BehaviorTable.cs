@@ -6,6 +6,7 @@ public class BehaviorTable {
 
     public struct ComboKey {
 
+        // ComboKey
         public uint elementId; // elementID
         public uint modeId; // modeID
         public uint behaviorId; // behaviorID
@@ -19,6 +20,7 @@ public class BehaviorTable {
 
     public struct ComboInfo {
 
+        // ComboInfo
         public uint animKey; // animKey
         public uint layerNum; // layerNum
 
@@ -30,6 +32,7 @@ public class BehaviorTable {
 
     public struct ModeTransitionKey {
 
+        // ModeTransitionKey
         public uint elementSrcId; // elementSrcID
         public uint modeSrcId; // modeSrcID
         public uint elementDstId; // elementDstID
@@ -45,6 +48,7 @@ public class BehaviorTable {
 
     public struct TransitionInfo {
 
+        // TransitionInfo
         public uint behavior; // mBehavior
         public uint effect; // mEffect
         public uint stopEffect; // mStopEffect
@@ -58,6 +62,7 @@ public class BehaviorTable {
 
     public struct BehaviorInfo {
 
+        // BehaviorInfo
         public float rampTime; // rampTime
         public uint effect; // effect
 
@@ -67,6 +72,7 @@ public class BehaviorTable {
         }
     }
 
+    // BehaviorTable
     public DataId did; // m_DID
     public Dictionary<ModeTransitionKey, float> modeTransitionRampTimes; // mModeTransitionRampTimes
     public Dictionary<ComboKey, ComboInfo> comboLookup; // mComboLookup

@@ -12,6 +12,6 @@ public class CreateFellowshipSEvt : IServerEvent {
     public CreateFellowshipSEvt(AC2Reader data) {
         lootingMethod = (LootingMethod)data.UnpackUInt32();
         social = data.UnpackBoolean();
-        name = data.UnpackPackage<WPString>();
+        name = data.UnpackHeapObject<WPString>();
     }
 }

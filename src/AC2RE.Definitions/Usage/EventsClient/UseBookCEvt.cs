@@ -16,7 +16,7 @@ public class UseBookCEvt : IClientEvent {
     public UseBookCEvt(AC2Reader data) {
         imageDid = data.UnpackDataId();
         showControls = data.UnpackBoolean();
-        bookText = data.UnpackPackage<StringInfo>();
+        bookText = data.UnpackHeapObject<StringInfo>();
     }
 
     public void write(AC2Writer data) {

@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class Trade : IPackage {
+public class Trade : IHeapObject {
 
     public PackageType packageType => PackageType.Trade;
 
@@ -19,22 +19,22 @@ public class Trade : IPackage {
     }
 
     public Trade(AC2Reader data) {
-        data.ReadPkg<LAHash>(v => slaveItemIdToAmount = v.to<InstanceId, uint>());
+        data.ReadHO<LAHash>(v => slaveItemIdToAmount = v.to<InstanceId, uint>());
         masterId = data.ReadInstanceId();
         slaveId = data.ReadInstanceId();
         masterAccepted = data.ReadBoolean();
         slaveAccepted = data.ReadBoolean();
         status = data.ReadUInt32();
-        data.ReadPkg<LAHash>(v => masterItemIdToAmount = v.to<InstanceId, uint>());
+        data.ReadHO<LAHash>(v => masterItemIdToAmount = v.to<InstanceId, uint>());
     }
 
     public void write(AC2Writer data) {
-        data.WritePkg(LAHash.from(slaveItemIdToAmount));
+        data.WriteHO(LAHash.from(slaveItemIdToAmount));
         data.Write(masterId);
         data.Write(slaveId);
         data.Write(masterAccepted);
         data.Write(slaveAccepted);
         data.Write(status);
-        data.WritePkg(LAHash.from(masterItemIdToAmount));
+        data.WriteHO(LAHash.from(masterItemIdToAmount));
     }
 }

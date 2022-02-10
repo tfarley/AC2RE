@@ -15,6 +15,7 @@ public class PositionPack {
         IMPULSE = 1 << 3, // PF_IMPULSE 0x00000008
     }
 
+    // PositionPack
     public double time; // m_time
     public PositionOffset offset; // m_offset
     public Vector3 doMotion; // m_doMotion

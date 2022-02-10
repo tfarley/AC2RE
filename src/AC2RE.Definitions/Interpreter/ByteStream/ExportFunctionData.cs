@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class ExportFunctionData {
 
+    // ExportFunctionData
     public string name; // m_name
     public FunctionId funcId; // m_fid
     public uint offset; // m_offset

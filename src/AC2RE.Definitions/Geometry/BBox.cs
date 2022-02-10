@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public struct BBox {
 
+    // BBox
     public Vector3 min; // min
     public Vector3 max; // max
 

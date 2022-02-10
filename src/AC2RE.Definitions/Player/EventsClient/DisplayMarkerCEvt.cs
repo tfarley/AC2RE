@@ -16,7 +16,7 @@ public class DisplayMarkerCEvt : IClientEvent {
     }
 
     public DisplayMarkerCEvt(AC2Reader data) {
-        text = data.UnpackPackage<StringInfo>();
+        text = data.UnpackHeapObject<StringInfo>();
         markerDid = data.UnpackDataId();
         cell = new(data.UnpackUInt32());
         id = data.UnpackInstanceId();

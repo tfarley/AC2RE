@@ -33,6 +33,6 @@ public class Eff_Mn_Doppelganger : GenesisEffect {
         magicAttack = data.ReadInt32();
         missileDefense = data.ReadInt32();
         missileAttack = data.ReadInt32();
-        data.ReadPkg<StringInfo>(v => subName = v);
+        data.ReadHO<StringInfo>(v => subName = v);
     }
 }

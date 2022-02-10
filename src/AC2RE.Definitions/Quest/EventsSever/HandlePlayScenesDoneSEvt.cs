@@ -8,6 +8,6 @@ public class HandlePlayScenesDoneSEvt : IServerEvent {
     public GMSceneInfoList scenes; // _playScenes
 
     public HandlePlayScenesDoneSEvt(AC2Reader data) {
-        scenes = data.UnpackPackage<GMSceneInfoList>();
+        scenes = data.UnpackHeapObject<GMSceneInfoList>();
     }
 }

@@ -2,14 +2,14 @@
 
 namespace AC2RE.Definitions;
 
-public class SingletonPkg<T> : IPackage where T : class, IPackage {
+public class SingletonPkg<T> : IHeapObject where T : class, IHeapObject {
 
-    public DataId did;
+    public DataId wstateDid;
     public T package;
 
-    private SingletonPkg<U> to<U>() where U : class, IPackage {
+    private SingletonPkg<U> to<U>() where U : class, IHeapObject {
         return new() {
-            did = did,
+            wstateDid = wstateDid,
             package = package as U,
         };
     }
@@ -19,17 +19,17 @@ public class SingletonPkg<T> : IPackage where T : class, IPackage {
     }
 
     public SingletonPkg(AC2Reader data) {
-        did = data.ReadDataId();
+        wstateDid = data.ReadDataId();
     }
 
     public void write(AC2Writer data) {
-        data.Write(did);
+        data.Write(wstateDid);
     }
 
-    public static SingletonPkg<T> cast(IPackage package) {
+    public static SingletonPkg<T> cast(IHeapObject package) {
         Type packageType = package.GetType();
         if (packageType.IsGenericType && packageType.GetGenericTypeDefinition() == typeof(SingletonPkg<>)) {
-            return ((SingletonPkg<IPackage>)package).to<T>();
+            return ((SingletonPkg<IHeapObject>)package).to<T>();
         } else {
             return new() {
                 package = (T)package,

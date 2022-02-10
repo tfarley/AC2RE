@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class CLandBlockInfo {
 
+    // CLandBlockInfo
     public DataId did; // m_DID
     public uint version; // m_version
     public EntityGroupDesc entities; // m_entities

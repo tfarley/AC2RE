@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class AnimationRecipeAction : IPackage {
+public class AnimationRecipeAction : IHeapObject {
 
     public PackageType packageType => PackageType.AnimationRecipeAction;
 

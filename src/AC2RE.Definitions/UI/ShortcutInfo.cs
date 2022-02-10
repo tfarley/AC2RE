@@ -3,7 +3,7 @@ using System.Text;
 
 namespace AC2RE.Definitions;
 
-public class ShortcutInfo : IPackage {
+public class ShortcutInfo : IHeapObject {
 
     public NativeType nativeType => NativeType.ShortcutInfo;
 

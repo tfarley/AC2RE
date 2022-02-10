@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class CraftBlob : IPackage {
+public class CraftBlob : IHeapObject {
 
     public virtual PackageType packageType => PackageType.CraftBlob;
 

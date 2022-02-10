@@ -8,6 +8,6 @@ public class DirectiveTakeAllFromContainerSEvt : IServerEvent {
     public InvTakeAllDesc takeAllDesc; // _iDesc
 
     public DirectiveTakeAllFromContainerSEvt(AC2Reader data) {
-        takeAllDesc = data.UnpackPackage<InvTakeAllDesc>();
+        takeAllDesc = data.UnpackHeapObject<InvTakeAllDesc>();
     }
 }

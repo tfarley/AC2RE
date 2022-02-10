@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class AllegianceData : IPackage {
+public class AllegianceData : IHeapObject {
 
     public PackageType packageType => PackageType.AllegianceData;
 
@@ -24,27 +24,27 @@ public class AllegianceData : IPackage {
         xpPassed = data.ReadUInt64();
         species = (SpeciesType)data.ReadUInt32();
         level = data.ReadUInt32();
-        data.ReadPkg<WPString>(v => userDefinedTitle = v);
+        data.ReadHO<WPString>(v => userDefinedTitle = v);
         sex = (SexType)data.ReadUInt32();
         xpPooled = data.ReadUInt64();
         isOfficer = data.ReadBoolean();
         id = data.ReadInstanceId();
         rank = data.ReadUInt32();
         factionType = (FactionType)data.ReadUInt32();
-        data.ReadPkg<StringInfo>(v => name = v);
+        data.ReadHO<StringInfo>(v => name = v);
     }
 
     public void write(AC2Writer data) {
         data.Write(xpPassed);
         data.Write((uint)species);
         data.Write(level);
-        data.WritePkg(userDefinedTitle);
+        data.WriteHO(userDefinedTitle);
         data.Write((uint)sex);
         data.Write(xpPooled);
         data.Write(isOfficer);
         data.Write(id);
         data.Write(rank);
         data.Write((uint)factionType);
-        data.WritePkg(name);
+        data.WriteHO(name);
     }
 }

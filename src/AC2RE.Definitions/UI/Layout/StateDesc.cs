@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class StateDesc {
 
+    // StateDesc
     public uint id; // elementID
     public byte flags; // flags
     public ushort x0; // x0

@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class DBFXTable {
 
+    // DBFXTable
     public DataId did; // m_DID
     public Dictionary<uint, List<FXData>> table; // m_table
     public List<uint> subTables; // m_sub_tables

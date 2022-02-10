@@ -14,6 +14,7 @@ public class CPositionPack {
         CANCELMOVETO = 1 << 2, // PF_CANCELMOVETO 0x00000004
     }
 
+    // CPositionPack
     public double time; // m_time
     public PositionOffset offset; // m_offset
     public Vector3 doMotion; // m_doMotion

@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class PKStatus : IPackage {
+public class PKStatus : IHeapObject {
 
     public PackageType packageType => PackageType.PKStatus;
 

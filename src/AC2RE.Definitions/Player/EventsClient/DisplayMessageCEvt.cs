@@ -14,7 +14,7 @@ public class DisplayMessageCEvt : IClientEvent {
 
     public DisplayMessageCEvt(AC2Reader data) {
         topmost = data.UnpackBoolean();
-        text = data.UnpackPackage<StringInfo>();
+        text = data.UnpackHeapObject<StringInfo>();
     }
 
     public void write(AC2Writer data) {

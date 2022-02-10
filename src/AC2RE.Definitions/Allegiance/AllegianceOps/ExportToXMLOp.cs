@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class ExportToXMLOp : IPackage {
+public class ExportToXMLOp : IHeapObject {
 
     public PackageType packageType => PackageType.ExportToXMLOp;
 
@@ -11,6 +11,6 @@ public class ExportToXMLOp : IPackage {
     public ExportToXMLOp(AC2Reader data) {
         nodesSeen = data.ReadUInt32();
         indentLevel = data.ReadUInt32();
-        data.ReadPkg<WPString>(v => fileName = v);
+        data.ReadHO<WPString>(v => fileName = v);
     }
 }

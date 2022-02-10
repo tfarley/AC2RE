@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class RenderMaterial {
 
+    // RenderMaterial
     public DataId did; // m_DID
     public MaterialModifier properties; // properties
     public List<MaterialLayer> layers; // layers

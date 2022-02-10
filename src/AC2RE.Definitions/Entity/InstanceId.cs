@@ -17,7 +17,8 @@ public readonly struct InstanceId : IEquatable<InstanceId> {
         Dynamic, // Dynamic_IDType
     }
 
-    public readonly ulong id;
+    // InstanceID
+    public readonly ulong id; // id
 
     public InstanceId(ulong id) {
         this.id = id;

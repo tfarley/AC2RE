@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class FellowVitals : IPackage {
+public class FellowVitals : IHeapObject {
 
     public PackageType packageType => PackageType.FellowVitals;
 

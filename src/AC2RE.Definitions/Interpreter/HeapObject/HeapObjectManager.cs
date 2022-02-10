@@ -3,35 +3,18 @@ using System.Collections.Generic;
 
 namespace AC2RE.Definitions;
 
-public static class PackageManager {
+public static class HeapObjectManager {
 
-    private static readonly DataId CLIENT_WLIB_DID = new(0x56000005);
-
-    private static PackageTypes packageTypes;
-
-    public static void loadPackageTypes(DatReader datReader) {
-        if (packageTypes == null) {
-            using (AC2Reader data = datReader.getFileReader(CLIENT_WLIB_DID)) {
-                WLib wlib = new(data);
-                packageTypes = new();
-                foreach (ByteStream.ExportData export in wlib.byteStream.exports) {
-                    packageTypes.add(export.args.packageType, export.args.parentIndex);
-                }
-                packageTypes.calculate();
-            }
-        }
-    }
-
-    public static InterpReferenceMeta getReferenceMeta(Type type) {
-        InterpReferenceMeta.Flag flags = InterpReferenceMeta.Flag.LOADED | InterpReferenceMeta.Flag.RECURSE;
+    public static ReferenceEntry getReferenceEntry(Type type) {
+        ReferenceEntry.Field flags = ReferenceEntry.Field.LOADED | ReferenceEntry.Field.RECURSE;
         if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(SingletonPkg<>)) {
-            flags |= InterpReferenceMeta.Flag.SINGLETON;
+            flags |= ReferenceEntry.Field.SINGLETON;
         }
 
         return new(flags, ReferenceType.HeapObject);
     }
 
-    public static IPackage read(AC2Reader data, NativeType nativeType) {
+    public static IHeapObject read(AC2Reader data, NativeType nativeType) {
         return nativeType switch {
             NativeType.AAHash => new AAHash(data),
             NativeType.AAMultiHash => new AAMultiHash(data),
@@ -72,33 +55,18 @@ public static class PackageManager {
             NativeType.StringInfo => new StringInfo(data),
             NativeType.wpstring => new WPString(data),
             NativeType.UISaveLocations => new UISaveLocations(data),
-            NativeType.Vector => new VectorPkg(data.ReadVector()),
+            NativeType.Vector => new VectorHeapObject(data.ReadVector()),
             NativeType.VisualDesc => new VisualDesc(data),
             _ => throw new NotImplementedException($"Unhandled read for native package type {nativeType}."),
         };
     }
 
-    public static bool isPackageType(PackageType packageType, PackageType comparePackageType) {
-        if (packageType == comparePackageType) {
-            return true;
-        }
-
-        List<PackageType> packageTypeHierarchy = packageTypes.getPackageTypeHierarchy(packageType);
-        foreach (PackageType inheritedPackageType in packageTypeHierarchy) {
-            if (inheritedPackageType == comparePackageType) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static IPackage read(AC2Reader data, PackageType packageType) {
-        IPackage package = readInternal(data, packageType);
+    public static IHeapObject read(AC2Reader data, PackageType packageType) {
+        IHeapObject package = readInternal(data, packageType);
 
         // Deserialize as the most derived "known" package type
         if (package == null) {
-            List<PackageType> packageTypeHierarchy = packageTypes.getPackageTypeHierarchy(packageType);
+            List<PackageType> packageTypeHierarchy = PackageTypes.getPackageTypeHierarchy(packageType);
             foreach (PackageType inheritedPackageType in packageTypeHierarchy) {
                 package = readInternal(data, inheritedPackageType);
                 if (package != null) {
@@ -114,7 +82,7 @@ public static class PackageManager {
         return package;
     }
 
-    private static IPackage readInternal(AC2Reader data, PackageType packageType) {
+    private static IHeapObject readInternal(AC2Reader data, PackageType packageType) {
         return packageType switch {
             PackageType.ACFraction => new ACFraction(data),
             PackageType.Act => new Act(data),
@@ -325,7 +293,7 @@ public static class PackageManager {
             PackageType.RecipeDifficultyTable => new RecipeDifficultyTable(data),
             PackageType.RecipeNameColoringTable => new RecipeNameColoringTable(data),
             PackageType.RecipeRecord => new RecipeRecord(data),
-            PackageType.RecipeTrainingTable => new GenericPackage(packageType),
+            PackageType.RecipeTrainingTable => new GenericHeapObject(packageType),
             PackageType.ReflectiveEffect => new ReflectiveEffect(data),
             PackageType.ReflectiveVitalEffect => new ReflectiveVitalEffect(data),
             PackageType.RemoveRecipeEffect => new RemoveRecipeEffect(data),

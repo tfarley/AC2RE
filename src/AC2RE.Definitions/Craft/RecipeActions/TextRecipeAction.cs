@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class TextRecipeAction : IPackage {
+public class TextRecipeAction : IHeapObject {
 
     public PackageType packageType => PackageType.TextRecipeAction;
 
@@ -8,7 +8,7 @@ public class TextRecipeAction : IPackage {
     public TextType textType; // m_textType
 
     public TextRecipeAction(AC2Reader data) {
-        data.ReadPkg<StringInfo>(v => text = v);
+        data.ReadHO<StringInfo>(v => text = v);
         textType = (TextType)data.ReadUInt32();
     }
 }

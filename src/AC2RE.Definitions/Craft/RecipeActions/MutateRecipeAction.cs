@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class MutateRecipeAction : IPackage {
+public class MutateRecipeAction : IHeapObject {
 
     public PackageType packageType => PackageType.MutateRecipeAction;
 
@@ -15,7 +15,7 @@ public class MutateRecipeAction : IPackage {
     }
 
     public uint ordinal; // m_uiOrdinal
-    public IPackage treasureProfile; // m_prof
+    public IHeapObject treasureProfile; // m_prof
     public BiasProfile biasProfile; // m_biasProf
     public Flag flags; // m_flags
     public DataId mappingTableDid; // m_didMappingTable
@@ -25,8 +25,8 @@ public class MutateRecipeAction : IPackage {
     public MutateRecipeAction(AC2Reader data) {
         ordinal = data.ReadUInt32();
         // TODO: Unknown type "TreasureProfile" - perhaps newer native type?
-        data.ReadPkg<IPackage>(v => treasureProfile = v);
-        data.ReadPkg<BiasProfile>(v => biasProfile = v);
+        data.ReadHO<IHeapObject>(v => treasureProfile = v);
+        data.ReadHO<BiasProfile>(v => biasProfile = v);
         flags = (Flag)data.ReadUInt32();
         mappingTableDid = data.ReadDataId();
         minSpinnerVal = data.ReadUInt32();

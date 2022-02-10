@@ -7,6 +7,7 @@ public class CLightInfo {
 
     public class LightSourceInfo {
 
+        // CLightInfo::LightSourceInfo
         public CellId cellId; // nCellID
         public PropertyCollection properties; // pLightSource.?
         public Vector3 origin; // pLightSource.m_vOrigin
@@ -22,6 +23,7 @@ public class CLightInfo {
 
     public class LightCellInfo {
 
+        // CLightInfo::LightCellInfo
         public CellId cellId; // nCellID
         public List<ushort> indices; // aIndices
 
@@ -40,6 +42,7 @@ public class CLightInfo {
         }
     }
 
+    // CLightInfo
     public DataId did; // m_DID
     public Dictionary<uint, List<uint>> lookupHash; // m_lookupHash
     public List<LightSourceInfo> lightSourceInfos; // m_aInfos

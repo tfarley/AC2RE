@@ -13,7 +13,7 @@ public class EnterPortalSceneCEvt : IClientEvent {
     }
 
     public EnterPortalSceneCEvt(AC2Reader data) {
-        scenes = data.UnpackPackage<GMSceneInfoList>();
+        scenes = data.UnpackHeapObject<GMSceneInfoList>();
         delay = data.UnpackDouble();
     }
 

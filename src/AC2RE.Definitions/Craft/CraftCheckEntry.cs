@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class CraftCheckEntry : IPackage {
+public class CraftCheckEntry : IHeapObject {
 
     public PackageType packageType => PackageType.CraftCheckEntry;
 
@@ -11,8 +11,8 @@ public class CraftCheckEntry : IPackage {
     public Dictionary<uint, CraftRandomEntry> randEntries; // m_hashRandEntries
 
     public CraftCheckEntry(AC2Reader data) {
-        data.ReadPkg<AList>(v => randomThresholds = v);
+        data.ReadHO<AList>(v => randomThresholds = v);
         threshold = data.ReadSingle();
-        data.ReadPkg<ARHash>(v => randEntries = v.to<uint, CraftRandomEntry>());
+        data.ReadHO<ARHash>(v => randEntries = v.to<uint, CraftRandomEntry>());
     }
 }

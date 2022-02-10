@@ -12,7 +12,7 @@ public class UpdateSkillInfoCEvt : IClientEvent {
     }
 
     public UpdateSkillInfoCEvt(AC2Reader data) {
-        skillInfo = data.UnpackPackage<SkillInfo>();
+        skillInfo = data.UnpackHeapObject<SkillInfo>();
     }
 
     public void write(AC2Writer data) {

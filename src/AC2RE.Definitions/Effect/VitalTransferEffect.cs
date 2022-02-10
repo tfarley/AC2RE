@@ -31,9 +31,9 @@ public class VitalTransferEffect : Effect {
     public Flag vitalTransferFlags => (Flag)flags;
 
     public VitalTransferEffect(AC2Reader data) : base(data) {
-        data.ReadPkg<RArray>(v => casterChangeData = v.to<FloatScaleDuple>());
+        data.ReadHO<RArray>(v => casterChangeData = v.to<FloatScaleDuple>());
         casterChangeVar = data.ReadSingle();
-        data.ReadPkg<RArray>(v => targetChangeData = v.to<FloatScaleDuple>());
+        data.ReadHO<RArray>(v => targetChangeData = v.to<FloatScaleDuple>());
         targetChangeVar = data.ReadSingle();
     }
 }

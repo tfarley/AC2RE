@@ -2,6 +2,7 @@
 
 public class FXScalarAndTarget {
 
+    // FXScalarAndTarget
     public float scalar; // m_scalar
     public InstanceId targetId; // m_target_id
 

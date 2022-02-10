@@ -28,17 +28,17 @@ public class HandleCharacterSessionStartCEvt : IClientEvent {
 
     public HandleCharacterSessionStartCEvt(AC2Reader data) {
         money = data.UnpackInt32();
-        actRegistry = data.UnpackPackage<ActRegistry>();
-        quests = data.UnpackPackage<GMQuestInfoList>();
-        options = data.UnpackPackage<GameplayOptionsProfile>();
-        skills = data.UnpackPackage<SkillRepository>();
-        effectRegistry = data.UnpackPackage<EffectRegistry>();
+        actRegistry = data.UnpackHeapObject<ActRegistry>();
+        quests = data.UnpackHeapObject<GMQuestInfoList>();
+        options = data.UnpackHeapObject<GameplayOptionsProfile>();
+        skills = data.UnpackHeapObject<SkillRepository>();
+        effectRegistry = data.UnpackHeapObject<EffectRegistry>();
         filledInventoryLocations = (InvLoc)data.UnpackUInt32();
-        inventoryByLocationTable = data.UnpackPackage<ARHash>().to<InvLoc, InventProfile>();
-        inventoryByIdTable = data.UnpackPackage<LRHash>().to<InstanceId, InventProfile>();
-        containerSegments = data.UnpackPackage<RList>().to<ContainerSegmentDescriptor>();
-        containerIds = data.UnpackPackage<LList>().to<InstanceId>();
-        contentIds = data.UnpackPackage<LList>().to<InstanceId>();
+        inventoryByLocationTable = data.UnpackHeapObject<ARHash>().to<InvLoc, InventProfile>();
+        inventoryByIdTable = data.UnpackHeapObject<LRHash>().to<InstanceId, InventProfile>();
+        containerSegments = data.UnpackHeapObject<RList>().to<ContainerSegmentDescriptor>();
+        containerIds = data.UnpackHeapObject<LList>().to<InstanceId>();
+        contentIds = data.UnpackHeapObject<LList>().to<InstanceId>();
         localFactionStatus = (FactionStatus)data.UnpackUInt32();
         serverFactionStatus = (FactionStatus)data.UnpackUInt32();
     }

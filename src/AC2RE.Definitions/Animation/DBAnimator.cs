@@ -6,26 +6,11 @@ namespace AC2RE.Definitions;
 
 public class DBAnimator {
 
-    // Const - globals
-    public enum AnimatorType : uint {
-        undef = 0,
-
-        asset = 0x40000001, // asset
-        cube = 0x40000002, // cube
-        human = 0x40000003, // human
-
-        look = 0x40000005, // look
-        axis = 0x40000006, // axis
-        random = 0x40000007, // random
-        switchME = 0x40000008, // switchME
-
-        angle = 0x4000000A, // angle
-    }
-
     public class AnimAsset : IWritable {
 
         public class AnimAssetScaleKey : IWritable {
 
+            // AnimAssetScaleKey
             public Vector3 scale; // scale
             public float time; // sTime
 
@@ -46,6 +31,7 @@ public class DBAnimator {
 
         public class AnimAssetOffsetKey : IWritable {
 
+            // AnimAssetOffsetKey
             public Vector3 offset; // offset
             public float time; // sTime
 
@@ -66,6 +52,7 @@ public class DBAnimator {
 
         public class AnimAssetQuatKey : IWritable {
 
+            // AnimAssetQuatKey
             public Quaternion rot; // qt
             public float time; // sTime
 
@@ -86,6 +73,7 @@ public class DBAnimator {
 
         public class AnimAssetWeightKey : IWritable {
 
+            // AnimAssetWeightKey
             public float weight; // weight
             public float time; // sTime
 
@@ -132,6 +120,7 @@ public class DBAnimator {
 
         public class AnimInfo : IWritable {
 
+            // AnimInfo
             public List<Trigger> fxTriggers; // mEffectsTriggers
             public List<WeenieHook> weenieHooks; // mWeenieHooks
             public List<ImpulseTrigger> impulseTriggers; // mImpulseTriggers
@@ -162,6 +151,7 @@ public class DBAnimator {
             }
         }
 
+        // AnimAsset
         public float period; // period
         public List<BoneInfo> boneInfos; // numBones + m_scaleKeys + m_offsetKeys + m_quatKeys + m_weightKeys
         public AnimInfo animInfo; // animInfo
@@ -194,6 +184,7 @@ public class DBAnimator {
 
         public class SliderAndTickList : IWritable {
 
+            // AnimCube::SliderAndTickList
             public uint slider; // mSlider
             public List<float> tickList; // mTickList
 
@@ -212,6 +203,7 @@ public class DBAnimator {
             }
         }
 
+        // AnimCube
         public List<SliderAndTickList> sliderData; // mSliderData
         public List<DataId> dbAnimatorDids; // mDBAnimatorIDs
 
@@ -232,6 +224,7 @@ public class DBAnimator {
 
     public class AMHuman : IWritable {
 
+        // AMHuman
         public DataId dbAnimatorDid; // dbAnimatorID
 
         public AMHuman() {
@@ -249,6 +242,7 @@ public class DBAnimator {
 
     public class AxisCube : IWritable {
 
+        // AxisCube
         public List<uint> sliderIds; // SlidersIDs
         public List<DataId> dbAnimatorDids; // dbAnimatorIDs
         public uint originId; // originID
@@ -272,6 +266,7 @@ public class DBAnimator {
 
     public class AnimInterpolator : IWritable {
 
+        // AnimInterpolator
         public List<DataId> dbAnimatorDids; // dbAnimatorIDs
         public uint slider; // mSlider
 
@@ -292,6 +287,7 @@ public class DBAnimator {
 
     public class AMRandom : IWritable {
 
+        // AMRandom
         public AnimInterpolator interpolator; // mInterp
         public float variation; // mVariation
         public float frequency; // mFrequency
@@ -328,6 +324,7 @@ public class DBAnimator {
             terrain, // terrain
         }
 
+        // AMSwitchME
         public SwitchType switchType; // mSwitchType
         public uint defaultVal; // mDefault
         public Dictionary<uint, uint> overrides; // mOverrides
@@ -353,6 +350,7 @@ public class DBAnimator {
 
         public class BoneAngleMod : IWritable {
 
+            // BoneAngleMod
             public uint bone; // mBone
             public float x; // x
             public float y; // y
@@ -374,6 +372,7 @@ public class DBAnimator {
             }
         }
 
+        // AMAngle
         public List<BoneAngleMod> boneAngleMods; // mBoneList
         public float minX; // mMinX
         public float maxX; // mMaxX
@@ -401,6 +400,23 @@ public class DBAnimator {
         }
     }
 
+    // Const - globals
+    public enum AnimatorType : uint {
+        undef = 0,
+
+        asset = 0x40000001, // asset
+        cube = 0x40000002, // cube
+        human = 0x40000003, // human
+
+        look = 0x40000005, // look
+        axis = 0x40000006, // axis
+        random = 0x40000007, // random
+        switchME = 0x40000008, // switchME
+
+        angle = 0x4000000A, // angle
+    }
+
+    // DBAnimator
     public DataId did; // m_DID
     public AnimatorType type;
     public IWritable animatorData;

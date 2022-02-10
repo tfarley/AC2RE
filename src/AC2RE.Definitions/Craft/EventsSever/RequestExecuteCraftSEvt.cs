@@ -14,7 +14,7 @@ public class RequestExecuteCraftSEvt : IServerEvent {
 
     public RequestExecuteCraftSEvt(AC2Reader data) {
         targetId = data.UnpackInstanceId();
-        ingredients = data.UnpackPackage<ALHash>();
+        ingredients = data.UnpackHeapObject<ALHash>();
         spinnerVal = data.UnpackInt32();
         recipeDid = data.UnpackDataId();
     }

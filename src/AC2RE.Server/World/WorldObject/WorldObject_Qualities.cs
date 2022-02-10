@@ -764,8 +764,8 @@ internal partial class WorldObject {
         }
     }
 
-    public PackageId getQ(uint stat) => qualities.packageIds?.GetValueOrDefault(stat) ?? default;
-    public void setQ(uint stat, PackageId value) {
+    public ReferenceId getQ(uint stat) => qualities.packageIds?.GetValueOrDefault(stat) ?? default;
+    public void setQ(uint stat, ReferenceId value) {
         if (qualities.packageIds == null) {
             if (value != default) {
                 qualities.packageIds = new() { { stat, value } };

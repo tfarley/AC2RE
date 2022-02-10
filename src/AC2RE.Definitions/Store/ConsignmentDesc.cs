@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class ConsignmentDesc : IPackage {
+public class ConsignmentDesc : IHeapObject {
 
     public PackageType packageType => PackageType.ConsignmentDesc;
 

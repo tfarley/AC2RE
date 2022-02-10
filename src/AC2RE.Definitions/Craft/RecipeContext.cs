@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class RecipeContext : IPackage {
+public class RecipeContext : IHeapObject {
 
     public PackageType packageType => PackageType.RecipeContext;
 
@@ -26,13 +26,13 @@ public class RecipeContext : IPackage {
         skillLevel = data.ReadInt32();
         notifyUI = data.ReadBoolean();
         recipeDid = data.ReadDataId();
-        data.ReadPkg<Player>(v => crafter = v);
-        data.ReadPkg<ALHash>(v => productIds = v);
+        data.ReadHO<Player>(v => crafter = v);
+        data.ReadHO<ALHash>(v => productIds = v);
         randVal = data.ReadSingle();
         craftXp = data.ReadInt64();
         targetId = data.ReadInstanceId();
-        data.ReadPkg<CraftBlob>(v => blob = v);
+        data.ReadHO<CraftBlob>(v => blob = v);
         cost = data.ReadInt32();
-        data.ReadPkg<ALHash>(v => ingredientIds = v);
+        data.ReadHO<ALHash>(v => ingredientIds = v);
     }
 }

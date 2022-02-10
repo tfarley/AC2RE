@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace AC2RE.Definitions;
 
-public class BaseProperty : IPackage {
+public class BaseProperty : IHeapObject {
 
     public NativeType nativeType => NativeType.BaseProperty;
 

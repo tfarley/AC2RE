@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class EmoteInfo : IPackage {
+public class EmoteInfo : IHeapObject {
 
     public PackageType packageType => PackageType.EmoteInfo;
 
@@ -11,10 +11,10 @@ public class EmoteInfo : IPackage {
     public StringInfo commandText; // _cmd
 
     public EmoteInfo(AC2Reader data) {
-        data.ReadPkg<StringInfo>(v => description = v);
-        data.ReadPkg<StringInfo>(v => selfText = v);
-        data.ReadPkg<StringInfo>(v => otherText = v);
-        data.ReadPkg<BehaviorParams>(v => emoteParams = v);
-        data.ReadPkg<StringInfo>(v => commandText = v);
+        data.ReadHO<StringInfo>(v => description = v);
+        data.ReadHO<StringInfo>(v => selfText = v);
+        data.ReadHO<StringInfo>(v => otherText = v);
+        data.ReadHO<BehaviorParams>(v => emoteParams = v);
+        data.ReadHO<StringInfo>(v => commandText = v);
     }
 }

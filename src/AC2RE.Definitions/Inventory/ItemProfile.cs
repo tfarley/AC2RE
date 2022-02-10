@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class ItemProfile : IPackage {
+public class ItemProfile : IHeapObject {
 
     public PackageType packageType => PackageType.ItemProfile;
 

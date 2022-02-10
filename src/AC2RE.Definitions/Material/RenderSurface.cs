@@ -2,6 +2,7 @@
 
 public class RenderSurface {
 
+    // RenderSurface
     public DataId did; // m_DID
     public uint unk1;
     public uint width; // sourceData.width

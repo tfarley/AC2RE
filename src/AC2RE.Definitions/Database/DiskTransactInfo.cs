@@ -2,6 +2,7 @@
 
 public class DiskTransactInfo {
 
+    // DiskTransactInfo
     public uint type; // ulType_
     public uint[] ul = new uint[10]; // ul1_ - ul10_
 

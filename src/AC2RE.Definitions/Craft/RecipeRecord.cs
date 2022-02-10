@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class RecipeRecord : IPackage {
+public class RecipeRecord : IHeapObject {
 
     public PackageType packageType => PackageType.RecipeRecord;
 

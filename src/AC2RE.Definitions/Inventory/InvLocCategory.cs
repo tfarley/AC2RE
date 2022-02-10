@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class InvLocCategory : IPackage {
+public class InvLocCategory : IHeapObject {
 
     public PackageType packageType => PackageType.InvLocCategory;
 

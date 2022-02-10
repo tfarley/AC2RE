@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AC2RE.Definitions;
 
-public class UsageDesc : IPackage {
+public class UsageDesc : IHeapObject {
 
     public PackageType packageType => PackageType.UsageDesc;
 
@@ -49,10 +49,10 @@ public class UsageDesc : IPackage {
     }
 
     public UsageDesc(AC2Reader data) {
-        data.ReadPkg<StringInfo>(v => successText = v);
-        data.ReadPkg<UsageBlob>(v => usageBlob = v);
+        data.ReadHO<StringInfo>(v => successText = v);
+        data.ReadHO<UsageBlob>(v => usageBlob = v);
         itemId = data.ReadInstanceId();
-        data.ReadPkg<Position>(v => userPos = v);
+        data.ReadHO<Position>(v => userPos = v);
         userWeenieType = (WeenieType)data.ReadUInt32();
         userId = data.ReadInstanceId();
         distToUsedItem = data.ReadSingle();
@@ -60,7 +60,7 @@ public class UsageDesc : IPackage {
         error = (ErrorType)data.ReadUInt32();
         effectTargetId = data.ReadInstanceId();
         usageTargetTypeValid = data.ReadUInt32();
-        data.ReadPkg<RList>(v => effectsToApply = v.to(SingletonPkg<Effect>.cast));
+        data.ReadHO<RList>(v => effectsToApply = v.to(SingletonPkg<Effect>.cast));
         vigorCost = data.ReadInt32();
         controlFlags = (ControlFlag)data.ReadUInt32();
         cancelsSF = data.ReadBoolean();
@@ -68,10 +68,10 @@ public class UsageDesc : IPackage {
     }
 
     public void write(AC2Writer data) {
-        data.WritePkg(successText);
-        data.WritePkg(usageBlob);
+        data.WriteHO(successText);
+        data.WriteHO(usageBlob);
         data.Write(itemId);
-        data.WritePkg(userPos);
+        data.WriteHO(userPos);
         data.Write((uint)userWeenieType);
         data.Write(userId);
         data.Write(distToUsedItem);
@@ -79,7 +79,7 @@ public class UsageDesc : IPackage {
         data.Write((uint)error);
         data.Write(effectTargetId);
         data.Write(usageTargetTypeValid);
-        data.WritePkg(RList.from(effectsToApply));
+        data.WriteHO(RList.from(effectsToApply));
         data.Write(vigorCost);
         data.Write((uint)controlFlags);
         data.Write(cancelsSF);

@@ -6,6 +6,7 @@ public class CSkyDesc {
 
     public class SkyDay {
 
+        // SkyDay
         public DataId dayDescDid; // day
         public float frequency; // frequency
 
@@ -15,6 +16,7 @@ public class CSkyDesc {
         }
     }
 
+    // CSkyDesc
     public DataId did; // m_DID
     public uint version; // version
     public double minTickSize; // min_tick_size

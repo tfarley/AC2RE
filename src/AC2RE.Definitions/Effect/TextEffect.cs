@@ -21,7 +21,7 @@ public class TextEffect : Effect {
     public Flag textFlags => (Flag)flags;
 
     public TextEffect(AC2Reader data) : base(data) {
-        data.ReadPkg<StringInfo>(v => broadcastText = v);
+        data.ReadHO<StringInfo>(v => broadcastText = v);
         textType = (TextType)data.ReadUInt32();
     }
 }

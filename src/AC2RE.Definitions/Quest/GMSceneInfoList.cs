@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class GMSceneInfoList : List<GMSceneInfo>, IPackage {
+public class GMSceneInfoList : List<GMSceneInfo>, IHeapObject {
 
     public NativeType nativeType => NativeType.gmSceneInfoList;
 

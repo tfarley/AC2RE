@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class VisualDescInfo : IPackage {
+public class VisualDescInfo : IHeapObject {
 
     public PackageType packageType => PackageType.VisualDescInfo;
 
@@ -15,14 +15,14 @@ public class VisualDescInfo : IPackage {
     }
 
     public VisualDescInfo(AC2Reader data) {
-        data.ReadPkg<VectorPkg>(v => scale = v.v);
-        data.ReadPkg<AppInfoHash>(v => appInfoHash = v);
-        data.ReadPkg<VisualDesc>(v => cachedVisualDesc = v);
+        data.ReadHO<VectorHeapObject>(v => scale = v.v);
+        data.ReadHO<AppInfoHash>(v => appInfoHash = v);
+        data.ReadHO<VisualDesc>(v => cachedVisualDesc = v);
     }
 
     public void write(AC2Writer data) {
-        data.WritePkg(new VectorPkg(scale));
-        data.WritePkg(appInfoHash);
-        data.WritePkg(cachedVisualDesc);
+        data.WriteHO(new VectorHeapObject(scale));
+        data.WriteHO(appInfoHash);
+        data.WriteHO(cachedVisualDesc);
     }
 }

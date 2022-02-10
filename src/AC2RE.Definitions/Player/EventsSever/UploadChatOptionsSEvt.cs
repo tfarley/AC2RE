@@ -14,10 +14,10 @@ public class UploadChatOptionsSEvt : IServerEvent {
     public Dictionary<uint, uint> chatFilter; // _chatFilter
 
     public UploadChatOptionsSEvt(AC2Reader data) {
-        chatPopupFlags = data.UnpackPackage<AAHash>();
-        devotedChatWindows = data.UnpackPackage<AAHash>();
-        chatFontColors = data.UnpackPackage<AAHash>();
-        chatFontSizes = data.UnpackPackage<AAHash>();
-        chatFilter = data.UnpackPackage<AAHash>();
+        chatPopupFlags = data.UnpackHeapObject<AAHash>();
+        devotedChatWindows = data.UnpackHeapObject<AAHash>();
+        chatFontColors = data.UnpackHeapObject<AAHash>();
+        chatFontSizes = data.UnpackHeapObject<AAHash>();
+        chatFilter = data.UnpackHeapObject<AAHash>();
     }
 }

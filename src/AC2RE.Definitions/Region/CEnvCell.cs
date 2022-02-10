@@ -16,6 +16,7 @@ public class CEnvCell {
         DRAW_SKY = 1 << 4, // ENVCELL_PACK_DRAW_SKY 0x00000010
     }
 
+    // CEnvCell
     public PackFlag packFlags;
     public Position pos; // m_position
     public List<LocalCellId> stabList; // m_stabList

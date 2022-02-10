@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class CharacterGenSystem : IPackage {
+public class CharacterGenSystem : IHeapObject {
 
     public PackageType packageType => PackageType.CharacterGenSystem;
 

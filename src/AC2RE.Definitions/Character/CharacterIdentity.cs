@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class CharacterIdentity {
 
+    // CharacterIdentity
     public InstanceId id; // id_
     public string name; // name_
     public uint secondsGreyedOut; // secondsGreyedOut_

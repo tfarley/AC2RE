@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class AHashSet : HashSet<uint>, IPackage {
+public class AHashSet : HashSet<uint>, IHeapObject {
 
     public NativeType nativeType => NativeType.AHashSet;
 

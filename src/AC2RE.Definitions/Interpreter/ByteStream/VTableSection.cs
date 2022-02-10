@@ -6,16 +6,17 @@ public class VTableSection {
 
     public class PackageInfo {
 
+        // PackageInfo
         public uint size; // size
         public uint checksum; // checksum
 
         public PackageInfo(AC2Reader data) {
-            // TODO: Size and checksum might be swapped
             size = data.ReadUInt32();
             checksum = data.ReadUInt32();
         }
     }
 
+    // VTableSection
     public List<List<VTableId>> funcMapper; // m_funcMapper
     public List<List<uint>> vTable; // m_vtbl
     public List<PackageInfo> packageInfo; // m_pkgInfo

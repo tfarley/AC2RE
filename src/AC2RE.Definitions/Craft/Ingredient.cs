@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AC2RE.Definitions;
 
-public class Ingredient : IPackage {
+public class Ingredient : IHeapObject {
 
     public PackageType packageType => PackageType.Ingredient;
 
@@ -43,23 +43,23 @@ public class Ingredient : IPackage {
 
     public Ingredient(AC2Reader data) {
         ordinal = data.ReadUInt32();
-        data.ReadPkg<StringInfo>(v => description = v);
-        data.ReadPkg<LevelMappingTable>(v => loreMappingTable = v);
+        data.ReadHO<StringInfo>(v => description = v);
+        data.ReadHO<LevelMappingTable>(v => loreMappingTable = v);
         autoSpinner = data.ReadBoolean();
         minSpinnerVal = data.ReadUInt32();
         requiredFlags = data.ReadUInt32();
-        data.ReadPkg<AAHash>(v => items = v.to<DataId, DataId>());
+        data.ReadHO<AAHash>(v => items = v.to<DataId, DataId>());
         flags = (Flag)data.ReadUInt32();
-        data.ReadPkg<StringInfo>(v => pluralDescription = v);
+        data.ReadHO<StringInfo>(v => pluralDescription = v);
         autoPopulate = data.ReadBoolean();
         maxSpinnerVal = data.ReadUInt32();
-        data.ReadPkg<LevelMappingTable>(v => levelMappingTable = v);
+        data.ReadHO<LevelMappingTable>(v => levelMappingTable = v);
         quantity = data.ReadUInt32();
-        data.ReadPkg<AAHash>(v => itemClasses = v);
+        data.ReadHO<AAHash>(v => itemClasses = v);
         restrictedFlags = data.ReadUInt32();
-        data.ReadPkg<StringInfo>(v => forcedDescription = v);
+        data.ReadHO<StringInfo>(v => forcedDescription = v);
         level = data.ReadInt32();
         lore = data.ReadInt32();
-        data.ReadPkg<LevelMappingTable>(v => stackMappingTable = v);
+        data.ReadHO<LevelMappingTable>(v => stackMappingTable = v);
     }
 }

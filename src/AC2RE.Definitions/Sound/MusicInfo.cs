@@ -2,6 +2,7 @@
 
 public class MusicInfo {
 
+    // MusicInfo
     public DataId did; // m_DID
     public uint bitfield; // m_bitField
     public float priority; // m_priority

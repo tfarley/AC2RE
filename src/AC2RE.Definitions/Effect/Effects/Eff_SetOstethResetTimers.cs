@@ -9,6 +9,6 @@ public class Eff_SetOstethResetTimers : Effect {
     public List<uint> recipes; // m_recipeList
 
     public Eff_SetOstethResetTimers(AC2Reader data) : base(data) {
-        data.ReadPkg<AList>(v => recipes = v);
+        data.ReadHO<AList>(v => recipes = v);
     }
 }

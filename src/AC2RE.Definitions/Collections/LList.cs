@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class LList : List<ulong>, IPackage {
+public class LList : List<ulong>, IHeapObject {
 
     public NativeType nativeType => NativeType.LList;
 

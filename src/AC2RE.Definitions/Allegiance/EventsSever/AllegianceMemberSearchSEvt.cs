@@ -8,6 +8,6 @@ public class AllegianceMemberSearchSEvt : IServerEvent {
     public WPString memberName; // _member
 
     public AllegianceMemberSearchSEvt(AC2Reader data) {
-        memberName = data.UnpackPackage<WPString>();
+        memberName = data.UnpackHeapObject<WPString>();
     }
 }

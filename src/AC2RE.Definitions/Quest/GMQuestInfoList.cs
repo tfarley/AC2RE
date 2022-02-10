@@ -2,7 +2,7 @@
 
 namespace AC2RE.Definitions;
 
-public class GMQuestInfoList : List<GMQuestInfo>, IPackage {
+public class GMQuestInfoList : List<GMQuestInfo>, IHeapObject {
 
     public NativeType nativeType => NativeType.gmQuestInfoList;
 

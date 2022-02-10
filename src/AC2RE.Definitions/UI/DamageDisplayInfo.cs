@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class DamageDisplayInfo : IPackage {
+public class DamageDisplayInfo : IHeapObject {
 
     public PackageType packageType => PackageType.DamageDisplayInfo;
 
@@ -29,9 +29,9 @@ public class DamageDisplayInfo : IPackage {
         targetHealthPoints = data.ReadUInt32();
         attackerIsPlayersPet = data.ReadBoolean();
         nonDamaging = data.ReadBoolean();
-        data.ReadPkg<gmCEntity>(v => target = v);
+        data.ReadHO<gmCEntity>(v => target = v);
         nonBasicSkillId = (SkillId)data.ReadUInt32();
-        data.ReadPkg<CPlayer>(v => player = v);
-        data.ReadPkg<gmCEntity>(v => attacker = v);
+        data.ReadHO<CPlayer>(v => player = v);
+        data.ReadHO<gmCEntity>(v => attacker = v);
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-public class QuestGlobals : IPackage {
+public class QuestGlobals : IHeapObject {
 
     public PackageType packageType => PackageType.QuestGlobals;
 

@@ -4,6 +4,7 @@ namespace AC2RE.Definitions;
 
 public class StreakFX {
 
+    // StreakFX
     public RGBAColor color; // m_cColor
     public Vector3 startPoint; // m_vStartPoint
     public Vector3 endPoint; // m_vEndPoint
