@@ -51,7 +51,7 @@ internal static class CharacterGen {
             }
         }
 
-        WorldObject character = world.objectManager.create(characterGenSystem.playerEntityDid, raceSexInfo.physObjDid, true);
+        WorldObject character = world.objectManager.create(InstanceId.IdType.Player, characterGenSystem.playerEntityDid, raceSexInfo.physObjDid, true);
         setCharacterPhysics(character, startPos);
         setCharacterVisual(character, appProfileMap, appearanceInfos);
         setCharacterQualities(character, species, sex);
@@ -116,7 +116,7 @@ internal static class CharacterGen {
     private static void createStartingInventory(World world, WorldObject character, CharGenMatrix charGenMatrix, SpeciesType species, Dictionary<DataId, Dictionary<AppearanceKey, float>> appearanceInfos) {
         List<StartInvData> startInvItems = charGenMatrix.startingInventoryTable[species][0][0];
         foreach (StartInvData startInvItem in startInvItems) {
-            WorldObject item = world.objectManager.create(startInvItem.entityDid, DataId.NULL, true);
+            WorldObject item = world.objectManager.create(InstanceId.IdType.Dynamic, startInvItem.entityDid, DataId.NULL, true);
 
             WState clothingWeenieState = world.contentManager.getWeenieStateFromEntityDid(item.entityDid);
             if (clothingWeenieState.package is Clothing clothing) {
@@ -137,7 +137,7 @@ internal static class CharacterGen {
             }
         }
 
-        WorldObject mountItem = world.objectManager.create(new(0x470014CB), DataId.NULL, true);
+        WorldObject mountItem = world.objectManager.create(InstanceId.IdType.Dynamic, new(0x470014CB), DataId.NULL, true);
 
         mountItem.setContainer(character);
     }

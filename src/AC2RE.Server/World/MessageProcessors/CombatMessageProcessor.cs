@@ -56,7 +56,7 @@ internal class CombatMessageProcessor : BaseMessageProcessor {
                             });
                         }
 
-                        WorldObject newTestObject = world.objectManager.create();
+                        WorldObject newTestObject = world.objectManager.create(InstanceId.IdType.Dynamic);
                         newTestObject.visual = new() {
                             parentDid = new(0x1F000000 + (uint)toggleCounter),
                         };

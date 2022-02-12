@@ -10,7 +10,7 @@ namespace AC2RE.PacketTool.UI;
 internal abstract class Tool {
 
     private static readonly Predicate<CreateObjectMsg> ALL_FILTER = msg => msg.physicsDesc.pos != null;
-    private static readonly Predicate<CreateObjectMsg> MAP_FILTER = msg => ALL_FILTER.Invoke(msg) && (byte)(msg.id.id >> 56) == 0x40;
+    private static readonly Predicate<CreateObjectMsg> MAP_FILTER = msg => ALL_FILTER.Invoke(msg) && msg.id.type == InstanceId.IdType.Static;
 
     public static readonly Dictionary<string, Func<string, Tool>> TOOLS = new() {
         { "GenerateMapDb", filePath => new GenerateDb(filePath, "map_obj.csv", MAP_FILTER) },

@@ -2,7 +2,7 @@
 
 namespace AC2RE.Server;
 
-internal class ClientIdGenerator : IIdGenerator<ClientId> {
+internal class ClientIdGenerator {
 
     private int idCounter = 0;
 

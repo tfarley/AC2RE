@@ -2,7 +2,7 @@
 
 namespace AC2RE.Server;
 
-internal class InstanceIdGenerator : IIdGenerator<InstanceId> {
+internal class InstanceIdGenerator {
 
     public readonly string type;
     public ulong idCounter { get; private set; }
@@ -12,8 +12,8 @@ internal class InstanceIdGenerator : IIdGenerator<InstanceId> {
         this.idCounter = idCounter;
     }
 
-    public InstanceId next() {
-        InstanceId id = new(idCounter);
+    public InstanceId next(InstanceId.IdType type) {
+        InstanceId id = new(type, idCounter);
         idCounter++;
         return id;
     }

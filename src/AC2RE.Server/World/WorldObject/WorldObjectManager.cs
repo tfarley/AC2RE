@@ -117,14 +117,11 @@ internal class WorldObjectManager {
         return newWorldObjects;
     }
 
-    public WorldObject create(InstanceId id, DataId entityDid, DataId physicsEntityDid = default) {
-        return create(entityDid, physicsEntityDid, false, id);
+    public WorldObject create(InstanceId.IdType type, DataId entityDid = default, DataId physicsEntityDidOverride = default, bool persistent = false) {
+        return create(instanceIdGenerator.next(type), entityDid, physicsEntityDidOverride, persistent);
     }
 
-    public WorldObject create(DataId entityDid = default, DataId physicsEntityDidOverride = default, bool persistent = false, InstanceId id = default) {
-        if (id == InstanceId.NULL) {
-            id = instanceIdGenerator.next();
-        }
+    private WorldObject create(InstanceId id, DataId entityDid = default, DataId physicsEntityDidOverride = default, bool persistent = false) {
         WorldObject newObject = new(world, id, persistent);
         newObject.entityDid = entityDid;
         applyEntities(newObject, physicsEntityDidOverride);

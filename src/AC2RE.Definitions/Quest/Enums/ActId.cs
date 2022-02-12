@@ -4,13 +4,13 @@
 public enum ActId : uint {
     Undef = 0,
 
-    TestSet = 1073741828, // TestSet
-    Osteth = 1073741829, // Osteth
-    Linvak = 1073741830, // Linvak
-    Omishan = 1073741831, // Omishan
-    Prologue = 1073741832, // Prologue
-    MonthlyEvents = 1073741833, // MonthlyEvents
-    Quests = 1073741834, // Quests
-    QuestsInvisible = 1073741835, // QuestsInvisible
-    Transitions = 1073741836, // Transitions
+    TestSet = 0x40000004, // TestSet
+    Osteth = 0x40000005, // Osteth
+    Linvak = 0x40000006, // Linvak
+    Omishan = 0x40000007, // Omishan
+    Prologue = 0x40000008, // Prologue
+    MonthlyEvents = 0x40000009, // MonthlyEvents
+    Quests = 0x4000000A, // Quests
+    QuestsInvisible = 0x4000000B, // QuestsInvisible
+    Transitions = 0x4000000C, // Transitions
 }

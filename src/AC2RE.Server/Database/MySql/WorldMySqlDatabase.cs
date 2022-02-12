@@ -461,7 +461,7 @@ internal class WorldMySqlDatabase : BaseMySqlDatabase, IWorldDatabase {
                             cmd.Parameters[0].Value = worldObject.id.id;
                             foreach ((StringInfoStat stat, StringInfo value) in worldObject.qualities.stringInfos) {
                                 cmd.Parameters[1].Value = (uint)stat;
-                                cmd.Parameters[2].Value = value.stringId;
+                                cmd.Parameters[2].Value = value.stringId.id;
                                 cmd.Parameters[3].Value = value.tableDid.id;
                                 cmd.Parameters[4].Value = value.literalValue;
                                 cmd.ExecuteNonQuery();
