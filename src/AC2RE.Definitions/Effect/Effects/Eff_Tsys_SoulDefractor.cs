@@ -11,7 +11,7 @@ public class Eff_Tsys_SoulDefractor : GenesisEffect {
     public int health; // m_health
     public int damage; // m_damage
     public int meleeAttack; // m_meleeAttack
-    public uint petClass; // m_petClass
+    public AIPetClass petClass; // m_petClass
     public DataId petIconDid; // m_petIcon
     public int meleeDefense; // m_meleeDefense
     public int vigor; // m_vigor
@@ -33,7 +33,7 @@ public class Eff_Tsys_SoulDefractor : GenesisEffect {
         health = data.ReadInt32();
         damage = data.ReadInt32();
         meleeAttack = data.ReadInt32();
-        petClass = data.ReadUInt32();
+        petClass = data.ReadEnum<AIPetClass>();
         petIconDid = data.ReadDataId();
         meleeDefense = data.ReadInt32();
         vigor = data.ReadInt32();

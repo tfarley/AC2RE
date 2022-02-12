@@ -5,12 +5,24 @@ namespace AC2RE.Definitions;
 
 public class PartGroupDataDesc {
 
-    // Const *_PartGroupKey
+    // Dat file 23000018 (internal) / Const *_PartGroupKey
     public enum PartGroupKey : uint {
         Invalid = 0, // Invalid_PartGroupKey
-        DefaultBody = 0x40000001, // DefaultBody_PartGroupKey
-        EntireTree = 0x40000002, // EntireTree_PartGroupKey
-        // NOTE: If MSB is set (0x80000000) then it is probably a kind of dynamic/numbered key
+
+        DefaultBody = 0x40000001, // _ / DefaultBody_PartGroupKey
+        EntireTree = 0x40000002, // _ / EntireTree_PartGroupKey
+
+        Body = 2164260865, // Body
+        Head = 2164260866, // Head
+        Beard = 2164260867, // Beard
+        Crest = 2164260868, // Crest
+        Tail = 2164260869, // Tail
+        TailFrill = 2164260870, // TailFrill
+        Mount = 2164260871, // Mount
+        Rider = 2164260872, // Rider
+        Camera = 2164260873, // Camera
+        BackSlot = 2164260874, // BackSlot
+        Helmet = 2164260875, // Helmet
     }
 
     // Enum PGDDPack::Flag

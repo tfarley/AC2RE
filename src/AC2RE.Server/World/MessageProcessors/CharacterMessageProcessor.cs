@@ -116,12 +116,12 @@ internal class CharacterMessageProcessor : BaseMessageProcessor {
                             actRegistry = new() {
                                 viewingProtectionEffectId = EffectId.NULL,
                                 actSceneTable = new() {
-                                    { 0x40000005, new() },
-                                    { 0x40000006, new() },
-                                    { 0x40000007, new() },
-                                    { 0x40000008, new() },
-                                    { 0x40000009, new() },
-                                    { 0x4000000A, new() },
+                                    { ActId.Osteth, new() },
+                                    { ActId.Linvak, new() },
+                                    { ActId.Omishan, new() },
+                                    { ActId.Prologue, new() },
+                                    { ActId.MonthlyEvents, new() },
+                                    { ActId.Quests, new() },
                                 }
                             },
                             quests = new() {

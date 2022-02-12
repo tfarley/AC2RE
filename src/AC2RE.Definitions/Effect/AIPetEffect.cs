@@ -4,9 +4,9 @@ public class AIPetEffect : GenesisEffect {
 
     public override PackageType packageType => PackageType.AIPetEffect;
 
-    public uint petClass; // m_petClass
+    public AIPetClass petClass; // m_petClass
 
     public AIPetEffect(AC2Reader data) : base(data) {
-        petClass = data.ReadUInt32();
+        petClass = data.ReadEnum<AIPetClass>();
     }
 }

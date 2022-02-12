@@ -7,7 +7,7 @@ public class ActRegistry : IHeapObject {
     public PackageType packageType => PackageType.ActRegistry;
 
     public EffectId viewingProtectionEffectId; // m_viewingProtectionEID
-    public Dictionary<uint, List<SceneId>> actSceneTable; // m_actSceneTable
+    public Dictionary<ActId, List<SceneId>> actSceneTable; // m_actSceneTable
 
     public ActRegistry() {
 
@@ -15,7 +15,7 @@ public class ActRegistry : IHeapObject {
 
     public ActRegistry(AC2Reader data) {
         viewingProtectionEffectId = data.ReadEffectId();
-        data.ReadHO<ARHash>(v => actSceneTable = v.to<uint, List<SceneId>>(v => (v as AList).to<SceneId>()));
+        data.ReadHO<ARHash>(v => actSceneTable = v.to<ActId, List<SceneId>>(v => (v as AList).to<SceneId>()));
     }
 
     public void write(AC2Writer data) {

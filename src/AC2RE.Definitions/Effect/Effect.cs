@@ -64,7 +64,7 @@ public class Effect : IHeapObject {
     public float appValue; // m_fAprValue
     public Flag flags; // m_uiExternalFlags
     public bool tracked; // m_tracked
-    public uint enumVal; // m_enum
+    public EffectType enumVal; // m_enum
     public float minTsysSpellcraft; // m_fMinTsysSpellcraft
     public InternalFlag internalFlags; // m_uiInternalFlags
     public float probVariance; // m_fProbVariance
@@ -100,7 +100,7 @@ public class Effect : IHeapObject {
         appValue = data.ReadSingle();
         flags = data.ReadEnum<Flag>();
         tracked = data.ReadBoolean();
-        enumVal = data.ReadUInt32();
+        enumVal = data.ReadEnum<EffectType>();
         minTsysSpellcraft = data.ReadSingle();
         internalFlags = data.ReadEnum64<InternalFlag>();
         probVariance = data.ReadSingle();

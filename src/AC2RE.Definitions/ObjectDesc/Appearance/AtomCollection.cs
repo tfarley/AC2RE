@@ -8,14 +8,14 @@ public class MaterialModifierAtom {
     public DataId modifierDid; // m_modifierDID
     public DataId templateDid; // m_templateDID
     public uint meshType; // m_meshType
-    public uint materialType; // m_materialType
+    public MaterialTypeId materialType; // m_materialType
 
     public MaterialModifierAtom(AC2Reader data) {
         priority = data.ReadSingle();
         templateDid = data.ReadDataId();
         modifierDid = data.ReadDataId();
         meshType = data.ReadUInt32();
-        materialType = data.ReadUInt32();
+        materialType = data.ReadEnum<MaterialTypeId>();
     }
 }
 

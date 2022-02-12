@@ -8,7 +8,7 @@ public class GMSceneInfo : IHeapObject {
 
     public SceneId id; // _ID
     public StringInfo name; // _siName
-    public uint actId; // _actID
+    public ActId actId; // _actID
     public uint sceneNum; // _uiSceneNum
     public bool hidden; // _bIsHidden
     public bool playable; // _bIsPlayable
@@ -21,7 +21,7 @@ public class GMSceneInfo : IHeapObject {
     public GMSceneInfo(AC2Reader data) {
         id = data.ReadEnum<SceneId>();
         name = new(data);
-        actId = data.ReadUInt32();
+        actId = data.ReadEnum<ActId>();
         sceneNum = data.ReadUInt32();
         hidden = data.ReadBoolean();
         playable = data.ReadBoolean();
@@ -31,7 +31,7 @@ public class GMSceneInfo : IHeapObject {
     public void write(AC2Writer data) {
         data.WriteEnum(id);
         name.write(data);
-        data.Write(actId);
+        data.WriteEnum(actId);
         data.Write(sceneNum);
         data.Write(hidden);
         data.Write(playable);

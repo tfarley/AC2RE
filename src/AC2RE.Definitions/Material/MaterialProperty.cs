@@ -6,7 +6,7 @@ namespace AC2RE.Definitions;
 public class MaterialProperty {
 
     // MaterialProperty
-    public uint nameId; // nameID
+    public MaterialPropId nameId; // nameID
     public RMDataType dataType; // dataType
     // data
     public Waveform valWaveform;
@@ -16,7 +16,7 @@ public class MaterialProperty {
     public List<MaterialField> fields; // fields
 
     public MaterialProperty(AC2Reader data) {
-        nameId = data.ReadUInt32();
+        nameId = data.ReadEnum<MaterialPropId>();
         dataType = data.ReadEnum<RMDataType>();
         uint dataLength = data.ReadUInt32();
         long startPos = data.BaseStream.Position;

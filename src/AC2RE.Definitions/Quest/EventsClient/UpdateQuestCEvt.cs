@@ -16,12 +16,12 @@ public class UpdateQuestCEvt : IClientEvent {
     public UpdateQuestCEvt(AC2Reader data) {
         error = data.UnpackEnum<ErrorType>();
         questInfo = data.UnpackHeapObject<GMQuestInfo>();
-        questUpdateType = new(data.UnpackUInt32());
+        questUpdateType = data.UnpackEnum<QuestUpdateType>();
     }
 
     public void write(AC2Writer data) {
         data.PackEnum(error);
         data.Pack(questInfo);
-        data.Pack(questUpdateType.value);
+        data.PackEnum(questUpdateType);
     }
 }

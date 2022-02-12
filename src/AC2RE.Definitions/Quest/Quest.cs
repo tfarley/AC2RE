@@ -12,7 +12,7 @@ public class Quest : MasterDIDListMember {
     public Dictionary<uint, PhaseInfo> questPhaseInfo; // m_questPhaseInfo
     public StringInfo description; // m_siDescription
     public bool playFxOnUpdate; // m_bPlayFXOnUpdate
-    public Dictionary<uint, List<EffectRecord>> questUpdateEffects; // m_questUpdateEffects
+    public Dictionary<QuestUpdateType, List<EffectRecord>> questUpdateEffects; // m_questUpdateEffects
 
     public Quest(AC2Reader data) : base(data) {
         data.ReadHO<StringInfo>(v => longName = v);
@@ -21,7 +21,7 @@ public class Quest : MasterDIDListMember {
         data.ReadHO<ARHash>(v => questPhaseInfo = v.to<uint, PhaseInfo>());
         data.ReadHO<StringInfo>(v => description = v);
         playFxOnUpdate = data.ReadBoolean();
-        data.ReadHO<ARHash>(v => questUpdateEffects = v.to<uint, List<EffectRecord>>(
+        data.ReadHO<ARHash>(v => questUpdateEffects = v.to<QuestUpdateType, List<EffectRecord>>(
             v => (v as RList).to<EffectRecord>()));
     }
 }

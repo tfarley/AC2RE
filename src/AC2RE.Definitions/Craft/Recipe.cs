@@ -36,7 +36,7 @@ public class Recipe : IHeapObject {
     public SingletonPkg<LevelMappingTable> m_difficultyMappingTable; // m_difficultyMappingTable
     public DataId iconDid; // m_iconDID
     public Dictionary<uint, CraftCheckEntry> craftCheckEntries; // m_craftCheckEntries
-    public uint craftSkillCategory; // m_craftSkillCategory
+    public CraftSkillCategoryType craftSkillCategory; // m_craftSkillCategory
     public List<Ingredient> ingredients; // m_ingredients
     public StringInfo name; // m_siName
     public StringInfo description; // m_siDesc
@@ -75,7 +75,7 @@ public class Recipe : IHeapObject {
         data.ReadHO<LevelMappingTable>(v => m_difficultyMappingTable = v);
         iconDid = data.ReadDataId();
         data.ReadHO<ARHash>(v => craftCheckEntries = v.to<uint, CraftCheckEntry>());
-        craftSkillCategory = data.ReadUInt32();
+        craftSkillCategory = data.ReadEnum<CraftSkillCategoryType>();
         data.ReadHO<RList>(v => ingredients = v.to<Ingredient>());
         data.ReadHO<StringInfo>(v => name = v);
         data.ReadHO<StringInfo>(v => description = v);
