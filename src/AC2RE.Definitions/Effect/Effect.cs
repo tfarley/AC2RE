@@ -96,17 +96,17 @@ public class Effect : IHeapObject {
 
     public Effect(AC2Reader data) {
         data.ReadHO<RArray>(v => durationData = v.to<FloatScaleDuple>());
-        fxId = (FxId)data.ReadUInt32();
+        fxId = data.ReadEnum<FxId>();
         appValue = data.ReadSingle();
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         tracked = data.ReadBoolean();
         enumVal = data.ReadUInt32();
         minTsysSpellcraft = data.ReadSingle();
-        internalFlags = (InternalFlag)data.ReadUInt64();
+        internalFlags = data.ReadEnum64<InternalFlag>();
         probVariance = data.ReadSingle();
         data.ReadHO<StringInfo>(v => tsysItemName = v);
         data.ReadHO<StringInfo>(v => description = v);
-        appKey = (AppearanceKey)data.ReadUInt32();
+        appKey = data.ReadEnum<AppearanceKey>();
         data.ReadHO<RArray>(v => forceData = v.to<FloatScaleDuple>());
         examinationFlags = data.ReadUInt32();
         variance = data.ReadSingle();
@@ -126,7 +126,7 @@ public class Effect : IHeapObject {
         data.ReadHO<StringInfo>(v => name = v);
         data.ReadHO<AList>(v => statList = v);
         data.ReadHO<RArray>(v => probData = v.to<FloatScaleDuple>());
-        tsysAppKey = (AppearanceKey)data.ReadUInt32();
+        tsysAppKey = data.ReadEnum<AppearanceKey>();
         selfTargetedSpellcraftCap = data.ReadSingle();
         eqClass = data.ReadUInt32();
     }

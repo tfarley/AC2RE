@@ -35,7 +35,7 @@ public class AllegianceProfile : IHeapObject {
         data.ReadHO<AList>(v => vassalsOnline = v.to<bool>());
         data.ReadHO<StringInfo>(v => motd = v);
         monarchOnline = data.ReadBoolean();
-        factionType = (FactionType)data.ReadUInt32();
+        factionType = data.ReadEnum<FactionType>();
         total = data.ReadUInt32();
         data.ReadHO<LAHashSet>(v => officerIds = v.to<InstanceId>());
     }
@@ -51,7 +51,7 @@ public class AllegianceProfile : IHeapObject {
         data.WriteHO(AList.from(vassalsOnline));
         data.WriteHO(motd);
         data.Write(monarchOnline);
-        data.Write((uint)factionType);
+        data.WriteEnum(factionType);
         data.Write(total);
         data.WriteHO(LAHashSet.from(officerIds));
     }

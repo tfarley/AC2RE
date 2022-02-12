@@ -8,7 +8,7 @@ public class DefaultTakePermissionBlob : IHeapObject {
     public QuestId requiredQuest; // m_requiredQuest
 
     public DefaultTakePermissionBlob(AC2Reader data) {
-        requiredQuestStatus = (QuestStatus)data.ReadUInt32();
-        requiredQuest = (QuestId)data.ReadUInt32();
+        requiredQuestStatus = data.ReadEnum<QuestStatus>();
+        requiredQuest = data.ReadEnum<QuestId>();
     }
 }

@@ -19,7 +19,7 @@ public class FrameDebugInfo {
 
     public FrameDebugInfo(AC2Reader data) {
         name = data.ReadString();
-        type = (FrameType)data.ReadUInt32();
+        type = data.ReadEnum<FrameType>();
         size = data.ReadUInt32();
         members = data.ReadList(() => new FrameMemberDebugInfo(data));
     }

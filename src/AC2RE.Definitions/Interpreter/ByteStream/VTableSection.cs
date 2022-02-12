@@ -27,7 +27,7 @@ public class VTableSection {
         funcMapper = data.ReadList(() => data.ReadList(() => new VTableId(data.ReadUInt32())));
         vTable = data.ReadList(() => data.ReadList(data.ReadUInt32));
         packageInfo = data.ReadList(() => new PackageInfo(data));
-        packageTypeId = data.ReadList(() => (PackageType)data.ReadUInt32());
-        packageNameToType = data.ReadDictionary(data.ReadString, () => (PackageType)data.ReadUInt32());
+        packageTypeId = data.ReadList(data.ReadEnum<PackageType>);
+        packageNameToType = data.ReadDictionary(data.ReadString, data.ReadEnum<PackageType>);
     }
 }

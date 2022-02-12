@@ -14,13 +14,13 @@ public class UpdateQuestCEvt : IClientEvent {
     }
 
     public UpdateQuestCEvt(AC2Reader data) {
-        error = (ErrorType)data.UnpackUInt32();
+        error = data.UnpackEnum<ErrorType>();
         questInfo = data.UnpackHeapObject<GMQuestInfo>();
         questUpdateType = new(data.UnpackUInt32());
     }
 
     public void write(AC2Writer data) {
-        data.Pack((uint)error);
+        data.PackEnum(error);
         data.Pack(questInfo);
         data.Pack(questUpdateType.value);
     }

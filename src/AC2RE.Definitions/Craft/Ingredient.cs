@@ -49,7 +49,7 @@ public class Ingredient : IHeapObject {
         minSpinnerVal = data.ReadUInt32();
         requiredFlags = data.ReadUInt32();
         data.ReadHO<AAHash>(v => items = v.to<DataId, DataId>());
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         data.ReadHO<StringInfo>(v => pluralDescription = v);
         autoPopulate = data.ReadBoolean();
         maxSpinnerVal = data.ReadUInt32();

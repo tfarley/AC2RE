@@ -17,6 +17,6 @@ public class TransactResult : IHeapObject {
         data.ReadHO<LAHash>(v => saleErrors = v.to<InstanceId, uint>());
         data.ReadHO<LAHash>(v => buyErrors = v.to<InstanceId, uint>());
         playerMoneySubtract = data.ReadUInt32();
-        error = (ErrorType)data.ReadUInt32();
+        error = data.ReadEnum<ErrorType>();
     }
 }

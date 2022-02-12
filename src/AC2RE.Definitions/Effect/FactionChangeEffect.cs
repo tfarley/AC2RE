@@ -10,7 +10,7 @@ public class FactionChangeEffect : Effect {
     public List<FactionEffectEntry> factionEffects; // m_listFactionEffects
 
     public FactionChangeEffect(AC2Reader data) : base(data) {
-        newFactionType = (FactionType)data.ReadUInt32();
+        newFactionType = data.ReadEnum<FactionType>();
         data.ReadHO<RList>(v => factionEffects = v.to<FactionEffectEntry>());
     }
 }

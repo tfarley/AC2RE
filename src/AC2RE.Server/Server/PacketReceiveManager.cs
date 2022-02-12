@@ -214,7 +214,7 @@ internal class PacketReceiveManager {
             while (client.incomingBlobQueue.TryDequeue(out NetBlob? blob)) {
                 using (AC2Reader data = new(new MemoryStream(blob.payload))) {
 
-                    MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
+                    MessageOpcode opcode = data.ReadEnum<MessageOpcode>();
                     INetMessage genericMsg = INetMessage.read(opcode, data, true);
 
                     StringBuilder msgString = new(genericMsg.GetType().Name);
@@ -248,7 +248,7 @@ internal class PacketReceiveManager {
     private byte[] serializeMessage(INetMessage msg) {
         MemoryStream buffer = new();
         using (AC2Writer data = new(buffer)) {
-            data.Write((uint)msg.opcode);
+            data.WriteEnum(msg.opcode);
             msg.write(data);
         }
         return buffer.ToArray();

@@ -10,6 +10,6 @@ public class WState {
         did = data.ReadDataId();
         uint stateDataLen = data.ReadUInt32();
         package = data.UnpackHeapObject<IHeapObject>(true);
-        packageType = (PackageType)data.ReadUInt32();
+        packageType = data.ReadEnum<PackageType>();
     }
 }

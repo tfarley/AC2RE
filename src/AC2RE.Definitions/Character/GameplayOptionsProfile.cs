@@ -85,7 +85,7 @@ public class GameplayOptionsProfile : IHeapObject {
     }
 
     public GameplayOptionsProfile(AC2Reader data) {
-        contentFlags = (ContentFlag)data.ReadUInt64();
+        contentFlags = data.ReadEnum64<ContentFlag>();
         if (contentFlags.HasFlag(ContentFlag.ALIAS_TABLE)) {
             aliasTable = data.ReadDictionary(() => data.ReadString(Encoding.Unicode), () => data.ReadString(Encoding.Unicode));
         }
@@ -108,23 +108,23 @@ public class GameplayOptionsProfile : IHeapObject {
             radarMask = data.ReadUInt32();
         }
         if (contentFlags.HasFlag(ContentFlag.FILTER_HASH)) {
-            filters = data.ReadDictionary(data.ReadUInt32, () => (TextType)data.ReadUInt32());
+            filters = data.ReadDictionary(data.ReadUInt32, data.ReadEnum<TextType>);
         }
         if (contentFlags.HasFlag(ContentFlag.BIT_FIELD)) {
-            bitfield = (Flag)data.ReadUInt32();
+            bitfield = data.ReadEnum<Flag>();
         }
-        version = (Version)data.ReadUInt32();
+        version = data.ReadEnum<Version>();
         if (contentFlags.HasFlag(ContentFlag.CHAT_FONT_COLORS)) {
-            chatFontColors = data.ReadDictionary(() => (TextType)data.ReadUInt32(), data.ReadUInt32);
+            chatFontColors = data.ReadDictionary(data.ReadEnum<TextType>, data.ReadUInt32);
         }
         if (contentFlags.HasFlag(ContentFlag.CHAT_FONT_SIZES)) {
-            chatFontSizes = data.ReadDictionary(() => (TextType)data.ReadUInt32(), data.ReadUInt32);
+            chatFontSizes = data.ReadDictionary(data.ReadEnum<TextType>, data.ReadUInt32);
         }
         if (contentFlags.HasFlag(ContentFlag.WINDOW_TO_CHANNEL)) {
-            windowToChannel = data.ReadDictionary(data.ReadUInt32, () => (TextType)data.ReadUInt32());
+            windowToChannel = data.ReadDictionary(data.ReadUInt32, data.ReadEnum<TextType>);
         }
         if (contentFlags.HasFlag(ContentFlag.CHAT_POPUP_FLAGS)) {
-            chatPopupFlags = data.ReadDictionary(() => (TextType)data.ReadUInt32(), data.ReadBoolean);
+            chatPopupFlags = data.ReadDictionary(data.ReadEnum<TextType>, data.ReadBoolean);
         }
         if (contentFlags.HasFlag(ContentFlag.WINDOW_OPACITIES)) {
             windowOpacities = data.ReadDictionary(data.ReadUInt32, data.ReadSingle);
@@ -132,7 +132,7 @@ public class GameplayOptionsProfile : IHeapObject {
     }
 
     public void write(AC2Writer data) {
-        data.Write((ulong)contentFlags);
+        data.WriteEnum64(contentFlags);
         if (contentFlags.HasFlag(ContentFlag.ALIAS_TABLE)) {
             data.Write(aliasTable, k => data.Write(k, Encoding.Unicode), v => data.Write(v, Encoding.Unicode));
         }
@@ -155,23 +155,23 @@ public class GameplayOptionsProfile : IHeapObject {
             data.Write(radarMask);
         }
         if (contentFlags.HasFlag(ContentFlag.FILTER_HASH)) {
-            data.Write(filters, data.Write, v => data.Write((uint)v));
+            data.Write(filters, data.Write, data.WriteEnum);
         }
         if (contentFlags.HasFlag(ContentFlag.BIT_FIELD)) {
-            data.Write((uint)bitfield);
+            data.WriteEnum(bitfield);
         }
-        data.Write((uint)version);
+        data.WriteEnum(version);
         if (contentFlags.HasFlag(ContentFlag.CHAT_FONT_COLORS)) {
-            data.Write(chatFontColors, k => data.Write((uint)k), data.Write);
+            data.Write(chatFontColors, data.WriteEnum, data.Write);
         }
         if (contentFlags.HasFlag(ContentFlag.CHAT_FONT_SIZES)) {
-            data.Write(chatFontSizes, k => data.Write((uint)k), data.Write);
+            data.Write(chatFontSizes, data.WriteEnum, data.Write);
         }
         if (contentFlags.HasFlag(ContentFlag.WINDOW_TO_CHANNEL)) {
-            data.Write(windowToChannel, data.Write, v => data.Write((uint)v));
+            data.Write(windowToChannel, data.Write, data.WriteEnum);
         }
         if (contentFlags.HasFlag(ContentFlag.CHAT_POPUP_FLAGS)) {
-            data.Write(chatPopupFlags, k => data.Write((uint)k), data.Write);
+            data.Write(chatPopupFlags, data.WriteEnum, data.Write);
         }
         if (contentFlags.HasFlag(ContentFlag.WINDOW_OPACITIES)) {
             data.Write(windowOpacities, data.Write, data.Write);

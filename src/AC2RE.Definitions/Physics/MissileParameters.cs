@@ -70,7 +70,7 @@ public class MissileParameters : IHeapObject {
     public float detonationChance; // m_detonation_chance
 
     public MissileParameters(AC2Reader data) {
-        bitfield = (PackFlag)data.ReadUInt32();
+        bitfield = data.ReadEnum<PackFlag>();
         if (bitfield.HasFlag(PackFlag.SPEED_LIMITS)) {
             maxVelocity = data.ReadSingle();
             minVelocity = data.ReadSingle();

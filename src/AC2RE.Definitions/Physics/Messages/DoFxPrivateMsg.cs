@@ -16,10 +16,10 @@ public class DoFxPrivateMsg : INetMessage {
     }
 
     public DoFxPrivateMsg(AC2Reader data) {
-        fxIds = data.ReadList(() => (FxId)data.ReadUInt32());
+        fxIds = data.ReadList(data.ReadEnum<FxId>);
     }
 
     public void write(AC2Writer data) {
-        data.Write(fxIds, v => data.Write((uint)v));
+        data.Write(fxIds, data.WriteEnum);
     }
 }

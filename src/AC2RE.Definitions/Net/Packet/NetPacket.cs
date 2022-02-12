@@ -193,7 +193,7 @@ public class NetPacket {
 
     public NetPacket(AC2Reader data) {
         seq = data.ReadUInt32();
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         checksum = data.ReadUInt32();
         recipientId = data.ReadUInt16();
         interval = data.ReadUInt16();
@@ -266,7 +266,7 @@ public class NetPacket {
     }
     public void writeHeader(AC2Writer data) {
         data.Write(seq);
-        data.Write((uint)flags);
+        data.WriteEnum(flags);
         data.Write(0xBADD70DD); // checksum, replaced after data written
         data.Write(recipientId);
         data.Write(interval);

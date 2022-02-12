@@ -18,13 +18,13 @@ public class DoFxMsg : INetMessage {
 
     public DoFxMsg(AC2Reader data) {
         senderIdWithStamp = data.ReadInstanceIdWithStamp();
-        fxId = (FxId)data.ReadUInt32();
+        fxId = data.ReadEnum<FxId>();
         scalar = data.ReadSingle();
     }
 
     public void write(AC2Writer data) {
         data.Write(senderIdWithStamp);
-        data.Write((uint)fxId);
+        data.WriteEnum(fxId);
         data.Write(scalar);
     }
 }

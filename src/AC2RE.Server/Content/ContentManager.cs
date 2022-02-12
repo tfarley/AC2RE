@@ -204,7 +204,7 @@ internal class ContentManager : IDisposable {
     public PackageType getWeenieStatePackageType(DataId did) {
         using (AC2Reader data = portalDatReader.getFileReader(did)) {
             data.BaseStream.Seek(-4, SeekOrigin.End);
-            return (PackageType)data.ReadUInt32();
+            return data.ReadEnum<PackageType>();
         }
     }
 
@@ -295,7 +295,7 @@ internal class ContentManager : IDisposable {
     }
 
     public string getString(StringInfo stringInfo) {
-        if (stringInfo.tableDid == DataId.NULL || stringInfo.stringId == 0) {
+        if (stringInfo.tableDid == DataId.NULL || stringInfo.stringId == StringId.NULL) {
             return "";
         }
 
@@ -304,12 +304,12 @@ internal class ContentManager : IDisposable {
     }
 
     public string translateNetError(NetError netError) {
-        if (netError.tableId.id == 0 || netError.stringId == 0) {
+        if (netError.tableEnumId.id == 0 || netError.stringId == StringId.NULL) {
             return "";
         }
 
         EnumIdMap idMap = getIdMap(new(0x28000005));
-        DataId tableDid = idMap.enumToId[netError.tableId];
+        DataId tableDid = idMap.enumIdToDid[netError.tableEnumId];
         StringInfo stringInfo = new(tableDid, netError.stringId);
         return getString(stringInfo);
     }

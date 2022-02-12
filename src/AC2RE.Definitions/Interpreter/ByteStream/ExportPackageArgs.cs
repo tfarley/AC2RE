@@ -29,10 +29,10 @@ public class ExportPackageArgs {
     public ExportPackageArgs(AC2Reader data) {
         name = data.ReadString();
         baseName = data.ReadString();
-        flags = (TypeFlag)data.ReadUInt32();
+        flags = data.ReadEnum<TypeFlag>();
         size = data.ReadUInt32();
         checksum = data.ReadUInt32();
-        packageType = (PackageType)data.ReadUInt32();
+        packageType = data.ReadEnum<PackageType>();
         parentIndex = data.ReadInt32();
         checkpoints = data.ReadDictionary(data.ReadString, () => new CheckpointExportData(data));
     }

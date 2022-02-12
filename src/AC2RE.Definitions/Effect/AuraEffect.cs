@@ -27,6 +27,6 @@ public class AuraEffect : Effect {
     public AuraEffect(AC2Reader data) : base(data) {
         maxRangeSqr = data.ReadInt32();
         data.ReadHO<RList>(v => effects = v.to(SingletonPkg<Effect>.cast));
-        auraFlags = (Flag)data.ReadUInt32();
+        auraFlags = data.ReadEnum<Flag>();
     }
 }

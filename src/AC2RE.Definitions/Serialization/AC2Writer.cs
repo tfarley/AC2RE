@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace AC2RE.Definitions;
@@ -77,6 +78,10 @@ public class AC2Writer : BinaryWriter {
 
     public void Pack(EffectId value) {
         Pack(value.id);
+    }
+
+    public void PackEnum<T>(T value) where T : struct, Enum {
+        Pack(Unsafe.As<T, uint>(ref value));
     }
 
     public void Pack(IHeapObject value) {
@@ -336,8 +341,24 @@ public class AC2Writer : BinaryWriter {
         Write(value.id);
     }
 
+    public void Write(StringId value) {
+        Write(value.id);
+    }
+
     public void Write(EffectId value) {
         Write(value.id);
+    }
+
+    public void WriteEnum16<T>(T value) where T : struct, Enum {
+        Write(Unsafe.As<T, ushort>(ref value));
+    }
+
+    public void WriteEnum<T>(T value) where T : struct, Enum {
+        Write(Unsafe.As<T, uint>(ref value));
+    }
+
+    public void WriteEnum64<T>(T value) where T : struct, Enum {
+        Write(Unsafe.As<T, ulong>(ref value));
     }
 
     public void Align(uint bytes) {

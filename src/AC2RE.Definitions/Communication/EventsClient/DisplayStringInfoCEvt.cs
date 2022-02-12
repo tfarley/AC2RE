@@ -14,11 +14,11 @@ public class DisplayStringInfoCEvt : IClientEvent {
 
     public DisplayStringInfoCEvt(AC2Reader data) {
         text = data.UnpackHeapObject<StringInfo>();
-        type = (TextType)data.UnpackUInt32();
+        type = data.UnpackEnum<TextType>();
     }
 
     public void write(AC2Writer data) {
         data.Pack(text);
-        data.Pack((uint)type);
+        data.PackEnum(type);
     }
 }

@@ -17,14 +17,14 @@ public class OpenContainerDoneCEvt : IClientEvent {
     }
 
     public OpenContainerDoneCEvt(AC2Reader data) {
-        status = (ErrorType)data.UnpackUInt32();
+        status = data.UnpackEnum<ErrorType>();
         containerIds = data.UnpackHeapObject<LList>().to<InstanceId>();
         contentIds = data.UnpackHeapObject<LList>().to<InstanceId>();
         containerId = data.UnpackInstanceId();
     }
 
     public void write(AC2Writer data) {
-        data.Pack((uint)status);
+        data.PackEnum(status);
         data.Pack(LList.from(containerIds));
         data.Pack(LList.from(contentIds));
         data.Pack(containerId);

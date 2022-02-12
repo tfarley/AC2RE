@@ -42,12 +42,12 @@ public class EntityDesc : IHeapObject {
     }
 
     public EntityDesc(AC2Reader data) {
-        packFlags = (PackFlag)data.ReadUInt32();
+        packFlags = data.ReadEnum<PackFlag>();
         if (packFlags.HasFlag(PackFlag.DATABASE)) {
             did = data.ReadDataId();
         }
         if (packFlags.HasFlag(PackFlag.TYPE)) {
-            type = (EntityType)data.ReadUInt32();
+            type = data.ReadEnum<EntityType>();
         }
         if (packFlags.HasFlag(PackFlag.RUNTIMEID)) {
             runtimeId = data.ReadInstanceId();
@@ -75,12 +75,12 @@ public class EntityDesc : IHeapObject {
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)packFlags);
+        data.WriteEnum(packFlags);
         if (packFlags.HasFlag(PackFlag.DATABASE)) {
             data.Write(did);
         }
         if (packFlags.HasFlag(PackFlag.TYPE)) {
-            data.Write((uint)type);
+            data.WriteEnum(type);
         }
         if (packFlags.HasFlag(PackFlag.RUNTIMEID)) {
             data.Write(runtimeId);
@@ -89,7 +89,7 @@ public class EntityDesc : IHeapObject {
             if (dataId.id != 0) {
                 data.Write(dataId);
             } else {
-                data.Write((uint)packageType);
+                data.WriteEnum(packageType);
             }
         }
         if (packFlags.HasFlag(PackFlag.OFFSET)) {

@@ -30,7 +30,7 @@ public class DamageDisplayInfo : IHeapObject {
         attackerIsPlayersPet = data.ReadBoolean();
         nonDamaging = data.ReadBoolean();
         data.ReadHO<gmCEntity>(v => target = v);
-        nonBasicSkillId = (SkillId)data.ReadUInt32();
+        nonBasicSkillId = data.ReadEnum<SkillId>();
         data.ReadHO<CPlayer>(v => player = v);
         data.ReadHO<gmCEntity>(v => attacker = v);
     }

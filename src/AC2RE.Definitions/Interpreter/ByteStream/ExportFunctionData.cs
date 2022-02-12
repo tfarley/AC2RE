@@ -17,7 +17,7 @@ public class ExportFunctionData {
         funcId = new(data.ReadUInt32());
         offset = data.ReadUInt32();
         size = data.ReadUInt32();
-        flags = (FuncFlag)data.ReadUInt32();
+        flags = data.ReadEnum<FuncFlag>();
         deps = data.ReadList(() => new VTableId(data.ReadUInt32()));
     }
 }

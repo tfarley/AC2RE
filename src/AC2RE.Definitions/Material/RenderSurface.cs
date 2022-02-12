@@ -16,7 +16,7 @@ public class RenderSurface {
         unk1 = data.ReadUInt32();
         width = data.ReadUInt32();
         height = data.ReadUInt32();
-        pixelFormat = (PixelFormat)data.ReadUInt32();
+        pixelFormat = data.ReadEnum<PixelFormat>();
         imageSize = data.ReadUInt32();
         sourceData = data.ReadBytes((int)imageSize);
     }

@@ -27,7 +27,7 @@ public class PhysicsStory {
     public List<StoryHookData> hooks; // m_hooks
 
     public PhysicsStory(AC2Reader data) {
-        packFlags = (PackFlag)data.ReadUInt32();
+        packFlags = data.ReadEnum<PackFlag>();
         if (packFlags.HasFlag(PackFlag.ATTACKER_ID)) {
             attackerId = data.ReadInstanceId();
         }
@@ -38,7 +38,7 @@ public class PhysicsStory {
             clientAttackContextId = data.ReadUInt32();
         }
         if (packFlags.HasFlag(PackFlag.SKILL_ID)) {
-            skillId = (SkillId)data.ReadUInt32();
+            skillId = data.ReadEnum<SkillId>();
         }
         basicAttack = packFlags.HasFlag(PackFlag.BASIC_ATTACK);
         hooks = data.ReadList(() => new StoryHookData(data));

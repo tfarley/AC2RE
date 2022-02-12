@@ -13,6 +13,6 @@ public class SetModeMsg : INetMessage {
 
     public SetModeMsg(AC2Reader data) {
         senderIdWithStamp = data.ReadInstanceIdWithStamp();
-        modeId = (ModeId)data.ReadUInt32();
+        modeId = data.ReadEnum<ModeId>();
     }
 }

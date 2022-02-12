@@ -22,10 +22,10 @@ public class CharTemplate {
     public CharTemplate(AC2Reader data) {
         did = data.ReadDataId();
         behaviorFlags = data.ReadDictionary(data.ReadUInt32, data.ReadUInt64);
-        sliderControllers = data.ReadDictionary(data.ReadUInt32, () => (SliderController)data.ReadUInt32());
-        modeIsCombat = data.ReadDictionary(() => (ModeId)data.ReadUInt32(), data.ReadBoolean);
+        sliderControllers = data.ReadDictionary(data.ReadUInt32, data.ReadEnum<SliderController>);
+        modeIsCombat = data.ReadDictionary(data.ReadEnum<ModeId>, data.ReadBoolean);
         defaultElementId = data.ReadUInt32();
-        defaultModeId = (ModeId)data.ReadUInt32();
+        defaultModeId = data.ReadEnum<ModeId>();
         userControlledSliders = data.ReadList(data.ReadUInt32);
     }
 }

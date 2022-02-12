@@ -17,7 +17,7 @@ public class MaterialProperty {
 
     public MaterialProperty(AC2Reader data) {
         nameId = data.ReadUInt32();
-        dataType = (RMDataType)data.ReadUInt32();
+        dataType = data.ReadEnum<RMDataType>();
         uint dataLength = data.ReadUInt32();
         long startPos = data.BaseStream.Position;
         switch (dataType) {

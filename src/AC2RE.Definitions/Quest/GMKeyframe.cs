@@ -21,7 +21,7 @@ public class GMKeyframe : IHeapObject {
     }
 
     public GMKeyframe(AC2Reader data) {
-        sceneId = (SceneId)data.ReadUInt32();
+        sceneId = data.ReadEnum<SceneId>();
         frameNum = data.ReadUInt32();
         duration = data.ReadDouble();
         videoFragmentDid = data.ReadDataId();
@@ -33,7 +33,7 @@ public class GMKeyframe : IHeapObject {
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)sceneId);
+        data.WriteEnum(sceneId);
         data.Write(frameNum);
         data.Write(duration);
         data.Write(videoFragmentDid);

@@ -38,7 +38,7 @@ public class ExaminationRequest : IHeapObject {
     }
 
     public ExaminationRequest(AC2Reader data) {
-        type = (RequestType)data.ReadUInt32();
+        type = data.ReadEnum<RequestType>();
         admin = data.ReadBoolean();
         switch (type) {
             case RequestType.Undef:
@@ -70,7 +70,7 @@ public class ExaminationRequest : IHeapObject {
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)type);
+        data.WriteEnum(type);
         data.Write(admin);
         switch (type) {
             case RequestType.Undef:

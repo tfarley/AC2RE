@@ -19,6 +19,6 @@ public class ItemInteractionOutcome : IHeapObject {
 
     public ItemInteractionOutcome(AC2Reader data) {
         data.ReadHO<StringInfo>(v => messageText = v);
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
     }
 }

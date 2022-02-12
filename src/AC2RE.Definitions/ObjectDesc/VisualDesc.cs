@@ -61,7 +61,7 @@ public class VisualDesc : IHeapObject {
     }
 
     public VisualDesc(AC2Reader data) {
-        packFlags = (PackFlag)data.ReadUInt32();
+        packFlags = data.ReadEnum<PackFlag>();
         if (packFlags.HasFlag(PackFlag.DATABASE)) {
             did = data.ReadDataId();
         }
@@ -111,7 +111,7 @@ public class VisualDesc : IHeapObject {
         if (globalAppearanceModifiers != default) packFlags |= PackFlag.GLOBALMOD;
         if (pgdDescTable != default) packFlags |= PackFlag.PGDTABLE;
 
-        data.Write((uint)packFlags);
+        data.WriteEnum(packFlags);
         if (packFlags.HasFlag(PackFlag.DATABASE)) {
             data.Write(did);
         }

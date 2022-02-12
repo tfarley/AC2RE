@@ -17,7 +17,7 @@ public class WeenieHook {
     public float time; // mTime
 
     public WeenieHook(AC2Reader data) {
-        hookType = (AnimHookType)data.ReadUInt32();
+        hookType = data.ReadEnum<AnimHookType>();
         hookNum = data.ReadUInt32();
         hookData = data.ReadUInt32();
         triggered = data.ReadBoolean();
@@ -25,7 +25,7 @@ public class WeenieHook {
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)hookType);
+        data.WriteEnum(hookType);
         data.Write(hookNum);
         data.Write(hookData);
         data.Write(triggered);

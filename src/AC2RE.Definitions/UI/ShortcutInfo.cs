@@ -19,7 +19,7 @@ public class ShortcutInfo : IHeapObject {
 
     public ShortcutInfo(AC2Reader data) {
         // TODO: Guessing on the types here
-        type = (ShortcutType)data.ReadUInt32();
+        type = data.ReadEnum<ShortcutType>();
         switch (type) {
             case ShortcutType.Undef:
                 break;
@@ -41,7 +41,7 @@ public class ShortcutInfo : IHeapObject {
 
     public void write(AC2Writer data) {
         // TODO: Guessing on the types here
-        data.Write((uint)type);
+        data.WriteEnum(type);
         switch (type) {
             case ShortcutType.Undef:
                 break;

@@ -22,7 +22,7 @@ public class CCellPortal {
     public List<LocalCellId> stabList; // num_stabs + stab_list
 
     public CCellPortal(AC2Reader data) {
-        packFlags = (PackFlag)data.ReadUInt16();
+        packFlags = data.ReadEnum16<PackFlag>();
         portalIndex = data.ReadUInt16();
         otherCellId = data.ReadLocalCellId();
         otherPortalIndex = data.ReadUInt16();

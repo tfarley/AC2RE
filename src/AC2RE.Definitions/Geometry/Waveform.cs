@@ -35,7 +35,7 @@ public class Waveform {
     }
 
     public Waveform(AC2Reader data) {
-        type = (WaveformType)data.ReadUInt32();
+        type = data.ReadEnum<WaveformType>();
         baseValue = data.ReadSingle();
         baseVel = data.ReadSingle();
         amplitude = data.ReadSingle();
@@ -49,7 +49,7 @@ public class Waveform {
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)type);
+        data.WriteEnum(type);
         data.Write(baseValue);
         data.Write(baseVel);
         data.Write(amplitude);

@@ -64,7 +64,7 @@ public class EffectRecord : IHeapObject {
         actingForWhomId = data.ReadInstanceId();
         skillDid = data.ReadDataId();
         fromItemId = data.ReadInstanceId();
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         durabilityLevel = data.ReadUInt32();
         relatedEffectId = data.ReadEffectId();
         effectId = data.ReadEffectId();
@@ -87,7 +87,7 @@ public class EffectRecord : IHeapObject {
         data.Write(actingForWhomId);
         data.Write(skillDid);
         data.Write(fromItemId);
-        data.Write((uint)flags);
+        data.WriteEnum(flags);
         data.Write(durabilityLevel);
         data.Write(relatedEffectId);
         data.Write(effectId);

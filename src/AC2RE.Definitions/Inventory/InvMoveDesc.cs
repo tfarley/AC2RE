@@ -68,7 +68,7 @@ public class InvMoveDesc : IHeapObject {
         moveType = data.ReadUInt32();
         checkTakePerm = data.ReadBoolean();
         hidden = data.ReadBoolean();
-        targetWeenieType = (WeenieType)data.ReadUInt32();
+        targetWeenieType = data.ReadEnum<WeenieType>();
         fromId = data.ReadInstanceId();
         splitItemAttunedId = data.ReadInstanceId();
         trade = data.ReadBoolean();
@@ -88,7 +88,7 @@ public class InvMoveDesc : IHeapObject {
         actualFromContainerId = data.ReadInstanceId();
         itemVisualDescDid = data.ReadDataId();
         fromSlot = data.ReadInt32();
-        error = (ErrorType)data.ReadUInt32();
+        error = data.ReadEnum<ErrorType>();
         playedAnim = data.ReadBoolean();
         quiet = data.ReadBoolean();
         allowOverflowSlots = data.ReadBoolean();
@@ -114,7 +114,7 @@ public class InvMoveDesc : IHeapObject {
         data.Write(moveType);
         data.Write(checkTakePerm);
         data.Write(hidden);
-        data.Write((uint)targetWeenieType);
+        data.WriteEnum(targetWeenieType);
         data.Write(fromId);
         data.Write(splitItemAttunedId);
         data.Write(trade);
@@ -134,7 +134,7 @@ public class InvMoveDesc : IHeapObject {
         data.Write(actualFromContainerId);
         data.Write(itemVisualDescDid);
         data.Write(fromSlot);
-        data.Write((uint)error);
+        data.WriteEnum(error);
         data.Write(playedAnim);
         data.Write(quiet);
         data.Write(allowOverflowSlots);

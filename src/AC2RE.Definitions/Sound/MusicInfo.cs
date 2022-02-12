@@ -15,7 +15,7 @@ public class MusicInfo {
         bitfield = data.ReadUInt32();
         priority = data.ReadSingle();
         minDist = data.ReadSingle();
-        type = (MusicType)data.ReadUInt32();
+        type = data.ReadEnum<MusicType>();
         objDid = data.ReadDataId();
     }
 }

@@ -23,8 +23,8 @@ public class NetAuthenticator {
     public byte[] extraData; // m_ExtraData
 
     public NetAuthenticator(AC2Reader data) {
-        authType = (AuthType)data.ReadUInt32();
-        authFlags = (AuthFlag)data.ReadUInt32();
+        authType = data.ReadEnum<AuthType>();
+        authFlags = data.ReadEnum<AuthFlag>();
         connectionSeq = data.ReadUInt32();
         accountName = data.ReadString();
         if (authFlags.HasFlag(AuthFlag.ADMINACCTOVERRIDE)) {

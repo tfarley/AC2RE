@@ -17,7 +17,7 @@ public class TotemUsageBlob : UsageBlob {
     }
 
     public TotemUsageBlob(AC2Reader data) : base(data) {
-        targetWeenieType = (WeenieType)data.ReadUInt32();
+        targetWeenieType = data.ReadEnum<WeenieType>();
         data.ReadHO<StringInfo>(v => playerName = v);
         minTargetLore = data.ReadInt32();
         data.ReadHO<ARHash>(v => effects = v);
@@ -26,7 +26,7 @@ public class TotemUsageBlob : UsageBlob {
 
     public override void write(AC2Writer data) {
         base.write(data);
-        data.Write((uint)targetWeenieType);
+        data.WriteEnum(targetWeenieType);
         data.WriteHO(playerName);
         data.Write(minTargetLore);
         data.WriteHO(ARHash.from(effects));

@@ -31,7 +31,7 @@ public class TargetInteraction : IHeapObject {
         data.ReadHO<RList>(v => failureOutcomes = v.to<ItemInteractionOutcome>());
         userAnimRepeatCount = data.ReadUInt32();
         craftSkillDid = data.ReadDataId();
-        anim = (BehaviorId)data.ReadUInt32();
+        anim = data.ReadEnum<BehaviorId>();
         externalTargetMaxDistance = data.ReadSingle();
         validTargetPet = data.ReadBoolean();
         userAnimTimeScale = data.ReadSingle();

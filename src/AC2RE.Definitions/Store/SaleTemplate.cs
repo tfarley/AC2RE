@@ -28,9 +28,9 @@ public class SaleTemplate : IHeapObject {
         productDid = data.ReadDataId();
         data.ReadHO<AAHash>(v => requiredQuests = v.to<QuestId, uint>());
         cost = data.ReadSingle();
-        race = (SpeciesType)data.ReadUInt32();
+        race = data.ReadEnum<SpeciesType>();
         tradeDid = data.ReadDataId();
         level = data.ReadUInt32();
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
     }
 }

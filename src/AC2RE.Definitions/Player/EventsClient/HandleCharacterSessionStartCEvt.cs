@@ -33,14 +33,14 @@ public class HandleCharacterSessionStartCEvt : IClientEvent {
         options = data.UnpackHeapObject<GameplayOptionsProfile>();
         skills = data.UnpackHeapObject<SkillRepository>();
         effectRegistry = data.UnpackHeapObject<EffectRegistry>();
-        filledInventoryLocations = (InvLoc)data.UnpackUInt32();
+        filledInventoryLocations = data.UnpackEnum<InvLoc>();
         inventoryByLocationTable = data.UnpackHeapObject<ARHash>().to<InvLoc, InventProfile>();
         inventoryByIdTable = data.UnpackHeapObject<LRHash>().to<InstanceId, InventProfile>();
         containerSegments = data.UnpackHeapObject<RList>().to<ContainerSegmentDescriptor>();
         containerIds = data.UnpackHeapObject<LList>().to<InstanceId>();
         contentIds = data.UnpackHeapObject<LList>().to<InstanceId>();
-        localFactionStatus = (FactionStatus)data.UnpackUInt32();
-        serverFactionStatus = (FactionStatus)data.UnpackUInt32();
+        localFactionStatus = data.UnpackEnum<FactionStatus>();
+        serverFactionStatus = data.UnpackEnum<FactionStatus>();
     }
 
     public void write(AC2Writer data) {
@@ -50,13 +50,13 @@ public class HandleCharacterSessionStartCEvt : IClientEvent {
         data.Pack(options);
         data.Pack(skills);
         data.Pack(effectRegistry);
-        data.Pack((uint)filledInventoryLocations);
+        data.PackEnum(filledInventoryLocations);
         data.Pack(ARHash.from(inventoryByLocationTable));
         data.Pack(LRHash.from(inventoryByIdTable));
         data.Pack(RList.from(containerSegments));
         data.Pack(LList.from(containerIds));
         data.Pack(LList.from(contentIds));
-        data.Pack((uint)localFactionStatus);
-        data.Pack((uint)serverFactionStatus);
+        data.PackEnum(localFactionStatus);
+        data.PackEnum(serverFactionStatus);
     }
 }

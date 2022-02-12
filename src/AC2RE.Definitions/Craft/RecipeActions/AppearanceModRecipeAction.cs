@@ -11,7 +11,7 @@ public class AppearanceModRecipeAction : IHeapObject {
     public uint maxSpinnerVal; // m_uiMaxSpinnerVal
 
     public AppearanceModRecipeAction(AC2Reader data) {
-        appKey = (AppearanceKey)data.ReadUInt32();
+        appKey = data.ReadEnum<AppearanceKey>();
         ordinal = data.ReadUInt32();
         mod = data.ReadSingle();
         minSpinnerVal = data.ReadUInt32();

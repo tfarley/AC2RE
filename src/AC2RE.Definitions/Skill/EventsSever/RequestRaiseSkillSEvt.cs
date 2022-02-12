@@ -8,6 +8,6 @@ public class RequestRaiseSkillSEvt : IServerEvent {
     public SkillId skillId; // _skillType
 
     public RequestRaiseSkillSEvt(AC2Reader data) {
-        skillId = (SkillId)data.UnpackUInt32();
+        skillId = data.UnpackEnum<SkillId>();
     }
 }

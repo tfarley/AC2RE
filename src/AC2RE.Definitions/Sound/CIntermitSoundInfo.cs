@@ -27,7 +27,7 @@ public class CIntermitSoundInfo {
     public float maxTime; // m_max_time
 
     public CIntermitSoundInfo(AC2Reader data) {
-        bitfield = (Flag)data.ReadUInt32();
+        bitfield = data.ReadEnum<Flag>();
         objDid = data.ReadDataId();
         volume = data.ReadSingle();
         probability = data.ReadSingle();

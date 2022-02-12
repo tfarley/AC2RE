@@ -14,13 +14,13 @@ public class PatronSwearDoneCEvt : IClientEvent {
     }
 
     public PatronSwearDoneCEvt(AC2Reader data) {
-        error = (ErrorType)data.UnpackUInt32();
+        error = data.UnpackEnum<ErrorType>();
         vassalName = data.UnpackHeapObject<StringInfo>();
         vassalId = data.UnpackInstanceId();
     }
 
     public void write(AC2Writer data) {
-        data.Pack((uint)error);
+        data.PackEnum(error);
         data.Pack(vassalName);
         data.Pack(vassalId);
     }

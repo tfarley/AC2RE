@@ -335,13 +335,13 @@ public class DBAnimator {
 
         public AMSwitchME(AC2Reader data) {
             defaultVal = data.ReadUInt32();
-            switchType = (SwitchType)data.ReadUInt32();
+            switchType = data.ReadEnum<SwitchType>();
             overrides = data.ReadDictionary(data.ReadUInt32, data.ReadUInt32);
         }
 
         public void write(AC2Writer data) {
             data.Write(defaultVal);
-            data.Write((uint)switchType);
+            data.WriteEnum(switchType);
             data.Write(overrides, data.Write, data.Write);
         }
     }
@@ -427,7 +427,7 @@ public class DBAnimator {
 
     public DBAnimator(AC2Reader data) {
         did = data.ReadDataId();
-        type = (AnimatorType)data.ReadUInt32();
+        type = data.ReadEnum<AnimatorType>();
         switch (type) {
             case AnimatorType.asset:
                 animatorData = new AnimAsset(data);
@@ -459,7 +459,7 @@ public class DBAnimator {
 
     public void write(AC2Writer data) {
         data.Write(did);
-        data.Write((uint)type);
+        data.WriteEnum(type);
         if (animatorData != null) {
             animatorData.write(data);
         }

@@ -22,6 +22,6 @@ public class TextEffect : Effect {
 
     public TextEffect(AC2Reader data) : base(data) {
         data.ReadHO<StringInfo>(v => broadcastText = v);
-        textType = (TextType)data.ReadUInt32();
+        textType = data.ReadEnum<TextType>();
     }
 }

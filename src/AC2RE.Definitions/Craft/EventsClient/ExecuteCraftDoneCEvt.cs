@@ -15,13 +15,13 @@ public class ExecuteCraftDoneCEvt : IClientEvent {
 
     public ExecuteCraftDoneCEvt(AC2Reader data) {
         notifyUI = data.UnpackBoolean();
-        error = (ErrorType)data.UnpackUInt32();
+        error = data.UnpackEnum<ErrorType>();
         recipeDid = data.UnpackDataId();
     }
 
     public void write(AC2Writer data) {
         data.Pack(notifyUI);
-        data.Pack((uint)error);
+        data.PackEnum(error);
         data.Pack(recipeDid);
     }
 }

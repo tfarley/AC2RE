@@ -72,15 +72,15 @@ public class BehaviorParams : IHeapObject {
     }
 
     public BehaviorParams(AC2Reader data) {
-        packFlags = (PackFlag)data.ReadUInt32();
+        packFlags = data.ReadEnum<PackFlag>();
         if (packFlags.HasFlag(PackFlag.BEHAVIOR_ID)) {
-            behaviorId = (BehaviorId)data.ReadUInt32();
+            behaviorId = data.ReadEnum<BehaviorId>();
         }
         if (packFlags.HasFlag(PackFlag.TIME_SCALE)) {
             timeScale = data.ReadSingle();
         }
         if (packFlags.HasFlag(PackFlag.MODE_ID)) {
-            modeId = (ModeId)data.ReadUInt32();
+            modeId = data.ReadEnum<ModeId>();
         }
         if (packFlags.HasFlag(PackFlag.HOLDCYLE)) {
             holdCycles = data.ReadUInt32();
@@ -89,7 +89,7 @@ public class BehaviorParams : IHeapObject {
             fxScriptId = data.ReadDataId();
         }
         if (packFlags.HasFlag(PackFlag.FXTODO)) {
-            fxId = (FxId)data.ReadUInt32();
+            fxId = data.ReadEnum<FxId>();
         }
         if (packFlags.HasFlag(PackFlag.TARGET)) {
             targetId = data.ReadInstanceId();
@@ -101,7 +101,7 @@ public class BehaviorParams : IHeapObject {
         if (packFlags.HasFlag(PackFlag.VDESC)) {
             visualDescToClone = data.ReadDataId();
             clonedAprDid = data.ReadDataId();
-            clonedAppHash = data.ReadDictionary(() => (AppearanceKey)data.ReadUInt32(), data.ReadSingle);
+            clonedAppHash = data.ReadDictionary(data.ReadEnum<AppearanceKey>, data.ReadSingle);
         }
         if (packFlags.HasFlag(PackFlag.IMPULSE)) {
             impulse = data.ReadVector();
@@ -151,15 +151,15 @@ public class BehaviorParams : IHeapObject {
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)packFlags);
+        data.WriteEnum(packFlags);
         if (packFlags.HasFlag(PackFlag.BEHAVIOR_ID)) {
-            data.Write((uint)behaviorId);
+            data.WriteEnum(behaviorId);
         }
         if (packFlags.HasFlag(PackFlag.TIME_SCALE)) {
             data.Write(timeScale);
         }
         if (packFlags.HasFlag(PackFlag.MODE_ID)) {
-            data.Write((uint)modeId);
+            data.WriteEnum(modeId);
         }
         if (packFlags.HasFlag(PackFlag.HOLDCYLE)) {
             data.Write(holdCycles);
@@ -168,7 +168,7 @@ public class BehaviorParams : IHeapObject {
             data.Write(fxScriptId);
         }
         if (packFlags.HasFlag(PackFlag.FXTODO)) {
-            data.Write((uint)fxId);
+            data.WriteEnum(fxId);
         }
         if (packFlags.HasFlag(PackFlag.TARGET)) {
             data.Write(targetId);

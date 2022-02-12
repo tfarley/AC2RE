@@ -34,7 +34,7 @@ public class Consignment : IHeapObject {
         quantityOffered = data.ReadInt32();
         quantitySold = data.ReadInt32();
         enteredTime = data.ReadDouble();
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
     }
 
     public void write(AC2Writer data) {
@@ -44,6 +44,6 @@ public class Consignment : IHeapObject {
         data.Write(quantityOffered);
         data.Write(quantitySold);
         data.Write(enteredTime);
-        data.Write((uint)flags);
+        data.WriteEnum(flags);
     }
 }

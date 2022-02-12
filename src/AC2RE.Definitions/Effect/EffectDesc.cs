@@ -69,7 +69,7 @@ public class EffectDesc : IHeapObject {
         sourceHealthChange = data.ReadInt32();
         data.ReadHO<Effect>(v => effect = v);
         targetVigor = data.ReadInt32();
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         durabilityLevel = data.ReadUInt32();
         data.ReadHO<RList>(v => sourceEffects = v);
         targetFocus = data.ReadInt32();

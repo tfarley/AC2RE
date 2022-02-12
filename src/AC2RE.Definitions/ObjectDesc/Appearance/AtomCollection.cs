@@ -60,7 +60,7 @@ public class FXAtom {
     public List<FXData> fxDatas; // m_fx_data
 
     public FXAtom(AC2Reader data) {
-        fxIds = data.ReadList(() => (FxId)data.ReadUInt32());
+        fxIds = data.ReadList(data.ReadEnum<FxId>);
         fxDatas = data.ReadList(() => new FXData(data));
     }
 }

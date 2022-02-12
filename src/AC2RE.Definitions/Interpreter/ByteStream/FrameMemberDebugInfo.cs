@@ -25,8 +25,8 @@ public class FrameMemberDebugInfo {
 
     public FrameMemberDebugInfo(AC2Reader data) {
         offset = data.ReadInt32();
-        type = (FrameMemberType)data.ReadUInt32();
-        flags = (VarFlag)data.ReadUInt32();
+        type = data.ReadEnum<FrameMemberType>();
+        flags = data.ReadEnum<VarFlag>();
         name = data.ReadString();
         typeName = data.ReadString();
     }

@@ -28,7 +28,7 @@ public class TransactInfo : IHeapObject {
         customerMoney = data.ReadUInt32();
         data.ReadHO<RList>(v => saleItemProfiles = v.to<ItemProfile>());
         data.ReadHO<LAHash>(v => hashToBuyErrors = v.to<InstanceId, uint>());
-        error = (ErrorType)data.ReadUInt32();
+        error = data.ReadEnum<ErrorType>();
         customerId = data.ReadInstanceId();
         data.ReadHO<LAHash>(v => hashForSaleErrors = v.to<InstanceId, uint>());
         vendorId = data.ReadInstanceId();

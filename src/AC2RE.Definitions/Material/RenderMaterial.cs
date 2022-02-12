@@ -14,6 +14,6 @@ public class RenderMaterial {
         did = data.ReadDataId();
         properties = new(data);
         layers = data.ReadList(() => new MaterialLayer(data));
-        sortMode = (SortMode)data.ReadUInt32();
+        sortMode = data.ReadEnum<SortMode>();
     }
 }

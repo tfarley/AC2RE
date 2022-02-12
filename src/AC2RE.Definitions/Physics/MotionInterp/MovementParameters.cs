@@ -43,7 +43,7 @@ public class MovementParameters : IHeapObject {
     }
 
     public MovementParameters(AC2Reader data) {
-        packFlags = (PackFlag)data.ReadUInt32();
+        packFlags = data.ReadEnum<PackFlag>();
         if (packFlags.HasFlag(PackFlag.MOVE) || packFlags.HasFlag(PackFlag.AWAY)) {
             desiredVel = data.ReadSingle();
             failDist = data.ReadSingle();
@@ -71,7 +71,7 @@ public class MovementParameters : IHeapObject {
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)packFlags);
+        data.WriteEnum(packFlags);
         if (packFlags.HasFlag(PackFlag.MOVE) || packFlags.HasFlag(PackFlag.AWAY)) {
             data.Write(desiredVel);
             data.Write(failDist);

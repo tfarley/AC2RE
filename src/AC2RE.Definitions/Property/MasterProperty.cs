@@ -22,6 +22,6 @@ public class MasterProperty {
     public MasterProperty(AC2Reader data) {
         did = data.ReadDataId();
         enumMapper = new(data);
-        properties = data.ReadDictionary(() => (PropertyName)data.ReadUInt32(), () => new BasePropertyDesc(data));
+        properties = data.ReadDictionary(data.ReadEnum<PropertyName>, () => new BasePropertyDesc(data));
     }
 }

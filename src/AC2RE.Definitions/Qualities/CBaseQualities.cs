@@ -44,43 +44,43 @@ public class CBaseQualities {
     }
 
     public CBaseQualities(AC2Reader data) {
-        packFlags = (PackFlag)data.ReadUInt32();
+        packFlags = data.ReadEnum<PackFlag>();
         did = data.ReadDataId();
         if (packFlags.HasFlag(PackFlag.WeenieDesc)) {
             weenieDesc = new(data);
         }
         if (packFlags.HasFlag(PackFlag.IntHashTable)) {
-            ints = data.ReadDictionary(() => (IntStat)data.ReadUInt32(), data.ReadInt32);
+            ints = data.ReadDictionary(data.ReadEnum<IntStat>, data.ReadInt32);
         }
         if (packFlags.HasFlag(PackFlag.BoolHashTable)) {
-            bools = data.ReadDictionary(() => (BoolStat)data.ReadUInt32(), data.ReadBoolean);
+            bools = data.ReadDictionary(data.ReadEnum<BoolStat>, data.ReadBoolean);
         }
         if (packFlags.HasFlag(PackFlag.FloatHashTable)) {
-            floats = data.ReadDictionary(() => (FloatStat)data.ReadUInt32(), data.ReadSingle);
+            floats = data.ReadDictionary(data.ReadEnum<FloatStat>, data.ReadSingle);
         }
         if (packFlags.HasFlag(PackFlag.TSHashTable)) {
-            doubles = data.ReadDictionary(() => (TimestampStat)data.ReadUInt32(), data.ReadDouble);
+            doubles = data.ReadDictionary(data.ReadEnum<TimestampStat>, data.ReadDouble);
         }
         if (packFlags.HasFlag(PackFlag.StringHashTable)) {
-            strings = data.ReadDictionary(() => (StringStat)data.ReadUInt32(), data.ReadString);
+            strings = data.ReadDictionary(data.ReadEnum<StringStat>, data.ReadString);
         }
         if (packFlags.HasFlag(PackFlag.DataIDHashTable)) {
-            dids = data.ReadDictionary(() => (DataIdStat)data.ReadUInt32(), data.ReadDataId);
+            dids = data.ReadDictionary(data.ReadEnum<DataIdStat>, data.ReadDataId);
         }
         if (packFlags.HasFlag(PackFlag.InstanceIDHashTable)) {
-            ids = data.ReadDictionary(() => (InstanceIdStat)data.ReadUInt32(), data.ReadInstanceId);
+            ids = data.ReadDictionary(data.ReadEnum<InstanceIdStat>, data.ReadInstanceId);
         }
         if (packFlags.HasFlag(PackFlag.PositionHashTable)) {
-            poss = data.ReadDictionary(() => (PositionStat)data.ReadUInt32(), () => new Position(data));
+            poss = data.ReadDictionary(data.ReadEnum<PositionStat>, () => new Position(data));
         }
         if (packFlags.HasFlag(PackFlag.StringInfoHashTable)) {
-            stringInfos = data.ReadDictionary(() => (StringInfoStat)data.ReadUInt32(), () => new StringInfo(data));
+            stringInfos = data.ReadDictionary(data.ReadEnum<StringInfoStat>, () => new StringInfo(data));
         }
         if (packFlags.HasFlag(PackFlag.PackageIDHashTable)) {
             packageIds = data.ReadDictionary(data.ReadUInt32, data.ReadReferenceId);
         }
         if (packFlags.HasFlag(PackFlag.LongIntHashTable)) {
-            longs = data.ReadDictionary(() => (LongIntStat)data.ReadUInt32(), data.ReadInt64);
+            longs = data.ReadDictionary(data.ReadEnum<LongIntStat>, data.ReadInt64);
         }
     }
 
@@ -99,43 +99,43 @@ public class CBaseQualities {
         if (packageIds != default) packFlags |= PackFlag.PackageIDHashTable;
         if (longs != default) packFlags |= PackFlag.LongIntHashTable;
 
-        data.Write((uint)packFlags);
+        data.WriteEnum(packFlags);
         data.Write(did);
         if (packFlags.HasFlag(PackFlag.WeenieDesc)) {
             weenieDesc.write(data);
         }
         if (packFlags.HasFlag(PackFlag.IntHashTable)) {
-            data.Write(ints, v => data.Write((uint)v), data.Write);
+            data.Write(ints, data.WriteEnum, data.Write);
         }
         if (packFlags.HasFlag(PackFlag.BoolHashTable)) {
-            data.Write(bools, v => data.Write((uint)v), data.Write);
+            data.Write(bools, data.WriteEnum, data.Write);
         }
         if (packFlags.HasFlag(PackFlag.FloatHashTable)) {
-            data.Write(floats, v => data.Write((uint)v), data.Write);
+            data.Write(floats, data.WriteEnum, data.Write);
         }
         if (packFlags.HasFlag(PackFlag.TSHashTable)) {
-            data.Write(doubles, v => data.Write((uint)v), data.Write);
+            data.Write(doubles, data.WriteEnum, data.Write);
         }
         if (packFlags.HasFlag(PackFlag.StringHashTable)) {
-            data.Write(strings, v => data.Write((uint)v), data.Write);
+            data.Write(strings, data.WriteEnum, data.Write);
         }
         if (packFlags.HasFlag(PackFlag.DataIDHashTable)) {
-            data.Write(dids, v => data.Write((uint)v), data.Write);
+            data.Write(dids, data.WriteEnum, data.Write);
         }
         if (packFlags.HasFlag(PackFlag.InstanceIDHashTable)) {
-            data.Write(ids, v => data.Write((uint)v), data.Write);
+            data.Write(ids, data.WriteEnum, data.Write);
         }
         if (packFlags.HasFlag(PackFlag.PositionHashTable)) {
-            data.Write(poss, v => data.Write((uint)v), v => v.write(data));
+            data.Write(poss, data.WriteEnum, v => v.write(data));
         }
         if (packFlags.HasFlag(PackFlag.StringInfoHashTable)) {
-            data.Write(stringInfos, v => data.Write((uint)v), v => v.write(data));
+            data.Write(stringInfos, data.WriteEnum, v => v.write(data));
         }
         if (packFlags.HasFlag(PackFlag.PackageIDHashTable)) {
             data.Write(packageIds, data.Write, data.Write);
         }
         if (packFlags.HasFlag(PackFlag.LongIntHashTable)) {
-            data.Write(longs, v => data.Write((uint)v), data.Write);
+            data.Write(longs, data.WriteEnum, data.Write);
         }
     }
 }

@@ -26,11 +26,11 @@ public class GMQuestInfo : IHeapObject {
 
     public GMQuestInfo(AC2Reader data) {
         // TODO: This format does not match known stuff, so the names/order here may be slightly incorrect
-        questId = (QuestId)data.ReadUInt32();
+        questId = data.ReadEnum<QuestId>();
         questName = new(data);
         questDescription = new(data);
         iconDid = data.ReadDataId();
-        questStatus = (QuestStatus)data.ReadUInt32();
+        questStatus = data.ReadEnum<QuestStatus>();
         curPhase = data.ReadUInt32();
         curJournalEntry = new(data);
         challengeLevel = data.ReadInt32();
@@ -44,11 +44,11 @@ public class GMQuestInfo : IHeapObject {
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)questId);
+        data.WriteEnum(questId);
         questName.write(data);
         questDescription.write(data);
         data.Write(iconDid);
-        data.Write((uint)questStatus);
+        data.WriteEnum(questStatus);
         data.Write(curPhase);
         curJournalEntry.write(data);
         data.Write(challengeLevel);

@@ -33,6 +33,6 @@ public class StoreTemplate : IHeapObject {
         data.ReadHO<RArray>(v => sales = v.to<SaleTemplate>());
         portraitDid = data.ReadDataId();
         version = data.ReadInt32();
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
     }
 }

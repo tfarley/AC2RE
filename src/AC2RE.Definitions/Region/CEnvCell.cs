@@ -28,7 +28,7 @@ public class CEnvCell {
 
     public CEnvCell(AC2Reader data) {
         pos = new(data);
-        packFlags = (PackFlag)data.ReadUInt32();
+        packFlags = data.ReadEnum<PackFlag>();
         environmentDid = data.ReadDataId();
         portals = data.ReadList(() => new CCellPortal(data));
         stabList = data.ReadList(data.ReadLocalCellId);

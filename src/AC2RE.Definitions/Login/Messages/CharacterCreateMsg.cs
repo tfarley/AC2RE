@@ -26,10 +26,10 @@ public class CharacterCreateMsg : INetMessage {
         characterName = data.ReadString(Encoding.Unicode);
         entityDid = data.ReadDataId();
         startArea = data.ReadUInt32();
-        species = (SpeciesType)data.ReadUInt32();
-        sex = (SexType)data.ReadUInt32();
-        classType = (ClassType)data.ReadUInt32();
-        implement = (ImplementType)data.ReadUInt32();
-        physiqueTypeValues = data.ReadDictionary(() => (PhysiqueType)data.ReadUInt32(), data.ReadSingle);
+        species = data.ReadEnum<SpeciesType>();
+        sex = data.ReadEnum<SexType>();
+        classType = data.ReadEnum<ClassType>();
+        implement = data.ReadEnum<ImplementType>();
+        physiqueTypeValues = data.ReadDictionary(data.ReadEnum<PhysiqueType>, data.ReadSingle);
     }
 }

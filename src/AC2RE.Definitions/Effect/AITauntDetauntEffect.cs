@@ -27,7 +27,7 @@ public class AITauntDetauntEffect : Effect {
     public AITauntDetauntEffect(AC2Reader data) : base(data) {
         minSpellcraft = data.ReadInt32();
         maxSpellcraft = data.ReadInt32();
-        aiTauntDetauntFlags = (Flag)data.ReadUInt32();
+        aiTauntDetauntFlags = data.ReadEnum<Flag>();
         minFractionalMod = data.ReadSingle();
         maxFractionalMod = data.ReadSingle();
         maxRawMod = data.ReadInt32();

@@ -40,7 +40,7 @@ public class ExaminationDataNode {
     }
 
     public ExaminationDataNode(AC2Reader data) {
-        type = (DataType)data.ReadUInt32();
+        type = data.ReadEnum<DataType>();
         order = data.ReadUInt32();
         switch (type) {
             case DataType.Undef:
@@ -88,7 +88,7 @@ public class ExaminationDataNode {
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)type);
+        data.WriteEnum(type);
         data.Write(order);
         switch (type) {
             case DataType.Undef:

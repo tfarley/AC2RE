@@ -49,7 +49,7 @@ public class StringInfoData {
 
     public StringInfoData(AC2Reader data) {
         // TODO: Not sure if this should be full 32 read or 16 + align
-        type = (DataType)data.ReadUInt16();
+        type = data.ReadEnum16<DataType>();
         data.Align(4);
         switch (type) {
             case DataType.Int:
@@ -79,7 +79,7 @@ public class StringInfoData {
 
     public void write(AC2Writer data) {
         // TODO: Not sure if this should be full 32 write or 16 + align
-        data.Write((ushort)type);
+        data.WriteEnum16(type);
         data.Align(4);
         switch (type) {
             case DataType.Int:

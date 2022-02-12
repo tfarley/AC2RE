@@ -9,6 +9,6 @@ public class QuestTriggerEffect : Effect {
 
     public QuestTriggerEffect(AC2Reader data) : base(data) {
         questUpdateType = new(data.ReadUInt32());
-        questId = (QuestId)data.ReadUInt32();
+        questId = data.ReadEnum<QuestId>();
     }
 }

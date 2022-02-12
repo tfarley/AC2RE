@@ -44,7 +44,7 @@ public class EffectRegistry : IHeapObject {
         lastPulseTime = data.ReadDouble();
         data.ReadHO<AList>(v => equipperEffectIds = v.to<EffectId>());
         data.ReadHO<AList>(v => acquirerEffectIds = v.to<EffectId>());
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         data.ReadHO<AHashSet>(v => trackedEffects = v);
         data.ReadHO<AAHash>(v => topEffects = v.to<uint, EffectId>());
         data.ReadHO<AAMultiHash>(v => effectCategorizationTable = v.to<uint, EffectId>());
@@ -60,7 +60,7 @@ public class EffectRegistry : IHeapObject {
         data.Write(lastPulseTime);
         data.WriteHO(AList.from(equipperEffectIds));
         data.WriteHO(AList.from(acquirerEffectIds));
-        data.Write((uint)flags);
+        data.WriteEnum(flags);
         data.WriteHO(AHashSet.from(trackedEffects));
         data.WriteHO(AAHash.from(topEffects));
         data.WriteHO(AAMultiHash.from(effectCategorizationTable));

@@ -22,7 +22,7 @@ public class PlayerEffectRecipeAction : IHeapObject {
     public PlayerEffectRecipeAction(AC2Reader data) {
         spellcraft = data.ReadSingle();
         data.ReadHO<Effect>(v => effect = v);
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         mappingTableDid = data.ReadDataId();
     }
 }

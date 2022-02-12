@@ -21,7 +21,7 @@ public class PerkSkill : Skill {
     public PerkSkill(AC2Reader data) : base(data) {
         priority = data.ReadInt32();
         value = data.ReadDouble();
-        perkFlags = (Flag)data.ReadUInt32();
+        perkFlags = data.ReadEnum<Flag>();
         perkType = data.ReadUInt32();
     }
 }

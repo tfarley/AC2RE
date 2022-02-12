@@ -20,15 +20,15 @@ public class SkillUINode : IHeapObject {
     public uint unk1;
 
     public SkillUINode(AC2Reader data) {
-        skillId = (SkillId)data.ReadUInt32();
+        skillId = data.ReadEnum<SkillId>();
         type = data.ReadUInt32();
         name = new(data);
         description = new(data);
         iconDid = data.ReadDataId();
         x = data.ReadUInt32();
         y = data.ReadUInt32();
-        parentSkillIds = data.ReadList(() => (SkillId)data.ReadUInt32());
-        dependentSkillIds = data.ReadList(() => (SkillId)data.ReadUInt32());
+        parentSkillIds = data.ReadList(data.ReadEnum<SkillId>);
+        dependentSkillIds = data.ReadList(data.ReadEnum<SkillId>);
         isPassive = data.ReadBoolean();
         untrainable = data.ReadBoolean();
         unk1 = data.ReadUInt32();

@@ -12,10 +12,10 @@ public class UpdateFactionStatusCEvt : IClientEvent {
     }
 
     public UpdateFactionStatusCEvt(AC2Reader data) {
-        status = (FactionStatus)data.UnpackUInt32();
+        status = data.UnpackEnum<FactionStatus>();
     }
 
     public void write(AC2Writer data) {
-        data.Pack((uint)status);
+        data.PackEnum(status);
     }
 }

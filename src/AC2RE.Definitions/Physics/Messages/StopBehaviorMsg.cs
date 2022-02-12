@@ -17,11 +17,11 @@ public class StopBehaviorMsg : INetMessage {
 
     public StopBehaviorMsg(AC2Reader data) {
         senderIdWithStamp = data.ReadInstanceIdWithStamp();
-        behaviorId = (BehaviorId)data.ReadUInt32();
+        behaviorId = data.ReadEnum<BehaviorId>();
     }
 
     public void write(AC2Writer data) {
         data.Write(senderIdWithStamp);
-        data.Write((uint)behaviorId);
+        data.WriteEnum(behaviorId);
     }
 }

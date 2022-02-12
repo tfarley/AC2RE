@@ -53,16 +53,16 @@ public class UsageDesc : IHeapObject {
         data.ReadHO<UsageBlob>(v => usageBlob = v);
         itemId = data.ReadInstanceId();
         data.ReadHO<Position>(v => userPos = v);
-        userWeenieType = (WeenieType)data.ReadUInt32();
+        userWeenieType = data.ReadEnum<WeenieType>();
         userId = data.ReadInstanceId();
         distToUsedItem = data.ReadSingle();
         targetId = data.ReadInstanceId();
-        error = (ErrorType)data.ReadUInt32();
+        error = data.ReadEnum<ErrorType>();
         effectTargetId = data.ReadInstanceId();
         usageTargetTypeValid = data.ReadUInt32();
         data.ReadHO<RList>(v => effectsToApply = v.to(SingletonPkg<Effect>.cast));
         vigorCost = data.ReadInt32();
-        controlFlags = (ControlFlag)data.ReadUInt32();
+        controlFlags = data.ReadEnum<ControlFlag>();
         cancelsSF = data.ReadBoolean();
         healthCost = data.ReadInt32();
     }
@@ -72,16 +72,16 @@ public class UsageDesc : IHeapObject {
         data.WriteHO(usageBlob);
         data.Write(itemId);
         data.WriteHO(userPos);
-        data.Write((uint)userWeenieType);
+        data.WriteEnum(userWeenieType);
         data.Write(userId);
         data.Write(distToUsedItem);
         data.Write(targetId);
-        data.Write((uint)error);
+        data.WriteEnum(error);
         data.Write(effectTargetId);
         data.Write(usageTargetTypeValid);
         data.WriteHO(RList.from(effectsToApply));
         data.Write(vigorCost);
-        data.Write((uint)controlFlags);
+        data.WriteEnum(controlFlags);
         data.Write(cancelsSF);
         data.Write(healthCost);
     }

@@ -51,7 +51,7 @@ public class CameraFX {
 
     public CameraFX(AC2Reader data) {
         did = data.ReadDataId();
-        packFlags = (PackFlag)data.ReadUInt64();
+        packFlags = data.ReadEnum64<PackFlag>();
         if (packFlags.HasFlag(PackFlag.SHAKE)) {
             shake = data.ReadBoolean();
         }
@@ -102,7 +102,7 @@ public class CameraFX {
 
     public void write(AC2Writer data) {
         data.Write(did);
-        data.Write((ulong)packFlags);
+        data.WriteEnum64(packFlags);
         if (packFlags.HasFlag(PackFlag.SHAKE)) {
             data.Write(shake);
         }

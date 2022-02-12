@@ -19,7 +19,7 @@ public class InterpCEventCellMsg : INetMessage, IInterpCEventMsg {
 
     public InterpCEventCellMsg(AC2Reader data) {
         senderIdWithStamp = data.ReadInstanceIdWithStamp();
-        ClientEventFunctionId funcId = (ClientEventFunctionId)data.ReadUInt32();
+        ClientEventFunctionId funcId = data.ReadEnum<ClientEventFunctionId>();
         uint length = data.ReadUInt32();
         netEvent = IClientEvent.read(funcId, data);
     }
@@ -39,13 +39,13 @@ public class InterpCEventPrivateMsg : INetMessage, IInterpCEventMsg {
     }
 
     public InterpCEventPrivateMsg(AC2Reader data) {
-        ClientEventFunctionId funcId = (ClientEventFunctionId)data.ReadUInt32();
+        ClientEventFunctionId funcId = data.ReadEnum<ClientEventFunctionId>();
         uint length = data.ReadUInt32();
         netEvent = IClientEvent.read(funcId, data);
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)netEvent.funcId);
+        data.WriteEnum(netEvent.funcId);
         // Placeholder for length
         data.Write((uint)0);
         long contentStart = data.BaseStream.Position;
@@ -71,7 +71,7 @@ public class InterpCEventVisualMsg : INetMessage, IInterpCEventMsg {
 
     public InterpCEventVisualMsg(AC2Reader data) {
         senderIdWithStamp = data.ReadInstanceIdWithStamp();
-        ClientEventFunctionId funcId = (ClientEventFunctionId)data.ReadUInt32();
+        ClientEventFunctionId funcId = data.ReadEnum<ClientEventFunctionId>();
         uint length = data.ReadUInt32();
         netEvent = IClientEvent.read(funcId, data);
     }

@@ -18,21 +18,21 @@ public class ChannelData : IHeapObject {
 
     public ChannelData(AC2Reader data) {
         pendingRoomCreation = data.ReadBoolean();
-        type = (TextType)data.ReadUInt32();
+        type = data.ReadEnum<TextType>();
         regionId = data.ReadUInt32();
         roomId = data.ReadUInt32();
         available = data.ReadBoolean();
-        factionType = (FactionType)data.ReadUInt32();
+        factionType = data.ReadEnum<FactionType>();
         data.ReadHO<WPString>(v => name = v);
     }
 
     public void write(AC2Writer data) {
         data.Write(pendingRoomCreation);
-        data.Write((uint)type);
+        data.WriteEnum(type);
         data.Write(regionId);
         data.Write(roomId);
         data.Write(available);
-        data.Write((uint)factionType);
+        data.WriteEnum(factionType);
         data.WriteHO(name);
     }
 }

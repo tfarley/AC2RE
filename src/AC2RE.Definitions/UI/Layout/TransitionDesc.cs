@@ -114,7 +114,7 @@ public class TransitionDesc {
     }
 
     public TransitionDesc(AC2Reader data) {
-        type = (TransitionType)data.ReadUInt32();
+        type = data.ReadEnum<TransitionType>();
         when = data.ReadUInt32();
         state = data.ReadUInt32();
         transitionData = type switch {
@@ -126,7 +126,7 @@ public class TransitionDesc {
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)type);
+        data.WriteEnum(type);
         data.Write(when);
         data.Write(state);
         transitionData.write(data);

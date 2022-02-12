@@ -30,7 +30,7 @@ public class ItemEffectRecipeAction : IHeapObject {
         spellcraft = data.ReadSingle();
         data.ReadHO<Effect>(v => effect = v);
         effectKind = data.ReadInt32();
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         mappingTableDid = data.ReadDataId();
         minSpinnerVal = data.ReadUInt32();
         maxSpinnerVal = data.ReadUInt32();

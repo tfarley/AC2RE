@@ -59,7 +59,7 @@ internal class ClientManager {
     private byte[] serializeMessage(INetMessage msg) {
         MemoryStream buffer = new();
         using (AC2Writer data = new(buffer)) {
-            data.Write((uint)msg.opcode);
+            data.WriteEnum(msg.opcode);
             msg.write(data);
         }
         return buffer.ToArray();

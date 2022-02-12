@@ -119,12 +119,12 @@ public class ActiveSkill : Skill {
 
     public ActiveSkill(AC2Reader data) : base(data) {
         maxPets = data.ReadInt32();
-        behaviorOtherHit = (BehaviorId)data.ReadUInt32();
+        behaviorOtherHit = data.ReadEnum<BehaviorId>();
         maxVigor = data.ReadInt32();
         minUseTime = data.ReadSingle();
         data.ReadHO<RList>(v => reqEffects = v.to(SingletonPkg<Effect>.cast));
         minHealth = data.ReadInt32();
-        allowedImplementsRight = (ImplementType)data.ReadInt32();
+        allowedImplementsRight = data.ReadEnum<ImplementType>();
         data.ReadHO<RList>(v => barringEffects = v.to(SingletonPkg<Effect>.cast));
         minRange = data.ReadSingle();
         endFocusModAdd = data.ReadInt32();
@@ -132,20 +132,20 @@ public class ActiveSkill : Skill {
         maxHealth = data.ReadInt32();
         data.ReadHO<RList>(v => userEffects = v.to(SingletonPkg<Effect>.cast));
         data.ReadHO<AHashSet>(v => validWeenieTypes = v.to<WeenieType>());
-        behaviorSelfHit = (BehaviorId)data.ReadUInt32();
+        behaviorSelfHit = data.ReadEnum<BehaviorId>();
         minVigor = data.ReadInt32();
-        behaviorSelfMiss = (BehaviorId)data.ReadUInt32();
+        behaviorSelfMiss = data.ReadEnum<BehaviorId>();
         data.ReadHO<AAHash>(v => weightHash = v);
         minRank = data.ReadUInt32();
-        behaviorOtherMiss = (BehaviorId)data.ReadUInt32();
-        validTargets = (Target)data.ReadUInt32();
+        behaviorOtherMiss = data.ReadEnum<BehaviorId>();
+        validTargets = data.ReadEnum<Target>();
         validPetOnly = data.ReadUInt32();
-        powerUpBehavior = (BehaviorId)data.ReadUInt32();
+        powerUpBehavior = data.ReadEnum<BehaviorId>();
         startFocusModMult = data.ReadSingle();
         dmgAttributeMod = data.ReadSingle();
-        allowedImplementsLeft = (ImplementType)data.ReadInt32();
-        requiredSkillTargetFlags = (Target)data.ReadUInt32();
-        behaviorOtherCrit = (BehaviorId)data.ReadUInt32();
+        allowedImplementsLeft = data.ReadEnum<ImplementType>();
+        requiredSkillTargetFlags = data.ReadEnum<Target>();
+        behaviorOtherCrit = data.ReadEnum<BehaviorId>();
         minLevel = data.ReadUInt32();
         maxLevel = data.ReadUInt32();
         data.ReadHO<AAHash>(v => useBarringSkills = v);
@@ -164,6 +164,6 @@ public class ActiveSkill : Skill {
         minFocus = data.ReadInt32();
         dmgAttributeChance = data.ReadSingle();
         maxRange = data.ReadSingle();
-        activeFlags = (Flag)data.ReadUInt32();
+        activeFlags = data.ReadEnum<Flag>();
     }
 }

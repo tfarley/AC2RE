@@ -19,7 +19,7 @@ public class TravelTieEffect : Effect {
     public Flag travelTieFlags => (Flag)flags;
 
     public TravelTieEffect(AC2Reader data) : base(data) {
-        weenieType = (WeenieType)data.ReadUInt32();
+        weenieType = data.ReadEnum<WeenieType>();
         portalLink = data.ReadUInt32();
     }
 }

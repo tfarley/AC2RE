@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace AC2RE.Definitions;
@@ -82,6 +83,11 @@ public class AC2Reader : BinaryReader {
 
     public EffectId UnpackEffectId() {
         return new(UnpackUInt32());
+    }
+
+    public T UnpackEnum<T>() where T : struct, Enum {
+        uint value = UnpackUInt32();
+        return Unsafe.As<uint, T>(ref value);
     }
 
     public T UnpackHeapObject<T>(bool skipPackTag = false) where T : IHeapObject {
@@ -379,8 +385,27 @@ public class AC2Reader : BinaryReader {
         return new(ReadUInt32());
     }
 
+    public StringId ReadStringId() {
+        return new(ReadUInt32());
+    }
+
     public EffectId ReadEffectId() {
         return new(ReadUInt32());
+    }
+
+    public T ReadEnum16<T>() where T : struct, Enum {
+        ushort value = ReadUInt16();
+        return Unsafe.As<ushort, T>(ref value);
+    }
+
+    public T ReadEnum<T>() where T : struct, Enum {
+        uint value = ReadUInt32();
+        return Unsafe.As<uint, T>(ref value);
+    }
+
+    public T ReadEnum64<T>() where T : struct, Enum {
+        ulong value = ReadUInt64();
+        return Unsafe.As<ulong, T>(ref value);
     }
 
     public void Align(uint bytes) {

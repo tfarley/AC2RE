@@ -19,7 +19,7 @@ public class AttributeDesc {
     // AttributeDesc
     public uint id; // attributeID
     public AttributeType type; // type
-    public uint valStringId; // val_strID
+    public StringId valStringId; // val_strID
     public uint valId; // val_ID
     public int valInt; // val_Int
     public float valFloat; // val_Float
@@ -33,7 +33,7 @@ public class AttributeDesc {
 
     public AttributeDesc(AC2Reader data) {
         id = data.ReadUInt32();
-        type = (AttributeType)data.ReadUInt32();
+        type = data.ReadEnum<AttributeType>();
         switch (type) {
             case AttributeType.ID:
                 valId = data.ReadUInt32();
@@ -51,7 +51,7 @@ public class AttributeDesc {
                 valAscii = data.ReadString();
                 break;
             case AttributeType.STRING:
-                valStringId = data.ReadUInt32();
+                valStringId = data.ReadStringId();
                 break;
             case AttributeType.DATAID:
                 valDid = data.ReadDataId();
@@ -63,7 +63,7 @@ public class AttributeDesc {
 
     public void write(AC2Writer data) {
         data.Write(id);
-        data.Write((uint)type);
+        data.WriteEnum(type);
         switch (type) {
             case AttributeType.ID:
                 data.Write(valId);

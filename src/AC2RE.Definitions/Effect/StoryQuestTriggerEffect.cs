@@ -7,6 +7,6 @@ public class StoryQuestTriggerEffect : Effect {
     public SceneId sceneId; // m_sceneID
 
     public StoryQuestTriggerEffect(AC2Reader data) : base(data) {
-        sceneId = (SceneId)data.ReadUInt32();
+        sceneId = data.ReadEnum<SceneId>();
     }
 }

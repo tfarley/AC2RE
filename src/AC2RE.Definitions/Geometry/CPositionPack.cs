@@ -30,7 +30,7 @@ public class CPositionPack {
         time = data.ReadDouble();
         offset = new(data);
         (doMotion, heading) = data.ReadVectorHeadingPack();
-        packFlags = (PackFlag)data.ReadUInt32();
+        packFlags = data.ReadEnum<PackFlag>();
         instanceStamp = data.ReadUInt16();
         teleportStamp = data.ReadUInt16();
         forcePosStamp = data.ReadUInt16();

@@ -9,7 +9,7 @@ public class TaggedIterationList {
 
     public TaggedIterationList(AC2Reader data) {
         datName = data.ReadUInt32();
-        datType = (DatFileType)data.ReadUInt32();
+        datType = data.ReadEnum<DatFileType>();
         iterationList = new(data);
     }
 }

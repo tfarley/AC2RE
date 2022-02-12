@@ -10,7 +10,7 @@ public class InterpSEventMsg : INetMessage {
     public IServerEvent netEvent;
 
     public InterpSEventMsg(AC2Reader data) {
-        ServerEventFunctionId funcId = (ServerEventFunctionId)data.ReadUInt32();
+        ServerEventFunctionId funcId = data.ReadEnum<ServerEventFunctionId>();
         uint length = data.ReadUInt32();
         netEvent = IServerEvent.read(funcId, data);
     }

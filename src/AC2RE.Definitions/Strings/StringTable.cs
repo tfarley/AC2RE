@@ -10,7 +10,7 @@ public class StringTable {
     public ushort baseVal; // m_base
     public ushort numDecimalDigits; // m_numDecimalDigits
     public bool leadingZero; // m_leadingZero
-    public Dictionary<uint, StringTableString> strings; // m_strings
+    public Dictionary<StringId, StringTableString> strings; // m_strings
 
     public StringTable() {
 
@@ -22,6 +22,6 @@ public class StringTable {
         baseVal = data.ReadUInt16();
         leadingZero = data.ReadBoolean();
         numDecimalDigits = data.ReadUInt16();
-        strings = data.ReadDictionary(data.ReadUInt32, () => new StringTableString(data));
+        strings = data.ReadDictionary(data.ReadStringId, () => new StringTableString(data));
     }
 }

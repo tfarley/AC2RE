@@ -22,7 +22,7 @@ public class ProduceRecipeAction : IHeapObject {
 
     public ProduceRecipeAction(AC2Reader data) {
         ordinal = data.ReadUInt32();
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         entityDid = data.ReadDataId();
         mappingTableDid = data.ReadDataId();
         quantity = data.ReadUInt32();

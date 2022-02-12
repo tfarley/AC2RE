@@ -24,7 +24,7 @@ public class TransactionBlob : IHeapObject {
         shopperId = data.ReadInstanceId();
         quantity = data.ReadUInt32();
         storekeeperId = data.ReadInstanceId();
-        error = (ErrorType)data.ReadUInt32();
+        error = data.ReadEnum<ErrorType>();
         slot = data.ReadUInt32();
     }
 
@@ -34,7 +34,7 @@ public class TransactionBlob : IHeapObject {
         data.Write(shopperId);
         data.Write(quantity);
         data.Write(storekeeperId);
-        data.Write((uint)error);
+        data.WriteEnum(error);
         data.Write(slot);
     }
 }

@@ -99,7 +99,7 @@ public class ByteStream {
         data.Align(4);
         byteStreamVersion = data.ReadUInt32();
         while (data.BaseStream.Position < data.BaseStream.Length) {
-            SectionType sectionType = (SectionType)data.ReadUInt32();
+            SectionType sectionType = data.ReadEnum<SectionType>();
             uint sectionSize = data.ReadUInt32();
             switch (sectionType) {
                 case SectionType.VersionInfo:

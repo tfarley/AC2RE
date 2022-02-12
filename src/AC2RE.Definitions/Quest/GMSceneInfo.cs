@@ -19,7 +19,7 @@ public class GMSceneInfo : IHeapObject {
     }
 
     public GMSceneInfo(AC2Reader data) {
-        id = (SceneId)data.ReadUInt32();
+        id = data.ReadEnum<SceneId>();
         name = new(data);
         actId = data.ReadUInt32();
         sceneNum = data.ReadUInt32();
@@ -29,7 +29,7 @@ public class GMSceneInfo : IHeapObject {
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)id);
+        data.WriteEnum(id);
         name.write(data);
         data.Write(actId);
         data.Write(sceneNum);

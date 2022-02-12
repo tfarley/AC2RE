@@ -16,7 +16,7 @@ public class AddIngredientDoneCEvt : IClientEvent {
     }
 
     public AddIngredientDoneCEvt(AC2Reader data) {
-        error = (ErrorType)data.UnpackUInt32();
+        error = data.UnpackEnum<ErrorType>();
         spinnerVal = data.UnpackUInt32();
         ingredientId = data.UnpackInstanceId();
         ordinal = data.UnpackUInt32();
@@ -24,7 +24,7 @@ public class AddIngredientDoneCEvt : IClientEvent {
     }
 
     public void write(AC2Writer data) {
-        data.Pack((uint)error);
+        data.PackEnum(error);
         data.Pack(spinnerVal);
         data.Pack(ingredientId);
         data.Pack(ordinal);

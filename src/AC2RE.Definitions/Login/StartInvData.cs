@@ -16,7 +16,7 @@ public class StartInvData : IHeapObject {
         colorType = data.ReadUInt32();
         equipped = data.ReadBoolean();
         modifier = data.ReadSingle();
-        appKey = (AppearanceKey)data.ReadUInt32();
+        appKey = data.ReadEnum<AppearanceKey>();
         data.ReadHO<WPString>(v => entityName = v);
         quantity = data.ReadInt32();
         entityDid = data.ReadDataId();

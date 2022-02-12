@@ -12,10 +12,10 @@ public class RemoveSkillInfoCEvt : IClientEvent {
     }
 
     public RemoveSkillInfoCEvt(AC2Reader data) {
-        skillId = (SkillId)data.UnpackUInt32();
+        skillId = data.UnpackEnum<SkillId>();
     }
 
     public void write(AC2Writer data) {
-        data.Pack((uint)skillId);
+        data.PackEnum(skillId);
     }
 }

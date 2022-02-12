@@ -27,7 +27,7 @@ public class Eff_Mn_Golem_Clone : GenesisEffect {
         health = data.ReadInt32();
         damage = data.ReadInt32();
         meleeAttack = data.ReadInt32();
-        faction = (FactionType)data.ReadUInt32();
+        faction = data.ReadEnum<FactionType>();
         meleeDefense = data.ReadSingle();
         vigor = data.ReadSingle();
         armor = data.ReadSingle();

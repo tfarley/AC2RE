@@ -28,7 +28,7 @@ public class NetBlobFrag {
         fragCount = data.ReadUInt16();
         fragSize = data.ReadUInt16();
         fragIndex = data.ReadUInt16();
-        queueId = (NetQueue)data.ReadUInt16();
+        queueId = data.ReadEnum16<NetQueue>();
 
         _payload = data.ReadBytes(fragSize - 16);
     }
@@ -38,7 +38,7 @@ public class NetBlobFrag {
         data.Write(fragCount);
         data.Write(fragSize);
         data.Write(fragIndex);
-        data.Write((ushort)queueId);
+        data.WriteEnum16(queueId);
     }
 
     public void writePayload(AC2Writer data) {

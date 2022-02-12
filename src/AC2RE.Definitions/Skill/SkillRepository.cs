@@ -23,7 +23,7 @@ public class SkillRepository : IHeapObject {
         untrainingXp = data.ReadUInt64();
         heroSkillCredits = data.ReadUInt32();
         data.ReadHO<AAHash>(v => perkTypes = v);
-        skillIdUntraining = (SkillId)data.ReadUInt32();
+        skillIdUntraining = data.ReadEnum<SkillId>();
         data.ReadHO<AAHash>(v => categories = v);
         data.ReadHO<ARHash>(v => skills = v.to<SkillId, SkillInfo>());
     }
@@ -33,7 +33,7 @@ public class SkillRepository : IHeapObject {
         data.Write(untrainingXp);
         data.Write(heroSkillCredits);
         data.WriteHO(AAHash.from(perkTypes));
-        data.Write((uint)skillIdUntraining);
+        data.WriteEnum(skillIdUntraining);
         data.WriteHO(AAHash.from(categories));
         data.WriteHO(ARHash.from(skills));
     }

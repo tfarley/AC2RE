@@ -16,16 +16,16 @@ public class InventProfile : IHeapObject {
 
     public InventProfile(AC2Reader data) {
         data.ReadHO<VisualDescInfo>(v => visualDescInfo = v);
-        slotsTaken = (InvLoc)data.ReadUInt32();
-        location = (InvLoc)data.ReadUInt32();
+        slotsTaken = data.ReadEnum<InvLoc>();
+        location = data.ReadEnum<InvLoc>();
         it = data.ReadInt32();
         id = data.ReadInstanceId();
     }
 
     public void write(AC2Writer data) {
         data.WriteHO(visualDescInfo);
-        data.Write((uint)slotsTaken);
-        data.Write((uint)location);
+        data.WriteEnum(slotsTaken);
+        data.WriteEnum(location);
         data.Write(it);
         data.Write(id);
     }

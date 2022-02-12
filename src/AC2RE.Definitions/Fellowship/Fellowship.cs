@@ -31,7 +31,7 @@ public class Fellowship : IHeapObject {
 
     public Fellowship(AC2Reader data) {
         lastClaimantId = data.ReadInstanceId();
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         chatRoomId = data.ReadUInt32();
         data.ReadHO<LRHash>(v => fellowTable = v.to<InstanceId, Fellow>());
         leaderId = data.ReadInstanceId();
@@ -40,7 +40,7 @@ public class Fellowship : IHeapObject {
 
     public void write(AC2Writer data) {
         data.Write(lastClaimantId);
-        data.Write((uint)flags);
+        data.WriteEnum(flags);
         data.Write(chatRoomId);
         data.WriteHO(LRHash.from(fellowTable));
         data.Write(leaderId);

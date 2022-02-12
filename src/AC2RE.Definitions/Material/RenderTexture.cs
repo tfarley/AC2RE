@@ -20,7 +20,7 @@ public class RenderTexture {
 
     public RenderTexture(AC2Reader data) {
         did = data.ReadDataId();
-        textureType = (TextureType)data.ReadUInt32();
+        textureType = data.ReadEnum<TextureType>();
         levelSurfaceDids = data.ReadList(data.ReadDataId);
     }
 }

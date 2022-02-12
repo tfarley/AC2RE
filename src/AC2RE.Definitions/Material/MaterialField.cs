@@ -9,8 +9,8 @@ public class MaterialField {
     public uint indices; // tcIndex, stageIndex, modifierIndex
 
     public MaterialField(AC2Reader data) {
-        fieldType = (RMFieldType)data.ReadUInt32();
-        dataType = (RMDataType)data.ReadUInt32();
+        fieldType = data.ReadEnum<RMFieldType>();
+        dataType = data.ReadEnum<RMDataType>();
         layerIndex = data.ReadUInt32();
         indices = data.ReadUInt32();
     }

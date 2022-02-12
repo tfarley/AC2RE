@@ -12,10 +12,10 @@ public class StoreRequestDoneCEvt : IClientEvent {
     }
 
     public StoreRequestDoneCEvt(AC2Reader data) {
-        error = (ErrorType)data.UnpackUInt32();
+        error = data.UnpackEnum<ErrorType>();
     }
 
     public void write(AC2Writer data) {
-        data.Pack((uint)error);
+        data.PackEnum(error);
     }
 }

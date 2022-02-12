@@ -6,11 +6,11 @@ public class MasterDIDList : IHeapObject {
 
     public PackageType packageType => PackageType.MasterDIDList;
 
-    public EnumId emapperId; // mEmapperID
+    public EnumId enumId; // mEmapperID
     public Dictionary<uint, DataId> map; // mMap
 
     public MasterDIDList(AC2Reader data) {
-        emapperId = data.ReadEnumId();
+        enumId = data.ReadEnumId();
         data.ReadHO<AAHash>(v => map = v.to<uint, DataId>());
     }
 }

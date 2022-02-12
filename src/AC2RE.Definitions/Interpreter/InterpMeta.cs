@@ -15,6 +15,7 @@ public static class InterpMeta {
         { typeof(DataId), typeof(uint) },
         { typeof(CellId), typeof(uint) },
         { typeof(EnumId), typeof(uint) },
+        { typeof(StringId), typeof(uint) },
         { typeof(EffectId), typeof(uint) },
         { typeof(QuestUpdateType), typeof(uint) },
 

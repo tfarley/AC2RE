@@ -8,7 +8,7 @@ public class StringTableString {
     // StringTableString
     public uint table; // table
     public List<string> strings; // strings
-    public List<uint> variables; // variables
+    public List<StringVariable> variables; // variables
     public List<string> varNames; // varNames
 
     public StringTableString() {
@@ -31,7 +31,7 @@ public class StringTableString {
             }
         }
         data.Align(4);
-        variables = data.ReadList(data.ReadUInt32, 2);
+        variables = data.ReadList(data.ReadEnum<StringVariable>, 2);
         data.Align(4);
         if (hasVarNames) {
             varNames = data.ReadList(() => data.ReadString(Encoding.Unicode));

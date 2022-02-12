@@ -20,7 +20,7 @@ internal class SkillMessageProcessor : BaseMessageProcessor {
                                 sendUpdateSkillRepo(player, character);
                                 sendUpdateSkillInfo(player, character, sEvent.skillId);
                                 Skill skill = world.contentManager.getSkill(sEvent.skillId);
-                                sendMessage(player, new StringInfo(new(0x250004AA), 1533416325, new() {
+                                sendMessage(player, new StringInfo(new(0x250004AA), new(0x5B661385), new() {
                                     { StringVariable.SkillName, new(skill.name) },
                                 }));
                             } else {
@@ -35,7 +35,7 @@ internal class SkillMessageProcessor : BaseMessageProcessor {
                                 sendUpdateSkillRepo(player, character);
                                 sendUpdateSkillInfo(player, character, sEvent.skillId);
                                 Skill skill = world.contentManager.getSkill(sEvent.skillId);
-                                sendMessage(player, new StringInfo(new(0x250004AA), 2419982329, new() {
+                                sendMessage(player, new StringInfo(new(0x250004AA), new(0x903DFFF9), new() {
                                     { StringVariable.SkillName, new(skill.name) },
                                     { StringVariable.SkillLevel, new((int)character.skillRepo.skills[sEvent.skillId].levelCached) },
                                 }));

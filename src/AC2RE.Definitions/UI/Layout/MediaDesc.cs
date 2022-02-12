@@ -235,8 +235,8 @@ public class MediaDesc {
 
     public MediaDesc(AC2Reader data) {
         // Duplicate line is intentional to match how actual code works
-        type = (MediaType)data.ReadUInt32();
-        type = (MediaType)data.ReadUInt32();
+        type = data.ReadEnum<MediaType>();
+        type = data.ReadEnum<MediaType>();
         mediaData = type switch {
             MediaType.ANIMATION => new AnimationMediaData(data),
             MediaType.PAUSE => new PauseMediaData(data),
@@ -254,8 +254,8 @@ public class MediaDesc {
 
     public void write(AC2Writer data) {
         // Duplicate line is intentional to match how actual code works
-        data.Write((uint)type);
-        data.Write((uint)type);
+        data.WriteEnum(type);
+        data.WriteEnum(type);
         mediaData.write(data);
     }
 }

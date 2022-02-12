@@ -22,29 +22,29 @@ public class AllegianceData : IHeapObject {
 
     public AllegianceData(AC2Reader data) {
         xpPassed = data.ReadUInt64();
-        species = (SpeciesType)data.ReadUInt32();
+        species = data.ReadEnum<SpeciesType>();
         level = data.ReadUInt32();
         data.ReadHO<WPString>(v => userDefinedTitle = v);
-        sex = (SexType)data.ReadUInt32();
+        sex = data.ReadEnum<SexType>();
         xpPooled = data.ReadUInt64();
         isOfficer = data.ReadBoolean();
         id = data.ReadInstanceId();
         rank = data.ReadUInt32();
-        factionType = (FactionType)data.ReadUInt32();
+        factionType = data.ReadEnum<FactionType>();
         data.ReadHO<StringInfo>(v => name = v);
     }
 
     public void write(AC2Writer data) {
         data.Write(xpPassed);
-        data.Write((uint)species);
+        data.WriteEnum(species);
         data.Write(level);
         data.WriteHO(userDefinedTitle);
-        data.Write((uint)sex);
+        data.WriteEnum(sex);
         data.Write(xpPooled);
         data.Write(isOfficer);
         data.Write(id);
         data.Write(rank);
-        data.Write((uint)factionType);
+        data.WriteEnum(factionType);
         data.WriteHO(name);
     }
 }

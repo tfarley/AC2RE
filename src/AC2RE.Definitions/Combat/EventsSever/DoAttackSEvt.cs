@@ -11,7 +11,7 @@ public class DoAttackSEvt : IServerEvent {
 
     public DoAttackSEvt(AC2Reader data) {
         specialAttackId = data.UnpackUInt32();
-        skillId = (SkillId)data.UnpackUInt32();
+        skillId = data.UnpackEnum<SkillId>();
         targetId = data.UnpackInstanceId();
     }
 }

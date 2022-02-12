@@ -14,12 +14,12 @@ public class PropertyGroup : IHeapObject {
     }
 
     public PropertyGroup(AC2Reader data) {
-        name = (PropertyGroupName)data.ReadUInt32();
+        name = data.ReadEnum<PropertyGroupName>();
         properties = data.ReadList(() => new BaseProperty(data));
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)name);
+        data.WriteEnum(name);
         data.Write(properties, v => v.write(data));
     }
 }

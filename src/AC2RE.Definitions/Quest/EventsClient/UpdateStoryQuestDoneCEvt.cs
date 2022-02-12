@@ -14,14 +14,14 @@ public class UpdateStoryQuestDoneCEvt : IClientEvent {
     }
 
     public UpdateStoryQuestDoneCEvt(AC2Reader data) {
-        status = (ErrorType)data.UnpackUInt32();
+        status = data.UnpackEnum<ErrorType>();
         addScene = data.UnpackBoolean();
-        sceneId = (SceneId)data.UnpackUInt32();
+        sceneId = data.UnpackEnum<SceneId>();
     }
 
     public void write(AC2Writer data) {
-        data.Pack((uint)status);
+        data.PackEnum(status);
         data.Pack(addScene);
-        data.Pack((uint)sceneId);
+        data.PackEnum(sceneId);
     }
 }

@@ -242,7 +242,7 @@ internal class WorldMySqlDatabase : BaseMySqlDatabase, IWorldDatabase {
         using (MySqlCommand cmd = new($"SELECT * FROM world_obj_stat_strinfo WHERE objectId = '{worldObject.id.id}';", connection)) {
             using (MySqlDataReader reader = cmd.ExecuteReader()) {
                 while (reader.Read()) {
-                    worldObject.setQ((StringInfoStat)reader.GetUInt32("stat"), !reader.IsDBNull("literalValue") ? new(reader.GetString("literalValue")) : new(new(reader.GetUInt32("tableDid")), reader.GetUInt32("stringId")));
+                    worldObject.setQ((StringInfoStat)reader.GetUInt32("stat"), !reader.IsDBNull("literalValue") ? new(reader.GetString("literalValue")) : new(new(reader.GetUInt32("tableDid")), new(reader.GetUInt32("stringId"))));
                 }
             }
         }

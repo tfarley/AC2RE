@@ -7,6 +7,6 @@ public class RaceFilter : IHeapObject {
     public SpeciesType race; // m_race
 
     public RaceFilter(AC2Reader data) {
-        race = (SpeciesType)data.ReadUInt32();
+        race = data.ReadEnum<SpeciesType>();
     }
 }

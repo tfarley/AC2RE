@@ -45,7 +45,7 @@ public class CFogDesc {
             fogMax = data.ReadSingle();
             fogSky = data.ReadSingle();
             fogDensity = data.ReadSingle();
-            fogType = (LScapeFogType)data.ReadUInt32();
+            fogType = data.ReadEnum<LScapeFogType>();
             fogColor = data.ReadRGBAColor();
         }
     }

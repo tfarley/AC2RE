@@ -16,12 +16,12 @@ public class QualUpdateFloatPrivateMsg : INetMessage {
     }
 
     public QualUpdateFloatPrivateMsg(AC2Reader data) {
-        type = (FloatStat)data.ReadUInt32();
+        type = data.ReadEnum<FloatStat>();
         value = data.ReadSingle();
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)type);
+        data.WriteEnum(type);
         data.Write(value);
     }
 }
@@ -46,13 +46,13 @@ public class QualUpdateFloatVisualMsg : INetMessage {
 
     public QualUpdateFloatVisualMsg(AC2Reader data) {
         senderIdWithStamp = data.ReadInstanceIdWithStamp();
-        type = (FloatStat)data.ReadUInt32();
+        type = data.ReadEnum<FloatStat>();
         value = data.ReadSingle();
     }
 
     public void write(AC2Writer data) {
         data.Write(senderIdWithStamp);
-        data.Write((uint)type);
+        data.WriteEnum(type);
         data.Write(value);
     }
 }

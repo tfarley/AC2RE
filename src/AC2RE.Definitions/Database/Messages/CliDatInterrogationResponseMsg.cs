@@ -13,7 +13,7 @@ public class CliDatInterrogationResponseMsg : INetMessage {
     public List<TaggedIterationList> iterationListData; // IterationListData
 
     public CliDatInterrogationResponseMsg(AC2Reader data) {
-        language = (Language)data.ReadUInt32();
+        language = data.ReadEnum<Language>();
         iterationListData = data.ReadList(() => new TaggedIterationList(data));
     }
 }

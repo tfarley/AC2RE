@@ -97,11 +97,11 @@ public class PhysicsDesc {
     }
 
     public PhysicsDesc(AC2Reader data) {
-        packFlags = (PackFlag)data.ReadUInt32();
+        packFlags = data.ReadEnum<PackFlag>();
         instanceStamp = data.ReadUInt16();
         visualOrderStamp = data.ReadUInt16();
         if (packFlags.HasFlag(PackFlag.MODE)) {
-            modeId = (ModeId)data.ReadUInt32();
+            modeId = data.ReadEnum<ModeId>();
         }
         if (packFlags.HasFlag(PackFlag.BEHAVIORS)) {
             behaviors = data.ReadList(() => new BehaviorParams(data));
@@ -117,12 +117,12 @@ public class PhysicsDesc {
         }
         if (packFlags.HasFlag(PackFlag.PARENT)) {
             parentId = data.ReadInstanceId();
-            locationId = (HoldingLocation)data.ReadUInt32();
+            locationId = data.ReadEnum<HoldingLocation>();
             parentInstanceStamp = data.ReadUInt16();
             data.Align(4);
         }
         if (packFlags.HasFlag(PackFlag.ORIENTATION)) {
-            orientationId = (Orientation)data.ReadUInt32();
+            orientationId = data.ReadEnum<Orientation>();
         }
         if (packFlags.HasFlag(PackFlag.VELOCITY)) {
             vel = data.ReadVector();
@@ -161,7 +161,7 @@ public class PhysicsDesc {
             targetOffset = data.ReadVector();
         }
         if (packFlags.HasFlag(PackFlag.FX)) {
-            fx = data.ReadStlMap(() => (FxId)data.ReadUInt32(), () => new FXScalarAndTarget(data));
+            fx = data.ReadStlMap(data.ReadEnum<FxId>, () => new FXScalarAndTarget(data));
         }
         missileIsActivated = packFlags.HasFlag(PackFlag.MISSILE_ACTIVATED);
         missileIsMoving = packFlags.HasFlag(PackFlag.MISSILE_MOVING);
@@ -195,11 +195,11 @@ public class PhysicsDesc {
         if (targetOffset != default) packFlags |= PackFlag.TARGET_OFFSET;
         if (fx != default) packFlags |= PackFlag.FX;
 
-        data.Write((uint)packFlags);
+        data.WriteEnum(packFlags);
         data.Write(instanceStamp);
         data.Write(visualOrderStamp);
         if (packFlags.HasFlag(PackFlag.MODE)) {
-            data.Write((uint)modeId);
+            data.WriteEnum(modeId);
         }
         if (packFlags.HasFlag(PackFlag.BEHAVIORS)) {
             data.Write(behaviors, v => v.write(data));
@@ -215,12 +215,12 @@ public class PhysicsDesc {
         }
         if (packFlags.HasFlag(PackFlag.PARENT)) {
             data.Write(parentId);
-            data.Write((uint)locationId);
+            data.WriteEnum(locationId);
             data.Write(parentInstanceStamp);
             data.Align(4);
         }
         if (packFlags.HasFlag(PackFlag.ORIENTATION)) {
-            data.Write((uint)orientationId);
+            data.WriteEnum(orientationId);
         }
         if (packFlags.HasFlag(PackFlag.VELOCITY)) {
             data.Write(vel);
@@ -259,7 +259,7 @@ public class PhysicsDesc {
             data.Write(targetOffset);
         }
         if (packFlags.HasFlag(PackFlag.FX)) {
-            data.WriteStlMap(fx, v => data.Write((uint)v), v => v.write(data));
+            data.WriteStlMap(fx, data.WriteEnum, v => v.write(data));
         }
         for (int i = 0; i < timestamps.Length; i++) {
             data.Write(timestamps[i]);

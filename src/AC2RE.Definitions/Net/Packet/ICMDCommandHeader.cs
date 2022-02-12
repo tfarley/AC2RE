@@ -11,12 +11,12 @@ public class ICMDCommandHeader {
     }
 
     public ICMDCommandHeader(AC2Reader data) {
-        cmd = (ICMDCommand)data.ReadUInt32();
+        cmd = data.ReadEnum<ICMDCommand>();
         param = data.ReadUInt32();
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)cmd);
+        data.WriteEnum(cmd);
         data.Write(param);
     }
 }

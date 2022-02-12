@@ -19,14 +19,14 @@ public class ParentMsg : INetMessage {
     public ParentMsg(AC2Reader data) {
         senderIdWithStamp = data.ReadInstanceIdWithStamp();
         parentIdWithChildPosStamp = data.ReadInstanceIdWithStamp();
-        childLocation = (HoldingLocation)data.ReadUInt32();
-        orientationId = (Orientation)data.ReadUInt32();
+        childLocation = data.ReadEnum<HoldingLocation>();
+        orientationId = data.ReadEnum<Orientation>();
     }
 
     public void write(AC2Writer data) {
         data.Write(senderIdWithStamp);
         data.Write(parentIdWithChildPosStamp);
-        data.Write((uint)childLocation);
-        data.Write((uint)orientationId);
+        data.WriteEnum(childLocation);
+        data.WriteEnum(orientationId);
     }
 }

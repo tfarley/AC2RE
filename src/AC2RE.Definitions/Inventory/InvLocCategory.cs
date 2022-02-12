@@ -14,13 +14,13 @@ public class InvLocCategory : IHeapObject {
     public InvLoc fingerWearInvLoc; // FingerWear_InvLoc
 
     public InvLocCategory(AC2Reader data) {
-        weaponInvLoc = (InvLoc)data.ReadUInt32();
-        clothingInvLoc = (InvLoc)data.ReadUInt32();
-        readySlotInvLoc = (InvLoc)data.ReadUInt32();
-        armorInvLoc = (InvLoc)data.ReadUInt32();
-        jewelryInvLoc = (InvLoc)data.ReadUInt32();
-        wristWearInvLoc = (InvLoc)data.ReadUInt32();
-        allInvLoc = (InvLoc)data.ReadUInt32();
-        fingerWearInvLoc = (InvLoc)data.ReadUInt32();
+        weaponInvLoc = data.ReadEnum<InvLoc>();
+        clothingInvLoc = data.ReadEnum<InvLoc>();
+        readySlotInvLoc = data.ReadEnum<InvLoc>();
+        armorInvLoc = data.ReadEnum<InvLoc>();
+        jewelryInvLoc = data.ReadEnum<InvLoc>();
+        wristWearInvLoc = data.ReadEnum<InvLoc>();
+        allInvLoc = data.ReadEnum<InvLoc>();
+        fingerWearInvLoc = data.ReadEnum<InvLoc>();
     }
 }

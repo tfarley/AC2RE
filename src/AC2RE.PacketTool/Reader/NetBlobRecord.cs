@@ -56,7 +56,7 @@ internal class NetBlobRecord {
         if (netBlob.payload != null) {
             using (AC2Reader data = new(new MemoryStream(netBlob.payload))) {
                 try {
-                    MessageOpcode opcode = (MessageOpcode)data.ReadUInt32();
+                    MessageOpcode opcode = data.ReadEnum<MessageOpcode>();
                     try {
                         _message = INetMessage.read(opcode, data, isClientToServer);
                         try {

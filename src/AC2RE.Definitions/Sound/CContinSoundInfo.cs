@@ -25,7 +25,7 @@ public class CContinSoundInfo {
     public float maxHeight; // m_max_height
 
     public CContinSoundInfo(AC2Reader data) {
-        bitfield = (Flag)data.ReadUInt32();
+        bitfield = data.ReadEnum<Flag>();
         objDid = data.ReadDataId();
         volume = data.ReadSingle();
         minPitch = data.ReadSingle();

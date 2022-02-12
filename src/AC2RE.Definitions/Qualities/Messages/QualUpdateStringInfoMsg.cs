@@ -16,12 +16,12 @@ public class QualUpdateStringInfoPrivateMsg : INetMessage {
     }
 
     public QualUpdateStringInfoPrivateMsg(AC2Reader data) {
-        type = (StringInfoStat)data.ReadUInt32();
+        type = data.ReadEnum<StringInfoStat>();
         value = new(data);
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)type);
+        data.WriteEnum(type);
         value.write(data);
     }
 }
@@ -46,13 +46,13 @@ public class QualUpdateStringInfoVisualMsg : INetMessage {
 
     public QualUpdateStringInfoVisualMsg(AC2Reader data) {
         senderIdWithStamp = data.ReadInstanceIdWithStamp();
-        type = (StringInfoStat)data.ReadUInt32();
+        type = data.ReadEnum<StringInfoStat>();
         value = new(data);
     }
 
     public void write(AC2Writer data) {
         data.Write(senderIdWithStamp);
-        data.Write((uint)type);
+        data.WriteEnum(type);
         value.write(data);
     }
 }

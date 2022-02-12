@@ -16,13 +16,13 @@ public class CharGenVerificationMsg : INetMessage {
     }
 
     public CharGenVerificationMsg(AC2Reader data) {
-        response = (CharGenResponse)data.ReadUInt32();
+        response = data.ReadEnum<CharGenResponse>();
         characterIdentity = new(data);
         weenieCharGenResult = data.ReadUInt32();
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)response);
+        data.WriteEnum(response);
         characterIdentity.write(data);
         data.Write(weenieCharGenResult);
     }

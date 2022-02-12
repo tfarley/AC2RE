@@ -16,12 +16,12 @@ public class QualUpdateBoolPrivateMsg : INetMessage {
     }
 
     public QualUpdateBoolPrivateMsg(AC2Reader data) {
-        type = (BoolStat)data.ReadUInt32();
+        type = data.ReadEnum<BoolStat>();
         value = data.ReadBoolean();
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)type);
+        data.WriteEnum(type);
         data.Write(value);
     }
 }
@@ -46,13 +46,13 @@ public class QualUpdateBoolVisualMsg : INetMessage {
 
     public QualUpdateBoolVisualMsg(AC2Reader data) {
         senderIdWithStamp = data.ReadInstanceIdWithStamp();
-        type = (BoolStat)data.ReadUInt32();
+        type = data.ReadEnum<BoolStat>();
         value = data.ReadBoolean();
     }
 
     public void write(AC2Writer data) {
         data.Write(senderIdWithStamp);
-        data.Write((uint)type);
+        data.WriteEnum(type);
         data.Write(value);
     }
 }

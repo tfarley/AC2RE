@@ -44,15 +44,15 @@ public class PartGroupDataDesc {
     }
 
     public PartGroupDataDesc(AC2Reader data) {
-        packFlags = (PackFlag)data.ReadUInt32();
+        packFlags = data.ReadEnum<PackFlag>();
         if (packFlags.HasFlag(PackFlag.KEY)) {
-            key = (PartGroupKey)data.ReadUInt32();
+            key = data.ReadEnum<PartGroupKey>();
         }
         if (packFlags.HasFlag(PackFlag.PARENTKEY)) {
-            parentKey = (PartGroupKey)data.ReadUInt32();
+            parentKey = data.ReadEnum<PartGroupKey>();
         }
         if (packFlags.HasFlag(PackFlag.CONNECTIONPOINT)) {
-            connectionPoint = (ConnectionPoint)data.ReadUInt32();
+            connectionPoint = data.ReadEnum<ConnectionPoint>();
         }
         if (packFlags.HasFlag(PackFlag.SETUP)) {
             setupDid = data.ReadDataId();
@@ -61,16 +61,16 @@ public class PartGroupDataDesc {
             animMapDid = data.ReadDataId();
         }
         if (packFlags.HasFlag(PackFlag.APPHASH)) {
-            appearanceInfos = data.ReadDictionary(data.ReadDataId, () => data.ReadDictionary(() => (AppearanceKey)data.ReadUInt32(), data.ReadSingle));
+            appearanceInfos = data.ReadDictionary(data.ReadDataId, () => data.ReadDictionary(data.ReadEnum<AppearanceKey>, data.ReadSingle));
         }
         if (packFlags.HasFlag(PackFlag.FXTABLE)) {
             fxTableDid = data.ReadDataId();
         }
         if (packFlags.HasFlag(PackFlag.STARTUPFX)) {
-            startupFx = data.ReadDictionary(() => (FxId)data.ReadUInt32(), data.ReadSingle);
+            startupFx = data.ReadDictionary(data.ReadEnum<FxId>, data.ReadSingle);
         }
         if (packFlags.HasFlag(PackFlag.FXOVERRIDES)) {
-            fxOverrides = data.ReadDictionary(() => (FxId)data.ReadUInt32(), () => data.ReadList(() => new FXData(data)));
+            fxOverrides = data.ReadDictionary(data.ReadEnum<FxId>, () => data.ReadList(() => new FXData(data)));
         }
     }
 
@@ -86,15 +86,15 @@ public class PartGroupDataDesc {
         if (startupFx != default) packFlags |= PackFlag.STARTUPFX;
         if (fxOverrides != default) packFlags |= PackFlag.FXOVERRIDES;
 
-        data.Write((uint)packFlags);
+        data.WriteEnum(packFlags);
         if (packFlags.HasFlag(PackFlag.KEY)) {
-            data.Write((uint)key);
+            data.WriteEnum(key);
         }
         if (packFlags.HasFlag(PackFlag.PARENTKEY)) {
-            data.Write((uint)parentKey);
+            data.WriteEnum(parentKey);
         }
         if (packFlags.HasFlag(PackFlag.CONNECTIONPOINT)) {
-            data.Write((uint)connectionPoint);
+            data.WriteEnum(connectionPoint);
         }
         if (packFlags.HasFlag(PackFlag.SETUP)) {
             data.Write(setupDid);
@@ -103,16 +103,16 @@ public class PartGroupDataDesc {
             data.Write(animMapDid);
         }
         if (packFlags.HasFlag(PackFlag.APPHASH)) {
-            data.Write(appearanceInfos, data.Write, v => data.Write(v, v => data.Write((uint)v), data.Write));
+            data.Write(appearanceInfos, data.Write, v => data.Write(v, data.WriteEnum, data.Write));
         }
         if (packFlags.HasFlag(PackFlag.FXTABLE)) {
             data.Write(fxTableDid);
         }
         if (packFlags.HasFlag(PackFlag.STARTUPFX)) {
-            data.Write(startupFx, v => data.Write((uint)v), data.Write);
+            data.Write(startupFx, data.WriteEnum, data.Write);
         }
         if (packFlags.HasFlag(PackFlag.FXOVERRIDES)) {
-            data.Write(fxOverrides, v => data.Write((uint)v), v => data.Write(v, v => v.write(data)));
+            data.Write(fxOverrides, data.WriteEnum, v => data.Write(v, v => v.write(data)));
         }
     }
 }

@@ -7,6 +7,6 @@ public class ResurrectEffect : ParameterizedNumericEffect {
     public FxId rezFx; // m_rezFX
 
     public ResurrectEffect(AC2Reader data) : base(data) {
-        rezFx = (FxId)data.ReadUInt32();
+        rezFx = data.ReadEnum<FxId>();
     }
 }

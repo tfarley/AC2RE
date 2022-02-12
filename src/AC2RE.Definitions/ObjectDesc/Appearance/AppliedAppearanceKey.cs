@@ -10,12 +10,12 @@ public class AppliedAppearanceKey {
     }
 
     public AppliedAppearanceKey(AC2Reader data) {
-        key = (AppearanceKey)data.ReadUInt32();
+        key = data.ReadEnum<AppearanceKey>();
         scalarMod = data.ReadSingle();
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)key);
+        data.WriteEnum(key);
         data.Write(scalarMod);
     }
 }

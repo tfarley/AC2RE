@@ -15,12 +15,12 @@ public class DisplayStringInfoMsg : INetMessage {
     }
 
     public DisplayStringInfoMsg(AC2Reader data) {
-        type = (TextType)data.ReadUInt32();
+        type = data.ReadEnum<TextType>();
         text = new(data);
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)type);
+        data.WriteEnum(type);
         text.write(data);
     }
 }

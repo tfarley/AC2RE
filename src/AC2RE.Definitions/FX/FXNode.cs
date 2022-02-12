@@ -105,7 +105,7 @@ public class FXNode {
     }
 
     public FXNode(AC2Reader data) {
-        packFlags = (PackFlag)data.ReadUInt64();
+        packFlags = data.ReadEnum64<PackFlag>();
         if (packFlags.HasFlag(PackFlag.SOUND_LIST)) {
             soundList = data.ReadList(data.ReadDataId);
         }
@@ -131,7 +131,7 @@ public class FXNode {
             intensity = data.ReadSingle();
         }
         if (packFlags.HasFlag(PackFlag.HOLDING_LOCATION)) {
-            holdingLocation = (HoldingLocation)data.ReadUInt32();
+            holdingLocation = data.ReadEnum<HoldingLocation>();
         }
         if (packFlags.HasFlag(PackFlag.BONE_NAME)) {
             boneName = data.ReadUInt32();
@@ -234,7 +234,7 @@ public class FXNode {
     }
 
     public void write(AC2Writer data) {
-        data.Write((ulong)packFlags);
+        data.WriteEnum64(packFlags);
         if (packFlags.HasFlag(PackFlag.SOUND_LIST)) {
             data.Write(soundList, data.Write);
         }
@@ -260,7 +260,7 @@ public class FXNode {
             data.Write(intensity);
         }
         if (packFlags.HasFlag(PackFlag.HOLDING_LOCATION)) {
-            data.Write((uint)holdingLocation);
+            data.WriteEnum(holdingLocation);
         }
         if (packFlags.HasFlag(PackFlag.BONE_NAME)) {
             data.Write(boneName);

@@ -14,11 +14,11 @@ public class ToggleSpecialAttackCEvt : IClientEvent {
 
     public ToggleSpecialAttackCEvt(AC2Reader data) {
         toggled = data.UnpackBoolean();
-        skill = (SkillId)data.UnpackUInt32();
+        skill = data.UnpackEnum<SkillId>();
     }
 
     public void write(AC2Writer data) {
         data.Pack(toggled);
-        data.Pack((uint)skill);
+        data.PackEnum(skill);
     }
 }

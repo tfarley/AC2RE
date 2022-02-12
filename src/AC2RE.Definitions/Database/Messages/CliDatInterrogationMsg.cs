@@ -18,14 +18,14 @@ public class CliDatInterrogationMsg : INetMessage {
     }
 
     public CliDatInterrogationMsg(AC2Reader data) {
-        regionId = (RegionID)data.ReadUInt32();
-        nameRuleLanguage = (Language)data.ReadUInt32();
-        supportedLanguages = data.ReadList(() => (Language)data.ReadUInt32());
+        regionId = data.ReadEnum<RegionID>();
+        nameRuleLanguage = data.ReadEnum<Language>();
+        supportedLanguages = data.ReadList(data.ReadEnum<Language>);
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)regionId);
-        data.Write((uint)nameRuleLanguage);
-        data.Write(supportedLanguages, v => data.Write((uint)v));
+        data.WriteEnum(regionId);
+        data.WriteEnum(nameRuleLanguage);
+        data.Write(supportedLanguages, data.WriteEnum);
     }
 }

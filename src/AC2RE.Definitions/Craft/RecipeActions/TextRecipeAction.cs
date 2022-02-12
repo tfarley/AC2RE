@@ -9,6 +9,6 @@ public class TextRecipeAction : IHeapObject {
 
     public TextRecipeAction(AC2Reader data) {
         data.ReadHO<StringInfo>(v => text = v);
-        textType = (TextType)data.ReadUInt32();
+        textType = data.ReadEnum<TextType>();
     }
 }

@@ -24,7 +24,7 @@ public class SelectionInfo : IHeapObject {
     }
 
     public SelectionInfo(AC2Reader data) {
-        type = (InfoType)data.ReadUInt32();
+        type = data.ReadEnum<InfoType>();
         if (type == InfoType.Agent) {
             curHealth = data.ReadInt32();
             pkDamage = data.ReadInt32();
@@ -36,7 +36,7 @@ public class SelectionInfo : IHeapObject {
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)type);
+        data.WriteEnum(type);
         if (type == InfoType.Agent) {
             data.Write(curHealth);
             data.Write(pkDamage);

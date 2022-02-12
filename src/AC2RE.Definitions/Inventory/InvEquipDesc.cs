@@ -41,37 +41,37 @@ public class InvEquipDesc : IHeapObject {
     }
 
     public InvEquipDesc(AC2Reader data) {
-        blockingItemLocation = (InvLoc)data.ReadUInt32();
+        blockingItemLocation = data.ReadEnum<InvLoc>();
         data.ReadHO<EquipItemProfile>(v => equipProfile = v);
         quantity = data.ReadUInt32();
         itemId = data.ReadInstanceId();
-        precludedSlots = (InvLoc)data.ReadUInt32();
+        precludedSlots = data.ReadEnum<InvLoc>();
         targetContainerSlot = data.ReadInt32();
-        location = (InvLoc)data.ReadUInt32();
+        location = data.ReadEnum<InvLoc>();
         equipperId = data.ReadInstanceId();
         containerId = data.ReadInstanceId();
-        controlFlags = (ControlFlag)data.ReadUInt32();
-        error = (ErrorType)data.ReadUInt32();
-        takenSlots = (InvLoc)data.ReadUInt32();
-        actualLocation = (InvLoc)data.ReadUInt32();
+        controlFlags = data.ReadEnum<ControlFlag>();
+        error = data.ReadEnum<ErrorType>();
+        takenSlots = data.ReadEnum<InvLoc>();
+        actualLocation = data.ReadEnum<InvLoc>();
         blockingItemId = data.ReadInstanceId();
         containerSlot = data.ReadInt32();
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)blockingItemLocation);
+        data.WriteEnum(blockingItemLocation);
         data.WriteHO(equipProfile);
         data.Write(quantity);
         data.Write(itemId);
-        data.Write((uint)precludedSlots);
+        data.WriteEnum(precludedSlots);
         data.Write(targetContainerSlot);
-        data.Write((uint)location);
+        data.WriteEnum(location);
         data.Write(equipperId);
         data.Write(containerId);
-        data.Write((uint)controlFlags);
-        data.Write((uint)error);
-        data.Write((uint)takenSlots);
-        data.Write((uint)actualLocation);
+        data.WriteEnum(controlFlags);
+        data.WriteEnum(error);
+        data.WriteEnum(takenSlots);
+        data.WriteEnum(actualLocation);
         data.Write(blockingItemId);
         data.Write(containerSlot);
     }

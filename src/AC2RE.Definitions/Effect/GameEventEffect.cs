@@ -8,7 +8,7 @@ public class GameEventEffect : Effect {
     public bool gameEventState; // m_gameEventState
 
     public GameEventEffect(AC2Reader data) : base(data) {
-        gameEvent = (GameEventType)data.ReadUInt32();
+        gameEvent = data.ReadEnum<GameEventType>();
         gameEventState = data.ReadBoolean();
     }
 }

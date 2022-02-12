@@ -89,7 +89,7 @@ public class Recipe : IHeapObject {
         chargeRefreshPeriod = data.ReadInt32();
         numAnimCycles = data.ReadUInt32();
         data.ReadHO<AList>(v => craftThresholds = v);
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         maxSpinnerVal = data.ReadUInt32();
         minLevel = data.ReadUInt32();
         lastProductOrdinal = data.ReadUInt32();

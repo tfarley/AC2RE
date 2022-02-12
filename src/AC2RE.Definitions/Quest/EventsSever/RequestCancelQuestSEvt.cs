@@ -8,6 +8,6 @@ public class RequestCancelQuestSEvt : IServerEvent {
     public QuestId questId; // _questID
 
     public RequestCancelQuestSEvt(AC2Reader data) {
-        questId = (QuestId)data.UnpackUInt32();
+        questId = data.UnpackEnum<QuestId>();
     }
 }

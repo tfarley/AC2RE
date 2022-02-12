@@ -9,6 +9,6 @@ public class SkillProfile : IHeapObject {
 
     public SkillProfile(AC2Reader data) {
         level = data.ReadInt32();
-        skillId = (SkillId)data.ReadUInt32();
+        skillId = data.ReadEnum<SkillId>();
     }
 }

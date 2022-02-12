@@ -13,12 +13,12 @@ public class TradeBeClosedCEvt : IClientEvent {
     }
 
     public TradeBeClosedCEvt(AC2Reader data) {
-        error = (ErrorType)data.UnpackUInt32();
+        error = data.UnpackEnum<ErrorType>();
         sourceId = data.UnpackInstanceId();
     }
 
     public void write(AC2Writer data) {
-        data.Pack((uint)error);
+        data.PackEnum(error);
         data.Pack(sourceId);
     }
 }

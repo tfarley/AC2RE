@@ -25,14 +25,14 @@ public class InvTransmuteAllDesc : IHeapObject {
     }
 
     public InvTransmuteAllDesc(AC2Reader data) {
-        lastError = (ErrorType)data.ReadUInt32();
+        lastError = data.ReadEnum<ErrorType>();
         ignoreAttunement = data.ReadBoolean();
         data.ReadHO<LList>(v => transmutedItemIds = v.to<InstanceId>());
         checkTakePerm = data.ReadBoolean();
         moneyEarned = data.ReadUInt32();
         quiet = data.ReadBoolean();
         noAnim = data.ReadBoolean();
-        error = (ErrorType)data.ReadUInt32();
+        error = data.ReadEnum<ErrorType>();
         fromContainerId = data.ReadInstanceId();
         data.ReadHO<LList>(v => notTransmutedItemIds = v.to<InstanceId>());
         playedAnim = data.ReadBoolean();
@@ -41,14 +41,14 @@ public class InvTransmuteAllDesc : IHeapObject {
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)lastError);
+        data.WriteEnum(lastError);
         data.Write(ignoreAttunement);
         data.WriteHO(LList.from(transmutedItemIds));
         data.Write(checkTakePerm);
         data.Write(moneyEarned);
         data.Write(quiet);
         data.Write(noAnim);
-        data.Write((uint)error);
+        data.WriteEnum(error);
         data.Write(fromContainerId);
         data.WriteHO(LList.from(notTransmutedItemIds));
         data.Write(playedAnim);

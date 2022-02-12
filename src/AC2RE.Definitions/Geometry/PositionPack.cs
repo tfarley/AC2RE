@@ -34,7 +34,7 @@ public class PositionPack {
         time = data.ReadDouble();
         offset = new(data);
         (doMotion, heading) = data.ReadVectorHeadingPack();
-        packFlags = (PackFlag)data.ReadUInt32();
+        packFlags = data.ReadEnum<PackFlag>();
         posStamp = data.ReadUInt16();
         forcePosStamp = data.ReadUInt16();
         teleportStamp = data.ReadUInt16();
@@ -48,7 +48,7 @@ public class PositionPack {
         data.Write(time);
         offset.write(data);
         data.Write(doMotion, heading);
-        data.Write((uint)packFlags);
+        data.WriteEnum(packFlags);
         data.Write(posStamp);
         data.Write(forcePosStamp);
         data.Write(teleportStamp);

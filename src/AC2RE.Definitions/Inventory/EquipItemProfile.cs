@@ -18,21 +18,21 @@ public class EquipItemProfile : IHeapObject {
 
     public EquipItemProfile(AC2Reader data) {
         weaponLength = data.ReadUInt32();
-        primaryParentingLocation = (HoldingLocation)data.ReadUInt32();
-        secondaryParentingLocation = (HoldingLocation)data.ReadUInt32();
-        inventoryLocations = (InvLoc)data.ReadUInt32();
+        primaryParentingLocation = data.ReadEnum<HoldingLocation>();
+        secondaryParentingLocation = data.ReadEnum<HoldingLocation>();
+        inventoryLocations = data.ReadEnum<InvLoc>();
         bindOnUse = data.ReadBoolean();
-        preferredInventoryLocation = (InvLoc)data.ReadUInt32();
-        placementPos = (Orientation)data.ReadUInt32();
+        preferredInventoryLocation = data.ReadEnum<InvLoc>();
+        placementPos = data.ReadEnum<Orientation>();
     }
 
     public void write(AC2Writer data) {
         data.Write(weaponLength);
-        data.Write((uint)primaryParentingLocation);
-        data.Write((uint)secondaryParentingLocation);
-        data.Write((uint)inventoryLocations);
+        data.WriteEnum(primaryParentingLocation);
+        data.WriteEnum(secondaryParentingLocation);
+        data.WriteEnum(inventoryLocations);
         data.Write(bindOnUse);
-        data.Write((uint)preferredInventoryLocation);
-        data.Write((uint)placementPos);
+        data.WriteEnum(preferredInventoryLocation);
+        data.WriteEnum(placementPos);
     }
 }

@@ -80,7 +80,7 @@ public class DefaultPermissionBlob : IHeapObject {
 
     public DefaultPermissionBlob(AC2Reader data) {
         stringTableForErrorsDid = data.ReadDataId();
-        factionRequired = (FactionType)data.ReadUInt32();
+        factionRequired = data.ReadEnum<FactionType>();
         boundToId = data.ReadInstanceId();
         stRequired1Rating = data.ReadUInt32();
         lastUserId = data.ReadInstanceId();
@@ -90,26 +90,26 @@ public class DefaultPermissionBlob : IHeapObject {
         monarchOnly = data.ReadBoolean();
         usageRadius = data.ReadSingle();
         lastDistance = data.ReadSingle();
-        forQuest = (QuestId)data.ReadUInt32();
+        forQuest = data.ReadEnum<QuestId>();
         closeProximityMsgRadius = data.ReadSingle();
         requiredArcaneLore = data.ReadInt32();
         heroOnly = data.ReadBoolean();
         data.ReadHO<Position>(v => positionRequired = v);
-        questStatusRequired = (QuestStatus)data.ReadUInt32();
+        questStatusRequired = data.ReadEnum<QuestStatus>();
         veryFarProximityMsgRadius = data.ReadSingle();
         minRank = data.ReadInt32();
-        skillIdRequired1 = (SkillId)data.ReadUInt32();
-        skillIdRequired2 = (SkillId)data.ReadUInt32();
-        questRequired = (QuestId)data.ReadUInt32();
-        speciesRequired = (SpeciesType)data.ReadUInt32();
+        skillIdRequired1 = data.ReadEnum<SkillId>();
+        skillIdRequired2 = data.ReadEnum<SkillId>();
+        questRequired = data.ReadEnum<QuestId>();
+        speciesRequired = data.ReadEnum<SpeciesType>();
         data.ReadHO<Position>(v => lastPosition = v);
         requiredCraftSkillRating = data.ReadInt32();
         stRequired2Rating = data.ReadUInt32();
         minLevel = data.ReadInt32();
         maxLevel = data.ReadInt32();
-        skillIdRestricted1 = (SkillId)data.ReadUInt32();
-        skillIdRestricted2 = (SkillId)data.ReadUInt32();
-        flags = (Flag)data.ReadUInt32();
+        skillIdRestricted1 = data.ReadEnum<SkillId>();
+        skillIdRestricted2 = data.ReadEnum<SkillId>();
+        flags = data.ReadEnum<Flag>();
         landblockFaction = data.ReadBoolean();
         legionsExpansionOnly = data.ReadBoolean();
         mediumProximityMsgRadius = data.ReadSingle();

@@ -10,6 +10,6 @@ public class CharacterErrorMsg : INetMessage {
     public CharError error; // error
 
     public CharacterErrorMsg(AC2Reader data) {
-        error = (CharError)data.ReadUInt32();
+        error = data.ReadEnum<CharError>();
     }
 }

@@ -17,13 +17,13 @@ public class ResurrectionRequest : IHeapObject {
         rezzerId = data.ReadInstanceId();
         data.ReadHO<StringInfo>(v => rezzerName = v);
         focusLossMod = data.ReadSingle();
-        fx = (FxId)data.ReadUInt32();
+        fx = data.ReadEnum<FxId>();
     }
 
     public void write(AC2Writer data) {
         data.Write(rezzerId);
         data.WriteHO(rezzerName);
         data.Write(focusLossMod);
-        data.Write((uint)fx);
+        data.WriteEnum(fx);
     }
 }

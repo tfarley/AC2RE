@@ -10,7 +10,7 @@ public class AppearanceProfile : IHeapObject {
 
     public AppearanceProfile(AC2Reader data) {
         modifier = data.ReadSingle();
-        appKey = (AppearanceKey)data.ReadUInt32();
+        appKey = data.ReadEnum<AppearanceKey>();
         aprDid = data.ReadDataId();
     }
 }

@@ -12,11 +12,11 @@ public class ServerSwitchHeader {
 
     public ServerSwitchHeader(AC2Reader data) {
         seq = data.ReadUInt32();
-        switchType = (ServerSwitchType)data.ReadUInt32();
+        switchType = data.ReadEnum<ServerSwitchType>();
     }
 
     public void write(AC2Writer data) {
         data.Write(seq);
-        data.Write((uint)switchType);
+        data.WriteEnum(switchType);
     }
 }

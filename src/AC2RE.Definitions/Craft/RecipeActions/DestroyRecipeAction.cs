@@ -23,7 +23,7 @@ public class DestroyRecipeAction : IHeapObject {
 
     public DestroyRecipeAction(AC2Reader data) {
         ordinal = data.ReadUInt32();
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         mappingTableDid = data.ReadDataId();
         minSpinnerVal = data.ReadUInt32();
         quantity = data.ReadUInt32();

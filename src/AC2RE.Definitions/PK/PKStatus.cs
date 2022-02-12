@@ -35,14 +35,14 @@ public class PKStatus : IHeapObject {
     public ErrorType errorTypeInvulnerability; // m_etInvulnerability
 
     public PKStatus(AC2Reader data) {
-        factionStatus = (FactionStatus)data.ReadUInt32();
-        faction = (FactionType)data.ReadUInt32();
+        factionStatus = data.ReadEnum<FactionStatus>();
+        faction = data.ReadEnum<FactionType>();
         permAlwaysTrue = data.ReadUInt32();
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         petMasterId = data.ReadInstanceId();
-        pkType = (Type)data.ReadUInt32();
+        pkType = data.ReadEnum<Type>();
         permAlwaysFalse = data.ReadUInt32();
         id = data.ReadInstanceId();
-        errorTypeInvulnerability = (ErrorType)data.ReadUInt32();
+        errorTypeInvulnerability = data.ReadEnum<ErrorType>();
     }
 }

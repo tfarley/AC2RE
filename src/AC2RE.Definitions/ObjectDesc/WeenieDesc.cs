@@ -86,15 +86,15 @@ public class WeenieDesc {
     }
 
     public WeenieDesc(AC2Reader data) {
-        packFlags = (PackFlag)data.ReadUInt32();
+        packFlags = data.ReadEnum<PackFlag>();
         if (packFlags.HasFlag(PackFlag.MyPackageID)) {
-            packageType = (PackageType)data.ReadUInt32();
+            packageType = data.ReadEnum<PackageType>();
         }
         if (packFlags.HasFlag(PackFlag.EntityDID)) {
             entityDid = data.ReadDataId();
         }
         if (packFlags.HasFlag(PackFlag.Bitfield)) {
-            bitfield = (Bitfield)data.ReadUInt32();
+            bitfield = data.ReadEnum<Bitfield>();
         }
         if (packFlags.HasFlag(PackFlag.Name)) {
             name = new(data);
@@ -136,7 +136,7 @@ public class WeenieDesc {
             value = data.ReadInt32();
         }
         if (packFlags.HasFlag(PackFlag.FactionType)) {
-            factionType = (FactionType)data.ReadInt32();
+            factionType = data.ReadEnum<FactionType>();
         }
         if (packFlags.HasFlag(PackFlag.PKAlwaysTruePermissions)) {
             pkAlwaysTruePermissions = data.ReadInt32();
@@ -200,15 +200,15 @@ public class WeenieDesc {
         if (durabilityCurrentLevel != default) packFlags |= PackFlag.Durability_CurrentLevel;
         if (durabilityMaxLevel != default) packFlags |= PackFlag.Durability_MaxLevel;
 
-        data.Write((uint)packFlags);
+        data.WriteEnum(packFlags);
         if (packFlags.HasFlag(PackFlag.MyPackageID)) {
-            data.Write((uint)packageType);
+            data.WriteEnum(packageType);
         }
         if (packFlags.HasFlag(PackFlag.EntityDID)) {
             data.Write(entityDid);
         }
         if (packFlags.HasFlag(PackFlag.Bitfield)) {
-            data.Write((uint)bitfield);
+            data.WriteEnum(bitfield);
         }
         if (packFlags.HasFlag(PackFlag.Name)) {
             name.write(data);
@@ -250,7 +250,7 @@ public class WeenieDesc {
             data.Write(value);
         }
         if (packFlags.HasFlag(PackFlag.FactionType)) {
-            data.Write((int)factionType);
+            data.WriteEnum(factionType);
         }
         if (packFlags.HasFlag(PackFlag.PKAlwaysTruePermissions)) {
             data.Write(pkAlwaysTruePermissions);

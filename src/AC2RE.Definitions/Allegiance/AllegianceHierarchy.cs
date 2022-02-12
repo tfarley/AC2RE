@@ -72,7 +72,7 @@ public class AllegianceHierarchy : IHeapObject {
         data.ReadHO<StringInfo>(v => motd = v);
         chatActive = data.ReadBoolean();
         allowNeutralsToBypassKingdomRestrictions = data.ReadBoolean();
-        factionType = (FactionType)data.ReadUInt32();
+        factionType = data.ReadEnum<FactionType>();
         total = data.ReadUInt32();
         data.ReadHO<LAHashSet>(v => officerIds = v);
     }
@@ -91,7 +91,7 @@ public class AllegianceHierarchy : IHeapObject {
         data.WriteHO(motd);
         data.Write(chatActive);
         data.Write(allowNeutralsToBypassKingdomRestrictions);
-        data.Write((uint)factionType);
+        data.WriteEnum(factionType);
         data.Write(total);
         data.WriteHO(LAHashSet.from(officerIds));
     }

@@ -43,7 +43,7 @@ public class StoryHookData {
     public int attackerPkDamageChange; // m_attackerPKDamageChange
 
     public StoryHookData(AC2Reader data) {
-        packFlags = (PackFlag)data.ReadUInt32();
+        packFlags = data.ReadEnum<PackFlag>();
         type = (HookType)((uint)packFlags & 0xF);
         packFlags = (PackFlag)((uint)packFlags & ~0xF);
         if (packFlags.HasFlag(PackFlag.TARGET_ID)) {
@@ -53,7 +53,7 @@ public class StoryHookData {
             weaponId = data.ReadInstanceId();
         }
         if (packFlags.HasFlag(PackFlag.ATTACK_RESULT)) {
-            attackResult = (CombatResultType)data.ReadUInt32();
+            attackResult = data.ReadEnum<CombatResultType>();
         }
         if (packFlags.HasFlag(PackFlag.ANIM_HOOK_NUMBER)) {
             animHookNumber = data.ReadUInt32();

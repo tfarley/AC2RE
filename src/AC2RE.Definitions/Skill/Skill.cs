@@ -46,13 +46,13 @@ public class Skill : MasterListMember {
 
     public Skill(AC2Reader data) : base(data) {
         data.ReadHO<StringInfo>(v => lore = v);
-        allowedSpecies = (SpeciesType)data.ReadUInt32();
+        allowedSpecies = data.ReadEnum<SpeciesType>();
         minCharLevel = data.ReadUInt32();
         data.ReadHO<AAHash>(v => barringSkillIds = v.to<SkillId, uint>());
         levelWhenTrained = data.ReadInt32();
         data.ReadHO<AAHash>(v => parentSkillIds = v.to<SkillId, uint>());
         combatSpeedModifier = data.ReadSingle();
-        reqQuestId = (QuestId)data.ReadUInt32();
+        reqQuestId = data.ReadEnum<QuestId>();
         allowedClasses = data.ReadInt32();
         data.ReadHO<AAHash>(v => prereqSkillIds = v.to<SkillId, uint>());
         advMod = data.ReadSingle();
@@ -62,11 +62,11 @@ public class Skill : MasterListMember {
         advTableDid = data.ReadDataId();
         heroCost = data.ReadUInt32();
         advCap = data.ReadInt32();
-        allowedFactions = (FactionType)data.ReadUInt32();
+        allowedFactions = data.ReadEnum<FactionType>();
         data.ReadHO<StringInfo>(v => description = v);
         cost = data.ReadUInt32();
         iconDid = data.ReadDataId();
         data.ReadHO<StringInfo>(v => name = v);
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
     }
 }

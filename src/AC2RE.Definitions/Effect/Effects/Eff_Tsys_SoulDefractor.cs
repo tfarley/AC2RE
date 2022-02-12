@@ -27,7 +27,7 @@ public class Eff_Tsys_SoulDefractor : GenesisEffect {
 
     public Eff_Tsys_SoulDefractor(AC2Reader data) : base(data) {
         subVariance = data.ReadSingle();
-        movementType = (AIMovementType)data.ReadUInt32();
+        movementType = data.ReadEnum<AIMovementType>();
         magicDefense = data.ReadInt32();
         level = data.ReadInt32();
         health = data.ReadInt32();
@@ -37,7 +37,7 @@ public class Eff_Tsys_SoulDefractor : GenesisEffect {
         petIconDid = data.ReadDataId();
         meleeDefense = data.ReadInt32();
         vigor = data.ReadInt32();
-        fx = (FxId)data.ReadUInt32();
+        fx = data.ReadEnum<FxId>();
         data.ReadHO<IHeapObject>(v => loveTable = v); // TODO: AILoveTable, possibly singleton too
         armor = data.ReadInt32();
         magicAttack = data.ReadInt32();

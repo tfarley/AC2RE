@@ -41,13 +41,13 @@ public class SkillInfo : IHeapObject {
         levelCached = data.ReadUInt32();
         timeCached = data.ReadDouble();
         xpAllocated = data.ReadUInt64();
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         grantedTime = data.ReadDouble();
         trainedChildren = data.ReadUInt32();
         trainedDependents = data.ReadUInt32();
         costWhenLearned = data.ReadUInt32();
         skillOverride = data.ReadUInt32();
-        skillId = (SkillId)data.ReadUInt32();
+        skillId = data.ReadEnum<SkillId>();
     }
 
     public void write(AC2Writer data) {
@@ -55,12 +55,12 @@ public class SkillInfo : IHeapObject {
         data.Write(levelCached);
         data.Write(timeCached);
         data.Write(xpAllocated);
-        data.Write((uint)flags);
+        data.WriteEnum(flags);
         data.Write(grantedTime);
         data.Write(trainedChildren);
         data.Write(trainedDependents);
         data.Write(costWhenLearned);
         data.Write(skillOverride);
-        data.Write((uint)skillId);
+        data.WriteEnum(skillId);
     }
 }

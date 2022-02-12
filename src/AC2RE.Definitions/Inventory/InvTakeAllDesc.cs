@@ -24,12 +24,12 @@ public class InvTakeAllDesc : IHeapObject {
     }
 
     public InvTakeAllDesc(AC2Reader data) {
-        lastError = (ErrorType)data.ReadUInt32();
+        lastError = data.ReadEnum<ErrorType>();
         ignoreAttunement = data.ReadBoolean();
         checkTakePerm = data.ReadBoolean();
         quiet = data.ReadBoolean();
         noAnim = data.ReadBoolean();
-        error = (ErrorType)data.ReadUInt32();
+        error = data.ReadEnum<ErrorType>();
         fromContainerId = data.ReadInstanceId();
         data.ReadHO<LList>(v => itemsNotTakenIds = v.to<InstanceId>());
         playedAnim = data.ReadBoolean();
@@ -39,12 +39,12 @@ public class InvTakeAllDesc : IHeapObject {
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)lastError);
+        data.WriteEnum(lastError);
         data.Write(ignoreAttunement);
         data.Write(checkTakePerm);
         data.Write(quiet);
         data.Write(noAnim);
-        data.Write((uint)error);
+        data.WriteEnum(error);
         data.Write(fromContainerId);
         data.WriteHO(LList.from(itemsNotTakenIds));
         data.Write(playedAnim);

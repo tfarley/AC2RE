@@ -76,7 +76,7 @@ public class CSetup {
     }
 
     // Const - globals
-    public enum Flags : uint {
+    public enum Flag : uint {
         NONE = 0,
 
         ALLOW_FREE_HEADING = 1 << 2, // ALLOW_FREE_HEADING 0x00000004
@@ -100,7 +100,7 @@ public class CSetup {
     public List<Sphere> spheres; // num_sphere + sphere
     public float stepDownHeight; // step_down_height
     public float stepUpHeight; // step_up_height
-    public Flags flags; // has_physics_bsp + allow_free_heading
+    public Flag flags; // has_physics_bsp + allow_free_heading
     public float height; // height
     public float radius; // radius
     public Sphere boundingSphere; // bounding_sphere
@@ -115,7 +115,7 @@ public class CSetup {
 
     public CSetup(AC2Reader data) {
         did = data.ReadDataId();
-        flags = (Flags)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         meshes = data.ReadList(data.ReadDataId);
         bones = data.ReadList(() => new BoneInfo(data));
         placementFrames = data.ReadList(() => new PlacementFrame(data));
@@ -130,7 +130,7 @@ public class CSetup {
         boundingSphere = new(data);
         selectionSphere = new(data);
         degradeInfo = new(data);
-        shadowType = (ShadowType)data.ReadUInt32();
+        shadowType = data.ReadEnum<ShadowType>();
         physicsContainmentRadius = data.ReadSingle();
         physicsBoundingBox = new(data);
     }

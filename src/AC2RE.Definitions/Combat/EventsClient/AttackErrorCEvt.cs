@@ -14,14 +14,14 @@ public class AttackErrorCEvt : IClientEvent {
     }
 
     public AttackErrorCEvt(AC2Reader data) {
-        skillId = (SkillId)data.UnpackUInt32();
+        skillId = data.UnpackEnum<SkillId>();
         targetId = data.UnpackInstanceId();
-        error = (ErrorType)data.UnpackUInt32();
+        error = data.UnpackEnum<ErrorType>();
     }
 
     public void write(AC2Writer data) {
-        data.Pack((uint)skillId);
+        data.PackEnum(skillId);
         data.Pack(targetId);
-        data.Pack((uint)error);
+        data.PackEnum(error);
     }
 }

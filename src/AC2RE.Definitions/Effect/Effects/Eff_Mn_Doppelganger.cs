@@ -28,7 +28,7 @@ public class Eff_Mn_Doppelganger : GenesisEffect {
         meleeAttack = data.ReadInt32();
         meleeDefense = data.ReadInt32();
         vigor = data.ReadInt32();
-        fx = (FxId)data.ReadUInt32();
+        fx = data.ReadEnum<FxId>();
         armor = data.ReadInt32();
         magicAttack = data.ReadInt32();
         missileDefense = data.ReadInt32();

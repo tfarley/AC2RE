@@ -20,7 +20,7 @@ public class UsageBlob : IHeapObject {
         data.ReadHO<StringInfo>(v => successText = v);
         userBehaviorRepeatCount = data.ReadUInt32();
         userBehaviorTimeScale = data.ReadSingle();
-        userBehavior = (BehaviorId)data.ReadUInt32();
+        userBehavior = data.ReadEnum<BehaviorId>();
         userBehaviorFadeChildren = data.ReadBoolean();
     }
 
@@ -29,7 +29,7 @@ public class UsageBlob : IHeapObject {
         data.WriteHO(successText);
         data.Write(userBehaviorRepeatCount);
         data.Write(userBehaviorTimeScale);
-        data.Write((uint)userBehavior);
+        data.WriteEnum(userBehavior);
         data.Write(userBehaviorFadeChildren);
     }
 }

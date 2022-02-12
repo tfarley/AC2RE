@@ -17,11 +17,11 @@ public class DoModeMsg : INetMessage {
 
     public DoModeMsg(AC2Reader data) {
         senderIdWithStamp = data.ReadInstanceIdWithStamp();
-        modeId = (ModeId)data.ReadUInt32();
+        modeId = data.ReadEnum<ModeId>();
     }
 
     public void write(AC2Writer data) {
         data.Write(senderIdWithStamp);
-        data.Write((uint)modeId);
+        data.WriteEnum(modeId);
     }
 }

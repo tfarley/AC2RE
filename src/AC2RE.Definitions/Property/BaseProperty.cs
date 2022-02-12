@@ -17,7 +17,7 @@ public class BaseProperty : IHeapObject {
     }
 
     public BaseProperty(AC2Reader data) {
-        name = (PropertyName)data.ReadUInt32();
+        name = data.ReadEnum<PropertyName>();
         BasePropertyDesc propertyDesc = MasterProperty.instance.properties[name];
         type = propertyDesc.type;
         group = propertyDesc.group;
@@ -32,7 +32,7 @@ public class BaseProperty : IHeapObject {
             PropertyType.DataFile => data.ReadDataId(),
             PropertyType.Waveform => new Waveform(data),
             PropertyType.StringInfo => new StringInfo(data),
-            PropertyType.PackageID => (PackageType)data.ReadUInt32(),
+            PropertyType.PackageID => data.ReadEnum<PackageType>(),
             PropertyType.LongInteger => data.ReadInt64(),
             PropertyType.Position => new Position(data),
             _ => throw new InvalidDataException(type.ToString()),
@@ -40,7 +40,7 @@ public class BaseProperty : IHeapObject {
     }
 
     public void write(AC2Writer data) {
-        data.Write((uint)name);
+        data.WriteEnum(name);
         switch (type) {
             case PropertyType.Bool:
                 data.Write((bool)value);

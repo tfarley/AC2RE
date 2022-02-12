@@ -17,11 +17,11 @@ public class StopFxMsg : INetMessage {
 
     public StopFxMsg(AC2Reader data) {
         senderIdWithStamp = data.ReadInstanceIdWithStamp();
-        fxId = (FxId)data.ReadUInt32();
+        fxId = data.ReadEnum<FxId>();
     }
 
     public void write(AC2Writer data) {
         data.Write(senderIdWithStamp);
-        data.Write((uint)fxId);
+        data.WriteEnum(fxId);
     }
 }

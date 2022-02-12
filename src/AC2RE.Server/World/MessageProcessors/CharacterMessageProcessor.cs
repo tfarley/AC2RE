@@ -127,13 +127,13 @@ internal class CharacterMessageProcessor : BaseMessageProcessor {
                             quests = new() {
                                 new() {
                                     questId = QuestId.FindExplorerArwic,
-                                    questName = new(new(0x250017EB), 2824895724),
-                                    questDescription = new(new(0x250017EB), 1816499044),
+                                    questName = new(new(0x250017EB), new(0xA8607CEC)),
+                                    questDescription = new(new(0x250017EB), new(0x6C459364)),
                                     iconDid = new(0x4100034B),
                                     challengeLevel = -999,
                                     questStatus = QuestStatus.Underway,
                                     curPhase = 1,
-                                    curJournalEntry = new(new(0x250017EB), 777789010),
+                                    curJournalEntry = new(new(0x250017EB), new(0x2E5C1E52)),
                                     bestowalTime = 129500898.25912432,
                                     doneTime = -1355582621.7408757,
                                     expired = true,

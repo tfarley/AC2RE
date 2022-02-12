@@ -27,7 +27,7 @@ public class MutateRecipeAction : IHeapObject {
         // TODO: Unknown type "TreasureProfile" - perhaps newer native type?
         data.ReadHO<IHeapObject>(v => treasureProfile = v);
         data.ReadHO<BiasProfile>(v => biasProfile = v);
-        flags = (Flag)data.ReadUInt32();
+        flags = data.ReadEnum<Flag>();
         mappingTableDid = data.ReadDataId();
         minSpinnerVal = data.ReadUInt32();
         maxSpinnerVal = data.ReadUInt32();

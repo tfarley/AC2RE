@@ -17,10 +17,10 @@ public class BasePropertyDesc {
     public bool required; // m_bRequired
 
     public BasePropertyDesc(AC2Reader data) {
-        type = (PropertyType)data.ReadUInt32();
-        group = (PropertyGroupName)data.ReadUInt32();
+        type = data.ReadEnum<PropertyType>();
+        group = data.ReadEnum<PropertyGroupName>();
         propData = data.ReadUInt32();
-        reportToWeenie = (WeenieReportType)data.ReadUInt32();
+        reportToWeenie = data.ReadEnum<WeenieReportType>();
         required = data.ReadBoolean();
     }
 }
