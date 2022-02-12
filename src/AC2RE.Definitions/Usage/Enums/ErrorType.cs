@@ -323,6 +323,13 @@ public enum ErrorType : uint {
     Usage_SummonerOnly = 10066, // Usage_SummonerOnly_ErrorType
     Usage_CraftLevelTooLow = 10067, // Usage_CraftLevelTooLow_ErrorType
     Usage_ItemBroken = 10068, // Usage_ItemBroken_ErrorType
+    Usage_HeroCreditCapAlreadyReached = 10069, // Usage_HeroCreditCapAlreadyReached_ErrorType
+    Usage_CantUseSaddleWithDarkside = 10070, // Usage_CantUseSaddleWithDarkside_ErrorType
+    Usage_LegionsExpansionOnly = 10071, // Usage_LegionsExpansionOnly_ErrorType
+    Usage_EffectsFailed = 10072, // Usage_EffectsFailed_ErrorType
+    Usage_NotRepairable = 10073, // Usage_NotRepairable_ErrorType
+    Usage_BoundToSomeoneElse = 10074, // Usage_BoundToSomeoneElse_ErrorType
+    Usage_SilentFailure = 10075, // Usage_SilentFailure_ErrorType
 
     CharGen_SpecDataNotFound = 15001, // CharGen_SpecDataNotFound_ErrorType
     CharGen_SpecNoRacesDefined = 15002, // CharGen_SpecNoRacesDefined_ErrorType
@@ -478,6 +485,7 @@ public enum ErrorType : uint {
     Skill_NotAHero = 30047, // Skill_NotAHero_ErrorType
     Skill_AlreadyHaveSkillForCategory = 30048, // Skill_AlreadyHaveSkillForCategory_ErrorType
     Skill_DependentsTrained = 30049, // Skill_DependentsTrained_ErrorType
+    Skill_PackFull = 30050, // Skill_PackFull_ErrorType
 
     Craft_NotEnoughTrait = 40000, // Craft_NotEnoughTrait_ErrorType
     Craft_MissingRequiredItem = 40001, // Craft_MissingRequiredItem_ErrorType

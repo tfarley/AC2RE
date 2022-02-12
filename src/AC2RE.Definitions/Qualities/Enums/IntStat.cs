@@ -33,9 +33,9 @@ public enum IntStat : uint {
     ClothingPriority = 268, // ClothingPriority_IntStat
     PK_Damage = 269, // PK_Damage_IntStat
     PK_Vigorloss = 270, // PK_Vigorloss_IntStat
-
+    Valor_CurrentLevel = 271, // Valor_CurrentLevel_IntStat
     WeaponLength = 272, // WeaponLength_IntStat
-
+    Valor_Threshold = 273, // Valor_Threshold_IntStat
     CurrentEquippedLocation = 274, // CurrentEquippedLocation_IntStat
     ValidInventoryLocations = 275, // ValidInventoryLocations_IntStat
     Inv_PrimaryParentingLocation = 276, // Inv_PrimaryParentingLocation_IntStat
@@ -182,6 +182,8 @@ public enum IntStat : uint {
 
     GrooveLevel = 950, // GrooveLevel_IntStat
 
+    TrophyCount = 1600, // TrophyCount_IntStat
+
     Faction_Membership = 2000, // Faction_Membership_IntStat
     Faction_Status = 2001, // Faction_Status_IntStat
     Faction_Ownership = 2002, // Faction_Ownership_IntStat
@@ -200,7 +202,7 @@ public enum IntStat : uint {
     EnterWorldFX = 4102, // EnterWorldFX_IntStat
     AppearanceMutationKey = 4103, // AppearanceMutationKey_IntStat
     SkillTargetFlags = 4104, // SkillTargetFlags_IntStat
-    NPC_DamageType = 4105, // _ / NPC_DamageType
+    DamageType = 4105, // DamageType_IntStat
 
     Quest_BestowedSceneID = 4200, // Quest_BestowedSceneID_IntStat
     Travel_PortalFlags = 4201, // Travel_PortalFlags_IntStat
@@ -234,4 +236,5 @@ public enum IntStat : uint {
     Activation_Type = 9806, // Activation_Type_IntStat
     HeroSkill_Resets = 9807, // HeroSkill_Resets_IntStat
     ExtraSales = 9808, // ExtraSales_IntStat
+    EarnedExtraHeroCredits = 9809, // EarnedExtraHeroCredits_IntStat
 }

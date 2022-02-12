@@ -17,6 +17,8 @@ public enum TimestampStat : uint {
     Skill_LastCompleteReset = 306, // Skill_LastCompleteReset_TSStat
     CraftSkill_LastCompleteReset = 307, // CraftSkill_LastCompleteReset_TSStat
     Skill_LastCompleteHeroReset = 308, // Skill_LastCompleteHeroReset_TSStat
+    LastCheckForDamageModImprovement = 309, // LastCheckForDamageModImprovement_TSStat
+    Skill_LastPerkUntrain = 310, // Skill_LastPerkUntrain_TSStat
 
     AI_ImplementChange = 400, // AI_ImplementChange_TSStat
     AI_PetLastCommandTime = 401, // AI_PetLastCommandTime_TSStat

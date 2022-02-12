@@ -14,6 +14,7 @@ public enum InstanceIdStat : uint {
     Viewing = 262, // Viewing_IIDStat
     Attuned = 263, // Attuned_IIDStat
     Author = 264, // Author_IIDStat
+    BoundTo = 265, // BoundTo_IIDStat
 
     Vendor_Current = 275, // Vendor_Current_IIDStat
 

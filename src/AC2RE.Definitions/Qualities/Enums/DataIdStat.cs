@@ -1,6 +1,6 @@
 ﻿namespace AC2RE.Definitions;
 
-// Const *_DIDStat / WSL func gmPropertyMapper::constructor
+// Const *_DIDStat
 public enum DataIdStat : uint {
     Undef = 0, // Undef_DIDStat
     PhysObj = 1, // PhysObj_DIDStat
@@ -26,5 +26,9 @@ public enum DataIdStat : uint {
     StoreTemplate = 312, // StoreTemplate_DIDStat
     Book_Image = 313, // Book_Image_DIDStat
     StoreGroup = 314, // StoreGroup_DIDStat
-    NPC_CorpseOverrideEntity = 315, // _ / NPC_CorpseOverrideEntity
+    CorpseOverrideEntity = 315, // CorpseOverrideEntity_DIDStat
+
+    Trophy1 = 1601, // Trophy1_DIDStat
+
+    Trophy99 = 1699, // Trophy99_DIDStat
 }

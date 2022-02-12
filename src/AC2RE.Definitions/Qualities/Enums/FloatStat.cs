@@ -25,6 +25,7 @@ public enum FloatStat : uint {
     BondEquippedTreasure = 271, // BondEquippedTreasure_FloatStat
     CloseSphereRadius = 272, // CloseSphereRadius_FloatStat
     MoveItemDistance = 273, // MoveItemDistance_FloatStat
+    Valor_Multiplier = 274, // Valor_Multiplier_FloatStat
 
     BaseRotTime = 280, // BaseRotTime_FloatStat
     MaxAccelRotTime = 281, // MaxAccelRotTime_FloatStat
@@ -58,7 +59,7 @@ public enum FloatStat : uint {
 
     Gen_HeartbeatInterval = 401, // Gen_HeartbeatInterval_FloatStat
     Gen_RegenInterval = 402, // Gen_RegenInterval_FloatStat
-    GeneratorInitialDelay = 403, // _ / GeneratorInitialDelay
+    Gen_InitialDelay = 403, // Gen_InitialDelay_FloatStat
 
     CombatModeDelay = 500, // CombatModeDelay_FloatStat
     Combat_DamageMod = 501, // Combat_DamageMod_FloatStat
@@ -67,29 +68,37 @@ public enum FloatStat : uint {
     Absorption_Chance = 504, // Absorption_Chance_FloatStat
     BypassableArmorMod = 505, // BypassableArmorMod_FloatStat
     CombatSpeedResistance = 506, // CombatSpeedResistance_FloatStat
-    NPC_ArmorThreshold = 507, // _ / NPC_ArmorThreshold
-    NPC_DamageTypeMod = 508, // _ / NPC_DamageTypeMod
+    ArmorThreshold = 507, // ArmorThreshold_FloatStat
+    DamageTypeMod = 508, // DamageTypeMod_FloatStat
 
     TSYS_MundaneMutationIntensity = 600, // TSYS_MundaneMutationIntensity_FloatStat
+    ChanceOfHeroSkillCreditToken = 601, // ChanceOfHeroSkillCreditToken_FloatStat
 
     Weapon_Variance = 1000, // Weapon_Variance_FloatStat
     CriticalHitMod = 1001, // CriticalHitMod_FloatStat
     Durability_DecayMod = 1002, // Durability_DecayMod_FloatStat
-    Item_NatureDamageMod = 1003, // _ / Item_NatureDamageMod
-    Item_DecayDamageMod = 1004, // _ / Item_DecayDamageMod
-    Item_MartialDamageMod = 1005, // _ / Item_MartialDamageMod
-    Item_ArcaneDamageMod = 1006, // _ / Item_ArcaneDamageMod
-
-    Item_NatureDamageModCap = 1011, // _ / Item_NatureDamageModCap
-    Item_DecayDamageModCap = 1012, // _ / Item_DecayDamageModCap
-    Item_MartialDamageModCap = 1013, // _ / Item_MartialDamageModCap
-    Item_ArcaneDamageModCap = 1014, // _ / Item_ArcaneDamageModCap
-    Item_NatureDamageModGrowthRate = 1015, // _ / Item_NatureDamageModGrowthRate
-    Item_DecayDamageModGrowthRate = 1016, // _ / Item_DecayDamageModGrowthRate
-    Item_MartialDamageModGrowthRate = 1017, // _ / Item_MartialDamageModGrowthRate
-    Item_ArcaneDamageModGrowthRate = 1018, // _ / Item_ArcaneDamageModGrowthRate
+    NatureDamageMod = 1003, // NatureDamageMod_FloatStat
+    DecayDamageMod = 1004, // DecayDamageMod_FloatStat
+    MartialDamageMod = 1005, // MartialDamageMod_FloatStat
+    ArcaneDamageMod = 1006, // ArcaneDamageMod_FloatStat
+    NatureDamageModBaseMutabilityChance = 1007, // NatureDamageModBaseMutabilityChance_FloatStat
+    DecayDamageModBaseMutabilityChance = 1008, // DecayDamageModBaseMutabilityChance_FloatStat
+    MartialDamageModBaseMutabilityChance = 1009, // MartialDamageModBaseMutabilityChance_FloatStat
+    ArcaneDamageModBaseMutabilityChance = 1010, // ArcaneDamageModBaseMutabilityChance_FloatStat
+    NatureDamageModCap = 1011, // NatureDamageModCap_FloatStat
+    DecayDamageModCap = 1012, // DecayDamageModCap_FloatStat
+    MartialDamageModCap = 1013, // MartialDamageModCap_FloatStat
+    ArcaneDamageModCap = 1014, // ArcaneDamageModCap_FloatStat
+    NatureDamageModGrowthRate = 1015, // NatureDamageModGrowthRate_FloatStat
+    DecayDamageModGrowthRate = 1016, // DecayDamageModGrowthRate_FloatStat
+    MartialDamageModGrowthRate = 1017, // MartialDamageModGrowthRate_FloatStat
+    ArcaneDamageModGrowthRate = 1018, // ArcaneDamageModGrowthRate_FloatStat
 
     AppearanceMutationKeyValue = 1500, // AppearanceMutationKeyValue_FloatStat
+
+    TrophyDropChance1 = 1601, // TrophyDropChance1_FloatStat
+
+    TrophyDropChance99 = 1699, // TrophyDropChance99_FloatStat
 
     AI_PerceptionRadius = 2000, // AI_PerceptionRadius_FloatStat
     AI_HomesickRadius = 2001, // AI_HomesickRadius_FloatStat
@@ -127,10 +136,12 @@ public enum FloatStat : uint {
     AI_HarvestingVariance = 2085, // _ / AI_HarvestingVariance
 
     AI_EnchantedRandomSkewSkill = 2090, // AI_EnchantedRandomSkewSkill_FloatStat
-    AICombat_TargetConsiderInterval = 2091, // _ / AICombat_TargetConsiderInterval
+    AICombat_TargetConsiderInterval = 2091, // AICombat_TargetConsiderInterval_FloatStat
 
     AI_Pet_MaxDefendDistance = 2100, // AI_Pet_MaxDefendDistance_FloatStat
     AI_Pet_CommandSpamCounter = 2101, // AI_Pet_CommandSpamCounter_FloatStat
+    AI_Pet_InitialHealthMod = 2102, // AI_Pet_InitialHealthMod_FloatStat
+    AI_Pet_InitialDamageMod = 2103, // AI_Pet_InitialDamageMod_FloatStat
 
     AI_EnchantedRandomSkewTarget = 2200, // AI_EnchantedRandomSkewTarget_FloatStat
 
@@ -151,4 +162,6 @@ public enum FloatStat : uint {
     Craft_DyePlantMod = 5004, // Craft_DyePlantMod_FloatStat
 
     Experience_CombatXPMod = 5500, // Experience_CombatXPMod_FloatStat
+
+    AI_MoveToMod = 6001, // AI_MoveToMod_FloatStat
 }

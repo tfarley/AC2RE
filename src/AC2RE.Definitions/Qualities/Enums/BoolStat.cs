@@ -45,7 +45,7 @@ public enum BoolStat : uint {
     Death_NeverLeaveCorpse = 291, // Death_NeverLeaveCorpse_BoolStat
     Death_LastKilledByPlayer = 292, // Death_LastKilledByPlayer_BoolStat
     Death_IsBeingButchered = 293, // Death_IsBeingButchered_BoolStat
-    NPC_MungeCorpseOverrideEntity = 294, // _ / NPC_MungeCorpseOverrideEntity
+    Death_MungeCorpseOverrideEntity = 294, // Death_MungeCorpseOverrideEntity_BoolStat
 
     Usage_UseWhenCollided = 300, // Usage_UseWhenCollided_BoolStat
     Usage_UseWhileMoving = 301, // Usage_UseWhileMoving_BoolStat
@@ -73,7 +73,7 @@ public enum BoolStat : uint {
     Usage_ShouldUnlockUserForUsageEffects = 323, // Usage_ShouldUnlockUserForUsageEffects_BoolStat
     Usage_SummonerOnly = 324, // Usage_SummonerOnly_BoolStat
     Usage_DurabilityLostOnUse = 325, // Usage_DurabilityLostOnUse_BoolStat
-    Usage_LegionsExpansionOnly = 326, // _ / Usage_LegionsExpansionOnly
+    Usage_LegionsExpansionOnly = 326, // Usage_LegionsExpansionOnly_BoolStat
 
     Weapon_Harmless = 600, // Weapon_Harmless_BoolStat
     IsCrafted = 601, // IsCrafted_BoolStat
@@ -93,7 +93,7 @@ public enum BoolStat : uint {
     Open = 702, // Open_BoolStat
     Inventory_IgnoresAttunement = 703, // Inventory_IgnoresAttunement_BoolStat
     Inventory_IgnoresTakePermissions = 704, // Inventory_IgnoresTakePermissions_BoolStat
-    Usage_IsBindOnUse = 705, // _ / Usage_IsBindOnUse
+    IsBindOnUse = 705, // IsBindOnUse_BoolStat
 
     Death_LootAbsoluteOverride = 800, // Death_LootAbsoluteOverride_BoolStat
     Gen_NonPersonalizable = 801, // Gen_NonPersonalizable_BoolStat
@@ -131,6 +131,7 @@ public enum BoolStat : uint {
     IsHero = 4000, // IsHero_BoolStat
 
     Craft_IsCraftSkillResetting = 5000, // Craft_IsCraftSkillResetting_BoolStat
+    Mine_IsInUse = 5001, // Mine_IsInUse_BoolStat
 
     AI_InvCreated = 9501, // AI_InvCreated_BoolStat
     AI_Teleport = 9502, // AI_Teleport_BoolStat
@@ -155,8 +156,11 @@ public enum BoolStat : uint {
     AI_UnwieldItemsOnIdle = 9522, // AI_UnwieldItemsOnIdle_BoolStat
     AI_IdleOnly = 9523, // AI_IdleOnly_BoolStat
     Book_ShowControls = 9524, // Book_ShowControls_BoolStat
+    AI_PerformingMoveTo = 9525, // AI_PerformingMoveTo_BoolStat
+    Item_IsDamageModMutable = 9526, // IsDamageModMutable_BoolStat
+    AICombat_MeleeNPC = 9527, // AICombat_MeleeNPC_BoolStat
+    AICombat_MissileNPC = 9528, // AICombat_MissileNPC_BoolStat
 
-    Item_IsDamageModMutable = 9526, // _ / Item_IsDamageModMutable
-    AICombat_MeleeNPC = 9527, // _ / AICombat_MeleeNPC
-    AICombat_MissileNPC = 9528, // _ / AICombat_MissileNPC
+    IsRepairable = 9700, // IsRepairable_BoolStat
+    IsImbuable = 9701, // IsImbuable_BoolStat
 }
