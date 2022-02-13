@@ -8,8 +8,7 @@ public class DamageDisplayInfo : IHeapObject {
     public bool playerIsAttacker; // m_playerIsAttacker
     public bool harmful; // m_harmful
     public uint attackerHealthPoints; // m_attackerHealthPoints
-    // TODO: CombatResultType?
-    public uint attackResult; // m_attackResult
+    public uint attackResult; // m_attackResult // TODO: CombatResultType?
     public bool heal; // m_heal
     public uint targetHealthPoints; // m_targetHealthPoints
     public bool attackerIsPlayersPet; // m_attackerIsPlayersPet

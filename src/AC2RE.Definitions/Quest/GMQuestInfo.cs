@@ -14,7 +14,7 @@ public class GMQuestInfo : IHeapObject {
     public StringInfo curJournalEntry; // _strCurJournalEntry
     public double bestowalTime; // _ttBestowal
     public double doneTime; // _ttDone
-    public bool expired; // _bExpires
+    public bool expires; // _bExpires
     public bool maxedOut; // _bMaxedOut
     public double secondsRemaining; // _ttSecondsRemaining
     public double secondsUntilRetry; // _ttSecondsUntilRetry
@@ -36,7 +36,7 @@ public class GMQuestInfo : IHeapObject {
         challengeLevel = data.ReadInt32();
         bestowalTime = data.ReadDouble();
         doneTime = data.ReadDouble();
-        expired = data.ReadBoolean();
+        expires = data.ReadBoolean();
         secondsRemaining = data.ReadDouble();
         secondsUntilRetry = data.ReadDouble();
         maxedOut = data.ReadBoolean();
@@ -54,7 +54,7 @@ public class GMQuestInfo : IHeapObject {
         data.Write(challengeLevel);
         data.Write(bestowalTime);
         data.Write(doneTime);
-        data.Write(expired);
+        data.Write(expires);
         data.Write(secondsRemaining);
         data.Write(secondsUntilRetry);
         data.Write(maxedOut);

@@ -68,7 +68,6 @@ public class ExaminationDataNode {
             case DataType.Break:
                 break;
             case DataType.Tab:
-                // TODO: Not sure if this is correct type
                 valInt = data.ReadInt32();
                 break;
             case DataType.Countdown:
@@ -116,7 +115,6 @@ public class ExaminationDataNode {
             case DataType.Break:
                 break;
             case DataType.Tab:
-                // TODO: Not sure if this is correct type
                 data.Write(valInt);
                 break;
             case DataType.Countdown:

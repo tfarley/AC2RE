@@ -22,7 +22,7 @@ public class NetPacket {
         UNK_1 = 1 << 10, // 0x00000400 // TODO: Response to server switch?
         REFERRAL = 1 << 11, // 0x00000800
         NAK = 1 << 12, // 0x00001000
-        NO_RETRANSMIT = 1 << 13, // 0x00002000
+        EMPTY_ACK = 1 << 13, // 0x00002000
         PAK = 1 << 14, // 0x00004000
         LOGOFF = 1 << 15, // 0x00008000
         LOGON = 1 << 16, // 0x00010000
@@ -65,12 +65,12 @@ public class NetPacket {
         }
     }
 
-    private List<uint> _noRetransmitHeader;
-    public List<uint> noRetransmitHeader {
-        get => _noRetransmitHeader;
+    private List<uint> _emptyAckHeader;
+    public List<uint> emptyAckHeader {
+        get => _emptyAckHeader;
         set {
-            _noRetransmitHeader = value;
-            flags |= Flag.NO_RETRANSMIT;
+            _emptyAckHeader = value;
+            flags |= Flag.EMPTY_ACK;
         }
     }
 
@@ -212,8 +212,8 @@ public class NetPacket {
         if (flags.HasFlag(Flag.NAK)) {
             _nacksHeader = data.ReadList(data.ReadUInt32);
         }
-        if (flags.HasFlag(Flag.NO_RETRANSMIT)) {
-            _noRetransmitHeader = data.ReadList(data.ReadUInt32);
+        if (flags.HasFlag(Flag.EMPTY_ACK)) {
+            _emptyAckHeader = data.ReadList(data.ReadUInt32);
         }
         if (flags.HasFlag(Flag.PAK)) {
             _ackHeader = data.ReadUInt32();
@@ -291,9 +291,9 @@ public class NetPacket {
             data.Write(_nacksHeader, data.Write);
             checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
         }
-        if (flags.HasFlag(Flag.NO_RETRANSMIT)) {
+        if (flags.HasFlag(Flag.EMPTY_ACK)) {
             long dataStart = data.BaseStream.Position;
-            data.Write(_noRetransmitHeader, data.Write);
+            data.Write(_emptyAckHeader, data.Write);
             checksum += AC2Crypto.calcChecksum(rawData, dataStart, data.BaseStream.Position - dataStart, true);
         }
         if (flags.HasFlag(Flag.PAK)) {

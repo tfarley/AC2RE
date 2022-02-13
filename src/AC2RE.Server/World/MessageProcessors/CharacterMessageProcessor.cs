@@ -136,7 +136,7 @@ internal class CharacterMessageProcessor : BaseMessageProcessor {
                                     curJournalEntry = new(new(0x250017EB), new(0x2E5C1E52)),
                                     bestowalTime = 129500898.25912432,
                                     doneTime = -1355582621.7408757,
-                                    expired = true,
+                                    expires = true,
                                     maxedOut = true,
                                     secondsRemaining = 10800,
                                     secondsUntilRetry = 0,

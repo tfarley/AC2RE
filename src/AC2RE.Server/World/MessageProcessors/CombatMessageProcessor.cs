@@ -45,13 +45,13 @@ internal class CombatMessageProcessor : BaseMessageProcessor {
                                         categories = 1,
                                         maxDurabilityLevel = 0,
                                     },
-                                    effectId = new EffectId(0x00000BD9),
+                                    effectId = new(0x00000BD9),
                                 }
                             });
                         } else {
                             send(player, new InterpCEventPrivateMsg {
                                 netEvent = new ClientRemoveEffectCEvt {
-                                    effectId = new EffectId(0x00000BD9),
+                                    effectId = new(0x00000BD9),
                                 }
                             });
                         }
