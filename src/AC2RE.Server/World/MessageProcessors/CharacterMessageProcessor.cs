@@ -63,10 +63,12 @@ internal class CharacterMessageProcessor : BaseMessageProcessor {
             case MessageOpcode.CHARACTER_ENTER_GAME_EVENT: {
                     CharacterEnterGameMsg msg = (CharacterEnterGameMsg)genericMsg;
 
-                    if (!world.characterManager.existsWithAccountAndWorldObject(player.account.id, msg.characterId)) {
+                    Character? dbCharacter = world.characterManager.getWithAccountAndObject(player.account.id, msg.characterId);
+                    if (dbCharacter == null) {
                         throw new ArgumentException($"Account {player.account.id} attempted to log in with unowned character object {msg.characterId}.");
                     }
 
+                    player.dbCharacter = dbCharacter;
                     player.characterId = msg.characterId;
                     player.attackNum = 0;
 
@@ -108,6 +110,15 @@ internal class CharacterMessageProcessor : BaseMessageProcessor {
                             filledInventoryLocations |= equipLoc;
                             inventoryByLocationTable[equipLoc] = profile;
                             inventoryByIdTable[item.id] = profile;
+                        }
+                    }
+
+                    List<ShortcutInfo> shortcuts = new(player.dbCharacter.shortcuts.Length);
+                    foreach (ShortcutInfo? shortcut in player.dbCharacter.shortcuts) {
+                        if (shortcut == null) {
+                            shortcuts.Add(new());
+                        } else {
+                            shortcuts.Add(shortcut);
                         }
                     }
 
@@ -156,7 +167,7 @@ internal class CharacterMessageProcessor : BaseMessageProcessor {
                                     | GameplayOptionsProfile.ContentFlag.CHAT_FONT_SIZES
                                     | GameplayOptionsProfile.ContentFlag.CHAT_POPUP_FLAGS
                                     | GameplayOptionsProfile.ContentFlag.WINDOW_TO_CHANNEL,
-                                shortcutArray = Enumerable.Repeat(new ShortcutInfo { type = ShortcutType.Undef }, 100).ToList(),
+                                shortcutArray = shortcuts,
                                 whichShortcutSet = 1,
                                 damageTextRangeOther = 1.0f,
                                 savedUILocations = new(),

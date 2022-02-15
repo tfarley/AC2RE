@@ -4,6 +4,7 @@ using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Text;
 
 namespace AC2RE.Server.Database;
@@ -12,8 +13,45 @@ internal class WorldMySqlDatabase : BaseMySqlDatabase, IWorldDatabase {
 
     protected override string? databaseName => "ac2re_world";
 
+    private ShortcutInfo mapShortcut(MySqlDataReader reader) {
+        ShortcutInfo shortcut = new();
+        shortcut.type = (ShortcutType)reader.GetUInt32("type");
+        switch (shortcut.type) {
+            case ShortcutType.Undef:
+                break;
+            case ShortcutType.Skill:
+            case ShortcutType.Recipe:
+                shortcut.valEnum = reader.GetUInt32("valInt");
+                break;
+            case ShortcutType.NewRecipe:
+                shortcut.valDid = new(reader.GetUInt32("valInt"));
+                break;
+            case ShortcutType.Item:
+                shortcut.valId = new(reader.GetUInt64("valInt"));
+                break;
+            case ShortcutType.Alias:
+                shortcut.valString = reader.GetString("valString");
+                break;
+            default:
+                throw new InvalidDataException(shortcut.type.ToString());
+        }
+        return shortcut;
+    }
+
+    private void fillShortcuts(Character character) {
+        using (MySqlCommand cmd = new($"SELECT * FROM shortcuts WHERE characterId = '{character.id.id}';", connection)) {
+            using (MySqlDataReader reader = cmd.ExecuteReader()) {
+                while (reader.Read()) {
+                    uint index = reader.GetUInt32("idx");
+                    character.shortcuts[(int)index] = mapShortcut(reader);
+                }
+            }
+        }
+    }
+
     private Character mapCharacter(MySqlDataReader reader) {
-        return new(new(reader.GetGuid("id")), reader.GetUInt32("sequence"), new(reader.GetGuid("accountId")), new(reader.GetUInt64("objectId")));
+        CharacterId characterId = new(reader.GetGuid("id"));
+        return new(characterId, reader.GetUInt32("sequence"), new(reader.GetGuid("accountId")), new(reader.GetUInt64("objectId")), new ShortcutInfo?[100]);
     }
 
     public Character? getCharacterWithId(CharacterId id) {
@@ -36,6 +74,9 @@ internal class WorldMySqlDatabase : BaseMySqlDatabase, IWorldDatabase {
                     characters.Add(mapCharacter(reader));
                 }
             }
+        }
+        foreach (Character character in characters) {
+            fillShortcuts(character);
         }
 
         return characters;
@@ -610,8 +651,8 @@ internal class WorldMySqlDatabase : BaseMySqlDatabase, IWorldDatabase {
 
             using (MySqlCommand cmd = upsertCommand(connection, transaction, "characters",
                 new("id", MySqlDbType.String),
-                new("sequence", MySqlDbType.UInt16),
                 new("accountId", MySqlDbType.String),
+                new("sequence", MySqlDbType.UInt16),
                 new("objectId", MySqlDbType.UInt64))) {
                 foreach (Character character in worldSave.characters) {
                     if (character.deleted) {
@@ -625,15 +666,61 @@ internal class WorldMySqlDatabase : BaseMySqlDatabase, IWorldDatabase {
                     }
 
                     cmd.Parameters[0].Value = character.id.id;
-                    cmd.Parameters[1].Value = character.sequence;
-                    cmd.Parameters[2].Value = character.accountId.id;
+                    cmd.Parameters[1].Value = character.accountId.id;
+                    cmd.Parameters[2].Value = character.sequence;
                     cmd.Parameters[3].Value = character.objectId.id;
                     cmd.ExecuteNonQuery();
                 }
             }
 
+            using (MySqlCommand cmd = upsertCommand(connection, transaction, "shortcuts",
+                new("characterId", MySqlDbType.String),
+                new("idx", MySqlDbType.UInt32),
+                new("type", MySqlDbType.UInt32),
+                new("valInt", MySqlDbType.UInt64),
+                new("valString", MySqlDbType.String))) {
+                foreach (Character character in worldSave.characters) {
+                    if (!character.deleted) {
+                        for (int i = 0; i < character.shortcuts.Length; i++) {
+                            ShortcutInfo? shortcut = character.shortcuts[i];
+                            ShortcutType shortcutType = shortcut?.type ?? ShortcutType.Undef;
+                            cmd.Parameters[0].Value = character.id.id;
+                            cmd.Parameters[1].Value = i;
+                            cmd.Parameters[2].Value = (uint)shortcutType;
+                            switch (shortcutType) {
+                                case ShortcutType.Undef:
+                                    cmd.Parameters[3].Value = null;
+                                    cmd.Parameters[4].Value = null;
+                                    break;
+                                case ShortcutType.Skill:
+                                case ShortcutType.Recipe:
+                                    cmd.Parameters[3].Value = shortcut!.valEnum;
+                                    cmd.Parameters[4].Value = null;
+                                    break;
+                                case ShortcutType.NewRecipe:
+                                    cmd.Parameters[3].Value = shortcut!.valDid.id;
+                                    cmd.Parameters[4].Value = null;
+                                    break;
+                                case ShortcutType.Item:
+                                    cmd.Parameters[3].Value = shortcut!.valId.id;
+                                    cmd.Parameters[4].Value = null;
+                                    break;
+                                case ShortcutType.Alias:
+                                    cmd.Parameters[3].Value = null;
+                                    cmd.Parameters[4].Value = shortcut!.valString;
+                                    break;
+                                default:
+                                    throw new InvalidDataException(shortcut!.type.ToString());
+                            }
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+
             if (characterIdsToDelete.Length > 0) {
                 delete(connection, transaction, "characters", $"id IN ({characterIdsToDelete})");
+                delete(connection, transaction, "shortcuts", $"characterId IN ({characterIdsToDelete})");
             }
 
             if (worldObjectIdsToDelete.Count > 0) {

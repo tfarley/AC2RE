@@ -2,7 +2,7 @@
 
 public class UploadGameOptionsSEvt : IServerEvent {
 
-    public ServerEventFunctionId funcId => ServerEventFunctionId.Player__SetShortcut;
+    public ServerEventFunctionId funcId => ServerEventFunctionId.Player__UploadGameOptions;
 
     // WM_Player::SendSEvt_UploadGameOptions
     public uint optionsBitfield; // _optionsBitfield

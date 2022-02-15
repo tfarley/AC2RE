@@ -218,6 +218,18 @@ CREATE TABLE characters (
 );
 CREATE TABLE del_characters LIKE characters;
 ALTER TABLE del_characters ADD FOREIGN KEY (accountId) REFERENCES ac2re_account.account (id) ON DELETE CASCADE;
-ALTER TABLE characters ADD UNIQUE (accountId, sequence);";
+ALTER TABLE characters ADD UNIQUE (accountId, sequence);
+
+CREATE TABLE shortcuts (
+    PRIMARY KEY (characterId, idx),
+    FOREIGN KEY (characterId) REFERENCES characters (id),
+    characterId CHAR(36) NOT NULL,
+    idx INT UNSIGNED NOT NULL,
+    type INT UNSIGNED NOT NULL,
+    valInt BIGINT UNSIGNED,
+    valString CHAR(255)
+);
+CREATE TABLE del_shortcuts LIKE shortcuts;
+ALTER TABLE del_shortcuts ADD FOREIGN KEY (characterId) REFERENCES del_characters (id) ON DELETE CASCADE;";
 
 }

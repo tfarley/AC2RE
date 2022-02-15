@@ -22,11 +22,11 @@ internal class CommunicationMessageProcessor : BaseMessageProcessor {
                                 case ".vel": {
                                         if (splitText.Length < 2) {
                                             sendMessage(player, "Too few arguments", TextType.Error);
-                                            break;
+                                            return true;
                                         }
                                         if (!float.TryParse(splitText[1], out float value)) {
                                             sendMessage(player, "Cannot parse argument", TextType.Error);
-                                            break;
+                                            return true;
                                         }
                                         if (tryGetCharacter(player, out WorldObject? character)) {
                                             character.setVelScale(value);
@@ -43,25 +43,25 @@ internal class CommunicationMessageProcessor : BaseMessageProcessor {
                                 case ".tp": {
                                         if (splitText.Length < 2) {
                                             sendMessage(player, "Too few arguments", TextType.Error);
-                                            break;
+                                            return true;
                                         }
                                         if (!uint.TryParse(splitText[1], NumberStyles.HexNumber, null, out uint cellId)) {
                                             sendMessage(player, "Cannot parse argument", TextType.Error);
-                                            break;
+                                            return true;
                                         }
                                         Vector3 offset = new();
                                         if (splitText.Length >= 5) {
                                             if (!float.TryParse(splitText[2], out offset.X)) {
                                                 sendMessage(player, "Cannot parse argument", TextType.Error);
-                                                break;
+                                                return true;
                                             }
                                             if (!float.TryParse(splitText[3], out offset.Y)) {
                                                 sendMessage(player, "Cannot parse argument", TextType.Error);
-                                                break;
+                                                return true;
                                             }
                                             if (!float.TryParse(splitText[4], out offset.Z)) {
                                                 sendMessage(player, "Cannot parse argument", TextType.Error);
-                                                break;
+                                                return true;
                                             }
                                         }
                                         teleport(player, new(new(cellId), offset));
@@ -69,7 +69,7 @@ internal class CommunicationMessageProcessor : BaseMessageProcessor {
                                     }
                                 default:
                                     sendMessage(player, "Invalid command", TextType.Error);
-                                    break;
+                                    return true;
                             }
                         }
                     } else {

@@ -48,6 +48,7 @@ internal class World {
             new UsageMessageProcessor(this),
             new ExaminationMessageProcessor(this),
             new SkillMessageProcessor(this),
+            new UIMessageProcessor(this),
         };
     }
 

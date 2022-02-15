@@ -86,7 +86,7 @@ internal class CharacterManager {
             highestOrder = existingCharacters[^1].sequence;
         }
 
-        Character character = new(new(Guid.NewGuid()), highestOrder + 1, accountId, objectId);
+        Character character = new(new(Guid.NewGuid()), highestOrder + 1, accountId, objectId, new ShortcutInfo?[100]);
         characters[character.id] = character;
         return character;
     }
