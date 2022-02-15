@@ -42,6 +42,10 @@ public class StoryHookData {
     public int targetPkDamageChange; // m_targetPKDamageChange
     public int attackerPkDamageChange; // m_attackerPKDamageChange
 
+    public StoryHookData() {
+
+    }
+
     public StoryHookData(AC2Reader data) {
         packFlags = data.ReadEnum<PackFlag>();
         type = (HookType)((uint)packFlags & 0xF);
@@ -72,6 +76,48 @@ public class StoryHookData {
         }
         if (packFlags.HasFlag(PackFlag.ATTACKER_PKDAMAGE)) {
             attackerPkDamageChange = data.ReadInt32();
+        }
+    }
+
+    public void write(AC2Writer data) {
+        packFlags = 0;
+        if (targetId != default) packFlags |= PackFlag.TARGET_ID;
+        if (weaponId != default) packFlags |= PackFlag.WEAPON_ID;
+        if (attackResult != default) packFlags |= PackFlag.ATTACK_RESULT;
+        if (animHookNumber != default) packFlags |= PackFlag.ANIM_HOOK_NUMBER;
+        if (attackHookNumber != default) packFlags |= PackFlag.ATTACK_HOOK_NUMBER;
+        if (targetHealthChange != default) packFlags |= PackFlag.TARGET_HEALTH;
+        if (attackerHealthChange != default) packFlags |= PackFlag.ATTACKER_HEALTH;
+        if (targetPkDamageChange != default) packFlags |= PackFlag.TARGET_PKDAMAGE;
+        if (attackerPkDamageChange != default) packFlags |= PackFlag.ATTACKER_PKDAMAGE;
+
+        data.WriteEnum((PackFlag)((uint)packFlags | (uint)type));
+        if (packFlags.HasFlag(PackFlag.TARGET_ID)) {
+            data.Write(targetId);
+        }
+        if (packFlags.HasFlag(PackFlag.WEAPON_ID)) {
+            data.Write(weaponId);
+        }
+        if (packFlags.HasFlag(PackFlag.ATTACK_RESULT)) {
+            data.WriteEnum(attackResult);
+        }
+        if (packFlags.HasFlag(PackFlag.ANIM_HOOK_NUMBER)) {
+            data.Write(animHookNumber);
+        }
+        if (packFlags.HasFlag(PackFlag.ATTACK_HOOK_NUMBER)) {
+            data.Write(attackHookNumber);
+        }
+        if (packFlags.HasFlag(PackFlag.TARGET_HEALTH)) {
+            data.Write(targetHealthChange);
+        }
+        if (packFlags.HasFlag(PackFlag.ATTACKER_HEALTH)) {
+            data.Write(attackerHealthChange);
+        }
+        if (packFlags.HasFlag(PackFlag.TARGET_PKDAMAGE)) {
+            data.Write(targetPkDamageChange);
+        }
+        if (packFlags.HasFlag(PackFlag.ATTACKER_PKDAMAGE)) {
+            data.Write(attackerPkDamageChange);
         }
     }
 }

@@ -138,7 +138,6 @@ internal partial class WorldObject {
 
                 if (behaviorTarget != null) {
                     behaviorTarget.doBehavior(new() {
-                        packFlags = BehaviorParams.PackFlag.BEHAVIOR_ID | BehaviorParams.PackFlag.FADE_CHILDREN | BehaviorParams.PackFlag.FXSCRIPT | BehaviorParams.PackFlag.TARGET | BehaviorParams.PackFlag.VDESC,
                         behaviorId = behaviorId,
                         fxScriptId = new(0x57000005),
                         targetId = item.id,

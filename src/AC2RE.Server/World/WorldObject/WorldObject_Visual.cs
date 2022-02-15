@@ -75,6 +75,13 @@ internal partial class WorldObject {
         }, true);
     }
 
+    public void doStory(PhysicsStory story) {
+        world.playerManager.sendAllVisible(id, new DoStoryMsg {
+            senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
+            story = story,
+        }, true);
+    }
+
     private void syncMode() {
         ModeId newMode = mode;
         if (attacking == false) {

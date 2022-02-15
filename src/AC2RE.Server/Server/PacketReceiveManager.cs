@@ -212,34 +212,38 @@ internal class PacketReceiveManager {
             }
 
             while (client.incomingBlobQueue.TryDequeue(out NetBlob? blob)) {
-                using (AC2Reader data = new(new MemoryStream(blob.payload))) {
+                try {
+                    using (AC2Reader data = new(new MemoryStream(blob.payload))) {
 
-                    MessageOpcode opcode = data.ReadEnum<MessageOpcode>();
-                    INetMessage genericMsg = INetMessage.read(opcode, data, true);
+                        MessageOpcode opcode = data.ReadEnum<MessageOpcode>();
+                        INetMessage genericMsg = INetMessage.read(opcode, data, true);
 
-                    StringBuilder msgString = new(genericMsg.GetType().Name);
-                    if (opcode == MessageOpcode.Interp__InterpSEvent) {
-                        InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
-                        msgString.Append($" {msg.netEvent.funcId}");
-                    }
+                        StringBuilder msgString = new(genericMsg.GetType().Name);
+                        if (opcode == MessageOpcode.Interp__InterpSEvent) {
+                            InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
+                            msgString.Append($" {msg.netEvent.funcId}");
+                        }
 
-                    Logs.NET.debug("Got msg",
-                        "client", client,
-                        "msg", msgString);
-
-                    if (!world.processMessage(client, genericMsg)) {
-                        Logs.NET.warn("Unhandled message",
+                        Logs.NET.debug("Got msg",
                             "client", client,
                             "msg", msgString);
-                    }
 
-                    if (data.BaseStream.Position < data.BaseStream.Length) {
-                        Logs.NET.warn("NetBlob was not fully read",
-                            "msg", msgString,
-                            "client", client,
-                            "pos", data.BaseStream.Position,
-                            "len", data.BaseStream.Length);
+                        if (!world.processMessage(client, genericMsg)) {
+                            Logs.NET.warn("Unhandled message",
+                                "client", client,
+                                "msg", msgString);
+                        }
+
+                        if (data.BaseStream.Position < data.BaseStream.Length) {
+                            Logs.NET.warn("NetBlob was not fully read",
+                                "msg", msgString,
+                                "client", client,
+                                "pos", data.BaseStream.Position,
+                                "len", data.BaseStream.Length);
+                        }
                     }
+                } catch (Exception e) {
+                    Logs.NET.error(e, "Error processing NetBlob");
                 }
             }
         });

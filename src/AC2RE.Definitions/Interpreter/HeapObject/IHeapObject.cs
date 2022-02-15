@@ -3,6 +3,6 @@
 public interface IHeapObject : IWritable {
 
     // HeapObject
-    NativeType nativeType => NativeType.Undef; // m_ntype
-    PackageType packageType => PackageType.Undef; // m_pkgid
+    public NativeType nativeType => NativeType.Undef; // m_ntype
+    public PackageType packageType => PackageType.Undef; // m_pkgid
 }

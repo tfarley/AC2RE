@@ -11,8 +11,17 @@ public class DoStoryMsg : INetMessage {
     public InstanceIdWithStamp senderIdWithStamp; // sender
     public PhysicsStory story; // __story
 
+    public DoStoryMsg() {
+
+    }
+
     public DoStoryMsg(AC2Reader data) {
         senderIdWithStamp = data.ReadInstanceIdWithStamp();
         story = new(data);
+    }
+
+    public void write(AC2Writer data) {
+        data.Write(senderIdWithStamp);
+        story.write(data);
     }
 }

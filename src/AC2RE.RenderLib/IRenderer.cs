@@ -7,32 +7,32 @@ namespace AC2RE.RenderLib;
 
 public interface IRenderer : IDisposable {
 
-    static IRenderer createWinOGL(IntPtr hwnd) {
+    public static IRenderer createWinOGL(IntPtr hwnd) {
         return new WinOGLRenderer(hwnd);
     }
 
-    void resize(uint width, uint height);
+    public void resize(uint width, uint height);
 
-    void setClearColor(float r, float g, float b);
+    public void setClearColor(float r, float g, float b);
 
     // NOTE: Matrix4x4 transform multiplication order is left-to-right; OpenGl mat order is right-to-left
-    void setTransforms(Matrix4x4 modelToClipMatrix, Matrix4x4 modelToCameraMatrix);
+    public void setTransforms(Matrix4x4 modelToClipMatrix, Matrix4x4 modelToCameraMatrix);
 
-    void setAmbientLight(float r, float g, float b);
-    void setDirLight(DirLight dirLight);
-    void setPointLightData(byte[] pointLightData);
+    public void setAmbientLight(float r, float g, float b);
+    public void setDirLight(DirLight dirLight);
+    public void setPointLightData(byte[] pointLightData);
 
-    IShader loadVertexShader(byte[] shaderSource);
-    IShader loadFragmentShader(byte[] shaderSource);
-    IShaderProgram createShaderProgram(params IShader[] shaders);
+    public IShader loadVertexShader(byte[] shaderSource);
+    public IShader loadFragmentShader(byte[] shaderSource);
+    public IShaderProgram createShaderProgram(params IShader[] shaders);
 
-    IMesh loadMesh(byte[] vertexData, List<VertexAttribute> vertexAttributes, uint vertexSize, byte[] indexData, Type indexType);
+    public IMesh loadMesh(byte[] vertexData, List<VertexAttribute> vertexAttributes, uint vertexSize, byte[] indexData, Type indexType);
 
-    ITexture loadTexture(byte[] textureData, uint width, uint height, TextureFormat format);
+    public ITexture loadTexture(byte[] textureData, uint width, uint height, TextureFormat format);
 
-    void draw(IMesh mesh, IShaderProgram? shader = null, List<ITexture>? textures = null);
+    public void draw(IMesh mesh, IShaderProgram? shader = null, List<ITexture>? textures = null);
 
-    void clear();
+    public void clear();
 
-    void swap();
+    public void swap();
 }

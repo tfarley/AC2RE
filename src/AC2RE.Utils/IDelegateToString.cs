@@ -2,5 +2,5 @@
 
 public interface IDelegateToString {
 
-    object delegatedToStringObject { get; }
+    public object delegatedToStringObject { get; }
 }

@@ -4,7 +4,7 @@ namespace AC2RE.Definitions;
 
 public interface IServerEvent {
 
-    ServerEventFunctionId funcId { get; } // _fid
+    public ServerEventFunctionId funcId { get; } // _fid
 
     public static IServerEvent read(ServerEventFunctionId funcId, AC2Reader data) {
         return funcId switch {

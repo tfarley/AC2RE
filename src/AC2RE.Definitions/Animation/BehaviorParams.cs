@@ -151,6 +151,32 @@ public class BehaviorParams : IHeapObject {
     }
 
     public void write(AC2Writer data) {
+        packFlags = 0;
+        if (behaviorId != default) packFlags |= PackFlag.BEHAVIOR_ID;
+        if (timeScale != default) packFlags |= PackFlag.TIME_SCALE;
+        if (modeId != default) packFlags |= PackFlag.MODE_ID;
+        if (holdCycles != default) packFlags |= PackFlag.HOLDCYLE;
+        if (fxScriptId != default) packFlags |= PackFlag.FXSCRIPT;
+        if (fxId != default) packFlags |= PackFlag.FXTODO;
+        if (targetId != default) packFlags |= PackFlag.TARGET;
+        if (cameraTargetId != default || cameraBehavior != default) packFlags |= PackFlag.NEW_CAMERA_OBJ;
+        if (visualDescToClone != default || clonedAprDid != default || clonedAppHash != default) packFlags |= PackFlag.VDESC;
+        if (impulse != default) packFlags |= PackFlag.IMPULSE;
+        if (earlyCallback != default) packFlags |= PackFlag.EARLYCALLBACK;
+        if (moveToCancels != default) packFlags |= PackFlag.MOVETOCANCELS;
+        if (cameraParent != default) packFlags |= PackFlag.PARENTED_CAMERA;
+        if (cameraTarget != default) packFlags |= PackFlag.TARGETED_CAMERA;
+        if (cameraHold != default) packFlags |= PackFlag.HOLD_CAMERA;
+        if (cameraRestore != default) packFlags |= PackFlag.RESTORE_CAMERA;
+        if (fadeChildren != default) packFlags |= PackFlag.FADE_CHILDREN;
+        if (propagate != default) packFlags |= PackFlag.PROPAGATE;
+        if (lockActions != default) packFlags |= PackFlag.LOCKACTIONS;
+        if (sendEvent != default) packFlags |= PackFlag.SEND_EVENT;
+        if (leaveIdleAlone != default) packFlags |= PackFlag.LEAVE_IDLE;
+        if (destroyOnCompletion != default) packFlags |= PackFlag.SELF_DESTRUCT;
+        if (weenieEmoteId != default) packFlags |= PackFlag.WEENIE_EMOTE_ID;
+        if (contextId != default) packFlags |= PackFlag.CONTEXTID;
+
         data.WriteEnum(packFlags);
         if (packFlags.HasFlag(PackFlag.BEHAVIOR_ID)) {
             data.WriteEnum(behaviorId);

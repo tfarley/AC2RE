@@ -17,8 +17,8 @@ internal abstract class BaseMessageProcessor : IMessageProcessor {
         return world.objectManager.tryGet(player.characterId, out character);
     }
 
-    protected void send(Player player, INetMessage msg) {
-        world.playerManager.send(player, msg);
+    protected void send(Player player, INetMessage msg, bool ordered = false) {
+        world.playerManager.send(player, msg, ordered);
     }
 
     protected void sendMessage(Player player, string text, TextType type = TextType.Standard) {

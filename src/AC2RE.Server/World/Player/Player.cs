@@ -9,6 +9,7 @@ internal class Player {
     public readonly Account account;
     public readonly HashSet<InstanceId> visibleObjectIds = new();
     public InstanceId characterId;
+    public uint attackNum;
 
     public Player(ClientId clientId, Account account) {
         this.clientId = clientId;

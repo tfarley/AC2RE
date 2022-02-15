@@ -4,10 +4,10 @@ namespace AC2RE.Definitions;
 
 public interface INetMessage : IWritable {
 
-    NetBlobId.Flag blobFlags { get; }
-    NetQueue queueId { get; }
-    MessageOpcode opcode { get; }
-    OrderingType orderingType => OrderingType.PRIVATE_ORDERED;
+    public NetBlobId.Flag blobFlags { get; }
+    public NetQueue queueId { get; }
+    public MessageOpcode opcode { get; }
+    public OrderingType orderingType => OrderingType.PRIVATE_ORDERED;
 
     public static INetMessage read(MessageOpcode opcode, AC2Reader data, bool isClientToServer) {
         return opcode switch {

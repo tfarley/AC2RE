@@ -68,6 +68,7 @@ internal class CharacterMessageProcessor : BaseMessageProcessor {
                     }
 
                     player.characterId = msg.characterId;
+                    player.attackNum = 0;
 
                     if (!world.objectManager.tryGet(msg.characterId, out WorldObject? character)) {
                         throw new ArgumentException($"Account {player.account.id} attempted to log in with non-existent character object {msg.characterId}.");
@@ -291,7 +292,7 @@ internal class CharacterMessageProcessor : BaseMessageProcessor {
                         }
                     }
 
-                    character.doMode(ModeId.peace);
+                    character.setAttacking(false);
                     character.setVelScale(2.0f);
 
                     character.enterWorld();

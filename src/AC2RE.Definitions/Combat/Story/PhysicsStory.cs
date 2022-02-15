@@ -26,6 +26,10 @@ public class PhysicsStory {
     public bool basicAttack; // m_basicAttack
     public List<StoryHookData> hooks; // m_hooks
 
+    public PhysicsStory() {
+
+    }
+
     public PhysicsStory(AC2Reader data) {
         packFlags = data.ReadEnum<PackFlag>();
         if (packFlags.HasFlag(PackFlag.ATTACKER_ID)) {
@@ -42,5 +46,29 @@ public class PhysicsStory {
         }
         basicAttack = packFlags.HasFlag(PackFlag.BASIC_ATTACK);
         hooks = data.ReadList(() => new StoryHookData(data));
+    }
+
+    public void write(AC2Writer data) {
+        packFlags = 0;
+        if (attackerId != default) packFlags |= PackFlag.ATTACKER_ID;
+        if (attackerBehavior != default) packFlags |= PackFlag.ATTACKER_BVR;
+        if (clientAttackContextId != default) packFlags |= PackFlag.CLIENT_CONTEXT;
+        if (skillId != default) packFlags |= PackFlag.SKILL_ID;
+
+        data.WriteEnum(packFlags);
+        if (packFlags.HasFlag(PackFlag.ATTACKER_ID)) {
+            data.Write(attackerId);
+        }
+        if (packFlags.HasFlag(PackFlag.ATTACKER_BVR)) {
+            attackerBehavior.write(data);
+        }
+        if (packFlags.HasFlag(PackFlag.CLIENT_CONTEXT)) {
+            data.Write(clientAttackContextId);
+        }
+        if (packFlags.HasFlag(PackFlag.SKILL_ID)) {
+            data.WriteEnum(skillId);
+        }
+        basicAttack = packFlags.HasFlag(PackFlag.BASIC_ATTACK);
+        data.Write(hooks, v => v.write(data));
     }
 }

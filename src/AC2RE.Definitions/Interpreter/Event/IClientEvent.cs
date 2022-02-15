@@ -4,7 +4,7 @@ namespace AC2RE.Definitions;
 
 public interface IClientEvent : IWritable {
 
-    ClientEventFunctionId funcId { get; } // _fid
+    public ClientEventFunctionId funcId { get; } // _fid
 
     public static IClientEvent read(ClientEventFunctionId funcId, AC2Reader data) {
         return funcId switch {
