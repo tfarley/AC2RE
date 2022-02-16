@@ -140,7 +140,11 @@ internal class RenderResourceManager : IDisposable {
             vertexAttributes.Add(new(UberShaderManager.MATRIX_WEIGHTS_ATTRIB_ID_START + i, 1, typeof(float), mesh.vertexArray.vertexFormat.offsetMatrixWeights + i * 4));
         }
 
-        ushort[] indices = mesh.geometry.indices.ToArray();
+        List<ushort> allIndices = new();
+        foreach (CMeshFragment material in mesh.geometry.degrades[0].materials) {
+            allIndices.AddRange(material.indices);
+        }
+        ushort[] indices = allIndices.ToArray();
         byte[] indexData = new byte[indices.Length * sizeof(ushort)];
         Buffer.BlockCopy(indices, 0, indexData, 0, indexData.Length);
 

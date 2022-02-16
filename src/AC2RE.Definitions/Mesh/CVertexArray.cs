@@ -13,6 +13,5 @@ public class CVertexArray {
         vertexData = data.ReadBytes((int)(numVertices * vertexFormat.vertexSize));
         data.Align(4);
         bbox = new(data);
-        // TODO: Check to see if there is more to parse here
     }
 }

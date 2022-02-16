@@ -12,11 +12,10 @@ public class CBaseMesh {
     public List<DataId> materialInstanceDids; // m_pMaterials
 
     public CBaseMesh(AC2Reader data) {
-        uint geometryMeshType = data.ReadUInt32();
+        MeshType meshType = data.ReadEnum<MeshType>();
         materialInstanceDids = data.ReadList(data.ReadDataId);
         vertexArray = new(data);
         boundingSphere = new(data);
-        geometry = new(geometryMeshType, data);
-        // TODO: Check to see if there is more to parse here
+        geometry = new(meshType, data);
     }
 }
