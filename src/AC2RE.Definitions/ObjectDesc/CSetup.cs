@@ -7,23 +7,21 @@ public class CSetup {
     public class BoneInfo {
 
         // BoneInfo
-        public uint id; // id
+        public BoneType id; // id
         public uint parentIndex; // parent_index
 
         public BoneInfo(AC2Reader data) {
             parentIndex = data.ReadUInt32();
-            id = data.ReadUInt32();
+            id = data.ReadEnum<BoneType>();
         }
     }
 
     public class PlacementFrame {
 
         // PlacementFrame
-        public uint id; // id (HashBaseData)
         public List<TransformBase> keyframes; // keyFrame
 
         public PlacementFrame(AC2Reader data) {
-            id = data.ReadUInt32();
             keyframes = data.ReadList(() => new TransformBase(data));
         }
     }
@@ -31,12 +29,10 @@ public class CSetup {
     public class LocationType {
 
         // LocationType
-        public uint id; // id (HashBaseData)
         public uint boneIndex; // bone_index
         public TransformBase transform; // transform
 
         public LocationType(AC2Reader data) {
-            id = data.ReadUInt32();
             boneIndex = data.ReadUInt32();
             transform = new(data);
         }
@@ -105,9 +101,9 @@ public class CSetup {
     public float radius; // radius
     public Sphere boundingSphere; // bounding_sphere
     public Sphere selectionSphere; // selection_sphere
-    public List<LocationType> holdingLocations; // holding_locations
-    public List<LocationType> connectionPoints; // connection_points
-    public List<PlacementFrame> placementFrames; // placement_frames
+    public Dictionary<HoldingLocation, LocationType> holdingLocations; // holding_locations
+    public Dictionary<ConnectionPoint, LocationType> connectionPoints; // connection_points
+    public Dictionary<uint, PlacementFrame> placementFrames; // placement_frames
     public DegradeInfo degradeInfo; // degrade_info
     public ShadowType shadowType; // render_info
     public float physicsContainmentRadius; // m_physics_containment_radius
@@ -118,9 +114,9 @@ public class CSetup {
         flags = data.ReadEnum<Flag>();
         meshes = data.ReadList(data.ReadDataId);
         bones = data.ReadList(() => new BoneInfo(data));
-        placementFrames = data.ReadList(() => new PlacementFrame(data));
-        holdingLocations = data.ReadList(() => new LocationType(data));
-        connectionPoints = data.ReadList(() => new LocationType(data));
+        placementFrames = data.ReadDictionary(data.ReadUInt32, () => new PlacementFrame(data));
+        holdingLocations = data.ReadDictionary(data.ReadEnum<HoldingLocation>, () => new LocationType(data));
+        connectionPoints = data.ReadDictionary(data.ReadEnum<ConnectionPoint>, () => new LocationType(data));
         cylspheres = data.ReadList(() => new Cylsphere(data));
         spheres = data.ReadList(() => new Sphere(data));
         height = data.ReadSingle();
