@@ -27,7 +27,7 @@ internal class CharacterManager {
         }
     }
 
-    public bool tryGet(CharacterId id, [MaybeNullWhen(false)] out Character character) {
+    public bool tryGet(CharacterId id, [NotNullWhen(true)] out Character? character) {
         character = get(id);
         return character != null;
     }
@@ -54,7 +54,7 @@ internal class CharacterManager {
         return charactersWithAccount;
     }
 
-    public bool tryGetWithAccountAndObject(AccountId accountId, InstanceId objectId, [MaybeNullWhen(false)] out Character character) {
+    public bool tryGetWithAccountAndObject(AccountId accountId, InstanceId objectId, [NotNullWhen(true)] out Character? character) {
         character = getWithAccountAndObject(accountId, objectId);
         return character != null;
     }

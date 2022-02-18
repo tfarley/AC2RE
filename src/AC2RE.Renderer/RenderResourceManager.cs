@@ -96,7 +96,7 @@ internal class RenderResourceManager : IDisposable {
             using (AC2Reader dataModifier = datReader.getFileReader(materialInstance.modifierDids[0])) {
                 MaterialModifier modifier = new(dataModifier);
                 foreach (MaterialProperty property in modifier.properties) {
-                    if (property.dataType == RMDataType.TEXTURE) {
+                    if (property.dataType == RMDataType.TEXTURE && property.valTextureDid != DataId.NULL) {
                         using (AC2Reader dataTexture = datReader.getFileReader(property.valTextureDid)) {
                             RenderTexture tex = new(dataTexture);
                             // TODO: These textures likely need to be ordered by nameId, not just serialization order
@@ -141,8 +141,10 @@ internal class RenderResourceManager : IDisposable {
         }
 
         List<ushort> allIndices = new();
-        foreach (CMeshFragment material in mesh.geometry.degrades[0].materials) {
-            allIndices.AddRange(material.indices);
+        if (mesh.geometry.degrades.Count > 0) {
+            foreach (CMeshFragment material in mesh.geometry.degrades[0].materials) {
+                allIndices.AddRange(material.indices);
+            }
         }
         ushort[] indices = allIndices.ToArray();
         byte[] indexData = new byte[indices.Length * sizeof(ushort)];

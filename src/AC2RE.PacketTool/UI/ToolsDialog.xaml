@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AC2RE.PacketTool.UI"
         mc:Ignorable="d"
-        Title="Tools" Height="450" Width="1200" ContentRendered="toolsDialog_ContentRendered">
+        Title="AC2RE Packet Tools" Height="450" Width="1200" ContentRendered="toolsDialog_ContentRendered">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

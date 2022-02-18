@@ -35,7 +35,7 @@ internal class WorldObjectManager {
         };
     }
 
-    public bool tryGet(InstanceId id, [MaybeNullWhen(false)] out WorldObject worldObject) {
+    public bool tryGet(InstanceId id, [NotNullWhen(true)] out WorldObject? worldObject) {
         worldObject = get(id);
         return worldObject != null;
     }

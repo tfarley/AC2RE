@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AC2RE.PacketTool.UI"
         mc:Ignorable="d"
-        Title="Search" Height="450" Width="1200" ContentRendered="searchDialog_ContentRendered">
+        Title="AC2RE Packet Search" Height="450" Width="1200" ContentRendered="searchDialog_ContentRendered">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

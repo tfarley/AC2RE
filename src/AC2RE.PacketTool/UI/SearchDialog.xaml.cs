@@ -40,7 +40,7 @@ public partial class SearchDialog : Window {
         resultsListViewSortManager = new(resultsListView, "fileName", "lineNum");
         resultsListViewExtraColumnManager = new(resultsListView);
 
-        foreach (MessageErrorType? messageErrorType in Enum.GetValues(typeof(MessageErrorType))) {
+        foreach (MessageErrorType? messageErrorType in Enum.GetValues<MessageErrorType>()) {
             if (messageErrorType != MessageErrorType.UNDETERMINED) {
                 errorsFilterComboBox.Items.Add(new ComboBoxItem { Content = messageErrorType });
             }

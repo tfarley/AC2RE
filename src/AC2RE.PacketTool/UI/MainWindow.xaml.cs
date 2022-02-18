@@ -26,7 +26,7 @@ public partial class MainWindow : Window {
         recordsListViewSortManager = new(recordsListView, "lineNum");
         recordsListViewExtraColumnManager = new(recordsListView);
 
-        foreach (MessageErrorType? messageErrorType in Enum.GetValues(typeof(MessageErrorType))) {
+        foreach (MessageErrorType? messageErrorType in Enum.GetValues<MessageErrorType>()) {
             if (messageErrorType != MessageErrorType.UNDETERMINED) {
                 errorsFilterComboBox.Items.Add(new ComboBoxItem { Content = messageErrorType });
             }

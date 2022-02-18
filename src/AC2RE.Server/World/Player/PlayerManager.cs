@@ -15,7 +15,7 @@ internal class PlayerManager {
         this.clientManager = clientManager;
     }
 
-    public bool tryGet(InstanceId characterId, [MaybeNullWhen(false)] out Player player) {
+    public bool tryGet(InstanceId characterId, [NotNullWhen(true)] out Player? player) {
         player = get(characterId);
         return player != null;
     }
@@ -31,7 +31,7 @@ internal class PlayerManager {
         return null;
     }
 
-    public bool tryGet(ClientId clientId, [MaybeNullWhen(false)] out Player player) {
+    public bool tryGet(ClientId clientId, [NotNullWhen(true)] out Player? player) {
         player = get(clientId);
         return player != null;
     }

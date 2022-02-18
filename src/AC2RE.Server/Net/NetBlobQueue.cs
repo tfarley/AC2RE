@@ -34,7 +34,7 @@ internal class NetBlobQueue {
         completeBlobs.Enqueue(blob, blob.blobId.sequenceId);
     }
 
-    public bool TryDequeue([MaybeNullWhen(false)] out NetBlob result) {
+    public bool TryDequeue([NotNullWhen(true)] out NetBlob? result) {
         // TODO: May need to do something if queue gets blocked for too long
         if (completeBlobs.Count > 0) {
             NetBlob nextBlob = completeBlobs.Peek();

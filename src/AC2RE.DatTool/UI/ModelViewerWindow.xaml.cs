@@ -1,6 +1,7 @@
 ﻿using AC2RE.Definitions;
 using AC2RE.Renderer;
 using AC2RE.RenderLib;
+using AC2RE.UICommon;
 using AC2RE.Utils;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,9 @@ using System.Numerics;
 using System.Windows;
 using System.Windows.Media;
 
-namespace AC2RE.UICommon.UI;
+namespace AC2RE.DatTool.UI;
 
-public partial class RenderPreviewWindow : Window {
+public partial class ModelViewerWindow : Window {
 
     private static readonly float MIN_DT = 1.0f / 120.0f;
 
@@ -25,7 +26,7 @@ public partial class RenderPreviewWindow : Window {
 
     private RenderObject? testObject;
 
-    public RenderPreviewWindow(DatReader datReader, DataId initialDid) {
+    public ModelViewerWindow(DatReader datReader, DataId initialDid) {
         InitializeComponent();
 
         HwndElement renderElement = new();
@@ -59,7 +60,7 @@ public partial class RenderPreviewWindow : Window {
         uint inputDid;
         try {
             inputDid = Convert.ToUInt32(renderDidTextBox.Text, 16);
-        } catch (Exception e) {
+        } catch (Exception) {
             return;
         }
 
@@ -68,14 +69,12 @@ public partial class RenderPreviewWindow : Window {
             testObject = null;
         }
 
-        try {
+        UIUtil.swallowException(() => {
             List<RenderMesh>? meshes = renderManager.loadDatMeshes(new(inputDid));
             if (meshes != null) {
                 testObject = renderManager.addRenderObject(meshes);
             }
-        } catch (Exception e) {
-            return;
-        }
+        });
     }
 
     private void CompositionTarget_Rendering(object? sender, EventArgs e) {

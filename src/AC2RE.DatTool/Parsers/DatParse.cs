@@ -148,7 +148,7 @@ internal class DatParse {
                     DBFile2IDTable file2IdTable = new(data);
 
                     if (directory != null && typesToParseSet.Contains(dbType)) {
-                        File.WriteAllText(Path.Join(directory!, $"{did.id:X8}{dbTypeDef.extension}.txt"), Util.objectToString(file2IdTable));
+                        File.WriteAllText(Path.Join(directory, $"{did.id:X8}{dbTypeDef.extension}.txt"), Util.objectToString(file2IdTable));
                     }
 
                     foreach (var element in file2IdTable.cacheByDid.Values) {

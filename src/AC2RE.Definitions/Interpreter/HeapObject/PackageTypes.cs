@@ -6,10 +6,11 @@ public static class PackageTypes {
 
     private static readonly DataId CLIENT_WLIB_DID = new(0x56000005);
 
+    public static bool loaded { get; private set; }
+
     private static readonly List<PackageType> packageTypes = new();
     private static readonly Dictionary<PackageType, int> packageTypeToParentIndex = new();
     private static readonly Dictionary<PackageType, List<PackageType>> packageTypeToHierarchyCache = new();
-    private static bool loaded;
 
     public static void loadPackageTypes(DatReader datReader) {
         if (!loaded) {

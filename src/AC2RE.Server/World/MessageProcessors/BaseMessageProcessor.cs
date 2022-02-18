@@ -13,7 +13,7 @@ internal abstract class BaseMessageProcessor : IMessageProcessor {
 
     public abstract bool processMessage(ClientConnection client, Player player, INetMessage genericMsg);
 
-    public bool tryGetCharacter(Player player, [MaybeNullWhen(false)] out WorldObject character) {
+    public bool tryGetCharacter(Player player, [NotNullWhen(true)] out WorldObject? character) {
         return world.objectManager.tryGet(player.characterId, out character);
     }
 

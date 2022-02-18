@@ -4,17 +4,43 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AC2RE.DatTool.UI"
+        xmlns:app="clr-namespace:AC2RE.DatTool"
         mc:Ignorable="d"
         Title="AC2RE Dat Tool" Height="450" Width="800">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem x:Name="openMenuItem" Header="Open" Click="openMenuItem_Click"/>
+                <MenuItem x:Name="generateHeightmapMenuItem" Header="Generate Heightmap" Click="generateHeightmapMenuItem_Click"/>
             </MenuItem>
         </Menu>
 
-        <Grid>
-
-        </Grid>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="portal.dat:" Margin="10,10,5,10"/>
+                <TextBox x:Name="portalDatPathTextBox" MinWidth="500" Margin="0,10,0,10" Text="{Binding Path=(app:UserSettings.portalDatFilePath)}"/>
+                <Button Content="Browse" Padding="10,5,10,5" Margin="10,10,0,10" Click="portalDatPathBrowseButton_Click"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="highres.dat:" Margin="10,10,5,10"/>
+                <TextBox x:Name="highresDatPathTextBox" MinWidth="500" Margin="0,10,0,10" Text="{Binding Path=(app:UserSettings.highresDatFilePath)}"/>
+                <Button Content="Browse" Padding="10,5,10,5" Margin="10,10,0,10" Click="highresDatPathBrowseButton_Click"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="cell__1.dat:" Margin="10,10,5,10"/>
+                <TextBox x:Name="cell1DatPathTextBox" MinWidth="500" Margin="0,10,0,10" Text="{Binding Path=(app:UserSettings.cell1DatFilePath)}"/>
+                <Button Content="Browse" Padding="10,5,10,5" Margin="10,10,0,10" Click="cell1DatPathBrowseButton_Click"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="local__*.dat:" Margin="10,10,5,10"/>
+                <TextBox x:Name="localDatPathTextBox" MinWidth="500" Margin="0,10,0,10" Text="{Binding Path=(app:UserSettings.localDatFilePath)}"/>
+                <Button Content="Browse" Padding="10,5,10,5" Margin="10,10,0,10" Click="localDatPathBrowseButton_Click"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Extract" Padding="10,5,10,5" Margin="10,10,0,10" Click="extractButton_Click"/>
+                <Button Content="Inspector" Padding="10,5,10,5" Margin="10,10,0,10" Click="inspectorButton_Click"/>
+                <Button Content="Model Viewer" Padding="10,5,10,5" Margin="10,10,0,10" Click="modelViewerButton_Click"/>
+                <Button Content="Map Viewer" Padding="10,5,10,5" Margin="10,10,0,10" Click="mapViewerButton_Click"/>
+            </StackPanel>
+        </StackPanel>
     </DockPanel>
 </Window>

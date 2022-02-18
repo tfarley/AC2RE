@@ -1,0 +1,16 @@
+﻿<Window x:Class="AC2RE.DatTool.UI.ExtractWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AC2RE.DatTool.UI"
+        mc:Ignorable="d"
+        Title="AC2RE Dat Extract" Height="320" Width="750">
+    <StackPanel Orientation="Horizontal">
+        <StackPanel x:Name="dbTypeCheckBoxesPanel" Orientation="Horizontal"/>
+        <StackPanel VerticalAlignment="Bottom">
+            <Button Content="Toggle All" Padding="10,5,10,5" Margin="10,10,0,10" Click="toggleAllButton_Click"/>
+            <Button Content="Extract" Padding="10,5,10,5" Margin="10,10,0,10" Click="extractButton_Click"/>
+        </StackPanel>
+    </StackPanel>
+</Window>
