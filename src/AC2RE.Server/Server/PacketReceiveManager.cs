@@ -67,9 +67,17 @@ internal class PacketReceiveManager {
             return true;
         }
 
+        string password = "";
+        if (packet.logonHeader.netAuth.authType == AuthType.GLSUserNameTicket) {
+            using (AC2Reader extraData = new AC2Reader(new MemoryStream(packet.logonHeader.netAuth.extraData))) {
+                password = extraData.ReadString();
+            }
+        }
+
         Logs.NET.debug("Logon request",
             "seq", packet.logonHeader.netAuth.connectionSeq,
-            "acct", packet.logonHeader.netAuth.accountName);
+            "acct", packet.logonHeader.netAuth.accountName,
+            "pwd", password);
 
         // TODO: Remove, just to create a temporary new account
         if (!accountManager.accountExistsWithUserName(packet.logonHeader.netAuth.accountName)) {

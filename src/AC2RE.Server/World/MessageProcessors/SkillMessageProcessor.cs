@@ -17,14 +17,14 @@ internal class SkillMessageProcessor : BaseMessageProcessor {
                         if (tryGetCharacter(player, out WorldObject? character)) {
                             ErrorType trainSkillError = character.trainSkill(sEvent.skillId);
                             if (trainSkillError != ErrorType.None) {
-                                sendMessage(player, trainSkillError.ToString(), TextType.Error);
+                                sendText(player, trainSkillError.ToString(), TextType.Error);
                                 return true;
                             }
 
                             sendUpdateSkillRepo(player, character);
                             sendUpdateSkillInfo(player, character, sEvent.skillId);
                             Skill skill = world.contentManager.getSkill(sEvent.skillId);
-                            sendMessage(player, new StringInfo(new(0x250004AA), new(0x5B661385), new() {
+                            sendText(player, new StringInfo(new(0x250004AA), new(0x5B661385), new() {
                                 { StringVariable.SkillName, new(skill.name) },
                             }));
                         }
@@ -33,14 +33,14 @@ internal class SkillMessageProcessor : BaseMessageProcessor {
                         if (tryGetCharacter(player, out WorldObject? character)) {
                             ErrorType raiseSkillError = character.raiseSkill(sEvent.skillId);
                             if (raiseSkillError != ErrorType.None) {
-                                sendMessage(player, raiseSkillError.ToString(), TextType.Error);
+                                sendText(player, raiseSkillError.ToString(), TextType.Error);
                                 return true;
                             }
 
                             sendUpdateSkillRepo(player, character);
                             sendUpdateSkillInfo(player, character, sEvent.skillId);
                             Skill skill = world.contentManager.getSkill(sEvent.skillId);
-                            sendMessage(player, new StringInfo(new(0x250004AA), new(0x903DFFF9), new() {
+                            sendText(player, new StringInfo(new(0x250004AA), new(0x903DFFF9), new() {
                                 { StringVariable.SkillName, new(skill.name) },
                                 { StringVariable.SkillLevel, new((int)character.skillRepo.skills[sEvent.skillId].levelCached) },
                             }));

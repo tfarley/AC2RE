@@ -15,12 +15,12 @@ internal class UIMessageProcessor : BaseMessageProcessor {
                     if (msg.netEvent.funcId == ServerEventFunctionId.Player__SetShortcut) {
                         SetShortcutSEvt sEvent = (SetShortcutSEvt)msg.netEvent;
                         if (sEvent.index >= player.dbCharacter.shortcuts.Length) {
-                            sendMessage(player, "Shortcut index out of range", TextType.Error);
+                            sendText(player, "Shortcut index out of range", TextType.Error);
                             return true;
                         }
 
                         if ((sEvent.shortcut.valString?.Length ?? 0) > 255) {
-                            sendMessage(player, "Shortcut alias too long", TextType.Error);
+                            sendText(player, "Shortcut alias too long", TextType.Error);
                             return true;
                         }
 

@@ -29,6 +29,20 @@ public class AC2Writer : BinaryWriter {
         Write((uint)(value ? 1 : 0));
     }
 
+    public void WriteCompressed(uint value) {
+        // SB_As32Bit_Compressed::Serialize
+        if (value <= 0x7F) {
+            Write((byte)(value & 0xFF));
+        } else if (value <= 0x3FFF) {
+            Write((byte)(((value >> 8) & 0xFF) | 0x80));
+            Write((byte)(value & 0xFF));
+        } else {
+            Write((byte)(((value >> 24) & 0xFF) | 0xC0));
+            Write((byte)((value >> 16) & 0xFF));
+            Write((ushort)(value & 0xFFFF));
+        }
+    }
+
     // NOTE: Special naming to avoid stomping on ushort overload
     private void WritePackTag(PackTag value) {
         Write((uint)value);
@@ -183,6 +197,16 @@ public class AC2Writer : BinaryWriter {
         AC2Crypto.encrypt(bytes, 0, bytes.Length);
         Write(bytes);
         Align(4);
+    }
+
+    public void WriteMultiByteString(string str) {
+        int numChars = str?.Length ?? 0;
+        WriteCompressed((uint)numChars);
+        if (numChars == 0) {
+            return;
+        }
+        byte[] bytes = Encoding.Unicode.GetBytes(str);
+        Write(bytes);
     }
 
     public void Write<T>(List<T> list, Action<T> elementWriter, uint sizeOfSize = 4) {

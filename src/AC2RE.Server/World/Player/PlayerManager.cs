@@ -93,11 +93,11 @@ internal class PlayerManager {
     }
 
     public void disconnectAll() {
+        sendAll(new DisplayStringInfoMsg {
+            type = TextType.Admin,
+            text = new(new(0x25000626), new(0x9E296F6)),
+        });
         foreach (Player player in _players.Values) {
-            send(player, new DisplayStringInfoMsg {
-                type = TextType.Admin,
-                text = new(new(0x25000626), new(0x9E296F6)),
-            });
             disconnect(player);
         }
     }

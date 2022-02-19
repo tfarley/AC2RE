@@ -56,7 +56,7 @@ internal static class CharacterGen {
         setCharacterVisual(character, appProfileMap, appearanceInfos);
         setCharacterQualities(character, species, sex);
 
-        character.name = new(name);
+        character.name = new(name + (sex == SexType.Male ? " [M]" : " [F]"));
 
         addStartingSkills(world, character, charGenMatrix, species);
 

@@ -17,11 +17,29 @@ public class InterpCEventCellMsg : INetMessage, IInterpCEventMsg {
     public InstanceIdWithStamp senderIdWithStamp; // sender
     public IClientEvent netEvent { get; set; }
 
+    public InterpCEventCellMsg() {
+
+    }
+
     public InterpCEventCellMsg(AC2Reader data) {
         senderIdWithStamp = data.ReadInstanceIdWithStamp();
         ClientEventFunctionId funcId = data.ReadEnum<ClientEventFunctionId>();
         uint length = data.ReadUInt32();
         netEvent = IClientEvent.read(funcId, data);
+    }
+
+    public void write(AC2Writer data) {
+        data.Write(senderIdWithStamp);
+        data.WriteEnum(netEvent.funcId);
+        // Placeholder for length
+        data.Write((uint)0);
+        long contentStart = data.BaseStream.Position;
+        netEvent.write(data);
+        long contentEnd = data.BaseStream.Position;
+        long contentLength = contentEnd - contentStart;
+        data.BaseStream.Seek(contentStart - sizeof(uint), SeekOrigin.Begin);
+        data.Write((uint)contentLength);
+        data.BaseStream.Seek(contentEnd, SeekOrigin.Begin);
     }
 }
 
@@ -52,7 +70,7 @@ public class InterpCEventPrivateMsg : INetMessage, IInterpCEventMsg {
         netEvent.write(data);
         long contentEnd = data.BaseStream.Position;
         long contentLength = contentEnd - contentStart;
-        data.BaseStream.Seek(-contentLength - sizeof(uint), SeekOrigin.Current);
+        data.BaseStream.Seek(contentStart - sizeof(uint), SeekOrigin.Begin);
         data.Write((uint)contentLength);
         data.BaseStream.Seek(contentEnd, SeekOrigin.Begin);
     }

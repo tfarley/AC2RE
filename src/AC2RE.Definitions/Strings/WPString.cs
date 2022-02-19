@@ -8,8 +8,8 @@ public class WPString : IHeapObject {
 
     public string contents;
 
-    public WPString() {
-
+    public WPString(string contents) {
+        this.contents = contents;
     }
 
     public WPString(AC2Reader data) {

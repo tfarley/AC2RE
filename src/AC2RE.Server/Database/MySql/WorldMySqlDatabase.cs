@@ -110,7 +110,7 @@ internal class WorldMySqlDatabase : BaseMySqlDatabase, IWorldDatabase {
     }
 
     public List<WorldObject> getWorldObjectsWithLandblockId(World world, LandblockId landblockId) {
-        return getWorldObjectsWhere(world, $"JOIN world_obj_phys ON landblockId = {landblockId.id}");
+        return getWorldObjectsWhere(world, $"JOIN world_obj_phys ON objectId = id AND landblockId = {landblockId.id}");
     }
 
     public List<WorldObject> getWorldObjectsWithContainerId(World world, InstanceId containerId) {
@@ -122,7 +122,7 @@ internal class WorldMySqlDatabase : BaseMySqlDatabase, IWorldDatabase {
     }
 
     public List<WorldObject> getWorldObjectsWithParentId(World world, InstanceId parentId) {
-        return getWorldObjectsWhere(world, $"JOIN world_obj_phys ON parentId = {parentId.id}");
+        return getWorldObjectsWhere(world, $"JOIN world_obj_phys ON objectId = id AND parentId = {parentId.id}");
     }
 
     private WorldObject? getWorldObjectWhere(World world, string? whereClause = null) {

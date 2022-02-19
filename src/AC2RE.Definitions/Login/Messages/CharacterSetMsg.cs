@@ -14,9 +14,9 @@ public class CharacterSetMsg : INetMessage {
     public uint status; // status_
     public uint numAllowedCharacters; // numAllowedCharacters_
     public string accountName; // account_
-    public uint unk1;
-    public bool hasLegions;
     public bool useTurbineChat; // m_fUseTurbineChat
+    public bool hasLegions;
+    public uint unk1;
 
     public CharacterSetMsg() {
 
@@ -28,9 +28,9 @@ public class CharacterSetMsg : INetMessage {
         status = data.ReadUInt32();
         numAllowedCharacters = data.ReadUInt32();
         accountName = data.ReadString();
-        unk1 = data.ReadUInt32();
-        hasLegions = data.ReadBoolean();
         useTurbineChat = data.ReadBoolean();
+        hasLegions = data.ReadBoolean();
+        unk1 = data.ReadUInt32();
     }
 
     public void write(AC2Writer data) {
@@ -39,8 +39,8 @@ public class CharacterSetMsg : INetMessage {
         data.Write(status);
         data.Write(numAllowedCharacters);
         data.Write(accountName);
-        data.Write(unk1);
+        data.Write(useTurbineChat);
         data.Write(hasLegions);
-        data.Write(useTurbineChat); // TODO: Double check these three flags - this might actually be the first "1"
+        data.Write(unk1);
     }
 }

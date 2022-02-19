@@ -94,6 +94,7 @@ internal class CombatMessageProcessor : BaseMessageProcessor {
                         if (tryGetCharacter(player, out WorldObject? character)) {
                             character.setAttacking(true);
                             Skill skill = world.contentManager.getSkill(sEvent.skillId);
+                            SkillInfo skillInfo = character.skillRepo.skills[sEvent.skillId];
                             if (skill is ActiveSkill activeSkill) {
                                 InstanceId weaponId = character.getEquipped(InvLoc.PrimaryHand);
                                 if (weaponId == InstanceId.NULL) {
@@ -127,7 +128,7 @@ internal class CombatMessageProcessor : BaseMessageProcessor {
                                                 targetHealthChange = -staticAttackHook.addMod,
                                             });
                                         } else if (hook is LinearAttackHook linearAttackHook) {
-                                            int level = 1;
+                                            int level = character.getSkillLevel(sEvent.skillId);
                                             float damage = 0.0f;
                                             if (linearAttackHook.addDmgData.Count > 1) {
                                                 float damagePerLevel = (linearAttackHook.addDmgData[0].value - linearAttackHook.addDmgData[1].value) / (linearAttackHook.addDmgData[0].level - linearAttackHook.addDmgData[1].level);
@@ -159,7 +160,6 @@ internal class CombatMessageProcessor : BaseMessageProcessor {
                                     skillId = sEvent.skillId,
                                     hooks = hooks,
                                 });
-                                SkillInfo skillInfo = character.skillRepo.skills[sEvent.skillId];
                                 skillInfo.flags |= SkillInfo.Flag.HasTimeLastUsed;
                                 skillInfo.lastUsedTime = world.serverTime.time;
                                 send(player, new InterpCEventPrivateMsg {

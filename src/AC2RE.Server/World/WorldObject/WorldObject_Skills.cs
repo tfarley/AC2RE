@@ -87,8 +87,10 @@ internal partial class WorldObject {
         Skill skill = world.contentManager.getSkill(skillId);
         AdvancementTable advancementTable = world.contentManager.getAdvancementTable(skill.advTableDid);
 
-        int nextSkillLevel;
-        for (nextSkillLevel = 2; nextSkillLevel < advancementTable.maxLevel && nextSkillLevel < advancementTable.map.Count && skillInfo.xpAllocated >= advancementTable.map[nextSkillLevel]; nextSkillLevel++);
+        int nextSkillLevel = 2;
+        while (nextSkillLevel < advancementTable.maxLevel && nextSkillLevel < advancementTable.map.Count && skillInfo.xpAllocated >= advancementTable.map[nextSkillLevel]) {
+            nextSkillLevel++;
+        }
 
         if (nextSkillLevel > advancementTable.maxLevel) {
             return ErrorType.Skill_CannotRaise;
@@ -107,5 +109,20 @@ internal partial class WorldObject {
         xpAvailable -= (long)xpCost;
 
         return ErrorType.None;
+    }
+
+    public int getSkillLevel(SkillId skillId) {
+        if (!skillRepo.skills.TryGetValue(skillId, out SkillInfo? skillInfo)) {
+            return 0;
+        }
+
+        Skill skill = world.contentManager.getSkill(skillId);
+        AdvancementTable advancementTable = world.contentManager.getAdvancementTable(skill.advTableDid);
+
+        int level = 1;
+        while (level < advancementTable.maxLevel && level < advancementTable.map.Count && skillInfo.xpAllocated >= advancementTable.map[level + 1]) {
+            level++;
+        }
+        return level;
     }
 }

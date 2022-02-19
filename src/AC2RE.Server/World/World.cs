@@ -30,6 +30,8 @@ internal class World {
     public readonly WorldObjectManager objectManager;
     public readonly LandblockManager landblockManager;
 
+    public readonly Dictionary<uint, ChannelData> roomIdToChatChannel;
+
     public World(IMapDatabase mapDb, IWorldDatabase worldDb, ServerTime serverTime, ContentManager contentManager, PlayerManager playerManager) {
         this.mapDb = mapDb;
         this.worldDb = worldDb;
@@ -49,6 +51,63 @@ internal class World {
             new ExaminationMessageProcessor(this),
             new SkillMessageProcessor(this),
             new UIMessageProcessor(this),
+        };
+        roomIdToChatChannel = new() {
+            {
+                1,
+                new() {
+                    pendingRoomCreation = true,
+                    type = TextType.GeneralChannel,
+                    regionId = 0,
+                    roomId = 1,
+                    available = true,
+                    name = new("General"),
+                }
+            },
+            {
+                2,
+                new() {
+                    pendingRoomCreation = true,
+                    type = TextType.TradeChannel,
+                    regionId = 0,
+                    roomId = 2,
+                    available = true,
+                    name = new("Trade"),
+                }
+            },
+            {
+                3,
+                new() {
+                    pendingRoomCreation = true,
+                    type = TextType.RegionChannel,
+                    regionId = 0,
+                    roomId = 3,
+                    available = true,
+                    name = new("Region"),
+                }
+            },
+            {
+                4,
+                new() {
+                    pendingRoomCreation = true,
+                    type = TextType.FactionChannel,
+                    regionId = 0,
+                    roomId = 4,
+                    available = true,
+                    name = new("Faction"),
+                }
+            },
+            {
+                5,
+                new() {
+                    pendingRoomCreation = true,
+                    type = TextType.PKChannel,
+                    regionId = 0,
+                    roomId = 5,
+                    available = true,
+                    name = new("PvP"),
+                }
+            },
         };
     }
 

@@ -21,12 +21,23 @@ internal abstract class BaseMessageProcessor : IMessageProcessor {
         world.playerManager.send(player, msg, ordered);
     }
 
-    protected void sendMessage(Player player, string text, TextType type = TextType.Standard) {
-        sendMessage(player, new StringInfo(text), type);
+    protected void sendText(Player player, string text, TextType type = TextType.Standard) {
+        sendText(player, new StringInfo(text + '\n'), type);
     }
 
-    protected void sendMessage(Player player, StringInfo text, TextType type = TextType.Standard) {
+    protected void sendText(Player player, StringInfo text, TextType type = TextType.Standard) {
         world.playerManager.send(player, new DisplayStringInfoMsg {
+            text = text,
+            type = type,
+        });
+    }
+
+    protected void sendTextAll(string text, TextType type = TextType.Standard) {
+        sendTextAll(new StringInfo(text + '\n'), type);
+    }
+
+    protected void sendTextAll(StringInfo text, TextType type = TextType.Standard) {
+        world.playerManager.sendAll(new DisplayStringInfoMsg {
             text = text,
             type = type,
         });

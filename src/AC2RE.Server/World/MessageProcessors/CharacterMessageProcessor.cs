@@ -309,6 +309,17 @@ internal class CharacterMessageProcessor : BaseMessageProcessor {
                     character.enterWorld();
 
                     world.landblockManager.syncPlayerVisibility(player);
+
+                    Dictionary<TextType, ChannelData> chatChannels = new();
+                    foreach (ChannelData chatChannel in world.roomIdToChatChannel.Values) {
+                        chatChannels[chatChannel.type] = chatChannel;
+                    }
+
+                    send(player, new InterpCEventPrivateMsg {
+                        netEvent = new RefreshChannelsCEvt {
+                            channels = chatChannels,
+                        }
+                    });
                     break;
                 }
             case MessageOpcode.Login__CharExitGame: {
@@ -359,7 +370,7 @@ internal class CharacterMessageProcessor : BaseMessageProcessor {
                 character.player = player;
                 characterIdentities.Add(new() {
                     id = character.id,
-                    name = character.name!.literalValue,
+                    name = StringUtil.removeMetaTags(character.name!.literalValue),
                     secondsGreyedOut = 0,
                     visualDesc = character.visual,
                 });
@@ -386,9 +397,9 @@ internal class CharacterMessageProcessor : BaseMessageProcessor {
             status = 0,
             numAllowedCharacters = 10,
             accountName = player.account.userName,
-            unk1 = 1,
-            hasLegions = true,
             useTurbineChat = true,
+            hasLegions = true,
+            unk1 = 1,
         });
     }
 }

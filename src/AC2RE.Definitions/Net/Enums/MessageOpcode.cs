@@ -207,7 +207,6 @@ public enum MessageOpcode : uint {
     Physics__CreateObject = 0x00010058, // Evt_Physics__CreateObject_ID
     Physics__ObjDescEvent = 0x00010059, // Evt_Physics__ObjDescEvent_ID
     Physics__SoundEvent = 0x0001005F, // Evt_Physics__SoundEvent_ID
-    EnteredWorldEvent = 0x00010060, // Evt_EnteredWorldEvent_ID
     Physics__CreatePlayer = 0x00010060, // Evt_Physics__CreatePlayer_ID
     Physics__DeleteObject = 0x00010061, // Evt_Physics__DeleteObject_ID
     Physics__SetState = 0x00010062, // Evt_Physics__SetState_ID

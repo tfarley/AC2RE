@@ -29,9 +29,7 @@ public interface INetMessage : IWritable {
             MessageOpcode.Login__CharExitGame => isClientToServer ? new CharacterExitGameSMsg(data) : new CharacterExitGameCMsg(data),
             MessageOpcode.Login__CharacterSet => new CharacterSetMsg(data),
             MessageOpcode.Login__CharGenVerification => new CharGenVerificationMsg(data),
-            MessageOpcode.Login__ChatServerData => new GenericMsg {
-                payload = data.ReadBytes((int)(data.BaseStream.Length - data.BaseStream.Position)),
-            },
+            MessageOpcode.Login__ChatServerData => new ChatServerDataMsg(data),
             MessageOpcode.Login__ClientSceneRenderingComplete => new ClientSceneRenderingCompleteMsg(),
             MessageOpcode.Login__MinCharSet => new MinCharSetMsg(data),
             MessageOpcode.Login__PlayerDesc => new PlayerDescMsg(data),

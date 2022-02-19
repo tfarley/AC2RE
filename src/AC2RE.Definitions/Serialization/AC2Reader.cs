@@ -28,6 +28,22 @@ public class AC2Reader : BinaryReader {
         return ReadUInt32() != 0;
     }
 
+    public uint ReadUInt32Compressed() {
+        // SB_As32Bit_Compressed::Serialize
+        byte b0 = ReadByte();
+        if ((b0 & 0x80) == 0) {
+            return b0;
+        }
+
+        byte b1 = ReadByte();
+        if ((b0 & 0x40) == 0) {
+            return ((uint)(b0 & 0x7F) << 8) | b1;
+        }
+
+        ushort b2b3 = ReadUInt16();
+        return ((((uint)(b0 & 0x3F) << 8) | b1) << 16) | b2b3;
+    }
+
     private PackTag ReadPackTag() {
         return (PackTag)ReadUInt32();
     }
@@ -197,6 +213,16 @@ public class AC2Reader : BinaryReader {
         Align(4);
         AC2Crypto.decrypt(bytes, 0, length);
         return encoding.GetString(bytes);
+    }
+
+    public string ReadMultiByteString() {
+        uint numChars = ReadUInt32Compressed();
+        if (numChars == 0) {
+            return "";
+        }
+        int length = (int)numChars * 2;
+        byte[] bytes = ReadBytes(length);
+        return Encoding.Unicode.GetString(bytes);
     }
 
     public List<T> ReadList<T>(Func<T> elementReader, uint sizeOfSize = 4) {
