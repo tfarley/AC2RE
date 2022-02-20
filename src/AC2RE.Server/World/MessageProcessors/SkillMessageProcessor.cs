@@ -21,8 +21,6 @@ internal class SkillMessageProcessor : BaseMessageProcessor {
                                 return true;
                             }
 
-                            sendUpdateSkillRepo(player, character);
-                            sendUpdateSkillInfo(player, character, sEvent.skillId);
                             Skill skill = world.contentManager.getSkill(sEvent.skillId);
                             sendText(player, new StringInfo(new(0x250004AA), new(0x5B661385), new() {
                                 { StringVariable.SkillName, new(skill.name) },
@@ -37,8 +35,6 @@ internal class SkillMessageProcessor : BaseMessageProcessor {
                                 return true;
                             }
 
-                            sendUpdateSkillRepo(player, character);
-                            sendUpdateSkillInfo(player, character, sEvent.skillId);
                             Skill skill = world.contentManager.getSkill(sEvent.skillId);
                             sendText(player, new StringInfo(new(0x250004AA), new(0x903DFFF9), new() {
                                 { StringVariable.SkillName, new(skill.name) },
@@ -54,26 +50,5 @@ internal class SkillMessageProcessor : BaseMessageProcessor {
                 return false;
         }
         return true;
-    }
-
-    private void sendUpdateSkillRepo(Player player, WorldObject character) {
-        send(player, new InterpCEventPrivateMsg {
-            netEvent = new UpdateSkillRepositoryCEvt {
-                skillRepository = new() {
-                    skillCredits = character.skillRepo.skillCredits,
-                    untrainingXp = character.skillRepo.untrainingXp,
-                    heroSkillCredits = character.skillRepo.heroSkillCredits,
-                    skillIdUntraining = character.skillRepo.skillIdUntraining,
-                },
-            }
-        });
-    }
-
-    private void sendUpdateSkillInfo(Player player, WorldObject character, SkillId skillId) {
-        send(player, new InterpCEventPrivateMsg {
-            netEvent = new UpdateSkillInfoCEvt {
-                skillInfo = character.skillRepo.skills[skillId],
-            }
-        });
     }
 }

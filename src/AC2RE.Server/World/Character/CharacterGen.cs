@@ -15,7 +15,7 @@ internal static class CharacterGen {
         { SpeciesType.Empyrean, (1 << 20) },
     };
 
-    public static WorldObject createCharacterObject(World world, Position startPos, string name, SpeciesType species, SexType sex, Dictionary<PhysiqueType, float> physiqueTypeValues) {
+    public static WorldObject createCharacterObject(World world, Position startPos, string name, SpeciesType species, SexType sex, ClassType classType, Dictionary<PhysiqueType, float> physiqueTypeValues) {
         Dictionary<PhysiqueType, Dictionary<float, Tuple<AppearanceKey, DataId>>> appProfileMap = new();
 
         CharacterGenSystem characterGenSystem = world.contentManager.getCharacterGenSystem();
@@ -54,7 +54,7 @@ internal static class CharacterGen {
         WorldObject character = world.objectManager.create(InstanceId.IdType.Player, characterGenSystem.playerEntityDid, raceSexInfo.physObjDid, true);
         setCharacterPhysics(character, startPos);
         setCharacterVisual(character, appProfileMap, appearanceInfos);
-        setCharacterQualities(character, species, sex);
+        setCharacterQualities(character, species, sex, classType);
 
         character.name = new(name + (sex == SexType.Male ? " [M]" : " [F]"));
 
@@ -78,12 +78,12 @@ internal static class CharacterGen {
         };
     }
 
-    private static void setCharacterQualities(WorldObject character, SpeciesType species, SexType sex) {
+    private static void setCharacterQualities(WorldObject character, SpeciesType species, SexType sex, ClassType classType) {
         character.capacity = 78;
         character.species = species;
         character.sex = sex;
-        character.playerClass = 2;
         character.level = 7;
+        character.classType = classType;
         character.money = 321;
         character.health = 100;
         character.healthMax = 100;

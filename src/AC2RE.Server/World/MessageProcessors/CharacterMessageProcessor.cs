@@ -25,7 +25,7 @@ internal class CharacterMessageProcessor : BaseMessageProcessor {
             case MessageOpcode.CHARACTER_CREATE_EVENT: {
                     CharacterCreateMsg msg = (CharacterCreateMsg)genericMsg;
 
-                    WorldObject characterObject = CharacterGen.createCharacterObject(world, World.ARWIC_START_POS, msg.characterName, msg.species, msg.sex, msg.physiqueTypeValues);
+                    WorldObject characterObject = CharacterGen.createCharacterObject(world, World.ARWIC_START_POS, msg.characterName, msg.species, msg.sex, msg.classType, msg.physiqueTypeValues);
                     characterObject.player = player;
 
                     Character character = world.characterManager.createWithAccountAndObject(player.account.id, characterObject.id);

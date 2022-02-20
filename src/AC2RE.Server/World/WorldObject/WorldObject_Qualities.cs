@@ -378,9 +378,9 @@ internal partial class WorldObject {
         set => setQ(IntStat.ContainerMaxCapacity, value);
     }
 
-    public int playerClass {
-        get => getQ(IntStat.Class);
-        set => setQ(IntStat.Class, value);
+    public ClassType classType {
+        get => (ClassType)getQ(IntStat.Class);
+        set => setQ(IntStat.Class, (int)value);
     }
 
     public int level {

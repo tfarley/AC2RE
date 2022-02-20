@@ -1,5 +1,6 @@
 ﻿using AC2RE.Server.Database;
 using AC2RE.Server.Migration;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -49,6 +50,16 @@ internal class AC2Server {
         }
 
         time.restart();
+
+        Logs.STATUS.info("Connecting to database...");
+        while (true) {
+            try {
+                BaseMySqlDatabase.createConnection().Dispose();
+                break;
+            } catch (Exception e) {
+                Logs.STATUS.error(e, "Failed to make initial database connection");
+            }
+        }
 
         Logs.STATUS.info("Running migrations...");
         MigrationManager.bootstrap();

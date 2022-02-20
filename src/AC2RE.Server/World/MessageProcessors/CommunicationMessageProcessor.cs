@@ -70,7 +70,7 @@ internal class CommunicationMessageProcessor : BaseMessageProcessor {
                                         }
                                     default:
                                         sendText(player, "Invalid command", TextType.Error);
-                                        return true;
+                                        break;
                                 }
                             } else if (tryGetCharacter(player, out WorldObject? character)) {
                                 world.playerManager.sendAllVisible(character.id, new InterpCEventCellMsg {
@@ -122,7 +122,7 @@ internal class CommunicationMessageProcessor : BaseMessageProcessor {
                                     result = 0,
                                 }
                             });
-                            return true;
+                            break;
                         }
                     }
                     break;

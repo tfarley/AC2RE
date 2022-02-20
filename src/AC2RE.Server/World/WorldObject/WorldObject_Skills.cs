@@ -72,6 +72,9 @@ internal partial class WorldObject {
 
         skillRepo.skillCredits -= skill.cost;
 
+        sendUpdateSkillRepo();
+        sendUpdateSkillInfo(skillId);
+
         return ErrorType.None;
     }
 
@@ -108,6 +111,9 @@ internal partial class WorldObject {
 
         xpAvailable -= (long)xpCost;
 
+        sendUpdateSkillRepo();
+        sendUpdateSkillInfo(skillId);
+
         return ErrorType.None;
     }
 
@@ -124,5 +130,30 @@ internal partial class WorldObject {
             level++;
         }
         return level;
+    }
+
+    private void sendUpdateSkillRepo() {
+        if (player != null) {
+            world.playerManager.send(player, new InterpCEventPrivateMsg {
+                netEvent = new UpdateSkillRepositoryCEvt {
+                    skillRepository = new() {
+                        skillCredits = skillRepo.skillCredits,
+                        untrainingXp = skillRepo.untrainingXp,
+                        heroSkillCredits = skillRepo.heroSkillCredits,
+                        skillIdUntraining = skillRepo.skillIdUntraining,
+                    },
+                }
+            });
+        }
+    }
+
+    private void sendUpdateSkillInfo(SkillId skillId) {
+        if (player != null) {
+            world.playerManager.send(player, new InterpCEventPrivateMsg {
+                netEvent = new UpdateSkillInfoCEvt {
+                    skillInfo = skillRepo.skills[skillId],
+                }
+            });
+        }
     }
 }

@@ -4,7 +4,7 @@ namespace AC2RE.Server;
 
 internal partial class WorldObject {
 
-    private World world;
+    private readonly World world;
 
     public readonly InstanceId id;
     public bool deleted { get; private set; }
@@ -14,13 +14,13 @@ internal partial class WorldObject {
     public bool inWorld { get; private set; }
 
     public Player? player;
-    public bool attacking { get; private set; }
 
     public WorldObject(World world, InstanceId id, bool persistent) {
         this.world = world;
         this.id = id;
         this.persistent = persistent;
 
+        initCombat();
         initContain();
         initEquip();
         initPhysics();
@@ -73,20 +73,5 @@ internal partial class WorldObject {
         broadcastPhysics();
         broadcastQualities();
         broadcastVisuals();
-    }
-
-    public void setAttacking(bool attacking) {
-        if (this.attacking == attacking) {
-            return;
-        }
-
-        this.attacking = attacking;
-        world.playerManager.send(player, new InterpCEventPrivateMsg {
-            netEvent = new UpdateAttackStateCEvt() {
-                attacking = attacking,
-            }
-        }, true);
-
-        syncMode();
     }
 }

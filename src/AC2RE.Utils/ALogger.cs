@@ -40,16 +40,48 @@ public class ALogger {
     }
 
     [Conditional("DEBUG")]
+    public void trace(Exception e, params object[] contextKeyValues) {
+        addContext(logger, contextKeyValues).Verbose(e, e.Message);
+    }
+
+    [Conditional("DEBUG")]
+    public void trace(Exception e, string message, params object[] contextKeyValues) {
+        addContext(logger, contextKeyValues).Verbose(e, message);
+    }
+
+    [Conditional("DEBUG")]
     public void debug(string message, params object[] contextKeyValues) {
         addContext(logger, contextKeyValues).Debug(message);
+    }
+
+    [Conditional("DEBUG")]
+    public void debug(Exception e, params object[] contextKeyValues) {
+        addContext(logger, contextKeyValues).Debug(e, e.Message);
+    }
+
+    [Conditional("DEBUG")]
+    public void debug(Exception e, string message, params object[] contextKeyValues) {
+        addContext(logger, contextKeyValues).Debug(e, message);
     }
 
     public void info(string message, params object[] contextKeyValues) {
         addContext(logger, contextKeyValues).Information(message);
     }
 
+    public void info(Exception e, params object[] contextKeyValues) {
+        addContext(logger, contextKeyValues).Information(e, e.Message);
+    }
+
+    public void info(Exception e, string message, params object[] contextKeyValues) {
+        addContext(logger, contextKeyValues).Information(e, message);
+    }
+
     public void warn(string message, params object[] contextKeyValues) {
         addContext(logger, contextKeyValues).Warning(message);
+    }
+
+    public void warn(Exception e, params object[] contextKeyValues) {
+        addContext(logger, contextKeyValues).Warning(e, e.Message);
     }
 
     public void warn(Exception e, string message, params object[] contextKeyValues) {
@@ -60,12 +92,20 @@ public class ALogger {
         addContext(logger, contextKeyValues).Error(message);
     }
 
+    public void error(Exception e, params object[] contextKeyValues) {
+        addContext(logger, contextKeyValues).Error(e, e.Message);
+    }
+
     public void error(Exception e, string message, params object[] contextKeyValues) {
         addContext(logger, contextKeyValues).Error(e, message);
     }
 
     public void fatal(string message, params object[] contextKeyValues) {
         addContext(logger, contextKeyValues).Fatal(message);
+    }
+
+    public void fatal(Exception e, params object[] contextKeyValues) {
+        addContext(logger, contextKeyValues).Fatal(e, e.Message);
     }
 
     public void fatal(Exception e, string message, params object[] contextKeyValues) {
