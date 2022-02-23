@@ -94,13 +94,28 @@ public class ByteStream {
     public List<PLineOffsetList> lineOffsets; // m_lineOffsets
     public List<FrameDebugInfo> frames; // m_frames
 
-    public ByteStream(AC2Reader data) {
+    public ByteStream(AC2Reader data, params SectionType[] sectionTypesToParse) {
         magic = data.ReadBytes(2);
         data.Align(4);
         byteStreamVersion = data.ReadUInt32();
         while (data.BaseStream.Position < data.BaseStream.Length) {
             SectionType sectionType = data.ReadEnum<SectionType>();
             uint sectionSize = data.ReadUInt32();
+
+            if (sectionTypesToParse.Length > 0) {
+                bool shouldParseSection = false;
+                foreach (SectionType sectionTypeToParse in sectionTypesToParse) {
+                    if (sectionType == sectionTypeToParse) {
+                        shouldParseSection = true;
+                        break;
+                    }
+                }
+                if (!shouldParseSection) {
+                    data.BaseStream.Seek(sectionSize, SeekOrigin.Current);
+                    continue;
+                }
+            }
+
             switch (sectionType) {
                 case SectionType.VersionInfo:
                     versionInfo = new(data);

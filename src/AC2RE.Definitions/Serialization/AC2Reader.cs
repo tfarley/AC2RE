@@ -161,7 +161,7 @@ public class AC2Reader : BinaryReader {
             }
 
             // Skip over tags
-            ReadBytes((int)size);
+            BaseStream.Seek(size, SeekOrigin.Current);
             Align(4);
         } else {
             throw new InvalidDataException(referenceEntry.blob.ToString());

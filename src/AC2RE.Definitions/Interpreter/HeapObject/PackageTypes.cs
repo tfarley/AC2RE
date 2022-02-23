@@ -15,7 +15,7 @@ public static class PackageTypes {
     public static void loadPackageTypes(DatReader datReader) {
         if (!loaded) {
             using (AC2Reader data = datReader.getFileReader(CLIENT_WLIB_DID)) {
-                WLib wlib = new(data);
+                WLib wlib = new(data, SectionType.ExportTable);
                 foreach (ByteStream.ExportData export in wlib.byteStream.exports) {
                     add(export.args.packageType, export.args.parentIndex);
                 }

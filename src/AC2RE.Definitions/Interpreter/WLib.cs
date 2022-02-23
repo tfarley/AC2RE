@@ -6,8 +6,8 @@ public class WLib {
     public DataId did; // m_DID
     public ByteStream byteStream; // m_bstream
 
-    public WLib(AC2Reader data) {
+    public WLib(AC2Reader data, params SectionType[] sectionTypesToParse) {
         did = data.ReadDataId();
-        byteStream = new(data);
+        byteStream = new(data, sectionTypesToParse);
     }
 }
