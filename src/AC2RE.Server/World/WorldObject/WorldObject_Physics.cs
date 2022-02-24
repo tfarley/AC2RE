@@ -9,7 +9,10 @@ namespace AC2RE.Server;
 
 internal partial class WorldObject {
 
-    public PhysicsDesc physics;
+    public PhysicsDesc physics = new() {
+        pos = new(),
+        visualOrderStamp = 1,
+    };
     public LandblockId landblockId => physics.pos.cell.landblockId;
     private HashSet<InstanceId>? childIds;
 
@@ -26,10 +29,7 @@ internal partial class WorldObject {
     private bool positionDirty;
 
     private void initPhysics() {
-        physics = new();
-        physics.pos = new();
         physics.timestamps[(int)PhysicsTimeStamp.POSITION] = 1;
-        physics.visualOrderStamp = 1;
     }
 
     public void recachePhysics(IEnumerable<WorldObject> childWorldObjects) {
@@ -62,7 +62,7 @@ internal partial class WorldObject {
         world.playerManager.sendAllVisible(id, new SetVelocityScaleMsg {
             senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
             velScale = physics.velScale,
-        }, true);
+        });
     }
 
     public Position pos {
@@ -91,7 +91,7 @@ internal partial class WorldObject {
         world.playerManager.sendAllVisible(id, new LookAtMsg {
             senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
             targetId = physics.lookAtId,
-        }, true);
+        });
     }
 
     public void setLookAt(float lookAtDirX, float lookAtDirZ) {
@@ -101,7 +101,7 @@ internal partial class WorldObject {
             senderIdWithStamp = getInstanceIdWithStamp(),
             x = physics.headingX,
             z = physics.headingZ,
-        }, true);
+        });
     }
 
     public PhysicsDesc.SliderData getSliderValue(uint slider) {
@@ -123,7 +123,7 @@ internal partial class WorldObject {
             sliderId = slider,
             newValue = value,
             time = 0.1f, // TODO: Figure out what time means
-        }, true);
+        });
     }
 
     public void moveTo(InstanceId targetId, float desiredDist, float successDist, float desiredVel = 1.0f, bool toward = true) {
@@ -139,7 +139,7 @@ internal partial class WorldObject {
                 targetId = targetId,
             },
             movetoStamp = ++physics.timestamps[(int)PhysicsTimeStamp.MOVE_TO],
-        }, true);
+        });
     }
 
     private void broadcastPhysics() {

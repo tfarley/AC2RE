@@ -5,6 +5,7 @@ public class CPositionMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
     public NetQueue queueId => NetQueue.WEENIE;
     public MessageOpcode opcode => MessageOpcode.Physics__CPosition;
+    public OrderingType orderingType => OrderingType.PRIVATE_ORDERED;
 
     // ECM_Physics::SendEvt_CPosition
     public CPositionPack posPack; // _position_pack

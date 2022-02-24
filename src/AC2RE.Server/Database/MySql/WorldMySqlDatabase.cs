@@ -98,6 +98,7 @@ internal class WorldMySqlDatabase : BaseMySqlDatabase, IWorldDatabase {
         WorldObject worldObject = new(world, new(reader.GetUInt64("id")), true);
         worldObject.entityDid = new(reader.GetUInt32("entityDid"));
         worldObject.physicsEntityDid = new(reader.GetUInt32("physicsEntityDid"));
+        worldObject.effectRegistry.effectIdCounter = reader.GetUInt32("effectIdCounter");
         return worldObject;
     }
 
@@ -324,11 +325,13 @@ internal class WorldMySqlDatabase : BaseMySqlDatabase, IWorldDatabase {
             using (MySqlCommand objCmd = upsertCommand(connection, transaction, "world_obj",
                 new("id", MySqlDbType.UInt64),
                 new("entityDid", MySqlDbType.UInt32),
-                new("physicsEntityDid", MySqlDbType.UInt32))) {
+                new("physicsEntityDid", MySqlDbType.UInt32),
+                new("effectIdCounter", MySqlDbType.UInt32))) {
                 foreach (WorldObject worldObject in worldSave.worldObjects) {
                     objCmd.Parameters[0].Value = worldObject.id.id;
                     objCmd.Parameters[1].Value = worldObject.entityDid.id;
                     objCmd.Parameters[2].Value = worldObject.physicsEntityDid.id;
+                    objCmd.Parameters[3].Value = worldObject.effectRegistry.effectIdCounter;
                     objCmd.ExecuteNonQuery();
 
                     if (worldObject.qualities.ints != null) {

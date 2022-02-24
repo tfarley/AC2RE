@@ -7,7 +7,7 @@ public interface INetMessage : IWritable {
     public NetBlobId.Flag blobFlags { get; }
     public NetQueue queueId { get; }
     public MessageOpcode opcode { get; }
-    public OrderingType orderingType => OrderingType.PRIVATE_ORDERED;
+    public OrderingType orderingType { get; }
 
     public static INetMessage read(MessageOpcode opcode, AC2Reader data, bool isClientToServer) {
         return opcode switch {

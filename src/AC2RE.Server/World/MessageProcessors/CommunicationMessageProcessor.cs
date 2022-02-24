@@ -68,6 +68,12 @@ internal class CommunicationMessageProcessor : BaseMessageProcessor {
                                             teleport(player, new(new(cellId), offset));
                                             break;
                                         }
+                                    case ".kill": {
+                                            if (tryGetCharacter(player, out WorldObject? character)) {
+                                                character.applyDamage(1000000.0f, null);
+                                            }
+                                            break;
+                                        }
                                     default:
                                         sendText(player, "Invalid command", TextType.Error);
                                         break;

@@ -8,6 +8,7 @@ public class MinCharSetMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
     public NetQueue queueId => NetQueue.EVENT;
     public MessageOpcode opcode => MessageOpcode.Login__MinCharSet;
+    public OrderingType orderingType => OrderingType.UNORDERED;
 
     // MinimalCharacterSet
     public uint numAllowedCharacters; // m_numAllowedCharacters

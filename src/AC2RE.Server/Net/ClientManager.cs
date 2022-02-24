@@ -65,9 +65,9 @@ internal class ClientManager {
         return buffer.ToArray();
     }
 
-    private void send(ClientId clientId, INetMessage msg, byte[] payload, bool ordered = false) {
+    private void send(ClientId clientId, INetMessage msg, byte[] payload) {
         tryProcessClient(clientId, client => {
-            client.enqueueBlob(msg.blobFlags, msg.queueId, payload, ordered ? msg.orderingType : OrderingType.UNORDERED);
+            client.enqueueBlob(msg.blobFlags, msg.queueId, payload, msg.orderingType);
 
             StringBuilder msgString = new(msg.GetType().Name);
             if (msg is IInterpCEventMsg cEventMsg) {
@@ -80,14 +80,14 @@ internal class ClientManager {
         });
     }
 
-    public void send(ClientId clientId, INetMessage msg, bool ordered = false) {
-        send(clientId, msg, serializeMessage(msg), ordered);
+    public void send(ClientId clientId, INetMessage msg) {
+        send(clientId, msg, serializeMessage(msg));
     }
 
-    public void send(IEnumerable<ClientId> clientIds, INetMessage msg, bool ordered = false) {
+    public void send(IEnumerable<ClientId> clientIds, INetMessage msg) {
         byte[] payload = serializeMessage(msg);
         foreach (ClientId clientId in clientIds) {
-            send(clientId, msg, payload, ordered);
+            send(clientId, msg, payload);
         }
     }
 }

@@ -7,6 +7,7 @@ public class ChatServerDataMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
     public NetQueue queueId => NetQueue.LOGON;
     public MessageOpcode opcode => MessageOpcode.Login__ChatServerData;
+    public OrderingType orderingType => OrderingType.UNORDERED;
 
     // ChatNetworkBlob
     public ChatNetworkBlobHeader header; // m_header

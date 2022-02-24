@@ -40,6 +40,10 @@ internal partial class WorldObject {
                         });
                     }
                     if (hook is StaticAttackHook staticAttackHook) {
+                        float damage = staticAttackHook.addMod;
+                        if (world.objectManager.tryGet(targetId, out WorldObject? target)) {
+                            damage = target.applyDamage(damage, this);
+                        }
                         hooks.Add(new() {
                             type = StoryHookData.HookType.Damage,
                             targetId = targetId,
@@ -47,7 +51,7 @@ internal partial class WorldObject {
                             attackResult = CombatResultType.Hit,
                             animHookNumber = hook.animHookIndex,
                             attackHookNumber = (uint)(activeSkill.hooks.Count - 1),
-                            targetHealthChange = -staticAttackHook.addMod,
+                            targetHealthChange = -(int)damage,
                         });
                     } else if (hook is LinearAttackHook linearAttackHook) {
                         int level = getSkillLevel(skillId);
@@ -55,6 +59,9 @@ internal partial class WorldObject {
                         if (linearAttackHook.addDmgData.Count > 1) {
                             float damagePerLevel = (linearAttackHook.addDmgData[0].value - linearAttackHook.addDmgData[1].value) / (linearAttackHook.addDmgData[0].level - linearAttackHook.addDmgData[1].level);
                             damage = linearAttackHook.addDmgData[1].value + damagePerLevel * (level - 1);
+                        }
+                        if (world.objectManager.tryGet(targetId, out WorldObject? target)) {
+                            damage = target.applyDamage(damage, this);
                         }
                         hooks.Add(new() {
                             type = StoryHookData.HookType.Damage,
@@ -87,10 +94,8 @@ internal partial class WorldObject {
             skillInfo.flags |= SkillInfo.Flag.HasTimeLastUsed;
             skillInfo.lastUsedTime = world.serverTime.time;
             if (player != null) {
-                world.playerManager.send(player, new InterpCEventPrivateMsg {
-                    netEvent = new UpdateSkillInfoCEvt {
-                        skillInfo = skillInfo,
-                    }
+                world.playerManager.send(player, new UpdateSkillInfoCEvt {
+                    skillInfo = skillInfo,
                 });
             }
         }
@@ -102,12 +107,127 @@ internal partial class WorldObject {
         }
 
         this.attacking = attacking;
-        world.playerManager.send(player, new InterpCEventPrivateMsg {
-            netEvent = new UpdateAttackStateCEvt() {
-                attacking = attacking,
-            }
-        }, true);
+        world.playerManager.send(player, new UpdateAttackStateCEvt() {
+            attacking = attacking,
+        });
 
         syncMode();
+    }
+
+    public float applyDamage(float damage, WorldObject? attacker) {
+        health = Math.Max(health - (int)damage, 0);
+
+        doFx(FxId.BloodyDamaged, 1.0f - (health / healthMax));
+
+        if (health <= 0 && !dead) {
+            dead = true;
+            selectable = false;
+
+            doBehavior(new() {
+                behaviorId = BehaviorId.death,
+                modeId = ModeId.dead,
+                cameraParent = true,
+                cameraTarget = true,
+                cameraHold = true,
+            });
+            if (player != null) {
+                if (attacker != null) {
+                    world.playerManager.send(player, new DisplayDeathMessageCEvt {
+                        lastAttackerName = attacker.name,
+                    });
+                }
+                world.playerManager.send(player, new SetMovementFrozenCEvt {
+                    frozen = true,
+                });
+                // TODO: Add 10 second delay before death state is updated
+                world.playerManager.send(player, new UpdateDeathStateCEvt {
+                    dead = dead,
+                });
+            }
+            if (attacker != null) {
+                if (attacker.player != null) {
+                    world.playerManager.send(attacker.player, new DisplayKillingMessageCEvt {
+                        defenderName = name,
+                    });
+                }
+                world.playerManager.sendAllVisible(id, new InterpCEventVisualMsg {
+                    senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
+                    netEvent = new AnnounceWhoKilledMeCEvt {
+                        killerName = attacker.name,
+                        killerId = attacker.id,
+                    },
+                });
+            }
+        }
+
+        return damage;
+    }
+
+    public void resurrect() {
+        if (!dead) {
+            Logs.GENERAL.warn("Attempt to resurrect when not dead", "objId", id);
+            return;
+        }
+
+        health = healthMax;
+        vigor = vigorMax;
+        dead = false;
+        selectable = true;
+
+        if (player != null) {
+            addEffect(new() {
+                timeDemotedFromTopLevel = -1.0,
+                timeCast = world.serverTime.time,
+                casterId = player.characterId,
+                timeout = 180.0f,
+                appFloat = 0.0f,
+                spellcraft = 0.0f,
+                appInt = 0,
+                pk = false,
+                appPackage = null,
+                timePromotedToTopLevel = -1.0,
+                effect = new() {
+                    wstateDid = new(0x70000973),
+                },
+                actingForWhomId = default,
+                skillDid = default,
+                fromItemId = player.characterId,
+                flags = EffectRecord.Flag.IsSpecifiedTimeout | EffectRecord.Flag.IsTransientEffect,
+                durabilityLevel = 0,
+                relatedEffectId = EffectId.NULL,
+                categories = 1,
+                maxDurabilityLevel = 0,
+            });
+            world.playerManager.send(player, new SetAnimationFrozenCEvt {
+                frozen = true,
+            });
+            world.playerManager.send(player, new EnterPortalSpaceCEvt());
+            setMode(ModeId.peace);
+            world.playerManager.send(player, new ExitPortalSpaceCEvt());
+            world.playerManager.send(player, new SetAnimationFrozenCEvt {
+                frozen = false,
+            });
+            world.playerManager.send(player, new UpdateDeathStateCEvt {
+                dead = dead,
+            });
+        }
+
+        doFx(FxId.BloodyDamaged, 0.0f);
+        doFx(FxId.Lifestone_Prot, 1.0f);
+        doFx(FxId.Enter_World, 1.0f);
+
+        stopBehavior(BehaviorId.death);
+
+        doBehavior(new() {
+            behaviorId = BehaviorId.Revive,
+            cameraRestore = true,
+        });
+
+        if (player != null) {
+            world.playerManager.send(player, new SetMovementFrozenCEvt {
+                frozen = false,
+            });
+            stopFx(FxId.Enter_World);
+        }
     }
 }

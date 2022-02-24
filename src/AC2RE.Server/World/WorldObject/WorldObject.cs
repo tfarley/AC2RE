@@ -22,6 +22,7 @@ internal partial class WorldObject {
 
         initCombat();
         initContain();
+        initEffect();
         initEquip();
         initPhysics();
         initQualities();

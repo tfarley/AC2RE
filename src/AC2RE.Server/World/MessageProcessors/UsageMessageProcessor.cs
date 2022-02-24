@@ -46,19 +46,15 @@ internal class UsageMessageProcessor : BaseMessageProcessor {
                                         } else {
                                             sEvent.usageDesc.error = ErrorType.Usage_GeneralError;
 
-                                            send(player, new InterpCEventPrivateMsg {
-                                                netEvent = new TryToUseItemDoneCEvt {
-                                                    usageDesc = sEvent.usageDesc,
-                                                }
+                                            send(player, new TryToUseItemDoneCEvt {
+                                                usageDesc = sEvent.usageDesc,
                                             });
                                         }
                                     } else {
                                         sEvent.usageDesc.error = ErrorType.Usage_CantUse;
 
-                                        send(player, new InterpCEventPrivateMsg {
-                                            netEvent = new TryToUseItemDoneCEvt {
-                                                usageDesc = sEvent.usageDesc,
-                                            }
+                                        send(player, new TryToUseItemDoneCEvt {
+                                            usageDesc = sEvent.usageDesc,
                                         });
                                     }
                                 }
@@ -66,10 +62,8 @@ internal class UsageMessageProcessor : BaseMessageProcessor {
                         } else {
                             sEvent.usageDesc.error = ErrorType.Usage_GeneralError;
 
-                            send(player, new InterpCEventPrivateMsg {
-                                netEvent = new TryToUseItemDoneCEvt {
-                                    usageDesc = sEvent.usageDesc,
-                                }
+                            send(player, new TryToUseItemDoneCEvt {
+                                usageDesc = sEvent.usageDesc,
                             });
                         }
                     } else {

@@ -5,6 +5,7 @@ public class QualUpdateIntPrivateMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
     public NetQueue queueId => NetQueue.EVENT;
     public MessageOpcode opcode => MessageOpcode.Qualities__UpdateInt_Private;
+    public OrderingType orderingType => OrderingType.PRIVATE_ORDERED;
 
     // ECM_Qualities::RecvEvt_UpdateInt_Private
     public IntStat type; // _stype

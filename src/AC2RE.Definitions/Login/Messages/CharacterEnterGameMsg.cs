@@ -5,6 +5,7 @@ public class CharacterEnterGameMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
     public NetQueue queueId => NetQueue.LOGON;
     public MessageOpcode opcode => MessageOpcode.CHARACTER_ENTER_GAME_EVENT;
+    public OrderingType orderingType => OrderingType.UNORDERED;
 
     public InstanceId characterId;
     public string accountName;

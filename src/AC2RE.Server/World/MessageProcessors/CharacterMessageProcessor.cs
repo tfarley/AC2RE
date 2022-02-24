@@ -122,179 +122,163 @@ internal class CharacterMessageProcessor : BaseMessageProcessor {
                         }
                     }
 
-                    send(player, new InterpCEventPrivateMsg {
-                        netEvent = new HandleCharacterSessionStartCEvt {
-                            money = 12345,
-                            actRegistry = new() {
-                                viewingProtectionEffectId = EffectId.NULL,
-                                actSceneTable = new() {
-                                    { ActId.Osteth, new() },
-                                    { ActId.Linvak, new() },
-                                    { ActId.Omishan, new() },
-                                    { ActId.Prologue, new() },
-                                    { ActId.MonthlyEvents, new() },
-                                    { ActId.Quests, new() },
-                                }
+                    send(player, new HandleCharacterSessionStartCEvt {
+                        money = 12345,
+                        actRegistry = new() {
+                            viewingProtectionEffectId = EffectId.NULL,
+                            actSceneTable = new() {
+                                { ActId.Osteth, new() },
+                                { ActId.Linvak, new() },
+                                { ActId.Omishan, new() },
+                                { ActId.Prologue, new() },
+                                { ActId.MonthlyEvents, new() },
+                                { ActId.Quests, new() },
+                            }
+                        },
+                        quests = new() {
+                            new() {
+                                questId = QuestId.FindExplorerArwic,
+                                questName = new(new(0x250017EB), new(0xA8607CEC)),
+                                questDescription = new(new(0x250017EB), new(0x6C459364)),
+                                iconDid = new(0x4100034B),
+                                challengeLevel = -999,
+                                questStatus = QuestStatus.Underway,
+                                curPhase = 1,
+                                curJournalEntry = new(new(0x250017EB), new(0x2E5C1E52)),
+                                bestowalTime = 129500898.25912432,
+                                doneTime = -1355582621.7408757,
+                                expires = true,
+                                maxedOut = true,
+                                secondsRemaining = 10800,
+                                secondsUntilRetry = 0,
+                                playFxOnUpdate = false,
                             },
-                            quests = new() {
-                                new() {
-                                    questId = QuestId.FindExplorerArwic,
-                                    questName = new(new(0x250017EB), new(0xA8607CEC)),
-                                    questDescription = new(new(0x250017EB), new(0x6C459364)),
-                                    iconDid = new(0x4100034B),
-                                    challengeLevel = -999,
-                                    questStatus = QuestStatus.Underway,
-                                    curPhase = 1,
-                                    curJournalEntry = new(new(0x250017EB), new(0x2E5C1E52)),
-                                    bestowalTime = 129500898.25912432,
-                                    doneTime = -1355582621.7408757,
-                                    expires = true,
-                                    maxedOut = true,
-                                    secondsRemaining = 10800,
-                                    secondsUntilRetry = 0,
-                                    playFxOnUpdate = false,
-                                },
+                        },
+                        options = new() {
+                            contentFlags =
+                                GameplayOptionsProfile.ContentFlag.SHORTCUT_ARRAY
+                                | GameplayOptionsProfile.ContentFlag.SHOW_RANGE_DAMAGE_OTHER
+                                | GameplayOptionsProfile.ContentFlag.SAVED_UI_LOCATIONS
+                                | GameplayOptionsProfile.ContentFlag.RADAR_MASK
+                                | GameplayOptionsProfile.ContentFlag.FILTER_HASH
+                                | GameplayOptionsProfile.ContentFlag.BIT_FIELD
+                                | GameplayOptionsProfile.ContentFlag.CHAT_FONT_COLORS
+                                | GameplayOptionsProfile.ContentFlag.CHAT_FONT_SIZES
+                                | GameplayOptionsProfile.ContentFlag.CHAT_POPUP_FLAGS
+                                | GameplayOptionsProfile.ContentFlag.WINDOW_TO_CHANNEL,
+                            shortcutArray = shortcuts,
+                            whichShortcutSet = 1,
+                            damageTextRangeOther = 1.0f,
+                            savedUILocations = new(),
+                            /*m_savedUILocations = new() {
+                                contents = new() {
+                                { 0, new() {
+                                    { 0xA05C6B95, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                    { 0xA0446B95, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                    { 0xA04C6B95, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                    { 0xA0746B95, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                    { 0x6433C3C7, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                    { 0x9A25490C, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                    { 0xA0F792C9, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
+                                } }
+                            }
+                            },*/
+                            radarMask = 0xFFFFFFFF,
+                            filters = new() {
+                                { 1, TextType.All },
+                                { 2, TextType.GeneralChannel },
+                                { 3, TextType.Fellowship },
+                                { 4, TextType.Allegiance },
                             },
-                            options = new() {
-                                contentFlags =
-                                    GameplayOptionsProfile.ContentFlag.SHORTCUT_ARRAY
-                                    | GameplayOptionsProfile.ContentFlag.SHOW_RANGE_DAMAGE_OTHER
-                                    | GameplayOptionsProfile.ContentFlag.SAVED_UI_LOCATIONS
-                                    | GameplayOptionsProfile.ContentFlag.RADAR_MASK
-                                    | GameplayOptionsProfile.ContentFlag.FILTER_HASH
-                                    | GameplayOptionsProfile.ContentFlag.BIT_FIELD
-                                    | GameplayOptionsProfile.ContentFlag.CHAT_FONT_COLORS
-                                    | GameplayOptionsProfile.ContentFlag.CHAT_FONT_SIZES
-                                    | GameplayOptionsProfile.ContentFlag.CHAT_POPUP_FLAGS
-                                    | GameplayOptionsProfile.ContentFlag.WINDOW_TO_CHANNEL,
-                                shortcutArray = shortcuts,
-                                whichShortcutSet = 1,
-                                damageTextRangeOther = 1.0f,
-                                savedUILocations = new(),
-                                /*m_savedUILocations = new() {
-                                    contents = new() {
-                                    { 0, new() {
-                                        { 0xA05C6B95, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
-                                        { 0xA0446B95, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
-                                        { 0xA04C6B95, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
-                                        { 0xA0746B95, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
-                                        { 0x6433C3C7, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
-                                        { 0x9A25490C, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
-                                        { 0xA0F792C9, new() { m_x0 = -1.00125f, m_y0 = 0.7f, m_x1 = -0.01125f, m_y1 = 0.4f, m_shown = true, } },
-                                    } }
-                                }
-                                },*/
-                                radarMask = 0xFFFFFFFF,
-                                filters = new() {
-                                    { 1, TextType.All },
-                                    { 2, TextType.GeneralChannel },
-                                    { 3, TextType.Fellowship },
-                                    { 4, TextType.Allegiance },
-                                },
-                                bitfield = (GameplayOptionsProfile.Flag)0x80024FF5,
-                                version = GameplayOptionsProfile.Version.LATEST_VERSION,
-                                chatFontColors = new() {
-                                    { TextType.Error, 0 },
-                                    { TextType.Combat, 1 },
-                                    { TextType.Admin, 2 },
-                                    { TextType.Standard, 3 },
-                                    { TextType.Say, 4 },
-                                    { TextType.Tell, 5 },
-                                    { TextType.Emote, 6 },
-                                    { TextType.Log, 4 },
-                                    { TextType.Broadcast, 9 },
-                                    { TextType.Fellowship, 7 },
-                                    { TextType.Allegiance, 8 },
-                                    { TextType.ChatEntry, 4 },
-                                    { TextType.GeneralChannel, 4 },
-                                    { TextType.TradeChannel, 4 },
-                                    { TextType.RegionChannel, 4 },
-                                    { TextType.FactionChannel, 4 },
-                                    { TextType.Devoted, 4 },
-                                    { TextType.PKChannel, 4 },
-                                },
-                                chatFontSizes = new() {
-                                    { TextType.Error, 0 },
-                                    { TextType.Combat, 0 },
-                                    { TextType.Admin, 0 },
-                                    { TextType.Standard, 0 },
-                                    { TextType.Say, 0 },
-                                    { TextType.Tell, 0 },
-                                    { TextType.Emote, 0 },
-                                    { TextType.Log, 0 },
-                                    { TextType.Broadcast, 0 },
-                                    { TextType.Fellowship, 0 },
-                                    { TextType.Allegiance, 0 },
-                                    { TextType.ChatEntry, 0 },
-                                    { TextType.GeneralChannel, 0 },
-                                    { TextType.TradeChannel, 0 },
-                                    { TextType.RegionChannel, 0 },
-                                    { TextType.FactionChannel, 0 },
-                                    { TextType.Devoted, 0 },
-                                    { TextType.PKChannel, 0 },
-                                },
-                                windowToChannel = new() {
-                                    { 1, TextType.Say },
-                                    { 2, TextType.GeneralChannel },
-                                    { 3, TextType.Fellowship },
-                                    { 4, TextType.Allegiance },
-                                },
-                                chatPopupFlags = new() {
-                                    { TextType.Broadcast, true },
-                                    { TextType.Fellowship, true },
-                                    { TextType.Allegiance, true },
-                                },
-                                windowOpacities = new() {
-                                    { 0xA05C6B95, 0.65f },
-                                    { 0xA0446B95, 0.65f },
-                                    { 0xA04C6B95, 0.65f },
-                                    { 0xA0746B95, 0.65f },
-                                },
+                            bitfield = (GameplayOptionsProfile.Flag)0x80024FF5,
+                            version = GameplayOptionsProfile.Version.LATEST_VERSION,
+                            chatFontColors = new() {
+                                { TextType.Error, 0 },
+                                { TextType.Combat, 1 },
+                                { TextType.Admin, 2 },
+                                { TextType.Standard, 3 },
+                                { TextType.Say, 4 },
+                                { TextType.Tell, 5 },
+                                { TextType.Emote, 6 },
+                                { TextType.Log, 4 },
+                                { TextType.Broadcast, 9 },
+                                { TextType.Fellowship, 7 },
+                                { TextType.Allegiance, 8 },
+                                { TextType.ChatEntry, 4 },
+                                { TextType.GeneralChannel, 4 },
+                                { TextType.TradeChannel, 4 },
+                                { TextType.RegionChannel, 4 },
+                                { TextType.FactionChannel, 4 },
+                                { TextType.Devoted, 4 },
+                                { TextType.PKChannel, 4 },
                             },
-                            skills = character.skillRepo,
-                            effectRegistry = new() {
-                                qualitiesModifiedCount = null,
-                                appliedFx = new(),
-                                baseEffectRegistry = null,
-                                effectIdCounter = 3,
-                                effectInfo = null,
-                                lastPulseTime = -1.0,
-                                equipperEffectIds = null,
-                                acquirerEffectIds = null,
-                                flags = (EffectRegistry.Flag)0x000C0001,
-                                trackedEffects = null,
-                                topEffects = null,
-                                effectCategorizationTable = null,
-                                appliedAppearances = new(),
+                            chatFontSizes = new() {
+                                { TextType.Error, 0 },
+                                { TextType.Combat, 0 },
+                                { TextType.Admin, 0 },
+                                { TextType.Standard, 0 },
+                                { TextType.Say, 0 },
+                                { TextType.Tell, 0 },
+                                { TextType.Emote, 0 },
+                                { TextType.Log, 0 },
+                                { TextType.Broadcast, 0 },
+                                { TextType.Fellowship, 0 },
+                                { TextType.Allegiance, 0 },
+                                { TextType.ChatEntry, 0 },
+                                { TextType.GeneralChannel, 0 },
+                                { TextType.TradeChannel, 0 },
+                                { TextType.RegionChannel, 0 },
+                                { TextType.FactionChannel, 0 },
+                                { TextType.Devoted, 0 },
+                                { TextType.PKChannel, 0 },
                             },
-                            filledInventoryLocations = filledInventoryLocations,
-                            inventoryByLocationTable = inventoryByLocationTable,
-                            inventoryByIdTable = inventoryByIdTable,
-                            containerSegments = new() {
-                                new() {
-                                    segmentMaxSize = 42,
-                                    segmentSize = (uint)character.contentsItemIdsEnumerable.Count(),
-                                },
-                                new() {
-                                    segmentMaxSize = 12,
-                                    segmentSize = 0,
-                                },
-                                new() {
-                                    segmentMaxSize = 12,
-                                    segmentSize = 0,
-                                },
-                                new() {
-                                    segmentMaxSize = 12,
-                                    segmentSize = 0,
-                                },
+                            windowToChannel = new() {
+                                { 1, TextType.Say },
+                                { 2, TextType.GeneralChannel },
+                                { 3, TextType.Fellowship },
+                                { 4, TextType.Allegiance },
                             },
-                            containerIds = new() {
+                            chatPopupFlags = new() {
+                                { TextType.Broadcast, true },
+                                { TextType.Fellowship, true },
+                                { TextType.Allegiance, true },
+                            },
+                            windowOpacities = new() {
+                                { 0xA05C6B95, 0.65f },
+                                { 0xA0446B95, 0.65f },
+                                { 0xA04C6B95, 0.65f },
+                                { 0xA0746B95, 0.65f },
+                            },
+                        },
+                        skills = character.skillRepo,
+                        effectRegistry = character.effectRegistry,
+                        filledInventoryLocations = filledInventoryLocations,
+                        inventoryByLocationTable = inventoryByLocationTable,
+                        inventoryByIdTable = inventoryByIdTable,
+                        containerSegments = new() {
+                            new() {
+                                segmentMaxSize = 42,
+                                segmentSize = (uint)character.contentsItemIdsEnumerable.Count(),
+                            },
+                            new() {
+                                segmentMaxSize = 12,
+                                segmentSize = 0,
+                            },
+                            new() {
+                                segmentMaxSize = 12,
+                                segmentSize = 0,
+                            },
+                            new() {
+                                segmentMaxSize = 12,
+                                segmentSize = 0,
+                            },
+                        },
+                        containerIds = new() {
 
-                            },
-                            contentIds = new(character.contentsItemIdsEnumerable),
-                            localFactionStatus = FactionStatus.Peace,
-                            serverFactionStatus = FactionStatus.Undef,
-                        }
+                        },
+                        contentIds = new(character.contentsItemIdsEnumerable),
+                        localFactionStatus = FactionStatus.Peace,
+                        serverFactionStatus = FactionStatus.Undef,
                     });
 
                     foreach (InstanceId itemId in character.containedItemIdsEnumerable) {
@@ -315,10 +299,8 @@ internal class CharacterMessageProcessor : BaseMessageProcessor {
                         chatChannels[chatChannel.type] = chatChannel;
                     }
 
-                    send(player, new InterpCEventPrivateMsg {
-                        netEvent = new RefreshChannelsCEvt {
-                            channels = chatChannels,
-                        }
+                    send(player, new RefreshChannelsCEvt {
+                        channels = chatChannels,
                     });
                     break;
                 }

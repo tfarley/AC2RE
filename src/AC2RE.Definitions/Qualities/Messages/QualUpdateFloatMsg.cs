@@ -5,6 +5,7 @@ public class QualUpdateFloatPrivateMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
     public NetQueue queueId => NetQueue.EVENT;
     public MessageOpcode opcode => MessageOpcode.Qualities__UpdateFloat_Private;
+    public OrderingType orderingType => OrderingType.PRIVATE_ORDERED;
 
     // ECM_Qualities::RecvEvt_UpdateFloat_Private
     public FloatStat type; // _stype

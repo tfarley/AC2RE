@@ -32,6 +32,8 @@ internal static class StatCfg {
         { IntStat.EtherealMovementTypeHigh, new(SyncMode.VISUAL, persistent: true) },
         { IntStat.Quantity, new(SyncMode.VISUAL, persistent: true) },
         { IntStat.Durability_CurrentLevel, new(SyncMode.VISUAL, persistent: true) },
+        { IntStat.Health_CurrentLevel, new(SyncMode.PRIVATE, persistent: true) },
+        { IntStat.Vigor_CurrentLevel, new(SyncMode.PRIVATE, persistent: true) },
     };
 
     private static readonly Dictionary<BoolStat, Config> BOOL = new() {

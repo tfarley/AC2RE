@@ -151,26 +151,20 @@ internal partial class WorldObject {
 
         if (world.objectManager.tryGet(moveDesc.actualFromContainerId, out fromContainer) && fromContainer.player != null) {
             if (moveDesc.actualFromContainerId == moveDesc.actualTargetContainerId) {
-                world.playerManager.send(fromContainer.player, new InterpCEventPrivateMsg {
-                    netEvent = new ReorganizeContentsDoneCEvt {
-                        moveDesc = moveDesc,
-                    }
+                world.playerManager.send(fromContainer.player, new ReorganizeContentsDoneCEvt {
+                    moveDesc = moveDesc,
                 });
             } else {
-                world.playerManager.send(fromContainer.player, new InterpCEventPrivateMsg {
-                    netEvent = new MoveItemDoneCEvt {
-                        moveDesc = moveDesc,
-                    }
+                world.playerManager.send(fromContainer.player, new MoveItemDoneCEvt {
+                    moveDesc = moveDesc,
                 });
             }
         }
 
         if (world.objectManager.tryGet(moveDesc.actualTargetContainerId, out targetContainer) && targetContainer.player != null) {
             if (moveDesc.actualFromContainerId != moveDesc.actualTargetContainerId) {
-                world.playerManager.send(targetContainer.player, new InterpCEventPrivateMsg {
-                    netEvent = new MoveItemDoneCEvt {
-                        moveDesc = moveDesc,
-                    }
+                world.playerManager.send(targetContainer.player, new MoveItemDoneCEvt {
+                    moveDesc = moveDesc,
                 });
             }
         }

@@ -45,7 +45,8 @@ CREATE TABLE id_gen (
 CREATE TABLE world_obj (
     id BIGINT UNSIGNED NOT NULL PRIMARY KEY,
     entityDid INT UNSIGNED NOT NULL,
-    physicsEntityDid INT UNSIGNED NOT NULL
+    physicsEntityDid INT UNSIGNED NOT NULL,
+    effectIdCounter INT UNSIGNED NOT NULL
 );
 CREATE TABLE del_world_obj LIKE world_obj;
 

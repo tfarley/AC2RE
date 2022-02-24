@@ -5,12 +5,12 @@ namespace AC2RE.Server;
 
 internal partial class WorldObject {
 
-    public VisualDesc visual;
+    public VisualDesc visual = new();
 
     private bool visualDirty;
 
     private void initVisual() {
-        visual = new();
+
     }
 
     public Vector3 visualScale {
@@ -44,42 +44,51 @@ internal partial class WorldObject {
             senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
             fxId = fxId,
             scalar = scalar,
-        }, true);
+        });
     }
 
     public void stopFx(FxId fxId) {
         world.playerManager.sendAllVisible(id, new StopFxMsg {
             senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
             fxId = fxId,
-        }, true);
+        });
+    }
+
+    public void setMode(ModeId modeId) {
+        physics.modeId = modeId;
+        world.playerManager.sendAllVisible(id, new SetModeMsg {
+            senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
+            modeId = modeId,
+        });
     }
 
     public void doMode(ModeId modeId) {
+        physics.modeId = modeId;
         world.playerManager.sendAllVisible(id, new DoModeMsg {
             senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
             modeId = modeId,
-        }, true);
+        });
     }
 
     public void doBehavior(BehaviorParams behaviorParams) {
         world.playerManager.sendAllVisible(id, new DoBehaviorMsg {
             senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
             behaviorParams = behaviorParams,
-        }, true);
+        });
     }
 
     public void stopBehavior(BehaviorId behaviorId) {
         world.playerManager.sendAllVisible(id, new StopBehaviorMsg {
             senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
             behaviorId = behaviorId,
-        }, true);
+        });
     }
 
     public void doStory(PhysicsStory story) {
         world.playerManager.sendAllVisible(id, new DoStoryMsg {
             senderIdWithStamp = getInstanceIdWithStamp(++physics.visualOrderStamp),
             story = story,
-        }, true);
+        });
     }
 
     private void syncMode() {

@@ -7,6 +7,7 @@ public class CharacterSetMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
     public NetQueue queueId => NetQueue.EVENT;
     public MessageOpcode opcode => MessageOpcode.Login__CharacterSet;
+    public OrderingType orderingType => OrderingType.UNORDERED;
 
     // CharacterSet
     public List<CharacterIdentity> characters; // set_

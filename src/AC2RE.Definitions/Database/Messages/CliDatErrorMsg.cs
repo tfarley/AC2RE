@@ -5,6 +5,7 @@ public class CliDatErrorMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
     public NetQueue queueId => NetQueue.DATABASE;
     public MessageOpcode opcode => MessageOpcode.CLIDAT_ERROR_EVENT;
+    public OrderingType orderingType => OrderingType.UNORDERED;
 
     // CCliDatErrorEvent::CDataFormat
     public QualifiedDataId qdid; // qdid

@@ -5,14 +5,14 @@ namespace AC2RE.Server;
 
 internal partial class WorldObject {
 
-    public SkillRepository skillRepo;
+    public SkillRepository skillRepo = new() {
+        perkTypes = new(),
+        categories = new(),
+        skills = new(),
+    };
 
     private void initSkills() {
-        skillRepo = new() {
-            perkTypes = new(),
-            categories = new(),
-            skills = new(),
-        };
+
     }
 
     public ErrorType trainSkill(SkillId skillId) {
@@ -134,25 +134,21 @@ internal partial class WorldObject {
 
     private void sendUpdateSkillRepo() {
         if (player != null) {
-            world.playerManager.send(player, new InterpCEventPrivateMsg {
-                netEvent = new UpdateSkillRepositoryCEvt {
-                    skillRepository = new() {
-                        skillCredits = skillRepo.skillCredits,
-                        untrainingXp = skillRepo.untrainingXp,
-                        heroSkillCredits = skillRepo.heroSkillCredits,
-                        skillIdUntraining = skillRepo.skillIdUntraining,
-                    },
-                }
+            world.playerManager.send(player, new UpdateSkillRepositoryCEvt {
+                skillRepository = new() {
+                    skillCredits = skillRepo.skillCredits,
+                    untrainingXp = skillRepo.untrainingXp,
+                    heroSkillCredits = skillRepo.heroSkillCredits,
+                    skillIdUntraining = skillRepo.skillIdUntraining,
+                },
             });
         }
     }
 
     private void sendUpdateSkillInfo(SkillId skillId) {
         if (player != null) {
-            world.playerManager.send(player, new InterpCEventPrivateMsg {
-                netEvent = new UpdateSkillInfoCEvt {
-                    skillInfo = skillRepo.skills[skillId],
-                }
+            world.playerManager.send(player, new UpdateSkillInfoCEvt {
+                skillInfo = skillRepo.skills[skillId],
             });
         }
     }

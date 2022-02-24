@@ -5,6 +5,7 @@ public class DeParentMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
     public NetQueue queueId => NetQueue.EVENT;
     public MessageOpcode opcode => MessageOpcode.Physics__DeParent;
+    public OrderingType orderingType => OrderingType.UNORDERED;
 
     // ECM_Physics::RecvEvt_DeParent
     public InstanceIdWithStamp senderIdWithStamp; // sender

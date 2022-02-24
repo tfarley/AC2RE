@@ -52,42 +52,48 @@ internal class PlayerManager {
         _players.Remove(clientId);
     }
 
-    public void send(Player toPlayer, INetMessage message, bool ordered = false) {
-        clientManager.send(toPlayer.clientId, message, ordered);
+    public void send(Player toPlayer, IClientEvent netEvent) {
+        send(toPlayer, new InterpCEventPrivateMsg {
+            netEvent = netEvent,
+        });
     }
 
-    public void send(IEnumerable<Player> toPlayers, INetMessage message, bool ordered = false) {
+    public void send(Player toPlayer, INetMessage message) {
+        clientManager.send(toPlayer.clientId, message);
+    }
+
+    public void send(IEnumerable<Player> toPlayers, INetMessage message) {
         List<ClientId> clientIds = new();
         foreach (Player player in toPlayers) {
             clientIds.Add(player.clientId);
         }
-        clientManager.send(clientIds, message, ordered);
+        clientManager.send(clientIds, message);
     }
 
-    public void sendAll(INetMessage message, bool ordered = false) {
-        clientManager.send(_players.Keys, message, ordered);
+    public void sendAll(INetMessage message) {
+        clientManager.send(_players.Keys, message);
     }
 
-    public void sendAllVisible(InstanceId objectId, INetMessage message, bool ordered = false) {
+    public void sendAllVisible(InstanceId objectId, INetMessage message) {
         foreach (Player player in _players.Values) {
             if (player.visibleObjectIds.Contains(objectId)) {
-                send(player, message, ordered);
+                send(player, message);
             }
         }
     }
 
-    public void sendAllExcept(Player? excludePlayer, INetMessage message, bool ordered = false) {
+    public void sendAllExcept(Player? excludePlayer, INetMessage message) {
         foreach (Player player in _players.Values) {
             if (player != excludePlayer) {
-                send(player, message, ordered);
+                send(player, message);
             }
         }
     }
 
-    public void sendAllVisibleExcept(InstanceId objectId, Player? excludePlayer, INetMessage message, bool ordered = false) {
+    public void sendAllVisibleExcept(InstanceId objectId, Player? excludePlayer, INetMessage message) {
         foreach (Player player in _players.Values) {
             if (player != excludePlayer && player.visibleObjectIds.Contains(objectId)) {
-                send(player, message, ordered);
+                send(player, message);
             }
         }
     }
@@ -112,8 +118,6 @@ internal class PlayerManager {
             fxId = FxId.Enter_World,
             scalar = 1.0f,
         });
-        send(player, new InterpCEventPrivateMsg {
-            netEvent = new EnterPortalSpaceCEvt()
-        });
+        send(player, new EnterPortalSpaceCEvt());
     }
 }

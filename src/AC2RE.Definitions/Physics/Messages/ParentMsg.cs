@@ -5,6 +5,7 @@ public class ParentMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.EPHEMERAL;
     public NetQueue queueId => NetQueue.EVENT;
     public MessageOpcode opcode => MessageOpcode.Physics__Parent;
+    public OrderingType orderingType => OrderingType.UNORDERED;
 
     // ECM_Physics::RecvEvt_Parent
     public InstanceIdWithStamp senderIdWithStamp; // sender

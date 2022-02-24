@@ -5,6 +5,7 @@ public class CLookAtDirMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
     public NetQueue queueId => NetQueue.WEENIE;
     public MessageOpcode opcode => MessageOpcode.Physics__CLookAtDir;
+    public OrderingType orderingType => OrderingType.PRIVATE_ORDERED;
 
     // ECM_Physics::SendEvt_CLookAtDir
     public float x; // _x

@@ -11,8 +11,17 @@ public class SetModeMsg : INetMessage {
     public InstanceIdWithStamp senderIdWithStamp; // sender
     public ModeId modeId; // modeID
 
+    public SetModeMsg() {
+
+    }
+
     public SetModeMsg(AC2Reader data) {
         senderIdWithStamp = data.ReadInstanceIdWithStamp();
         modeId = data.ReadEnum<ModeId>();
+    }
+
+    public void write(AC2Writer data) {
+        data.Write(senderIdWithStamp);
+        data.WriteEnum(modeId);
     }
 }

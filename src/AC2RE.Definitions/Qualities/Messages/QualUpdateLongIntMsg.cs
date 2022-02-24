@@ -5,6 +5,7 @@ public class QualUpdateLongIntPrivateMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
     public NetQueue queueId => NetQueue.EVENT;
     public MessageOpcode opcode => MessageOpcode.Qualities__UpdateLongInt_Private;
+    public OrderingType orderingType => OrderingType.PRIVATE_ORDERED;
 
     // ECM_Qualities::RecvEvt_UpdateLongInt_Private
     public LongIntStat type; // _stype

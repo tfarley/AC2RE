@@ -5,13 +5,14 @@ namespace AC2RE.Server;
 
 internal partial class WorldObject {
 
-    public CBaseQualities qualities;
+    public CBaseQualities qualities = new() {
+        weenieDesc = new(),
+    };
 
-    private HashSet<object> dirtyStats = new();
+    private readonly HashSet<object> dirtyStats = new();
 
     private void initQualities() {
-        qualities = new();
-        qualities.weenieDesc = new();
+
     }
 
     public void syncWeenieDesc() {

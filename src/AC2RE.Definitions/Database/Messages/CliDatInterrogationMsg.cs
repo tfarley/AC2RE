@@ -7,6 +7,7 @@ public class CliDatInterrogationMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
     public NetQueue queueId => NetQueue.DATABASE;
     public MessageOpcode opcode => MessageOpcode.CLIDAT_INTERROGATION_EVENT;
+    public OrderingType orderingType => OrderingType.UNORDERED;
 
     // CCliDatInterrogationEvent::CDataFormat
     public RegionID regionId; // dwServersRegion

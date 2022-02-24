@@ -8,6 +8,7 @@ public class CharacterCreateMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
     public NetQueue queueId => NetQueue.LOGON;
     public MessageOpcode opcode => MessageOpcode.CHARACTER_CREATE_EVENT;
+    public OrderingType orderingType => OrderingType.UNORDERED;
 
     // accountID
     public string accountName; // account

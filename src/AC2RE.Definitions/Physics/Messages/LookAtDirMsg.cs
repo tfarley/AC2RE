@@ -5,6 +5,7 @@ public class LookAtDirMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.EPHEMERAL;
     public NetQueue queueId => NetQueue.EVENT;
     public MessageOpcode opcode => MessageOpcode.Physics__LookAtDir;
+    public OrderingType orderingType => OrderingType.UNORDERED;
 
     // ECM_Physics::RecvEvt_LookAtDir
     public InstanceIdWithStamp senderIdWithStamp; // sender

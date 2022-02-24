@@ -215,26 +215,22 @@ internal class ExaminationMessageProcessor : BaseMessageProcessor {
                                     });
                                 }
                             }
-                            send(player, new InterpCEventPrivateMsg {
-                                netEvent = new UpdateExaminationProfileCEvt {
-                                    profile = new() {
-                                        request = sEvent.request,
-                                        nodes = nodes,
-                                    }
+                            send(player, new UpdateExaminationProfileCEvt {
+                                profile = new() {
+                                    request = sEvent.request,
+                                    nodes = nodes,
                                 }
                             });
                         } else {
-                            send(player, new InterpCEventPrivateMsg {
-                                netEvent = new UpdateExaminationProfileCEvt {
-                                    profile = new() {
-                                        request = sEvent.request,
-                                        nodes = new() {
-                                            new() {
-                                                order = 2,
-                                                type = ExaminationDataNode.DataType.Int,
-                                                valInt = 12345,
-                                                appearanceId = 3193660691,
-                                            }
+                            send(player, new UpdateExaminationProfileCEvt {
+                                profile = new() {
+                                    request = sEvent.request,
+                                    nodes = new() {
+                                        new() {
+                                            order = 2,
+                                            type = ExaminationDataNode.DataType.Int,
+                                            valInt = 12345,
+                                            appearanceId = 3193660691,
                                         }
                                     }
                                 }

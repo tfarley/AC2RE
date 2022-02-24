@@ -8,6 +8,7 @@ namespace AC2RE.Server;
 internal class CombatMessageProcessor : BaseMessageProcessor {
 
     private int toggleCounter = 0;
+    private EffectId testEffectId;
 
     public CombatMessageProcessor(World world) : base(world) {
 
@@ -19,43 +20,37 @@ internal class CombatMessageProcessor : BaseMessageProcessor {
                     InterpSEventMsg msg = (InterpSEventMsg)genericMsg;
                     // TODO: Just for testing - when pressing the attack mode button, toggle Refining effect UI image
                     if (msg.netEvent.funcId == ServerEventFunctionId.Combat__StartAttack) {
-                        if (toggleCounter % 2 == 0) {
-                            SingletonPkg<Effect> refiningEffect = new() {
-                                wstateDid = new(0x6F0011ED),
-                            };
-                            send(player, new InterpCEventPrivateMsg {
-                                netEvent = new ClientAddEffectCEvt {
-                                    effectRecord = new() {
-                                        timeDemotedFromTopLevel = -1.0,
-                                        timeCast = 129996502.8136027,
-                                        casterId = player.characterId,
-                                        timeout = 0.0f,
-                                        appFloat = 0.0f,
-                                        spellcraft = 1.0f,
-                                        appInt = 0,
-                                        pk = false,
-                                        appPackage = null,
-                                        timePromotedToTopLevel = -1.0,
-                                        effect = refiningEffect,
-                                        actingForWhomId = default,
-                                        skillDid = default,
-                                        fromItemId = player.characterId,
-                                        flags = EffectRecord.Flag.IsInfiniteTimeout | EffectRecord.Flag.IsRemoveOnLogout | EffectRecord.Flag.IsTransientEffect,
-                                        durabilityLevel = 0,
-                                        relatedEffectId = EffectId.NULL,
-                                        effectId = EffectId.NULL,
-                                        categories = 1,
-                                        maxDurabilityLevel = 0,
+                        if (tryGetCharacter(player, out WorldObject? character)) {
+                            character.doFx(FxId.Portal_Use, 1.0f);
+
+                            if (toggleCounter % 2 == 0) {
+                                testEffectId = character.addEffect(new() {
+                                    timeDemotedFromTopLevel = -1.0,
+                                    timeCast = world.serverTime.time,
+                                    casterId = player.characterId,
+                                    timeout = 0.0f,
+                                    appFloat = 0.0f,
+                                    spellcraft = 1.0f,
+                                    appInt = 0,
+                                    pk = false,
+                                    appPackage = null,
+                                    timePromotedToTopLevel = -1.0,
+                                    effect = new() {
+                                        wstateDid = new(0x6F0011ED),
                                     },
-                                    effectId = new(0x00000BD9),
-                                }
-                            });
-                        } else {
-                            send(player, new InterpCEventPrivateMsg {
-                                netEvent = new ClientRemoveEffectCEvt {
-                                    effectId = new(0x00000BD9),
-                                }
-                            });
+                                    actingForWhomId = default,
+                                    skillDid = default,
+                                    fromItemId = player.characterId,
+                                    flags = EffectRecord.Flag.IsInfiniteTimeout | EffectRecord.Flag.IsRemoveOnLogout | EffectRecord.Flag.IsTransientEffect,
+                                    durabilityLevel = 0,
+                                    relatedEffectId = EffectId.NULL,
+                                    effectId = EffectId.NULL,
+                                    categories = 1,
+                                    maxDurabilityLevel = 0,
+                                });
+                            } else {
+                                character.removeEffect(testEffectId);
+                            }
                         }
 
                         WorldObject newTestObject = world.objectManager.create(InstanceId.IdType.Dynamic);
@@ -78,12 +73,6 @@ internal class CombatMessageProcessor : BaseMessageProcessor {
 
                         newTestObject.enterWorld();
 
-                        if (tryGetCharacter(player, out WorldObject? character)) {
-                            character.health = toggleCounter;
-
-                            character.doFx(FxId.Portal_Use, 1.0f);
-                        }
-
                         toggleCounter++;
                     } else if (msg.netEvent.funcId == ServerEventFunctionId.Combat__StopAttack) {
                         if (tryGetCharacter(player, out WorldObject? character)) {
@@ -93,6 +82,10 @@ internal class CombatMessageProcessor : BaseMessageProcessor {
                         DoAttackSEvt sEvent = (DoAttackSEvt)msg.netEvent;
                         if (tryGetCharacter(player, out WorldObject? character)) {
                             character.doAttack(sEvent.skillId, sEvent.targetId, sEvent.specialAttackId);
+                        }
+                    } else if (msg.netEvent.funcId == ServerEventFunctionId.Death__RequestResurrect) {
+                        if (tryGetCharacter(player, out WorldObject? character)) {
+                            character.resurrect();
                         }
                     } else {
                         return false;

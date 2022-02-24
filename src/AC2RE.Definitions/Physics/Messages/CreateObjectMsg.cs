@@ -5,6 +5,7 @@ public class CreateObjectMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
     public NetQueue queueId => NetQueue.EVENT;
     public MessageOpcode opcode => MessageOpcode.Physics__CreateObject;
+    public OrderingType orderingType => OrderingType.UNORDERED;
 
     // CM_Physics::RecvEvt_CreateObject
     public InstanceId id; // objectID

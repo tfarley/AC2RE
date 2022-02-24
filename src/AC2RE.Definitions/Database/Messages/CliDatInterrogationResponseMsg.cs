@@ -7,6 +7,7 @@ public class CliDatInterrogationResponseMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.OUT_OF_WORLD;
     public NetQueue queueId => NetQueue.DATABASE;
     public MessageOpcode opcode => MessageOpcode.CLIDAT_INTERROGATION_RESPONSE_EVENT;
+    public OrderingType orderingType => OrderingType.UNORDERED;
 
     // CCliDatInterrogationResponseEvent::CDataFormat
     public Language language; // LanguageID

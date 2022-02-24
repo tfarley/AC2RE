@@ -5,6 +5,7 @@ public class InterpSEventMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
     public NetQueue queueId => NetQueue.WEENIE;
     public MessageOpcode opcode => MessageOpcode.Interp__InterpSEvent;
+    public OrderingType orderingType => OrderingType.PRIVATE_ORDERED;
 
     // ECM_Interp::SendEvt_InterpSEvent
     public IServerEvent netEvent;

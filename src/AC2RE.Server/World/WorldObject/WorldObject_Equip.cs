@@ -105,10 +105,8 @@ internal partial class WorldObject {
         }
 
         if (world.objectManager.tryGet(equipDesc.equipperId, out equipper) && equipper.player != null) {
-            world.playerManager.send(equipper.player, new InterpCEventPrivateMsg {
-                netEvent = new EquipItemDoneCEvt {
-                    equipDesc = equipDesc,
-                }
+            world.playerManager.send(equipper.player, new EquipItemDoneCEvt {
+                equipDesc = equipDesc,
             });
         }
     }
@@ -139,10 +137,8 @@ internal partial class WorldObject {
         }
 
         if (world.objectManager.tryGet(equipDesc.equipperId, out equipper) && equipper.player != null) {
-            world.playerManager.send(equipper.player, new InterpCEventPrivateMsg {
-                netEvent = new UnequipItemDoneCEvt {
-                    equipDesc = equipDesc,
-                }
+            world.playerManager.send(equipper.player, new UnequipItemDoneCEvt {
+                equipDesc = equipDesc,
             });
         }
     }

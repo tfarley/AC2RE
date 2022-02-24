@@ -5,6 +5,7 @@ public class PlayerDescMsg : INetMessage {
     public NetBlobId.Flag blobFlags => NetBlobId.Flag.NONE;
     public NetQueue queueId => NetQueue.EVENT;
     public MessageOpcode opcode => MessageOpcode.Login__PlayerDesc;
+    public OrderingType orderingType => OrderingType.PRIVATE_ORDERED;
 
     // ECM_Login::RecvEvt_PlayerDesc
     public CBaseQualities qualities; // _q
