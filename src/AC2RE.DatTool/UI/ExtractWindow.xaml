@@ -10,6 +10,7 @@
         <StackPanel x:Name="dbTypeCheckBoxesPanel" Orientation="Horizontal"/>
         <StackPanel VerticalAlignment="Bottom">
             <Button Content="Toggle All" Padding="10,5,10,5" Margin="10,10,0,10" Click="toggleAllButton_Click"/>
+            <Button Content="Parse Only" Padding="10,5,10,5" Margin="10,10,0,10" Click="parseOnlyButton_Click"/>
             <Button Content="Extract" Padding="10,5,10,5" Margin="10,10,0,10" Click="extractButton_Click"/>
         </StackPanel>
     </StackPanel>

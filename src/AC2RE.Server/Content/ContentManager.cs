@@ -8,6 +8,14 @@ namespace AC2RE.Server;
 
 internal class ContentManager : IDisposable {
 
+    private static readonly DataId MASTER_SCENE_LIST_DID = new(0x700001A5);
+    private static readonly DataId MASTER_USAGE_ACTION_LIST_DID = new(0x70000257);
+    private static readonly DataId MASTER_USAGE_PERMISSION_LIST_DID = new(0x7000026E);
+    private static readonly DataId MASTER_SKILL_LIST_DID = new(0x700016E2);
+    private static readonly DataId MASTER_SKILL_PANEL_LIST_DID = new(0x70001976);
+    private static readonly DataId MASTER_ABILITY_CALCULATOR_LIST_DID = new(0x7000199D);
+    private static readonly DataId MASTER_ACT_LIST_DID = new(0x70001A89);
+
     private readonly DatReader portalDatReader;
     private readonly DatReader cell1DatReader;
     private readonly DatReader localDatReader;
@@ -34,21 +42,23 @@ internal class ContentManager : IDisposable {
         MasterProperty.loadMasterProperties(portalDatReader);
         PackageTypes.loadPackageTypes(portalDatReader);
 
-        foreach (DataId did in portalDatReader.dids) {
-            DbType dbType = DbTypeDef.getType(DbTypeDef.DatType.PORTAL, did);
-
-            if (dbType == DbType.WSTATE) {
-                if (PackageTypes.isPackageType(getWeenieStatePackageType(did), PackageType.Skill)) {
-                    WState wstate = getWeenieState(did);
-                    Skill skill = (Skill)wstate.package;
-                    skillCache[(SkillId)skill.enumVal] = skill;
-                }
-            }
-        }
+        loadSkills(portalDatReader);
     }
 
     public void Dispose() {
         portalDatReader.Dispose();
+    }
+
+    private void loadSkills(DatReader datReader) {
+        using (AC2Reader data = datReader.getFileReader(MASTER_SKILL_LIST_DID)) {
+            WState masterSkillListWState = new(data);
+            MasterList masterSkillList = (MasterList)masterSkillListWState.package;
+            foreach (SingletonPkg<IHeapObject> singleton in masterSkillList.map.Values) {
+                WState wstate = getWeenieState(singleton.wstateDid);
+                Skill skill = (Skill)wstate.package;
+                skillCache[(SkillId)skill.enumVal] = skill;
+            }
+        }
     }
 
     public bool contains(DataId did) {

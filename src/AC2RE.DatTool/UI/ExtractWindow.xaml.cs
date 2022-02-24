@@ -87,32 +87,42 @@ public partial class ExtractWindow : Window {
         });
     }
 
+    private void parseOnlyButton_Click(object sender, RoutedEventArgs e) {
+        UIUtil.swallowException(() => {
+            extract(null);
+        });
+    }
+
     private void extractButton_Click(object sender, RoutedEventArgs e) {
         UIUtil.swallowException(() => {
             string? outputPath = UIUtil.promptSelectDirectory();
             if (outputPath != null) {
-                DbType[] selectedDbTypes = getSelectedDbTypes();
+                extract(outputPath);
+            }
+        });
+    }
 
-                UIUtil.swallowException(() => {
-                    using (DatReader portalDatReader = new(portalDatPathTextBox.Text)) {
-                        MasterProperty.loadMasterProperties(portalDatReader);
-                        PackageTypes.loadPackageTypes(portalDatReader);
+    private void extract(string? outputPath) {
+        DbType[] selectedDbTypes = getSelectedDbTypes();
 
-                        DatParse.parseDat(DbTypeDef.DatType.PORTAL, portalDatReader, outputPath, selectedDbTypes);
-                    }
-                });
+        UIUtil.swallowException(() => {
+            using (DatReader portalDatReader = new(portalDatPathTextBox.Text)) {
+                MasterProperty.loadMasterProperties(portalDatReader);
+                PackageTypes.loadPackageTypes(portalDatReader);
 
-                UIUtil.swallowException(() => {
-                    using (DatReader cell1DatReader = new(cell1DatPathTextBox.Text)) {
-                        DatParse.parseDat(DbTypeDef.DatType.CELL, cell1DatReader, outputPath, selectedDbTypes);
-                    }
-                });
+                DatParse.parseDat(DbTypeDef.DatType.PORTAL, portalDatReader, outputPath, selectedDbTypes);
+            }
+        });
 
-                UIUtil.swallowException(() => {
-                    using (DatReader localDatReader = new(localDatPathTextBox.Text)) {
-                        DatParse.parseDat(DbTypeDef.DatType.LOCAL, localDatReader, outputPath, selectedDbTypes);
-                    }
-                });
+        UIUtil.swallowException(() => {
+            using (DatReader cell1DatReader = new(cell1DatPathTextBox.Text)) {
+                DatParse.parseDat(DbTypeDef.DatType.CELL, cell1DatReader, outputPath, selectedDbTypes);
+            }
+        });
+
+        UIUtil.swallowException(() => {
+            using (DatReader localDatReader = new(localDatPathTextBox.Text)) {
+                DatParse.parseDat(DbTypeDef.DatType.LOCAL, localDatReader, outputPath, selectedDbTypes);
             }
         });
     }
