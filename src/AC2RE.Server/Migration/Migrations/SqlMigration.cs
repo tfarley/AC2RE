@@ -5,6 +5,8 @@ namespace AC2RE.Server.Migration;
 
 internal abstract class SqlMigration : IMigration {
 
+    public virtual bool optional => false;
+
     protected abstract string statement { get; }
 
     public void execute() {

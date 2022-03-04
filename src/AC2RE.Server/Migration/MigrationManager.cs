@@ -1,5 +1,6 @@
 ﻿using AC2RE.Server.Database;
 using MySqlConnector;
+using System;
 using System.Collections.Generic;
 
 namespace AC2RE.Server.Migration;
@@ -38,7 +39,15 @@ CREATE TABLE IF NOT EXISTS migration (
             string migrationName = migration.GetType().Name;
             if (!migrationDb.hasRunMigration(migrationName)) {
                 Logs.STATUS.info("Running migration", "name", migrationName);
-                migration.execute();
+                try {
+                    migration.execute();
+                } catch (Exception e) {
+                    if (migration.optional) {
+                        Logs.STATUS.warn(e, "Optional migration failed - skipping", "name", migrationName);
+                    } else {
+                        throw;
+                    }
+                }
                 migrationDb.setRunMigration(migrationName);
             }
         }

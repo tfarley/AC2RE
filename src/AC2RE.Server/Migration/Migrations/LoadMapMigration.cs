@@ -2,6 +2,8 @@
 
 internal class LoadMapMigration : SqlMigration {
 
+    public override bool optional => true;
+
     protected override string statement => @"USE ac2re_map;
 
 LOAD DATA INFILE './map_obj.csv' INTO TABLE map_obj
