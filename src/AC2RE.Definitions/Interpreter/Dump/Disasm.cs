@@ -9,17 +9,21 @@ public class Disasm {
 
     public class Instruction {
 
+        public static readonly int TAG_SHIFT = 8; // OPCODE_TAG_SHIFT
+        public static readonly int IMMEDIATE_SHIFT = 16; // OPCODE_VALUE_SHIFT
+
         public uint offset;
         public uint raw;
         public Opcode opcode;
         public bool dwordFlag;
-        public byte tag;
+        public StackType tag;
         public short immediate;
         public bool valIsDec;
         public bool val2IsDec;
         public long? val;
-        public long? val2;
+        public double? valDouble;
         public string valString;
+        public long? val2;
         public ExportData targetPackage;
         public ExportFunctionData targetFunc;
         public string targetString;
@@ -64,8 +68,8 @@ public class Disasm {
                 raw = rawInstruction,
                 opcode = (Opcode)(rawInstruction & 0x7F),
                 dwordFlag = (rawInstruction & (uint)Opcode.DWORD_FLAG) != 0,
-                tag = (byte)((rawInstruction & 0xFF00) >> 8),
-                immediate = (short)((rawInstruction & 0xFFFF0000) >> 16),
+                tag = (StackType)(byte)((rawInstruction & 0x0F00) >> Instruction.TAG_SHIFT),
+                immediate = (short)((rawInstruction & 0xFFFF0000) >> Instruction.IMMEDIATE_SHIFT),
             };
             // TODO: Decode more opcodes via Interp::Handle* - some may have embedded immediates
             switch (instruction.opcode) {
@@ -73,11 +77,30 @@ public class Disasm {
                     instruction.valIsDec = true;
                     if (instruction.dwordFlag) {
                         i += 4;
-                        instruction.val = BitConverter.ToInt64(byteStream.opcodeStream.opcodeBytes, (int)i);
+                        byte[] swappedBytes = new byte[8];
+                        for (int j = 0; j < 4; j++) {
+                            swappedBytes[j] = byteStream.opcodeStream.opcodeBytes[i + 4 + j];
+                            swappedBytes[j + 4] = byteStream.opcodeStream.opcodeBytes[i + j];
+                        }
+                        switch (instruction.tag) {
+                            case StackType.Float:
+                                instruction.valDouble = BitConverter.ToDouble(swappedBytes);
+                                break;
+                            default:
+                                instruction.val = BitConverter.ToInt64(swappedBytes);
+                                break;
+                        }
                         i += 4;
                     } else {
                         i += 4;
-                        instruction.val = BitConverter.ToInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
+                        switch (instruction.tag) {
+                            case StackType.Float:
+                                instruction.valDouble = BitConverter.ToSingle(byteStream.opcodeStream.opcodeBytes, (int)i);
+                                break;
+                            default:
+                                instruction.val = BitConverter.ToInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
+                                break;
+                        }
                     }
                     break;
                 case Opcode.NEW:
@@ -118,9 +141,23 @@ public class Disasm {
                 case Opcode.LOAD:
                     instruction.valString = getFrameMemberNameByOffset(curFrame, instruction.immediate);
                     break;
+                case Opcode.PUSHV:
+                    switch (instruction.tag) {
+                        case StackType.Reference:
+                            if (instruction.immediate == -1) {
+                                instruction.valString = "null";
+                            } else {
+                                instruction.val = instruction.immediate;
+                            }
+                            break;
+                        default:
+                            instruction.valIsDec = true;
+                            instruction.val = instruction.immediate;
+                            break;
+                    }
+                    break;
                 case Opcode.POPN:
                 case Opcode.PUSH_FRAME:
-                case Opcode.PUSHV:
                 case Opcode.SADDR:
                     instruction.valIsDec = true;
                     instruction.val = instruction.immediate;
@@ -146,18 +183,6 @@ public class Disasm {
                         break;
                     }
                 default:
-                    if (instruction.opcode >= Opcode.FADD && instruction.opcode <= Opcode.FDEC) {
-                        i += 4;
-                        instruction.val = BitConverter.ToInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
-                        if (instruction.dwordFlag) {
-                            i += 4;
-                            instruction.val2 = BitConverter.ToInt64(byteStream.opcodeStream.opcodeBytes, (int)i);
-                            i += 4;
-                        } else {
-                            i += 4;
-                            instruction.val2 = BitConverter.ToInt32(byteStream.opcodeStream.opcodeBytes, (int)i);
-                        }
-                    }
                     break;
             }
             instructions.Add(instruction);
@@ -238,6 +263,9 @@ public class Disasm {
                 } else {
                     data.Write($" 0x{instruction.val.Value:X8}");
                 }
+            }
+            if (instruction.valDouble.HasValue) {
+                data.Write($" {instruction.valDouble}");
             }
             if (instruction.val2.HasValue) {
                 if (instruction.val2IsDec) {
