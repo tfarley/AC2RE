@@ -76,6 +76,8 @@ internal class CharacterMessageProcessor : BaseMessageProcessor {
                         throw new ArgumentException($"Account {player.account.id} attempted to log in with non-existent character object {msg.characterId}.");
                     }
 
+                    client.reset();
+
                     send(player, new CreatePlayerMsg {
                         id = msg.characterId,
                         regionId = 1,

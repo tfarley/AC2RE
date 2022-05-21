@@ -70,8 +70,13 @@ internal class ClientConnection {
         highestReceivedPacketSeq = 1;
     }
 
+    public void reset() {
+        orderingStamps.Clear();
+    }
+
     public void enqueueBlob(NetBlobId.Flag blobFlags, NetQueue queueId, byte[] payload, OrderingType orderingType) {
         orderingStamps.TryGetValue(orderingType, out ushort orderingStamp);
+        orderingStamp++;
 
         NetBlob blob = new() {
             blobId = new(blobFlags, orderingType, orderingStamp, blobSeq),
@@ -85,7 +90,6 @@ internal class ClientConnection {
             outgoingFragQueue.Enqueue(frag);
         }
 
-        orderingStamp++;
         orderingStamps[orderingType] = orderingStamp;
         blobSeq++;
     }

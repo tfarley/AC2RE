@@ -185,10 +185,10 @@ internal class PacketReceiveManager {
                 Logs.NET.info("Client connected",
                     "client", client);
                 client.connect();
-                send(client.id, new WorldNameMsg {
+                clientManager.send(client.id, new WorldNameMsg {
                     worldName = new("MyWorld"),
                 });
-                send(client.id, new CliDatInterrogationMsg {
+                clientManager.send(client.id, new CliDatInterrogationMsg {
                     regionId = (RegionID)1,
                     nameRuleLanguage = Language.English,
                     supportedLanguages = SUPPORTED_LANGUAGES,
@@ -255,40 +255,5 @@ internal class PacketReceiveManager {
                 }
             }
         });
-    }
-
-    private byte[] serializeMessage(INetMessage msg) {
-        MemoryStream buffer = new();
-        using (AC2Writer data = new(buffer)) {
-            data.WriteEnum(msg.opcode);
-            msg.write(data);
-        }
-        return buffer.ToArray();
-    }
-
-    private void send(ClientId clientId, INetMessage msg, byte[] payload, bool ordered = false) {
-        clientManager.tryProcessClient(clientId, client => {
-            client.enqueueBlob(msg.blobFlags, msg.queueId, payload, ordered ? msg.orderingType : OrderingType.UNORDERED);
-
-            StringBuilder msgString = new(msg.GetType().Name);
-            if (msg is IInterpCEventMsg cEventMsg) {
-                msgString.Append($" {cEventMsg.netEvent.funcId}");
-            }
-
-            Logs.NET.debug("Enqueued msg",
-                "client", client,
-                "msg", msgString);
-        });
-    }
-
-    public void send(ClientId clientId, INetMessage msg, bool ordered = false) {
-        send(clientId, msg, serializeMessage(msg), ordered);
-    }
-
-    public void send(IEnumerable<ClientId> clientIds, INetMessage msg, bool ordered = false) {
-        byte[] payload = serializeMessage(msg);
-        foreach (ClientId clientId in clientIds) {
-            send(clientId, msg, payload, ordered);
-        }
     }
 }
